@@ -47,7 +47,6 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     private GridLayoutManager landGridLayoutManager;
     private LandRecyclerAdapter landRecyclerAdapter;
     private NaverMap naverMap;
-    HashMap<Marker, Integer> markerMap = new HashMap();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -187,6 +186,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @Override
     public void showMessage(String message) {
         ToastUtil.makeShortToast(context, message);
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package in.koreatech.koin.service_store.adapters;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +23,7 @@ import in.koreatech.koin.core.networks.entity.Store;
 
 /**
  * Created by hyerim on 2018. 8. 12....
+ * Edited by hansol on 2019.12.28...
  */
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.ViewHolder> {
     private final String TAG = StoreRecyclerAdapter.class.getSimpleName();
@@ -47,6 +52,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         this.mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
         this.mStoreArrayList = new ArrayList<>();
+        Collections.sort(storeArrayList);
         this.mStoreArrayList.addAll(storeArrayList);
     }
 

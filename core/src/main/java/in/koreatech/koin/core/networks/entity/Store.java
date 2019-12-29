@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 /**
  * Created by hyerim on 2018. 8. 12....
+ * Edited by hansol on 2019.12.28...
  */
-public class Store {
+public class Store implements Comparable<Store> {
     //Unique ID
     @SerializedName("id")
     @Expose
@@ -99,7 +100,7 @@ public class Store {
     public ArrayList<StoreMenu> menus;
 
     public int shopId;
-    
+
     public String size;
 
     public String price;
@@ -148,5 +149,16 @@ public class Store {
 
     public Store() {
 
+    }
+
+    @Override
+    public int compareTo(Store o) {
+        int compareResult = this.name.compareTo(o.name);
+        if (compareResult < 0) {
+            return -1;
+        } else if (compareResult > 0) {
+            return 1;
+        }
+        return 0;
     }
 }
