@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="in.koreatech.koin">
+
+    <meta-data
+        android:name="firebase_crashlytics_collection_enabled"
+        android:value="false" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.DIAL_PHONE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".KoinApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_koin"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
+        <receiver android:name=".service_dining.widget.DiningWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/dining_widget_info" />
+
+        </receiver>
+        <receiver
+            android:name=".service_bus.widget.BusWidget"
+            android:label="@string/navigation_item_bus">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/bus_widget_info" />
+        </receiver>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="@string/navermap_keyvalue" />
+
+        <receiver
+            android:name=".service_timetable.widget.TimetableWidget"
+            android:label="@string/navigation_item_timetable">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/timetable_widget_info" />
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="in.koreatech.koin.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
+        <activity
+            android:name=".ui.StartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.SignupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_store.ui.StoreActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_dining.ui.DiningActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_bus.ui.BusActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_board.ui.BoardActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_board.ui.ArticleActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_board.ui.ArticleEditActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_callvan.ui.CallvanActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_callvan.ui.CreateRoomActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedSellDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedBuyDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedBuyEditActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedSellEditActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedBuyCreateActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedSellCreateActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.UserInfoActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".ui.UserInfoEditedActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_store.ui.StoreDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_circle.ui.CircleActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_circle.ui.CircleDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_board.ui.ArticleCommentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_used_market.ui.MarketUsedDetailCommentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_timetable.ui.TimetableActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_timetable.ui.TimetableAnonymousActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_land.ui.LandActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_land.ui.LandDetailActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_lostfound.ui.LostFoundMainActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_lostfound.ui.LostFoundDetailActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_lostfound.ui.LostFoundEditActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_lostfound.ui.LostFoundCommentActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
+            android:name=".service_store.ui.StoreFlyerViewActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+    </application>
+
+</manifest>

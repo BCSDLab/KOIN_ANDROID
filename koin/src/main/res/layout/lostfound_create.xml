@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/freeboard_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_app_bar_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_button_text="취소"
+                app:right_button_text="등록"
+                app:title_text="분실물게시판" />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:orientation="vertical">
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/lostfound_create_nestedscrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <EditText
+                            android:id="@+id/lostfound_create_title_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            android:background="@android:color/transparent"
+                            android:hint="제목을 입력해주세요"
+                            android:maxLines="1"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toTopOf="@id/title_lostsort_border"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/title_lostsort_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/lostfound_create_title_edittext" />
+
+
+                        <RadioGroup
+                            android:id="@+id/lostfound_create_radiobutton_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="17dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title_lostsort_border">
+
+                            <RadioButton
+                                android:id="@+id/lostfound_create_get_radiobutton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:buttonTint="@color/light_navy"
+                                android:checked="true"
+                                android:text="분실물 습득"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+
+                            <RadioButton
+                                android:id="@+id/lostfound_create_found_radiobutton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="30dp"
+                                android:buttonTint="@color/light_navy"
+                                android:checked="false"
+                                android:text="분실물 찾기"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+
+                                />
+
+                        </RadioGroup>
+
+
+                        <LinearLayout
+                            android:id="@+id/lostsort_lostdate_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostfound_create_radiobutton_group" />
+
+                        <TextView
+                            android:id="@+id/lostfound_create_lostdate_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="49dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginBottom="18.5dp"
+                            android:gravity="center_vertical"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/lostdate_lostplace_border"
+                            app:layout_constraintStart_toEndOf="@+id/lostfound_create_date_textview"
+                            app:layout_constraintTop_toBottomOf="@+id/lostsort_lostdate_border"
+                            app:layout_constraintVertical_bias="0.5" />
+
+
+                        <TextView
+                            android:id="@+id/lostfound_create_date_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginBottom="18.5dp"
+                            android:gravity="center_vertical"
+                            android:text="분실일"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/lostdate_lostplace_border"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostsort_lostdate_border"
+                            app:layout_constraintVertical_bias="0.5" />
+
+
+                        <LinearLayout
+                            android:id="@+id/lostdate_lostplace_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="18dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostfound_create_lostdate_textview" />
+
+
+                        <TextView
+                            android:id="@+id/lostfound_create_placename_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="18.5dp"
+                            android:gravity="center_vertical"
+                            android:text="분실장소"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/lostdate_lostplace_border" />
+
+
+                        <TextView
+                            android:id="@+id/lostfound_create_phonenum_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="19dp"
+                            android:gravity="center_vertical"
+                            android:text="연락처"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostplace_phone_number_border" />
+
+                        <RadioGroup
+                            android:id="@+id/lostfound_create_phone_status_radiobutton_group"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="49dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintStart_toEndOf="@+id/lostfound_create_phonenum_textview"
+                            app:layout_constraintTop_toBottomOf="@+id/lostplace_phone_number_border">
+
+                            <RadioButton
+                                android:id="@+id/lostfound_create_phone_public_radiobutton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:layout_marginEnd="8dp"
+                                android:buttonTint="@color/light_navy"
+                                android:text="공개"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+
+                            <RadioButton
+                                android:id="@+id/lostfound_create_phone_private_radiobutton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="17dp"
+                                android:layout_marginTop="12dp"
+                                android:buttonTint="@color/light_navy"
+                                android:checked="true"
+                                android:text="비공개"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+
+                                />
+
+                        </RadioGroup>
+
+                        <LinearLayout
+                            android:id="@+id/lostplace_phone_number_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="18dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostfound_create_placename_textview" />
+
+
+                        <LinearLayout
+                            android:id="@+id/border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lostfound_create_phone_num_ediitext" />
+
+                        <EditText
+                            android:id="@+id/lostfound_create_content_ediitext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="18.5dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            android:background="@android:color/transparent"
+                            android:hint="내용을 입력해주세요."
+                            android:letterSpacing="-0.05"
+                            android:lineSpacingExtra="10sp"
+                            android:paddingBottom="63dp"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/border"
+                            app:layout_constraintVertical_bias="1.0"
+                            tools:text="" />
+
+                        <EditText
+                            android:id="@+id/lostfound_create_placename_edittext"
+                            android:layout_width="175dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="33dp"
+                            android:background="@android:color/transparent"
+                            android:hint="습득장소를 입력해주세요."
+                            android:letterSpacing="-0.05"
+                            android:lineSpacingExtra="8sp"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/lostfound_create_placename_textview"
+                            app:layout_constraintStart_toEndOf="@+id/lostfound_create_placename_textview"
+                            app:layout_constraintTop_toTopOf="@+id/lostfound_create_placename_textview" />
+
+                        <EditText
+                            android:id="@+id/lostfound_create_phone_num_ediitext"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="49dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="49dp"
+                            android:background="@android:color/transparent"
+                            android:hint="연락처를 입력해주세요.\nex)010-1234-1234"
+                            android:inputType="phone"
+                            android:letterSpacing="-0.05"
+                            android:lineSpacingExtra="8sp"
+                            app:layout_constrainedHeight="true"
+                            android:textColorHint="@color/white_87"
+                            app:layout_constrainedWidth="true"
+                            android:textSize="16sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toEndOf="@+id/lostfound_create_phonenum_textview"
+                            app:layout_constraintTop_toBottomOf="@+id/lostfound_create_phone_status_radiobutton_group" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <include layout="@layout/base_navigation_drawer_left" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

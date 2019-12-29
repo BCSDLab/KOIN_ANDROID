@@ -1,0 +1,14 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
+
+
+    <string name="take_screen_shot_activity">Activity Screenshot</string>
+    <string name="take_screen_shot_view">Layout Screenshot</string>
+    <string name="take_save_screen_shot">Save Screenshot</string>
+    <string name="reset">Reset</string>
+    <string name="toast_message_screenshot">First Take any Screenshot</string>
+    <string name="toast_message_screenshot_success">Screenshot saved successfully.</string>
+    <string name="settings_message">Go to Permissions to Grant Storage</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+</resources>

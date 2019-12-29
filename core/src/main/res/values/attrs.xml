@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="KoinBaseAppbarDark">
+        <attr name="background_color" format="reference|color" />
+        <attr name="title_text_color" format="reference|color" />
+        <attr name="title_text" format="reference|string" />
+        <attr name="title_visibility">
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="left_button_text_color" format="reference|color" />
+        <attr name="left_button_background" format="reference" />
+        <attr name="left_button_text" format="reference|string" />
+        <attr name="left_button_visibility">
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="right_button_text_color" format="reference|color" />
+        <attr name="right_button_visibility" >
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="right_button_background" format="reference" />
+        <attr name="right_button_text" format="reference|string" />
+    </declare-styleable>
+
+    <declare-styleable name="Typekit">
+        <attr name="font_name" format="string"/>
+    </declare-styleable>
+    
+    <declare-styleable name="TimetableView">
+        <attr name="row_count" format="integer"/>
+        <attr name="column_count" format="integer"/>
+        <attr name="cell_height" format="dimension"/>
+        <attr name="side_cell_width" format="dimension"/>
+        <attr name="header_title" format="reference"/>
+        <attr name="sticker_colors" format="reference"/>
+        <attr name="start_time" format="integer"/>
+        <attr name="header_highlight_color" format="color"/>
+        <attr name="header_height" format="dimension"/>
+        <attr name="margin_bottom" format="dimension"/>
+        <attr name="activate_timebar" format="boolean"/>
+    </declare-styleable>
+</resources>

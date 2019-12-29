@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/timetable_detail_schedule_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="310dp"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="@string/user_lock_bottom_sheet_behavior"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_pale_grey_rectangle"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/timetable_detail_schedule_bottom_sheet_left_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="삭제"
+            android:textColor="@color/squash"
+            android:textSize="15sp"
+            app:font_name="Custom6" />
+
+        <TextView
+            android:id="@+id/timetable_detail_schedule_bottom_sheet_center_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:text="수업상세"
+            android:textColor="@color/light_navy"
+            android:textSize="15sp"
+            app:font_name="Custom5" />
+
+        <TextView
+            android:id="@+id/timetable_detail_schedule_bottom_sheet_right_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:text="완료"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:font_name="Custom6" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44.5dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/timetable_detail_schedule_bottom_sheet_class_title_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:layout_marginStart="16dp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="16dp"
+            android:letterSpacing="-0.03"
+            android:lineSpacingExtra="3sp"
+            android:textSize="15sp"
+            app:font_name="Bold"
+            tools:text="영어1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44.5dp"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/timetable_detail_schedule_bottom_sheet_class_detail_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:includeFontPadding="false"
+            android:layout_marginEnd="16dp"
+            android:letterSpacing="-0.03"
+            android:lineSpacingExtra="3sp"
+            android:textSize="12sp"
+            app:font_name="Custom6"
+            tools:text="detail" />
+
+
+    </LinearLayout>
+
+    <!--TODO 시간표 custom 추가기능 -->
+    <!--<androidx.core.widget.NestedScrollView-->
+    <!--android:id="@+id/timetable_bottom_sheet_custom_add_nestedscrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/white"-->
+    <!--app:behavior_hideable="true">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical">-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="180">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="41">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginStart="20dp"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:text="수업명*"-->
+    <!--android:textColor="@color/warm_grey" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:layout_marginEnd="34dp"-->
+    <!--android:layout_marginBottom="6dp"-->
+    <!--android:layout_weight="139"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="159">-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/timetable_add_schedule_class_edittext"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginStart="10dp"-->
+    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:hint="필수 입력사항입니다."-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:textColorHint="@color/cloudy_blue" />-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="180">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="41">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginStart="20dp"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:text="담당교수"-->
+    <!--android:textColor="@color/warm_grey" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:layout_marginEnd="34dp"-->
+    <!--android:layout_marginBottom="6dp"-->
+    <!--android:layout_weight="139"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="159">-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/timetable_add_schedule_professor_edittext"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginStart="10dp"-->
+    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:includeFontPadding="false"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:textColorHint="@color/cloudy_blue" />-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="180">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="41">-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginStart="20dp"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:text="학점"-->
+    <!--android:textColor="@color/warm_grey" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:layout_marginEnd="34dp"-->
+    <!--android:layout_marginBottom="6dp"-->
+    <!--android:layout_weight="139"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="159">-->
+
+    <!--<RadioGroup-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_group"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginStart="10dp"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal">-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_one"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:paddingStart="10dp"-->
+    <!--android:button="@drawable/radiobutton_timetable_select"-->
+    <!--android:checked="true"-->
+    <!--android:text="1" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_two"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:paddingStart="6dp"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="2" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_three"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:paddingStart="6dp"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="3" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_four"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:paddingStart="6dp"-->
+    <!--android:text="4" />-->
+
+    <!--<RadioButton-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_grade_radiobutton_fifth"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:textSize="13sp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:paddingStart="6dp"-->
+    <!--android:text="5" />-->
+
+
+    <!--</RadioGroup>-->
+
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="180">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="43dp"-->
+    <!--android:layout_weight="41"-->
+    <!--&gt;-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:lineSpacingExtra="6sp"-->
+    <!--android:layout_marginStart="20dp"-->
+    <!--android:text="시긴"-->
+    <!--android:textColor="@color/warm_grey" />-->
+
+    <!--</LinearLayout>-->
+
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_marginTop="6dp"-->
+    <!--android:layout_marginEnd="34dp"-->
+    <!--android:layout_marginBottom="22dp"-->
+    <!--android:layout_weight="139"-->
+    <!--android:gravity="center"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="159">-->
+
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/timetable_add_schedule_bottom_sheet_time_recyclerview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="10dp"-->
+    <!--android:textColor="@color/black"-->
+    <!--android:textColorHint="@color/cloudy_blue" />-->
+
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
+
+    <!--</androidx.core.widget.NestedScrollView>-->
+
+    <!--<androidx.core.widget.NestedScrollView-->
+    <!--android:id="@+id/timetable_bottom_sheet_custom_search_nestedscrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="300dp"-->
+    <!--android:visibility="gone">-->
+
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/timetable_search_recyclerview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</androidx.core.widget.NestedScrollView>-->
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom
+            android:id="@+id/market_used_buy_swiperefreshlayout"
+            android:layout_marginBottom="56dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/market_used_buy_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/background"
+                android:scrollbars="vertical"/>
+
+
+
+        </in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+
+    </RelativeLayout>
+</LinearLayout>

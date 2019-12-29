@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin_timetable">
+
+    <TextView
+        android:id="@+id/timetable_widget_need_to_add_textview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="시간표 서비스에 접속해주세요" />
+
+
+    <ImageView
+        android:id="@+id/timetable_timetableview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+       />
+</LinearLayout>

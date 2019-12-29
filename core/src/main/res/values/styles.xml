@@ -1,0 +1,93 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/white</item>
+
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="KAPTheme" parent="AppTheme">
+
+    </style>
+
+    <style name="KAPTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/black</item>
+    </style>
+
+    <style name="EditTextTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/black</item>
+        <item name="colorControlActivated">@color/black</item>
+        <item name="colorControlHighlight">@color/black</item>
+    </style>
+
+
+    <style name="KAPTextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>T
+
+    <style name="KAPProgress" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/background</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:indeterminateTintMode">src_in</item>
+    </style>
+
+    <style name="KAPNavigationHeader" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/background</item>
+        <item name="colorControlActivated">@color/background</item>
+        <item name="colorControlHighlight">@color/background</item>
+    </style>
+
+    <style name="KAPDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--buttons color-->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!--title and message color-->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!--dialog background-->
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
+    </style>
+
+    <style name="KAPTimePicker" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+        <item name="android:calendarViewShown">false</item>
+        <item name="android:textSize">20sp</item>
+        <item name="colorControlNormal">@color/transparent</item>
+    </style>
+
+    <style name="KAPDatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:headerYearTextAppearance">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="android:textAppearance">@color/black</item>
+        <item name="android:colorControlActivated">@color/squash</item>
+        <item name="android:colorAccent">@color/light_navy</item>
+        <item name="android:focusedMonthDateColor">@color/squash</item>
+    </style>
+
+    <style name="Theme.AppCompat.Translucent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+</resources>

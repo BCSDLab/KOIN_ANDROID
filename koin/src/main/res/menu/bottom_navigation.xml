@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--TODO:메뉴 아이콘 변경-->
+    <item
+        android:id="@+id/action_callvan"
+        android:icon="@drawable/ic_together_black_24dp"
+        android:title="콜밴쉐어링" />
+    <item
+        android:id="@+id/action_chat"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="채팅" />
+
+    <item
+        android:id="@+id/action_company"
+        android:icon="@drawable/ic_car_black_24dp"
+        android:title="콜밴목록" />
+
+    <item
+        android:id="@+id/action_total_chat"
+        android:icon="@drawable/ic_total_chat_black_24dp"
+        android:title="전체채팅" />
+
+</menu>

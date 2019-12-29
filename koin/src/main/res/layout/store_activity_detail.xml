@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingPrefix">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/callvan_main_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_appbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_button_background="@drawable/ic_back_arrow"
+                app:title_text="상점" />
+
+        </LinearLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="56dp"
+            android:background="@color/white"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.044"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.044" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.186"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.531" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.531"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.531" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.683"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.683" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.147"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.147" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.813"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.86" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.622"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.622" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_vertical_0.953"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.953" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_horizontal_0.288"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.288" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:font_name="Custom5"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="상점명" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_const_phone_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="7sp"
+                    android:text="전화번호"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
+
+                <TextView
+                    android:id="@+id/store_detail_phone_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview"
+                    tools:text="010-5181-1203" />
+
+                <TextView
+                    android:id="@+id/store_detail_const_time_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="7sp"
+                    android:text="운영시간"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_const_phone_num" />
+
+                <TextView
+                    android:id="@+id/store_detail_time_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_time_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_phone_textview"
+                    tools:text="14:00 ~" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_const_address_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="7sp"
+                    android:text="주소정보"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_const_time_textview" />
+
+                <TextView
+                    android:id="@+id/store_detail_address_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
+                    app:layout_constraintTop_toTopOf="@+id/store_detail_const_address_textview"
+                    tools:text="충청남도 천안시 동남구 병천면 가전7길 4" />
+
+                <TextView
+                    android:id="@+id/store_detail_const_deliver_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="7sp"
+                    android:text="배달금액"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_address_textview" />
+
+                <TextView
+                    android:id="@+id/store_detail_deliver_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_deliver_textview"
+                    app:layout_constraintTop_toTopOf="@+id/store_detail_const_deliver_textview"
+                    tools:text="2000원" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_const_etc_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="7sp"
+                    android:text="기타정보"
+                    android:textColor="@color/warm_grey"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_deliver_textview" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_etc_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="5sp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:font_name="Custom6"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
+                    app:layout_constraintTop_toTopOf="@+id/store_detail_const_etc_textview"
+                    tools:text="배달료 5000원" />
+
+
+                <TextView
+                    android:id="@+id/store_detail_is_delivery_textview"
+                    android:layout_width="70dp"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/button_rect_squash_radius_13dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+                    android:text="#배달가능"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
+
+                <TextView
+                    android:id="@+id/store_detail_is_card_textview"
+                    android:layout_width="70dp"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/button_rect_squash_radius_13dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+
+                    android:text="#카드가능"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
+
+                <TextView
+                    android:id="@+id/store_detail_is_bank_textview"
+                    android:layout_width="89dp"
+                    android:layout_height="26dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/button_rect_squash_radius_13dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+                    android:text="#계좌이체가능"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:font_name="Custom6"
+                    app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
+
+                <LinearLayout
+                    android:id="@+id/store_detail_call_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_rect_primary"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingTop="7dp"
+                    app:layout_constrainedHeight="true"
+                    app:layout_constrainedWidth="true"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="7dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.683"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_phone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="전화하기"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        app:font_name="Custom6" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/border_frameLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_call_button">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0.2"
+                        android:background="@color/cloudy_blue" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="메뉴 소개"
+                        android:textColor="@color/warm_grey"
+                        android:textSize="13sp"
+                        app:font_name="Custom6" />
+                </FrameLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/store_detail_flyer_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/background"
+                    android:clipToPadding="false"
+                    android:paddingBottom="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/store_detail_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@color/background"
+                    android:clipToPadding="false"
+                    android:paddingBottom="12dp"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_flyer_recyclerview" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--navigation drawer-->
+    <include layout="@layout/base_navigation_drawer_left" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

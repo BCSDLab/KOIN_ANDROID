@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/rooms_chat_swiperefreshlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/room_chat_frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_vertical_0.044"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.044" />
+
+
+            <LinearLayout
+                android:id="@+id/callvan_room_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="63dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingLeft="16dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/rooms_recyclerview"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/rooms_starting_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="7sp"
+                        android:text="출발지"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/ic_arrow_right"
+                        android:contentDescription="TODO" />
+
+                    <TextView
+                        android:id="@+id/rooms_ending_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:lineSpacingExtra="7sp"
+                        android:text="도착지"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/ic_time"
+                        android:contentDescription="TODO" />
+
+                    <TextView
+                        android:id="@+id/rooms_date_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="7sp"
+                        android:text="03월 02일"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/rooms_time_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="7sp"
+                        android:text="오후 10:30"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/ic_people" />
+
+                    <TextView
+                        android:id="@+id/rooms_people_count_textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="6sp"
+                        android:text="1명 / 6명"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/room_chat_main_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:background="@color/cloudy_blue"
+                app:layout_constraintTop_toBottomOf="@+id/callvan_room_info_layout" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/background_dark"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <EditText
+                        android:id="@+id/room_chat_main_input_text"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="70"
+                        android:background="@color/white"
+                        android:inputType="" />
+
+                    <Button
+                        android:id="@+id/room_chat_main_button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="20"
+                        android:background="@drawable/button_rect_normal_radius_25dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="전송"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout><!--<?xml version="1.0" encoding="utf-8"?>--><!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:orientation="vertical">-->
+
+    <!--<FrameLayout--><!--android:id="@+id/no_room_chat_frameLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/background"--><!--android:visibility="invisible">-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center"--><!--android:orientation="vertical">-->
+
+    <!--<ImageView--><!--android:layout_width="wrap_content"--><!--android:layout_height="80dp"--><!--android:layout_gravity="center_horizontal"--><!--android:src="@drawable/image_nothing_show" />-->
+
+    <!--<TextView--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:gravity="center"--><!--android:paddingTop="10dp"--><!--android:text="입장한 콜밴 모임이 없습니다" />-->
+
+    <!--<TextView--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:gravity="center" />--><!--</LinearLayout>-->
+
+    <!--</FrameLayout>-->
+
+    <!--<FrameLayout--><!--android:id="@+id/room_chat_frameLayout"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/background"--><!--android:visibility="visible">-->
+
+    <!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent">-->
+
+    <!--<androidx.recyclerview.widget.RecyclerView--><!--android:id="@+id/room_chat_main_recyclerView"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_marginBottom="50dp" />-->
+
+    <!--<FrameLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="50dp"--><!--android:layout_alignParentBottom="true">-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/background_dark"--><!--android:orientation="horizontal"--><!--android:paddingBottom="5dp"--><!--android:paddingTop="5dp">-->
+
+    <!--<EditText--><!--android:id="@+id/room_chat_main_input_text"--><!--android:layout_width="0dp"--><!--android:layout_height="match_parent"--><!--android:layout_marginLeft="15dp"--><!--android:layout_marginRight="10dp"--><!--android:layout_weight="70"--><!--android:background="@color/white"--><!--android:inputType="" />-->
+
+    <!--<Button--><!--android:id="@+id/room_chat_main_button"--><!--android:layout_width="0dp"--><!--android:layout_height="match_parent"--><!--android:layout_marginRight="10dp"--><!--android:layout_weight="20"--><!--android:background="@drawable/button_rect_normal_radius_25dp"--><!--android:backgroundTint="@color/colorPrimary"--><!--android:text="전송"--><!--android:textColor="@color/white" />-->
+
+    <!--</LinearLayout>-->
+
+    <!--</FrameLayout>--><!--</RelativeLayout>-->
+
+    <!--</FrameLayout>-->
+
+    <!--</RelativeLayout>-->

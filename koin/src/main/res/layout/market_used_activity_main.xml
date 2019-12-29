@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+        android:id="@+id/freeboard_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_app_bar_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_button_background="@drawable/ic_back_arrow"
+                app:right_button_background="@drawable/ic_create"
+                app:title_text="중고장터"
+                />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/market_used_main_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:background="@android:color/white">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/market_used_main_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="47dp"
+                    android:layout_gravity="top"
+                    app:tabSelectedTextColor="@color/black"
+                    app:tabTextColor="@color/warm_grey"
+                    app:tabIndicatorColor="@color/squash"
+                    />
+
+            </androidx.viewpager.widget.ViewPager>
+
+        </RelativeLayout>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include layout="@layout/base_navigation_drawer_left" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

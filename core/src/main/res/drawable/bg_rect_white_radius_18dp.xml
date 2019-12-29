@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="11dp"/>
+            <solid android:color="@color/white"/>
+            <padding
+
+                android:left="4dp"
+                android:right="4dp"
+                />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_arrow_left_right3" />
+</layer-list>

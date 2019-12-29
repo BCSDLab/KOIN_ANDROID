@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navi_item_home"
+        android:title="@string/home" />
+
+    <item android:title="학교 정보">
+        <menu>
+            <item
+                android:id="@+id/navi_item_store"
+                android:title="@string/navigation_item_store" />
+            <item
+                android:id="@+id/navi_item_bus"
+                android:title="@string/navigation_item_bus" />
+            <item
+                android:id="@+id/navi_item_dining"
+                android:title="@string/navigation_item_dining" />
+            <item
+                android:id="@+id/navi_item_cirlce"
+                android:title="@string/navigation_item_circle" />
+            <!--<item-->
+            <!--android:id="@+id/navi_item_faq"-->
+            <!--android:title="@string/navigation_item_faq" />-->
+
+        </menu>
+    </item>
+    <item android:title="커뮤니티">
+        <menu>
+            <item
+                android:id="@+id/navi_item_free_board"
+                android:title="@string/navigation_item_free_board" />
+            <item
+                android:id="@+id/navi_item_anonymous_board"
+                android:title="@string/navigation_item_anonymous_board" />
+            <item
+                android:id="@+id/navi_item_recruit_board"
+                android:title="@string/navigation_item_recruit_board" />
+        </menu>
+    </item>
+
+    <group
+        android:id="@+id/group3"
+        android:checkableBehavior="single">
+        <!--<item-->
+            <!--android:id="@+id/navi_item_callvansharing"-->
+            <!--android:title="@string/navigation_item_callvan_sharing" />-->
+        <!--<item-->
+        <!--android:id="@+id/navi_item_realestate"-->
+        <!--android:title="@string/real_estate" />-->
+        <item
+            android:id="@+id/navi_item_usedmarket"
+            android:title="중고장터" />
+        <!--<item-->
+        <!--android:id="@+id/navi_item_byeonchun_escape"-->
+        <!--android:title="병천 탈출 - 취업 커뮤니티" />-->
+
+    </group>
+
+    <!--<item-->
+    <!--android:id="@+id/navi_item_guide"-->
+    <!--android:title="원하는 서비스를 문의사항에 요청해보세요!" />-->
+</menu>

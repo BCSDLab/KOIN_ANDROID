@@ -1,0 +1,315 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical"
+    android:padding="@dimen/widget_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/linearlayout_widget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rect_blue_radius_gradient_12dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="21dp"
+                android:layout_height="26dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="4sp"
+                android:text="출발"
+                android:textColor="#d1ad85"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <TextView
+                android:id="@+id/bus_start_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:letterSpacing="0.02"
+                android:lineSpacingExtra="4sp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:text="한기대" />
+
+            <LinearLayout
+                android:layout_width="22dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
+                android:layout_width="27dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/reverse_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_rect_white_radius_18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="22dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="4sp"
+                android:text="도착"
+                android:textColor="#d1ad85"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="15dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+
+            <TextView
+                android:id="@+id/bus_end_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="4sp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                tools:text="야우리" />
+
+            <LinearLayout
+                android:layout_width="21dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@null"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/bus_type_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/koreatech_bus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignStart="@+id/bus_type_linearlayout"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect_line_squash_radius11dp"
+                    android:gravity="center"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="4sp"
+                    android:paddingTop="3dp"
+                    android:text="학교셔틀"
+                    android:textColor="#323232" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/express_bus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect_line_squash_radius11dp"
+                    android:gravity="center"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="4sp"
+                    android:paddingTop="3dp"
+                    android:text="대성고속"
+                    android:textColor="#323232" />
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/city_bus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="40dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_rect_line_squash_radius11dp"
+                    android:gravity="center"
+                    android:letterSpacing="0.02"
+                    android:lineSpacingExtra="4sp"
+                    android:paddingTop="3dp"
+                    android:text="시내버스"
+                    android:textColor="#323232" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:background="@color/white"
+                android:orientation="horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rect_deep_dark_navy_radius_12dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bus_time_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:lineSpacingExtra="10sp"
+                    android:text="10시간 10분 50초 남음"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/time_text_refresh_button"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_refresh" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"/>
+
+        <LinearLayout
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:background="@null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <Button
+                    android:id="@+id/left_arrow_imagebutton"
+                    android:layout_width="31dp"
+                    android:layout_height="41dp"
+                    android:layout_gravity="left|center"
+                    android:background="@drawable/ic_blur_arrow_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/right_arrow_imagebutton"
+                    android:layout_width="31dp"
+                    android:layout_height="41dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_blur_arrow_left"
+                    android:gravity="right" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+</FrameLayout>

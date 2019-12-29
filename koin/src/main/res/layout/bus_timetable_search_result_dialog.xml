@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0.295"
+        android:layout_height="0dp"
+        android:background="@color/cloudy_blue_two"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|center_vertical"
+            android:letterSpacing="-0.04"
+            android:lineHeight="27sp"
+            android:lineSpacingExtra="9sp"
+            android:padding="16dp"
+            android:text="운행 정보 조회"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="0.705"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_weight="0.3"
+                android:gravity="left|center_vertical"
+                android:letterSpacing="-0.04"
+                android:lineHeight="22sp"
+                android:lineSpacingExtra="7sp"
+                android:text="학교셔틀"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bus_timetable_search_result_shuttle_bus_textview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:background="@color/white"
+                android:gravity="right|center_vertical"
+                android:letterSpacing="-0.02"
+                android:lineHeight="22sp"
+                android:lineSpacingExtra="7sp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_weight="0.3"
+                android:gravity="left|center_vertical"
+                android:letterSpacing="-0.04"
+                android:lineHeight="22sp"
+                android:lineSpacingExtra="7sp"
+                android:text="대성고속"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/bus_timetable_search_result_daesung_bus_textview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:background="@color/white"
+                android:gravity="right|center_vertical"
+                android:letterSpacing="-0.02"
+                android:lineHeight="22sp"
+                android:lineSpacingExtra="7sp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal"
+            android:paddingRight="14dp"
+            android:paddingBottom="9dp">
+
+            <Button
+                android:id="@+id/bus_timetable_search_result_close_button"
+                android:layout_width="58dp"
+                android:layout_height="36dp"
+                android:background="@color/transparent"
+                android:letterSpacing="-0.04"
+                android:lineHeight="22sp"
+                android:lineSpacingExtra="7sp"
+                android:text="닫기"
+                android:gravity="center"
+                android:textColor="@color/light_navy"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+

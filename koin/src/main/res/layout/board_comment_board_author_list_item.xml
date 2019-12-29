@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccentLightLess0"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:id="@+id/comment_board_author_writer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/comment_board_author_remove"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_weight="1"
+            android:gravity="center_vertical|end"
+            android:text="@string/comment_remove"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/comment_board_author_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical|start"
+            android:text="@string/comment_edit"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/comment_board_author_create_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/comment_board_author_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="3dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/colorPrimaryText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:background="@color/divider"
+        android:orientation="vertical" />
+</LinearLayout>

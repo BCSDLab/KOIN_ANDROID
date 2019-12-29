@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/message_user_name_linearLayout_incoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="3dp"
+            android:paddingStart="5dp"
+            android:paddingTop="3dp">
+
+            <TextView
+                android:id="@+id/message_user_name_incoming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/message_body_linearLayout_incoming"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/message_user_name_linearLayout_incoming"
+            android:background="@drawable/shape_incoming_message_bubble"
+            android:paddingBottom="5dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/message_body_incoming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="body"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/create_time_incoming"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"
+        android:gravity="start"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="10sp"/>
+</LinearLayout>

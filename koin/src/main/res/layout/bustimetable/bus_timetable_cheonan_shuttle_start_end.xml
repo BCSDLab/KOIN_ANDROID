@@ -1,0 +1,2693 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+        >
+
+
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            >
+
+        <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+
+                    >
+
+                <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text=" 구간 "
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_marginTop="1dp"
+                        />
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text="천안역 "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text="터미널"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_column="2"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text="두정역"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_column="3"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text="고속철"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_column="4"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+                <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:textSize="16sp"
+                        android:text="신방동"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_column="5"
+                        android:textColor="@color/colorPrimary"
+                        />
+
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 한기대"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 등교만"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 두정역"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:43"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_gravity="center"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 주공11단지APT"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:43"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" "
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 동일하이빌APT"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:51"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 노동부(천안지방사무소)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:45"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 늘푸른APT"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:46"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 성정지하도(6단지)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:48"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 전자랜드"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:48"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 광혜당약국"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:50"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 신방동(현대APT)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:55"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 신반동 새마을금고"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:56"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 천안아산KTX(3번출구)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:56"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" Y-City"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 7:57"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 터미널(신세계)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:00"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 천안역(학화호두과자)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:05"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 한화꿈에그린APT"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 07:59"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 용암마을"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:00"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 충무병원"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 07:53"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:01"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 주공7단지APT"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:01"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 세종아트빌라BS(구 일봉회관)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 07:55"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:03"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 성황동 신협"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:text=" 08:03"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 신방동 리차드"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:text=" 08:03"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 신방동GS주요소"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:text=" 08:04"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 제일고 맞은편(구 교육청)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:text=" 08:06"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:08"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text=" 남부오거리(귀뚜라미보일러)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:text=" 08:07"
+                        android:layout_marginStart="0dp"
+                        android:gravity="center"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 07:56"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 원성동(GS마트)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:08"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:10"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 삼룡교(유니클로,구 한방병원)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:text=" 08:10"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:09"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 07:58"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:12"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 청당동(벽산블루밍)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:10"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 부영(APT)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:10"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 구성동(GS주요소)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:text=" 08:11"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:10"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:00"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:13"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 청수고BS앞쪽"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:text=" 08:14"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 한양수자인APT(청당동)"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:15"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 동우APT,신계초,운전리,연춘리"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:text=" O"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" O"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 중앙아파트"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" O"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" O"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" O"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" O"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" O"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+            <TableRow
+                    android:background="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="1"
+                    >
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:text=" 한기대"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_column="0"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:50"
+                        android:layout_column="1"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:50"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="2"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:50"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="3"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:text=" 08:50"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="4"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+
+                        android:layout_marginTop="1dp"
+                        android:layout_marginStart="0dp"
+                        android:text=" 08:50"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_column="5"/>
+            </TableRow>
+
+
+        </TableLayout>
+    </ScrollView>
+</HorizontalScrollView>

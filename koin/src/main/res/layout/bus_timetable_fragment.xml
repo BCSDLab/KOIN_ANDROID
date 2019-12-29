@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_0.044"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.044" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_0.956"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.956" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_0.086"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.086" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_0.914"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.914" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizental_0.063"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.063" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_horizental_0.212"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.212" />
+    <!--<androidx.constraintlayout.widget.Group-->
+    <!--android:id="@+id/winnerplayer_group"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.063"-->
+    <!--app:constraint_referenced_ids="bus_timetable_bustype_shuttle, bus_timetable_bustype_daesung" />-->
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bus_timetable_bustype_shuttle"
+        android:layout_width="94dp"
+        android:layout_height="40dp"
+        android:background="@drawable/button_rect_accent_radius_23dp"
+        android:gravity="center"
+        android:letterSpacing="-0.04"
+        android:lineSpacingExtra="7sp"
+        android:text="학교셔틀"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_vertical_0.086"
+        app:layout_constraintRight_toLeftOf="@id/bus_timetable_bustype_daesung"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.063" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bus_timetable_bustype_daesung"
+        android:layout_width="94dp"
+        android:layout_height="40dp"
+        android:background="@drawable/button_rect_gray_radius_23dp"
+        android:gravity="center"
+        android:letterSpacing="-0.04"
+        android:lineSpacingExtra="7sp"
+        android:text="대성고속"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toRightOf="@id/bus_timetable_bustype_shuttle"
+        app:layout_constraintRight_toLeftOf="@id/bus_timetable_bustype_city"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.063" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bus_timetable_bustype_city"
+        android:layout_width="94dp"
+        android:layout_height="40dp"
+        android:background="@drawable/button_rect_darkgreen_radius_23dp"
+        android:gravity="center"
+        android:letterSpacing="-0.04"
+        android:lineSpacingExtra="7sp"
+        android:text="시내버스"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toRightOf="@id/bus_timetable_bustype_daesung"
+        app:layout_constraintRight_toLeftOf="@id/guideline_vertical_0.914"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.063" />
+
+    <Spinner
+        android:id="@+id/bus_timetable_fragment_spinner"
+        android:layout_width="@dimen/spinner_width"
+        android:background="@drawable/spinner_default"
+        android:dropDownWidth="@dimen/spinner_width"
+        android:layout_height="40dp"
+        android:entries="@array/bus_stop_place"
+        android:visibility="gone"
+        android:lineSpacingExtra="6sp"
+        android:overlapAnchor="false"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_vertical_0.044"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
+
+    <Spinner
+        android:id="@+id/bus_timetable_fragment_daesung_spinner"
+        android:layout_width="@dimen/spinner_width"
+        android:background="@drawable/spinner_default"
+        android:dropDownWidth="@dimen/spinner_width"
+        android:layout_height="40dp"
+        android:entries="@array/bus_stop_daesung"
+        android:visibility="gone"
+        android:lineSpacingExtra="6sp"
+        android:overlapAnchor="false"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintLeft_toLeftOf="@id/guideline_vertical_0.044"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
+
+    <Spinner
+        android:id="@+id/bus_timetable_fragment_cheonan_start_endspinner"
+        android:layout_width="@dimen/spinner_width"
+        android:background="@drawable/spinner_default"
+        android:dropDownWidth="@dimen/spinner_width"
+        android:layout_height="40dp"
+        android:entries="@array/bus_stop_cheonan_start_end"
+        android:visibility="gone"
+        android:lineSpacingExtra="6sp"
+        android:overlapAnchor="false"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintRight_toRightOf="@id/guideline_vertical_0.956"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
+
+    <Spinner
+        android:id="@+id/bus_timetable_fragment_chungju_spinner"
+        android:layout_width="@dimen/spinner_width"
+        android:background="@drawable/spinner_default"
+        android:dropDownWidth="@dimen/spinner_width"
+        android:layout_height="40dp"
+        android:entries="@array/bus_stop_chungju"
+        android:visibility="gone"
+        android:lineSpacingExtra="6sp"
+        android:overlapAnchor="false"
+        android:textColor="@color/black"
+        android:textSize="13sp"
+        app:layout_constraintRight_toRightOf="@id/guideline_vertical_0.956"
+        app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="60dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizental_0.212">
+
+        <FrameLayout
+            android:id="@+id/bus_timetable_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

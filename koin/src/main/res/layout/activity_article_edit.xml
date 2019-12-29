@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    android:fitsSystemWindows="true">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/freeboard_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_app_bar_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_button_background="@drawable/ic_back_arrow"
+                app:right_button_background="@drawable/ic_create" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:orientation="vertical">
+
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/article_scrollview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <EditText
+                            android:id="@+id/article_edittext_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            app:font_name="Normal"
+                            android:background="@android:color/transparent"
+                            android:hint="제목을 입력해주세요"
+                            android:maxLines="1"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toTopOf="@id/title_nickname_border"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                             />
+
+                        <LinearLayout
+                            android:id="@+id/title_nickname_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/article_edittext_title" />
+
+                        <EditText
+                            android:id="@+id/article_edittext_nickname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:font_name="Normal"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            android:background="@android:color/transparent"
+                            android:hint="닉네임을 입력해주세요"
+                            android:maxLines="1"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toTopOf="@id/nickname_password_border"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/title_nickname_border"
+                            app:layout_constraintVertical_chainStyle="spread_inside" />
+
+                        <LinearLayout
+                            android:id="@+id/nickname_password_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/article_edittext_nickname" />
+
+                        <EditText
+                            android:id="@+id/article_edittext_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:font_name="Normal"
+                            android:maxLines="1"
+                            android:inputType="textPassword"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            android:background="@android:color/transparent"
+                            android:hint="비밀번호를 입력해주세요"
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toTopOf="@id/password_content_border"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/nickname_password_border"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/password_content_border"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="0.5dp"
+                            android:layout_marginTop="17.5dp"
+                            android:layout_marginEnd="0.5dp"
+                            android:background="@color/divider"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/article_edittext_password" />
+
+                        <EditText
+                            android:id="@+id/article_edittext_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:font_name="Normal"
+                            android:letterSpacing="-0.05"
+                            android:lineSpacingExtra="10sp"
+                            android:layout_marginStart="16dp"
+                            android:paddingBottom="63dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_marginBottom="17.5dp"
+                            android:background="@android:color/transparent"
+                            android:hint="내용을 입력해주세요."
+                            android:textColorHint="@color/white_87"
+                            android:textSize="16sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/password_content_border"
+                            app:layout_constraintVertical_bias="1.0"
+                            tools:text="" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.core.widget.NestedScrollView>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <include layout="@layout/base_navigation_drawer_left" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:includeFontPadding="false"
+    android:orientation="vertical">
+
+    <include layout="@layout/table_header" />
+
+    <ScrollView
+        android:id="@+id/timetable_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:includeFontPadding="false"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:id="@+id/sticker_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:includeFontPadding="false">
+
+            <include
+                layout="@layout/inner_table"
+                android:includeFontPadding="false" />
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>

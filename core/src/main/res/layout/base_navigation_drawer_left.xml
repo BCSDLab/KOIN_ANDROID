@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- The navigation drawer -->
+<com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/left_nav_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@color/background"
+    android:fitsSystemWindows="true"
+    android:theme="@style/KAPNavigationHeader">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/base_naviagtion_drawer_nickname_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/light_navy"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toTopOf="@id/base_naviagtion_drawer_school_info_linearlayout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1"
+                tools:text="홍길동" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="43dp"
+                android:layout_marginBottom="16dp"
+                android:text="님, 안녕하세요!"
+                android:textColor="@color/light_navy"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toTopOf="@+id/base_naviagtion_drawer_school_info_linearlayout"
+                app:layout_constraintStart_toEndOf="@+id/base_naviagtion_drawer_nickname_textview"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/img_menu_logo"
+                app:layout_constraintBottom_toTopOf="@+id/base_naviagtion_drawer_school_info_linearlayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/base_naviagtion_drawer_school_info_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_nickname_textview">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.2"
+                    android:background="@color/cloudy_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="학교정보"
+                    android:textColor="#858585"
+                    android:textSize="13sp" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_store"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_school_info_linearlayout">
+
+                <TextView
+                    android:id="@+id/navi_item_store_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="주변 상점"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_bus"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_store">
+
+                <TextView
+                    android:id="@+id/navi_item_bus_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="버스 / 교통"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_dining"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_bus">
+
+                <TextView
+                    android:id="@+id/navi_item_dining_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="식단"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_cirlce"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_dining">
+
+                <TextView
+                    android:id="@+id/navi_item_cirlce_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="동아리"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_timetable"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_cirlce">
+
+                <TextView
+                    android:id="@+id/navi_item_timetable_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="시간표"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_land"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_timetable">
+
+                <TextView
+                    android:id="@+id/navi_item_land_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="복덕방"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/base_naviagtion_drawer_community_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_land">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.2"
+                    android:background="@color/cloudy_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="커뮤니티"
+                    android:textColor="#858585"
+                    android:textSize="13sp" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_anonymous_board"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_community_linearlayout">
+
+                <TextView
+                    android:id="@+id/navi_item_anonymous_board_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="익명게시판"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_free_board"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_anonymous_board">
+
+                <TextView
+                    android:id="@+id/navi_item_free_board_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="자유게시판"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_recruit_board"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_free_board">
+
+                <TextView
+                    android:id="@+id/navi_item_recruit_board_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="취업게시판"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!--<LinearLayout-->
+            <!--android:id="@+id/navi_item_callvansharing"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="22dp"-->
+            <!--android:layout_marginTop="12dp"-->
+            <!--android:orientation="horizontal"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/navi_item_recruit_board">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/navi_item_callvansharing_textview"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="16dp"-->
+            <!--android:lineSpacingExtra="7sp"-->
+            <!--android:text="콜벤쉐어링"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="15sp" />-->
+            <!--</LinearLayout>-->
+
+            <LinearLayout
+                android:id="@+id/navi_item_usedmarket"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_recruit_board">
+
+                <TextView
+                    android:id="@+id/navi_item_usedmarket_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="중고장터"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/navi_item_lostfound"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_usedmarket">
+
+                <TextView
+                    android:id="@+id/navi_item_lostfound_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="분실물"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/base_naviagtion_drawer_help_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_lostfound">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.2"
+                    android:background="@color/cloudy_blue" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="고객 지원"
+                    android:textColor="#858585"
+                    android:textSize="13sp" />
+            </FrameLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/navi_item_kakao_talk"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_help_linearlayout">
+
+                <TextView
+                    android:id="@+id/navi_item_kakao_talk_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="카카오톡 1:1 대화"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_kakaotalk"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/navi_item_version_info"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:visibility="gone"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_kakao_talk">
+
+                <TextView
+                    android:id="@+id/navi_item_version_info_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="버전 정보"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_android"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/navi_item_developer"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="26dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_version_info"
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/navi_item_developer_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:lineSpacingExtra="7sp"
+                    android:text="만든이"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="BCSD Lab"
+                    android:textColor="@color/cloudy_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</com.google.android.material.navigation.NavigationView>
