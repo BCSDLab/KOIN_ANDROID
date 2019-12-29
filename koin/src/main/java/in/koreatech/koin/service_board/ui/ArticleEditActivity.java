@@ -508,9 +508,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     public void showUploadImage(String url, String uploadImageId) {
         try {
             articleEditor.onImageUploadComplete(url, uploadImageId);
-        } catch (NullPointerException e) {
-            ToastUtil.makeShortToast(mContext, R.string.fail_upload);
-        } finally {
+        } catch (Exception e) {
             ToastUtil.makeShortToast(mContext, R.string.fail_upload);
         }
         isUploadingImage = false;
