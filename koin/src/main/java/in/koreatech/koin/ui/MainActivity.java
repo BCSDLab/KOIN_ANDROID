@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 
 import in.koreatech.koin.core.util.ToastUtil;
 
@@ -87,7 +87,7 @@ public class MainActivity extends KoinNavigationDrawerActivity {
                 callDrawerItem(R.id.navi_item_cirlce);
                 break;
             default:
-                ToastUtil.makeShortToast(this, "서비스예정입니다");
+                ToastUtil.getInstance().makeShortToast("서비스예정입니다");
                 break;
         }
 
@@ -96,7 +96,7 @@ public class MainActivity extends KoinNavigationDrawerActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        DefaultSharedPreferencesHelper.getInstance().init(this);
+        UserInfoSharedPreferencesHelper.getInstance().init(this);
         if (requestCode == TIMETABLE_REQUEST_CODE)
             callDrawerItem(R.id.navi_item_timetable);
     }

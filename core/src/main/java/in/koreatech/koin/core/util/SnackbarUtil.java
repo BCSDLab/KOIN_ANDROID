@@ -13,7 +13,7 @@ import static com.google.android.material.snackbar.Snackbar.LENGTH_LONG;
 import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 
 import in.koreatech.koin.core.R;
-import in.koreatech.koin.core.bases.WebViewActivity;
+import in.koreatech.koin.core.activity.WebViewActivity;
 
 /**
  * Created by hyerim on 2018. 4. 9....

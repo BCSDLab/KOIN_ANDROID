@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.bases.BaseActivity;
+import in.koreatech.koin.core.activity.ActivityBase;
 
 
 /**
@@ -25,7 +25,7 @@ import in.koreatech.koin.core.bases.BaseActivity;
  * @since 2019.10.6
  * 전단지를 보여주는 화면
  */
-public class StoreFlyerViewActivity extends BaseActivity {
+public class StoreFlyerViewActivity extends ActivityBase {
     public static final String TAG = StoreFlyerViewActivity.class.getName();
     public static final float ZOOM_STANDARD = 1.1f; // 줌 기준
     // 스와이프 길이

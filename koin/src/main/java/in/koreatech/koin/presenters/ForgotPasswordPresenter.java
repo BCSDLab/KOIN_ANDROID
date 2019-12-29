@@ -2,7 +2,7 @@ package in.koreatech.koin.presenters;
 
 import androidx.annotation.NonNull;
 
-import in.koreatech.koin.core.contracts.ForgotPasswordContract;
+import in.koreatech.koin.contracts.ForgotPasswordContract;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.interactors.UserInteractor;
 import in.koreatech.koin.core.networks.interactors.UserRestInteractor;

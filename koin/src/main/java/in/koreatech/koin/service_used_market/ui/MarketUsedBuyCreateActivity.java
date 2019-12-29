@@ -38,11 +38,11 @@ import butterknife.OnClick;
 import com.bumptech.glide.Glide;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
+import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.service_used_market.contracts.MarketUsedCreateContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.Item;
 import in.koreatech.koin.core.networks.entity.MarketItem;
 import in.koreatech.koin.core.networks.interactors.MarketUsedRestInteractor;
@@ -62,7 +62,7 @@ import java.util.*;
  * @see MarketUsedBuyFragment
  * @since 2018. 09.15
  */
-public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketUsedCreateContract.View {
+public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketUsedCreateContract.View {
     private final String TAG = MarketUsedBuyEditActivity.class.getSimpleName();
     private final int MAXTITLELENGTH = 39;
     private static final int MY_REQUEST_CODE = 100;
@@ -87,7 +87,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
     private String mPhoneNumberTwo;
     private String mPhoneNumberThree;
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private MarketItem mMarketItem;
     private MarketUsedCreateContract.Presenter mMarketUsedCreatePresenter;
     private Uri mCurrentPhotoPath;
@@ -136,7 +136,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
         this.mContext = this;
         setContentView(R.layout.market_used_buy_create_activity);
         ButterKnife.bind(this);
-        mPhoneNumber = DefaultSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+        mPhoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
         init();
     }
 
@@ -162,17 +162,17 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
     /**
@@ -182,7 +182,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
      * 가격을 입력시 ',' event 처리를 위해 moneyEditTextChangedListener() 호출
      * 사용자 번호가 등록이 되어있을경우 사용자 번호로 set 아닐경우 unset
      *
-     * @see DefaultSharedPreferencesHelper
+     * @see UserInfoSharedPreferencesHelper
      */
     void init() {
 
@@ -268,7 +268,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
             builder.setNeutralButton("취소", null);
             builder.create().show();
         } else
-            ToastUtil.makeLongToast(mContext, "기능 사용을 위한 권한 동의가 필요합니다.");
+            ToastUtil.getInstance().makeShortToast("기능 사용을 위한 권한 동의가 필요합니다.");
     }
 
 
@@ -312,7 +312,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
      */
     public void setPhoneNumber() {
         if (mPhoneNumber == null)
-            ToastUtil.makeShortToast(this, "휴대폰 번호를 기입해주세요");
+            ToastUtil.getInstance().makeShortToast("휴대폰 번호를 기입해주세요");
         mMarketBuyCreateEditTextPhoneNum.setTextIsSelectable(true);
         mMarketBuyCreateEditTextPhoneNum.setClickable(true);
         mMarketBuyCreateEditTextPhoneNum.setText(mPhoneNumberOne);
@@ -528,7 +528,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            ToastUtil.makeShortToast(mContext, "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.");
+            ToastUtil.getInstance().makeShortToast( "용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.");
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.putExtra("crop", "true");
@@ -692,13 +692,13 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
 
 
         if (mIsContentCheck && mIsTitlecheck && !mIsPhoneCheck)
-            ToastUtil.makeLongToast(mContext, R.string.market_used_phone_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_phone_check);
         if (!mIsTitlecheck && mIsContentCheck)
-            ToastUtil.makeLongToast(mContext, R.string.market_used_title_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_title_check);
         if (!mIsContentCheck && mIsTitlecheck)
-            ToastUtil.makeLongToast(mContext, R.string.market_used_content_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_content_check);
         if (!mIsTitlecheck && !mIsContentCheck)
-            ToastUtil.makeLongToast(mContext, R.string.market_used_title_content_check);
+            ToastUtil.getInstance().makeShortToast( R.string.market_used_title_content_check);
 
         if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
             mMarketUsedCreatePresenter.createMarketItem(mMarketItem);
@@ -716,7 +716,7 @@ public class MarketUsedBuyCreateActivity extends BaseActivity implements MarketU
 
     @Override
     public void showMarketCreatefFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
     @Override

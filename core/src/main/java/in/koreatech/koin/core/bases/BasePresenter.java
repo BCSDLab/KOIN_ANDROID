@@ -5,6 +5,5 @@ package in.koreatech.koin.core.bases;
  */
 public interface BasePresenter {
 
-
 }
 

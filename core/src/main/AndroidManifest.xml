@@ -5,13 +5,14 @@
 
     <application
         android:allowBackup="true"
-        android:name=".bases.BaseApplication" >
+        android:name=".ApplicationBase" >
 
         <activity
-            android:name=".bases.WebViewActivity"
+            android:name=".activity.WebViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+        <activity android:name=".activity.ActivityBase" />
 
     </application>
 

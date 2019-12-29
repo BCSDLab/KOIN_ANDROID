@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.bases.BaseActivity;
+import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.CallvanRoom;
 import in.koreatech.koin.core.networks.interactors.CallvanRestInteractor;
@@ -28,7 +28,7 @@ import in.koreatech.koin.service_callvan.presenters.CreateRoomPresenter;
 /**
  * Created by hyerim on 2018. 6. 18....
  */
-public class CreateRoomActivity extends BaseActivity implements CreateRoomContract.View {
+public class CreateRoomActivity extends ActivityBase implements CreateRoomContract.View {
     private final static String TAG = CreateRoomActivity.class.getSimpleName();
 
     private Context mContext;
@@ -285,7 +285,7 @@ public class CreateRoomActivity extends BaseActivity implements CreateRoomContra
 //        }
 
         if (startPlaceResult.compareTo(endPlaceResult) == 0) {
-            ToastUtil.makeShortToast(this, "출발지와 목적지가 같습니다");
+            ToastUtil.getInstance().makeShortToast( "출발지와 목적지가 같습니다");
             return;
         }
 
@@ -300,10 +300,10 @@ public class CreateRoomActivity extends BaseActivity implements CreateRoomContra
 
         String selectTime = sb.toString();
         if (Long.parseLong(selectTime) < TimeUtil.getDeviceCreatedDateOnlyLong()) {
-            ToastUtil.makeShortToast(this, "현재 시간보다 나중으로 선택하세요");
+            ToastUtil.getInstance().makeShortToast("현재 시간보다 나중으로 선택하세요");
             return;
         } else if (Long.parseLong(selectTime) > TimeUtil.getDeviceCreatedDateOnlyLongAddTimeLimit(30 * 24 * 60)) {
-            ToastUtil.makeShortToast(this, "한달 이내로 시간을 선택해주세요");
+            ToastUtil.getInstance().makeShortToast("한달 이내로 시간을 선택해주세요");
             return;
         }
 
@@ -339,6 +339,6 @@ public class CreateRoomActivity extends BaseActivity implements CreateRoomContra
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast( message);
     }
 }

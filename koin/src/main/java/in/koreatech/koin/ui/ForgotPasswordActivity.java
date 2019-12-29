@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
-import in.koreatech.koin.core.contracts.ForgotPasswordContract;
+import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.contracts.ForgotPasswordContract;
 import in.koreatech.koin.presenters.ForgotPasswordPresenter;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -30,12 +30,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by hyerim on 2018. 6. 18....
  */
-public class ForgotPasswordActivity extends BaseActivity implements ForgotPasswordContract.View {
+public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswordContract.View {
     private final static String TAG = ForgotPasswordActivity.class.getSimpleName();
 
     private Context mContext;
     private ForgotPasswordContract.Presenter mForgotPasswordPresenter;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
     @BindView(R.id.forgot_password_id_edittext)
     EditText mIdEditText;
@@ -91,23 +91,23 @@ public class ForgotPasswordActivity extends BaseActivity implements ForgotPasswo
 
     @Override
     public void showProgress() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "진행 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "진행 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideProgress() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @OnClick(R.id.reset_password_button)

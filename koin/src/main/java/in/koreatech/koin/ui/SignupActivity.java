@@ -27,9 +27,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
-import in.koreatech.koin.core.contracts.SignupContract;
+import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.contracts.SignupContract;
 import in.koreatech.koin.core.util.FilterUtil;
 import in.koreatech.koin.core.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
@@ -40,7 +40,7 @@ import in.koreatech.koin.presenters.SignupPresenter;
 /**
  * Created by hyerim on 2018. 6. 1....
  */
-public class SignupActivity extends BaseActivity implements SignupContract.View {
+public class SignupActivity extends ActivityBase implements SignupContract.View {
     final static String TAG = SignupActivity.class.getSimpleName();
 
     private Context mContext;
@@ -48,7 +48,7 @@ public class SignupActivity extends BaseActivity implements SignupContract.View 
     private boolean isverified;
     private FirebasePerformanceUtil mFirebasePerformanceUtil;
     private long mSignUpButtonClickCount; // Firebase Performance 측정 회원가입 버튼 클릭 빈도수 측정
-    private static GenerateProgressTask mGenerateProgress;
+    private static CustomProgressDialog mGenerateProgress;
 
     /* View Components */
     @BindView(R.id.signup_edittext_id)
@@ -163,7 +163,7 @@ public class SignupActivity extends BaseActivity implements SignupContract.View 
     @OnClick(R.id.signup_send_verification_button)
     public void onClickSendVerificationButton() {
         if (isverified) {
-            ToastUtil.makeShortToast(mContext, "확인 메일 전송중입니다 잠시만 기다려 주세요");
+            ToastUtil.getInstance().makeShortToast( "확인 메일 전송중입니다 잠시만 기다려 주세요");
             return;
         }
         View view = this.getCurrentFocus();
@@ -173,18 +173,18 @@ public class SignupActivity extends BaseActivity implements SignupContract.View 
         }
 
         if (!FilterUtil.isEmailValidate(mEditTextID.getText().toString().trim())) {
-            ToastUtil.makeShortToast(mContext, "이메일을 확인해 주세요");
+            ToastUtil.getInstance().makeShortToast("이메일을 확인해 주세요");
             return;
         }
 
         if (!isPasswordSame() |
                 !FilterUtil.isPasswordValidate(mEditTextPW.getText().toString())) {
-            ToastUtil.makeShortToast(mContext, "입력한 정보를 다시 확인해 주세요");
+            ToastUtil.getInstance().makeShortToast("입력한 정보를 다시 확인해 주세요");
             return;
         }
 
         if (!mCheckBoxPersonalInfoTerms.isChecked() || !mCheckBoxSignupTerms.isChecked()) {
-            ToastUtil.makeShortToast(mContext, "이용약관에 동의해 주세요");
+            ToastUtil.getInstance().makeShortToast("이용약관에 동의해 주세요");
             return;
         }
 
@@ -201,7 +201,7 @@ public class SignupActivity extends BaseActivity implements SignupContract.View 
     @Override
     public void showMessage(String message) {
         Log.d(TAG, message);
-            ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
         isverified = false;
     }
 
@@ -294,7 +294,7 @@ public class SignupActivity extends BaseActivity implements SignupContract.View 
 
     @Override
     public void showProgress() {
-        mGenerateProgress = new GenerateProgressTask(mContext, "이메일 전송 중");
+        mGenerateProgress = new CustomProgressDialog(mContext, "이메일 전송 중");
         mGenerateProgress.execute();
     }
 

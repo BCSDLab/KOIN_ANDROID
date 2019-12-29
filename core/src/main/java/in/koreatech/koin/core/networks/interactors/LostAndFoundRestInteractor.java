@@ -6,11 +6,10 @@ import com.google.gson.JsonObject;
 
 import java.io.File;
 
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Comment;
-import in.koreatech.koin.core.networks.entity.LostAndFound;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.core.networks.responses.GrantCheckResponse;
@@ -71,10 +70,10 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
     @Override
     public void readLostAndFoundDetail(int id, ApiCallback apiCallback) {
         Observable<LostItem> observable;
-        if (DefaultSharedPreferencesHelper.getInstance().loadUser() == null)
+        if (UserInfoSharedPreferencesHelper.getInstance().loadUser() == null)
             observable = RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).getLostItemDetail(id);
         else {
-            String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+            String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
             observable = RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).getLostItemDetail(id, addAuthorizationBearer(token));
         }
         observable.subscribeOn(Schedulers.io())
@@ -111,13 +110,13 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void readGrantedDetail(int id, ApiCallback apiCallback) {
-        if (DefaultSharedPreferencesHelper.getInstance().loadUser() == null) {
+        if (UserInfoSharedPreferencesHelper.getInstance().loadUser() == null) {
             GrantCheckResponse grantCheckResponse = new GrantCheckResponse();
             grantCheckResponse.isGrantEdit = false;
             apiCallback.onSuccess(grantCheckResponse);
             return;
         }
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("lostItem_id", id);
 
@@ -156,7 +155,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void createCommentDetail(int id, String content, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("content", content);
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).postLostItemComment(id, addAuthorizationBearer(token), jsonObject)
@@ -194,7 +193,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void deleteCommentDetail(int itemId, int commentId, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).deleteLostItemComment(itemId, commentId, addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -230,7 +229,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void editCommentDetail(int itemId, int commentId, String content, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("content", content);
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).putLostItemComment(itemId, commentId, addAuthorizationBearer(token), jsonObject)
@@ -268,7 +267,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void editCotentEdit(int id, LostItem lostItem, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).putLostAndFoundContent(id, addAuthorizationBearer(token), lostItem)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -305,7 +304,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void uploadImage(File file, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).postLostItemImage(addAuthorizationBearer(token), filePart)
                 .subscribeOn(Schedulers.io())
@@ -343,7 +342,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void createLostAndFoundItem(LostItem lostItem, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).postLostItem(addAuthorizationBearer(token), lostItem)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -380,7 +379,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
     @Override
     public void deleteLostAndFoundItem(int id, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(LostAndFoundService.class).deleteLostItem(id, addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

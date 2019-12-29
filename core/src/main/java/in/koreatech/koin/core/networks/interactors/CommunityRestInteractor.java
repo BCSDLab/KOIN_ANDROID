@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Article;
@@ -212,7 +212,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void createArticle(Article article, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("board_id", article.boardUid);
         jsonObject.addProperty("content", article.content);
@@ -271,8 +271,8 @@ public class CommunityRestInteractor implements CommunityInteractor {
     @Override
     public void readArticle(int articleUid, ApiCallback apiCallback) {
         Observable<Article> articleObservable;
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
-        if (DefaultSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS)
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
+        if (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS)
             articleObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).getArticle(String.valueOf(articleUid));
         else
             articleObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).getArticle(addAuthorizationBearer(token), String.valueOf(articleUid));
@@ -382,7 +382,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void updateArticle(Article article, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject articleJsonObject = new JsonObject();
         articleJsonObject.addProperty("board_id", article.boardUid);
         articleJsonObject.addProperty("content", article.content);
@@ -440,7 +440,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void deleteArticle(int articleUid, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).deleteArticle(String.valueOf(articleUid), addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
@@ -478,7 +478,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void createComment(int articleUid, String content, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("content", content);
@@ -519,7 +519,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void readComment(int articleUid, int commentUid, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
                 .getComment(String.valueOf(articleUid), String.valueOf(commentUid), addAuthorizationBearer(token))
@@ -559,7 +559,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void updateComment(Comment comment, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("content", comment.content);
@@ -602,7 +602,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void deleteComment(int articleUid, int commentUid, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
                 .deleteComment(String.valueOf(articleUid), String.valueOf(commentUid),
@@ -644,14 +644,14 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void updateGrantCheck(int articleUid, ApiCallback apiCallback) {
-        if (DefaultSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS) {
+        if (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS) {
             Article article = new Article();
             article.isGrantEdit = false;
             article.articleUid = articleUid;
             apiCallback.onSuccess(article);
             return;
         }
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("article_id", articleUid);
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).postGrantCheck(addAuthorizationBearer(token), jsonObject)

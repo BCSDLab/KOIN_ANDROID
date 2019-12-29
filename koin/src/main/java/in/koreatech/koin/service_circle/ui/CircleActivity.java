@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
@@ -45,7 +45,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
     public static final String SHARE_VIEW_NAME = "NAME";
     private Context mContext;
     private CircleRecyclerAdapter mCircleRecyclerAdapyter;
-    private static GenerateProgressTask mGenerateProgress;
+    private static CustomProgressDialog mGenerateProgress;
 
     private CirclePresenter mCirlcePresenter;
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
@@ -174,7 +174,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void showLoading() {
-        mGenerateProgress = new GenerateProgressTask(mContext, "로딩 중");
+        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
         mGenerateProgress.execute();
     }
 
@@ -182,7 +182,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
             R.id.circle_study_linear_layout, R.id.circle_religion_linear_layout, R.id.circle_service_linear_layout, R.id.circle_etc_linear_layout
     })
     public void onClickCircleCategory(View view) {
-        mGenerateProgress = new GenerateProgressTask(mContext, "로딩 중");
+        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
         mGenerateProgress.execute();
         initCategoryColor();
         switch (view.getId()) {
@@ -259,7 +259,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override

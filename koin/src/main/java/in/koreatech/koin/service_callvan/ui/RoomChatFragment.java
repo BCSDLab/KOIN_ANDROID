@@ -33,7 +33,7 @@ import butterknife.OnEditorAction;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.constants.FirebaseDBConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.FirebaseDbManager;
 import in.koreatech.koin.core.networks.entity.Message;
 import in.koreatech.koin.core.util.FormValidatorUtil;
@@ -85,11 +85,11 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRoomUid = DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        mRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
         if (mRoomUid > 0) {
-            mUid = DefaultSharedPreferencesHelper.getInstance().loadUser().uid;
+            mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
             if (FormValidatorUtil.validateStringIsEmpty(mUid)) {
-                ToastUtil.makeShortToast(getActivity(), "채팅 정보를 일시적으로 불러올 수 없습니다");
+                ToastUtil.getInstance().makeShortToast("채팅 정보를 일시적으로 불러올 수 없습니다");
                 mMessageReference = null;
             } else {
                 mMessageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(mRoomUid));
@@ -124,7 +124,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     public void onStart() {
         super.onStart();
 
-        mUid = DefaultSharedPreferencesHelper.getInstance().loadUser().uid;
+        mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
         ValueEventListener messageListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -230,7 +230,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
         if (!FormValidatorUtil.validateStringIsEmpty(mInputEditText.getText().toString())) {
             String meesageBody = mInputEditText.getText().toString();
 
-            String userName = DefaultSharedPreferencesHelper.getInstance().loadUser().userName;
+            String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
 
             String messageKey = FirebaseDbManager.createRoomChatMessage(String.valueOf(mRoomUid));
 
@@ -244,7 +244,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
 
     @Override
     public void updateRoomChatView() {
-        mRoomUid = DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        mRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         //참여한 방이 없을 경우
         if (mRoomUid <= 0) {

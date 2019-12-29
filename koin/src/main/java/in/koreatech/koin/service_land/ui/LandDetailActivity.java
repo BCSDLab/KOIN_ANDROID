@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.core.networks.interactors.LandRestInteractor;
@@ -44,7 +44,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     private int landId;
     private Double landLatitude;
     private Double landLongitude;
-    private GenerateProgressTask landDetailGenerateProgress;
+    private CustomProgressDialog landDetailGenerateProgress;
     private LandDetailPresenter landDetailPresenter;
     private NaverMap naverMap;
     private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
@@ -225,7 +225,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     protected void onStart() {
         super.onStart();
         if (landId == -1) {
-            ToastUtil.makeLongToast(this, "원룸 정보를 불러오지 못했습니다.");
+            ToastUtil.getInstance().makeShortToast("원룸 정보를 불러오지 못했습니다.");
             finish();
         }
         if (landDetailPresenter != null) {
@@ -264,7 +264,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void showLoading() {
-        landDetailGenerateProgress = new GenerateProgressTask(this, "로딩 중");
+        landDetailGenerateProgress = new CustomProgressDialog(this, "로딩 중");
         landDetailGenerateProgress.execute();
     }
 
@@ -284,7 +284,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     /**

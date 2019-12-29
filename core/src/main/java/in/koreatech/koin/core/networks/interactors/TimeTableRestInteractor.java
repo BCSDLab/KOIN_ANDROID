@@ -6,19 +6,13 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 
-import in.koreatech.koin.core.networks.entity.Lecture;
-
 import in.koreatech.koin.core.networks.entity.TimeTable;
-import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
-import in.koreatech.koin.core.networks.entity.TimeTableTest;
 import in.koreatech.koin.core.networks.responses.DefaultResponse;
 
-import in.koreatech.koin.core.networks.responses.TimeTablePostItemResponse;
-import in.koreatech.koin.core.networks.services.MarketService;
 import in.koreatech.koin.core.networks.services.TimeTableService;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -38,7 +32,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
     @Override
     public void deleteSemesterTimeTable(ApiCallback apiCallback, String semester) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).deleteTimeTables(addAuthorizationBearer(token), semester)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -76,7 +70,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
     @Override
     public void deleteTimeTable(ApiCallback apiCallback, int id) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).deleteTimeTable(addAuthorizationBearer(token), id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -114,7 +108,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
     @Override
     public void readTimeTable(ApiCallback apiCallback, String semester) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).getTimeTablesList(addAuthorizationBearer(token), semester)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -151,7 +145,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
     @Override
     public void createTimeTable(ApiCallback apiCallback, JsonObject jsonObject) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).postTimeTables(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -187,7 +181,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
     @Override
     public void editTimeTable(ApiCallback apiCallback, JsonObject jsonObject) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).putEditTimeTables(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

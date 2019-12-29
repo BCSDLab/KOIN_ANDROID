@@ -1,31 +1,22 @@
 package in.koreatech.koin.service_timetable.widget;
 
-import android.Manifest;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
-import android.os.Environment;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
-
-import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
-import in.koreatech.koin.ui.MainActivity;
 import in.koreatech.koin.ui.StartActivity;
 
 /**

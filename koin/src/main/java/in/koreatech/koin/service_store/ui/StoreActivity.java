@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
@@ -40,7 +40,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     private Context mContext;
     private StoreRecyclerAdapter mStoreRecyclerAdapter;
-    private static GenerateProgressTask mGenerateProgress;
+    private static CustomProgressDialog mGenerateProgress;
 
     private String today;
     private StorePresenter mStorePresenter;
@@ -117,7 +117,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
 
     public void sortStoreCategorize(int position) {
-        mGenerateProgress = new GenerateProgressTask(mContext, "로딩 중");
+        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
         mGenerateProgress.execute();
         mStoreArrayList.clear();
 
@@ -199,7 +199,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override

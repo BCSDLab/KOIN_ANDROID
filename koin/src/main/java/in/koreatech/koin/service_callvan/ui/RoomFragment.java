@@ -26,7 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.CallvanRoom;
 import in.koreatech.koin.core.networks.interactors.CallvanRestInteractor;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -174,7 +174,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     }
 
     public void updateRoomView() {
-        mJoinedRoomUid = DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        mJoinedRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
         Log.d(TAG, "join room uid" + mJoinedRoomUid);
 
         // 방에 참가중일 경우
@@ -194,7 +194,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     }
 
     private void updateRoomList() {
-        if (DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid() > 0) {
+        if (UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid() > 0) {
             return;
         }
 
@@ -259,7 +259,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         mInfoEndingPlaceTextView.setText(room.endingPlace);
         mInfoPeopleCountTextView.setText(room.currentPeople + "명/" + room.maximumPeople + "명");
 
-        DefaultSharedPreferencesHelper.getInstance().saveCallvanRoomUid(room.uid);
+        UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(room.uid);
     }
 
     @Override
@@ -300,7 +300,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     public void onCallvanRoomDecreasePeopleReceived(boolean isSuccess) {
         if (isSuccess) {
             //방에서 나올 경우 이전에 설정해둔 필터를 지움
-            DefaultSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
+            UserInfoSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
             mSelectedStartPlaceTextView.setText("출발지");
             mSelectedEndPlaceTextView.setText("목적지");
 //            ((CallvanActivity) getActivity()).refreshRoomFragment();
@@ -353,7 +353,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         String endFilterText = mSelectedEndPlaceTextView.getText().toString();
 
         if (startFilterText.compareTo(endFilterText) == 0) {
-            ToastUtil.makeShortToast(getActivity(), "출발지와 목적지가 같습니다");
+            ToastUtil.getInstance().makeShortToast("출발지와 목적지가 같습니다");
             mSelectedStartPlaceTextView.setText("출발지");
             mSelectedEndPlaceTextView.setText("목적지");
             updateUserInterface(mRoomArrayList, -1);
@@ -411,7 +411,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
 }

@@ -17,9 +17,9 @@ import com.crashlytics.android.Crashlytics;
 
 import in.koreatech.koin.BuildConfig;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.bases.BaseActivity;
-import in.koreatech.koin.core.contracts.SplashContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.contracts.SplashContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.VersionDialogClickListner;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Version;
@@ -28,7 +28,7 @@ import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.presenters.SplashPresenter;
 import io.fabric.sdk.android.Fabric;
 
-public class StartActivity extends BaseActivity implements SplashContract.View,VersionDialogClickListner {
+public class StartActivity extends ActivityBase implements SplashContract.View,VersionDialogClickListner {
     private final String TAG = StartActivity.class.getSimpleName();
 
     private Context mContext;
@@ -53,7 +53,7 @@ public class StartActivity extends BaseActivity implements SplashContract.View,V
         mFirebasePerformanceUtil = new FirebasePerformanceUtil("koin_start");
         mFirebasePerformanceUtil.start();
         RetrofitManager.getInstance().init();
-        DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
+        UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
         new SplashPresenter(this);
         mCurrentVersionName = getVersionName();
         //TODO : 버전 확인, 업데이트
@@ -90,7 +90,7 @@ public class StartActivity extends BaseActivity implements SplashContract.View,V
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     private final Runnable mLoginActivityRunnable = new Runnable() {

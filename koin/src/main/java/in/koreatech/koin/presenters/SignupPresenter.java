@@ -2,11 +2,10 @@ package in.koreatech.koin.presenters;
 
 import androidx.annotation.NonNull;
 
-import in.koreatech.koin.core.contracts.SignupContract;
+import in.koreatech.koin.contracts.SignupContract;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.interactors.UserInteractor;
 import in.koreatech.koin.core.networks.interactors.UserRestInteractor;
-import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import retrofit2.HttpException;
 
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
@@ -49,7 +48,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     private Context mContext;
     private StoreDetailPresenter mStoreDetailPresenter;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
     private Store mStore;
 
@@ -258,7 +257,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -303,17 +302,17 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 

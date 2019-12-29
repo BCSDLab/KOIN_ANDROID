@@ -2,8 +2,8 @@ package in.koreatech.koin.presenters;
 
 import androidx.annotation.NonNull;
 
-import in.koreatech.koin.core.contracts.UserInfoEditContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.contracts.UserInfoEditContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.networks.interactors.UserInteractor;
@@ -31,7 +31,7 @@ public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
         @Override
         public void onSuccess(Object object) {
             User user = (User) object;
-            DefaultSharedPreferencesHelper.getInstance().saveUser(user);
+            UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
             mUserInfoEditView.showConfirm();
         }
 

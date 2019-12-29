@@ -46,7 +46,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
@@ -75,7 +75,7 @@ import static in.koreatech.koin.core.util.timetable.TimeDuplicateCheckUtil.dupli
 
 public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
     public static final String TAG = TimetableActivity.class.getName();
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
     public static final int LOAD_TIME_MS = 500;
@@ -180,17 +180,17 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -277,18 +277,18 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                generateProgressTask = new GenerateProgressTask(mContext, "저장 중");
-                generateProgressTask.execute();
+                customProgressDialog = new CustomProgressDialog(mContext, "저장 중");
+                customProgressDialog.execute();
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
                 saveTimeTableViewInBMP(smester);
-                generateProgressTask.cancel(true);
-                generateProgressTask = null;
+                customProgressDialog.cancel(true);
+                customProgressDialog = null;
             }, 2000);
 
         } else {
-            ToastUtil.makeShortToast(mContext, "권한이 필요합니다.");
+            ToastUtil.getInstance().makeShortToast("권한이 필요합니다.");
             askSaveToImagePermission();
         }
     }
@@ -610,7 +610,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.makeLongToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override
@@ -632,7 +632,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -647,7 +647,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -664,7 +664,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override

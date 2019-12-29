@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.Message;
 
 /**
@@ -84,7 +84,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.mMessageList = messageList;
         this.mMessageKeyList = messageKeyList;
 
-        mUid = DefaultSharedPreferencesHelper.getInstance().loadUser().uid;
+        mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
     }
 
     @NonNull

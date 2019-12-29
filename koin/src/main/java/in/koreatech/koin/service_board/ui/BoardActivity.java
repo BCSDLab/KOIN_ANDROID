@@ -6,9 +6,6 @@ import android.os.Bundle;
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.service_board.contracts.BoardContract;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
@@ -37,7 +33,6 @@ import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
 import in.koreatech.koin.service_board.presenters.BoardPresenter;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_board.adpaters.BoardRecyclerAdapter;
-import in.koreatech.koin.ui.LoginActivity;
 
 import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_FREE;
@@ -52,7 +47,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     private final int REQ_CODE_ARTICLE = 2;
     private final int RES_CODE_ARTICLE_DELETED = 1;
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private Context mContext;
     private int mBoardUid;
     private String mUserNickname;
@@ -168,7 +163,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
                 showNickNameRequestDialog();
                 return;
             }
@@ -182,10 +177,10 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     public AuthorizeConstant getAuthorize() {
         AuthorizeConstant authorizeConstant;
         try {
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         }
         return authorizeConstant;
     }
@@ -222,7 +217,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
         @Override
         public void onClick(View view, final int position) {
 
-            if ((mBoardUid != ID_ANONYMOUS) && (DefaultSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
+            if ((mBoardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
                 mBoardPresenter.getArticleGrant(mArticleArrayList.get(position).articleUid);
             else
                 goToArticleActivity(mArticleArrayList.get(position).articleUid, mBoardUid == ID_ANONYMOUS);
@@ -268,17 +263,17 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -288,6 +283,6 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
             mBoardSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 }

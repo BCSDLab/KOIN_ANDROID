@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
@@ -85,7 +85,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
 
     private final int REQ_CODE_ARTICLE_EDIT = 1;
-    private  GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private CommentRecyclerAdapter mCommentRecyclerAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Comment> mCommentArrayList;
@@ -199,7 +199,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
                 showNickNameRequestDialog();
                 return;
             }
@@ -213,10 +213,10 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public AuthorizeConstant getAuthorize() {
         AuthorizeConstant authorizeConstant;
         try {
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         }
         return authorizeConstant;
     }
@@ -292,7 +292,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         if (!mCommentPassword.isEmpty())
             mArticleCommentPresenter.checkAnonymousCommentDeleteGranted(mSelectedComment.commentUid, mCommentPassword);
         else
-            ToastUtil.makeShortToast(mContext, "비밀번호를 입력해주세요");
+            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
     }
 
     public void onClickedAnonymousRegisterButton() {
@@ -300,15 +300,15 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         String password = mArticleCommentPasswordEdittext.getText().toString();
         String nickname = mArticleCommentNicknameEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.makeShortToast(mContext, "내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
             return;
         }
         if (password.isEmpty()) {
-            ToastUtil.makeShortToast(mContext, "비밀번호를 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요.");
             return;
         }
         if (nickname.isEmpty()) {
-            ToastUtil.makeShortToast(mContext, "닉네임을 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("닉네임을 입력해주세요.");
             return;
         }
         if (!mIsEditComment) {
@@ -323,7 +323,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public void onClickedCommentRegisterButton() {
         String commentContent = mArticleCommentContentEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.makeShortToast(mContext, "내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
             return;
         }
         if (!mIsEditComment) {
@@ -351,19 +351,19 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorDeleteComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessDeleteComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글 삭제에 성공하였습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorGrantedDeleteComment() {
-        ToastUtil.makeShortToast(mContext, "비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShortToast( "비밀번호가 일치하지 않습니다.");
     }
 
     @Override
@@ -375,53 +375,53 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorGrantedDeleteContent() {
-        ToastUtil.makeShortToast(mContext, "비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShortToast("비밀번호가 일치하지 않습니다.");
     }
 
     @Override
     public void showSuccessCreateComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글이 등록되었습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorCreateComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 등록되지 않았습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글이 등록되지 않았습니다.");
     }
 
     @Override
     public void showErrorDeleteAnonymousComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShortToast( "댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessAnonymousDeleteComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShortToast( "댓글 삭제에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
 
     }
 
     @Override
     public void showSuccessCreateAnonymousComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShortToast( "댓글이 등록되었습니다.");
         onClickedAnonymousCommentCancelButton();
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorCreateAnonymousComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 등록되지 않았습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글이 등록되지 않았습니다.");
     }
 
     @Override
     public void showErrorUpdateAnonymousComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 수정에 실패하였습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글 수정에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessUpdateAnonymousComment() {
-        ToastUtil.makeShortToast(mContext, "댓글 수정에 성공하였습니다.");
+        ToastUtil.getInstance().makeShortToast( "댓글 수정에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
     }
 
@@ -432,7 +432,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorGrantedAdjustComment() {
-        ToastUtil.makeShortToast(mContext, "비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShortToast("비밀번호가 일치하지 않습니다.");
     }
 
     @Override
@@ -440,18 +440,18 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         if (mSelectedComment.password != null && !mSelectedComment.password.isEmpty())
             mArticleCommentPresenter.updateAnonymousComment(mArticle.articleUid, mSelectedComment);
         else
-            ToastUtil.makeShortToast(mContext,"비밀번호를 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요.");
 
     }
 
     @Override
     public void showErrorEditComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 수정되지 않았습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글이 수정되지 않았습니다.");
     }
 
     @Override
     public void showSuccessEditComment() {
-        ToastUtil.makeShortToast(mContext, "댓글이 수정되었습니다.");
+        ToastUtil.getInstance().makeShortToast("댓글이 수정되었습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }
@@ -491,17 +491,17 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -557,11 +557,11 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public String getNickname() {
         String nickname = "";
         try {
-            nickname = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            if (DefaultSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
+                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         }
         if (nickname == null) nickname = "";
         return nickname;

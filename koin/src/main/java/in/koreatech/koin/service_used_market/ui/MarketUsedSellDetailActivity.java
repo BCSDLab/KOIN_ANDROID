@@ -36,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.service_used_market.contracts.MarketUsedDetailContract;
@@ -60,7 +60,7 @@ import in.koreatech.koin.ui.UserInfoEditedActivity;
 public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity implements MarketUsedDetailContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
     private final String TAG = MarketUsedSellDetailActivity.class.getSimpleName();
     private static final int REQUEST_PHONE_CALL = 1;
-    private static GenerateProgressTask mGenerateProgress;
+    private static CustomProgressDialog mGenerateProgress;
 
 
     private Context mContext;
@@ -106,7 +106,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @BindView(R.id.market_used_sell_detail_hit_count_textview)
     TextView mMarkethitCountTextView;
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 //    @BindView(R.id.market_used_sell_detail_comment_count_textview)
 //    TextView mMarketCommentCountTextView;
 //
@@ -171,17 +171,17 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     }
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -320,7 +320,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         if (getUser().userNickName != null)
             startActivity(intent);
         else {
-            ToastUtil.makeLongToast(this, "닉네임이 필요합니다.");
+            ToastUtil.getInstance().makeShortToast("닉네임이 필요합니다.");
             intent = new Intent(this, UserInfoEditedActivity.class);
             startActivity(intent);
         }
@@ -448,7 +448,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void showMarketDataReceivedFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
         finish();
     }
 
@@ -464,40 +464,40 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void showMarketItemDelete() {
-        ToastUtil.makeShortToast(mContext, "삭제되었습니다.");
+        ToastUtil.getInstance().makeShortToast("삭제되었습니다.");
         finish();
     }
 
     @Override
     public void showMarketCommentUpdateFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
     @Override
     public void showMarketCommentDeleteFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
     @Override
     public void showMarketCommentEditFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
     @Override
     public void showMarketItemDeleteFail() {
-        ToastUtil.makeShortToast(mContext, R.string.server_failed);
+        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
     }
 
 //    public void checkRequiredInfo() {
 //        String nickName;
-//        AuthorizeConstant authorize = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+//        AuthorizeConstant authorize = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
 //        if (authorize == AuthorizeConstant.ANONYMOUS) {
 //            mMarketCommentInputEditText.setFocusable(false);
 //            mMarketCreateCommentButton.setEnabled(false);
 //            mMarketCommentInputEditText.setText("로그인을 하셔야 입력할 수 있습니다.");
 //            return;
 //        } else {
-//            nickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+//            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
 //        }
 //
 //        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
@@ -515,12 +515,12 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 //    @OnClick(R.id.market_used_sell_detail_comment_input_text)
 //    public void onTouchMarketUsedCommentInputText() {
 //        String nickName;
-//        AuthorizeConstant authorize = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+//        AuthorizeConstant authorize = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
 //        if (authorize == AuthorizeConstant.ANONYMOUS) {
 //            showLoginRequestDialog();
 //            return;
 //        } else {
-//            nickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+//            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
 //        }
 //        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
 //            showNickNameRequestDialog();

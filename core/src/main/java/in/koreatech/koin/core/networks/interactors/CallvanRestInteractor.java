@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.CallvanRoom;
@@ -19,8 +19,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
 import static in.koreatech.koin.core.networks.RetrofitManager.addAuthorizationBearer;
@@ -43,7 +41,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void readCompanyList(ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).getCompanyList(addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -87,7 +85,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void readCompany(int uid, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).getCompany(uid, addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,7 +128,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void readRoomList(ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).getCallvanRoomsList(addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -173,7 +171,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void createRoom(CallvanRoom room, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).postCallvanRoom(addAuthorizationBearer(token), room)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -216,7 +214,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void readRoom(int roomUid, ApiCallback apiCallback) {
-        RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).getCallvanRoom(roomUid, DefaultSharedPreferencesHelper.getInstance().loadToken())
+        RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).getCallvanRoom(roomUid, UserInfoSharedPreferencesHelper.getInstance().loadToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<CallvanRoom>() {
@@ -258,7 +256,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void updateRoom(CallvanRoom room, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).putCallvanRoom(addAuthorizationBearer(token), room)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -301,7 +299,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
      */
     @Override
     public void deleteRoom(int roomUid, ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).deleteCallvanRoom(roomUid, addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -346,7 +344,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
     public void createParticipant(int roomUid, ApiCallback apiCallback) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("room_id", roomUid);
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).postParticipant(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -391,7 +389,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
     public void deleteParticipant(int roomUid, ApiCallback apiCallback) {
         JsonObject roomId = new JsonObject();
         roomId.addProperty("room_id", roomUid);
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(CallvanService.class).deleteParticipant(addAuthorizationBearer(token), roomId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

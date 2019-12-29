@@ -16,9 +16,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
-import in.koreatech.koin.core.contracts.LoginContract;
+import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.contracts.LoginContract;
 import in.koreatech.koin.presenters.LoginPresenter;
 import in.koreatech.koin.core.util.ToastUtil;
 
@@ -28,12 +28,12 @@ import static in.koreatech.koin.core.util.FormValidatorUtil.validateStringIsEmpt
 /**
  * Created by hyerim on 2018. 4. 30....
  */
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+public class LoginActivity extends ActivityBase implements LoginContract.View {
     private final String TAG = LoginActivity.class.getSimpleName();
     private Context mContext;
     private LoginContract.Presenter mLoginPresenter;
     private boolean mIsMainActivity;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
     /* View Components */
     @BindView(R.id.login_edittext_id)
@@ -94,7 +94,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
         }
 
         if (validateStringIsEmpty(mEditTextID.getText().toString()) || validateStringIsEmpty(mEditTextPW.getText().toString())) {
-            ToastUtil.makeShortToast(mContext, "아이디와 비밀번호를 입력해주세요");
+            ToastUtil.getInstance().makeShortToast("아이디와 비밀번호를 입력해주세요");
         } else {
             mLoginPresenter.login(mEditTextID.getText().toString(), mEditTextPW.getText().toString(), false);
         }
@@ -130,17 +130,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     public void showProgress() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "진행 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "진행 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideProgress() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
      */
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override

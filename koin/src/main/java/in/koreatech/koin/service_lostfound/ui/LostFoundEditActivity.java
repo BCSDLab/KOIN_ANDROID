@@ -30,9 +30,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.util.LoadImageFromUrl;
 import in.koreatech.koin.core.util.SnackbarUtil;
@@ -56,7 +56,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     private int lostDateYear;
     private int lostDateMonth;
     private int lostDateDay;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private LostFoundEditContract.Presenter lostAndFoundPresenter;
 
     @BindView(R.id.lostfound_create_nestedscrollview)
@@ -212,8 +212,8 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
             lostFoundCreatePhoneNumEditText.setFocusableInTouchMode(true);
             if (lostItem.phone != null) {
                 lostFoundCreatePhoneNumEditText.setText(lostItem.phone);
-            } else if (DefaultSharedPreferencesHelper.getInstance().loadUser() != null && DefaultSharedPreferencesHelper.getInstance().loadUser().phoneNumber != null) {
-                lostFoundCreatePhoneNumEditText.setText(DefaultSharedPreferencesHelper.getInstance().loadUser().phoneNumber);
+            } else if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null && UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber != null) {
+                lostFoundCreatePhoneNumEditText.setText(UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber);
             }
         } else {
             lostFoundCreatePhoneNumEditText.setFocusable(false);
@@ -256,15 +256,15 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         int type = lostItem.getType();
 
         if (title.isEmpty()) {
-            ToastUtil.makeLongToast(this, R.string.market_used_title_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_title_check);
             return;
         }
         if (isPhoneValid && !Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", phoneNumber)) {
-            ToastUtil.makeLongToast(this, R.string.market_used_phone_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_phone_check);
             return;
         }
         if (content.isEmpty()) {
-            ToastUtil.makeLongToast(this, R.string.market_used_content_check);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_content_check);
             return;
         }
 
@@ -386,18 +386,18 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
 
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
 
         }
     }
@@ -405,7 +405,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     @Override
     public void showSuccessUpdate(LostItem lostItem) {
         finish();
-        ToastUtil.makeShortToast(this, "수정되었습니다.");
+        ToastUtil.getInstance().makeShortToast( "수정되었습니다.");
     }
 
     @Override
@@ -414,12 +414,12 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         intent.putExtra("ID", lostItem.id);
         startActivity(intent);
         finish();
-        ToastUtil.makeShortToast(this, "생성되었습니다.");
+        ToastUtil.getInstance().makeShortToast("생성되었습니다.");
     }
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override

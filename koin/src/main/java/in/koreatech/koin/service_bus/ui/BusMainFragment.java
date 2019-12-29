@@ -1,7 +1,6 @@
 package in.koreatech.koin.service_bus.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.helpers.TimerRenewListener;
 import in.koreatech.koin.core.networks.interactors.CityBusRestInteractor;
 import in.koreatech.koin.core.util.BusTimerUtil;
@@ -35,7 +34,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     public static final int REFRESH_TIME = 60; // 1분 갱신
 
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private Unbinder mUnbinder;
     private boolean mIsCreate;
     private int mDepartureState; // 0 : 한기대 1 : 야우리 2 : 천안역
@@ -491,18 +490,18 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     @Override
     public void showLoading() {
-//        if (generateProgressTask == null) {
-//            generateProgressTask = new GenerateProgressTask(getContext(), "로딩중");
-//            generateProgressTask.execute();
+//        if (customProgressDialog == null) {
+//            customProgressDialog = new CustomProgressDialog(getContext(), "로딩중");
+//            customProgressDialog.execute();
 //        }
 
     }
 
     @Override
     public void hideLoading() {
-//        if (generateProgressTask != null) {
-//            generateProgressTask.cancel(true);
-//            generateProgressTask = null;
+//        if (customProgressDialog != null) {
+//            customProgressDialog.cancel(true);
+//            customProgressDialog = null;
 //        }
     }
 }

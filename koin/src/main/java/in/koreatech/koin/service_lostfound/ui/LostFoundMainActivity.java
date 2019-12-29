@@ -16,22 +16,19 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
 import in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.networks.responses.LostAndFoundPageResponse;
 import in.koreatech.koin.core.util.ToastUtil;
-import in.koreatech.koin.service_board.ui.ArticleEditActivity;
 import in.koreatech.koin.service_lostfound.Contracts.LostFoundMainContract;
 import in.koreatech.koin.service_lostfound.adapter.LostFoundMainActivityRecyclerviewAdapter;
 import in.koreatech.koin.service_lostfound.presenters.LostFoundMainPresenter;
-
-import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_ANONYMOUS;
 
 /**
  * @author yunjaeNa
@@ -47,7 +44,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     SwipeRefreshLayoutBottom lostfoundMainSwipeRefreshLayout;
 
     private LinearLayoutManager linearLayoutManager;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private LostFoundMainActivityRecyclerviewAdapter lostFoundMainActivityRecyclerviewAdapter;
     private ArrayList<LostItem> lostItemArrayList;
     private LostFoundMainContract.Presenter lostFoundMainPresenter;
@@ -135,17 +132,17 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -158,7 +155,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         if (currentPage < totalPage)
             lostFoundMainPresenter.getLostItem(++currentPage, LIMITITEM);
         else
-            ToastUtil.makeShortToast(this, "마지막 페이지 입니다.");
+            ToastUtil.getInstance().makeShortToast("마지막 페이지 입니다.");
     }
 
     @Override
@@ -176,7 +173,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -199,7 +196,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
             showNickNameRequestDialog();
             return;
         }

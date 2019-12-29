@@ -2,15 +2,12 @@ package in.koreatech.koin.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -19,10 +16,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.bases.BaseActivity;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
-import in.koreatech.koin.core.contracts.UserInfoContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.contracts.UserInfoContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.presenters.UserInfoPresenter;
 import in.koreatech.koin.core.util.FormValidatorUtil;
@@ -130,7 +126,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @Override
     public void onUserDataReceived() {
-        mUser = DefaultSharedPreferencesHelper.getInstance().loadUser();
+        mUser = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
         mUserinfoTextviewId.setText(isNull(mUser.userId) + "@koreatech.ac.kr");
         mUserinfoTextviewName.setText(isNull(mUser.userName));
@@ -157,7 +153,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         switch (mRequiredService) {
             case R.string.navigation_item_free_board:
             case R.string.navigation_item_recruit_board:
-                String userName = DefaultSharedPreferencesHelper.getInstance().loadUser().userName;
+                String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
                 if (FormValidatorUtil.validateStringIsEmpty(userName) && mUserinfoTextviewName.getText().equals("-")) {
                     mUserinfoTextviewName.setText("이름을 입력해주세요");
 //                    mUserinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
@@ -192,7 +188,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @OnClick(R.id.userinfo_button_delete_user)
     public void onClickDeleteUserButton() {
-        final int roomUid = DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        final int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         SnackbarUtil.makeLongSnackbarActionYes(mUserinfoScrollview, "정말 탈퇴하시려구요? 한번 더 생각해보세요 :)", new Runnable() {
             @Override

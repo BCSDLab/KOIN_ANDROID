@@ -46,10 +46,10 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.UserLockBottomSheetBehavior;
@@ -82,7 +82,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public static final int LOAD_TIME_MS = 500;
 
     public static int select = -1;          //TimetableSelectAnonymousMajorDialog에서 선택했던것을 기억하는 변수
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     @BindView(R.id.timetable_timetableview)
     TimetableView mTimetableView;
     @BindView(R.id.timetable_add_schedule_bottom_sheet)
@@ -199,22 +199,22 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
     public boolean checkIsAnonoymous() {
-        return DefaultSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS;
+        return UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS;
     }
 
     public void askSaveToImagePermission() {
@@ -286,18 +286,18 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                generateProgressTask = new GenerateProgressTask(mContext, "저장 중");
-                generateProgressTask.execute();
+                customProgressDialog = new CustomProgressDialog(mContext, "저장 중");
+                customProgressDialog.execute();
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
                 saveTimeTableViewInBMP(semester);
-                generateProgressTask.cancel(true);
-                generateProgressTask = null;
+                customProgressDialog.cancel(true);
+                customProgressDialog = null;
             }, 2000);
 
         } else {
-            ToastUtil.makeShortToast(mContext, "권한이 필요합니다.");
+            ToastUtil.getInstance().makeShortToast("권한이 필요합니다.");
             askSaveToImagePermission();
         }
     }
@@ -619,7 +619,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.makeLongToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override
@@ -641,7 +641,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -656,7 +656,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -673,7 +673,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.makeShortToast(mContext, "인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
     }
 
     @Override

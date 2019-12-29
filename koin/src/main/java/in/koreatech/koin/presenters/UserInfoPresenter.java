@@ -3,8 +3,8 @@ package in.koreatech.koin.presenters;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.perf.metrics.AddTrace;
-import in.koreatech.koin.core.contracts.UserInfoContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.contracts.UserInfoContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.networks.interactors.CallvanInteractor;
@@ -34,7 +34,7 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
         @Override
         public void onSuccess(Object object) {
             User user = (User) object;
-            DefaultSharedPreferencesHelper.getInstance().saveUser(user);
+            UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
 
             mUserInfoView.onUserDataReceived();
         }
@@ -48,7 +48,7 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
     private final ApiCallback deleteUserApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            DefaultSharedPreferencesHelper.getInstance().clear();
+            UserInfoSharedPreferencesHelper.getInstance().clear();
             mUserInfoView.onDeleteUserReceived();
         }
 

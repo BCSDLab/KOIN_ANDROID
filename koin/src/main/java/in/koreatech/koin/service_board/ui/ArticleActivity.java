@@ -19,10 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
@@ -49,7 +49,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     private Context mContext;
 
     private InputMethodManager mInputMethodManager;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
 //    private CommentRecyclerAdapter mCommentRecyclerAdapter;
 //    private RecyclerView.LayoutManager mLayoutManager;
@@ -219,17 +219,17 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -286,7 +286,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             return;
         } else {
-            nickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         }
         if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
         } else {
@@ -296,10 +296,10 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public AuthorizeConstant getAuthorize() {
         AuthorizeConstant authorizeConstant;
         try {
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         }
         return authorizeConstant;
     }
@@ -337,7 +337,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
             if (!password.isEmpty())
                 mArticlePresenter.checkAnonymousAdjustGranted(mArticle.articleUid, password);
             else
-                ToastUtil.makeShortToast(mContext, "비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
             return;
         }
 
@@ -403,7 +403,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
             if (!password.isEmpty())
                 mArticlePresenter.checkAnonymousDeleteGranted(mArticle.articleUid, password);
             else
-                ToastUtil.makeShortToast(mContext, "비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
 
         }
 
@@ -513,24 +513,24 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 //
 //    @Override
     public void showSuccessAdjustComment() {
-        ToastUtil.makeShortToast(mContext, "수정되었습니다.");
+        ToastUtil.getInstance().makeShortToast("수정되었습니다.");
     }
 
     @Override
     public void showErrorDeleteContent() {
-        ToastUtil.makeShortToast(mContext, "삭제에 실패했습니다.");
+        ToastUtil.getInstance().makeShortToast("삭제에 실패했습니다.");
     }
 
     @Override
     public void showSuccessDeleteContent() {
-        ToastUtil.makeShortToast(mContext, "삭제되었습니다.");
+        ToastUtil.getInstance().makeShortToast("삭제되었습니다.");
         setResult(RES_CODE_ARTICLE_DELETED);
         finish();
     }
 
     @Override
     public void showErrorAdjustGrantedContent() {
-        ToastUtil.makeShortToast(mContext, "비밀번호가 틀렸습니다.");
+        ToastUtil.getInstance().makeShortToast("비밀번호가 틀렸습니다.");
     }
 
     @Override
@@ -549,7 +549,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     public void showErrorGrantedDeleteContent() {
-        ToastUtil.makeShortToast(mContext, "게시물을 수정하거나 삭제할 권한이 없습니다.");
+        ToastUtil.getInstance().makeShortToast("게시물을 수정하거나 삭제할 권한이 없습니다.");
     }
 
     @Override
@@ -624,7 +624,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
                 showNickNameRequestDialog();
                 return;
             }

@@ -2,24 +2,16 @@ package in.koreatech.koin.service_board.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 
 import android.text.Editable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -33,8 +25,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
-import in.koreatech.koin.core.bases.BaseActivity;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
@@ -69,7 +60,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private Context mContext;
 
     private ArticleEditPresenter mArticleEditPresenter;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private int mBoardUid;
     private int mArticleUid;
     private String mTitleTemp;
@@ -209,21 +200,21 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         }
 
         if (FormValidatorUtil.validateStringIsEmpty(mEditTextTitle.getText().toString())) {
-            ToastUtil.makeShortToast(mContext, "제목을 입력하세요");
+            ToastUtil.getInstance().makeShortToast("제목을 입력하세요");
             return;
         }
         if (FormValidatorUtil.validateStringIsEmpty(mEditTextContent.getText().toString())) {
-            ToastUtil.makeShortToast(mContext, "내용을 입력하세요");
+            ToastUtil.getInstance().makeShortToast("내용을 입력하세요");
             return;
         }
 
         if (mBoardUid == ID_ANONYMOUS) {
             if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextNickname.getText().toString())) {
-                ToastUtil.makeShortToast(mContext, "제목을 입력하세요");
+                ToastUtil.getInstance().makeShortToast("제목을 입력하세요");
                 return;
             }
             if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextPassword.getText().toString())) {
-                ToastUtil.makeShortToast(mContext, "내용을 입력하세요");
+                ToastUtil.getInstance().makeShortToast("내용을 입력하세요");
                 return;
             }
         }
@@ -247,7 +238,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 }
                 break;
             default:
-                ToastUtil.makeShortToast(mContext, "잘못된 접근입니다.");
+                ToastUtil.getInstance().makeShortToast("잘못된 접근입니다.");
                 break;
 
         }
@@ -276,17 +267,17 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 

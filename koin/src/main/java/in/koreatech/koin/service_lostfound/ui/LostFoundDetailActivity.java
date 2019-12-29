@@ -18,10 +18,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.util.LoadImageFromUrl;
 import in.koreatech.koin.core.util.SnackbarUtil;
@@ -66,7 +66,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     @BindView(R.id.lostfound_detail_lost_date_textview)
     TextView lostfoundDetailLostDateTextview;
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private LostFoundDetailContract.Presenter lostfoundDetailPresenter;
     private LostItem lostItem;
     private int id;
@@ -93,17 +93,17 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -156,7 +156,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     @Override
     public void showMessage(String message) {
         if (message != null)
-            ToastUtil.makeShortToast(this, message);
+            ToastUtil.getInstance().makeShortToast(message);
     }
 
     /**
@@ -237,7 +237,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
             showNickNameRequestDialog();
             return;
         }

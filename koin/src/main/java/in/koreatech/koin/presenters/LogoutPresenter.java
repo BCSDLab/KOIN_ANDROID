@@ -1,6 +1,6 @@
 package in.koreatech.koin.presenters;
 
-import in.koreatech.koin.core.contracts.LogoutContract;
+import in.koreatech.koin.contracts.LogoutContract;
 import in.koreatech.koin.core.helpers.TokenSessionInteractor;
 import in.koreatech.koin.core.helpers.TokenSessionLocalInteractor;
 import in.koreatech.koin.core.networks.ApiCallback;

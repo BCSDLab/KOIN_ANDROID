@@ -4,22 +4,41 @@ import android.content.Context;
 import android.widget.Toast;
 
 /**
- * Created by hyerim on 2018. 4. 9....
+ * @author hyerim
+ * @author nayunjae
+ * @since 2018.4.9
  */
 public class ToastUtil {
-    public static void makeShortToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    private static Context applicationContext;
+
+    private ToastUtil() {
     }
 
-    public static void makeLongToast(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    private static class Holder {
+        private static final ToastUtil toastUtil = new ToastUtil();
     }
 
-    public static void makeShortToast(Context context, int message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    public static ToastUtil getInstance() {
+        return Holder.toastUtil;
     }
 
-    public static void makeLongToast(Context context, int message) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    public void init(Context context) {
+        applicationContext = context.getApplicationContext();
+    }
+
+    public void makeShortToast(String message) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void makeLongToast(String message) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show();
+    }
+
+    public void makeShortToast(int message) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void makeLongToast(int message) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show();
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +20,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.util.SnackbarUtil;
@@ -58,7 +57,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     Button lostfoundCommentRegisterButton;
 
     private LostFoundCommentContract.Presenter lostFoundCommentPresenter;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private LostFoundCommentRecyclerviewAdapter commentRecyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Comment> commentArrayList;
@@ -135,7 +134,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
             showNickNameRequestDialog();
             return;
         }
@@ -146,17 +145,17 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -213,7 +212,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(this, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @Override
@@ -224,11 +223,11 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     public String getNickname() {
         String nickname = "";
         try {
-            nickname = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            if (DefaultSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
+                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         }
         if (nickname == null) nickname = "";
         return nickname;
@@ -274,7 +273,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     public void onClickedCommentRegisterButton() {
         String commentContent = lostfoundCommentContentEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.makeShortToast(this, "내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
             return;
         }
         if (!isEditComment) {

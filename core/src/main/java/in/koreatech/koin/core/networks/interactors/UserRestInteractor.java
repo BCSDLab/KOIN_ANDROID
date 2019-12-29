@@ -5,7 +5,7 @@ import android.util.Log;
 import com.google.gson.JsonObject;
 
 import in.koreatech.koin.core.constants.URLConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Auth;
@@ -170,7 +170,7 @@ public class UserRestInteractor implements UserInteractor {
 
     @Override
     public void readUser(ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(UserService.class).getUser(addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -208,7 +208,7 @@ public class UserRestInteractor implements UserInteractor {
 
     @Override
     public void updateUser(ApiCallback apiCallback, User user) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(UserService.class).putUser(addAuthorizationBearer(token), user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -245,7 +245,7 @@ public class UserRestInteractor implements UserInteractor {
 
     @Override
     public void deleteUser(ApiCallback apiCallback) {
-        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(UserService.class).deleteUser(addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

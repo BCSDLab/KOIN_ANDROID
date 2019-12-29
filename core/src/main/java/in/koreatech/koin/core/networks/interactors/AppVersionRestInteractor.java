@@ -2,24 +2,15 @@ package in.koreatech.koin.core.networks.interactors;
 
 import android.util.Log;
 
-import java.util.ArrayList;
-
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
-import in.koreatech.koin.core.networks.entity.Company;
-import in.koreatech.koin.core.networks.entity.Item;
 import in.koreatech.koin.core.networks.entity.Version;
-import in.koreatech.koin.core.networks.services.CallvanService;
-import in.koreatech.koin.core.networks.services.MarketService;
 import in.koreatech.koin.core.networks.services.VersionService;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
-
-import static in.koreatech.koin.core.networks.RetrofitManager.addAuthorizationBearer;
 
 public class AppVersionRestInteractor implements AppVersionInteractor {
 

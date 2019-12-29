@@ -1,7 +1,6 @@
 package in.koreatech.koin.core.bases;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -18,15 +17,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
 import in.koreatech.koin.core.R;
+import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.util.FormValidatorUtil;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -36,10 +35,8 @@ import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
 /**
  * Created by hyerim on 2018. 5. 31....
  * Edited by yunjae on 2018. 8. 27....
- * Edited by hansol on 2019.11.14....
- * Edited by seongyun on 2019.11.15....
  */
-public abstract class BaseNavigationActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
+public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
     private final String TAG = BaseNavigationActivity.class.getSimpleName();
     private final int LEFTNAVI = GravityCompat.START;
     private final int RIGHTNAVI = GravityCompat.END;
@@ -59,9 +56,8 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     private InputMethodManager mInputMethodManager;
     private LinearLayout mOpenLeftNavigationDrawerOpenLinearLayout;
     private LinearLayout mOpenHomeLinearLayout;
-    private LinearLayout mOpenSearchLinearLayout;
+    private LinearLayout mOpenMyInfoLinearLayout;
 
-    private LinearLayout myInfoLinearLayout;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -75,6 +71,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         super.onCreate(savedInstanceState);
         mContext = setContext();
         mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+
     }
 
     protected abstract Context setContext();
@@ -111,15 +108,12 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         mLeftNavigationView = findViewById(getLeftNavigationDrawerID());
         mOpenLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
         mOpenHomeLinearLayout = findViewById(getBottomNavigationHomeID());
-        mOpenSearchLinearLayout = findViewById(getBottomNavigationSearchID());
-        myInfoLinearLayout =  findViewById(R.id.navi_item_myinfo);
-
+        mOpenMyInfoLinearLayout = findViewById(getBottomNavigationMyInfoID());
         mOpenLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
         mOpenHomeLinearLayout.setOnClickListener(this);
-        mOpenSearchLinearLayout.setOnClickListener(this);
+        mOpenMyInfoLinearLayout.setOnClickListener(this);
         mLeftNavigationView.setNavigationItemSelectedListener(this);
         mLeftNavigationView.setOnClickListener(this);
-        myInfoLinearLayout.setOnClickListener(this);
 
         width = getResources().getDisplayMetrics().widthPixels * 667 / 1000;
         ViewGroup.LayoutParams params = mLeftNavigationView.getLayoutParams();
@@ -137,18 +131,19 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
             textView.setTextColor(getResources().getColor(R.color.light_navy));
-        }
-        else if (id == R.id.navi_item_search) {
-            callDrawerItem(id);
-        }
-        else {
+        } else if (id == R.id.navi_item_user_info) {
+            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo_on);
+            textView.setTextColor(getResources().getColor(R.color.light_navy));
+        } else {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home);
             textView.setTextColor(getResources().getColor(R.color.black));
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu);
+            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
             textView.setTextColor(getResources().getColor(R.color.black));
         }
     }
@@ -166,9 +161,9 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
         imageView.setBackgroundResource(R.drawable.ic_bottom_home);
         textView.setTextColor(getResources().getColor(R.color.black));
-        imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-        textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-        imageView.setBackgroundResource(R.drawable.ic_search_menu);
+        imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+        textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+        imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
         textView.setTextColor(getResources().getColor(R.color.black));
     }
 
@@ -249,7 +244,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
 
     protected abstract int getBottomNavigationHomeID();
 
-    protected abstract int getBottomNavigationSearchID();
+    protected abstract int getBottomNavigationMyInfoID();
 
     protected abstract int getDrawerLayoutID();
 
@@ -343,14 +338,8 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             onClickTimeTable();
         } else if (itemId == R.id.navi_item_land) {
             goToLandActivity();
-        }else if (itemId == R.id.navi_item_myinfo) {
-            onClickNavigationUserInfo();
-        } else if (itemId == R.id.navi_item_search) {
-            goToSearchActivity();
-        }
-
-        else {
-            ToastUtil.makeShortToast(this, "서비스예정입니다");
+        } else {
+            ToastUtil.getInstance().makeShortToast("서비스예정입니다");
             mCurrentId = mBeforeId;
         }
         toggleIcon(mCurrentId);
@@ -358,9 +347,6 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
 
     }
 
-    /**
-     * 로그인, 비로그인 상태를 구분하여 내비게이션 드로어에 사용자 이름 설정
-     */
     public void setLeftNavigationDrawerName() {
         TextView mNameTextview = findViewById(R.id.base_naviagtion_drawer_nickname_textview);
         if (getAuthorize() == AuthorizeConstant.ANONYMOUS) // 비로그인일때 회원 정보 수정 비활성화
@@ -374,15 +360,14 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     @Override
     public void onClick(View v) {
         int i = v.getId();
-
         if (i == getBottomNavigationCategoryID()) {
             toggleNavigationDrawer();
             return;
         }
         if (i == getBottomNavigationHomeID())
             i = R.id.navi_item_home;
-        else if (i == getBottomNavigationSearchID())
-            i = R.id.navi_item_search;
+        else if (i == getBottomNavigationMyInfoID())
+            i = R.id.navi_item_user_info;
         else {
             selectNavigationItem(i);
             toggleNavigationDrawer();
@@ -461,7 +446,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
                     callDrawerItem(R.id.navi_item_home);
                 else {
                     mPressTime = System.currentTimeMillis();
-                    ToastUtil.makeShortToast(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
+                    ToastUtil.getInstance().makeShortToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
                 }
             } else {
                 finishAffinity();
@@ -472,10 +457,10 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     private AuthorizeConstant getAuthorize() {
         AuthorizeConstant authorizeConstant;
         try {
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         }
         return authorizeConstant;
     }
@@ -483,10 +468,10 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     private String getName() {
         String name;
         try {
-            name = DefaultSharedPreferencesHelper.getInstance().loadUser().userName;
+            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            name = DefaultSharedPreferencesHelper.getInstance().loadUser().userName;
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
         }
         return (name != null) ? name : "";
     }
@@ -497,13 +482,13 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             mCurrentId = mBeforeId;
             return;
         }
-        User user = DefaultSharedPreferencesHelper.getInstance().loadUser();
+        User user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
         //TODO:홈 만들 경우 유저 이름 체크 홈으로 이동
 
         if (service == R.string.home || service == R.string.navigation_item_free_board) {
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
-                ToastUtil.makeLongToast(mContext, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+                ToastUtil.getInstance().makeShortToast("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 mCurrentId = mBeforeId;
             } else {
@@ -512,7 +497,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
 
         } else if (service == R.string.navigation_item_recruit_board) {
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
-                ToastUtil.makeLongToast(mContext, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+                ToastUtil.getInstance().makeShortToast("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 mCurrentId = mBeforeId;
             } else {
@@ -571,8 +556,6 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     protected abstract void goToCircleActivity();
 
     protected abstract void goToLostFoundActivity();
-
-    protected abstract void goToSearchActivity();
 
 
     /*

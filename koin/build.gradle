@@ -2,7 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion project.compileSdkVersion
+
     defaultConfig {
         applicationId "in.koreatech.koin"
         minSdkVersion 21
@@ -27,20 +28,6 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "true"
         }
 
-        alpha {
-            debuggable true
-            minifyEnabled false
-            buildConfigField "boolean", "IS_DEBUG", "true"
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-
-        beta {
-            debuggable false
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "IS_DEBUG", "false"
-        }
-
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -48,17 +35,18 @@ android {
         }
     }
 
-    flavorDimensions 'version'
-    productFlavors {
-        orginal {
-            dimension 'version'
-        }
-        admin {
-            dimension 'version'
-            applicationIdSuffix ".admin"
-            versionNameSuffix "-admin"
-        }
-    }
+//    flavorDimensions 'version'
+//    productFlavors {
+//        orginal {
+//            dimension 'version'
+//        }
+//        admin {
+//            dimension 'version'
+//            applicationIdSuffix ".admin"
+//            versionNameSuffix "-admin"
+//        }
+//    }
+
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8

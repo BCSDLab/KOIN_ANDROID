@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
+
 import android.text.InputFilter;
 import android.view.KeyEvent;
 import android.view.View;
@@ -26,8 +26,8 @@ import butterknife.OnEditorAction;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
-import in.koreatech.koin.core.contracts.UserInfoEditContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.contracts.UserInfoEditContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.util.FilterUtil;
 import in.koreatech.koin.core.util.FormValidatorUtil;
@@ -184,12 +184,12 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     @OnClick(R.id.userinfoedited_button_nickname_check)
     public void onClickNicknameCheckButton() {
-        String beforeNickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+        String beforeNickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
         String currentNickName = mUserinfoeditedEdittextNickname.getText().toString().trim().replace(" ","");
 
         if(beforeNickName==null&&currentNickName.isEmpty())
         {
-            ToastUtil.makeShortToast(mContext, "닉네임을 입력해주세요");
+            ToastUtil.getInstance().makeShortToast("닉네임을 입력해주세요");
             return;
         }
         if(beforeNickName==null||!beforeNickName.equals(currentNickName)) {
@@ -197,7 +197,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             mUserinfoeditedEdittextNickname.setText(currentNickName);
         }
         else {
-            ToastUtil.makeShortToast(mContext, "기존 닉네임과 동일 합니다.");
+            ToastUtil.getInstance().makeShortToast("기존 닉네임과 동일 합니다.");
         }
     }
 
@@ -216,7 +216,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private boolean checkInputUserStudentId() {
         if (!FormValidatorUtil.validateStringIsEmpty(mUserinfoeditedEdittextStudentId.getText().toString().trim()) &&
                 !checkStudentID(mUserinfoeditedEdittextStudentId.getText().toString().trim())) {
-            ToastUtil.makeShortToast(mContext, "올바른 형태의 학번을 입력해주세요");
+            ToastUtil.getInstance().makeShortToast("올바른 형태의 학번을 입력해주세요");
 
             return true;
         }
@@ -226,7 +226,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             checkNickName();
 
         //학번을 처음 입력할 경우
-        else if (FormValidatorUtil.validateStringIsEmpty(DefaultSharedPreferencesHelper.getInstance().loadUser().studentId)) {
+        else if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().studentId)) {
             SnackbarUtil.makeLongSnackbarActionYes(mUserinfoeditedEdittextStudentId, "학번은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
@@ -248,7 +248,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         if(curNickname.isEmpty() && ( mUser.userNickName == null))
             checkInputUserData();
         else if((!curNickname.isEmpty()) &&  (mUser.userNickName == null) &&  !isNicknameChecked)
-            ToastUtil.makeShortToast(mContext, "닉네임 중복 검사를 해주세요");
+            ToastUtil.getInstance().makeShortToast( "닉네임 중복 검사를 해주세요");
         else if((!curNickname.isEmpty())&& (mUser.userNickName == null) && isNicknameChecked)
             checkInputUserData();
         else if (mUser.userNickName.equals(curNickname)) {
@@ -258,12 +258,12 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             //닉네임 검사 버튼 누른 경우
             checkInputUserData();
         } else {
-            ToastUtil.makeShortToast(mContext, "닉네임 중복 검사를 해주세요");
+            ToastUtil.getInstance().makeShortToast( "닉네임 중복 검사를 해주세요");
         }
     }
 
     private void checkInputUserData() {
-        if (FormValidatorUtil.validateStringIsEmpty(DefaultSharedPreferencesHelper.getInstance().loadUser().userName)) {
+        if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().userName)) {
             SnackbarUtil.makeLongSnackbarActionYes(mUserinfoeditedTextviewId, "이름은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
@@ -277,7 +277,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     }
 
     private void readUser() {
-        mUser = DefaultSharedPreferencesHelper.getInstance().loadUser();
+        mUser = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
         mUserinfoeditedTextviewId.setText(isNull(mUser.userId) + "@koreatech.ac.kr");
         mUserinfoeditedTextviewAnonymousNickName.setText(isNull(mUser.anonymousNickName));
@@ -382,7 +382,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showCheckNickNameSuccess() {
         // 닉네임 사용가능시 사용가능 Toast message onNicknameCheckSuccesst 실행
-        ToastUtil.makeShortToast(mContext, "사용가능한 닉네임입니다.");
+        ToastUtil.getInstance().makeShortToast("사용가능한 닉네임입니다.");
         onNicknameCheckSuccess(mUserinfoeditedEdittextNickname.getText().toString());
         mUserinfoeditedEdittextNickname.getBackground().setColorFilter(null);
     }
@@ -390,19 +390,19 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showCheckNickNameFail() {
         // 닉네임 사용불가시 사용불가능 Toast message 후 밑줄 빨간색으로 변경
-        ToastUtil.makeShortToast(mContext, "기존에 중복된 닉네임입니다.");
+        ToastUtil.getInstance().makeShortToast("기존에 중복된 닉네임입니다.");
         mUserinfoeditedEdittextNickname.getBackground().setColorFilter(Color.parseColor("#FF0000"), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
     public void showConfirm() {
-        ToastUtil.makeShortToast(mContext, "정보가 수정되었습니다.");
+        ToastUtil.getInstance().makeShortToast("정보가 수정되었습니다.");
         finish();
     }
 
     @Override
     public void showConfirmFail() {
-        ToastUtil.makeShortToast(mContext, "정보 수정에 실패하였습니다.");
+        ToastUtil.getInstance().makeShortToast("정보 수정에 실패하였습니다.");
     }
 
     @Override

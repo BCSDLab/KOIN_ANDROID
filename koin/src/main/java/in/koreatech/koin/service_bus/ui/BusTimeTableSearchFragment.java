@@ -30,7 +30,7 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.service_bus.contracts.BusTimeTableSearchContract;
 import in.koreatech.koin.service_bus.presenters.BusTimeTableSearchPresenter;
 
@@ -42,7 +42,7 @@ import in.koreatech.koin.service_bus.presenters.BusTimeTableSearchPresenter;
 public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTimeTableSearchContract.View {
     private final String TAG = BusTimeTableSearchFragment.class.getSimpleName();
 
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
     private Unbinder mUnbinder;
     private int mDepartureState;
     private int mArrivalState;
@@ -306,18 +306,18 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(getContext(), "로딩중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(getContext(), "로딩중");
+            customProgressDialog.execute();
         }
 
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 }

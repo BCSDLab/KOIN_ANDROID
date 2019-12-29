@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.Circle;
 import in.koreatech.koin.core.networks.interactors.CircleRestInteractor;
@@ -39,7 +39,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     private final String TAG = CircleDetailActivity.class.getSimpleName();
 
     private Context mContext;
-    private static GenerateProgressTask mGenerateProgress;
+    private static CustomProgressDialog mGenerateProgress;
     private CircleDetailPresenter mCirlceDetailPresenter;
     private Circle mCircle;
     private int mCircleId;
@@ -98,7 +98,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     public void onStart() {
         super.onStart();
         if (mCircleId == -1) {
-            ToastUtil.makeShortToast(mContext, "동아리 리스트를 받아오지 못했습니다.");
+            ToastUtil.getInstance().makeShortToast("동아리 리스트를 받아오지 못했습니다.");
             finish();
         }
         if (mCirlceDetailPresenter != null)
@@ -217,7 +217,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
 
     @Override
     public void showLoading() {
-        mGenerateProgress = new GenerateProgressTask(mContext, "로딩 중");
+        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
         mGenerateProgress.execute();
     }
 
@@ -229,7 +229,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
 

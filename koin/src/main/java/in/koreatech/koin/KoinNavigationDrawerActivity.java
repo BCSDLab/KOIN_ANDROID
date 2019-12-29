@@ -8,9 +8,9 @@ import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 
 import in.koreatech.koin.core.bases.BaseNavigationActivity;
-import in.koreatech.koin.core.bases.WebViewActivity;
+import in.koreatech.koin.core.activity.WebViewActivity;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_board.ui.BoardActivity;
@@ -46,7 +46,6 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_timetable, R.id.navi_item_anonymous_board,
             R.id.navi_item_free_board, R.id.navi_item_recruit_board,
             R.id.navi_item_land, R.id.navi_item_lostfound
-//            , R.id.navi_item_callvansharing
             , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
             R.id.navi_item_version_info, R.id.navi_item_developer};
 
@@ -56,7 +55,6 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_timetable_textview, R.id.navi_item_anonymous_board_textview,
             R.id.navi_item_free_board_textview, R.id.navi_item_recruit_board_textview,
             R.id.navi_item_land_textview, R.id.navi_item_lostfound_textview
-//            , R.id.navi_item_callvansharing_textview
             , R.id.navi_item_usedmarket_textview, R.id.navi_item_kakao_talk_textview,
             R.id.navi_item_version_info_textview, R.id.navi_item_developer_textview
     };
@@ -109,10 +107,10 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
         AuthorizeConstant authorizeConstant;
         try {
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
         }
         return authorizeConstant;
     }
@@ -120,10 +118,10 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     public User getUser() {
         User user;
         try {
-            user = DefaultSharedPreferencesHelper.getInstance().loadUser();
+            user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
         } catch (NullPointerException e) {
-            DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            user = DefaultSharedPreferencesHelper.getInstance().loadUser();
+            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
+            user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
         }
         return user;
     }
@@ -248,16 +246,16 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void onClickNavigationLogout() {
         //TODO:API 오류 복구 후 제거
-        DefaultSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
-        int roomUid = DefaultSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        UserInfoSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
+        int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         if (roomUid > 0) {
-            ToastUtil.makeLongToast(this, "콜밴쉐어링 방에 참여중일땐 로그아웃하실 수 없습니다");
+            ToastUtil.getInstance().makeLongToast("콜밴쉐어링 방에 참여중일땐 로그아웃하실 수 없습니다");
         } else {
-            DefaultSharedPreferencesHelper.getInstance().clear();
+            UserInfoSharedPreferencesHelper.getInstance().clear();
             finishAffinity();
             startActivity(new Intent(this, LoginActivity.class));
-            ToastUtil.makeShortToast(this, "로그아웃 되었습니다.");
+            ToastUtil.getInstance().makeShortToast("로그아웃 되었습니다.");
             overridePendingTransition(R.anim.fade, R.anim.hold);
 
         }

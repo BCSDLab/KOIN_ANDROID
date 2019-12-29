@@ -20,7 +20,7 @@ import butterknife.Unbinder;
 import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.service_used_market.contracts.MarketUsedContract;
 import in.koreatech.koin.core.helpers.RecyclerClickListener;
 import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
@@ -60,7 +60,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     private int mCurrentPage;
     private int mTotalPage;
     private boolean mIsResume;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
     @BindView(R.id.market_used_buy_recyclerview)
     RecyclerView mMarketBuyRecyclerView;
@@ -90,17 +90,17 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(getContext(), "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(getContext(), "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -182,7 +182,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
             mCurrentPage++;
             mMarketUsedPresenter.readMarket(BUYMARKETID, mCurrentPage);
         } else if (!mIsResume)
-            ToastUtil.makeLongToast(getActivity(), R.string.market_used_list_last_page);
+            ToastUtil.getInstance().makeShortToast(R.string.market_used_list_last_page);
         else
             mMarketUsedPresenter.readMarket(BUYMARKETID, mCurrentPage);
 
@@ -201,7 +201,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
 
     @Override
     public void showMarketDataReceivedFail() {
-        ToastUtil.makeShortToast(getActivity(), R.string.market_used_get_list_fail);
+        ToastUtil.getInstance().makeShortToast(R.string.market_used_get_list_fail);
     }
 
     @Override

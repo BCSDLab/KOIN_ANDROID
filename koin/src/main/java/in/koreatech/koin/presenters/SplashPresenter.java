@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 
 import java.util.StringTokenizer;
 
-import in.koreatech.koin.core.contracts.SplashContract;
-import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
+import in.koreatech.koin.contracts.SplashContract;
+import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.helpers.TokenSessionInteractor;
 import in.koreatech.koin.core.helpers.TokenSessionLocalInteractor;
 import in.koreatech.koin.core.networks.ApiCallback;
@@ -51,7 +51,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     @Override
     public void callActivity() {
         //저장된 토큰이 없을 경우
-        if (validateStringIsEmpty(DefaultSharedPreferencesHelper.getInstance().loadToken())) {
+        if (validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadToken())) {
             mSplashView.gotoLogin();
         }
         //저장된 토큰이 있을 경우
@@ -77,12 +77,12 @@ public class SplashPresenter implements SplashContract.Presenter {
      */
     @Override
     public void checkToken() {
-        long lastLoginDate = (DefaultSharedPreferencesHelper.getInstance().loadLastLoginDate()) / 10000;
+        long lastLoginDate = (UserInfoSharedPreferencesHelper.getInstance().loadLastLoginDate()) / 10000;
         long currentDate = TimeUtil.getDeviceCreatedDateOnlyLong() / 10000;
 
         if (Math.abs(currentDate - lastLoginDate) >= 100) { //접속한 지 한달 넘었을 경우
             mSplashView.showMessage("사용자 인증이 만료되었습니다.");
-            DefaultSharedPreferencesHelper.getInstance().clear();
+            UserInfoSharedPreferencesHelper.getInstance().clear();
             mSplashView.gotoLogin();
         } else {
             updateToken();
@@ -93,8 +93,8 @@ public class SplashPresenter implements SplashContract.Presenter {
      * 토큰을 업데이트 하는 메소드
      */
     public void updateToken() {
-        mAuthInteractor.readToken(DefaultSharedPreferencesHelper.getInstance().loadUser().userId,
-                DefaultSharedPreferencesHelper.getInstance().loadUserPw(),
+        mAuthInteractor.readToken(UserInfoSharedPreferencesHelper.getInstance().loadUser().userId,
+                UserInfoSharedPreferencesHelper.getInstance().loadUserPw(),
                 true, authApiCallback);
     }
 

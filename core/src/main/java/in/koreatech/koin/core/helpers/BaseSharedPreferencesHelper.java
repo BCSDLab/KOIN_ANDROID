@@ -28,73 +28,73 @@ public abstract class BaseSharedPreferencesHelper {
         editor.commit();
     }
 
-    public void putString(String _key, String _value) {
+    public void putString(String key, String value) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putString(_key, _value);
+        e.putString(key, value);
         e.apply();
     }
 
-    public String getString(String _key, String _value) {
+    public String getString(String key, String value) {
         if (sharedPreferences == null) {
             return null;
         }
-        return sharedPreferences.getString(_key, _value);
+        return sharedPreferences.getString(key, value);
     }
 
-    public void putBoolean(String _key, boolean _value) {
+    public void putBoolean(String key, boolean value) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putBoolean(_key, _value);
+        e.putBoolean(key, value);
         e.apply();
     }
 
-    public boolean getBoolean(String _key, boolean _value) {
-        return sharedPreferences != null && sharedPreferences.getBoolean(_key, _value);
+    public boolean getBoolean(String key, boolean value) {
+        return sharedPreferences != null && sharedPreferences.getBoolean(key, value);
     }
 
-    public void putInt(String _key, int _value) {
+    public void putInt(String key, int value) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putInt(_key, _value);
+        e.putInt(key, value);
         e.apply();
     }
 
-    public int getInt(String _key, int _value) {
+    public int getInt(String key, int value) {
         if (sharedPreferences == null) {
             return -1;
         }
-        return sharedPreferences.getInt(_key, _value);
+        return sharedPreferences.getInt(key, value);
     }
 
-    public void putLong(String _key, long _value) {
+    public void putLong(String key, long value) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putLong(_key, _value);
+        e.putLong(key, value);
         e.apply();
     }
 
-    public long getLong(String _key, long _value) {
+    public long getLong(String key, long value) {
         if (sharedPreferences == null) {
             return -1;
         }
-        return sharedPreferences.getLong(_key, _value);
+        return sharedPreferences.getLong(key, value);
     }
 
-    public void remove(String _key) {
+    public void remove(String key) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.remove(_key);
+        e.remove(key);
         e.apply();
     }
 
@@ -102,22 +102,22 @@ public abstract class BaseSharedPreferencesHelper {
         return sharedPreferences.edit();
     }
 
-    public void putStringArray(String _key, List<String> _value) {
+    public void putStringArray(String key, List<String> value) {
         if (sharedPreferences == null) {
             return;
         }
         SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putString(_key, gsonHelper.objectToJSON(_value).toString());
+        e.putString(key, gsonHelper.objectToJSON(value).toString());
 
         e.commit();
     }
 
-    public List<String> getStringArray(String _key, String _value) {
+    public List<String> getStringArray(String key, String value) {
         if (sharedPreferences == null) {
             return null;
         }
 
-        String arrayToString = sharedPreferences.getString(_key, _value);
+        String arrayToString = sharedPreferences.getString(key, value);
         ArrayList<String> arrayList = gsonHelper.jsonToObject(arrayToString, ArrayList.class);
 
         return arrayList;

@@ -1,7 +1,6 @@
 package in.koreatech.koin.service_dining.ui;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -27,7 +26,7 @@ import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.Dining;
 import in.koreatech.koin.core.networks.interactors.DiningRestInteractor;
@@ -40,7 +39,6 @@ import in.koreatech.koin.service_dining.presenters.DiningPresenter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -60,7 +58,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     private Context mContext;
     private DiningRecyclerAdapter mDiningRecyclerAdapter;
     private GestureDetector mGestureDetector;
-    private GenerateProgressTask generateProgressTask;
+    private CustomProgressDialog customProgressDialog;
 
     private String today;
     private DiningPresenter mDiningPresenter;
@@ -224,17 +222,17 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
+        if (customProgressDialog == null) {
+            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
+            customProgressDialog.execute();
         }
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
+        if (customProgressDialog != null) {
+            customProgressDialog.cancel(true);
+            customProgressDialog = null;
         }
     }
 
@@ -244,7 +242,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.makeShortToast(mContext, message);
+        ToastUtil.getInstance().makeShortToast(message);
     }
 
     @AddTrace(name = "DiningActivity_onDiningListDataReceived")
@@ -253,7 +251,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         mDiningArrayList.clear();
         mDiningRecyclerAdapter.notifyDataSetChanged();
         mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
-        ToastUtil.makeShortToast(mContext, R.string.error_network);
+        ToastUtil.getInstance().makeShortToast(R.string.error_network);
     }
 
     @Override
