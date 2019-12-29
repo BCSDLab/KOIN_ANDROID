@@ -132,7 +132,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         mItem = new Item();
         mMarketID = 0;
         mItem.id = getIntent().getIntExtra("ITEM_ID", 1);
-        mGrantedCheck = getIntent().getBooleanExtra("GRANT_CHECK", false);
         init();
     }
 
@@ -140,6 +139,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onStart() {
         super.onStart();
 //        checkRequiredInfo();
+        mMarketDetailPresenter.checkGranted(mItem.id);
+        mMarketDetailPresenter.readMarketDetail(mItem.id);
 
 
     }
@@ -167,7 +168,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @Override
     protected void onRestart() {
         super.onRestart();
-        mMarketDetailPresenter.readMarketDetail(mItem.id);
     }
     @Override
     public void showLoading() {
@@ -267,13 +267,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         mCommentArrayList = new ArrayList<>();
         mMarketDetailPresenter.readMarketDetail(mItem.id);
 
-        if (mGrantedCheck) {
-            mMarketEditButton.setVisibility(View.VISIBLE);
-            mMarketDeleteButton.setVisibility(View.VISIBLE);
-        } else {
-            mMarketEditButton.setVisibility(View.INVISIBLE);
-            mMarketDeleteButton.setVisibility(View.INVISIBLE);
-        }
 
 
 //        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, mCommentArrayList);
@@ -486,6 +479,18 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @Override
     public void showMarketItemDeleteFail() {
         ToastUtil.makeShortToast(mContext, R.string.server_failed);
+    }
+
+    @Override
+    public void showGrantCheck(boolean isGranted) {
+        Log.e(TAG, "showGrantCheck: " + isGranted);
+        if (isGranted) {
+            mMarketEditButton.setVisibility(View.VISIBLE);
+            mMarketDeleteButton.setVisibility(View.VISIBLE);
+        } else {
+            mMarketEditButton.setVisibility(View.INVISIBLE);
+            mMarketDeleteButton.setVisibility(View.INVISIBLE);
+        }
     }
 
 //    public void checkRequiredInfo() {

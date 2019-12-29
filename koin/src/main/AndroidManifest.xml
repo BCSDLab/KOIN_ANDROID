@@ -255,6 +255,11 @@
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
+        <activity
+            android:name=".service_search.ui.SearchActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>

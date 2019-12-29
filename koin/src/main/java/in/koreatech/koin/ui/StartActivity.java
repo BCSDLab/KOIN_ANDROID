@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Window;
@@ -56,10 +57,13 @@ public class StartActivity extends BaseActivity implements SplashContract.View,V
         DefaultSharedPreferencesHelper.getInstance().init(getApplicationContext());
         new SplashPresenter(this);
         mCurrentVersionName = getVersionName();
+        Fabric.with(this,new Crashlytics());
         //TODO : 버전 확인, 업데이트
         //TODO : 자동로그인 방식 수정 필요 (토큰 업데이트)
-        if(!BuildConfig.IS_DEBUG)
-        Fabric.with(this,new Crashlytics());
+        if(BuildConfig.IS_DEBUG)
+            Crashlytics.log(Log.DEBUG,"BuildType","debug모드");
+        else
+            Crashlytics.log(Log.DEBUG,"BuildType","release모드");
     }
 
     @Override
