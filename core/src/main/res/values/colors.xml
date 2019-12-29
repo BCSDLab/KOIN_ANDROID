@@ -63,6 +63,9 @@
     <color name="alice_blue">#f0f8ff</color>
     <color name="light_blue">#add8e6</color>
     <color name="light_steel_blue">#b0c4de</color>
+    <color name="light_cyan_blue">#9fa9b3</color>
+    <color name="dark_shade_gray">#404040</color>
+    <color name="light_shade_gray">#c9c9c9</color>
 
     <!-- BusWidget -->
     <color name="deep_light_navy">#165c8f</color>

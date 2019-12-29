@@ -36,7 +36,8 @@
 
     <style name="KAPTextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/colorPrimaryText</item>
-    </style>T
+    </style>
+    T
 
     <style name="KAPProgress" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/white</item>
@@ -90,4 +91,11 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
+
+    <style name="KoinAppBarEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
+
 </resources>
