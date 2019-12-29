@@ -9,10 +9,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
+
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +78,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     @BindView(R.id.article_view_count)
     TextView mTextViewViewCount;
     @BindView(R.id.article_content)
-    TextView mTextViewContent;
+    Editor mEditorContent;
 
     @BindView(R.id.article_writer)
     TextView mTextViewWriter;
@@ -117,16 +121,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mArticlePresenter.checkGranted(mArticle.articleUid);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (mArticle.boardUid == ID_ANONYMOUS) {
-            mArticlePresenter.getAnonymousArticle(mArticle.articleUid);
-            return;
-        }
-        mArticlePresenter.getArticle(mArticle.articleUid);
-        mArticlePresenter.checkGranted(mArticle.articleUid);
-    }
 
     @Override
     protected void onResume() {
@@ -319,7 +313,11 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mTextViewWriter.setText(mArticle.authorNickname);
         mTextViewCreateDate.setText(Html.fromHtml(mArticle.createDate));
         mTextViewViewCount.setText(String.valueOf(mArticle.hitCount));
-        mTextViewContent.setText(Html.fromHtml(mArticle.content));
+        mEditorContent.setDividerLayout(R.layout.tmpl_divider_layout);
+        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
+        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
+        mEditorContent.clearAllContents();
+        mEditorContent.render(renderHtmltoString(mArticle.content));
 
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
     }
@@ -328,6 +326,13 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public void onArticleDeleteCompleteReceived(boolean isSuccess) {
         setResult(RES_CODE_ARTICLE_DELETED);
         finish();
+
+    }
+
+
+    public String renderHtmltoString(String url) {
+        if (url == null) return "";
+        return url.replace("<div>", " ").replace("<div/>", " ");
 
     }
 
@@ -620,10 +625,10 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     public void onClickCreateButton() {
         if (mArticle.boardUid != ID_ANONYMOUS) {
-            AuthorizeConstant authorize = getAuthorize();
-            if (authorize == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
-                return;
+                    AuthorizeConstant authorize = getAuthorize();
+                    if (authorize == AuthorizeConstant.ANONYMOUS) {
+                        showLoginRequestDialog();
+                        return;
             } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
                 showNickNameRequestDialog();
                 return;

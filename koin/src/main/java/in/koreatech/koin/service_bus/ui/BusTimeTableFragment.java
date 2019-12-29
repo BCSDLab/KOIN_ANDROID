@@ -18,22 +18,21 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleStartEndDojungStationlFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleStartEndExpressTrainlFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleStartEndShinbanddonglFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleStartEndTerminalFragment;
 import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCheonanShuttleStartEndTrainStationFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableChungjuShuttleFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableChungjuShuttleStartEndBunpyeongdongFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableChungjuShuttleStartEndGymFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableChungjuShuttleStartEndShinnamdongFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableChungjuShuttleStartEndYongamFragment;
 import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableCityBusFragment;
 import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableDaejeonShuttleFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonChungjuShuttleGymEveningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonChungjuShuttleGymMorningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonChungjuShuttleYongamEveningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonChungjuShuttleYongamMorningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonShuttleStationFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeasonShuttleTerminalFragment;
+import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableSeoulShuttleFragment;
 import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableUnitoYawooriDaesungFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacaionCheonanShuttleFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacationChungjuShuttleYongamEveningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacationChungjuShuttleYongamMorningFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacationSeoulShuttleFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacationShuttleDojungFragment;
-import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableVacationShuttleFragment;
 import in.koreatech.koin.service_bus.ui.bustimetable.BusTimeTableYawooritoUniDaesungFragment;
 
 
@@ -120,7 +119,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
     }
 
     @OnClick(R.id.bus_timetable_bustype_shuttle)
-    public void onClickBustypeShuttle() {
+    public void onClickBustypeShuttle(){
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
         mBusTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
@@ -134,7 +133,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
     }
 
     @OnClick(R.id.bus_timetable_bustype_daesung)
-    public void onClickBustypeDaesung() {
+    public void onClickBustypeDaesung(){
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
         mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
@@ -147,7 +146,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
     }
 
     @OnClick(R.id.bus_timetable_bustype_city)
-    public void onClickBustypeCity() {
+    public void onClickBustypeCity(){
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCityBusFragment());
         mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
@@ -159,159 +158,69 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     }
 
-    //학기중
-    /*
-        @OnItemSelected(R.id.bus_timetable_fragment_spinner)
-        public void onBusArrivalSpinnerSelect(Spinner spinner, int position) {
-            FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
-            switch (position) {
-                case 0:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                    mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                    break;
-                case 1:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                    mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                    break;
-                case 2:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleStartEndGymFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.VISIBLE);
-                    mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                    break;
-                case 3:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                    mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                    break;
-                case 4:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeoulShuttleFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                    break;
-                case 5:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableDaejeonShuttleFragment());
-                    mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                    mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                    mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                    break;
-
-            }
-            fragmentTransaction.commit();
-
-        }
-
-     */
-    //방학중
     @OnItemSelected(R.id.bus_timetable_fragment_spinner)
     public void onBusArrivalSpinnerSelect(Spinner spinner, int position) {
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
         switch (position) {
             case 0:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonShuttleTerminalFragment());
-                mBusTimetableCheonanStartEndSpinner.setSelection(0);
-                mBusTimetableChungjuSpinner.setSelection(0);
-                mBusTimetableDaesungSpinner.setSelection(0);
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
                 mBusTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
                 mBusTimetableChungjuSpinner.setVisibility(View.GONE);
                 mBusTimetableDaesungSpinner.setVisibility(View.GONE);
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacationShuttleFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleFragment());
                 mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
                 mBusTimetableChungjuSpinner.setVisibility(View.GONE);
                 mBusTimetableDaesungSpinner.setVisibility(View.GONE);
                 break;
             case 2:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacationShuttleDojungFragment());
-                mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                break;
-            case 3:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonChungjuShuttleYongamMorningFragment());
-                mBusTimetableCheonanStartEndSpinner.setSelection(0);
-                mBusTimetableChungjuSpinner.setSelection(0);
-                mBusTimetableDaesungSpinner.setSelection(0);
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleStartEndGymFragment());
                 mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
                 mBusTimetableChungjuSpinner.setVisibility(View.VISIBLE);
                 mBusTimetableDaesungSpinner.setVisibility(View.GONE);
                 break;
-            case 4:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacationChungjuShuttleYongamMorningFragment());
+            case 3:
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleFragment());
                 mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
                 mBusTimetableChungjuSpinner.setVisibility(View.GONE);
                 mBusTimetableDaesungSpinner.setVisibility(View.GONE);
+                break;
+            case 4:
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeoulShuttleFragment());
+                mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
+                mBusTimetableChungjuSpinner.setVisibility(View.GONE);
                 break;
             case 5:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacationChungjuShuttleYongamEveningFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableDaejeonShuttleFragment());
                 mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
                 mBusTimetableChungjuSpinner.setVisibility(View.GONE);
                 mBusTimetableDaesungSpinner.setVisibility(View.GONE);
                 break;
-            case 6:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacationSeoulShuttleFragment());
-                mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                break;
-            case 7:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableVacaionCheonanShuttleFragment());
-                mBusTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
-                mBusTimetableChungjuSpinner.setVisibility(View.GONE);
-                mBusTimetableDaesungSpinner.setVisibility(View.GONE);
-                break;
-
-
 
         }
         fragmentTransaction.commit();
 
     }
 
-    //학기중
-    /*
-        @OnItemSelected(R.id.bus_timetable_fragment_cheonan_start_endspinner)
-        public void onBusArrivalCheonanSpinnerSelect(Spinner spinner, int position) {
-            FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
-            switch (position) {
-                case 0:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
-                    break;
-                case 1:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTerminalFragment());
-                    break;
-                case 2:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndDojungStationlFragment());
-                    break;
-                case 3:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndExpressTrainlFragment());
-                    break;
-                case 4:
-                    fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndShinbanddonglFragment());
-                    break;
-            }
-
-            fragmentTransaction.commit();
-
-        }
-
-     */
-    //방학중
     @OnItemSelected(R.id.bus_timetable_fragment_cheonan_start_endspinner)
     public void onBusArrivalCheonanSpinnerSelect(Spinner spinner, int position) {
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
         switch (position) {
             case 0:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonShuttleTerminalFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonShuttleStationFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTerminalFragment());
+                break;
+            case 2:
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndDojungStationlFragment());
+                break;
+            case 3:
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndExpressTrainlFragment());
+                break;
+            case 4:
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndShinbanddonglFragment());
                 break;
         }
 
@@ -319,8 +228,6 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     }
 
-    //학기중
-/*
     @OnItemSelected(R.id.bus_timetable_fragment_chungju_spinner)
     public void onBusArrivalChungjuSpinnerSelect(Spinner spinner, int position) {
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
@@ -338,28 +245,6 @@ public class BusTimeTableFragment extends BusBaseFragment {
                 fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleStartEndBunpyeongdongFragment());
                 break;
 
-        }
-
-        fragmentTransaction.commit();
-    }
- */
-    //방학중
-    @OnItemSelected(R.id.bus_timetable_fragment_chungju_spinner)
-    public void onBusArrivalChungjuSpinnerSelect(Spinner spinner, int position) {
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
-        switch (position) {
-            case 0:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonChungjuShuttleYongamMorningFragment());
-                break;
-            case 1:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonChungjuShuttleGymMorningFragment());
-                break;
-            case 2:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonChungjuShuttleYongamEveningFragment());
-                break;
-            case 3:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonChungjuShuttleGymEveningFragment());
-                break;
         }
 
         fragmentTransaction.commit();
@@ -385,13 +270,14 @@ public class BusTimeTableFragment extends BusBaseFragment {
     }
 
 
+
     public void init() {
         mFragmentManger = getChildFragmentManager();
         mBusTimetableChungjuSpinner.setVisibility(View.GONE);
         mBusTimetableShuttleBusSpinner.setVisibility(View.VISIBLE);
         mBusTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
         FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
-        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableSeasonShuttleStationFragment());
+        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
         fragmentTransaction.commit();
     }
 
