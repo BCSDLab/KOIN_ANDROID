@@ -23,16 +23,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
+        <activity android:name=".service_advertise.ui.AdvertisingActivity"></activity>
+
         <receiver android:name=".service_dining.widget.DiningWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/dining_widget_info" />
-
         </receiver>
         <receiver
             android:name=".service_bus.widget.BusWidget"

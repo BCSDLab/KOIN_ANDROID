@@ -13,6 +13,7 @@ import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.entity.User;
 import in.koreatech.koin.core.util.ToastUtil;
+import in.koreatech.koin.service_advertise.ui.AdvertisingActivity;
 import in.koreatech.koin.service_board.ui.BoardActivity;
 import in.koreatech.koin.service_bus.ui.BusActivity;
 import in.koreatech.koin.service_callvan.ui.CallvanActivity;
@@ -50,7 +51,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_free_board, R.id.navi_item_recruit_board,
             R.id.navi_item_land, R.id.navi_item_lostfound
 //            , R.id.navi_item_callvansharing
-            , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
+        , R.id.navi_item_advertising_board, R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
             R.id.navi_item_version_info, R.id.navi_item_developer}; //닉네임 레이아웃 추가
 
     private final int[] mMenuTextviewId = {
@@ -60,6 +61,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_free_board_textview, R.id.navi_item_recruit_board_textview,
             R.id.navi_item_land_textview, R.id.navi_item_lostfound_textview
 //            , R.id.navi_item_callvansharing_textview
+            , R.id.navi_item_advertising_textview
             , R.id.navi_item_usedmarket_textview, R.id.navi_item_kakao_talk_textview,
             R.id.navi_item_version_info_textview, R.id.navi_item_developer_textview
     };
@@ -209,6 +211,11 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void goToCircleActivity() {
         goToActivityFinish(new Intent(this, CircleActivity.class));
+    }
+
+    @Override
+    protected void goToAdvertisingActivity() {
+        goToActivityFinish(new Intent(this, AdvertisingActivity.class));
     }
 
     /**

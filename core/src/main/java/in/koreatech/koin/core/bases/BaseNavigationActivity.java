@@ -38,6 +38,7 @@ import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
  * Edited by yunjae on 2018. 8. 27....
  * Edited by hansol on 2019.11.14....
  * Edited by seongyun on 2019.11.15....
+ * Edited by hansol on 2019.12.30...
  */
 public abstract class BaseNavigationActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
     private final String TAG = BaseNavigationActivity.class.getSimpleName();
@@ -347,6 +348,8 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             onClickNavigationUserInfo();
         } else if (itemId == R.id.navi_item_search) {
             goToSearchActivity();
+        }else if(itemId == R.id.navi_item_advertising_board){
+            goToAdvertisingActivity();
         }
 
         else {
@@ -573,6 +576,8 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     protected abstract void goToLostFoundActivity();
 
     protected abstract void goToSearchActivity();
+
+    protected abstract void goToAdvertisingActivity();
 
 
     /*
