@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.regex.PatternSyntaxException;
 import java.util.zip.Inflater;
 
 import butterknife.BindView;
@@ -41,7 +42,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         if (searchedArticle.getTitle() != null) {
             String title = searchedArticle.getTitle();
             if (title.contains(keyword)) {
-                title = title.replaceAll(keyword, "<font color=\"#175c8e\">" + keyword + "</font>").replaceAll("\n","");
+                try {
+                    title = title.replaceAll(keyword, "<font color=\"#175c8e\">" + keyword + "</font>").replaceAll("\n", "");
+                } catch (PatternSyntaxException e) {
+                    title = title.replaceAll(String.format("\\%s",keyword), "<font color=\"#175c8e\">" + "\\" + keyword + "</font>").replaceAll("\n", "");
+                }
             }
             holder.searchResultTitle.setText(Html.fromHtml(title));
 

@@ -3,6 +3,8 @@ package in.koreatech.koin.service_search.presenters;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.networks.ApiCallback;
@@ -52,7 +54,13 @@ public class SeachArticlePresenter implements SearchArticleContract.Presenter {
             searchArticleView.hideLoading();
             return;
         }
-        searchArticleInteractor.readSearchArticleList(page, 1, searchText.trim(), searchArticleApiCallback);
+        try {
+            String urlEncodedText = URLEncoder.encode(searchText.trim(), "UTF-8");
+            searchArticleInteractor.readSearchArticleList(page, 1, urlEncodedText, searchArticleApiCallback);
+        } catch (UnsupportedEncodingException e) {
+            searchArticleView.showMessage("검색결과 없습니다.");
+        }
+
     }
 
     @Override
