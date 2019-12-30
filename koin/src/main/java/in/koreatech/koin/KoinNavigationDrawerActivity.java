@@ -20,6 +20,8 @@ import in.koreatech.koin.service_circle.ui.CircleActivity;
 import in.koreatech.koin.service_dining.ui.DiningActivity;
 import in.koreatech.koin.service_lostfound.ui.LostFoundMainActivity;
 import in.koreatech.koin.service_land.ui.LandActivity;
+import in.koreatech.koin.service_search.ui.RecentSearchSharedPreference;
+import in.koreatech.koin.service_search.ui.SearchActivity;
 import in.koreatech.koin.service_timetable.ui.TimetableActivity;
 import in.koreatech.koin.service_timetable.ui.TimetableAnonymousActivity;
 import in.koreatech.koin.service_used_market.ui.MarketUsedActivity;
@@ -37,19 +39,22 @@ import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_RECRUIT;
  * <p>
  * Created by hyerim on 2018. 7. 26....
  * Edited by yunjae on 2018. 8 .27....
+ * Edited by seongyun on 2019. 11. 15....
  */
 public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
-
+//시간표,복덕방,분실물
     private final int[] mMenuId = {
+            R.id.navi_item_myinfo,
             R.id.navi_item_store, R.id.navi_item_bus,
             R.id.navi_item_dining, R.id.navi_item_cirlce,
             R.id.navi_item_timetable, R.id.navi_item_anonymous_board,
             R.id.navi_item_free_board, R.id.navi_item_recruit_board,
             R.id.navi_item_land, R.id.navi_item_lostfound
             , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
-            R.id.navi_item_version_info, R.id.navi_item_developer};
+            R.id.navi_item_version_info, R.id.navi_item_developer}; //닉네임 레이아웃 추가
 
     private final int[] mMenuTextviewId = {
+            R.id.navi_item_myinfo_textview,
             R.id.navi_item_store_textview, R.id.navi_item_bus_textview,
             R.id.navi_item_dining_textview, R.id.navi_item_cirlce_textview,
             R.id.navi_item_timetable_textview, R.id.navi_item_anonymous_board_textview,
@@ -95,8 +100,8 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     }
 
     @Override
-    protected int getBottomNavigationMyInfoID() {
-        return R.id.base_navigation_bar_bottom_myinfo_linearlayout;
+    protected int getBottomNavigationSearchID() {
+        return R.id.base_navigation_bar_bottom_search_linearlayout;
     }
 
     /**
@@ -129,6 +134,11 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void goToMainActivity() {
         goToActivityFinish(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    protected void goToSearchActivity(){
+        goToActivityFinish(new Intent(this, SearchActivity.class));
     }
 
     @Override

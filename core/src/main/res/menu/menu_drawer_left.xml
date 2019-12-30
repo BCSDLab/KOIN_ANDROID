@@ -4,6 +4,10 @@
         android:id="@+id/navi_item_home"
         android:title="@string/home" />
 
+    <item
+        android:id="@+id/navi_item_search"
+        android:title="@string/navigation_item_search" />
+
     <item android:title="학교 정보">
         <menu>
             <item

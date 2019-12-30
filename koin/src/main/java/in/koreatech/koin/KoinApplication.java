@@ -6,6 +6,7 @@ import android.content.Context;
 import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.core.util.font_change.Typekit;
+import in.koreatech.koin.service_search.ui.RecentSearchSharedPreference;
 
 /**
  * Created by hyerim on 2018. 5. 28....
@@ -32,6 +33,7 @@ public class KoinApplication extends Application {
     private void init() {
         UserInfoSharedPreferencesHelper.getInstance().init(applicationContext);
         ToastUtil.getInstance().init(applicationContext);
+        RecentSearchSharedPreference.getInstance().init(applicationContext);
 
     }
 

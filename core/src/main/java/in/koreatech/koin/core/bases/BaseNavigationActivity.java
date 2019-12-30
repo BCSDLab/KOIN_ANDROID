@@ -56,7 +56,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private InputMethodManager mInputMethodManager;
     private LinearLayout mOpenLeftNavigationDrawerOpenLinearLayout;
     private LinearLayout mOpenHomeLinearLayout;
-    private LinearLayout mOpenMyInfoLinearLayout;
+    private LinearLayout mOpenSearchLinearLayout;
 
 
     @Override
@@ -108,10 +108,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         mLeftNavigationView = findViewById(getLeftNavigationDrawerID());
         mOpenLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
         mOpenHomeLinearLayout = findViewById(getBottomNavigationHomeID());
-        mOpenMyInfoLinearLayout = findViewById(getBottomNavigationMyInfoID());
+        mOpenSearchLinearLayout = findViewById(getBottomNavigationSearchID());
         mOpenLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
         mOpenHomeLinearLayout.setOnClickListener(this);
-        mOpenMyInfoLinearLayout.setOnClickListener(this);
+        mOpenSearchLinearLayout.setOnClickListener(this);
         mLeftNavigationView.setNavigationItemSelectedListener(this);
         mLeftNavigationView.setOnClickListener(this);
 
@@ -131,18 +131,18 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
             textView.setTextColor(getResources().getColor(R.color.light_navy));
-        } else if (id == R.id.navi_item_user_info) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo_on);
+        } else if (id == R.id.navi_item_search) {
+            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
+            imageView.setBackgroundResource(R.drawable.ic_search_menu_blue);
             textView.setTextColor(getResources().getColor(R.color.light_navy));
         } else {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home);
             textView.setTextColor(getResources().getColor(R.color.black));
-            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
             textView.setTextColor(getResources().getColor(R.color.black));
         }
@@ -161,9 +161,9 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
         imageView.setBackgroundResource(R.drawable.ic_bottom_home);
         textView.setTextColor(getResources().getColor(R.color.black));
-        imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
-        textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
+        imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
+        textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
+        imageView.setBackgroundResource(R.drawable.ic_search_menu);
         textView.setTextColor(getResources().getColor(R.color.black));
     }
 
@@ -244,7 +244,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract int getBottomNavigationHomeID();
 
-    protected abstract int getBottomNavigationMyInfoID();
+    protected abstract int getBottomNavigationSearchID();
 
     protected abstract int getDrawerLayoutID();
 
@@ -338,11 +338,19 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickTimeTable();
         } else if (itemId == R.id.navi_item_land) {
             goToLandActivity();
+        } else if (itemId == R.id.navi_item_myinfo) {
+            onClickNavigationUserInfo();
+        } else if (itemId == R.id.navi_item_search) {
+            goToSearchActivity();
+
+
         } else {
             ToastUtil.getInstance().makeShortToast("서비스예정입니다");
             mCurrentId = mBeforeId;
         }
+
         toggleIcon(mCurrentId);
+
         selectNavigationItem(mCurrentId);
 
     }
@@ -366,8 +374,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         }
         if (i == getBottomNavigationHomeID())
             i = R.id.navi_item_home;
-        else if (i == getBottomNavigationMyInfoID())
-            i = R.id.navi_item_user_info;
+        else if (i == getBottomNavigationSearchID())
+            i = R.id.navi_item_search;
         else {
             selectNavigationItem(i);
             toggleNavigationDrawer();
@@ -556,6 +564,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected abstract void goToCircleActivity();
 
     protected abstract void goToLostFoundActivity();
+
+    protected abstract void goToSearchActivity();
 
 
     /*

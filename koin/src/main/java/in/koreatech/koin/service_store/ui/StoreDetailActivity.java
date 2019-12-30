@@ -19,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +67,9 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     TextView  mEtcTextview;
     @BindView(R.id.store_detail_deliver_textview)
     TextView mDeliverTextview;
+    @BindView(R.id.store_detail_call_button)
+    LinearLayout storeDetailCallButton;
+
 
 
     //배달/카드/계좌이체 여부
@@ -184,11 +189,23 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void updateUserInterface() {
+        //상점 전화번호,주소,기타정보가 NULL일시에 - 표시를 한다
         mTitleTextView.setText(mStore.name);
+        if(mStore.phone == null){
+            mPhoneTextView.setText("-");
+            storeDetailCallButton.setVisibility(View.INVISIBLE);
+        }
+        if(mStore.address == null){
+            mAddressTextview.setText("-");
+        }
+        if(mStore.description == null){
+            mEtcTextview.setText("-");
+        }
+        /*
         mPhoneTextView.setText(Objects.requireNonNull(mStore.phone,"-"));
-        mAddressTextview.setText(Objects.requireNonNull(mStore.address,"-"));
+        mAddressTextview.setText(Objects.requireNonNullElse(mStore.address,"-"));
         mEtcTextview.setText(Objects.requireNonNull(mStore.description,"-"));
-
+         */
         if(mStore.deliveryPrice >= 0)
         mDeliverTextview.setText(mStore.deliveryPrice + "원");
         else
