@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <TextView
+        android:id="@+id/search_result_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:lineSpacingExtra="6sp"
+        android:text="2학기 다담여행 검색 결과입니다."
+        android:textColor="@color/light_navy"
+        android:textSize="14sp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+
+        />
+
+    <in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom
+        android:id="@+id/search_swipe_refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+       />
+
+    </in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+
+</LinearLayout>

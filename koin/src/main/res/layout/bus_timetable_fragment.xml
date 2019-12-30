@@ -100,7 +100,7 @@
 
     <Spinner
         android:id="@+id/bus_timetable_fragment_spinner"
-        android:layout_width="180dp"
+        android:layout_width="@dimen/spinner_width"
         android:background="@drawable/spinner_default"
         android:dropDownWidth="@dimen/spinner_width"
         android:layout_height="40dp"

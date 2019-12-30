@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -620,10 +621,10 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     public void onClickCreateButton() {
         if (mArticle.boardUid != ID_ANONYMOUS) {
-            AuthorizeConstant authorize = getAuthorize();
-            if (authorize == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
-                return;
+                    AuthorizeConstant authorize = getAuthorize();
+                    if (authorize == AuthorizeConstant.ANONYMOUS) {
+                        showLoginRequestDialog();
+                        return;
             } else if (authorize == AuthorizeConstant.MEMBER && DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
                 showNickNameRequestDialog();
                 return;
