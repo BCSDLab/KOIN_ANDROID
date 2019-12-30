@@ -42,7 +42,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private StoreRecyclerAdapter mStoreRecyclerAdapter;
     private static GenerateProgressTask mGenerateProgress;
 
-    private String today;
+    private String today; //test
     private StorePresenter mStorePresenter;
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
     private ArrayList<Store> mStoreArrayList; //store list
