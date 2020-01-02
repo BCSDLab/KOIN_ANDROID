@@ -72,7 +72,7 @@ import static in.koreatech.koin.util.TimeDuplicateCheckUtil.duplicateScheduleTos
 
 
 public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
-    public static final String TAG = TimetableActivity.class.getName();
+    public static final String TAG = "TimetableActivity";
     private CustomProgressDialog customProgressDialog;
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;

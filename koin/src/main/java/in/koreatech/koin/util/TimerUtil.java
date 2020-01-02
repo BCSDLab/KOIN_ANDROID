@@ -12,7 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class TimerUtil {
-    private final String TAG = TimerUtil.class.getName();
+    private final String TAG = "TimerUtil";
     public static final int SEND_CODE = 0;
     public static final int END_CODE = 1;
     protected Handler mHandler;

@@ -19,7 +19,7 @@ import retrofit2.HttpException;
  * Created by hyerim on 2018. 6. 21....
  */
 public class DiningRestInteractor implements DiningInteractor {
-    private final String TAG = DiningRestInteractor.class.getSimpleName();
+    private final String TAG = "DiningRestInteractor";
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     public DiningRestInteractor() {

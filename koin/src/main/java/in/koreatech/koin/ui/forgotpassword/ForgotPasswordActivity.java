@@ -31,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by hyerim on 2018. 6. 18....
  */
 public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswordContract.View {
-    private final static String TAG = ForgotPasswordActivity.class.getSimpleName();
+    private final static String TAG = "ForgotPasswordActivity";
 
     private Context mContext;
     private ForgotPasswordContract.Presenter mForgotPasswordPresenter;

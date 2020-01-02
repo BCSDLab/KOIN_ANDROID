@@ -7,7 +7,7 @@ import android.util.Log;
 import in.koreatech.koin.core.sharedpreference.BaseSharedPreferencesHelper;
 
 public class TimeTableSharedPreferencesHelper extends BaseSharedPreferencesHelper {
-    private final String TAG = TimeTableSharedPreferencesHelper.class.getSimpleName();
+    private final String TAG = "TimeTableSharedPreferencesHelper";
     private final String KOIN_TIMETABLE_SHARED_PREFERENCES = "in.koin.sharedpreferences.timetable";
     public static final String KEY_VERSION = ".version";
     public static final String KEY_LAST_LOGIN_TIMETABLE_PICTURE_NAME = ".path";

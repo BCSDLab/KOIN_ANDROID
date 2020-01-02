@@ -12,7 +12,7 @@ import in.koreatech.koin.ui.usedmarket.MarketUsedBaseFragment;
  * Created by yunjae on 2018. 8. 27....
  */
 public class MarketUsedMainViewPagerAdapter extends FragmentStatePagerAdapter {
-    private final String TAG = MarketUsedMainViewPagerAdapter.class.getSimpleName();
+    private final String TAG = "MarketUsedMainViewPagerAdapter";
 
     private int mTabCount = 2;
     private final String[] mTabTitle = new String[]{"팝니다", "삽니다"};

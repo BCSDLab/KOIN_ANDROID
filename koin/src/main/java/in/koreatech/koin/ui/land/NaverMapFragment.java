@@ -15,7 +15,7 @@ import com.naver.maps.map.NaverMapOptions;
  * Created by hansol on 2019. 09. 07...
  */
 public class NaverMapFragment extends MapFragment  {
-    public static final String TAG = NaverMapFragment.class.getSimpleName();
+    public static final String TAG = "NaverMapFragment";
     private MapView mapView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

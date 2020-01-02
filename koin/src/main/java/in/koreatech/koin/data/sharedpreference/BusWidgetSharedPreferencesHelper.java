@@ -6,7 +6,7 @@ import android.content.Context;
 import in.koreatech.koin.core.sharedpreference.BaseSharedPreferencesHelper;
 
 public class BusWidgetSharedPreferencesHelper extends BaseSharedPreferencesHelper {
-    private final String TAG = BusWidgetSharedPreferencesHelper.class.getSimpleName();
+    private final String TAG = "BusWidgetSharedPreferencesHelper";
     private final String KOIN_BUS_WIDGET_SHARED_PREFERENCES = "in.koin.sharedpreferences.bus.widget";
     public static final String BUS_BUTTON_SELECTED_POSITION = ".position";
     public static final String BUS_SELECTION_REVERSED = ".reversed";

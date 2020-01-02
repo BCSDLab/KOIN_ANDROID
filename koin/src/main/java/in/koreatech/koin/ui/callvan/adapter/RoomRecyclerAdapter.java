@@ -21,7 +21,7 @@ import in.koreatech.koin.data.network.entity.CallvanRoom;
  * Created by hyerim on 2018. 6. 18....
  */
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.ViewHolder> implements View.OnClickListener {
-    private final String TAG = RoomRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "RoomRecyclerAdapter";
 
     private OnJoinButtonClickListener mOnJoinButtonClickListener;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater

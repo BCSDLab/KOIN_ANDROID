@@ -20,7 +20,7 @@ import in.koreatech.koin.data.network.entity.Company;
  * Created by hyerim on 2018. 6. 17....
  */
 public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecyclerAdapter.ViewHolder> {
-    private final String TAG = CompanyRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "CompanyRecyclerAdapter";
 
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
     private ArrayList<Company> mCompanyArrayList; //콜밴 업체 정보를 저장할 List

@@ -17,7 +17,7 @@ import in.koreatech.koin.R;
  * @since 2018.09.16
  */
 public class BusTimeTableSeoulShuttleFragment extends Fragment {
-    private final String TAG = BusTimeTableSeoulShuttleFragment.class.getSimpleName();
+    private final String TAG = "BusTimeTableSeoulShuttleFragment";
 
 
     private Unbinder mUnbinder;

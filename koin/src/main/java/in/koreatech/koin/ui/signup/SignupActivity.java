@@ -41,7 +41,7 @@ import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
  * Created by hyerim on 2018. 6. 1....
  */
 public class SignupActivity extends ActivityBase implements SignupContract.View {
-    final static String TAG = SignupActivity.class.getSimpleName();
+    final static String TAG = "SignupActivity";
 
     private Context mContext;
     private SignupContract.Presenter mSignupPresenter;

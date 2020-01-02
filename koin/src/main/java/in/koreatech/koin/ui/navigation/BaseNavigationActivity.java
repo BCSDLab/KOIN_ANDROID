@@ -38,7 +38,7 @@ import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
  * Edited by yunjae on 2018. 8. 27....
  */
 public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
-    private final String TAG = BaseNavigationActivity.class.getSimpleName();
+    private final String TAG = "BaseNavigationActivity";
     private final int LEFTNAVI = GravityCompat.START;
     private final int RIGHTNAVI = GravityCompat.END;
     private final String CURRENT_ID = "CURRENT_ID";

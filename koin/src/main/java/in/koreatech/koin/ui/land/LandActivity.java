@@ -39,7 +39,7 @@ import androidx.annotation.NonNull;
  * Created by dongmin on 2019. 09. 02...
  */
 public class LandActivity extends KoinNavigationDrawerActivity implements LandContract.View, OnMapReadyCallback {
-    private static final String TAG = LandActivity.class.getSimpleName();
+    private static final String TAG = "LandActivity";
     private Context context;
     private LandPresenter landPresenter;
     private ArrayList<BokdukRoom> landArrayList;

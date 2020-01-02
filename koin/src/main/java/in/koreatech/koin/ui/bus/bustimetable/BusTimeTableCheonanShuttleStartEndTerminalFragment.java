@@ -17,7 +17,7 @@ import in.koreatech.koin.ui.bus.BusMainFragment;
  * @since 2018.09.16
  */
 public class BusTimeTableCheonanShuttleStartEndTerminalFragment extends BusMainFragment {
-    private final String TAG = BusTimeTableCheonanShuttleStartEndTerminalFragment.class.getSimpleName();
+    private final String TAG = "BusTimeTableCheonanShuttleStartEndTerminalFragment";
 
 
     private Unbinder mUnbinder;

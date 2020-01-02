@@ -38,7 +38,7 @@ import in.koreatech.koin.ui.callvan.adapter.CompanyRecyclerAdapter;
  * Created by hyerim on 2018. 6. 17....
  */
 public class CompanyFragment extends CallvanBaseFragment implements CompanyContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = CompanyFragment.class.getSimpleName();
+    private final String TAG = "CallvanBaseFragment";
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
 
     private Unbinder mUnbinder;

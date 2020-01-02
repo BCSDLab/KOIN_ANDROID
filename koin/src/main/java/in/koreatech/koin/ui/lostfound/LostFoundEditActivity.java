@@ -47,7 +47,7 @@ import in.koreatech.koin.ui.lostfound.presenter.LostFoundEditPresenter;
  * 분실물 게시판 글 수정 및 작성
  */
 public class LostFoundEditActivity extends KoinNavigationDrawerActivity implements CompoundButton.OnCheckedChangeListener, Html.ImageGetter, LostFoundEditContract.View {
-    public static final String TAG = LostFoundEditActivity.class.getSimpleName();
+    public static final String TAG = "LostFoundEditActivity";
     public static final int CREATE_MODE = 0;
     public static final int EDIT_MODE = 1;
     private final Calendar calendar = Calendar.getInstance();

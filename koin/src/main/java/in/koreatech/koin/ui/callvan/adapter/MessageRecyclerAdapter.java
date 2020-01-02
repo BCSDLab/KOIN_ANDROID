@@ -22,7 +22,7 @@ import in.koreatech.koin.data.network.entity.Message;
  * Created by hyerim on 2018. 6. 18....
  */
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = MessageRecyclerAdapter.class.getSimpleName();
+    private static final String TAG = "MessageRecyclerAdapter";
     private static final int VIEW_TYPE_INCOMING = 0; //받은 메시지
     private static final int VIEW_TYPE_OUTGOING = 1; //보낸 메시지
     private static final int VIEW_TYPE_NOTICE = 2;

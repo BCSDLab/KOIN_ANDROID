@@ -29,7 +29,7 @@ import in.koreatech.koin.core.constant.BusDestinationEnum;
  * 버스 위젯
  */
 public class BusWidget extends AppWidgetProvider {
-    public static final String TAG = BusWidget.class.getName();
+    public static final String TAG = "BusWidget";
     private CityBusInteractor busInteractor;
     private Context context;
     private static final String SYNC_CLICKED = "buttonTimeTextRefreshClicked";

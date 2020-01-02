@@ -27,7 +27,7 @@ import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
  * @since 2018.09.16
  */
 public class BusActivity extends KoinNavigationDrawerActivity {
-    private final String TAG = BusActivity.class.getSimpleName();
+    private final String TAG = "BusActivity";
     private final String TABLAYOUT_FONT_NAME = "fonts/notosanscjkkr_regular.otf";
     private Context mContext;
     private FirebasePerformanceUtil mFirebasePerformanceUtil;

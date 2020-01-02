@@ -14,7 +14,7 @@ import in.koreatech.koin.ui.callvan.CallvanBaseFragment;
  * Created by hyerim on 2019-05-06...
  */
 public class CallvanViewPagerAdapter extends FragmentStatePagerAdapter {
-    private final String TAG = CallvanViewPagerAdapter.class.getSimpleName();
+    private final String TAG = "CallvanViewPagerAdapter";
 
     private int mTabCount = 2;
     private final String[] mTabTitle = new String[]{"콜밴쉐어링", "콜밴 연락처"};

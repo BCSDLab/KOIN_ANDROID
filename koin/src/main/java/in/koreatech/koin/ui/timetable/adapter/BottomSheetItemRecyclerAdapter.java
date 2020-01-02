@@ -15,7 +15,7 @@ import in.koreatech.koin.core.R;
  * Created by hyerim on 2018. 8. 4....
  */
 public class BottomSheetItemRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final String TAG = BottomSheetItemRecyclerAdapter.class.getSimpleName();
+    private static final String TAG = "BottomSheetItemRecyclerAdapter";
 
     private Context mContext;
     private ArrayList<String> mItemsArrayList;

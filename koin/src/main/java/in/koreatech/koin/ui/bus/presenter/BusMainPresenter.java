@@ -13,7 +13,7 @@ import java.text.ParseException;
 
 
 public class BusMainPresenter implements BasePresenter {
-    private String TAG = BusMainPresenter.class.getSimpleName();
+    private String TAG = "BusMainPresenter";
     private final BusMainContract.View busMainView;
     private final CityBusInteractor busInteractor;
 

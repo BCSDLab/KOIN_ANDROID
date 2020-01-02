@@ -9,7 +9,7 @@ import in.koreatech.koin.util.TimeUtil;
 
 
 public class BusTimeTableSearchPresenter implements BasePresenter {
-    private String TAG = BusTimeTableSearchPresenter.class.getSimpleName();
+    private String TAG = "BusTimeTableSearchPresenter";
     private final BusTimeTableSearchContract.View busTimeTableSearchView;
 
 

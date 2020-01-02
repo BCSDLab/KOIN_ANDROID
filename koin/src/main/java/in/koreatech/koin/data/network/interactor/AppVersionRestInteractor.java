@@ -14,7 +14,7 @@ import retrofit2.HttpException;
 
 public class AppVersionRestInteractor implements AppVersionInteractor {
 
-    private final String TAG = AppVersionRestInteractor.class.getName();
+    private final String TAG = "AppVersionRestInteractor";
 
     @Override
     public void readAppVersion(String code,ApiCallback apiCallback) {

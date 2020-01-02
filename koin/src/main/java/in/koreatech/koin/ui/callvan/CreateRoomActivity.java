@@ -29,7 +29,7 @@ import in.koreatech.koin.ui.callvan.presenter.CreateRoomPresenter;
  * Created by hyerim on 2018. 6. 18....
  */
 public class CreateRoomActivity extends ActivityBase implements CreateRoomContract.View {
-    private final static String TAG = CreateRoomActivity.class.getSimpleName();
+    private final static String TAG = "CreateRoomActivity";
 
     private Context mContext;
     private int mMaxPeople;

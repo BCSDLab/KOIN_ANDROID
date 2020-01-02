@@ -29,7 +29,7 @@ import in.koreatech.koin.ui.login.LoginActivity;
  * Created by hyerim on 2018. 6. 4....
  */
 public class UserInfoActivity extends KoinNavigationDrawerActivity implements UserInfoContract.View {
-    private final String TAG = UserInfoActivity.class.getSimpleName();
+    private final String TAG = "UserInfoActivity";
     private Context mContext;
 
     private User mUser;

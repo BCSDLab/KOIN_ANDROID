@@ -24,7 +24,7 @@ import in.koreatech.koin.ui.callvan.adapter.CallvanViewPagerAdapter;
  * Created by hyerim on 2018. 6. 17....
  */
 public class CallvanActivity extends KoinNavigationDrawerActivity {
-    private final String TAG = CallvanActivity.class.getSimpleName();
+    private final String TAG = "CallvanActivity";
 
     private Context mContext;
     private FirebasePerformanceUtil mFirebasePerformanceUtil;

@@ -15,7 +15,7 @@ import in.koreatech.koin.ui.bus.BusMainFragment;
  * Created by yunjae on 2018. 8. 27....
  */
 public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
-    private final String TAG = BusMainViewPagerAdapter.class.getSimpleName();
+    private final String TAG = "BusMainViewPagerAdapter";
 
     private int mTabCount;
     private final String[] mTabTitle = new String[]{"운행정보","운행 정보 검색", "시간표"};

@@ -31,7 +31,7 @@ import in.koreatech.koin.ui.main.MainActivity;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends ActivityBase implements SplashContract.View, VersionDialogClickListener {
-    private final String TAG = SplashActivity.class.getSimpleName();
+    private final String TAG = "SplashActivity";
 
     private Context mContext;
     private SplashContract.Presenter mSplashPresenter;

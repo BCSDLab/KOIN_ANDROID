@@ -39,7 +39,7 @@ import in.koreatech.koin.ui.callvan.presenter.CallvanRoomPresenter;
  * Created by hyerim on 2018. 6. 17....
  */
 public class RoomFragment extends CallvanBaseFragment implements CallvanRoomContract.View, RoomRecyclerAdapter.OnJoinButtonClickListener, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = RoomFragment.class.getSimpleName();
+    private final String TAG = "RoomFragment";
 
     private CallvanRoomPresenter mRoomPresenter;
     private Unbinder mUnbinder;

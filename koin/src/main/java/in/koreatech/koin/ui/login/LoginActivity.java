@@ -32,7 +32,7 @@ import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
  * Created by hyerim on 2018. 4. 30....
  */
 public class LoginActivity extends ActivityBase implements LoginContract.View {
-    private final String TAG = LoginActivity.class.getSimpleName();
+    private final String TAG = "LoginActivity";
     private Context mContext;
     private LoginContract.Presenter mLoginPresenter;
     private boolean mIsMainActivity;

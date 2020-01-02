@@ -40,7 +40,7 @@ import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
  * Created by SeongYun on 2019.09.04
  */
 public class LandDetailActivity extends KoinNavigationDrawerActivity implements LandDetailContract.View, OnMapReadyCallback {
-    private final String TAG = LandDetailActivity.class.getSimpleName();
+    private final String TAG = "LandDetailActivity";
     private int landId;
     private Double landLatitude;
     private Double landLongitude;

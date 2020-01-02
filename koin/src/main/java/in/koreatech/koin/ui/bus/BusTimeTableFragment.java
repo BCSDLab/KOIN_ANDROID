@@ -41,7 +41,7 @@ import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungFrag
  * @since 2018.12.02
  */
 public class BusTimeTableFragment extends BusBaseFragment {
-    private final String TAG = BusTimeTableFragment.class.getSimpleName();
+    private final String TAG = "BusTimeTableFragment";
 
 
     private Unbinder mUnbinder;

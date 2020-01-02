@@ -14,7 +14,7 @@ import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
 
 public class SaveManager {
-    public static final String TAG = SaveManager.class.getName();
+    public static final String TAG = "SaveManager";
 
     public static String saveTimeTable(TimeTable timeTable, String semester) {
         JsonObject obj1 = new JsonObject();

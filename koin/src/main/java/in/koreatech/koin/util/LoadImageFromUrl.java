@@ -23,7 +23,7 @@ import java.net.URL;
  * Img 태그 주소를 통해 이미지를 받아서 textview 에다가 넣어준다.
  */
 public class LoadImageFromUrl extends AsyncTask<Object, Void, Bitmap> {
-    public static final String TAG = LoadImageFromUrl.class.getSimpleName();
+    public static final String TAG = "LoadImageFromUrl";
     private LevelListDrawable mDrawable;
     private WeakReference<Context> context;
     private WeakReference<TextView> textView;
