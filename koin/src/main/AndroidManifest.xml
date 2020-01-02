@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
-        <receiver android:name=".service_dining.widget.DiningWidget">
+        <receiver android:name=".ui.dining.DiningWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -35,7 +35,7 @@
 
         </receiver>
         <receiver
-            android:name=".service_bus.widget.BusWidget"
+            android:name=".ui.bus.BusWidget"
             android:label="@string/navigation_item_bus">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -51,7 +51,7 @@
             android:value="@string/navermap_keyvalue" />
 
         <receiver
-            android:name=".service_timetable.widget.TimetableWidget"
+            android:name=".ui.timetable.TimetableWidget"
             android:label="@string/navigation_item_timetable">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -73,7 +73,7 @@
         </provider>
 
         <activity
-            android:name=".ui.StartActivity"
+            android:name=".ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
@@ -84,179 +84,179 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.SignupActivity"
+            android:name=".ui.signup.SignupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.ForgotPasswordActivity"
+            android:name=".ui.forgotpassword.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreActivity"
+            android:name=".ui.store.StoreActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_dining.ui.DiningActivity"
+            android:name=".ui.dining.DiningActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_bus.ui.BusActivity"
+            android:name=".ui.bus.BusActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.BoardActivity"
+            android:name=".ui.board.BoardActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleActivity"
+            android:name=".ui.board.ArticleActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleEditActivity"
+            android:name=".ui.board.ArticleEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_callvan.ui.CallvanActivity"
+            android:name=".ui.callvan.CallvanActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_callvan.ui.CreateRoomActivity"
+            android:name=".ui.callvan.CreateRoomActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedActivity"
+            android:name=".ui.usedmarket.MarketUsedActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellDetailActivity"
+            android:name=".ui.usedmarket.MarketUsedSellDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyDetailActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyEditActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellEditActivity"
+            android:name=".ui.usedmarket.MarketUsedSellEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyCreateActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyCreateActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellCreateActivity"
+            android:name=".ui.usedmarket.MarketUsedSellCreateActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.UserInfoActivity"
+            android:name=".ui.userinfo.UserInfoActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.UserInfoEditedActivity"
+            android:name=".ui.userinfo.UserInfoEditedActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreDetailActivity"
+            android:name=".ui.store.StoreDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_circle.ui.CircleActivity"
+            android:name=".ui.circle.CircleActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_circle.ui.CircleDetailActivity"
+            android:name=".ui.circle.CircleDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleCommentActivity"
+            android:name=".ui.board.ArticleCommentActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedDetailCommentActivity"
+            android:name=".ui.usedmarket.MarketUsedDetailCommentActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_timetable.ui.TimetableActivity"
+            android:name=".ui.timetable.TimetableActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_timetable.ui.TimetableAnonymousActivity"
+            android:name=".ui.timetable.TimetableAnonymousActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_land.ui.LandActivity"
+            android:name=".ui.land.LandActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_land.ui.LandDetailActivity"
+            android:name=".ui.land.LandDetailActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundMainActivity"
+            android:name=".ui.lostfound.LostFoundMainActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundDetailActivity"
+            android:name=".ui.lostfound.LostFoundDetailActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundEditActivity"
+            android:name=".ui.lostfound.LostFoundEditActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundCommentActivity"
+            android:name=".ui.lostfound.LostFoundCommentActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreFlyerViewActivity"
+            android:name=".ui.store.StoreFlyerViewActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".service_search.ui.SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />

@@ -17,9 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import in.koreatech.koin.core.R;
-import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.util.ToastUtil;
+import in.koreatech.koin.core.toast.ToastUtil;
 
 /**
  * @author hyerim

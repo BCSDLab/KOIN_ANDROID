@@ -3,10 +3,10 @@ package in.koreatech.koin;
 import android.app.Application;
 import android.content.Context;
 
-import in.koreatech.koin.core.helpers.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.core.util.ToastUtil;
-import in.koreatech.koin.core.util.font_change.Typekit;
-import in.koreatech.koin.service_search.ui.RecentSearchSharedPreference;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.util.font_change.Typekit;
+import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 
 /**
  * Created by hyerim on 2018. 5. 28....

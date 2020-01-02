@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="KoinBaseAppbarDark">
+    <declare-styleable name="AppbarBase">
         <attr name="background_color" format="reference|color" />
         <attr name="title_text_color" format="reference|color" />
         <attr name="title_text" format="reference|string" />

@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppbarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
                 app:right_button_background="@drawable/ic_create"
                 app:title_text="분실물게시판" />
 
-            <in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom
+            <in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom
                 android:id="@+id/lostfound_main_swiperefreshlayout"
                 android:layout_width="match_parent"
                 android:layout_marginTop="56dp"
@@ -38,7 +38,7 @@
                     android:layout_marginBottom="56dp"
                     android:background="@android:color/white" />
 
-            </in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+            </in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom>
 
         </RelativeLayout>
 
