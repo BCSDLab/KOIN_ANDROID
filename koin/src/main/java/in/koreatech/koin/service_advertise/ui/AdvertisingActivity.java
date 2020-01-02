@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.networks.interactors.AdvertisingRestInteractor;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 
@@ -26,7 +27,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     void init(){
         mContext = this;
-        setPresenter(new AdvertisingPresenter(this, new ));
+        setPresenter(new AdvertisingPresenter(this, new AdvertisingRestInteractor()));
     }
     @Override
     protected void onStart() {
@@ -55,6 +56,10 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void setPresenter(AdvertisingContract.Presenter presenter) {
+
+    }
+    @Override
+    public void onAdvertisingDataReceived() {
 
     }
 }

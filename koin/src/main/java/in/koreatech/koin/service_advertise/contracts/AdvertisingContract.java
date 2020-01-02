@@ -9,7 +9,7 @@ import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 public interface AdvertisingContract {
 
     interface View extends BaseView<Presenter> {
-
+        void onAdvertisingDataReceived();
 
     }
     interface Presenter extends BasePresenter {

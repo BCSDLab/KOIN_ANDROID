@@ -117,9 +117,13 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @Override
     public void onLandListDataReceived(ArrayList<BokdukRoom> landList) {
         landArrayList.clear();
-        landArrayList.addAll(landList);
+        //여기에 network에서 받아온 정보인 landList대신에 local값을 집어넣으면 되는데.. local이 너무 복잡함
+        landArrayList.add(new BokdukRoom());
+        landArrayList.add(new BokdukRoom());
+        landArrayList.add(new BokdukRoom());
+//        landArrayList.addAll(landList);
         updateUserInterface();
-        makeNavermapMarker(landArrayList);
+//        makeNavermapMarker(landArrayList);
 
     }
 

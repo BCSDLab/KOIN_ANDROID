@@ -2,129 +2,106 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="170dp"
-    android:layout_height="140dp"
+    android:layout_width="158dp"
+    android:layout_height="226dp"
     android:background="@color/white">
 
 
     <LinearLayout
-        android:layout_width="160dp"
-        android:layout_height="127dp"
-
-        android:background="@drawable/bg_rect_cloudy_blue"
+        android:layout_width="158dp"
+        android:layout_height="226dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintTop_toTopOf="parent">
 
-
-        <LinearLayout
-            android:id="@+id/view"
-            android:layout_width="158dp"
-            android:layout_height="61dp"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/advertising_name_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal"
-                android:lineSpacingExtra="6sp"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                tools:text="IH (국제학사)" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="106dp"
+            app:srcCompat="@drawable/advertising_default_image" />
 
         <LinearLayout
-            android:id="@+id/month_fee_linearlayout"
-            android:layout_width="158dp"
-            android:layout_height="64dp"
-            android:layout_marginLeft="1dp"
-            android:background="@color/gray3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/testTextview1"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="2sp"
+                android:text="옛날통닭"
+                android:textColor="@color/light_navy"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/testTextview2"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="4sp"
+                android:text="곱창 2인 주문 시 \n 볶음밥 무료 사이다"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="14dp"
+                android:layout_marginTop="7dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/month_textview"
-                    android:layout_width="40dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:background="@drawable/bg_rect_darkgreen_radius_18dp"
-                    android:gravity="center"
-                    android:lineSpacingExtra="12sp"
-                    android:text="월세"
-                    android:textColor="#f3f3f3"
-                    android:textSize="12sp" />
+                    android:id="@+id/textView11"
+                    android:layout_width="8dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="2dp"
+                    android:background="@drawable/ic_event_big_3_x"
+                    android:gravity="center_vertical" />
 
                 <TextView
-                    android:id="@+id/advertising_month_fee_textview"
-                    android:layout_width="100dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:ellipsize="end"
-                    android:gravity="center|left"
-                    android:lineSpacingExtra="10sp"
-                    android:maxLength="15"
-                    android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
-                    android:textSize="12sp"
-                    tools:text="880만원 (1학기)" />
+                    android:id="@+id/testTextview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp"
+                    android:lineSpacingExtra="3sp"
+                    android:text="2019.09.02~2019.09.08"
+                    android:textColor="#5e5e5e"
+                    android:textSize="11sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="18dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/charter_textview"
-                    android:layout_width="40dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:background="@drawable/bg_rect_squash_radius_18dp"
-                    android:gravity="center"
-                    android:lineSpacingExtra="12sp"
-                    android:text="전세"
-                    android:textColor="#f3f3f3"
-                    android:textSize="12sp" />
+                    android:id="@+id/textView12"
+                    android:layout_width="14dp"
+                    android:layout_height="17dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/ic_advertising_bottom_icon" />
 
+                <!--
+                마지막 텍스트뷰 gravity top에 안붙는거 손봐야함ㅜ
+                -->
                 <TextView
-                    android:layout_width="6dp"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-
-                <TextView
-                    android:id="@+id/advertising_charter_fee_textview"
-                    android:layout_width="100dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center_vertical"
-                    android:ellipsize="end"
-                    android:gravity="center|left"
-                    android:lineSpacingExtra="10sp"
-                    android:maxLength="15"
-                    android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
-                    android:textSize="12sp"
-                    tools:text="X" />
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:lineSpacingExtra="2sp"
+                    android:text="2019.07.31"
+                    android:gravity="top"
+                    android:textColor="#9fa9b3"
+                    android:textSize="10sp" />
             </LinearLayout>
+
         </LinearLayout>
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
