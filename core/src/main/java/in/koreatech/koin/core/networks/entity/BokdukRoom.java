@@ -34,6 +34,20 @@ public class BokdukRoom {
     @Expose
     public int id;
 
+    @SerializedName("longitude")
+    @Expose
+    public Double longitude;
+
+
+    @SerializedName("name")
+    @Expose
+    public String name;
+
+
+    @SerializedName("room_type")
+    @Expose
+    public String roomType;
+
     public ArrayList<BokdukRoom> getLands() {
         return lands;
     }
@@ -70,17 +84,4 @@ public class BokdukRoom {
         return roomType;
     }
 
-    @SerializedName("longitude")
-    @Expose
-    public Double longitude;
-
-
-    @SerializedName("name")
-    @Expose
-    public String name;
-
-
-    @SerializedName("room_type")
-    @Expose
-    public String roomType;
 }

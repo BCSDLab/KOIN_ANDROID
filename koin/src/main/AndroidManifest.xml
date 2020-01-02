@@ -23,7 +23,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
-        <activity android:name=".service_advertise.ui.AdvertisingActivity"></activity>
+        <activity
+            android:name=".service_advertise.ui.AdvertisingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar"></activity>
 
         <receiver android:name=".service_dining.widget.DiningWidget">
             <intent-filter>
