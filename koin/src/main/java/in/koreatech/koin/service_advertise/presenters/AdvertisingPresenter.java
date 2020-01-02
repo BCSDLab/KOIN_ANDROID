@@ -28,12 +28,17 @@ public class AdvertisingPresenter implements BasePresenter {
             Advertising ads = (Advertising)object;
             adArrayList.clear();
             adArrayList.addAll(ads.ads);
-            adView.onAdvertisingDataReceived();
+            adView.onAdvertisingDataReceived(adArrayList);
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-
+            adView.showMessage("원룸 리스트를 받아오지 못했습니다");
         }
+    };
+
+    public void getAdList(){
+        adArrayList.clear();
+        advertisingInteractor.readAdList(apiCallback);
     }
 }
