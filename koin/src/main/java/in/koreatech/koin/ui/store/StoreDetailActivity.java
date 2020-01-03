@@ -273,7 +273,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

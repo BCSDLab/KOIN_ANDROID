@@ -97,7 +97,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
         }
 
         if (validateStringIsEmpty(mEditTextID.getText().toString()) || validateStringIsEmpty(mEditTextPW.getText().toString())) {
-            ToastUtil.getInstance().makeShortToast("아이디와 비밀번호를 입력해주세요");
+            ToastUtil.getInstance().makeShort("아이디와 비밀번호를 입력해주세요");
         } else {
             mLoginPresenter.login(mEditTextID.getText().toString(), mEditTextPW.getText().toString(), false);
         }
@@ -154,7 +154,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
      */
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

@@ -89,7 +89,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
         if (mRoomUid > 0) {
             mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
             if (FormValidatorUtil.validateStringIsEmpty(mUid)) {
-                ToastUtil.getInstance().makeShortToast("채팅 정보를 일시적으로 불러올 수 없습니다");
+                ToastUtil.getInstance().makeShort("채팅 정보를 일시적으로 불러올 수 없습니다");
                 mMessageReference = null;
             } else {
                 mMessageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(mRoomUid));

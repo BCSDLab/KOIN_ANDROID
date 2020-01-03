@@ -259,7 +259,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

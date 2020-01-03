@@ -26,19 +26,19 @@ public class ToastUtil {
         applicationContext = context.getApplicationContext();
     }
 
-    public void makeShortToast(String message) {
+    public void makeShort(String message) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void makeLongToast(String message) {
+    public void makeLong(String message) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show();
     }
 
-    public void makeShortToast(int message) {
+    public void makeShort(int message) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show();
     }
 
-    public void makeLongToast(int message) {
+    public void makeLong(int message) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show();
     }
 }

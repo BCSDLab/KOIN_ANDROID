@@ -292,7 +292,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         if (!mCommentPassword.isEmpty())
             mArticleCommentPresenter.checkAnonymousCommentDeleteGranted(mSelectedComment.commentUid, mCommentPassword);
         else
-            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
+            ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
     }
 
     public void onClickedAnonymousRegisterButton() {
@@ -300,15 +300,15 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         String password = mArticleCommentPasswordEdittext.getText().toString();
         String nickname = mArticleCommentNicknameEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
             return;
         }
         if (password.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요.");
+            ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요.");
             return;
         }
         if (nickname.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("닉네임을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("닉네임을 입력해주세요.");
             return;
         }
         if (!mIsEditComment) {
@@ -323,7 +323,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public void onClickedCommentRegisterButton() {
         String commentContent = mArticleCommentContentEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
             return;
         }
         if (!mIsEditComment) {
@@ -351,19 +351,19 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorDeleteComment() {
-        ToastUtil.getInstance().makeShortToast("댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessDeleteComment() {
-        ToastUtil.getInstance().makeShortToast("댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 성공하였습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorGrantedDeleteComment() {
-        ToastUtil.getInstance().makeShortToast( "비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShort( "비밀번호가 일치하지 않습니다.");
     }
 
     @Override
@@ -375,53 +375,53 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorGrantedDeleteContent() {
-        ToastUtil.getInstance().makeShortToast("비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShort("비밀번호가 일치하지 않습니다.");
     }
 
     @Override
     public void showSuccessCreateComment() {
-        ToastUtil.getInstance().makeShortToast("댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되었습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorCreateComment() {
-        ToastUtil.getInstance().makeShortToast("댓글이 등록되지 않았습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되지 않았습니다.");
     }
 
     @Override
     public void showErrorDeleteAnonymousComment() {
-        ToastUtil.getInstance().makeShortToast( "댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort( "댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessAnonymousDeleteComment() {
-        ToastUtil.getInstance().makeShortToast( "댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort( "댓글 삭제에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
 
     }
 
     @Override
     public void showSuccessCreateAnonymousComment() {
-        ToastUtil.getInstance().makeShortToast( "댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShort( "댓글이 등록되었습니다.");
         onClickedAnonymousCommentCancelButton();
         mIsEditComment = false;
     }
 
     @Override
     public void showErrorCreateAnonymousComment() {
-        ToastUtil.getInstance().makeShortToast("댓글이 등록되지 않았습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되지 않았습니다.");
     }
 
     @Override
     public void showErrorUpdateAnonymousComment() {
-        ToastUtil.getInstance().makeShortToast("댓글 수정에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 수정에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessUpdateAnonymousComment() {
-        ToastUtil.getInstance().makeShortToast( "댓글 수정에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort( "댓글 수정에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
     }
 
@@ -432,7 +432,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorGrantedAdjustComment() {
-        ToastUtil.getInstance().makeShortToast("비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShort("비밀번호가 일치하지 않습니다.");
     }
 
     @Override
@@ -440,18 +440,18 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         if (mSelectedComment.password != null && !mSelectedComment.password.isEmpty())
             mArticleCommentPresenter.updateAnonymousComment(mArticle.articleUid, mSelectedComment);
         else
-            ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요.");
+            ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요.");
 
     }
 
     @Override
     public void showErrorEditComment() {
-        ToastUtil.getInstance().makeShortToast("댓글이 수정되지 않았습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 수정되지 않았습니다.");
     }
 
     @Override
     public void showSuccessEditComment() {
-        ToastUtil.getInstance().makeShortToast("댓글이 수정되었습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 수정되었습니다.");
         mArticleCommentContentEdittext.setText("");
         mIsEditComment = false;
     }

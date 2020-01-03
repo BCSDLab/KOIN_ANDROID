@@ -309,7 +309,7 @@ public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity im
         if (getUser().userNickName != null)
             startActivity(intent);
         else {
-            ToastUtil.getInstance().makeShortToast("닉네임이 필요합니다.");
+            ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
             intent = new Intent(this, UserInfoEditedActivity.class);
             startActivity(intent);
         }
@@ -390,7 +390,7 @@ public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity im
 //        if (!comment.isEmpty())
 //            mMarketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
 //        else
-//            ToastUtil.makeShortToast(mContext, "댓글을 입력해주세요.");
+//            ToastUtil.makeShort(mContext, "댓글을 입력해주세요.");
 //
 //    }
 
@@ -437,7 +437,7 @@ public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity im
 
     @Override
     public void showMarketDataReceivedFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
         finish();
     }
 
@@ -453,28 +453,28 @@ public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity im
 
     @Override
     public void showMarketItemDelete() {
-        ToastUtil.getInstance().makeShortToast("삭제되었습니다.");
+        ToastUtil.getInstance().makeShort("삭제되었습니다.");
         finish();
     }
 
     @Override
     public void showMarketCommentUpdateFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
     @Override
     public void showMarketCommentDeleteFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
     @Override
     public void showMarketCommentEditFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
     @Override
     public void showMarketItemDeleteFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
     @Override

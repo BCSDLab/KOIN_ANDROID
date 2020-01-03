@@ -199,7 +199,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

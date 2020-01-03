@@ -242,7 +242,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @AddTrace(name = "DiningActivity_onDiningListDataReceived")
@@ -251,7 +251,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         mDiningArrayList.clear();
         mDiningRecyclerAdapter.notifyDataSetChanged();
         mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
-        ToastUtil.getInstance().makeShortToast(R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override

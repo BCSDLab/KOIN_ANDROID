@@ -259,12 +259,12 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         if (roomUid > 0) {
-            ToastUtil.getInstance().makeLongToast("콜밴쉐어링 방에 참여중일땐 로그아웃하실 수 없습니다");
+            ToastUtil.getInstance().makeLong("콜밴쉐어링 방에 참여중일땐 로그아웃하실 수 없습니다");
         } else {
             UserInfoSharedPreferencesHelper.getInstance().clear();
             finishAffinity();
             startActivity(new Intent(this, LoginActivity.class));
-            ToastUtil.getInstance().makeShortToast("로그아웃 되었습니다.");
+            ToastUtil.getInstance().makeShort("로그아웃 되었습니다.");
             overridePendingTransition(R.anim.fade, R.anim.hold);
 
         }

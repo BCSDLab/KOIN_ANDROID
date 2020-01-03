@@ -198,7 +198,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         if (getUser().userNickName != null)
             startActivity(intent);
         else {
-            ToastUtil.getInstance().makeShortToast("닉네임이 필요합니다.");
+            ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
             intent = new Intent(this, UserInfoEditedActivity.class);
             startActivity(intent);
         }
@@ -211,7 +211,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     @Override
     public void showMarketCommentUpdate() {
-        ToastUtil.getInstance().makeShortToast("댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되었습니다.");
         onClickedCancelButton();
         if (mItem.id != -1)
             mMarketUsedDetatailCommentPresenter.readMarketDetail(mItem.id);
@@ -219,24 +219,24 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     @Override
     public void showMarketCommentUpdateFail() {
-        ToastUtil.getInstance().makeShortToast("댓글이 등록되지 않았습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되지 않았습니다.");
     }
 
     @Override
     public void showMarketCommentDelete() {
-        ToastUtil.getInstance().makeShortToast("댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 성공하였습니다.");
         if (mItem.id != -1)
             mMarketUsedDetatailCommentPresenter.readMarketDetail(mItem.id);
     }
 
     @Override
     public void showMarketCommentDeleteFail() {
-        ToastUtil.getInstance().makeShortToast("댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showMarketCommentEdit() {
-        ToastUtil.getInstance().makeShortToast("댓글 수정에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 수정에 성공하였습니다.");
         onClickedCancelButton();
         if (mItem.id != -1)
             mMarketUsedDetatailCommentPresenter.readMarketDetail(mItem.id);
@@ -244,7 +244,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     @Override
     public void showMarketCommentEditFail() {
-        ToastUtil.getInstance().makeShortToast("댓글 수정에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 수정에 실패하였습니다.");
     }
 
 
@@ -322,7 +322,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     public void onClickedCommentRegisterButton() {
         String commentContent = mMarketUsedCommentContentEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
             return;
         }
         if (!mIsEditComment) {

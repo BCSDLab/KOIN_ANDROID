@@ -186,7 +186,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
      */
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     /**

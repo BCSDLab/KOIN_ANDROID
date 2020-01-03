@@ -156,7 +156,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     @Override
     public void showMessage(String message) {
         if (message != null)
-            ToastUtil.getInstance().makeShortToast(message);
+            ToastUtil.getInstance().makeShort(message);
     }
 
     /**

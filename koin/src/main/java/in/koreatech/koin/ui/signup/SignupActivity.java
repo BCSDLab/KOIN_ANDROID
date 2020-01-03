@@ -163,7 +163,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     @OnClick(R.id.signup_send_verification_button)
     public void onClickSendVerificationButton() {
         if (isverified) {
-            ToastUtil.getInstance().makeShortToast( "확인 메일 전송중입니다 잠시만 기다려 주세요");
+            ToastUtil.getInstance().makeShort( "확인 메일 전송중입니다 잠시만 기다려 주세요");
             return;
         }
         View view = this.getCurrentFocus();
@@ -173,18 +173,18 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
         }
 
         if (!FilterUtil.isEmailValidate(mEditTextID.getText().toString().trim())) {
-            ToastUtil.getInstance().makeShortToast("이메일을 확인해 주세요");
+            ToastUtil.getInstance().makeShort("이메일을 확인해 주세요");
             return;
         }
 
         if (!isPasswordSame() |
                 !FilterUtil.isPasswordValidate(mEditTextPW.getText().toString())) {
-            ToastUtil.getInstance().makeShortToast("입력한 정보를 다시 확인해 주세요");
+            ToastUtil.getInstance().makeShort("입력한 정보를 다시 확인해 주세요");
             return;
         }
 
         if (!mCheckBoxPersonalInfoTerms.isChecked() || !mCheckBoxSignupTerms.isChecked()) {
-            ToastUtil.getInstance().makeShortToast("이용약관에 동의해 주세요");
+            ToastUtil.getInstance().makeShort("이용약관에 동의해 주세요");
             return;
         }
 
@@ -201,7 +201,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     @Override
     public void showMessage(String message) {
         Log.d(TAG, message);
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
         isverified = false;
     }
 

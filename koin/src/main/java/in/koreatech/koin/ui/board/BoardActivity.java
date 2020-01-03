@@ -283,6 +283,6 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
             mBoardSwipeRefreshLayout.setRefreshing(false);
         }
 
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 }

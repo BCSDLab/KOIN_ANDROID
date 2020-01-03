@@ -87,7 +87,7 @@ public class MainActivity extends KoinNavigationDrawerActivity {
                 callDrawerItem(R.id.navi_item_cirlce);
                 break;
             default:
-                ToastUtil.getInstance().makeShortToast("서비스예정입니다");
+                ToastUtil.getInstance().makeShort("서비스예정입니다");
                 break;
         }
 

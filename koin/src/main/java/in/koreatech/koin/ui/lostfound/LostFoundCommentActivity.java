@@ -212,7 +212,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
@@ -273,7 +273,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     public void onClickedCommentRegisterButton() {
         String commentContent = lostfoundCommentContentEdittext.getText().toString();
         if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast("내용을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
             return;
         }
         if (!isEditComment) {

@@ -353,7 +353,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         String endFilterText = mSelectedEndPlaceTextView.getText().toString();
 
         if (startFilterText.compareTo(endFilterText) == 0) {
-            ToastUtil.getInstance().makeShortToast("출발지와 목적지가 같습니다");
+            ToastUtil.getInstance().makeShort("출발지와 목적지가 같습니다");
             mSelectedStartPlaceTextView.setText("출발지");
             mSelectedEndPlaceTextView.setText("목적지");
             updateUserInterface(mRoomArrayList, -1);
@@ -411,7 +411,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
 }

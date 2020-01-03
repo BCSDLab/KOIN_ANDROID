@@ -256,15 +256,15 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         int type = lostItem.getType();
 
         if (title.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_title_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
             return;
         }
         if (isPhoneValid && !Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", phoneNumber)) {
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_phone_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
             return;
         }
         if (content.isEmpty()) {
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_content_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
             return;
         }
 
@@ -405,7 +405,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     @Override
     public void showSuccessUpdate(LostItem lostItem) {
         finish();
-        ToastUtil.getInstance().makeShortToast( "수정되었습니다.");
+        ToastUtil.getInstance().makeShort( "수정되었습니다.");
     }
 
     @Override
@@ -414,12 +414,12 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         intent.putExtra("ID", lostItem.id);
         startActivity(intent);
         finish();
-        ToastUtil.getInstance().makeShortToast("생성되었습니다.");
+        ToastUtil.getInstance().makeShort("생성되었습니다.");
     }
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

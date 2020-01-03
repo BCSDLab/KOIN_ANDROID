@@ -295,7 +295,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             }, 2000);
 
         } else {
-            ToastUtil.getInstance().makeShortToast("권한이 필요합니다.");
+            ToastUtil.getInstance().makeShort("권한이 필요합니다.");
             askSaveToImagePermission();
         }
     }
@@ -617,7 +617,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
@@ -639,7 +639,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShort("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -654,7 +654,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShort("인터넷 환경을 확인해주세요");
     }
 
     @Override
@@ -671,7 +671,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShortToast("인터넷 환경을 확인해주세요");
+        ToastUtil.getInstance().makeShort("인터넷 환경을 확인해주세요");
     }
 
     @Override

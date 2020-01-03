@@ -67,7 +67,7 @@ public class AskNicknamePasswordDialog extends Dialog {
     public void anonymousArticleDialogConfirmTextview() {
         if (mType != NO_NICKNAME) {
             if (mAnonymousArticleDialogNicknameEditText.getText().toString().isEmpty() || mAnonymousArticleDialogPasswordEditText.getText().toString().isEmpty()) {
-                ToastUtil.getInstance().makeShortToast("닉네임 또는 비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShort("닉네임 또는 비밀번호를 입력해주세요");
                 return;
             } else {
                 mNickName = mAnonymousArticleDialogNicknameEditText.getText().toString();
@@ -76,7 +76,7 @@ public class AskNicknamePasswordDialog extends Dialog {
             }
         } else {
             if (mAnonymousArticleDialogPasswordEditText.toString().isEmpty()) {
-                ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
                 return;
             } else {
                 mPassword = mAnonymousArticleDialogPasswordEditText.getText().toString();

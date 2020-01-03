@@ -337,7 +337,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
             if (!password.isEmpty())
                 mArticlePresenter.checkAnonymousAdjustGranted(mArticle.articleUid, password);
             else
-                ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
             return;
         }
 
@@ -403,7 +403,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
             if (!password.isEmpty())
                 mArticlePresenter.checkAnonymousDeleteGranted(mArticle.articleUid, password);
             else
-                ToastUtil.getInstance().makeShortToast("비밀번호를 입력해주세요");
+                ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
 
         }
 
@@ -498,39 +498,39 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     //    @Override
 //    public void showErrorDeleteComment() {
-//        ToastUtil.makeShortToast(mContext, "삭제에 실패했습니다.");
+//        ToastUtil.makeShort(mContext, "삭제에 실패했습니다.");
 //    }
 //
 //    @Override
 //    public void showSuccessDeleteComment() {
-//        ToastUtil.makeShortToast(mContext, "삭제되었습니다.");
+//        ToastUtil.makeShort(mContext, "삭제되었습니다.");
 //    }
 //
 //    @Override
 //    public void showErrorAdjustComment() {
-//        ToastUtil.makeShortToast(mContext, "수정에 실패했습니다.");
+//        ToastUtil.makeShort(mContext, "수정에 실패했습니다.");
 //    }
 //
 //    @Override
     public void showSuccessAdjustComment() {
-        ToastUtil.getInstance().makeShortToast("수정되었습니다.");
+        ToastUtil.getInstance().makeShort("수정되었습니다.");
     }
 
     @Override
     public void showErrorDeleteContent() {
-        ToastUtil.getInstance().makeShortToast("삭제에 실패했습니다.");
+        ToastUtil.getInstance().makeShort("삭제에 실패했습니다.");
     }
 
     @Override
     public void showSuccessDeleteContent() {
-        ToastUtil.getInstance().makeShortToast("삭제되었습니다.");
+        ToastUtil.getInstance().makeShort("삭제되었습니다.");
         setResult(RES_CODE_ARTICLE_DELETED);
         finish();
     }
 
     @Override
     public void showErrorAdjustGrantedContent() {
-        ToastUtil.getInstance().makeShortToast("비밀번호가 틀렸습니다.");
+        ToastUtil.getInstance().makeShort("비밀번호가 틀렸습니다.");
     }
 
     @Override
@@ -549,7 +549,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     public void showErrorGrantedDeleteContent() {
-        ToastUtil.getInstance().makeShortToast("게시물을 수정하거나 삭제할 권한이 없습니다.");
+        ToastUtil.getInstance().makeShort("게시물을 수정하거나 삭제할 권한이 없습니다.");
     }
 
     @Override
@@ -569,7 +569,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
 //    @Override
 //    public void showErrorGrantedDeleteComment() {
-//        ToastUtil.makeShortToast(mContext, "비밀번호가 틀렸습니다.");
+//        ToastUtil.makeShort(mContext, "비밀번호가 틀렸습니다.");
 //    }
 //
 //    @Override
@@ -588,7 +588,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 //
 //    @Override
 //    public void showErrorGrantedAdjustComment() {
-//        ToastUtil.makeShortToast(mContext, "비밀번호가 틀렸습니다.");
+//        ToastUtil.makeShort(mContext, "비밀번호가 틀렸습니다.");
 //    }
 //
 //    @Override

@@ -96,7 +96,7 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
         if (totalPage >= currentPage + 1) {
             searchResultPresenter.getArticleSearched(currentText, currentPage + 1);
         } else
-            ToastUtil.getInstance().makeShortToast("마지막 검색 결과입니다.");
+            ToastUtil.getInstance().makeShort("마지막 검색 결과입니다.");
         swipeRefreshLayoutBottom.setRefreshing(false);
     }
 
@@ -121,7 +121,7 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

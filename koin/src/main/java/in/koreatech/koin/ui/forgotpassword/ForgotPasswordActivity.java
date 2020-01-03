@@ -107,7 +107,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @OnClick(R.id.reset_password_button)

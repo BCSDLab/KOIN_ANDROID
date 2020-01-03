@@ -346,7 +346,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
 
         } else {
-            ToastUtil.getInstance().makeShortToast("서비스예정입니다");
+            ToastUtil.getInstance().makeShort("서비스예정입니다");
             mCurrentId = mBeforeId;
         }
 
@@ -455,7 +455,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
                     callDrawerItem(R.id.navi_item_home);
                 else {
                     mPressTime = System.currentTimeMillis();
-                    ToastUtil.getInstance().makeShortToast("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
+                    ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
                 }
             } else {
                 finishAffinity();
@@ -497,7 +497,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
         if (service == R.string.home || service == R.string.navigation_item_free_board) {
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
-                ToastUtil.getInstance().makeShortToast("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+                ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 mCurrentId = mBeforeId;
             } else {
@@ -506,7 +506,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
         } else if (service == R.string.navigation_item_recruit_board) {
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
-                ToastUtil.getInstance().makeShortToast("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+                ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 mCurrentId = mBeforeId;
             } else {
@@ -518,7 +518,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         //콜밴쉐어링 hold
 //        else if (service == R.string.navigation_item_callvan_sharing) {
 //            if (FormValidatorUtil.validateStringIsEmpty(user.userName) || FormValidatorUtil.validateStringIsEmpty(user.phoneNumber)) {
-//                ToastUtil.makeLongToast(mContext, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+//                ToastUtil.makeLong(mContext, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
 //                goToUserInfoActivity(service);
 //                mCurrentId = mBeforeId;
 //            } else {

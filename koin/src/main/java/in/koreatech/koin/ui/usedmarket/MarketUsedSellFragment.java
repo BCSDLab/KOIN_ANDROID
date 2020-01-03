@@ -176,7 +176,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
             mCurrentPage++;
             mMarketUsedPresenter.readMarket(SELLMARKETID, mCurrentPage);
         } else if (!mIsResume)
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_list_last_page);
+            ToastUtil.getInstance().makeShort(R.string.market_used_list_last_page);
         else
             mMarketUsedPresenter.readMarket(SELLMARKETID, mCurrentPage);
 
@@ -194,7 +194,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
 
     @Override
     public void showMarketDataReceivedFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.market_used_get_list_fail);
+        ToastUtil.getInstance().makeShort(R.string.market_used_get_list_fail);
     }
 
     @Override

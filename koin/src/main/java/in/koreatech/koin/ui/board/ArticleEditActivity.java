@@ -200,21 +200,21 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         }
 
         if (FormValidatorUtil.validateStringIsEmpty(mEditTextTitle.getText().toString())) {
-            ToastUtil.getInstance().makeShortToast("제목을 입력하세요");
+            ToastUtil.getInstance().makeShort("제목을 입력하세요");
             return;
         }
         if (FormValidatorUtil.validateStringIsEmpty(mEditTextContent.getText().toString())) {
-            ToastUtil.getInstance().makeShortToast("내용을 입력하세요");
+            ToastUtil.getInstance().makeShort("내용을 입력하세요");
             return;
         }
 
         if (mBoardUid == ID_ANONYMOUS) {
             if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextNickname.getText().toString())) {
-                ToastUtil.getInstance().makeShortToast("제목을 입력하세요");
+                ToastUtil.getInstance().makeShort("제목을 입력하세요");
                 return;
             }
             if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextPassword.getText().toString())) {
-                ToastUtil.getInstance().makeShortToast("내용을 입력하세요");
+                ToastUtil.getInstance().makeShort("내용을 입력하세요");
                 return;
             }
         }
@@ -238,7 +238,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 }
                 break;
             default:
-                ToastUtil.getInstance().makeShortToast("잘못된 접근입니다.");
+                ToastUtil.getInstance().makeShort("잘못된 접근입니다.");
                 break;
 
         }

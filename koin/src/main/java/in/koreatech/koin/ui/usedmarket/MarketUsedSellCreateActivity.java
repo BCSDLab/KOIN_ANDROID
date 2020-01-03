@@ -265,7 +265,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             builder.setNeutralButton("취소", null);
             builder.create().show();
         } else
-            ToastUtil.getInstance().makeShortToast("기능 사용을 위한 권한 동의가 필요합니다.");
+            ToastUtil.getInstance().makeShort("기능 사용을 위한 권한 동의가 필요합니다.");
 
     }
 
@@ -312,7 +312,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         mMarketSellCreateEditTextPhoneNum.setTextIsSelectable(true);
         mMarketSellCreateEditTextPhoneNum.setClickable(true);
         if (mPhoneNumber == null) {
-            ToastUtil.getInstance().makeShortToast("휴대폰 번호를 기입해주세요");
+            ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
             return;
         }
         mMarketSellCreateEditTextPhoneNum.setText(mPhoneNumber);
@@ -528,7 +528,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
         } else {
-            ToastUtil.getInstance().makeShortToast("용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.");
+            ToastUtil.getInstance().makeShort("용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.");
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.putExtra("crop", "true");
@@ -691,13 +691,13 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
 
         if (mIsContentCheck && mIsTitlecheck && !mIsPhoneCheck)
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_phone_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
         if (!mIsTitlecheck && mIsContentCheck)
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_title_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
         if (!mIsContentCheck && mIsTitlecheck)
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_content_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
         if (!mIsTitlecheck && !mIsContentCheck)
-            ToastUtil.getInstance().makeShortToast(R.string.market_used_title_content_check);
+            ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
 
         if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
             mMarketUsedCreatePresenter.createMarketItem(mMarketItem);
@@ -715,7 +715,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
     @Override
     public void showMarketCreatefFail() {
-        ToastUtil.getInstance().makeShortToast(R.string.server_failed);
+        ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 
     @Override

@@ -189,7 +189,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
         if(beforeNickName==null&&currentNickName.isEmpty())
         {
-            ToastUtil.getInstance().makeShortToast("닉네임을 입력해주세요");
+            ToastUtil.getInstance().makeShort("닉네임을 입력해주세요");
             return;
         }
         if(beforeNickName==null||!beforeNickName.equals(currentNickName)) {
@@ -197,7 +197,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             mUserinfoeditedEdittextNickname.setText(currentNickName);
         }
         else {
-            ToastUtil.getInstance().makeShortToast("기존 닉네임과 동일 합니다.");
+            ToastUtil.getInstance().makeShort("기존 닉네임과 동일 합니다.");
         }
     }
 
@@ -216,7 +216,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private boolean checkInputUserStudentId() {
         if (!FormValidatorUtil.validateStringIsEmpty(mUserinfoeditedEdittextStudentId.getText().toString().trim()) &&
                 !checkStudentID(mUserinfoeditedEdittextStudentId.getText().toString().trim())) {
-            ToastUtil.getInstance().makeShortToast("올바른 형태의 학번을 입력해주세요");
+            ToastUtil.getInstance().makeShort("올바른 형태의 학번을 입력해주세요");
 
             return true;
         }
@@ -248,7 +248,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         if(curNickname.isEmpty() && ( mUser.userNickName == null))
             checkInputUserData();
         else if((!curNickname.isEmpty()) &&  (mUser.userNickName == null) &&  !isNicknameChecked)
-            ToastUtil.getInstance().makeShortToast( "닉네임 중복 검사를 해주세요");
+            ToastUtil.getInstance().makeShort( "닉네임 중복 검사를 해주세요");
         else if((!curNickname.isEmpty())&& (mUser.userNickName == null) && isNicknameChecked)
             checkInputUserData();
         else if (mUser.userNickName.equals(curNickname)) {
@@ -258,7 +258,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             //닉네임 검사 버튼 누른 경우
             checkInputUserData();
         } else {
-            ToastUtil.getInstance().makeShortToast( "닉네임 중복 검사를 해주세요");
+            ToastUtil.getInstance().makeShort( "닉네임 중복 검사를 해주세요");
         }
     }
 
@@ -382,7 +382,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showCheckNickNameSuccess() {
         // 닉네임 사용가능시 사용가능 Toast message onNicknameCheckSuccesst 실행
-        ToastUtil.getInstance().makeShortToast("사용가능한 닉네임입니다.");
+        ToastUtil.getInstance().makeShort("사용가능한 닉네임입니다.");
         onNicknameCheckSuccess(mUserinfoeditedEdittextNickname.getText().toString());
         mUserinfoeditedEdittextNickname.getBackground().setColorFilter(null);
     }
@@ -390,19 +390,19 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showCheckNickNameFail() {
         // 닉네임 사용불가시 사용불가능 Toast message 후 밑줄 빨간색으로 변경
-        ToastUtil.getInstance().makeShortToast("기존에 중복된 닉네임입니다.");
+        ToastUtil.getInstance().makeShort("기존에 중복된 닉네임입니다.");
         mUserinfoeditedEdittextNickname.getBackground().setColorFilter(Color.parseColor("#FF0000"), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
     public void showConfirm() {
-        ToastUtil.getInstance().makeShortToast("정보가 수정되었습니다.");
+        ToastUtil.getInstance().makeShort("정보가 수정되었습니다.");
         finish();
     }
 
     @Override
     public void showConfirmFail() {
-        ToastUtil.getInstance().makeShortToast("정보 수정에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("정보 수정에 실패하였습니다.");
     }
 
     @Override

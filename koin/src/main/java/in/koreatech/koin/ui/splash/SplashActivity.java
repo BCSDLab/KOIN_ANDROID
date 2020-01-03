@@ -92,7 +92,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     private final Runnable mLoginActivityRunnable = new Runnable() {

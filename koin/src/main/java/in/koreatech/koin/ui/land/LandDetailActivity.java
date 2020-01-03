@@ -225,7 +225,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     protected void onStart() {
         super.onStart();
         if (landId == -1) {
-            ToastUtil.getInstance().makeShortToast("원룸 정보를 불러오지 못했습니다.");
+            ToastUtil.getInstance().makeShort("원룸 정보를 불러오지 못했습니다.");
             finish();
         }
         if (landDetailPresenter != null) {
@@ -284,7 +284,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     /**

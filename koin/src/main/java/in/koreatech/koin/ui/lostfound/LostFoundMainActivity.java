@@ -155,7 +155,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         if (currentPage < totalPage)
             lostFoundMainPresenter.getLostItem(++currentPage, LIMITITEM);
         else
-            ToastUtil.getInstance().makeShortToast("마지막 페이지 입니다.");
+            ToastUtil.getInstance().makeShort("마지막 페이지 입니다.");
     }
 
     @Override
@@ -173,7 +173,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)

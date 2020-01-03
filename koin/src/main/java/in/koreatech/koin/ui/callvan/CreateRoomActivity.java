@@ -261,7 +261,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
         String startPlaceResult = startPlaceTextView;
         if (FormValidatorUtil.validateStartPlaceIsEmpty(startPlaceTextView)) {
 //            if (FormValidatorUtil.validateStringIsEmpty(startPlaceEditText)) {
-//                ToastUtil.makeShortToast(this, "출발지를 선택하거나 입력하세요");
+//                ToastUtil.makeShort(this, "출발지를 선택하거나 입력하세요");
 //                return;
 //            }
         }
@@ -275,7 +275,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
         String endPlaceResult = endPlaceTextView;
         if (FormValidatorUtil.validateEndPlaceIsEmpty(endPlaceTextView)) {
 //            if (FormValidatorUtil.validateStringIsEmpty(endPlaceEditText)) {
-//                ToastUtil.makeShortToast(this, "목적지를 선택하거나 입력하세요");
+//                ToastUtil.makeShort(this, "목적지를 선택하거나 입력하세요");
 //                return;
 //            }
         }
@@ -285,7 +285,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 //        }
 
         if (startPlaceResult.compareTo(endPlaceResult) == 0) {
-            ToastUtil.getInstance().makeShortToast( "출발지와 목적지가 같습니다");
+            ToastUtil.getInstance().makeShort( "출발지와 목적지가 같습니다");
             return;
         }
 
@@ -300,10 +300,10 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 
         String selectTime = sb.toString();
         if (Long.parseLong(selectTime) < TimeUtil.getDeviceCreatedDateOnlyLong()) {
-            ToastUtil.getInstance().makeShortToast("현재 시간보다 나중으로 선택하세요");
+            ToastUtil.getInstance().makeShort("현재 시간보다 나중으로 선택하세요");
             return;
         } else if (Long.parseLong(selectTime) > TimeUtil.getDeviceCreatedDateOnlyLongAddTimeLimit(30 * 24 * 60)) {
-            ToastUtil.getInstance().makeShortToast("한달 이내로 시간을 선택해주세요");
+            ToastUtil.getInstance().makeShort("한달 이내로 시간을 선택해주세요");
             return;
         }
 
@@ -339,6 +339,6 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast( message);
+        ToastUtil.getInstance().makeShort( message);
     }
 }

@@ -98,7 +98,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     public void onStart() {
         super.onStart();
         if (mCircleId == -1) {
-            ToastUtil.getInstance().makeShortToast("동아리 리스트를 받아오지 못했습니다.");
+            ToastUtil.getInstance().makeShort("동아리 리스트를 받아오지 못했습니다.");
             finish();
         }
         if (mCirlceDetailPresenter != null)
@@ -229,7 +229,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShortToast(message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
 
