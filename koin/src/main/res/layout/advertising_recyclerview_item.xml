@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/advertising_recyclerview_item_food_imageview"
             android:layout_width="match_parent"
             android:layout_height="106dp"
             app:srcCompat="@drawable/advertising_default_image" />
@@ -26,7 +26,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/testTextview1"
+                android:id="@+id/advertising_recyclerview_item_store_title_textview"
                 android:layout_width="match_parent"
                 android:layout_height="16dp"
                 android:layout_marginTop="10dp"
@@ -37,7 +37,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/testTextview2"
+                android:id="@+id/advertising_recyclerview_item_event_contents_textview"
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_marginTop="10dp"
@@ -64,7 +64,7 @@
                     android:gravity="center_vertical" />
 
                 <TextView
-                    android:id="@+id/testTextview3"
+                    android:id="@+id/advertising_recyclerview_item_period_textview"
                     android:layout_width="match_parent"
                     android:layout_height="14dp"
                     android:lineSpacingExtra="3sp"
@@ -75,8 +75,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="18dp"
+                android:layout_height="12dp"
                 android:layout_marginTop="10dp"
+                android:gravity="top"
                 android:orientation="horizontal">
 
                 <TextView
@@ -87,18 +88,16 @@
                     android:layout_marginRight="4dp"
                     android:background="@drawable/ic_advertising_bottom_icon" />
 
-                <!--
-                마지막 텍스트뷰 gravity top에 안붙는거 손봐야함ㅜ
-                -->
                 <TextView
-                    android:id="@+id/textView9"
+                    android:id="@+id/advertising_recyclerview_item_publish_date_textview"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
+                    android:layout_height="match_parent"
                     android:lineSpacingExtra="2sp"
                     android:text="2019.07.31"
-                    android:gravity="top"
                     android:textColor="#9fa9b3"
                     android:textSize="10sp" />
+
+
             </LinearLayout>
 
         </LinearLayout>

@@ -4,7 +4,9 @@ import android.util.Log;
 
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
+import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
+import in.koreatech.koin.core.networks.services.AdvertisingService;
 import in.koreatech.koin.core.networks.services.LandService;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,27 +19,27 @@ import retrofit2.HttpException;
  * Created by hansol on 2020.1.1...
  */
 public class AdvertisingRestInteractor implements AdvertisingInteractor{
-    private final String TAG = LandRestInteractor.class.getSimpleName();
+    private final String TAG = AdvertisingInteractor.class.getSimpleName();
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     public AdvertisingRestInteractor() {
     }
 
     @Override
-    public void readAdList(ApiCallback apiCallback) {//Land부분 수정해주세요~~!!
-        RetrofitManager.getInstance().getRetrofit().create(LandService.class).getLandList()
+    public void readAdList(ApiCallback apiCallback) {
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).getAdList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BokdukRoom>() {
+                .subscribe(new Observer<Advertising>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
 
                     }
 
                     @Override
-                    public void onNext(BokdukRoom land) {
-                        if (!land.lands.isEmpty()) {
-                            apiCallback.onSuccess(land);
+                    public void onNext(Advertising ad) {
+                        if (!ad.ads.isEmpty()) {
+                            apiCallback.onSuccess(ad);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
                         }

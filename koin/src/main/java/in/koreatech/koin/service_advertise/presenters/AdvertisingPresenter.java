@@ -11,7 +11,8 @@ import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 /**
  * Created by hansol on 2020.1.1...
  */
-public class AdvertisingPresenter implements BasePresenter {
+public class AdvertisingPresenter implements AdvertisingContract.Presenter {
+
     private final AdvertisingContract.View adView;
     private final AdvertisingInteractor advertisingInteractor;
     private ArrayList<Advertising> adArrayList;

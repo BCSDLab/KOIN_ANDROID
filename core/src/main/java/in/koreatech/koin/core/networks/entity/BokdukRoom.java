@@ -10,7 +10,6 @@ public class BokdukRoom {
     @Expose
     public ArrayList<BokdukRoom> lands;
 
-
     @SerializedName("monthly_fee")
     @Expose
     public String monthlyFee;

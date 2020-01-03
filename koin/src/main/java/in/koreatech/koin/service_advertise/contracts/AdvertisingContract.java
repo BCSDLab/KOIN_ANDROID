@@ -9,7 +9,7 @@ import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 /**
  * Created by hansol on 2020.1.1...
- */
+        */
 public interface AdvertisingContract {
 
     interface View extends BaseView<AdvertisingPresenter> {

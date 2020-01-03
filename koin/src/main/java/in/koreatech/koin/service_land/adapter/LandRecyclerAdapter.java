@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
+import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.service_land.ui.LandDetailActivity;
 
 /**
@@ -57,7 +58,6 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
             view = itemView;
             ButterKnife.bind(this, itemView);
         }
-
         /**
          * 복덕방 아이템의 글자들을 설정하는 함수
          *

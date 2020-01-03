@@ -1,9 +1,11 @@
 package in.koreatech.koin.service_advertise.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
+import in.koreatech.koin.service_advertise.ui.AdvertisingDetailActivity;
 import in.koreatech.koin.service_dining.adapters.DiningRecyclerAdapter;
 import in.koreatech.koin.service_land.adapter.LandRecyclerAdapter;
 
@@ -29,18 +32,21 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
 
     public AdvertisingRecyclerAdapter(ArrayList<Advertising> adArrayList, Context context) {
         this.adArrayList = adArrayList;
-        this.adArrayList.addAll(adArrayList);
         this.context = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View view; //onBindViewHolder 함수에서 아이템의 클릭리스너를 달기위한 view
-        @BindView(R.id.advertising_name_textview)
-        TextView textViewLandName;  //원룸의 이름을 표시할 TextView
-        @BindView(R.id.advertising_month_fee_textview)
-        TextView textViewMonthFee; //월세가격
-        @BindView(R.id.advertising_charter_fee_textview)
-        TextView textViewCharterFee; //전세가격
+        @BindView(R.id.advertising_recyclerview_item_food_imageview)
+        ImageView adFoodImageview;
+        @BindView(R.id.advertising_recyclerview_item_store_title_textview)
+        TextView adTitleTextview;
+        @BindView(R.id.advertising_recyclerview_item_event_contents_textview)
+        TextView adContentsTextview;
+        @BindView(R.id.advertising_recyclerview_item_period_textview)
+        TextView adPeriodTextview;
+        @BindView(R.id.advertising_recyclerview_item_publish_date_textview)
+        TextView adPublishedDateTextview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -48,26 +54,33 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
             ButterKnife.bind(this, itemView);
         }
 
-        /**
-         * 복덕방 아이템의 글자들을 설정하는 함수
-         */
         void onBind(Advertising ad) {
-            if (ad.getTestTitle() == null)
-                textViewLandName.setText("-");
-            else
-                textViewLandName.setText(ad.getTestTitle());
+            if(ad.getThumbnail() == null)
+                adFoodImageview.setImageResource(R.drawable.advertising_default_image);
 
-            if (ad.getTestPrice() == null)
-                textViewMonthFee.setText("-");
+            if (ad.getEventTitle() == null)
+                adTitleTextview.setText("-");
             else
-                textViewMonthFee.setText(ad.getTestPrice());
+                adTitleTextview.setText(ad.getEventTitle());
 
-//            if (ad.getCharterFee() == null)
-//                textViewCharterFee.setText("X");
-//            else
-//                textViewCharterFee.setText(ad.getCharterFee());
+            if (ad.getContent() == null)
+                adContentsTextview.setText("-");
+            else
+                adContentsTextview.setText(ad.getContent());
+
+            if (ad.getStartDate() == null && ad.getEndDate() == null)
+                adPeriodTextview.setText("-");
+            else
+                adPeriodTextview.setText(ad.startDate+"~"+ad.getEndDate());
+
+            String[] publishedDate = ad.getPublishedDate().split(" ");
+
+            if(ad.getPublishedDate() == null)
+                adPublishedDateTextview.setText("-");
+            else
+                adPublishedDateTextview.setText(publishedDate[0]);
+
         }
-
     }
 
     @NonNull
@@ -83,8 +96,10 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
         holder.onBind(adArrayList.get(position));
         Advertising ad = adArrayList.get(position);
 
-        holder.view.setOnClickListener(i->{
-            //홍보게시판 상세페이지로 이동 구현해요~
+            holder.view.setOnClickListener(i->{
+                Intent intent = new Intent(context, AdvertisingDetailActivity.class);
+                intent.putExtra("Shop_ID",ad.getId());
+                context.startActivity(intent);
         });
     }
 
