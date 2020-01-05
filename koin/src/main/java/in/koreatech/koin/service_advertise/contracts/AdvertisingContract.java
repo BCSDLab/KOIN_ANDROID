@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.bases.BaseView;
+import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
@@ -17,6 +18,6 @@ public interface AdvertisingContract {
         void showMessage(String message);
     }
     interface Presenter extends BasePresenter {
-
+        void getAdList();
     }
 }

@@ -88,6 +88,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ButterKnife.bind(this).unbind();
     }
 
     @Override

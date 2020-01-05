@@ -11,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.perf.metrics.AddTrace;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -29,14 +33,22 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
 
     private ArrayList<Advertising> adArrayList;
     private Context context;
+    private final RequestOptions glideOptions;
 
     public AdvertisingRecyclerAdapter(ArrayList<Advertising> adArrayList, Context context) {
         this.adArrayList = adArrayList;
         this.context = context;
+
+        glideOptions = new RequestOptions()
+                .fitCenter()
+                .override(158, 106)
+                .error(R.drawable.img_noimage)
+                .placeholder(R.color.white);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View view; //onBindViewHolder 함수에서 아이템의 클릭리스너를 달기위한 view
+        private Context context;
         @BindView(R.id.advertising_recyclerview_item_food_imageview)
         ImageView adFoodImageview;
         @BindView(R.id.advertising_recyclerview_item_store_title_textview)
@@ -55,8 +67,6 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
         }
 
         void onBind(Advertising ad) {
-            if(ad.getThumbnail() == null)
-                adFoodImageview.setImageResource(R.drawable.advertising_default_image);
 
             if (ad.getEventTitle() == null)
                 adTitleTextview.setText("-");
@@ -96,9 +106,14 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
         holder.onBind(adArrayList.get(position));
         Advertising ad = adArrayList.get(position);
 
+        Glide.with(context)
+                .load(ad.thumbnail)
+                .apply(glideOptions)
+                .into(holder.adFoodImageview);
+
             holder.view.setOnClickListener(i->{
                 Intent intent = new Intent(context, AdvertisingDetailActivity.class);
-                intent.putExtra("Shop_ID",ad.getId());
+                intent.putExtra("ID",ad.getId());
                 context.startActivity(intent);
         });
     }

@@ -10,14 +10,16 @@
     <LinearLayout
         android:layout_width="158dp"
         android:layout_height="226dp"
+        android:layout_marginStart="4dp"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/advertising_recyclerview_item_food_imageview"
-            android:layout_width="match_parent"
+            android:layout_width="158dp"
             android:layout_height="106dp"
+            android:scaleType="fitXY"
             app:srcCompat="@drawable/advertising_default_image" />
 
         <LinearLayout

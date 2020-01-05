@@ -38,6 +38,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
         }
     };
 
+    @Override
     public void getAdList(){
         adArrayList.clear();
         advertisingInteractor.readAdList(apiCallback);

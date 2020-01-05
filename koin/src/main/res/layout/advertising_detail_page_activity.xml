@@ -57,7 +57,7 @@
                             android:layout_marginTop="18dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView14">
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview">
 
                             <Button
                                 android:id="@+id/advertising_detail_page_edit_button"
@@ -81,7 +81,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/advertising_detail_title_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -105,10 +105,10 @@
                             android:textColor="@color/light_navy"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
 
                         <TextView
-                            android:id="@+id/textView14"
+                            android:id="@+id/advertising_detail_period_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
@@ -118,7 +118,7 @@
                             android:textColor="#252525"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/textView13"
-                            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
 
                         <Button
                             android:id="@+id/button__"
@@ -132,10 +132,10 @@
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview" />
 
                         <TextView
-                            android:id="@+id/textView15"
+                            android:id="@+id/advertising_detail_view_count_publisher_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="13dp"
                             android:layout_marginTop="26dp"
@@ -149,7 +149,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/textView19"
+                            android:id="@+id/advertising_detail_publish_date_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
@@ -160,7 +160,7 @@
                             android:textColor="#9fa9b3"
                             android:textSize="10sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_publisher_textview" />
 
                         <TextView
                             android:id="@+id/button2"
@@ -172,9 +172,10 @@
                             android:gravity="center"
                             android:lineSpacingExtra="2sp"
                             android:text="마감"
+                            android:visibility="invisible"
                             android:textColor="@color/black"
                             android:textSize="10sp"
-                            app:layout_constraintStart_toEndOf="@+id/textView10"
+                            app:layout_constraintStart_toEndOf="@+id/advertising_detail_title_textview"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
@@ -184,14 +185,14 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="13dp"
                             android:lineSpacingExtra="2sp"
-                            android:text="댓글"
+                            android:text="댓글 "
                             android:textColor="@color/warm_grey_two"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
 
                         <TextView
-                            android:id="@+id/textView23"
+                            android:id="@+id/advertising_detail_reply_count_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="15dp"
                             android:layout_marginTop="13dp"
@@ -229,7 +230,7 @@
                             android:background="@color/divider"
                             android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_activity_view_count_textview">
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_textview">
 
                         </LinearLayout>
 
@@ -247,13 +248,13 @@
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
                             <ImageView
-                                android:id="@+id/imageView"
+                                android:id="@+id/advertising_detail_event_imageview"
                                 android:layout_width="328dp"
                                 android:layout_height="wrap_content"
                                 app:srcCompat="@drawable/advertising_default_image" />
 
                             <TextView
-                                android:id="@+id/textView21"
+                                android:id="@+id/advertising_detail_contents_textview"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="21dp"
@@ -263,7 +264,7 @@
                                 android:textSize="14sp" />
 
                             <Button
-                                android:id="@+id/button4"
+                                android:id="@+id/advertising_detail_order_button"
                                 android:layout_width="159dp"
                                 android:layout_height="29dp"
                                 android:layout_marginTop="46dp"
@@ -280,14 +281,14 @@
                             android:layout_height="15dp"
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="2sp"
-                            android:text="개 |  조회수"
+                            android:text="개 |  조회수 "
                             android:textColor="@color/warm_grey_two"
                             android:textSize="13sp"
-                            app:layout_constraintStart_toEndOf="@+id/textView23"
+                            app:layout_constraintStart_toEndOf="@+id/advertising_detail_reply_count_textview"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
                         <TextView
-                            android:id="@+id/advertising_detail_activity_view_count_textview"
+                            android:id="@+id/advertising_detail_view_count_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="15dp"
                             android:layout_marginTop="12dp"
