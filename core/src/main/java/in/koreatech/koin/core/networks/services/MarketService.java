@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.entity.Item;
 import in.koreatech.koin.core.networks.entity.MarketItem;
-import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import io.reactivex.Observable;
 import in.koreatech.koin.core.networks.responses.MarketPageResponse;
 import okhttp3.MultipartBody;
@@ -35,7 +34,7 @@ public interface MarketService {
     Observable<Item> getMarketDetail(@Path("id") int id);
 
     @POST(ITEMS + "/grant/check")
-    Observable<DefaultResponse> postGrantedCheck(@Header("Authorization") String authHeader, @Body JsonObject articleUid);
+    Observable<Item> postGrantedCheck(@Header("Authorization") String authHeader, @Body JsonObject articleUid);
 
     @POST(ITEMS + "/{itemId}" + "/comments")
     Observable<Comment> postComment(@Path("itemId") int id, @Header("Authorization") String authHeader, @Body JsonObject content);

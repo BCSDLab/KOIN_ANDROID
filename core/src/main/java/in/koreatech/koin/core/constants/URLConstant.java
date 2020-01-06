@@ -1,7 +1,5 @@
 package in.koreatech.koin.core.constants;
 
-import in.koreatech.koin.core.networks.entity.Article;
-
 /**
  * Created by hyerim on 2018. 4. 29....
  * <p>
@@ -36,8 +34,6 @@ public class URLConstant {
     public static final String TIMETABLE = "timetable";
     public static final String TIMETABLES = "timetables";
     public static final String LAND = "lands";
-
-
 
 
     public static final class CALLVANS {
@@ -80,11 +76,6 @@ public class URLConstant {
         public static final String LOST = "lost";
         public static final String LOSTITEMS = LOST + "/lostItems";
         public static final String GRANTCHECK = LOSTITEMS + "/grant/check";
-    }
-
-    public static final class SEARCH{
-        public static final String SEARCH = "search";
-        public static final String ARTICLESEARCH = "articles/"+SEARCH;
     }
 
 

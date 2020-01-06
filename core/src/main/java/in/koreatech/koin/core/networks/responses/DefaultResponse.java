@@ -23,10 +23,6 @@ public class DefaultResponse {
     @Expose
     public String code;
 
-    @SerializedName("grantEdit")
-    @Expose
-    public boolean isGrantEdit;
-
 
     public boolean getSuccess() {
         return success;
@@ -42,9 +38,5 @@ public class DefaultResponse {
 
     public String getCode() {
         return code;
-    }
-
-    public boolean isGrantEdit() {
-        return isGrantEdit;
     }
 }
