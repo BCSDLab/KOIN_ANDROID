@@ -24,8 +24,8 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     private final String TAG = DiningRecyclerAdapter.class.getSimpleName();
 
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Dining> mDiningArrayList; //식단 정보 담긴 식당 List
-    private Context mContext;
+    private ArrayList<Dining> diningArrayList; //식단 정보 담긴 식당 List
+    private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dining_item_title)
@@ -37,7 +37,7 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
         @BindView(R.id.dining_item_price)
         TextView mTextViewPrice; // 정보(카드가격, 현금가격)
         @BindView(R.id.dining_divider)
-        LinearLayout mDiningDivider;
+        LinearLayout diningDivider;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -46,10 +46,10 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     }
 
     public DiningRecyclerAdapter(Context context, ArrayList<Dining> diningArrayList) {
-        mContext = context;
+        context = context;
         mLayoutInflater = LayoutInflater.from(context);
-        this.mDiningArrayList = new ArrayList<>();
-        this.mDiningArrayList.addAll(diningArrayList);
+        this.diningArrayList = new ArrayList<>();
+        this.diningArrayList.addAll(diningArrayList);
     }
 
 
@@ -62,7 +62,7 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Dining dining = mDiningArrayList.get(position);
+        Dining dining = diningArrayList.get(position);
         holder.mTextViewTitle.setText(dining.place);        // 식당이름(한식, 양식, 2캠퍼스 등)
 
         StringBuilder sb = new StringBuilder();
@@ -82,16 +82,16 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
         }
 
         if(!dining.place.equals("능수관"))
-            holder.mDiningDivider.setBackgroundColor(mContext.getResources().getColor(R.color.light_navy));
+            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.light_navy));
         else
-            holder.mDiningDivider.setBackgroundColor(mContext.getResources().getColor(R.color.squash));
+            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.squash));
 
         holder.mTextViewMenu.setText(sb.toString());        //메뉴리스트
     }
 
     @Override
     public int getItemCount() {
-        return mDiningArrayList.size();
+        return diningArrayList.size();
     }
 
     public Dining checkDiningString(Dining dining) {

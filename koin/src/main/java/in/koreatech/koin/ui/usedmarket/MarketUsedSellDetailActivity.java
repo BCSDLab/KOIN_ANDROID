@@ -63,14 +63,14 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     private static CustomProgressDialog mGenerateProgress;
 
 
-    private Context mContext;
+    private Context context;
 
     private MarketUsedDetailCommentAdapter mMarketDetailCommentRecyclerAdapter;
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
 
     private Item mItem; //품목 정보 저장
     private boolean mGrantedCheck; // 글쓴이 인지 확인
-    private ArrayList<Comment> mCommentArrayList;
+    private ArrayList<Comment> commentArrayList;
     private MarketUsedDetailContract.Presenter mMarketDetailPresenter;
 
     private String mPrevCommentContent;
@@ -128,7 +128,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         super.onCreate(savedInstanceState);
         setContentView(R.layout.market_used_sell_activity_detail);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
         mItem = new Item();
         mMarketID = 0;
         mItem.id = getIntent().getIntExtra("ITEM_ID", 1);
@@ -190,8 +190,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         StringBuilder title = new StringBuilder();
         String styledText;
         mItem = item;
-        mCommentArrayList.clear();
-        mCommentArrayList.addAll(item.comments);
+        commentArrayList.clear();
+        commentArrayList.addAll(item.comments);
 
 
         mMarketMoneyTextView.setText(changeMoneyFormat(Integer.toString(mItem.price)) + "원");
@@ -205,7 +205,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
             mMarketPhoneTextView.setText(item.phone);
 
 
-        Glide.with(mContext).load(item.thumbnail).apply(new RequestOptions()
+        Glide.with(context).load(item.thumbnail).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketThumbnailImageview);
@@ -264,12 +264,12 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     void init() {
         setPresenter(new MarketUsedDetailPresenter(this, new MarketUsedRestInteractor()));
-        mCommentArrayList = new ArrayList<>();
+        commentArrayList = new ArrayList<>();
         mMarketDetailPresenter.readMarketDetail(mItem.id);
 
 
 
-//        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, mCommentArrayList);
+//        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
 //        mLayoutManager = new LinearLayoutManager(this);
 //        mMarketCommentRecyclerVIew.setHasFixedSize(true);
 //        mMarketCommentRecyclerVIew.setLayoutManager(mLayoutManager); //layout 설정
@@ -394,7 +394,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 //        if (!comment.isEmpty())
 //            mMarketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
 //        else
-//            ToastUtil.makeShort(mContext, "댓글을 입력해주세요.");
+//            ToastUtil.makeShort(context, "댓글을 입력해주세요.");
 //
 //    }
 

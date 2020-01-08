@@ -25,7 +25,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
     private ArrayList<Lecture> mLectureArrayList;
     private RecyclerViewClickListener recyclerViewClickListener;
@@ -36,7 +36,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     public TimetableRecyclerAdapter(Context context, ArrayList<Lecture> lectureArrayList) {
-        mContext = context;
+        context = context;
         mLectureArrayList = lectureArrayList;
     }
 
@@ -80,7 +80,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView mLectureTitle;
         TextView mLectureInformationOne;
         TextView mLectureInfromationTwo;
-        ImageButton mAddLectureButton;
+        ImageButton addLectureButton;
 
 
         public ItemViewHolder(@NonNull View itemView) {
@@ -89,7 +89,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
             mLectureTitle = itemView.findViewById(R.id.lecture_title);
             mLectureInformationOne = itemView.findViewById(R.id.lecture_information1);
             mLectureInfromationTwo = itemView.findViewById(R.id.lecture_infromation2);
-            mAddLectureButton = itemView.findViewById(R.id.add_lecture_button);
+            addLectureButton = itemView.findViewById(R.id.add_lecture_button);
         }
     }
 
@@ -114,14 +114,14 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         StringBuilder stringBuilderTwo = new StringBuilder();
         Lecture lecture = mLectureArrayList.get(position);
         if (lecture.isItemClicked)
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(mContext.getResources().getColor(R.color.white6));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white6));
         else
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white));
 
         if (lecture.isAddButtonClicked)
-            holder.mAddLectureButton.setBackground(mContext.getDrawable(R.drawable.ic_delete_lecture_item_button));
+            holder.addLectureButton.setBackground(context.getDrawable(R.drawable.ic_delete_lecture_item_button));
         else
-            holder.mAddLectureButton.setBackground(mContext.getDrawable(R.drawable.ic_add_lecture_item_button));
+            holder.addLectureButton.setBackground(context.getDrawable(R.drawable.ic_add_lecture_item_button));
         holder.mLectureTitle.setText(lecture.name);
 
         stringBuilder.append(getSpertateTimeToString(lecture.classTime)).append("/ 정원 ").append(lecture.regularNumber);
@@ -136,7 +136,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.mLectureInfromationTwo.setText(stringBuilderTwo.toString());
 
         if (recyclerViewClickListener != null) {
-            holder.mAddLectureButton.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
+            holder.addLectureButton.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
             holder.mTmetableRecyclerviewItemRelativelayout.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
         }
     }

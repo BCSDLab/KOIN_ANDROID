@@ -9,10 +9,9 @@ import static in.koreatech.koin.core.constant.URLConstant.SEARCH.ARTICLESEARCH;
 
 public interface SearchArticleService {
     /**
-     *
-     * @param page 페이지 숫자
+     * @param page       페이지 숫자
      * @param searchType 검색 타입으로 0 - 제목, 1 - 제목 + 내용, 2 - 작성자
-     * @param query 검색한 단어
+     * @param query      검색한 단어
      * @return
      */
     @GET(ARTICLESEARCH)

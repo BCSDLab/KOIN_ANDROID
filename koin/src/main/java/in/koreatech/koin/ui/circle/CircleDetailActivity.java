@@ -53,7 +53,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
 
     /* View Component */
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppbarBase;
+    AppbarBase appbarBase;
     @BindView(R.id.circle_detail_logo_border_imageview)
     ImageView mCircleDetailLogoBoderImageview;
     @BindView(R.id.circle_detail_logo_background_imageview)
@@ -127,7 +127,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     }
 
     private void init() {
-        mAppbarBase.setTransitionName(CircleActivity.SHARE_VIEW_NAME_APP_BAR);
+        appbarBase.setTransitionName(CircleActivity.SHARE_VIEW_NAME_APP_BAR);
         mCircleDetailLogoImageview.setTransitionName(CircleActivity.SHARE_VIEW_NAME_LOGO);
         mCircleDetailNameTextview.setTransitionName(CircleActivity.SHARE_VIEW_NAME);
         mCircleDetailLineDescriptionTextview.setTransitionName(CircleActivity.SHARE_VIEW_DETAIL);

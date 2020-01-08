@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.AttrRes;
+
 import com.google.android.material.appbar.AppBarLayout;
+
 import android.view.View;
 import android.widget.TextView;
 

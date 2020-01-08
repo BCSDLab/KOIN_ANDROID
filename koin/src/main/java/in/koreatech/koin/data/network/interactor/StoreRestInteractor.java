@@ -18,8 +18,8 @@ import retrofit2.HttpException;
  * Created by hyerim on 2018. 8. 12....
  */
 public class StoreRestInteractor implements StoreInteractor {
-    private final String TAG = StoreRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "StoreRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public StoreRestInteractor() {
     }

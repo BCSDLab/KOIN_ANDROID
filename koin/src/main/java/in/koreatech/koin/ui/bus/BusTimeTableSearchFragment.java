@@ -44,30 +44,30 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     private CustomProgressDialog customProgressDialog;
     private Unbinder mUnbinder;
-    private int mDepartureState;
+    private int departureState;
     private int mArrivalState;
     private int mHour;
     private int mMin;
     private String mTotalDate;
     private String mTotalTime;
     private String mShuttleBusDepartInfo;
-    private String mDaesungBusDepartInfo;
+    private String daesungBusDepartInfo;
     private BusTimeTableSearchPresenter mPresenter;
     private String mResultDate;
     private Calendar mCalendar;
 
     @BindView(R.id.bus_search_bus_departure_spinner)
-    Spinner mBusTimetableSearchDepartureSpinner;
+    Spinner busTimetableSearchDepartureSpinner;
     @BindView(R.id.bus_search_bus_arrival_spinner)
-    Spinner mBusTimetalbeSearchArrivalSpinner;
+    Spinner busTimetalbeSearchArrivalSpinner;
     @BindView(R.id.bus_timetable_search_date_textview)
-    TextView mBusTimetableSearchDateTextView;
+    TextView busTimetableSearchDateTextView;
     @BindView(R.id.bus_search_timePicker)
-    TimePicker mBusTimetableSearchTimePicker;
+    TimePicker busTimetableSearchTimePicker;
     @BindView(R.id.bus_timetable_search_fragment_information_textview)
-    TextView mBusTimetableSearchInformationTextview;
+    TextView busTimetableSearchInformationTextview;
     @BindView(R.id.bus_timetable_search_fragment_search_button)
-    Button mBusTimetableSearchButton;
+    Button busTimetableSearchButton;
 
 
     /* View Component */
@@ -131,10 +131,10 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
 
         if (position != mArrivalState)
-            mDepartureState = position;
+            departureState = position;
         else {
-            mArrivalState = mDepartureState;
-            mDepartureState = position;
+            mArrivalState = departureState;
+            departureState = position;
         }
 
         setSpinner();
@@ -142,10 +142,10 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @OnItemSelected(R.id.bus_search_bus_arrival_spinner)
     public void onItemSelectedBusSearchArrivalSpinner(Spinner spinner, int position) {
-        if (position != mDepartureState)
+        if (position != departureState)
             mArrivalState = position;
         else {
-            mDepartureState = mArrivalState;
+            departureState = mArrivalState;
             mArrivalState = position;
         }
 
@@ -153,19 +153,19 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     }
 
     public void setSpinner() {
-        mBusTimetableSearchDepartureSpinner.setSelection(mDepartureState);
-        mBusTimetalbeSearchArrivalSpinner.setSelection(mArrivalState);
+        busTimetableSearchDepartureSpinner.setSelection(departureState);
+        busTimetalbeSearchArrivalSpinner.setSelection(mArrivalState);
     }
 
     public void init() {
-        mDepartureState = 0;
+        departureState = 0;
         mArrivalState = 1;
 
         mCalendar = Calendar.getInstance();
         mCalendar.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
         updateLabel();
-        mBusTimetableSearchDateTextView.setText("오늘 - " + mBusTimetableSearchDateTextView.getText());
+        busTimetableSearchDateTextView.setText("오늘 - " + busTimetableSearchDateTextView.getText());
 
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
         mMin = mCalendar.get(Calendar.MINUTE);
@@ -174,7 +174,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         showUserSelectDateTime();
         setDayPickerTime(mHour, mMin);
 
-        mBusTimetableSearchTimePicker.setOnTimeChangedListener((timePicker, hour, minute) -> {
+        busTimetableSearchTimePicker.setOnTimeChangedListener((timePicker, hour, minute) -> {
             BusTimeTableSearchFragment.this.mHour = hour;
             BusTimeTableSearchFragment.this.mMin = minute;
             showUserSelectDateTime();
@@ -184,11 +184,11 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     private void setDayPickerTime(int hour, int minute) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mBusTimetableSearchTimePicker.setHour(hour);
-            mBusTimetableSearchTimePicker.setMinute(minute);
+            busTimetableSearchTimePicker.setHour(hour);
+            busTimetableSearchTimePicker.setMinute(minute);
         } else {
-            mBusTimetableSearchTimePicker.setCurrentHour(hour);
-            mBusTimetableSearchTimePicker.setCurrentMinute(minute);
+            busTimetableSearchTimePicker.setCurrentHour(hour);
+            busTimetableSearchTimePicker.setCurrentMinute(minute);
         }
     }
 
@@ -211,7 +211,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         stringBuilder.append("시 ");
         stringBuilder.append(mMin);
         stringBuilder.append("분");
-        mBusTimetableSearchInformationTextview.setText(stringBuilder.toString());
+        busTimetableSearchInformationTextview.setText(stringBuilder.toString());
 
         mTotalDate = mResultDate.replaceAll(" / ", "-");
 
@@ -228,7 +228,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         mTotalTime = timeStringBulider.toString();
     }
 
-    DatePickerDialog.OnDateSetListener mDatePicker = new DatePickerDialog.OnDateSetListener() {
+    DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             mCalendar.set(Calendar.YEAR, year);
@@ -243,7 +243,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         String resultDate = "yyyy / M / dd";    // 출력형식  2019/3/24
 
         SimpleDateFormat selectDateFormat = new SimpleDateFormat(selectDate, Locale.KOREA);
-        mBusTimetableSearchDateTextView.setText(selectDateFormat.format(mCalendar.getTime()));
+        busTimetableSearchDateTextView.setText(selectDateFormat.format(mCalendar.getTime()));
 
         SimpleDateFormat resultDateFormat = new SimpleDateFormat(resultDate, Locale.KOREA);
         mResultDate = resultDateFormat.format(mCalendar.getTime());
@@ -252,14 +252,14 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @OnClick(R.id.bus_timetable_search_date_imageButton)
     public void onTimetableSearchDatepickerClick() {
-        new DatePickerDialog(getContext(), R.style.KAPDatePicker, mDatePicker, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(getContext(), R.style.KAPDatePicker, datePicker, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
 
     }
 
     @OnClick(R.id.bus_timetable_search_fragment_search_button)
     public void onTimetableSearchButtonClick() {
-        mPresenter.getDaesungBus(mDepartureState, mArrivalState, mTotalDate, mTotalTime);
-        mPresenter.getShuttleBus(mDepartureState, mArrivalState, mTotalDate, mTotalTime);
+        mPresenter.getDaesungBus(departureState, mArrivalState, mTotalDate, mTotalTime);
+        mPresenter.getShuttleBus(departureState, mArrivalState, mTotalDate, mTotalTime);
     }
 
     @Override
@@ -271,12 +271,12 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     @Override
     public void updateDaesungBusTime(String time) {
         if (time == null || time.isEmpty()) time = getResources().getString(R.string.bus_end_information);
-        mDaesungBusDepartInfo = time;
+        daesungBusDepartInfo = time;
     }
 
     @Override
     public void updateFailDaesungBusDepartInfo() {
-        mDaesungBusDepartInfo = getResources().getString(R.string.bus_end_information);
+        daesungBusDepartInfo = getResources().getString(R.string.bus_end_information);
     }
 
     @Override
@@ -286,7 +286,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void showBusTimeInfo() {
-        BusTimeTableSearchResultDialog dialog = new BusTimeTableSearchResultDialog(getActivity(), mShuttleBusDepartInfo, mDaesungBusDepartInfo);
+        BusTimeTableSearchResultDialog dialog = new BusTimeTableSearchResultDialog(getActivity(), mShuttleBusDepartInfo, daesungBusDepartInfo);
         dialog.setCancelable(true);
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();

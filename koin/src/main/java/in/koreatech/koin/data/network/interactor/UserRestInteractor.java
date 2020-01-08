@@ -30,8 +30,8 @@ import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBea
  * Edited by yunjae in 2018. 8. 22....
  */
 public class UserRestInteractor implements UserInteractor {
-    private final String TAG = UserRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "UserRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public UserRestInteractor() {
     }
@@ -56,7 +56,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<AuthResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -81,7 +81,7 @@ public class UserRestInteractor implements UserInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -101,7 +101,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -124,7 +124,7 @@ public class UserRestInteractor implements UserInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -140,7 +140,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -163,7 +163,7 @@ public class UserRestInteractor implements UserInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -177,7 +177,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<User>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -215,7 +215,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<User>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -252,7 +252,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -284,7 +284,7 @@ public class UserRestInteractor implements UserInteractor {
                 .subscribe(new Observer<UserInfoEditResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override

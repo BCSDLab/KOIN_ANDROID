@@ -43,26 +43,26 @@ import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_RECRUIT;
  * Created by hyerim on 2018. 6. 4....
  */
 public class ArticleEditActivity extends KoinNavigationDrawerActivity implements ArticleEditContract.View, TextWatcher {
-    private final static String TAG = ArticleEditActivity.class.getSimpleName();
+    private final static String TAG = "ArticleEditActivity";
     private final static int MAX_TITLE_LENGTH = 40;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppBarBase;
+    AppbarBase appBarBase;
     @BindView(R.id.title_nickname_border)
     LinearLayout mTitleNicknameBorder;
     @BindView(R.id.article_edittext_nickname)
-    EditText mArticleEdittextNickname;
+    EditText articleEdittextNickname;
     @BindView(R.id.nickname_password_border)
     LinearLayout mNicknamePasswordBorder;
     @BindView(R.id.article_edittext_password)
-    EditText mArticleEdittextPassword;
+    EditText articleEdittextPassword;
     @BindView(R.id.password_content_border)
     LinearLayout mPasswordContentBorder;
-    private Context mContext;
+    private Context context;
 
-    private ArticleEditPresenter mArticleEditPresenter;
+    private ArticleEditPresenter articleEditPresenter;
     private CustomProgressDialog customProgressDialog;
-    private int mBoardUid;
-    private int mArticleUid;
+    private int boardUid;
+    private int articleUid;
     private String mTitleTemp;
     private String mPassword;
     private String mNickname;
@@ -82,15 +82,15 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_edit);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         //isEdit = false로 게시물 작성을 기본값으로 함
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
-        mBoardUid = getIntent().getIntExtra("BOARD_UID", 0);
+        boardUid = getIntent().getIntExtra("BOARD_UID", 0);
 
         //게시물 수정인 경우
         if (isEdit) {
-            mArticleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
+            articleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
             mEditTextTitle.setText(getIntent().getStringExtra("ARTICLE_TITLE"));
             mPassword = getIntent().getStringExtra("PASSWORD");
             mNickname = getIntent().getStringExtra("NICKNAME");
@@ -98,11 +98,11 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             mEditTextTitle.setSelection(mEditTextTitle.getText().length());
             mEditTextContent.setText(Html.fromHtml(getIntent().getStringExtra("ARTICLE_CONTENT")));
             mEditTextContent.setSelection(mEditTextContent.getText().length());
-            if (mBoardUid == ID_ANONYMOUS) {
-                mArticleEdittextNickname.setText(mNickname);
-                mArticleEdittextPassword.setText(mPassword);
-                mArticleEdittextPassword.setFocusableInTouchMode(false);
-                mArticleEdittextNickname.setFocusableInTouchMode(false);
+            if (boardUid == ID_ANONYMOUS) {
+                articleEdittextNickname.setText(mNickname);
+                articleEdittextPassword.setText(mPassword);
+                articleEdittextPassword.setFocusableInTouchMode(false);
+                articleEdittextNickname.setFocusableInTouchMode(false);
 
             }
         }
@@ -139,18 +139,18 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     }
 
     public void init() {
-        switch (mBoardUid) {
+        switch (boardUid) {
             case ID_FREE:
-                mAppBarBase.setTitleText("자유게시판");
+                appBarBase.setTitleText("자유게시판");
                 break;
             case ID_RECRUIT:
-                mAppBarBase.setTitleText("취업게시판");
+                appBarBase.setTitleText("취업게시판");
                 break;
             case ID_ANONYMOUS:
-                mAppBarBase.setTitleText("익명게시판");
+                appBarBase.setTitleText("익명게시판");
                 break;
         }
-        setVisiblityInput(mBoardUid);
+        setVisiblityInput(boardUid);
         setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor()));
 
         mEditTextTitle.addTextChangedListener(this);
@@ -163,21 +163,21 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     public void setVisiblityInput(int id) {
         if (id != ID_ANONYMOUS) {
             mTitleNicknameBorder.setVisibility(View.GONE);
-            mArticleEdittextNickname.setVisibility(View.GONE);
+            articleEdittextNickname.setVisibility(View.GONE);
             mNicknamePasswordBorder.setVisibility(View.GONE);
-            mArticleEdittextPassword.setVisibility(View.GONE);
+            articleEdittextPassword.setVisibility(View.GONE);
         } else {
             mTitleNicknameBorder.setVisibility(View.VISIBLE);
-            mArticleEdittextNickname.setVisibility(View.VISIBLE);
+            articleEdittextNickname.setVisibility(View.VISIBLE);
             mNicknamePasswordBorder.setVisibility(View.VISIBLE);
-            mArticleEdittextPassword.setVisibility(View.VISIBLE);
+            articleEdittextPassword.setVisibility(View.VISIBLE);
             mPasswordContentBorder.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void setPresenter(ArticleEditPresenter presenter) {
-        this.mArticleEditPresenter = presenter;
+        this.articleEditPresenter = presenter;
     }
 
     @OnEditorAction(R.id.article_edittext_title)
@@ -208,33 +208,33 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             return;
         }
 
-        if (mBoardUid == ID_ANONYMOUS) {
-            if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextNickname.getText().toString())) {
+        if (boardUid == ID_ANONYMOUS) {
+            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextNickname.getText().toString())) {
                 ToastUtil.getInstance().makeShort("제목을 입력하세요");
                 return;
             }
-            if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextPassword.getText().toString())) {
+            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextPassword.getText().toString())) {
                 ToastUtil.getInstance().makeShort("내용을 입력하세요");
                 return;
             }
         }
 
-        switch (mBoardUid) {
+        switch (boardUid) {
             case ID_FREE: //자유게시판
             case ID_RECRUIT: //취업게시판
                 SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mEditTextContent.getText().toString());
                 if (isEdit) {
-                    mArticleEditPresenter.updateArticle(new Article(mBoardUid, mArticleUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder)));
+                    articleEditPresenter.updateArticle(new Article(boardUid, articleUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder)));
                 } else {
-                    mArticleEditPresenter.createArticle(new Article(mBoardUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder)));
+                    articleEditPresenter.createArticle(new Article(boardUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder)));
                 }
                 break;
             case ID_ANONYMOUS: //익명게시판
                 spannableStringBuilder = new SpannableStringBuilder(mEditTextContent.getText().toString());
                 if (isEdit) {
-                    mArticleEditPresenter.updateAnonymousArticle(mArticleUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), mPassword);
+                    articleEditPresenter.updateAnonymousArticle(articleUid, mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), mPassword);
                 } else {
-                    mArticleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), mArticleEdittextNickname.getText().toString().replace(" ", ""), mArticleEdittextPassword.getText().toString());
+                    articleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), articleEdittextNickname.getText().toString().replace(" ", ""), articleEdittextPassword.getText().toString());
                 }
                 break;
             default:
@@ -296,7 +296,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     public void goToArticleActivity(Article article) {
         if (!isEdit) {
             Intent intent = new Intent(this, ArticleActivity.class);
-            intent.putExtra("BOARD_UID", mBoardUid);
+            intent.putExtra("BOARD_UID", boardUid);
             intent.putExtra("ARTICLE_UID", article.articleUid);
             intent.putExtra("ARTICLE_GRANT_EDIT", true);
             startActivity(intent);
@@ -312,7 +312,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 //        dialog.show();
 //        dialog.setOnDismissListener(dialog1 -> {
 //            if (!dialog.isCancelled()) {
-//                mArticleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), dialog.getNickName(), dialog.getPassword());
+//                articleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), dialog.getNickName(), dialog.getPassword());
 //                mInputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), 0);
 //            }
 //        });

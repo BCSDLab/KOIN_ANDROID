@@ -30,7 +30,7 @@ import in.koreatech.koin.ui.login.LoginActivity;
  */
 public class UserInfoActivity extends KoinNavigationDrawerActivity implements UserInfoContract.View {
     private final String TAG = "UserInfoActivity";
-    private Context mContext;
+    private Context context;
 
     private User mUser;
     private int mRequiredService;
@@ -66,7 +66,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
 
         init();
     }

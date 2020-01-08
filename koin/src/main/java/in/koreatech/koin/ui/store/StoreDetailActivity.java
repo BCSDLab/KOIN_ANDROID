@@ -65,7 +65,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @BindView(R.id.store_detail_etc_textview)
     TextView  mEtcTextview;
     @BindView(R.id.store_detail_deliver_textview)
-    TextView mDeliverTextview;
+    TextView deliverTextview;
     @BindView(R.id.store_detail_call_button)
     LinearLayout storeDetailCallButton;
 
@@ -206,9 +206,9 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         mEtcTextview.setText(Objects.requireNonNull(mStore.description,"-"));
          */
         if(mStore.deliveryPrice >= 0)
-        mDeliverTextview.setText(mStore.deliveryPrice + "원");
+        deliverTextview.setText(mStore.deliveryPrice + "원");
         else
-            mDeliverTextview.setText("-");
+            deliverTextview.setText("-");
 
         if (!FormValidatorUtil.validateStringIsEmpty(mStore.openTime)) {
             mTimeTextView.setText(mStore.openTime + " ~ " + mStore.closeTime);

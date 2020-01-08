@@ -27,6 +27,7 @@ import static in.koreatech.koin.core.constant.URLConstant.CALLVANS.ROOMS;
 public interface CallvanService {
     /**
      * Get Callvan Company List API
+     *
      * @param authHeader 사용자 token
      * @return api 결과를 담은 콜밴 회사 array list
      */
@@ -35,7 +36,8 @@ public interface CallvanService {
 
     /**
      * Get Callvan Company API
-     * @param uid 콜밴 회사 id
+     *
+     * @param uid        콜밴 회사 id
      * @param authHeader 사용자 token
      * @return 콜밴 회사 정보를 담은 company
      */
@@ -44,6 +46,7 @@ public interface CallvanService {
 
     /**
      * Get Callvan room List API
+     *
      * @param authHeader 사용자 token
      * @return api 결과를 담은 콜밴 방 array list
      */
@@ -52,7 +55,8 @@ public interface CallvanService {
 
     /**
      * Get Callvan room API
-     * @param uid 콜밴 방 id
+     *
+     * @param uid        콜밴 방 id
      * @param authHeader 사용자 token
      * @return 콜밴 방 정보를 담은 CallvanRoom
      */
@@ -61,7 +65,8 @@ public interface CallvanService {
 
     /**
      * Create Callvan room API
-     * @param authHeader 사용자 token
+     *
+     * @param authHeader  사용자 token
      * @param callvanRoom 생성할 콜밴 방 정보를 담은 파라미터
      * @return
      */
@@ -70,7 +75,8 @@ public interface CallvanService {
 
     /**
      * Update Callvan Room API
-     * @param authHeader 사용자 token
+     *
+     * @param authHeader  사용자 token
      * @param callvanRoom 업데이트 할 콜밴 방 정보를 담은 파라미터
      * @return
      */
@@ -79,7 +85,8 @@ public interface CallvanService {
 
     /**
      * Delete Specific Callvan ROOM API
-     * @param uid 지워야할 콜밴 방 id
+     *
+     * @param uid        지워야할 콜밴 방 id
      * @param authHeader 사용자 토큰
      * @return api 성공여부 결과를 담은 defaultResponse
      */
@@ -88,8 +95,9 @@ public interface CallvanService {
 
     /**
      * join room API
+     *
      * @param authHeader 사용자 토큰
-     * @param roomUid 사용자가 참여할 콜밴 방 id
+     * @param roomUid    사용자가 참여할 콜밴 방 id
      * @return api 성공여부 결과를 담은 defaultResponse
      */
     @POST(PARTICIPANT)
@@ -97,8 +105,9 @@ public interface CallvanService {
 
     /**
      * out room API
+     *
      * @param authHeader 사용자 토큰
-     * @param roomUid 사용자가 퇴장할 콜밴 방 id
+     * @param roomUid    사용자가 퇴장할 콜밴 방 id
      * @return api 성공여부 결과를 담은 defaultResponse
      */
     @HTTP(method = "DELETE", path = PARTICIPANT, hasBody = true)

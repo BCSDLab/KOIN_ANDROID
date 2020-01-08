@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswordContract.View {
     private final static String TAG = "ForgotPasswordActivity";
 
-    private Context mContext;
+    private Context context;
     private ForgotPasswordContract.Presenter mForgotPasswordPresenter;
     private CustomProgressDialog customProgressDialog;
 
@@ -46,7 +46,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
         setContentView(R.layout.activity_forgot_password);
         ButterKnife.bind(this);
 
-        mContext = this;
+        context = this;
 
         //create presenter
         new ForgotPasswordPresenter(this);
@@ -129,7 +129,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
     @Override
     public void goToEmail() {
         SnackbarUtil.makeSnackbarActionWebView(this, R.id.forgot_password_id_edittext, "학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?",
-                "KOREATECH E-mail 인증", mContext.getResources().getString(R.string.koreatech_url), 5000);
+                "KOREATECH E-mail 인증", context.getResources().getString(R.string.koreatech_url), 5000);
     }
 
 

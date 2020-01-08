@@ -14,7 +14,7 @@ import retrofit2.HttpException;
 
 public class SearchArticleRestInteractor implements SearchArticleInteractor {
 
-    private final String TAG = SearchArticleRestInteractor.class.getSimpleName();
+    private final String TAG = "SearchArticleRestInteractor";
 
     public SearchArticleRestInteractor() {
     }

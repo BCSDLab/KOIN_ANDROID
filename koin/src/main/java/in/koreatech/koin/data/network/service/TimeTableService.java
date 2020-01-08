@@ -1,4 +1,5 @@
 package in.koreatech.koin.data.network.service;
+
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
 import retrofit2.http.Query;
-
 
 
 import static in.koreatech.koin.core.constant.URLConstant.TIMETABLE;
@@ -37,7 +37,7 @@ public interface TimeTableService {
     Observable<TimeTable> postTimeTables(@Header("Authorization") String authHeader, @Body JsonObject TimeTableUid);
 
     @PUT(TIMETABLES)
-    Observable<ArrayList<TimeTable>> putEditTimeTables( @Header("Authorization") String authHeader, @Body JsonObject TimeTableUid);
+    Observable<ArrayList<TimeTable>> putEditTimeTables(@Header("Authorization") String authHeader, @Body JsonObject TimeTableUid);
 
 
 }

@@ -27,17 +27,17 @@ public class SplashPresenter implements SplashContract.Presenter {
     private static final String TAG = "SplashPresenter";
     public static final String ANDROID_CODE = "android";
     private final SplashContract.View mSplashView;
-    private final UserInteractor mAuthInteractor;
+    private final UserInteractor authInteractor;
     private final TokenSessionInteractor mTokenSessionInteractor;
-    private final AppVersionRestInteractor mAppVersionRestInteractor;
-    private String mCurrentVersionName;
+    private final AppVersionRestInteractor appVersionRestInteractor;
+    private String currentVersionName;
     private String mStoreVersionName;
 
 
     public SplashPresenter(@NonNull SplashContract.View splashView) {
-        mAuthInteractor = new UserRestInteractor();
+        authInteractor = new UserRestInteractor();
         mTokenSessionInteractor = new TokenSessionLocalInteractor();
-        mAppVersionRestInteractor = new AppVersionRestInteractor();
+        appVersionRestInteractor = new AppVersionRestInteractor();
         mSplashView = checkNotNull(splashView, "splashView cannnot be null");
         mSplashView.setPresenter(this);
     }
@@ -65,8 +65,8 @@ public class SplashPresenter implements SplashContract.Presenter {
      */
     @Override
     public void checkUpdate(String currentVersion) {
-        mCurrentVersionName = currentVersion;
-        mAppVersionRestInteractor.readAppVersion(ANDROID_CODE, versionApiCallback);
+        currentVersionName = currentVersion;
+        appVersionRestInteractor.readAppVersion(ANDROID_CODE, versionApiCallback);
     }
 
     /**
@@ -92,7 +92,7 @@ public class SplashPresenter implements SplashContract.Presenter {
      * 토큰을 업데이트 하는 메소드
      */
     public void updateToken() {
-        mAuthInteractor.readToken(UserInfoSharedPreferencesHelper.getInstance().loadUser().userId,
+        authInteractor.readToken(UserInfoSharedPreferencesHelper.getInstance().loadUser().userId,
                 UserInfoSharedPreferencesHelper.getInstance().loadUserPw(),
                 true, authApiCallback);
     }
@@ -150,7 +150,7 @@ public class SplashPresenter implements SplashContract.Presenter {
             int currentMajor, currentMinor, currentPoint;
             int storeMajor, storeMinor, storePoint;
             try {
-                StringTokenizer currentVersionTokenizer = new StringTokenizer(mCurrentVersionName, ".");
+                StringTokenizer currentVersionTokenizer = new StringTokenizer(currentVersionName, ".");
                 StringTokenizer storeVersionTokenizer = new StringTokenizer(mStoreVersionName, ".");
                 currentMajor = Integer.parseInt(currentVersionTokenizer.nextToken());
                 currentMinor = Integer.parseInt(currentVersionTokenizer.nextToken());
@@ -164,7 +164,7 @@ public class SplashPresenter implements SplashContract.Presenter {
                     mSplashView.gotoAppMarket(Version.PRIORITY_MIDDLE, mStoreVersionName);
                 } else mSplashView.gotoAppMarket(Version.PRIORITY_LOW, mStoreVersionName);
             } catch (Exception e) {
-                Log.d(TAG, e.getMessage() + "current version : " + mCurrentVersionName + "store version : " + mStoreVersionName);
+                Log.d(TAG, e.getMessage() + "current version : " + currentVersionName + "store version : " + mStoreVersionName);
                 mSplashView.gotoAppMarket(Version.PRIORITY_LOW, mStoreVersionName);
             }
         }

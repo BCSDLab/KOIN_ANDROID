@@ -78,8 +78,7 @@ public class Circle {
     @Expose
     public int totalItemCount;
 
-    public static class CircleUrl
-    {
+    public static class CircleUrl {
         @SerializedName("type")
         @Expose
         public String type;

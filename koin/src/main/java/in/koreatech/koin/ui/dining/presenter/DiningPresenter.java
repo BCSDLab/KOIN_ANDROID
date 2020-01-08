@@ -19,7 +19,7 @@ public class DiningPresenter implements BasePresenter {
 
     private final DiningInteractor diningInteractor;
 
-    private boolean mDiningListApiCallCheck;
+    private boolean diningListApiCallCheck;
 
     private Resources mResources;
 
@@ -34,14 +34,14 @@ public class DiningPresenter implements BasePresenter {
         public void onSuccess(Object object) {
             ArrayList<Dining> diningArrayList = (ArrayList<Dining>) object;
             diningView.onDiningListDataReceived(diningArrayList);
-            mDiningListApiCallCheck = true;
+            diningListApiCallCheck = true;
             diningView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
            // diningView.showMessage(throwable.getMessage());
-            mDiningListApiCallCheck = false;
+            diningListApiCallCheck = false;
             if(!(throwable instanceof UnknownHostException))
                 diningView.showUserInterface();
             else

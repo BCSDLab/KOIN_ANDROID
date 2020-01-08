@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class MarketUsedBuyRecyclerAdapter extends RecyclerView.Adapter<MarketUsedBuyRecyclerAdapter.ViewHolder> {
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
     private ArrayList<Item> mMarketBuyArrayList;
     private final RequestOptions mGlideOptions;
@@ -57,7 +57,7 @@ public class MarketUsedBuyRecyclerAdapter extends RecyclerView.Adapter<MarketUse
 
     public MarketUsedBuyRecyclerAdapter(Context context, ArrayList<Item> marketBuyArrayList) {
         mLayoutInflater = LayoutInflater.from(context);
-        this.mContext = context;
+        this.context = context;
         this.mMarketBuyArrayList = new ArrayList<>();
         this.mMarketBuyArrayList = marketBuyArrayList;
 
@@ -89,7 +89,7 @@ public class MarketUsedBuyRecyclerAdapter extends RecyclerView.Adapter<MarketUse
         Item item = mMarketBuyArrayList.get(position);
         StringBuilder title = new StringBuilder();
 
-        Glide.with(mContext)
+        Glide.with(context)
                 .load(item.thumbnail)
                 .apply(mGlideOptions)
                 .into(holder.mImageViewItem);

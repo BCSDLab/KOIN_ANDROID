@@ -5,7 +5,7 @@ import android.util.Log;
 import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
-import in.koreatech.koin.data.network.entity.BusType;
+import in.koreatech.koin.core.constant.BusType;
 import in.koreatech.koin.data.network.interactor.CityBusInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
 
@@ -42,24 +42,24 @@ public class BusMainPresenter implements BasePresenter {
 
     public void getCityBus(int depart, int arrival) {
         busMainView.showLoading();
-        String mDepart;
-        String mArrival;
+        String departString;
+        String arrivalString;
 
         if (depart == 0)
-            mDepart = "koreatech";
+            departString = "koreatech";
         else if (depart == 1)
-            mDepart = "station";
+            departString = "station";
         else
-            mDepart = "terminal";
+            departString = "terminal";
 
         if (arrival == 0)
-            mArrival = "koreatech";
+            arrivalString = "koreatech";
         else if (arrival == 1)
-            mArrival = "station";
+            arrivalString = "station";
         else
-            mArrival = "terminal";
+            arrivalString = "terminal";
 
-        busInteractor.readCityBusList(apiCallback, mDepart, mArrival);
+        busInteractor.readCityBusList(apiCallback, departString, arrivalString);
     }
 
     public void getDaesungBus(int depart, int arrival) {

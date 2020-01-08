@@ -33,7 +33,7 @@ import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
  */
 public class LoginActivity extends ActivityBase implements LoginContract.View {
     private final String TAG = "LoginActivity";
-    private Context mContext;
+    private Context context;
     private LoginContract.Presenter mLoginPresenter;
     private boolean mIsMainActivity;
     private CustomProgressDialog customProgressDialog;
@@ -54,7 +54,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
     }
 
     private void init() {
-        mContext = this;
+        context = this;
         new LoginPresenter(this);
     }
 

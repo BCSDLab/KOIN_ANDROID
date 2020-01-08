@@ -16,16 +16,15 @@ import retrofit2.HttpException;
 /**
  * Created by hyerim on 2018. 8. 13....
  */
-public class CityBusRestInteractor implements CityBusInteractor{
-    private final String TAG = CityBusRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+public class CityBusRestInteractor implements CityBusInteractor {
+    private final String TAG = "CityBusRestInteractor";
 
     public CityBusRestInteractor() {
     }
 
     @Override
-    public void readCityBusList(ApiCallback apiCallback ,String depart, String arrival) {
-        RetrofitManager.getInstance().getRetrofit().create(CityBusService.class).getBusList(depart,arrival)
+    public void readCityBusList(ApiCallback apiCallback, String depart, String arrival) {
+        RetrofitManager.getInstance().getRetrofit().create(CityBusService.class).getBusList(depart, arrival)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<BusResponse>() {

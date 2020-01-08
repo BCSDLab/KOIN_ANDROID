@@ -24,8 +24,8 @@ import retrofit2.HttpException;
 import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBearer;
 
 public class TimeTableRestInteractor implements TimeTableInteractor {
-    private final String TAG = TimeTableRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "TimeTableRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public TimeTableRestInteractor() {
     }
@@ -62,7 +62,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
 
@@ -100,7 +100,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
 
@@ -152,7 +152,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                 .subscribe(new Observer<TimeTable>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -188,7 +188,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                 .subscribe(new Observer<ArrayList<TimeTable>>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override

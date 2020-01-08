@@ -20,7 +20,7 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
 
     private final String TAG = StoreDetailMenuRecyclerAdapter.class.getSimpleName();
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater;
     private ArrayList<Store> mStoreMenuArrayList;
 
@@ -39,7 +39,7 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
     }
 
     public StoreDetailMenuRecyclerAdapter(Context context, ArrayList<Store> storeArrayList) {
-        this.mContext = context;
+        this.context = context;
         this.mLayoutInflater = LayoutInflater.from(context);
         this.mStoreMenuArrayList = new ArrayList<>();
         this.mStoreMenuArrayList.addAll(storeArrayList);

@@ -24,7 +24,7 @@ import java.net.URL;
  */
 public class LoadImageFromUrl extends AsyncTask<Object, Void, Bitmap> {
     public static final String TAG = "LoadImageFromUrl";
-    private LevelListDrawable mDrawable;
+    private LevelListDrawable drawable;
     private WeakReference<Context> context;
     private WeakReference<TextView> textView;
 
@@ -36,7 +36,7 @@ public class LoadImageFromUrl extends AsyncTask<Object, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Object... params) {
         String source = (String) params[0];
-        mDrawable = (LevelListDrawable) params[1];
+        drawable = (LevelListDrawable) params[1];
         Log.d(TAG, "doInBackground " + source);
         try {
             InputStream is = new URL(source).openStream();
@@ -53,15 +53,15 @@ public class LoadImageFromUrl extends AsyncTask<Object, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        Log.d(TAG, "onPostExecute drawable " + mDrawable);
+        Log.d(TAG, "onPostExecute drawable " + drawable);
         Log.d(TAG, "onPostExecute bitmap " + bitmap);
         if (bitmap != null) {
             BitmapDrawable d = new BitmapDrawable(context.get().getResources(), bitmap);
             int width = textView.get().getWidth() < bitmap.getWidth() ? textView.get().getWidth() : bitmap.getWidth();
             int height = bitmap.getHeight() * width / bitmap.getWidth();
-            mDrawable.addLevel(1, 1, d);
-            mDrawable.setBounds(0, 0, width,height);
-            mDrawable.setLevel(1);
+            drawable.addLevel(1, 1, d);
+            drawable.setBounds(0, 0, width,height);
+            drawable.setLevel(1);
             CharSequence t = textView.get().getText();
             textView.get().setText(t);
         }

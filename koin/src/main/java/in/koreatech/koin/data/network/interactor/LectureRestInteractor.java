@@ -17,8 +17,8 @@ import retrofit2.HttpException;
 
 public class LectureRestInteractor implements LectureInteractor {
 
-    private final String TAG = LectureRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "LectureRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public LectureRestInteractor() {
     }

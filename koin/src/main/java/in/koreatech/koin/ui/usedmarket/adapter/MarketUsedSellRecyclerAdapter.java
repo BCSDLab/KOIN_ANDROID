@@ -26,7 +26,7 @@ import in.koreatech.koin.data.network.entity.Item;
 
 public class MarketUsedSellRecyclerAdapter extends RecyclerView.Adapter<MarketUsedSellRecyclerAdapter.ViewHolder> {
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
     private ArrayList<Item> mMarketsellArrayList;
     private final RequestOptions mGlideOptions;
@@ -57,7 +57,7 @@ public class MarketUsedSellRecyclerAdapter extends RecyclerView.Adapter<MarketUs
 
     public MarketUsedSellRecyclerAdapter(Context context, ArrayList<Item> marketsellArrayList) {
         mLayoutInflater = LayoutInflater.from(context);
-        this.mContext = context;
+        this.context = context;
         this.mMarketsellArrayList = new ArrayList<>();
         this.mMarketsellArrayList = marketsellArrayList;
 
@@ -89,7 +89,7 @@ public class MarketUsedSellRecyclerAdapter extends RecyclerView.Adapter<MarketUs
         Item item = mMarketsellArrayList.get(position);
         StringBuilder title = new StringBuilder();
 
-        Glide.with(mContext)
+        Glide.with(context)
                 .load(item.thumbnail)
                 .apply(mGlideOptions)
                 .into(holder.mImageViewItem);

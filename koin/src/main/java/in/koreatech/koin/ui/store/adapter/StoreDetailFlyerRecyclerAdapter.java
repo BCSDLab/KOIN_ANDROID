@@ -22,7 +22,7 @@ public class StoreDetailFlyerRecyclerAdapter extends RecyclerView.Adapter<StoreD
 
     private final String TAG = StoreDetailFlyerRecyclerAdapter.class.getSimpleName();
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater;
     private ArrayList<String> storeFlyerArrayList;
     private final RequestOptions glideOptions;
@@ -39,7 +39,7 @@ public class StoreDetailFlyerRecyclerAdapter extends RecyclerView.Adapter<StoreD
     }
 
     public StoreDetailFlyerRecyclerAdapter(Context context, ArrayList<String> storeFlyerArrayList) {
-        this.mContext = context;
+        this.context = context;
         this.mLayoutInflater = LayoutInflater.from(context);
         this.storeFlyerArrayList = storeFlyerArrayList;
         glideOptions = new RequestOptions()
@@ -61,7 +61,7 @@ public class StoreDetailFlyerRecyclerAdapter extends RecyclerView.Adapter<StoreD
     public void onBindViewHolder(@NonNull StoreDetailFlyerRecyclerAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         String url = storeFlyerArrayList.get(position);
-        Glide.with(mContext)
+        Glide.with(context)
                 .load(url)
                 .apply(glideOptions)
                 .into(holder.flyerImageview);

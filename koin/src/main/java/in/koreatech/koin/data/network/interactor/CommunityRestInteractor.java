@@ -31,8 +31,8 @@ import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBea
  * Created by hyerim on 2018. 6. 4....
  */
 public class CommunityRestInteractor implements CommunityInteractor {
-    private final String TAG = CommunityRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "CommunityRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public CommunityRestInteractor() {
     }
@@ -45,7 +45,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<ArrayList<Boards>>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -68,7 +68,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
 
@@ -83,7 +83,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Boards>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -105,7 +105,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-                        mCompositeDisposable.dispose();
+                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -118,7 +118,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<ArticlePageResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -155,7 +155,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -168,7 +168,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<ArticlePageResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -205,7 +205,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -223,7 +223,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -263,7 +263,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -282,7 +282,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -322,7 +322,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -335,7 +335,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -375,7 +375,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -393,7 +393,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -433,7 +433,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -448,7 +448,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -471,7 +471,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -488,7 +488,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -512,7 +512,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -528,7 +528,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -552,7 +552,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -571,7 +571,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -595,7 +595,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -612,7 +612,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -660,7 +660,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -711,7 +711,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -735,7 +735,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -750,7 +750,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -774,7 +774,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -792,7 +792,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -816,7 +816,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -830,7 +830,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -872,7 +872,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -923,7 +923,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -965,7 +965,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -988,7 +988,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -1006,7 +1006,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -1024,7 +1024,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -1041,7 +1041,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                 .subscribe(new Observer<Article>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -1059,7 +1059,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onComplete() {
-//                        mCompositeDisposable.dispose();
+//                        compositeDisposable.dispose();
                     }
                 });
     }

@@ -71,11 +71,11 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     private static final int REQUEST_CROP_IMAGE = 3;
     private static final int BUY_CODE = 1;
 
-    private Context mContext;
+    private Context context;
 
     private int mId;
     private String mTitle;
-    private String mContent;
+    private String content;
     private String mPrice;
     private String mPhoneNumber;
     private boolean mIsPhoneOpen;
@@ -90,7 +90,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     private CustomProgressDialog customProgressDialog;
     private MarketItem mMarketItem;
     private MarketUsedCreateContract.Presenter mMarketUsedCreatePresenter;
-    private Uri mCurrentPhotoPath;
+    private Uri currentPhotoPath;
     private File mImageFile;
 
     private boolean mIsTitlecheck;
@@ -133,7 +133,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mContext = this;
+        this.context = this;
         setContentView(R.layout.market_used_buy_create_activity);
         ButterKnife.bind(this);
         mPhoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
@@ -232,7 +232,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     @OnClick(R.id.market_used_buy_create_thumbnail_change_button)
     void onThumbnailChangeButtonClick() {
         getPermisson();
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (checkCameraPermisson() && checkStoragePermisson()) {
             builder.setMessage("이미지를 불러올 방법을 골라주세요.");
             builder.setPositiveButton("카메라", new DialogInterface.OnClickListener() {
@@ -243,14 +243,14 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
                     try {
                         photoFile = createImageFile();
                     } catch (IOException e) {
-                        Toast.makeText(mContext, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     if (photoFile != null) {
-                        mCurrentPhotoPath = FileProvider.getUriForFile(mContext,
+                        currentPhotoPath = FileProvider.getUriForFile(context,
                                 "in.koreatech.koin.provider", photoFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
                         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
                     }
 
@@ -419,9 +419,9 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
                 File oriFile = getImageFile(getImagePath);
 
                 //이미지 편집을 위해 선택한 이미지를 저장할 파일
-                mCurrentPhotoPath = data.getData();
+                currentPhotoPath = data.getData();
 
-                File copyFile = new File(mCurrentPhotoPath.getPath());
+                File copyFile = new File(currentPhotoPath.getPath());
 
                 //이미지 복사(이미지 편집시 원본 이미지가 변형되는것을 방지하기 위함)
                 createTempFile(copyFile, oriFile);
@@ -434,7 +434,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             case REQUEST_TAKE_PHOTO:
                 cropImage();
                 MediaScannerConnection.scanFile(this, //앨범에 사진을 보여주기 위해 Scan을 합니다.
-                        new String[]{mCurrentPhotoPath.getPath()}, null,
+                        new String[]{currentPhotoPath.getPath()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
                             public void onScanCompleted(String path, Uri uri) {
                             }
@@ -444,7 +444,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             case REQUEST_CROP_IMAGE:
 
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mCurrentPhotoPath);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPhotoPath);
                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     OutputStream os;
@@ -453,7 +453,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
-                    // Glide.with(mContext).asBitmap().load(bitmap).into(mMarketvEditThumbnailImageView);
+                    // Glide.with(context).asBitmap().load(bitmap).into(mMarketvEditThumbnailImageView);
                     mMarketUsedCreatePresenter.uploadThumbnailImage(mImageFile);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
@@ -515,13 +515,13 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
      */
     private void cropImage() {
 
-        this.grantUriPermission("com.android.camera", mCurrentPhotoPath,
+        this.grantUriPermission("com.android.camera", currentPhotoPath,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(mCurrentPhotoPath, "image/*");
+        intent.setDataAndType(currentPhotoPath, "image/*");
 
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        grantUriPermission(list.get(0).activityInfo.packageName, mCurrentPhotoPath,
+        grantUriPermission(list.get(0).activityInfo.packageName, currentPhotoPath,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         int size = list.size();
         if (size == 0) {
@@ -546,7 +546,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             File tempFile = new File(folder.toString(), croppedFileName.getName());
 
             mImageFile = tempFile;
-            mCurrentPhotoPath = FileProvider.getUriForFile(this,
+            currentPhotoPath = FileProvider.getUriForFile(this,
                     "in.koreatech.koin.provider", tempFile);
 
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -554,14 +554,14 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
 
 
             intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath);
             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
 
             Intent i = new Intent(intent);
             ResolveInfo res = list.get(0);
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            grantUriPermission(res.activityInfo.packageName, mCurrentPhotoPath,
+            grantUriPermission(res.activityInfo.packageName, currentPhotoPath,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
@@ -585,21 +585,21 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
 
-        Cursor mCursor = getContentResolver().query(uri, projection, null, null,
+        Cursor cursor = getContentResolver().query(uri, projection, null, null,
                 MediaStore.Images.Media.DATE_MODIFIED + " desc");
 
-        if (mCursor == null || mCursor.getCount() < 1) {
+        if (cursor == null || cursor.getCount() < 1) {
             return null;
         }
 
-        int idxColumn = mCursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        mCursor.moveToFirst();
+        int idxColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
 
-        String path = mCursor.getString(idxColumn);
+        String path = cursor.getString(idxColumn);
 
-        if (mCursor != null) {
-            mCursor.close();
-            mCursor = null;
+        if (cursor != null) {
+            cursor.close();
+            cursor = null;
         }
 
         return new File(path);
@@ -728,7 +728,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     @Override
     public void showImageUploadSuccess(String url) {
         mMarketBuyCreateThumbnailImageView.setVisibility(View.VISIBLE);
-        Glide.with(mContext).asBitmap().load(url).into(mMarketBuyCreateThumbnailImageView);
+        Glide.with(context).asBitmap().load(url).into(mMarketBuyCreateThumbnailImageView);
         mMarketItem.thumbnail = url;
     }
 

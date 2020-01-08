@@ -59,7 +59,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     /* View Component */
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppbarBase;
+    AppbarBase appbarBase;
     @BindView(R.id.circle_recyclerview)
     RecyclerView mCircleListRecyclerView;
     ImageView mCircleItemLogoImageview;
@@ -283,7 +283,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
         Intent intent = new Intent(this, CircleDetailActivity.class);
         ActivityOptions options = ActivityOptions
                 .makeSceneTransitionAnimation(this,
-                        Pair.create(mAppbarBase, SHARE_VIEW_NAME_APP_BAR),
+                        Pair.create(appbarBase, SHARE_VIEW_NAME_APP_BAR),
                         Pair.create(mCircleItemLogoImageview, SHARE_VIEW_NAME_LOGO),
                         Pair.create(mCircleItemNameTextview, SHARE_VIEW_NAME),
                         Pair.create(mCircleItemDetailTextview, SHARE_VIEW_DETAIL)

@@ -33,13 +33,13 @@ public class VersionUpdateDialog extends Dialog {
     TextView mVersionUpdateUpdateVersionTextview;
     @BindView(R.id.version_update_dialog_info_textview)
     TextView mVersionUpdateDialogInfoTextview;
-    Context mContext;
+    Context context;
     VersionDialogClickListener mVersionDialogClickListener;
 
 
     public VersionUpdateDialog(@NonNull Context context, int type, String currentVersion, String updateVersion, VersionDialogClickListener versionDialogClickListener) {
         super(context);
-        this.mContext = context;
+        this.context = context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.version_update_dialog);
@@ -71,9 +71,9 @@ public class VersionUpdateDialog extends Dialog {
         try {
             Intent appStoreIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName));
             appStoreIntent.setPackage("com.android.vending");
-            startActivity(mContext, appStoreIntent, null);
+            startActivity(context, appStoreIntent, null);
         } catch (android.content.ActivityNotFoundException exception) {
-            startActivity(mContext, new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)), null);
+            startActivity(context, new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)), null);
         }
         mVersionDialogClickListener.onUpdateClick();
         dismiss();

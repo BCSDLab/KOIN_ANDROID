@@ -99,7 +99,7 @@ public class Store {
     public ArrayList<StoreMenu> menus;
 
     public int shopId;
-    
+
     public String size;
 
     public String price;

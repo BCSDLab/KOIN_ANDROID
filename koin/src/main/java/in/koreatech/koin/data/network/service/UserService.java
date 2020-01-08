@@ -35,7 +35,7 @@ public interface UserService {
     @DELETE(URLConstant.USER.ME)
     Observable<DefaultResponse> deleteUser(@Header("Authorization") String authHeader);
 
-    @GET(URLConstant.USER.CHECKNICKNAME+"/{nickname}")
+    @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     Observable<UserInfoEditResponse> checkNickName(@Path("nickname") String nickname);
 }
 

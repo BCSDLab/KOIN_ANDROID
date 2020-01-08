@@ -17,14 +17,14 @@ import in.koreatech.koin.ui.bus.BusMainFragment;
 public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "BusMainViewPagerAdapter";
 
-    private int mTabCount;
-    private final String[] mTabTitle = new String[]{"운행정보","운행 정보 검색", "시간표"};
+    private int tabCount;
+    private final String[] mTabTitle = new String[]{"운행정보", "운행 정보 검색", "시간표"};
 
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public BusMainViewPagerAdapter(FragmentManager fragmentManager, int tabCount) {
         super(fragmentManager);
-        this.mTabCount = tabCount;
+        this.tabCount = tabCount;
     }
 
     @NonNull
@@ -48,7 +48,7 @@ public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mTabCount;
+        return this.tabCount;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package in.koreatech.koin.data.network.entity;
+package in.koreatech.koin.core.constant;
 
 public enum BusType {
     KOREATECH("koreatech", 0),

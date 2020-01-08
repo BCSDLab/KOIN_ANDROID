@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by hyerim on 2018. 5. 31....
  */
-public class Photo implements Serializable{
+public class Photo implements Serializable {
     private String highresLink;
     private String photoId;
     private String baseUrl;

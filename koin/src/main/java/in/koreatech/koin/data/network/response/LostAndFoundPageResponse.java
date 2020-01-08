@@ -22,7 +22,6 @@ public class LostAndFoundPageResponse {
     public int totalItemCount;
 
 
-
     public LostAndFoundPageResponse(int totalPage, ArrayList<LostItem> lostItemArrayList, int totalItemCount) {
         this.totalPage = totalPage;
         this.lostItemArrayList = lostItemArrayList;

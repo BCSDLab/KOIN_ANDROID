@@ -19,12 +19,8 @@ import in.koreatech.koin.R;
 public class BusTimeTableChungjuShuttleFragment extends Fragment {
     private final String TAG = "BusTimeTableChungjuShuttleFragment";
 
-
-    private Unbinder mUnbinder;
-    private FragmentManager mFragmentManger;
-
     /* View Component */
-    private View mView;
+    private View view;
 
 
 
@@ -36,9 +32,9 @@ public class BusTimeTableChungjuShuttleFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.bus_timetable_chungju_shuttle, container, false);
+        this.view = inflater.inflate(R.layout.bus_timetable_chungju_shuttle, container, false);
         init();
-        return mView;
+        return this.view;
     }
 
     @Override

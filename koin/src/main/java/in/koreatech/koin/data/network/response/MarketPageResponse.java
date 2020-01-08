@@ -21,7 +21,7 @@ public class MarketPageResponse {
     @Expose
     public int totalItemCount;
 
-    public MarketPageResponse(ArrayList<Item> marketArrayList, int totalPage,int totalItemCount) {
+    public MarketPageResponse(ArrayList<Item> marketArrayList, int totalPage, int totalItemCount) {
         this.marketArrayList = marketArrayList;
         this.totalPage = totalPage;
         this.totalItemCount = totalItemCount;

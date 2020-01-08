@@ -30,8 +30,8 @@ import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBea
 
 public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
-    private final String TAG = MarketUsedInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "MarketUsedInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public MarketUsedRestInteractor() {
     }
@@ -44,7 +44,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<MarketPageResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -86,7 +86,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<Item>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -125,7 +125,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<Item>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -163,7 +163,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -199,7 +199,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -237,7 +237,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -274,7 +274,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -311,7 +311,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -349,7 +349,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -388,7 +388,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override

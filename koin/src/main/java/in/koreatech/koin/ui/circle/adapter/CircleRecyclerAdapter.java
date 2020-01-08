@@ -28,26 +28,26 @@ import in.koreatech.koin.data.network.entity.Circle;
 public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAdapter.ViewHolder> {
     private final String TAG = CircleRecyclerAdapter.class.getSimpleName();
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Circle> mCirlceArrayList;
+    private ArrayList<Circle> cirlceArrayList;
     private final RequestOptions mGlideOptions;
     private final Resources mResource;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.circle_item_background_imageview)
-        ImageView mCircleItemBackgroundImageview;
+        ImageView circleItemBackgroundImageview;
         @BindView(R.id.circle_item_logo_background_imageview)
-        ImageView mCircleItemLogoBackgroundImageview;
+        ImageView circleItemLogoBackgroundImageview;
         @BindView(R.id.circle_item_logo_background_border_imageview)
-        ImageView mCircleItemLogoBackgroundBorderImageview;
+        ImageView circleItemLogoBackgroundBorderImageview;
         @BindView(R.id.circle_item_logo_imageview)
-        ImageView mCircleItemLogoImageview;
+        ImageView circleItemLogoImageview;
         @BindView(R.id.circle_item_name_textview)
-        TextView mCircleItemNameTextview;
+        TextView circleItemNameTextview;
         @BindView(R.id.circle_item_detail_textview)
-        TextView mCircleItemDetailTextview;
+        TextView circleItemDetailTextview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,11 +56,11 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
     }
 
     public CircleRecyclerAdapter(Context context, ArrayList<Circle> circleArrayList) {
-        this.mContext = context;
+        this.context = context;
         this.mResource = context.getResources();
         this.mLayoutInflater = LayoutInflater.from(context);
-        this.mCirlceArrayList = new ArrayList<>();
-        this.mCirlceArrayList.addAll(circleArrayList);
+        this.cirlceArrayList = new ArrayList<>();
+        this.cirlceArrayList.addAll(circleArrayList);
         mGlideOptions = new RequestOptions()
                 .fitCenter()
                 .override(300, 300)
@@ -79,37 +79,37 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        Circle circle = mCirlceArrayList.get(position);
-        Glide.with(mContext).load(new ColorDrawable(mContext.getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(holder.mCircleItemLogoBackgroundImageview);
-        Glide.with(mContext).load(new ColorDrawable(mContext.getResources().getColor(R.color.cloudy_blue))).apply(RequestOptions.circleCropTransform()).into(holder.mCircleItemLogoBackgroundBorderImageview);
+        Circle circle = cirlceArrayList.get(position);
+        Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundImageview);
+        Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.cloudy_blue))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundBorderImageview);
 
         if (circle.name != null)
-            holder.mCircleItemNameTextview.setText(circle.name);
+            holder.circleItemNameTextview.setText(circle.name);
         if (circle.lineDescription != null)
-            holder.mCircleItemDetailTextview.setText(circle.lineDescription);
+            holder.circleItemDetailTextview.setText(circle.lineDescription);
         if (circle.logoUrl != null) {
-            Glide.with(mContext)
+            Glide.with(context)
                     .load(circle.logoUrl)
                     .apply(mGlideOptions)
                     .apply(RequestOptions.circleCropTransform())
-                    .into(holder.mCircleItemLogoImageview);
+                    .into(holder.circleItemLogoImageview);
         } else {
-            Glide.with(mContext).load(new ColorDrawable(mContext.getResources().getColor(R.color.gray1))).apply(RequestOptions.circleCropTransform()).into(holder.mCircleItemLogoImageview);
+            Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.gray1))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoImageview);
         }
         if (circle.backgroundImgUrl != null) {
-            Glide.with(mContext)
+            Glide.with(context)
                     .load(circle.backgroundImgUrl)
                     .apply(mGlideOptions)
-                    .into(holder.mCircleItemBackgroundImageview);
+                    .into(holder.circleItemBackgroundImageview);
         } else {
-            holder.mCircleItemBackgroundImageview.setBackgroundColor(mResource.getColor(R.color.light_navy));
+            holder.circleItemBackgroundImageview.setBackgroundColor(mResource.getColor(R.color.light_navy));
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return mCirlceArrayList.size();
+        return cirlceArrayList.size();
     }
 
 }

@@ -33,7 +33,7 @@ public class FilterUtil implements InputFilter {
             return source;
         }
 
-//        ToastUtil.makeShort(mContext, "입력할 수 없는 문자입니다");
+//        ToastUtil.makeShort(context, "입력할 수 없는 문자입니다");
         return "";
     }
 

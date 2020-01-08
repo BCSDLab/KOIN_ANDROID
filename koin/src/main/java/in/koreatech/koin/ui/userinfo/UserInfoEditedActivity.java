@@ -42,13 +42,13 @@ import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
  */
 public class UserInfoEditedActivity extends KoinNavigationDrawerActivity implements UserInfoEditContract.View {
     private final String TAG = "UserInfoEditedActivity";
-    private Context mContext;
+    private Context context;
 
     private User mUser;
     private UserInfoEditContract.Presenter mUserInfoEditPresenter;
 
 
-    private String mChangedNickname;
+    private String changedNickname;
     private boolean isNicknameChecked;
 
     private ArrayList<String> ARRAY_MAJOR;
@@ -88,7 +88,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info_edited);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
 
         init();
     }
@@ -139,7 +139,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         mUserinfoeditedEdittextName.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_H), new InputFilter.LengthFilter(20)});
         mUserinfoeditedEdittextNickname.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
 
-        mChangedNickname = "";
+        changedNickname = "";
         isNicknameChecked = false;
 
         ARRAY_MAJOR = new ArrayList<String>(Arrays.asList(getResources().getStringArray(R.array.major)));
@@ -254,7 +254,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         else if (mUser.userNickName.equals(curNickname)) {
             //기존 닉네임 여부 검사 / 입력 안 한 경우
             checkInputUserData();
-        } else if (mChangedNickname.equals(curNickname) && isNicknameChecked) {
+        } else if (changedNickname.equals(curNickname) && isNicknameChecked) {
             //닉네임 검사 버튼 누른 경우
             checkInputUserData();
         } else {
@@ -291,7 +291,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         }
 
         mUserinfoeditedEdittextNickname.setText(isNull(mUser.userNickName));
-        mChangedNickname = isNull(mUser.userNickName);
+        changedNickname = isNull(mUser.userNickName);
 
         if (FormValidatorUtil.validateStringIsEmpty(mUser.phoneNumber) || mUser.phoneNumber.equals("")) {
             mUserinfoeditedEdittextPhone1.setText("");
@@ -459,6 +459,6 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     public void onNicknameCheckSuccess(String nickname) {
         isNicknameChecked = true;
-        mChangedNickname = nickname;
+        changedNickname = nickname;
     }
 }

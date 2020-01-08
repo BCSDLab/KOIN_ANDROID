@@ -54,10 +54,10 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
 
     private final int BUYMARKETID = 1;
-    private int mTotalItemCount;
+    private int mTotalItecount;
     private int mPosition;
     private boolean mGrantCheck;
-    private int mCurrentPage;
+    private int currentPage;
     private int mTotalPage;
     private boolean mIsResume;
     private CustomProgressDialog customProgressDialog;
@@ -128,7 +128,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     @Override
     public void onMarketDataReceived(MarketPageResponse marketPageResponses) {
         mTotalPage = marketPageResponses.totalPage;
-        if (mCurrentPage == 1)
+        if (currentPage == 1)
             mMarketBuyArrayList.clear();
         mMarketBuyArrayList.addAll(marketPageResponses.marketArrayList);
 
@@ -178,13 +178,13 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     public void onRefresh() {
         // 새로고침 코드
 
-        if ((mCurrentPage != mTotalPage) && !mIsResume) {
-            mCurrentPage++;
-            mMarketUsedPresenter.readMarket(BUYMARKETID, mCurrentPage);
+        if ((currentPage != mTotalPage) && !mIsResume) {
+            currentPage++;
+            mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
         } else if (!mIsResume)
             ToastUtil.getInstance().makeShort(R.string.market_used_list_last_page);
         else
-            mMarketUsedPresenter.readMarket(BUYMARKETID, mCurrentPage);
+            mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
 
         mIsResume = false;
         updateUserInterface();
@@ -216,7 +216,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
 
 
     public void init() {
-        mCurrentPage = 1;
+        currentPage = 1;
         mIsResume = false;
         mMarketUsedBuyRecyclerAdapter = new MarketUsedBuyRecyclerAdapter(getActivity(), mMarketBuyArrayList);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -226,7 +226,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
         mMarketBuyRecyclerView.addOnItemTouchListener(recyclerItemtouchListener); //itemTouchListner 설정
         mMarketBuyRecyclerView.setAdapter(mMarketUsedBuyRecyclerAdapter); //adapter 설정
         setPresenter(new MarketUsedPresenter(this, new MarketUsedRestInteractor()));
-        mMarketUsedPresenter.readMarket(BUYMARKETID, mCurrentPage);
+        mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
 
     }
 
@@ -244,7 +244,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     public void onResume() {
         super.onResume();
         mIsResume = true;
-        mCurrentPage = 1;
+        currentPage = 1;
         onRefresh();
     }
 

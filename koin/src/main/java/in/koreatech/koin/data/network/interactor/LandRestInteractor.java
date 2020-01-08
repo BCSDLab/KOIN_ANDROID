@@ -15,8 +15,8 @@ import retrofit2.HttpException;
 
 
 public class LandRestInteractor implements LandInteractor {
-    private final String TAG = LandRestInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "LandRestInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void readLandDetail(int landId, ApiCallback apiCallback) {
@@ -47,7 +47,7 @@ public class LandRestInteractor implements LandInteractor {
                     }
                     @Override
                     public void onComplete() {
-                        mCompositeDisposable.dispose();
+                        compositeDisposable.dispose();
                     }
                 });
     }

@@ -1,13 +1,10 @@
 package in.koreatech.koin.data.network.entity;
 
 
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class MarketItem {
-
-
 
     @SerializedName("title")
     @Expose
@@ -47,16 +44,14 @@ public class MarketItem {
     public int type;
 
 
-
-
     public MarketItem() {
     }
 
     public MarketItem(boolean grantEdit) {
     }
 
-    public MarketItem( String title, String content, int state
-            , int price, String phone, int isPhoneOpen,String urls) {
+    public MarketItem(String title, String content, int state
+            , int price, String phone, int isPhoneOpen, String urls) {
         this.title = title;
         this.content = content;
         this.state = state;

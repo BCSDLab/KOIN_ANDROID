@@ -17,7 +17,7 @@ import in.koreatech.koin.core.R;
 public class BottomSheetItemRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "BottomSheetItemRecyclerAdapter";
 
-    private Context mContext;
+    private Context context;
     private ArrayList<String> mItemsArrayList;
 
     class ItemsViewHolder extends RecyclerView.ViewHolder {
@@ -31,7 +31,7 @@ public class BottomSheetItemRecyclerAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public BottomSheetItemRecyclerAdapter(Context context, ArrayList<String> arrayList) {
-        this.mContext = context;
+        this.context = context;
         this.mItemsArrayList = arrayList;
     }
 

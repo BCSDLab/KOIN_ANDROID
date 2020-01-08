@@ -33,21 +33,21 @@ import io.fabric.sdk.android.Fabric;
 public class SplashActivity extends ActivityBase implements SplashContract.View, VersionDialogClickListener {
     private final String TAG = "SplashActivity";
 
-    private Context mContext;
+    private Context context;
     private SplashContract.Presenter mSplashPresenter;
     private FirebasePerformanceUtil mFirebasePerformanceUtil;
     private PackageInfo mPakageInfo;
-    private String mCurrentVersionName;
+    private String currentVersionName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_start);
-        this.mContext = this;
+        this.context = this;
 
         init();
-        mSplashPresenter.checkUpdate(mCurrentVersionName);
+        mSplashPresenter.checkUpdate(currentVersionName);
 
     }
 
@@ -57,7 +57,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
         RetrofitManager.getInstance().init();
         UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
         new SplashPresenter(this);
-        mCurrentVersionName = getVersionName();
+        currentVersionName = getVersionName();
         //TODO : 버전 확인, 업데이트
         //TODO : 자동로그인 방식 수정 필요 (토큰 업데이트)
         if(!BuildConfig.IS_DEBUG)
@@ -98,7 +98,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private final Runnable mLoginActivityRunnable = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(mContext, LoginActivity.class));
+            startActivity(new Intent(context, LoginActivity.class));
             overridePendingTransition(R.anim.fade, R.anim.hold);
             finish();
             mFirebasePerformanceUtil.stop();
@@ -108,7 +108,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private final Runnable mMainActivityRunnable = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(mContext, MainActivity.class));
+            startActivity(new Intent(context, MainActivity.class));
             overridePendingTransition(R.anim.fade, R.anim.hold);
             finish();
             mFirebasePerformanceUtil.stop();
@@ -128,7 +128,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
 
     public void createVersionUpdateDialog(int type,String storeVersion)
     {
-        VersionUpdateDialog dialog = new VersionUpdateDialog(this,type,mCurrentVersionName,storeVersion,this);
+        VersionUpdateDialog dialog = new VersionUpdateDialog(this,type,currentVersionName,storeVersion,this);
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
         Display display = getWindowManager().getDefaultDisplay();

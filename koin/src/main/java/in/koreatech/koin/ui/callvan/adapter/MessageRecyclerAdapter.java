@@ -27,7 +27,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int VIEW_TYPE_OUTGOING = 1; //보낸 메시지
     private static final int VIEW_TYPE_NOTICE = 2;
 
-    private Context mContext;
+    private Context context;
     private ArrayList<Message> mMessageList; //Message List
     private ArrayList<String> mMessageKeyList;
     private String mUid; //사용자 uid
@@ -42,7 +42,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView mMessageBody;
         @Nullable
         @BindView(R.id.create_time_incoming)
-        TextView mCreateTime;
+        TextView createTime;
 
         public IncomingViewHolder(View itemView) {
             super(itemView);
@@ -60,7 +60,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView mMessageBody;
         @Nullable
         @BindView(R.id.create_time_outgoing)
-        TextView mCreateTime;
+        TextView createTime;
 
 
         public OutgoingViewHolder(View itemView) {
@@ -80,7 +80,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     public MessageRecyclerAdapter(Context context, ArrayList<Message> messageList, ArrayList<String> messageKeyList) {
-        this.mContext = context;
+        this.context = context;
         this.mMessageList = messageList;
         this.mMessageKeyList = messageKeyList;
 
@@ -115,14 +115,14 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 IncomingViewHolder incomingViewHolder = (IncomingViewHolder) holder;
                 incomingViewHolder.mUserName.setText(message.userName);
                 incomingViewHolder.mMessageBody.setText(message.message);
-                incomingViewHolder.mCreateTime.setText(message.createDate);
+                incomingViewHolder.createTime.setText(message.createDate);
                 break;
 
             case VIEW_TYPE_OUTGOING:
                 OutgoingViewHolder outgoingViewHolder = (OutgoingViewHolder) holder;
                 outgoingViewHolder.mUserName.setText(message.userName);
                 outgoingViewHolder.mMessageBody.setText(message.message);
-                outgoingViewHolder.mCreateTime.setText(message.createDate);
+                outgoingViewHolder.createTime.setText(message.createDate);
                 break;
 
             case VIEW_TYPE_NOTICE:

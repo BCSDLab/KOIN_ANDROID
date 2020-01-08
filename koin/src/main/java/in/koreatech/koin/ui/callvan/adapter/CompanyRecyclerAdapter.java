@@ -23,13 +23,13 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
     private final String TAG = "CompanyRecyclerAdapter";
 
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Company> mCompanyArrayList; //콜밴 업체 정보를 저장할 List
-    private Context mContext;
+    private ArrayList<Company> companyArrayList; //콜밴 업체 정보를 저장할 List
+    private Context context;
 
     public CompanyRecyclerAdapter(Context context, ArrayList<Company> companyArrayList) {
         mLayoutInflater = LayoutInflater.from(context);
-        this.mContext = context;
-        this.mCompanyArrayList = companyArrayList;
+        this.context = context;
+        this.companyArrayList = companyArrayList;
     }
 
 
@@ -55,7 +55,7 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        Company company = mCompanyArrayList.get(position);
+        Company company = companyArrayList.get(position);
         holder.mTextViewCallvanName.setText(company.name); //콜밴 이름
         holder.mTextViewCallvanNumber.setText(company.phone); //콜밴 번호
 
@@ -63,7 +63,7 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
 
     @Override
     public int getItemCount() {
-        return mCompanyArrayList.size();
+        return companyArrayList.size();
     }
 
 }

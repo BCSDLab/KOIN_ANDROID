@@ -21,13 +21,13 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
 
     private final UserInfoContract.View mUserInfoView;
     private final UserInteractor mUserInteractor;
-    private final CallvanInteractor mCallvanInteractor;
+    private final CallvanInteractor callvanInteractor;
 
     public UserInfoPresenter(@NonNull UserInfoContract.View userInfoView) {
         mUserInfoView = checkNotNull(userInfoView, "userInfoView cannnot be null");
         mUserInfoView.setPresenter(this);
         this.mUserInteractor = new UserRestInteractor();
-        this.mCallvanInteractor = new CallvanRestInteractor();
+        this.callvanInteractor = new CallvanRestInteractor();
     }
 
     private final ApiCallback readUserApiCallback = new ApiCallback() {
@@ -84,7 +84,7 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
     }
 
     public void updateDecreaseCurrentPeopleCount(int roomUid) {
-        mCallvanInteractor.deleteParticipant(roomUid, deleteParticipantApiCallback );
+        callvanInteractor.deleteParticipant(roomUid, deleteParticipantApiCallback );
     }
 
 }

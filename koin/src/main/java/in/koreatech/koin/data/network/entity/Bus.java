@@ -334,7 +334,7 @@ public class Bus {
             // 오늘 일자로 시간 설정
             long timeDifference = currentBusTime.getTimeInMillis() - currentTime.getTimeInMillis();
             if (timeDifference > 0) { // 오늘 남은 버스가 존재한다면 ?
-                return timeDifference/1000;
+                return timeDifference / 1000;
             }
         }
         return -1;
@@ -374,9 +374,9 @@ public class Bus {
     }
 
     /**
-     * @param timetable  index 값을 받고 싶은 시간표를 인자로 받는다.
-     * @param hour       시간 입력 받는다.
-     * @param min        분 입력 받는다.
+     * @param timetable index 값을 받고 싶은 시간표를 인자로 받는다.
+     * @param hour      시간 입력 받는다.
+     * @param min       분 입력 받는다.
      * @return 현 시간에서 가장 가까운 남은 버스 시간 값의 index를 반환해준다.
      * @throws ParseException
      */

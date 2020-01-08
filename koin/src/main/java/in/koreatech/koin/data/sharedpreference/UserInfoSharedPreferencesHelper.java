@@ -87,10 +87,9 @@ public class UserInfoSharedPreferencesHelper extends BaseSharedPreferencesHelper
     }
 
     // 권한 확인
-    public AuthorizeConstant checkAuthorize() throws NullPointerException
-    {
+    public AuthorizeConstant checkAuthorize() throws NullPointerException {
         String userStr = sharedPreferences.getString(KEY_USER, "");
-        if(userStr.isEmpty())
+        if (userStr.isEmpty())
             return AuthorizeConstant.ANONYMOUS;
         else
             return AuthorizeConstant.MEMBER;

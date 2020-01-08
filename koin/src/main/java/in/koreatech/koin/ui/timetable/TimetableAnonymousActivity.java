@@ -84,7 +84,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @BindView(R.id.timetable_timetableview)
     TimetableView mTimetableView;
     @BindView(R.id.timetable_add_schedule_bottom_sheet)
-    LinearLayout mBottomsheet;
+    LinearLayout bottomsheet;
     @BindView(R.id.timetable_container_relativelayout)
     RelativeLayout mTimeTableContainerRelativeLayout;
     @BindView(R.id.timetable_search_recyclerview)
@@ -92,7 +92,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @BindView(R.id.timetable_add_schedule_bottom_sheet_center_textview)
     TextView mTimetableAddTopTextView;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet)
-    LinearLayout mDetailBottomsheet;
+    LinearLayout detailBottomsheet;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_center_textview)
     TextView mTimetableDetailTopTextView;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_class_title_textview)
@@ -110,13 +110,13 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @BindView(R.id.table_header)
     TableLayout mTimeTableHeader;
 
-    private Context mContext;
-    private UserLockBottomSheetBehavior mBottomSheetBehavior;
-    private UserLockBottomSheetBehavior mBottomSheetDetailBehavior;
+    private Context context;
+    private UserLockBottomSheetBehavior bottomSheetBehavior;
+    private UserLockBottomSheetBehavior bottomSheetDetailBehavior;
     private boolean isBottomSheetOpen;
     private boolean isBottomDetailSheetOpen;
     private TimetableAnonymousPresenter mTimetablePresenter;
-    private int mCategoryNumber;
+    private int categoryNumber;
 
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
     private ArrayList<TimeTableItem> mTimeTableArrayList;
@@ -131,7 +131,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     private TimetableSelectAnonymousMajorDialog mTimetableSelectAnonymousMajorDialog;
     private boolean isLoading;
     private DepartmentCode mSelectedDepartmentCode;
-    private int mBlockId;
+    private int blockId;
 
     private String semester = "";
 
@@ -139,7 +139,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable_activity_main);
-        mContext = this;
+        context = this;
         ButterKnife.bind(this);
         init();
     }
@@ -149,15 +149,15 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         isLoading = false;
         mSelectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
         setPresenter(new TimetableAnonymousPresenter(this));
-        mCategoryNumber = -1;
+        categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
         selectedLectureArrayList = new ArrayList<>();
         mTimeTableArrayList = new ArrayList<>();
         selectedLectureSeperateArrayList = new ArrayList<>();
-        mBottomSheetBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(mBottomsheet);
-        mBottomSheetDetailBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(mDetailBottomsheet);
-        mBottomsheet.setNestedScrollingEnabled(false);
+        bottomSheetBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(bottomsheet);
+        bottomSheetDetailBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(detailBottomsheet);
+        bottomsheet.setNestedScrollingEnabled(false);
         closeBottomSearchSheetButton();
         isBottomSheetOpen = false;
         mLayoutManager = new LinearLayoutManager(this);
@@ -273,7 +273,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void closeBottomSearchSheetButton() {
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         hideKeyboard(TimetableAnonymousActivity.this);
         clearFilterData();
     }
@@ -284,7 +284,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                customProgressDialog = new CustomProgressDialog(mContext, "저장 중");
+                customProgressDialog = new CustomProgressDialog(context, "저장 중");
                 customProgressDialog.execute();
             };
             handler.post(runnable);
@@ -302,7 +302,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public void initSearchRecyclerview() {
         mTimetableSearchRecyclerview.setLayoutManager(mLayoutManager);
-        mTimetableRecyclerAdapter = new TimetableRecyclerAdapter(mContext, selectedLectureSeperateArrayList);
+        mTimetableRecyclerAdapter = new TimetableRecyclerAdapter(context, selectedLectureSeperateArrayList);
         mTimetableSearchRecyclerview.setHasFixedSize(true);
         mTimetableSearchRecyclerview.setNestedScrollingEnabled(false);
         mTimetableRecyclerAdapter.setRecyclerViewClickListener(this);
@@ -311,7 +311,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
 
     public void initBottomSheet() {
-        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int state) {
                 int height = bottomSheet.getHeight();
@@ -337,7 +337,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void initDetailBottomSheet() {
-        mBottomSheetDetailBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetDetailBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int state) {
                 switch (state) {
@@ -367,12 +367,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         if (isBottomSheetOpen) {
             isBottomSheetOpen = false;
             mTimetableView.setMarginBottom(mTimetableAddTopTextView.getHeight());
-            mBottomSheetBehavior.setPeekHeight(mTimetableAddTopTextView.getHeight());
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehavior.setPeekHeight(mTimetableAddTopTextView.getHeight());
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             isBottomSheetOpen = true;
-            mBottomSheetBehavior.setPeekHeight(0);
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            bottomSheetBehavior.setPeekHeight(0);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
     }
@@ -382,12 +382,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         if (isBottomDetailSheetOpen) {
             isBottomDetailSheetOpen = false;
             mTimetableView.setMarginBottom(mTimetableDetailTopTextView.getHeight());
-            mBottomSheetDetailBehavior.setPeekHeight(mTimetableDetailTopTextView.getHeight());
-            mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetDetailBehavior.setPeekHeight(mTimetableDetailTopTextView.getHeight());
+            bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             isBottomDetailSheetOpen = true;
-            mBottomSheetDetailBehavior.setPeekHeight(0);
-            mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            bottomSheetDetailBehavior.setPeekHeight(0);
+            bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
     }
@@ -397,9 +397,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onBackPressed() {
 
         if (isBottomSheetOpen)
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         else if (isBottomDetailSheetOpen)
-            mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         else
             super.onBackPressed();
     }
@@ -417,7 +417,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onClickedSticker(TimeTableItem timeTableItem) {
         if (!isBottomSheetOpen) {
             StringBuilder infoStringBuilder = new StringBuilder();
-            mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             infoStringBuilder.append(getSpertateTimeToString(timeTableItem.getClassTime())).append("\n");
             if (timeTableItem.getDepartment() != null && !timeTableItem.getDepartment().trim().equals(""))
                 infoStringBuilder.append(timeTableItem.getDepartment()).append(" / ");
@@ -437,7 +437,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 infoStringBuilder.append("-").append(" / ");
             mTimetableDetailClassTitleTextview.setText(timeTableItem.getClassTitle());
             mTimetableDetailinformationTextview.setText(infoStringBuilder.toString());
-            mBlockId = timeTableItem.getId();
+            blockId = timeTableItem.getId();
 
         }
     }
@@ -445,7 +445,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     // Bottom sheet 검색 창 불러오는 함수
     public void onAddClassButtonClicked() {
         clearFilterData();
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     // Bottom sheet 검색 확인 함수
@@ -583,10 +583,10 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onClickedDetailBottomSheet(View view) {
         switch (view.getId()) {
             case R.id.timetable_detail_schedule_bottom_sheet_left_textview:
-                showAskDeleteTimeTableItemDialog(mBlockId);
+                showAskDeleteTimeTableItemDialog(blockId);
                 break;
             case R.id.timetable_detail_schedule_bottom_sheet_right_textview:
-                mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                 mTimetableSearchRecyclerview.setVisibility(View.GONE);
                 isBottomDetailSheetOpen = false;
                 break;
@@ -660,7 +660,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     public void showDeleteSuccessTimeTableItem(int id) {
         mTimetablePresenter.getSavedTimeTableItem();
-        mBottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         isBottomDetailSheetOpen = false;
     }
 

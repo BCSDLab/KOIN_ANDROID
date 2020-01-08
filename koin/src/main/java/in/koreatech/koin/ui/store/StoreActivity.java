@@ -38,7 +38,7 @@ import in.koreatech.koin.ui.store.presenter.StorePresenter;
 public class StoreActivity extends KoinNavigationDrawerActivity implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = StoreActivity.class.getSimpleName();
 
-    private Context mContext;
+    private Context context;
     private StoreRecyclerAdapter mStoreRecyclerAdapter;
     private static CustomProgressDialog mGenerateProgress;
 
@@ -49,7 +49,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private ArrayList<Store> mStoreAllArraylist; //All store list
     private int mStoreCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
     private Resources mResources;
-    private String mCategoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
+    private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
     private final int[] CATEGORY_ID = {R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
             R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc};
     private final int[] CATEGORY_TEXT_ID
@@ -71,7 +71,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_activity_main);
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         init();
         //TODO:필터기능 추가
     }
@@ -117,7 +117,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
 
     public void sortStoreCategorize(int position) {
-        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
+        mGenerateProgress = new CustomProgressDialog(context, "로딩 중");
         mGenerateProgress.execute();
         mStoreArrayList.clear();
 
@@ -125,7 +125,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             mStoreArrayList.addAll(mStoreAllArraylist);
         else {
             for (int a = 0; a < mStoreAllArraylist.size(); a++)
-                if (isSameCategory(mStoreAllArraylist.get(a).category, mCategoryCode[position - 1]))
+                if (isSameCategory(mStoreAllArraylist.get(a).category, categoryCode[position - 1]))
                     mStoreArrayList.add(mStoreAllArraylist.get(a));
         }
         mGenerateProgress.cancel(true);
@@ -161,13 +161,13 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     private void init() {
         mResources = getResources();
-        mCategoryCode = mResources.getStringArray(R.array.store_category_list_code);
+        categoryCode = mResources.getStringArray(R.array.store_category_list_code);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mStoreCategoryNumber = 0; //메뉴 전체로 초기화
         mLayoutManager = new LinearLayoutManager(this);
         mStoreArrayList = new ArrayList<>();
         mStoreAllArraylist = new ArrayList<>();
-        mStoreRecyclerAdapter = new StoreRecyclerAdapter(mContext, new ArrayList<Store>());
+        mStoreRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<Store>());
         mStoreListRecyclerView.setNestedScrollingEnabled(false);
         mStoreListRecyclerView.setHasFixedSize(false);
         mStoreListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
@@ -222,7 +222,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     @Override
     public void updateUserInterface() {
-        mStoreRecyclerAdapter = new StoreRecyclerAdapter(mContext, mStoreArrayList);
+        mStoreRecyclerAdapter = new StoreRecyclerAdapter(context, mStoreArrayList);
         mStoreListRecyclerView.setAdapter(mStoreRecyclerAdapter);
 
     }

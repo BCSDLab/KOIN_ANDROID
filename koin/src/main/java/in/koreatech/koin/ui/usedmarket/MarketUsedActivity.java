@@ -33,7 +33,7 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     private final String TAG = MarketUsedActivity.class.getSimpleName();
     private final String TABLAYOUT_FONT_NAME = "fonts/notosanscjkkr_regular.otf";
-    private Context mContext;
+    private Context context;
     private FirebasePerformanceUtil mFirebasePerformanceUtil;
 
     /* View Component */
@@ -53,7 +53,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.market_used_activity_main);
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         init();
     }
 

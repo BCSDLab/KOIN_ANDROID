@@ -27,7 +27,9 @@ import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build;
+
 import androidx.core.view.ViewCompat;
+
 import android.view.animation.Animation;
 
 import in.koreatech.koin.core.R;
@@ -129,14 +131,14 @@ class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
         private final RadialGradient mRadialGradient;
         private final int mShadowRadius;
         private final Paint mShadowPaint;
-        private final int mCircleDiameter;
+        private final int circleDiameter;
 
         public OvalShadow(int shadowRadius, int circleDiameter) {
             super();
             mShadowPaint = new Paint();
             mShadowRadius = shadowRadius;
-            mCircleDiameter = circleDiameter;
-            mRadialGradient = new RadialGradient(mCircleDiameter / 2, mCircleDiameter / 2,
+            this.circleDiameter = circleDiameter;
+            mRadialGradient = new RadialGradient(circleDiameter / 2, circleDiameter / 2,
                     mShadowRadius, new int[]{
                     FILL_SHADOW_COLOR, Color.TRANSPARENT
             }, null, Shader.TileMode.CLAMP);
@@ -147,9 +149,9 @@ class CircleImageView extends androidx.appcompat.widget.AppCompatImageView {
         public void draw(Canvas canvas, Paint paint) {
             final int viewWidth = CircleImageView.this.getWidth();
             final int viewHeight = CircleImageView.this.getHeight();
-            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2 + mShadowRadius),
+            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (circleDiameter / 2 + mShadowRadius),
                     mShadowPaint);
-            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (mCircleDiameter / 2), paint);
+            canvas.drawCircle(viewWidth / 2, viewHeight / 2, (circleDiameter / 2), paint);
         }
     }
 }

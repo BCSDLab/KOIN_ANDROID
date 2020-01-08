@@ -28,7 +28,7 @@ public class TypekitLayoutInflater extends LayoutInflater {
 
     // Reflection Hax
     private boolean mSetPrivateFactory = false;
-    private Field mConstructorArgs = null;
+    private Field constructorArgs = null;
 
     public TypekitLayoutInflater(Context context) {
         super(context);
@@ -203,9 +203,9 @@ public class TypekitLayoutInflater extends LayoutInflater {
         protected final Factory2 mFactory2;
         protected final TypekitFactory mTypekitFactory;
 
-        public WrapperFactory2(Factory2 mFactory2, TypekitFactory mDecorFactory) {
+        public WrapperFactory2(Factory2 mFactory2, TypekitFactory decorFactory) {
             this.mFactory2 = mFactory2;
-            this.mTypekitFactory = mDecorFactory;
+            this.mTypekitFactory = decorFactory;
         }
 
 
@@ -275,22 +275,22 @@ public class TypekitLayoutInflater extends LayoutInflater {
         // significant difference to performance on Android 4.0+.
 
         if (view == null && name.indexOf('.') > -1) {
-            if (mConstructorArgs == null)
-                mConstructorArgs = ReflectionUtils.getField(LayoutInflater.class, "mConstructorArgs");
+            if (constructorArgs == null)
+                constructorArgs = ReflectionUtils.getField(LayoutInflater.class, "constructorArgs");
 
-            final Object[] mConstructorArgsArr = (Object[]) ReflectionUtils.getValue(mConstructorArgs, this);
-            final Object lastContext = mConstructorArgsArr[0];
+            final Object[] constructorArgsArr = (Object[]) ReflectionUtils.getValue(constructorArgs, this);
+            final Object lastContext = constructorArgsArr[0];
             // The LayoutInflater actually finds out the correct context to use. We just need to set
-            // it on the mConstructor for the internal method.
+            // it on the constructor for the internal method.
             // Set the constructor ars up for the createView, not sure why we can't pass these in.
-            mConstructorArgsArr[0] = viewContext;
-            ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+            constructorArgsArr[0] = viewContext;
+            ReflectionUtils.setValue(constructorArgs, this, constructorArgsArr);
             try {
                 view = createView(name, null, attrs);
             } catch (ClassNotFoundException ignored) {
             } finally {
-                mConstructorArgsArr[0] = lastContext;
-                ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr);
+                constructorArgsArr[0] = lastContext;
+                ReflectionUtils.setValue(constructorArgs, this, constructorArgsArr);
             }
         }
         return view;

@@ -19,12 +19,8 @@ import in.koreatech.koin.ui.bus.BusMainFragment;
 public class BusTimeTableChungjuShuttleStartEndShinnamdongFragment extends BusMainFragment {
     private final String TAG = "BusTimeTableChungjuShuttleStartEndShinnamdongFragment";
 
-
-    private Unbinder mUnbinder;
-    private FragmentManager mFragmentManger;
-
     /* View Component */
-    private View mView;
+    private View view;
 
 
     @Override
@@ -35,9 +31,9 @@ public class BusTimeTableChungjuShuttleStartEndShinnamdongFragment extends BusMa
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.bus_timetable_chungju_shuttle_start_end_shinnamdong, container, false);
+        this.view = inflater.inflate(R.layout.bus_timetable_chungju_shuttle_start_end_shinnamdong, container, false);
         init();
-        return mView;
+        return this.view;
     }
 
     @Override

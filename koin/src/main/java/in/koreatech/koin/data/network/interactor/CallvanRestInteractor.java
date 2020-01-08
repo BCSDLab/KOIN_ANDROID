@@ -28,7 +28,7 @@ import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBea
  * Created by hyerim on 2018. 6. 17....
  */
 public class CallvanRestInteractor implements CallvanInteractor {
-    private final String TAG = CallvanRestInteractor.class.getSimpleName();
+    private final String TAG = "CallvanRestInteractor";
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     public CallvanRestInteractor() {

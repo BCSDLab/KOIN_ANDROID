@@ -41,7 +41,7 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivity implements MarketUsedCommentContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
 
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppBarBase;
+    AppbarBase appBarBase;
     @BindView(R.id.market_used_comment_title)
     TextView mMarketUsedCommentTitle;
     @BindView(R.id.market_used_comment_view_count_korean)
@@ -73,9 +73,9 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     @BindView(R.id.aritcle_comment_anonymous_cancel_delete_edit_linearlayout)
     LinearLayout mMarketUsedCommentAnoymousCancelDeleteEditLinearlayout;
     @BindView(R.id.market_used_comment_password_linearlayout)
-    LinearLayout mAritcleCommentPasswordLinearlayout;
+    LinearLayout aritcleCommentPasswordLinearlayout;
     @BindView(R.id.market_used_comment_cancel_register_linearlayout)
-    LinearLayout mAritcleCommentCancelRegisterLayout;
+    LinearLayout aritcleCommentCancelRegisterLayout;
     @BindView(R.id.market_used_comment_password_edittext)
     EditText mMarketUsedCommentPasswordEdittext;
 
@@ -87,9 +87,9 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     private boolean mGrantedCheck; // 글쓴이 인지 확인
     private boolean mIsEditPossible;
     private boolean mIsEditComment;
-    private ArrayList<Comment> mCommentArrayList;
+    private ArrayList<Comment> commentArrayList;
     private MarketUsedCommentContract.Presenter mMarketUsedDetatailCommentPresenter;
-    private Context mContext;
+    private Context context;
     private Comment mSelectedComment;
     private CustomProgressDialog customProgressDialog;
 
@@ -122,17 +122,17 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     public void init() {
         mItem = new Item();
-        mContext = this;
-        mCommentArrayList = new ArrayList<>();
-        mAritcleCommentPasswordLinearlayout.setVisibility(View.GONE);
+        context = this;
+        commentArrayList = new ArrayList<>();
+        aritcleCommentPasswordLinearlayout.setVisibility(View.GONE);
         mItem.id = getIntent().getIntExtra("ITEM_ID", -1);
         mMarketID = getIntent().getIntExtra("MARKET_ID", 0);
         if (mMarketID == 0)
-            mAppBarBase.setTitleText("팝니다");
+            appBarBase.setTitleText("팝니다");
         else
-            mAppBarBase.setTitleText("삽니다");
+            appBarBase.setTitleText("삽니다");
         mMarketUsedDetatailCommentPresenter = new MarketUsedDetailCommentPresenter(this, new MarketUsedRestInteractor());
-        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, mCommentArrayList);
+        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
         mLayoutManager = new LinearLayoutManager(this);
         mMarketUsedCommentContentRecyclerview.setHasFixedSize(true);
         mMarketUsedCommentContentRecyclerview.setLayoutManager(mLayoutManager); //layout 설정
@@ -144,7 +144,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     public void onMarketDataReceived(Item item) {
         String styledText;
         mItem = item;
-        mCommentArrayList.clear();
+        commentArrayList.clear();
         if (item.comments != null && item.comments.size() > 0) {
             styledText = item.title + "<font color='#175c8e'>(" + item.comments.size() + ")</font>";
             mMarketUsedCommentTitle.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE); // Title set
@@ -153,7 +153,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         mMarketUsedCommentViewCount.setText(item.hit);
         mMarketUsedCommentWriter.setText(item.nickname);
         mMarketUsedCommentCreateDate.setText(item.createdAt);
-        mCommentArrayList.addAll(item.comments);
+        commentArrayList.addAll(item.comments);
         mMarketDetailCommentRecyclerAdapter.notifyDataSetChanged();
 
     }

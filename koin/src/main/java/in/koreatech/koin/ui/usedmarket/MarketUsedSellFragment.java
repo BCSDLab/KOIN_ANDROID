@@ -57,7 +57,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     private final int SELLMARKETID = 0;
     private int mPostion;
     private boolean mGrantCheck;
-    private int mCurrentPage;
+    private int currentPage;
     private int mTotalPage;
     private boolean mIsResume;
 
@@ -113,7 +113,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     public void onMarketDataReceived(MarketPageResponse marketPageResponses) {
 
         mTotalPage = marketPageResponses.totalPage;
-        if (mCurrentPage == 1)
+        if (currentPage == 1)
             mMarketSellArrayList.clear();
         mMarketSellArrayList.addAll(marketPageResponses.marketArrayList);
 
@@ -172,13 +172,13 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     public void onRefresh() {
         // 새로고침 코드
 
-        if ((mCurrentPage != mTotalPage) && !mIsResume) {
-            mCurrentPage++;
-            mMarketUsedPresenter.readMarket(SELLMARKETID, mCurrentPage);
+        if ((currentPage != mTotalPage) && !mIsResume) {
+            currentPage++;
+            mMarketUsedPresenter.readMarket(SELLMARKETID, currentPage);
         } else if (!mIsResume)
             ToastUtil.getInstance().makeShort(R.string.market_used_list_last_page);
         else
-            mMarketUsedPresenter.readMarket(SELLMARKETID, mCurrentPage);
+            mMarketUsedPresenter.readMarket(SELLMARKETID, currentPage);
 
         mIsResume = false;
         updateUserInterface();
@@ -209,7 +209,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
 
 
     public void init() {
-        mCurrentPage = 1;
+        currentPage = 1;
         mIsResume = false;
         mMarketUsedSellRecyclerAdapter = new MarketUsedSellRecyclerAdapter(getActivity(), mMarketSellArrayList);
         mLayoutManager = new LinearLayoutManager(getActivity());
@@ -220,7 +220,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
         mMarketSellRecyclerView.setAdapter(mMarketUsedSellRecyclerAdapter); //adapter 설정
         setPresenter(new MarketUsedPresenter(this, new MarketUsedRestInteractor()));
 
-        mMarketUsedPresenter.readMarket(SELLMARKETID, mCurrentPage);
+        mMarketUsedPresenter.readMarket(SELLMARKETID, currentPage);
 
 
     }
@@ -250,7 +250,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     public void onResume() {
         super.onResume();
         mIsResume = true;
-        mCurrentPage = 1;
+        currentPage = 1;
         onRefresh();
     }
 }

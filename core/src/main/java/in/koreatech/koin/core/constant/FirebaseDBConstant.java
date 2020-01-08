@@ -4,9 +4,8 @@ import static in.koreatech.koin.core.BuildConfig.IS_DEBUG;
 
 /**
  * Created by hyerim on 2018. 4. 29....
- *
+ * <p>
  * Firebase Database 경로
- *
  */
 public class FirebaseDBConstant {
     public static final String BASE_CHANNEL = "production";

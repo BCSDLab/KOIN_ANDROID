@@ -17,7 +17,7 @@ import java.util.Objects;
 
 public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketUsedDetailCommentAdapter.ViewHolder> implements View.OnClickListener {
 
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
     private ArrayList<Comment> mMarketCommentArrayList;
 
@@ -44,7 +44,7 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
 
     public MarketUsedDetailCommentAdapter(Context context, ArrayList<Comment> mMarketCommentArrayList) {
         mLayoutInflater = LayoutInflater.from(context);
-        this.mContext = context;
+        this.context = context;
         this.mMarketCommentArrayList = new ArrayList<>();
         this.mMarketCommentArrayList = mMarketCommentArrayList;
     }

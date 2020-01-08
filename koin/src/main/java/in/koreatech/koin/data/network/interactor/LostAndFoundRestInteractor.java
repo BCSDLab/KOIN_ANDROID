@@ -29,8 +29,8 @@ import retrofit2.HttpException;
 import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBearer;
 
 public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
-    private final String TAG = LostAndFoundInteractor.class.getSimpleName();
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final String TAG = "LostAndFoundInteractor";
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void readLostAndFoundList(int limit, int page, ApiCallback apiCallback) {
@@ -40,7 +40,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<LostAndFoundPageResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -81,7 +81,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<LostItem>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -126,7 +126,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<GrantCheckResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -164,7 +164,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -200,7 +200,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -238,7 +238,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                 .subscribe(new Observer<Comment>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -275,7 +275,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -313,7 +313,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -350,7 +350,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -387,7 +387,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
 
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        mCompositeDisposable.add(disposable);
+                        compositeDisposable.add(disposable);
                     }
 
                     @Override

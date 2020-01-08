@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.board.adpater.holder;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.TextView;
 
@@ -51,27 +52,27 @@ public class CommentViewHolderFactory {
         @Nullable
         @BindView(R.id.comment_writer)
         public
-        TextView mCommentWriter;
+        TextView commentWriter;
 
         @Nullable
         @BindView(R.id.comment_content)
         public
-        TextView mCommentContent;
+        TextView commentContent;
 
         @Nullable
         @BindView(R.id.comment_create_date)
         public
-        TextView mCommentCreateDate;
+        TextView commentCreateDate;
 
         @Nullable
         @BindView(R.id.comment_remove)
         public
-        TextView mCommentRemove;
+        TextView commentRemove;
 
         @Nullable
         @BindView(R.id.comment_edit)
         public
-        TextView mCommentModify;
+        TextView commentModify;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -84,27 +85,27 @@ public class CommentViewHolderFactory {
         @Nullable
         @BindView(R.id.comment_board_author_writer)
         public
-        TextView mCommentWriter;
+        TextView commentWriter;
 
         @Nullable
         @BindView(R.id.comment_board_author_content)
         public
-        TextView mCommentContent;
+        TextView commentContent;
 
         @Nullable
         @BindView(R.id.comment_board_author_create_date)
         public
-        TextView mCommentCreateDate;
+        TextView commentCreateDate;
 
         @Nullable
         @BindView(R.id.comment_board_author_remove)
         public
-        TextView mCommentRemove;
+        TextView commentRemove;
 
         @Nullable
         @BindView(R.id.comment_board_author_edit)
         public
-        TextView mCommentModify;
+        TextView commentModify;
 
         public CommentBoardAuthorViewHolder(View itemView) {
             super(itemView);

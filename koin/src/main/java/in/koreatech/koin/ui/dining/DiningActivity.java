@@ -55,35 +55,35 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     private final int SWIPE_THRESHOLD = 100;
     private final int SWIPE_VELOCITY_THRESHOLD = 100;
 
-    private Context mContext;
-    private DiningRecyclerAdapter mDiningRecyclerAdapter;
+    private Context context;
+    private DiningRecyclerAdapter diningRecyclerAdapter;
     private GestureDetector mGestureDetector;
     private CustomProgressDialog customProgressDialog;
 
     private String today;
-    private DiningPresenter mDiningPresenter;
+    private DiningPresenter diningPresenter;
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
-    private Map<String, ArrayList<Dining>> mDiningArrayList;
+    private Map<String, ArrayList<Dining>> diningMap;
     private int typeIndex; //0 아침 / 1 점심 / 2 저녁
-    private int mChangeDate;
+    private int changeDate;
 
 
     /* View Component */
 
     @BindView(R.id.dining_breakfast_button)
-    TextView mBreakfastButton;
+    TextView breakfastButton;
     @BindView(R.id.dining_lunch_button)
     TextView mLunchButton;
     @BindView(R.id.dining_dinner_button)
-    TextView mDinnerButton;
+    TextView dinnerButton;
 
 
     @BindView(R.id.dining_swiperefreshlayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.dining_recyclerview)
-    RecyclerView mDiningListRecyclerView;
+    RecyclerView diningListRecyclerView;
     @BindView(R.id.dining_date_textView)
-    TextView mDiningDateTextView;
+    TextView diningDateTextView;
 
     @BindView(R.id.empty_dining_list_frameLayout)
     FrameLayout mEmptyBoardListFrameLayout;
@@ -91,9 +91,9 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @BindView(R.id.dining_next_date_button)
     Button mNextDateButton;
     @BindView(R.id.dining_before_date_button)
-    Button mBeforeDateButton;
+    Button beforeDateButton;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppbarBase;
+    AppbarBase appbarBase;
 
 
     @Override
@@ -101,7 +101,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dining_activity_main);
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         init();
 
         //TODO : 영업 시간 표시
@@ -111,7 +111,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void onStart() {
         super.onStart();
         Log.v(TAG, today);
-        mDiningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(mChangeDate));
+        diningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
     }
 
     @Override
@@ -137,19 +137,19 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     private void init() {
         today = TimeUtil.getDeviceCreatedDateOnlyString();
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mChangeDate = 0; // 현재날짜와 바뀐 날짜 비교
-        mAppbarBase.setTitleText("식단");
+        changeDate = 0; // 현재날짜와 바뀐 날짜 비교
+        appbarBase.setTitleText("식단");
 
         mLayoutManager = new LinearLayoutManager(this);
-        mDiningArrayList = new HashMap<String, ArrayList<Dining>>();
+        diningMap = new HashMap<String, ArrayList<Dining>>();
         typeIndex = 0;
 
-        mDiningRecyclerAdapter = new DiningRecyclerAdapter(mContext, new ArrayList<Dining>());
+        diningRecyclerAdapter = new DiningRecyclerAdapter(context, new ArrayList<Dining>());
 
-        mDiningListRecyclerView.setHasFixedSize(true);
-        mDiningListRecyclerView.setLayoutManager(mLayoutManager);
-        mDiningListRecyclerView.setAdapter(mDiningRecyclerAdapter);
-        mDiningListRecyclerView.setNestedScrollingEnabled(false);
+        diningListRecyclerView.setHasFixedSize(true);
+        diningListRecyclerView.setLayoutManager(mLayoutManager);
+        diningListRecyclerView.setAdapter(diningRecyclerAdapter);
+        diningListRecyclerView.setNestedScrollingEnabled(false);
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -159,7 +159,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
 
         setPresenter(new DiningPresenter(this, new DiningRestInteractor()));
-        mDiningPresenter.getDiningList(today);
+        diningPresenter.getDiningList(today);
 
 
         switch (getCurrentDiningType()) {
@@ -216,7 +216,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void setPresenter(DiningPresenter presenter) {
-        this.mDiningPresenter = presenter;
+        this.diningPresenter = presenter;
     }
 
 
@@ -248,15 +248,15 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @AddTrace(name = "DiningActivity_onDiningListDataReceived")
     @Override
     public void showNetworkError() {
-        mDiningArrayList.clear();
-        mDiningRecyclerAdapter.notifyDataSetChanged();
+        diningMap.clear();
+        diningRecyclerAdapter.notifyDataSetChanged();
         mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
         ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
     public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
-        mDiningArrayList.clear();
+        diningArrayList.clear();
 
         for (Dining dining : arrangeDinings(diningArrayList)) {
             if (dining == null) {
@@ -264,12 +264,12 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
             }
 
             String typeTemp = dining.type;
-            if (mDiningArrayList.containsKey(typeTemp)) {
-                mDiningArrayList.get(typeTemp).add(dining);
+            if (diningMap.containsKey(typeTemp)) {
+                diningMap.get(typeTemp).add(dining);
             } else {
                 ArrayList<Dining> dinings = new ArrayList<Dining>();
                 dinings.add(dining);
-                mDiningArrayList.put(dining.type, dinings);
+                diningMap.put(dining.type, dinings);
             }
         }
 
@@ -355,15 +355,15 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
                 sb.append(today.substring(5, 7)).append("월 ").append(today.substring(8, 9)).append("일");
                 e.printStackTrace();
             }
-            mDiningDateTextView.setText(today);
+            diningDateTextView.setText(today);
 
-            if (mDiningArrayList.get(TYPE[typeIndex]) != null && mDiningArrayList.get(TYPE[typeIndex]).size() != 0) {
-                mDiningRecyclerAdapter = new DiningRecyclerAdapter(mContext, mDiningArrayList.get(TYPE[typeIndex]));
-                mDiningListRecyclerView.setAdapter(mDiningRecyclerAdapter);
+            if (diningMap.get(TYPE[typeIndex]) != null && diningMap.get(TYPE[typeIndex]).size() != 0) {
+                diningRecyclerAdapter = new DiningRecyclerAdapter(context, diningMap.get(TYPE[typeIndex]));
+                diningListRecyclerView.setAdapter(diningRecyclerAdapter);
                 mEmptyBoardListFrameLayout.setVisibility(View.GONE);
             } else {
-                mDiningRecyclerAdapter = new DiningRecyclerAdapter(mContext, new ArrayList<Dining>());
-                mDiningListRecyclerView.setAdapter(mDiningRecyclerAdapter);
+                diningRecyclerAdapter = new DiningRecyclerAdapter(context, new ArrayList<Dining>());
+                diningListRecyclerView.setAdapter(diningRecyclerAdapter);
                 mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
@@ -373,7 +373,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void onRefresh() {
-        mDiningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(mChangeDate));
+        diningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
         if (mSwipeRefreshLayout.isRefreshing()) {
             mSwipeRefreshLayout.setRefreshing(false);
         }
@@ -382,18 +382,18 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @OnClick(R.id.dining_breakfast_button)
     public void onClickBreakfastButton() {
         typeIndex = 0;
-        mBreakfastButton.setText(Html.fromHtml(colorText("#f7941e", "아침")), TextView.BufferType.SPANNABLE);
+        breakfastButton.setText(Html.fromHtml(colorText("#f7941e", "아침")), TextView.BufferType.SPANNABLE);
         mLunchButton.setText("점심");
-        mDinnerButton.setText("저녁");
+        dinnerButton.setText("저녁");
         updateUserInterface();
     }
 
     @OnClick(R.id.dining_lunch_button)
     public void onClickLunchButton() {
         typeIndex = 1;
-        mBreakfastButton.setText("아침");
+        breakfastButton.setText("아침");
         mLunchButton.setText(Html.fromHtml(colorText("#f7941e", "점심")), TextView.BufferType.SPANNABLE);
-        mDinnerButton.setText("저녁");
+        dinnerButton.setText("저녁");
 
         updateUserInterface();
     }
@@ -402,9 +402,9 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void onClickDinnerButton() {
         typeIndex = 2;
 
-        mBreakfastButton.setText("아침");
+        breakfastButton.setText("아침");
         mLunchButton.setText("점심");
-        mDinnerButton.setText(Html.fromHtml(colorText("#f7941e", "저녁")), TextView.BufferType.SPANNABLE);
+        dinnerButton.setText(Html.fromHtml(colorText("#f7941e", "저녁")), TextView.BufferType.SPANNABLE);
         updateUserInterface();
     }
 
@@ -424,10 +424,10 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     }
 
     public void getBeforeDiningMenu() {
-        if (mChangeDate > -LIMITDATE) {
-            mChangeDate--;
-            today = TimeUtil.getChangeDate(mChangeDate);
-            mDiningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(mChangeDate));
+        if (changeDate > -LIMITDATE) {
+            changeDate--;
+            today = TimeUtil.getChangeDate(changeDate);
+            diningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
             updateUserInterface();
         } else {
             showMessage("더 이상 데이터를 불러올 수 없습니다.");
@@ -435,10 +435,10 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     }
 
     public void getNextDiningMenu() {
-        if (mChangeDate < LIMITDATE) {
-            mChangeDate++;
-            today = TimeUtil.getChangeDate(mChangeDate);
-            mDiningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(mChangeDate));
+        if (changeDate < LIMITDATE) {
+            changeDate++;
+            today = TimeUtil.getChangeDate(changeDate);
+            diningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
             updateUserInterface();
         } else
             showMessage("더 이상 데이터를 불러올 수 없습니다.");
@@ -446,8 +446,8 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void showUserInterface() {
-        mDiningArrayList.clear();
-        mDiningRecyclerAdapter.notifyDataSetChanged();
+        diningMap.clear();
+        diningRecyclerAdapter.notifyDataSetChanged();
         mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
     }
 

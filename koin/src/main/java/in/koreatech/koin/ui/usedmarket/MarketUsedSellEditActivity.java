@@ -75,12 +75,12 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     private static final int REQUEST_GET_GALLERY = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
     private static final int REQUEST_CROP_IMAGE = 3;
-    private Context mContext;
+    private Context context;
 
     private int mMarketId;
     private int mItemId;
     private String mTitle;
-    private String mContent;
+    private String content;
     private String mPrice;
     private String mPhoneNumber;
     private boolean mIsPhoneOpen;
@@ -92,7 +92,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     private Item item;
     private MarketItem mMarketItem;
     private MarketUsedEditContract.Presenter mMarketUsedEditPresenter;
-    private Uri mCurrentPhotoPath;
+    private Uri currentPhotoPath;
     private File mImageFile;
 
     private boolean mIsTitlecheck;
@@ -135,7 +135,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.mContext = this;
+        this.context = this;
         setContentView(R.layout.market_used_sell_edit_activity);
         ButterKnife.bind(this);
         item = new Item();
@@ -144,7 +144,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         ;
         mItemId = getIntent().getIntExtra("ITEM_ID", -1);
         mTitle = getIntent().getStringExtra("MARKET_TITLE");
-        mContent = getIntent().getStringExtra("MARKET_CONTENT");
+        content = getIntent().getStringExtra("MARKET_CONTENT");
         mPrice = Integer.toString(getIntent().getIntExtra("MARKET_PRICE", 0));
         mPhoneNumber = getIntent().getStringExtra("MARKET_PHONE");
         mIsPhoneOpen = getIntent().getBooleanExtra("MARKET_PHONE_STATUS", false);
@@ -207,7 +207,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         mIsPhoneCheck = false;
         mIsContentCheck = false;
         mMarketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
-        Glide.with(mContext).load(mThumbNail).apply(new RequestOptions()
+        Glide.with(context).load(mThumbNail).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketSellEditThumbnailImageView);
@@ -234,8 +234,8 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         else
             mMarketSellEditIsCompleteSellingRadioButton.setChecked(true);
 
-        if (mContent != null) {
-            Spanned spannedValue = Html.fromHtml(mContent, getImageHTML(), null);
+        if (content != null) {
+            Spanned spannedValue = Html.fromHtml(content, getImageHTML(), null);
             mMarketSellEditContent.setText(spannedValue);
         }
 
@@ -281,7 +281,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     void onThumbnailChangeButtonClick() {
         getPermisson();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         if (checkCameraPermisson() && checkStoragePermisson()) {
             builder.setMessage("이미지를 불러올 방법을 골라주세요.");
             builder.setPositiveButton("카메라", new DialogInterface.OnClickListener() {
@@ -292,14 +292,14 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                     try {
                         photoFile = createImageFile();
                     } catch (IOException e) {
-                        Toast.makeText(mContext, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     if (photoFile != null) {
-                        mCurrentPhotoPath = FileProvider.getUriForFile(mContext,
+                        currentPhotoPath = FileProvider.getUriForFile(context,
                                 "in.koreatech.koin.provider", photoFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
                         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
                     }
 
@@ -397,11 +397,11 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(mContent)) {
-                    mContent = s.toString();
-                    int number = getCharNumber(mContent, (char) 65532);
+                if (!s.toString().equals(content)) {
+                    content = s.toString();
+                    int number = getCharNumber(content, (char) 65532);
                     if (number < mImageUrl.size())
-                        deleteImageUrlAtArrayList(mContent, start);
+                        deleteImageUrlAtArrayList(content, start);
 
 
                 }
@@ -525,9 +525,9 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                 File oriFile = getImageFile(getImagePath);
 
                 //이미지 편집을 위해 선택한 이미지를 저장할 파일
-                mCurrentPhotoPath = data.getData();
+                currentPhotoPath = data.getData();
 
-                File copyFile = new File(mCurrentPhotoPath.getPath());
+                File copyFile = new File(currentPhotoPath.getPath());
 
                 //이미지 복사(이미지 편집시 원본 이미지가 변형되는것을 방지하기 위함)
                 createTempFile(copyFile, oriFile);
@@ -540,7 +540,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             case REQUEST_TAKE_PHOTO:
                 cropImage();
                 MediaScannerConnection.scanFile(this, //앨범에 사진을 보여주기 위해 Scan을 합니다.
-                        new String[]{mCurrentPhotoPath.getPath()}, null,
+                        new String[]{currentPhotoPath.getPath()}, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
                             public void onScanCompleted(String path, Uri uri) {
                             }
@@ -552,7 +552,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                 try {
 
 
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mCurrentPhotoPath);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPhotoPath);
                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     OutputStream os;
@@ -561,7 +561,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
-                    // Glide.with(mContext).asBitmap().load(bitmap).into(mMarketSellEditThumbnailImageView);
+                    // Glide.with(context).asBitmap().load(bitmap).into(mMarketSellEditThumbnailImageView);
                     mMarketUsedEditPresenter.uploadThumbnailImage(mImageFile);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
@@ -625,13 +625,13 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
      */
     private void cropImage() {
 
-        this.grantUriPermission("com.android.camera", mCurrentPhotoPath,
+        this.grantUriPermission("com.android.camera", currentPhotoPath,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(mCurrentPhotoPath, "image/*");
+        intent.setDataAndType(currentPhotoPath, "image/*");
 
         List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        grantUriPermission(list.get(0).activityInfo.packageName, mCurrentPhotoPath,
+        grantUriPermission(list.get(0).activityInfo.packageName, currentPhotoPath,
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         int size = list.size();
         if (size == 0) {
@@ -656,7 +656,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             File tempFile = new File(folder.toString(), croppedFileName.getName());
 
             mImageFile = tempFile;
-            mCurrentPhotoPath = FileProvider.getUriForFile(this,
+            currentPhotoPath = FileProvider.getUriForFile(this,
                     "in.koreatech.koin.provider", tempFile);
 
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -664,14 +664,14 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
 
             intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath);
             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
 
             Intent i = new Intent(intent);
             ResolveInfo res = list.get(0);
             i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            grantUriPermission(res.activityInfo.packageName, mCurrentPhotoPath,
+            grantUriPermission(res.activityInfo.packageName, currentPhotoPath,
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
@@ -695,21 +695,21 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
 
-        Cursor mCursor = getContentResolver().query(uri, projection, null, null,
+        Cursor cursor = getContentResolver().query(uri, projection, null, null,
                 MediaStore.Images.Media.DATE_MODIFIED + " desc");
 
-        if (mCursor == null || mCursor.getCount() < 1) {
+        if (cursor == null || cursor.getCount() < 1) {
             return null;
         }
 
-        int idxColumn = mCursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        mCursor.moveToFirst();
+        int idxColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
 
-        String path = mCursor.getString(idxColumn);
+        String path = cursor.getString(idxColumn);
 
-        if (mCursor != null) {
-            mCursor.close();
-            mCursor = null;
+        if (cursor != null) {
+            cursor.close();
+            cursor = null;
         }
 
         return new File(path);
@@ -835,7 +835,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     @Override
     public void showImageUploadSuccess(String url) {
         mMarketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
-        Glide.with(mContext).load(url).apply(new RequestOptions()
+        Glide.with(context).load(url).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketSellEditThumbnailImageView);

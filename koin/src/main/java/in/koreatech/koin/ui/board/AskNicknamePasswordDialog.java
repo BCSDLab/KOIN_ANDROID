@@ -22,24 +22,24 @@ import io.reactivex.annotations.NonNull;
 public class AskNicknamePasswordDialog extends Dialog {
 
     @BindView(R.id.anonymous_article_dialog_title)
-    TextView mAnonymousArticleDialogTitleTextview;
+    TextView anonymousArticleDialogTitleTextview;
     @BindView(R.id.anonymous_article_dialog_content)
-    TextView mAnonymousArticleDialogContentTextView;
+    TextView anonymousArticleDialogContentTextView;
     @BindView(R.id.anonymous_article_dialog_nickname_edittext)
-    EditText mAnonymousArticleDialogNicknameEditText;
+    EditText anonymousArticleDialogNicknameEditText;
     @BindView(R.id.anonymous_article_dialog_password_edittext)
-    TextView mAnonymousArticleDialogPasswordEditText;
+    TextView anonymousArticleDialogPasswordEditText;
     @BindView(R.id.anonymous_article_dialog_nickname_relativelayout)
-    RelativeLayout mAnonymousArticleDialogNicknameRelativelayout;
+    RelativeLayout anonymousArticleDialogNicknameRelativelayout;
     @BindView(R.id.anonymous_article_dialog_password_relativelayout)
-    RelativeLayout mAnonymousArticleDialogPasswordRelativelayout;
+    RelativeLayout anonymousArticleDialogPasswordRelativelayout;
 
     public static final int YES_NICKNAME = 0;
     public static final int NO_NICKNAME = 1;
     private View.OnClickListener onclickListener;
     private String mNickName;
     private String mPassword;
-    private Context mContext;
+    private Context context;
     private int mType;
     private boolean isCancelled;
 
@@ -49,14 +49,14 @@ public class AskNicknamePasswordDialog extends Dialog {
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.anonymous_article_dialog);
         ButterKnife.bind(this);
-        mContext = context;
+        context = context;
         mType = type;
-        mAnonymousArticleDialogTitleTextview.setText(title);
-        mAnonymousArticleDialogContentTextView.setText(content);
-        mAnonymousArticleDialogPasswordEditText.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_PASSWORD), new InputFilter.LengthFilter(20)});
-        mAnonymousArticleDialogNicknameEditText.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_N_H), new InputFilter.LengthFilter(20)});
+        anonymousArticleDialogTitleTextview.setText(title);
+        anonymousArticleDialogContentTextView.setText(content);
+        anonymousArticleDialogPasswordEditText.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_PASSWORD), new InputFilter.LengthFilter(20)});
+        anonymousArticleDialogNicknameEditText.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_N_H), new InputFilter.LengthFilter(20)});
         if (type == NO_NICKNAME)
-            mAnonymousArticleDialogNicknameRelativelayout.setVisibility(View.GONE);
+            anonymousArticleDialogNicknameRelativelayout.setVisibility(View.GONE);
     }
 
     public void setOnclickListener(View.OnClickListener onclickListener) {
@@ -66,20 +66,20 @@ public class AskNicknamePasswordDialog extends Dialog {
     @OnClick(R.id.anonymous_article_dialog_confirm_textview)
     public void anonymousArticleDialogConfirmTextview() {
         if (mType != NO_NICKNAME) {
-            if (mAnonymousArticleDialogNicknameEditText.getText().toString().isEmpty() || mAnonymousArticleDialogPasswordEditText.getText().toString().isEmpty()) {
+            if (anonymousArticleDialogNicknameEditText.getText().toString().isEmpty() || anonymousArticleDialogPasswordEditText.getText().toString().isEmpty()) {
                 ToastUtil.getInstance().makeShort("닉네임 또는 비밀번호를 입력해주세요");
                 return;
             } else {
-                mNickName = mAnonymousArticleDialogNicknameEditText.getText().toString();
-                mPassword = mAnonymousArticleDialogPasswordEditText.getText().toString();
+                mNickName = anonymousArticleDialogNicknameEditText.getText().toString();
+                mPassword = anonymousArticleDialogPasswordEditText.getText().toString();
                 dismiss();
             }
         } else {
-            if (mAnonymousArticleDialogPasswordEditText.toString().isEmpty()) {
+            if (anonymousArticleDialogPasswordEditText.toString().isEmpty()) {
                 ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
                 return;
             } else {
-                mPassword = mAnonymousArticleDialogPasswordEditText.getText().toString();
+                mPassword = anonymousArticleDialogPasswordEditText.getText().toString();
                 dismiss();
             }
             isCancelled = false;

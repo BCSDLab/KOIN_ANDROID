@@ -144,7 +144,7 @@ public class ArticlePresenter implements BasePresenter {
 //        }
 //    };
 
-//    private final ApiCallback grantAnonymousAdjustCommentGrantedApiCallback = new ApiCallback() {
+    //    private final ApiCallback grantAnonymousAdjustCommentGrantedApiCallback = new ApiCallback() {
 //        @Override
 //        public void onSuccess(Object object) {
 //            boolean isGrantEdit = ((Article) object).isGrantEdit;

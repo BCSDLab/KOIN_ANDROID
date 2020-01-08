@@ -20,7 +20,7 @@ import retrofit2.HttpException;
  */
 public class DiningRestInteractor implements DiningInteractor {
     private final String TAG = "DiningRestInteractor";
-    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public DiningRestInteractor() {
     }

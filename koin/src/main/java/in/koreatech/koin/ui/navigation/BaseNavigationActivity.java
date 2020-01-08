@@ -45,14 +45,14 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private final String BEFORE_ID = "BEFORE_ID";
     private final String FONT_NAME = "fonts/notosanscjkkr_regular.otf";
 
-    private Context mContext;
+    private Context context;
 
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
     private NavigationView mLeftNavigationView;
 
     private long mPressTime = 0;
-    private static int mCurrentId = R.id.navi_item_home;
-    private static int mBeforeId = R.id.navi_item_home;
+    private static int currentId = R.id.navi_item_home;
+    private static int beforeId = R.id.navi_item_home;
 
     private InputMethodManager mInputMethodManager;
     private LinearLayout mOpenLeftNavigationDrawerOpenLinearLayout;
@@ -62,15 +62,15 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_ID, mCurrentId);
-        outState.putInt(BEFORE_ID, mBeforeId);
+        outState.putInt(CURRENT_ID, currentId);
+        outState.putInt(BEFORE_ID, beforeId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = setContext();
+        context = setContext();
         mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
 
     }
@@ -80,22 +80,22 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     @Override
     protected void onStart() {
         super.onStart();
-        toggleIcon(mCurrentId);
+        toggleIcon(currentId);
         setLeftNavigationDrawerName();
-        selectNavigationItem(mCurrentId);
+        selectNavigationItem(currentId);
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mCurrentId = savedInstanceState.getInt(CURRENT_ID);
-            mBeforeId = savedInstanceState.getInt(BEFORE_ID);
+            currentId = savedInstanceState.getInt(CURRENT_ID);
+            beforeId = savedInstanceState.getInt(BEFORE_ID);
         }
         int width;
-        mDrawerLayout = findViewById(getDrawerLayoutID());
-        mDrawerLayout.addDrawerListener(this);
-        mDrawerLayout.setScrimColor(getResources().getColor(R.color.black__20));
+        drawerLayout = findViewById(getDrawerLayoutID());
+        drawerLayout.addDrawerListener(this);
+        drawerLayout.setScrimColor(getResources().getColor(R.color.black__20));
 
 
         for (int id : getMenuId()) {
@@ -120,7 +120,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         ViewGroup.LayoutParams params = mLeftNavigationView.getLayoutParams();
         params.width = width;
         mLeftNavigationView.setLayoutParams(params);
-        toggleIcon(mCurrentId);
+        toggleIcon(currentId);
     }
 
     public void toggleIcon(int id) {
@@ -172,18 +172,18 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected void onResume() {
         super.onResume();
         setLeftNavigationDrawerName();
-        if (mDrawerLayout != null) {
-            if (mDrawerLayout.isDrawerOpen(Gravity.LEFT))
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+        if (drawerLayout != null) {
+            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+                drawerLayout.closeDrawer(Gravity.LEFT);
         }
     }
 
     public void setLastNavigationItem() {
-        mCurrentId = mBeforeId;
-        Log.d(TAG, "mBeforeID: " + getResources().getResourceEntryName(mCurrentId));
-        Log.d(TAG, "mBeforeID: " + getResources().getResourceEntryName(mBeforeId));
-        toggleIcon(mCurrentId);
-        selectNavigationItem(mCurrentId);
+        currentId = beforeId;
+        Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(currentId));
+        Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(beforeId));
+        toggleIcon(currentId);
+        selectNavigationItem(currentId);
     }
 
     @Override
@@ -260,14 +260,14 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     private boolean goToNavigationItem(int itemId) {
         if (itemId == getLeftNavigationDrawerID()) {
-            mDrawerLayout.closeDrawer(LEFTNAVI);
+            drawerLayout.closeDrawer(LEFTNAVI);
             return true;
         }
 
         callDrawerItem(itemId);
 
 
-        mDrawerLayout.closeDrawer(LEFTNAVI);
+        drawerLayout.closeDrawer(LEFTNAVI);
 
 
         return true;
@@ -294,13 +294,13 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     // TODO -> 익명게시판 수정 후 주석 제거
     public void callDrawerItem(int itemId) {
 
-        if (itemId == mCurrentId) {
-            selectNavigationItem(mCurrentId);
+        if (itemId == currentId) {
+            selectNavigationItem(currentId);
             return;
         }
 
-        mBeforeId = mCurrentId;
-        mCurrentId = itemId;
+        beforeId = currentId;
+        currentId = itemId;
 
 
         if (itemId == R.id.navi_item_home) {
@@ -329,10 +329,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickNavigationLogin();
         } else if (itemId == R.id.navi_item_kakao_talk) {
             onClickNavigationkakaoTalk();
-            mCurrentId = mBeforeId;
+            currentId = beforeId;
         } else if (itemId == R.id.navi_item_developer) {
             onClickNavigationDeveloper();
-            mCurrentId = mBeforeId;
+            currentId = beforeId;
         } else if (itemId == R.id.navi_item_user_info) {
             onClickNavigationUserInfo();
         } else if (itemId == R.id.navi_item_timetable) {
@@ -347,12 +347,12 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
         } else {
             ToastUtil.getInstance().makeShort("서비스예정입니다");
-            mCurrentId = mBeforeId;
+            currentId = beforeId;
         }
 
-        toggleIcon(mCurrentId);
+        toggleIcon(currentId);
 
-        selectNavigationItem(mCurrentId);
+        selectNavigationItem(currentId);
 
     }
 
@@ -386,10 +386,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     }
 
     private void toggleNavigationDrawer() {
-        if (mDrawerLayout.isDrawerOpen(Gravity.LEFT))
-            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        if (drawerLayout.isDrawerOpen(Gravity.LEFT))
+            drawerLayout.closeDrawer(Gravity.LEFT);
         else
-            mDrawerLayout.openDrawer(Gravity.LEFT);
+            drawerLayout.openDrawer(Gravity.LEFT);
     }
 
     private void onClickNavigationFreeBoard() {
@@ -434,7 +434,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.action_openRight) {
-            mDrawerLayout.openDrawer(RIGHTNAVI);
+            drawerLayout.openDrawer(RIGHTNAVI);
             return true;
         }
 
@@ -451,7 +451,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             drawer.closeDrawer(RIGHTNAVI);
         } else {
             if (System.currentTimeMillis() > mPressTime + 2000) {
-                if (mCurrentId != R.id.navi_item_home)
+                if (currentId != R.id.navi_item_home)
                     callDrawerItem(R.id.navi_item_home);
                 else {
                     mPressTime = System.currentTimeMillis();
@@ -488,7 +488,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     public void checkUserInfoEnough(int service) {
         if (getAuthorize() == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
-            mCurrentId = mBeforeId;
+            currentId = beforeId;
             return;
         }
         User user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
@@ -499,7 +499,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
-                mCurrentId = mBeforeId;
+                currentId = beforeId;
             } else {
                 goToFreeBoardActivity();
             }
@@ -508,7 +508,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
-                mCurrentId = mBeforeId;
+                currentId = beforeId;
             } else {
                 goToRecruitBoardActivity();
             }
@@ -518,9 +518,9 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         //콜밴쉐어링 hold
 //        else if (service == R.string.navigation_item_callvan_sharing) {
 //            if (FormValidatorUtil.validateStringIsEmpty(user.userName) || FormValidatorUtil.validateStringIsEmpty(user.phoneNumber)) {
-//                ToastUtil.makeLong(mContext, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
+//                ToastUtil.makeLong(context, "해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
 //                goToUserInfoActivity(service);
-//                mCurrentId = mBeforeId;
+//                currentId = beforeId;
 //            } else {
 //                goToCallvanActivity();
 //            }

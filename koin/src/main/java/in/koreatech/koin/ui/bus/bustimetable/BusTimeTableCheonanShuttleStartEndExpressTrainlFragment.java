@@ -1,12 +1,15 @@
 package in.koreatech.koin.ui.bus.bustimetable;
 
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.ui.bus.BusMainFragment;
@@ -19,12 +22,8 @@ import in.koreatech.koin.ui.bus.BusMainFragment;
 public class BusTimeTableCheonanShuttleStartEndExpressTrainlFragment extends BusMainFragment {
     private final String TAG = "BusTimeTableCheonanShuttleStartEndExpressTrainlFragment";
 
-
-    private Unbinder mUnbinder;
-    private FragmentManager mFragmentManger;
-
     /* View Component */
-    private View mView;
+    private View view;
 
 
     @Override
@@ -35,9 +34,9 @@ public class BusTimeTableCheonanShuttleStartEndExpressTrainlFragment extends Bus
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.bus_timetable_cheonan_shuttle_start_end_express_train, container, false);
+        this.view = inflater.inflate(R.layout.bus_timetable_cheonan_shuttle_start_end_express_train, container, false);
         init();
-        return mView;
+        return this.view;
     }
 
     @Override

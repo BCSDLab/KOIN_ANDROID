@@ -296,14 +296,14 @@ public class TimeUtil {
         return (int) sec;
     }
 
-    public static String getDateDay(String date, String dateType) throws Exception {
+    public static String getDateDay(String dateSting, String dateType) throws Exception {
 
         String day = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateType);
-        Date mDate = dateFormat.parse(date);
+        Date date = dateFormat.parse(dateSting);
 
         Calendar cal = Calendar.getInstance();
-        cal.setTime(mDate);
+        cal.setTime(date);
 
         int dayNum = cal.get(Calendar.DAY_OF_WEEK);
 

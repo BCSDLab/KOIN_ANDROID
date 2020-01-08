@@ -53,7 +53,7 @@ public class Message {
         msg.userName = (String) snapshot.child("userName").getValue();
         msg.message = (String) snapshot.child("message").getValue();
         msg.createDate = (String) snapshot.child("createDate").getValue();
-        msg.isNotice =  (Boolean) snapshot.child("isNotice").getValue();
+        msg.isNotice = (Boolean) snapshot.child("isNotice").getValue();
         msg.isDeleted = (Boolean) snapshot.child("isDeleted").getValue();
         return msg;
     }

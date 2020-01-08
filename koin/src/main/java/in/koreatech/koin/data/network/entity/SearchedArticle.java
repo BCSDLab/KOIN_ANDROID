@@ -68,9 +68,8 @@ public class SearchedArticle implements Serializable {
         return searchedArticles;
     }
 
-    public void setSearchedArticles(ArrayList<SearchedArticle> searchedArticles)
-    {
-        if(this.searchedArticles != null) {
+    public void setSearchedArticles(ArrayList<SearchedArticle> searchedArticles) {
+        if (this.searchedArticles != null) {
             this.searchedArticles.clear();
             this.searchedArticles.addAll(searchedArticles);
         }

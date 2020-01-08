@@ -47,26 +47,24 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     private final int REQ_CODE_ARTICLE = 2;
     private final int RES_CODE_ARTICLE_DELETED = 1;
 
-    private CustomProgressDialog customProgressDialog;
-    private Context mContext;
-    private int mBoardUid;
-    private String mUserNickname;
+    private Context context;
+    private int boardUid;
 
-    private BoardRecyclerAdapter mBoardRecyclerAdapter;
+    private BoardRecyclerAdapter boardRecyclerAdapter;
     private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
-    private ArrayList<Article> mArticleArrayList;
-    private int mPageNum;   //다음 호출할 페이지 인덱스
+    private ArrayList<Article> articleArrayList;
+    private int pageNum;   //다음 호출할 페이지 인덱스
 
-    private BoardPresenter mBoardPresenter;
+    private BoardPresenter boardPresenter;
 
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mAppbarBase;
+    AppbarBase appbarBase;
     @BindView(R.id.freeboard_layout)
-    CoordinatorLayout mCoordinatorLayout;
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.board_swiperefreshlayout)
-    SwipeRefreshLayoutBottom mBoardSwipeRefreshLayout;
+    SwipeRefreshLayoutBottom boardSwipeRefreshLayout;
     @BindView(R.id.freeboard_recyclerview)
-    RecyclerView mBoardListRecyclerView;
+    RecyclerView boardListRecyclerView;
 
     @BindView(R.id.empty_board_list_frameLayout)
     FrameLayout mEmptyBoardListFrameLayout;
@@ -76,7 +74,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
 
         init();
     }
@@ -84,12 +82,12 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     @Override
     protected void onStart() {
         super.onStart();
-        mPageNum = 1;
-        if (mBoardPresenter != null)
-            mBoardPresenter.getArticlePage(mBoardUid, mPageNum);
+        this.pageNum = 1;
+        if (boardPresenter != null)
+            boardPresenter.getArticlePage(boardUid, this.pageNum);
         else {
             setPresenter(new BoardPresenter(this, new CommunityRestInteractor()));
-            mBoardPresenter.getArticlePage(mBoardUid, mPageNum);
+            boardPresenter.getArticlePage(boardUid, this.pageNum);
         }
     }
 
@@ -109,42 +107,42 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     }
 
     private void init() {
-        mBoardUid = getIntent().getIntExtra("BOARD_UID", ID_FREE);
-        mAppbarBase.setTitleText((mBoardUid == ID_FREE) ? "자유게시판" : (mBoardUid == ID_RECRUIT) ? "취업게시판" : "익명게시판");
-        mBoardSwipeRefreshLayout.setOnRefreshListener(this);
+        boardUid = getIntent().getIntExtra("BOARD_UID", ID_FREE);
+        appbarBase.setTitleText((boardUid == ID_FREE) ? "자유게시판" : (boardUid == ID_RECRUIT) ? "취업게시판" : "익명게시판");
+        boardSwipeRefreshLayout.setOnRefreshListener(this);
 
         mLayoutManager = new LinearLayoutManager(this);
-        mArticleArrayList = new ArrayList<>();
+        articleArrayList = new ArrayList<>();
 
-        mBoardRecyclerAdapter = new BoardRecyclerAdapter(mArticleArrayList);
+        boardRecyclerAdapter = new BoardRecyclerAdapter(articleArrayList);
 
-        mBoardListRecyclerView.setHasFixedSize(true);
-        mBoardListRecyclerView.setLayoutManager(mLayoutManager);
-        mBoardListRecyclerView.setAdapter(mBoardRecyclerAdapter);
-        mBoardListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
+        boardListRecyclerView.setHasFixedSize(true);
+        boardListRecyclerView.setLayoutManager(mLayoutManager);
+        boardListRecyclerView.setAdapter(boardRecyclerAdapter);
+        boardListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
         setPresenter(new BoardPresenter(this, new CommunityRestInteractor()));
 
-        mPageNum = 1;
+        this.pageNum = 1;
     }
 
     @Override
     public void setPresenter(BoardPresenter presenter) {
-        this.mBoardPresenter = presenter;
+        this.boardPresenter = presenter;
     }
 
     //리스트 추가 로드 기능 콜백
     @Override
     public void onRefresh() {
-        mBoardPresenter.getArticlePage(mBoardUid, mPageNum);
+        boardPresenter.getArticlePage(boardUid, this.pageNum);
     }
 
 
     public void onClickRefreshBoardList() {
-        mBoardListRecyclerView.stopScroll();
+        boardListRecyclerView.stopScroll();
         mLayoutManager.scrollToPosition(0);
-        mPageNum = 1;
+        this.pageNum = 1;
         //첫 페이지 다시 로드
-        mBoardPresenter.getArticlePage(mBoardUid, mPageNum);
+        boardPresenter.getArticlePage(boardUid, this.pageNum);
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -158,7 +156,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     public void onClickCreateButton() {
         //TODO:닉네임설정여부
-        if (mBoardUid != ID_ANONYMOUS) {
+        if (boardUid != ID_ANONYMOUS) {
             AuthorizeConstant authorize = getAuthorize();
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
@@ -168,8 +166,8 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
                 return;
             }
         }
-        Intent intent = new Intent(mContext, ArticleEditActivity.class);
-        intent.putExtra("BOARD_UID", mBoardUid);
+        Intent intent = new Intent(context, ArticleEditActivity.class);
+        intent.putExtra("BOARD_UID", boardUid);
         startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
 
     }
@@ -187,26 +185,26 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @Override
     public void onBoardListDataReceived(ArticlePageResponse articlePage) {
-        if (mPageNum == 1) {   //refresh 버튼 시 초기화 하면 에러 발생 (recycler view bug)
-            mArticleArrayList.clear();
+        if (this.pageNum == 1) {   //refresh 버튼 시 초기화 하면 에러 발생 (recycler view bug)
+            articleArrayList.clear();
         }
 
         updateUserInterface(articlePage.articleArrayList);
 
-        if (mBoardSwipeRefreshLayout.isRefreshing()) {
-            mBoardSwipeRefreshLayout.setRefreshing(false);
+        if (boardSwipeRefreshLayout.isRefreshing()) {
+            boardSwipeRefreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void updateUserInterface(ArrayList<Article> articleArrayList) {
-        mPageNum++;
+        this.pageNum++;
 
-        mArticleArrayList.addAll(articleArrayList);
+        this.articleArrayList.addAll(articleArrayList);
 
-        mBoardRecyclerAdapter.notifyDataSetChanged();
+        boardRecyclerAdapter.notifyDataSetChanged();
 
-        if (mArticleArrayList.size() != 0) {
+        if (articleArrayList.size() != 0) {
             mEmptyBoardListFrameLayout.setVisibility(View.GONE);
         } else {
             mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
@@ -217,10 +215,10 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
         @Override
         public void onClick(View view, final int position) {
 
-            if ((mBoardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
-                mBoardPresenter.getArticleGrant(mArticleArrayList.get(position).articleUid);
+            if ((boardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
+                boardPresenter.getArticleGrant(articleArrayList.get(position).articleUid);
             else
-                goToArticleActivity(mArticleArrayList.get(position).articleUid, mBoardUid == ID_ANONYMOUS);
+                goToArticleActivity(articleArrayList.get(position).articleUid, boardUid == ID_ANONYMOUS);
 
         }
 
@@ -237,7 +235,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     @Override
     public void goToArticleActivity(int articleUid, boolean isArticleGrantEdit) {
         Intent intent = new Intent(this, ArticleActivity.class);
-        intent.putExtra("BOARD_UID", mBoardUid);
+        intent.putExtra("BOARD_UID", boardUid);
         intent.putExtra("ARTICLE_UID", articleUid);
         intent.putExtra("ARTICLE_GRANT_EDIT", isArticleGrantEdit);
         startActivityForResult(intent, REQ_CODE_ARTICLE);
@@ -263,24 +261,18 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+       showProgressDialog("로딩 중");
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+       hideProgressDialog();
     }
 
     @Override
     public void showMessage(String message) {
-        if (mBoardSwipeRefreshLayout.isRefreshing()) {
-            mBoardSwipeRefreshLayout.setRefreshing(false);
+        if (boardSwipeRefreshLayout.isRefreshing()) {
+            boardSwipeRefreshLayout.setRefreshing(false);
         }
 
         ToastUtil.getInstance().makeShort(message);

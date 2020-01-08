@@ -27,7 +27,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
     public static final String TAG = TimetableAnonymousPresenter.class.getName();
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
-    private AppVersionInteractor mAppVersionInteractor;
+    private AppVersionInteractor appVersionInteractor;
     private TimeTableInteractor mTimeTableInteractor;
     private LectureInteractor mLectureInteractor;
     private TimetableAnonymousContract.View mTimeTableView;
@@ -35,7 +35,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
 
     public TimetableAnonymousPresenter(TimetableAnonymousContract.View mTimeTableView) {
         this.mTimeTableView = mTimeTableView;
-        this.mAppVersionInteractor = new AppVersionRestInteractor();
+        this.appVersionInteractor = new AppVersionRestInteractor();
         this.mTimeTableInteractor = new TimeTableRestInteractor();
         this.mLectureInteractor = new LectureRestInteractor();
         //
@@ -182,7 +182,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
 
     public void getTimeTableVersion() {
         mTimeTableView.showLoading();
-        mAppVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+        appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
     }
 
 

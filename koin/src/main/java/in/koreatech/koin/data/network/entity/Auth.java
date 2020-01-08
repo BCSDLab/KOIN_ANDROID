@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Auth {
-    private final String Tag = Auth.class.getSimpleName();
+    private final String Tag = "Auth";
 
     @SerializedName("token")
     @Expose

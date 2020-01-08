@@ -29,7 +29,7 @@ public class TimetablePresenter implements BasePresenter {
     public static final String TAG = TimetablePresenter.class.getName();
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
-    private AppVersionInteractor mAppVersionInteractor;
+    private AppVersionInteractor appVersionInteractor;
     private TimeTableInteractor mTimeTableInteractor;
     private LectureInteractor mLectureInteractor;
     private TimetableContract.View mTimeTableView;
@@ -37,7 +37,7 @@ public class TimetablePresenter implements BasePresenter {
 
     public TimetablePresenter(TimetableContract.View mTimeTableView) {
         this.mTimeTableView = mTimeTableView;
-        this.mAppVersionInteractor = new AppVersionRestInteractor();
+        this.appVersionInteractor = new AppVersionRestInteractor();
         this.mTimeTableInteractor = new TimeTableRestInteractor();
         this.mLectureInteractor = new LectureRestInteractor();
         //
@@ -172,7 +172,7 @@ public class TimetablePresenter implements BasePresenter {
 
     public void getTimetTableVersion() {
         mTimeTableView.showLoading();
-        mAppVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+        appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
     }
 
 
