@@ -10,6 +10,7 @@ import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.entity.Item;
 import in.koreatech.koin.core.networks.entity.MarketItem;
+import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.core.networks.responses.MarketPageResponse;
 import in.koreatech.koin.core.networks.services.MarketService;
 import io.reactivex.Observable;
@@ -116,20 +117,26 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
     @Override
     public void readGrantedDetail(int id, ApiCallback apiCallback) {
         String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        if (token == null || token.isEmpty()) {
+            DefaultResponse defaultResponse = new DefaultResponse();
+            defaultResponse.success = false;
+            apiCallback.onSuccess(defaultResponse);
+        }
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("item_id", id);
 
         RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postGrantedCheck(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Item>() {
+                .subscribe(new Observer<DefaultResponse>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
                         mCompositeDisposable.add(disposable);
                     }
 
                     @Override
-                    public void onNext(Item response) {
+                    public void onNext(DefaultResponse response) {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {

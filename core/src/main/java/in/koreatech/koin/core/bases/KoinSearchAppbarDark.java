@@ -2,47 +2,53 @@ package in.koreatech.koin.core.bases;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.AttrRes;
-import com.google.android.material.appbar.AppBarLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.AttrRes;
 
-import android.util.AttributeSet;
-
+import com.google.android.material.appbar.AppBarLayout;
 
 import in.koreatech.koin.core.R;
 
 /**
  * Created by yunjae on 2019. 3. 17....
- *
  */
-public class KoinBaseAppbarDark extends AppBarLayout {
+public class KoinSearchAppbarDark extends AppBarLayout {
     public AppBarLayout background;
     public TextView leftButton;
     public TextView rightButton;
-    public TextView title;
+    public EditText title;
+    public Button eraseButton;
+    private SearchTextChange searchTextChange;
+    private SearchEditorAction searchEditorAction;
 
     final Typeface textFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/notosans_medium.ttf");
     public OnClickListener onClickListener;
 
 
-    public KoinBaseAppbarDark(Context context) {
+    public KoinSearchAppbarDark(Context context) {
         super(context);
         init();
     }
 
-    public KoinBaseAppbarDark(Context context, AttributeSet attrs) {
+    public KoinSearchAppbarDark(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         getAttribute(attrs, context);
     }
 
-    public KoinBaseAppbarDark(Context context, AttributeSet attrs, int defStyle) {
+    public KoinSearchAppbarDark(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         init();
         getAttribute(attrs, context, defStyle);
@@ -59,16 +65,21 @@ public class KoinBaseAppbarDark extends AppBarLayout {
 
 
     public void init() {
-        View view = inflate(getContext(), R.layout.base_appbar_dark, null);
+        View view = inflate(getContext(), R.layout.search_appbar_dark, null);
         addView(view);
-        background = (AppBarLayout) findViewById(R.id.base_appbar_dark);
-        leftButton = (TextView) findViewById(R.id.base_appbar_dark_left_button);
-        rightButton = (TextView) findViewById(R.id.base_appbar_dark_right_button);
-        title = (TextView) findViewById(R.id.base_appbar_dark_title);
+        background = findViewById(R.id.base_appbar_dark);
+        leftButton = findViewById(R.id.base_appbar_dark_left_button);
+        rightButton = findViewById(R.id.base_appbar_dark_right_button);
+        title = findViewById(R.id.base_appbar_dark_title);
+        eraseButton = findViewById(R.id.base_appbar_dark_erase_button);
 
         title.setTypeface(textFont);
         leftButton.setTypeface(textFont);
         rightButton.setTypeface(textFont);
+        title.getBackground().setColorFilter(getContext().getResources().getColor(R.color.cloudy_blue), PorterDuff.Mode.SRC_ATOP);
+        eraseButton.setOnClickListener(v -> {
+            title.getText().clear();
+        });
     }
 
     public void getAttribute(AttributeSet attrs, Context context) {
@@ -172,5 +183,53 @@ public class KoinBaseAppbarDark extends AppBarLayout {
 
     public void setRightButtonVisibility(int rightButtonVisibility) {
         rightButton.setVisibility(rightButtonVisibility);
+    }
+
+    public String getText() {
+        return title.getText().toString();
+
+    }
+
+    public void setText(String string) {
+        if (string != null)
+            title.setText(string);
+
+    }
+
+    public void setOnTextChange(SearchTextChange searchTextChange) {
+        this.searchTextChange = searchTextChange;
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                searchTextChange.getString(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
+    public void setSearchEditorAction(SearchEditorAction searchEditorAction) {
+        this.searchEditorAction = searchEditorAction;
+        title.setOnEditorActionListener((v, actionId, event) -> this.searchEditorAction.onEditorAction(v, actionId, event));
+    }
+
+    public void clearText() {
+        title.getText().clear();
+    }
+
+    public interface SearchTextChange {
+        void getString(String text);
+    }
+
+    public interface SearchEditorAction {
+        boolean onEditorAction(TextView v, int actionId, KeyEvent event);
     }
 }

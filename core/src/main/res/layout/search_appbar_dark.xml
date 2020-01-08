@@ -26,20 +26,42 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@drawable/ic_back_arrow" />
 
-        <TextView
-            android:id="@+id/base_appbar_dark_title"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:letterSpacing="-0.05"
-            android:lineSpacingExtra="7sp"
-            android:textColor="@color/white"
-            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="제목" />
+            app:layout_constraintEnd_toStartOf="@+id/base_appbar_dark_right_button"
+            app:layout_constraintStart_toEndOf="@+id/base_appbar_dark_left_button"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/base_appbar_dark_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:drawablePadding="10dp"
+                android:hint="검색어를 입력해주세요"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:letterSpacing="-0.05"
+                android:lineSpacingExtra="7sp"
+                android:maxLines="1"
+                android:textColor="@color/white"
+                android:textColorHint="@color/cloudy_blue"
+                android:textSize="14sp"
+
+                />
+
+            <Button
+                android:id="@+id/base_appbar_dark_erase_button"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_eraser" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/base_appbar_dark_right_button"
