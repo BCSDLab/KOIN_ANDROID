@@ -208,6 +208,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 }
                 else Log.e(TAG, "버튼 못찾음");
                 isUploadingImage = true;
+                showLoading();
                 Observable.defer(() -> {
                     File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
                     return Observable.just(imageFile);
@@ -308,7 +309,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onBackPressed() {
-
+        hideLoading();
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -511,6 +512,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         } catch (Exception e) {
             ToastUtil.makeShortToast(mContext, R.string.fail_upload);
         }
+        hideLoading();
         isUploadingImage = false;
     }
 

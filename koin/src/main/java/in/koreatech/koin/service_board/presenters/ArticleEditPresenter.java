@@ -51,7 +51,7 @@ public class ArticleEditPresenter implements BasePresenter {
         public void onSuccess(Object object) {
             Image item = (Image) object;
             if(item.getUrls() != null)
-            articleEditView.showUploadImage(item.getUrls().get(0),uploadImageId);
+                articleEditView.showUploadImage(item.getUrls().get(0),uploadImageId);
             else
                 articleEditView.showFailUploadImage(uploadImageId);
 
