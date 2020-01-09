@@ -82,7 +82,7 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_title_textview"
-                            android:layout_width="wrap_content"
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="13dp"
@@ -172,9 +172,9 @@
                             android:gravity="center"
                             android:lineSpacingExtra="2sp"
                             android:text="마감"
-                            android:visibility="invisible"
                             android:textColor="@color/black"
                             android:textSize="10sp"
+                            android:visibility="invisible"
                             app:layout_constraintStart_toEndOf="@+id/advertising_detail_title_textview"
                             app:layout_constraintTop_toTopOf="parent" />
 

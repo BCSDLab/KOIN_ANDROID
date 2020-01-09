@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,9 +33,24 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
     AdDetailPresenter adDetailPresenter;
     Context context;
     private GenerateProgressTask adDetailGenerateProgress;
+    private RequestOptions glideOptions;
 
     @BindView(R.id.advertising_detail_title_textview)
     TextView titleTextview;
+    @BindView(R.id.advertising_detail_period_textview)
+    TextView periodTextview;
+    @BindView(R.id.advertising_detail_view_count_publisher_textview)
+    TextView viewPublisherTextview;
+    @BindView(R.id.advertising_detail_publish_date_textview)
+    TextView publishDateTextview;
+    @BindView(R.id.advertising_detail_event_imageview)
+    ImageView eventImage;
+    @BindView(R.id.advertising_detail_contents_textview)
+    TextView contentsTextview;
+    @BindView(R.id.advertising_detail_reply_count_textview)
+    TextView replyCountTextview;
+    @BindView(R.id.advertising_detail_view_count_textview)
+    TextView viewCountTextview;
 
 
     @Override
@@ -82,7 +101,24 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
 
     @Override
     public void onAdDetailDataReceived(AdDetail adDetail) {
+       titleTextview.setText(adDetail.eventTitle);
+       periodTextview.setText(adDetail.startDate +" ~ "+ adDetail.endDate);
+       viewPublisherTextview.setText("조회 "+ adDetail.hit +" · "+adDetail.nickname);
+       contentsTextview.setText(adDetail.content);
+//       replyCountTextview.setText(adDetail.comentCount+"");
+//       viewCountTextview.setText(adDetail.hit+"");
 
+        glideOptions = new RequestOptions()
+                .fitCenter()
+                .override(328, 435)
+                .error(R.drawable.img_noimage)
+                .placeholder(R.color.white);
+
+        Glide.with(context)
+                .load(adDetail.thumbnail)
+                .apply(glideOptions)
+                .into(eventImage);
+        ToastUtil.makeShortToast(context, "썸네일 URL확인해줘"+ adDetail.thumbnail);
     }
 
     @Override
@@ -101,5 +137,10 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
         if (id == KoinBaseAppbarDark.getLeftButtonId()) {
             onBackPressed();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

@@ -108,7 +108,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         }
 
         if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
+                showLoginRequestDialog();
             return;
         }
         if (getUser().userNickName != null)

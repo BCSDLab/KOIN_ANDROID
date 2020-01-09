@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Advertising {
-    @SerializedName("eventArticles")
+    @SerializedName("event_articles")
     @Expose
     public ArrayList<Advertising> ads;
 

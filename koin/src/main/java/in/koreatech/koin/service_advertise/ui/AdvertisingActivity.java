@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,6 +19,7 @@ import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
+import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.core.networks.interactors.AdvertisingRestInteractor;
@@ -26,12 +28,13 @@ import in.koreatech.koin.service_advertise.adapters.AdvertisingRecyclerAdapter;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 import in.koreatech.koin.service_land.adapter.LandRecyclerAdapter;
+import in.koreatech.koin.ui.UserInfoEditedActivity;
 
 /**
  * Created by hansol on 2020.1.1...
  */
 public class AdvertisingActivity extends KoinNavigationDrawerActivity implements AdvertisingContract.View {
-    Context mContext;
+    Context context;
     private ArrayList<Advertising> adArrayList;
     private AdvertisingPresenter adPresenter;
     private GridLayoutManager adGridLayoutManager;
@@ -49,11 +52,12 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     void init(){
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         adArrayList = new ArrayList<>();
         adGridLayoutManager = new GridLayoutManager(this, 2);
         adRecyclerView.setLayoutManager(adGridLayoutManager);
         setPresenter(new AdvertisingPresenter(this, new AdvertisingRestInteractor()));
+
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -61,6 +65,20 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         int id = v.getId();
         if (id == KoinBaseAppbarDark.getLeftButtonId()) {
             onBackPressed();
+        }else if (id == KoinBaseAppbarDark.getRightButtonId()) {
+            //점주계정 확인하세요
+             Intent intent = new Intent(context, AdvertisingCreateActivity.class);
+            if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
+                showLoginRequestDialog();
+                return;
+            }
+            if (getUser().userNickName != null)
+                startActivity(intent);
+            else {
+                ToastUtil.makeLongToast(this, "닉네임이 필요합니다.");
+                intent = new Intent(this, UserInfoEditedActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -107,3 +125,5 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         ToastUtil.makeShortToast(this, message);
     }
 }
+
+

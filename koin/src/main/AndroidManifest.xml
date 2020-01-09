@@ -23,10 +23,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
+        <activity android:name=".service_advertise.ui.AdvertisingCreateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar"
+            ></activity>
         <activity
             android:name=".service_advertise.ui.AdvertisingDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/KAPTheme.NoActionBar"></activity>
+            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".service_advertise.ui.AdvertisingActivity"
             android:screenOrientation="portrait"
