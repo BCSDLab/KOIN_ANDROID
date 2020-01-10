@@ -44,8 +44,8 @@ public class BusTimeTableFragment extends BusBaseFragment {
     private final String TAG = "BusTimeTableFragment";
 
 
-    private Unbinder mUnbinder;
-    private FragmentManager mFragmentManger;
+    private Unbinder unbinder;
+    private FragmentManager fragmentManger;
 
     @BindView(R.id.bus_timetable_fragment_spinner)
     Spinner busTimetableShuttleBusSpinner;
@@ -75,7 +75,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.bus_timetable_fragment, container, false);
-        mUnbinder = ButterKnife.bind(this, mView);
+        this.unbinder = ButterKnife.bind(this, mView);
         init();
         return mView;
     }
@@ -104,7 +104,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        this.unbinder.unbind();
     }
 
     @Override
@@ -120,7 +120,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnClick(R.id.bus_timetable_bustype_shuttle)
     public void onClickBustypeShuttle(){
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
         busTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
         busTimetableDaesungSpinner.setVisibility(View.GONE);
@@ -134,7 +134,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnClick(R.id.bus_timetable_bustype_daesung)
     public void onClickBustypeDaesung(){
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
         busTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
         busTimetableDaesungSpinner.setVisibility(View.VISIBLE);
@@ -147,7 +147,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnClick(R.id.bus_timetable_bustype_city)
     public void onClickBustypeCity(){
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCityBusFragment());
         busTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
         busTimetableDaesungSpinner.setVisibility(View.GONE);
@@ -160,7 +160,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnItemSelected(R.id.bus_timetable_fragment_spinner)
     public void onBusArrivalSpinnerSelect(Spinner spinner, int position) {
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
                 fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
@@ -205,7 +205,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnItemSelected(R.id.bus_timetable_fragment_cheonan_start_endspinner)
     public void onBusArrivalCheonanSpinnerSelect(Spinner spinner, int position) {
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
                 fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
@@ -230,7 +230,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnItemSelected(R.id.bus_timetable_fragment_chungju_spinner)
     public void onBusArrivalChungjuSpinnerSelect(Spinner spinner, int position) {
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
                 fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableChungjuShuttleStartEndGymFragment());
@@ -252,7 +252,7 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
     @OnItemSelected(R.id.bus_timetable_fragment_daesung_spinner)
     public void onBusArrivalDaesungSpinnerSelect(Spinner spinner, int position) {
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
                 fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
@@ -272,11 +272,11 @@ public class BusTimeTableFragment extends BusBaseFragment {
 
 
     public void init() {
-        mFragmentManger = getChildFragmentManager();
+        this.fragmentManger = getChildFragmentManager();
         busTimetableChungjuSpinner.setVisibility(View.GONE);
         busTimetableShuttleBusSpinner.setVisibility(View.VISIBLE);
         busTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
-        FragmentTransaction fragmentTransaction = mFragmentManger.beginTransaction();
+        FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
         fragmentTransaction.commit();
     }

@@ -7,10 +7,11 @@ import in.koreatech.koin.core.fragment.BaseFragment;
  * @author yunjae na
  * @since 2018.09.16
  */
-public class BusBaseFragment extends BaseFragment{
+public class BusBaseFragment extends BaseFragment {
 
     /**
      * Change fragment method from TabView
+     *
      * @param page page that selected
      * @return fragment fragment that selected
      */
@@ -18,13 +19,13 @@ public class BusBaseFragment extends BaseFragment{
         BusBaseFragment fragment = null;
         switch (page) {
             case 0:
-                fragment = new  BusMainFragment();
+                fragment = new BusMainFragment();
                 break;
             case 1:
-                fragment =new BusTimeTableSearchFragment();
+                fragment = new BusTimeTableSearchFragment();
                 break;
             case 2:
-                fragment =  new  BusTimeTableFragment();
+                fragment = new BusTimeTableFragment();
                 break;
         }
         return fragment;

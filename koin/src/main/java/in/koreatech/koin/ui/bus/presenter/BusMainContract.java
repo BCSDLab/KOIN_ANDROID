@@ -15,7 +15,7 @@ public interface BusMainContract {
 
         void updateDaesungBusTime(int current, int next);
 
-        void updateShuttleBusDepartInfo(String current,String next);
+        void updateShuttleBusDepartInfo(String current, String next);
 
         void updateCityBusDepartInfo(int current, int next);
 

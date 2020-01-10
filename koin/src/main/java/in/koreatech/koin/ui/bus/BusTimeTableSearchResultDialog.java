@@ -18,26 +18,25 @@ import in.koreatech.koin.R;
 public class BusTimeTableSearchResultDialog extends Dialog {
 
     @BindView(R.id.bus_timetable_search_result_shuttle_bus_textview)
-    TextView mBusTimeTableSearchResultShuttleBusTextview;
+    TextView busTimeTableSearchResultShuttleBusTextview;
     @BindView(R.id.bus_timetable_search_result_daesung_bus_textview)
-    TextView mBusTimeTableSearchResultDaesungBusTextview;
+    TextView busTimeTableSearchResultDaesungBusTextview;
     @BindView(R.id.bus_timetable_search_result_close_button)
-    Button mBusTimeTableSearchResultCloseButton;
+    Button busTimeTableSearchResultCloseButton;
 
 
-    public BusTimeTableSearchResultDialog(@NonNull Context context , String shuttleBusTime , String daesungBusTime) {
+    public BusTimeTableSearchResultDialog(@NonNull Context context, String shuttleBusTime, String daesungBusTime) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.bus_timetable_search_result_dialog);
         ButterKnife.bind(this);
-        mBusTimeTableSearchResultShuttleBusTextview.setText(shuttleBusTime);
-        mBusTimeTableSearchResultDaesungBusTextview.setText(daesungBusTime);
+        this.busTimeTableSearchResultShuttleBusTextview.setText(shuttleBusTime);
+        this.busTimeTableSearchResultDaesungBusTextview.setText(daesungBusTime);
     }
 
     @OnClick(R.id.bus_timetable_search_result_close_button)
-    public void oncloseButtonClick()
-    {
+    public void oncloseButtonClick() {
         dismiss();
     }
 

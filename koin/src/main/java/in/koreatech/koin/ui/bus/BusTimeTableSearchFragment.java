@@ -42,19 +42,18 @@ import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchPresenter;
 public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTimeTableSearchContract.View {
     private final String TAG = "BusTimeTableSearchFragment";
 
-    private CustomProgressDialog customProgressDialog;
-    private Unbinder mUnbinder;
+    private Unbinder unbinder;
     private int departureState;
-    private int mArrivalState;
-    private int mHour;
-    private int mMin;
-    private String mTotalDate;
-    private String mTotalTime;
-    private String mShuttleBusDepartInfo;
+    private int arrivalState;
+    private int hour;
+    private int min;
+    private String totalDate;
+    private String totalTime;
+    private String shuttleBusDepartInfo;
     private String daesungBusDepartInfo;
-    private BusTimeTableSearchPresenter mPresenter;
-    private String mResultDate;
-    private Calendar mCalendar;
+    private BusTimeTableSearchPresenter presenter;
+    private String resultDate;
+    private Calendar calendar;
 
     @BindView(R.id.bus_search_bus_departure_spinner)
     Spinner busTimetableSearchDepartureSpinner;
@@ -130,10 +129,10 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     public void onItemSelectedBusSearchDepartureSpinner(Spinner spinner, int position) {
 
 
-        if (position != mArrivalState)
+        if (position != arrivalState)
             departureState = position;
         else {
-            mArrivalState = departureState;
+            arrivalState = departureState;
             departureState = position;
         }
 
@@ -143,10 +142,10 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     @OnItemSelected(R.id.bus_search_bus_arrival_spinner)
     public void onItemSelectedBusSearchArrivalSpinner(Spinner spinner, int position) {
         if (position != departureState)
-            mArrivalState = position;
+            arrivalState = position;
         else {
-            departureState = mArrivalState;
-            mArrivalState = position;
+            departureState = arrivalState;
+            arrivalState = position;
         }
 
         setSpinner();
@@ -154,29 +153,29 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     public void setSpinner() {
         busTimetableSearchDepartureSpinner.setSelection(departureState);
-        busTimetalbeSearchArrivalSpinner.setSelection(mArrivalState);
+        busTimetalbeSearchArrivalSpinner.setSelection(arrivalState);
     }
 
     public void init() {
         departureState = 0;
-        mArrivalState = 1;
+        arrivalState = 1;
 
-        mCalendar = Calendar.getInstance();
-        mCalendar.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        this.calendar = Calendar.getInstance();
+        this.calendar.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
         updateLabel();
         busTimetableSearchDateTextView.setText("오늘 - " + busTimetableSearchDateTextView.getText());
 
-        mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-        mMin = mCalendar.get(Calendar.MINUTE);
+        this.hour = this.calendar.get(Calendar.HOUR_OF_DAY);
+        this.min = this.calendar.get(Calendar.MINUTE);
 
         setPresenter(new BusTimeTableSearchPresenter(this));
         showUserSelectDateTime();
-        setDayPickerTime(mHour, mMin);
+        setDayPickerTime(this.hour, this.min);
 
         busTimetableSearchTimePicker.setOnTimeChangedListener((timePicker, hour, minute) -> {
-            BusTimeTableSearchFragment.this.mHour = hour;
-            BusTimeTableSearchFragment.this.mMin = minute;
+            this.hour = hour;
+            this.min = minute;
             showUserSelectDateTime();
         });
 
@@ -195,45 +194,45 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     public void showUserSelectDateTime() {
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder timeStringBulider = new StringBuilder();
-        stringBuilder.append(mResultDate);
+        stringBuilder.append(this.resultDate);
         stringBuilder.append("   ");
-        if (mHour == 12) {
+        if (this.hour == 12) {
             stringBuilder.append("오후 ");
-            stringBuilder.append(mHour);
-        } else if (mHour > 12) {
+            stringBuilder.append(this.hour);
+        } else if (this.hour > 12) {
             stringBuilder.append("오후 ");
-            stringBuilder.append(mHour - 12);
+            stringBuilder.append(this.hour - 12);
         } else {
             stringBuilder.append("오전 ");
-            stringBuilder.append(mHour);
+            stringBuilder.append(this.hour);
         }
 
         stringBuilder.append("시 ");
-        stringBuilder.append(mMin);
+        stringBuilder.append(this.min);
         stringBuilder.append("분");
         busTimetableSearchInformationTextview.setText(stringBuilder.toString());
 
-        mTotalDate = mResultDate.replaceAll(" / ", "-");
+        this.totalDate = this.resultDate.replaceAll(" / ", "-");
 
-        if (mHour < 10) {
+        if (this.hour < 10) {
             timeStringBulider.append("0");
         }
-        timeStringBulider.append(mHour);
+        timeStringBulider.append(this.hour);
         timeStringBulider.append(":");
 
-        if (mMin < 10) {
+        if (this.min < 10) {
             timeStringBulider.append("0");
         }
-        timeStringBulider.append(mMin);
-        mTotalTime = timeStringBulider.toString();
+        timeStringBulider.append(this.min);
+        this.totalTime = timeStringBulider.toString();
     }
 
     DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            mCalendar.set(Calendar.YEAR, year);
-            mCalendar.set(Calendar.MONTH, month);
-            mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateLabel();
         }
     };
@@ -243,34 +242,36 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         String resultDate = "yyyy / M / dd";    // 출력형식  2019/3/24
 
         SimpleDateFormat selectDateFormat = new SimpleDateFormat(selectDate, Locale.KOREA);
-        busTimetableSearchDateTextView.setText(selectDateFormat.format(mCalendar.getTime()));
+        busTimetableSearchDateTextView.setText(selectDateFormat.format(this.calendar.getTime()));
 
         SimpleDateFormat resultDateFormat = new SimpleDateFormat(resultDate, Locale.KOREA);
-        mResultDate = resultDateFormat.format(mCalendar.getTime());
+        this.resultDate = resultDateFormat.format(this.calendar.getTime());
         showUserSelectDateTime();
     }
 
     @OnClick(R.id.bus_timetable_search_date_imageButton)
     public void onTimetableSearchDatepickerClick() {
-        new DatePickerDialog(getContext(), R.style.KAPDatePicker, datePicker, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(getContext(), R.style.KAPDatePicker, datePicker, this.calendar.get(Calendar.YEAR), this.calendar.get(Calendar.MONTH), this.calendar.get(Calendar.DAY_OF_MONTH)).show();
 
     }
 
     @OnClick(R.id.bus_timetable_search_fragment_search_button)
     public void onTimetableSearchButtonClick() {
-        mPresenter.getDaesungBus(departureState, mArrivalState, mTotalDate, mTotalTime);
-        mPresenter.getShuttleBus(departureState, mArrivalState, mTotalDate, mTotalTime);
+        this.presenter.getDaesungBus(departureState, arrivalState, this.totalDate, this.totalTime);
+        this.presenter.getShuttleBus(departureState, arrivalState, this.totalDate, this.totalTime);
     }
 
     @Override
     public void updateShuttleBusTime(String time) {
-        if (time == null || time.isEmpty()) time = getResources().getString(R.string.bus_end_information);
-        mShuttleBusDepartInfo = time;
+        if (time == null || time.isEmpty())
+            time = getResources().getString(R.string.bus_end_information);
+        this.shuttleBusDepartInfo = time;
     }
 
     @Override
     public void updateDaesungBusTime(String time) {
-        if (time == null || time.isEmpty()) time = getResources().getString(R.string.bus_end_information);
+        if (time == null || time.isEmpty())
+            time = getResources().getString(R.string.bus_end_information);
         daesungBusDepartInfo = time;
     }
 
@@ -281,12 +282,12 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void updateFailShuttleBusDepartInfo() {
-        mShuttleBusDepartInfo = getResources().getString(R.string.bus_end_information);
+        this.shuttleBusDepartInfo = getResources().getString(R.string.bus_end_information);
     }
 
     @Override
     public void showBusTimeInfo() {
-        BusTimeTableSearchResultDialog dialog = new BusTimeTableSearchResultDialog(getActivity(), mShuttleBusDepartInfo, daesungBusDepartInfo);
+        BusTimeTableSearchResultDialog dialog = new BusTimeTableSearchResultDialog(getActivity(), this.shuttleBusDepartInfo, daesungBusDepartInfo);
         dialog.setCancelable(true);
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
@@ -301,23 +302,17 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void setPresenter(BusTimeTableSearchPresenter presenter) {
-        this.mPresenter = presenter;
+        this.presenter = presenter;
     }
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(getContext(), "로딩중");
-            customProgressDialog.execute();
-        }
+        ((BusActivity) getActivity()).showProgressDialog("로딩 중");
 
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        ((BusActivity) getActivity()).hideProgressDialog();
     }
 }

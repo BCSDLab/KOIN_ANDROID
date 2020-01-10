@@ -69,7 +69,7 @@ public class BusMainPresenter implements BasePresenter {
             int soonArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
             int laterArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             String soonDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-            String laterDeparture =  Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
+            String laterDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             busMainView.updateDaesungBusTime(soonArrival, laterArrival);
             busMainView.updateDaesungBusDepartInfo(soonDeparture, laterDeparture);
         } catch (ParseException e) {
@@ -85,7 +85,7 @@ public class BusMainPresenter implements BasePresenter {
             int soonArrival = (int) Bus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
             int laterArrival = (int) Bus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             String soonDeparture = Bus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-            String laterDeparture =  Bus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
+            String laterDeparture = Bus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             busMainView.updateShuttleBusTime(soonArrival, laterArrival);
             busMainView.updateShuttleBusDepartInfo(soonDeparture, laterDeparture);
         } catch (ParseException e) {
