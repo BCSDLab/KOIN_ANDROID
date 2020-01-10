@@ -193,7 +193,7 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_reply_count_textview"
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="15dp"
                             android:layout_marginTop="13dp"
                             android:text="3"
@@ -289,7 +289,7 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_view_count_textview"
-                            android:layout_width="wrap_content"
+                            android:layout_width="30dp"
                             android:layout_height="15dp"
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="2sp"

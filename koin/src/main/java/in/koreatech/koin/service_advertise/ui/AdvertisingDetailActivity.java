@@ -101,10 +101,10 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
 
     @Override
     public void onAdDetailDataReceived(AdDetail adDetail) {
-       titleTextview.setText(adDetail.eventTitle);
-       periodTextview.setText(adDetail.startDate +" ~ "+ adDetail.endDate);
-       viewPublisherTextview.setText("조회 "+ adDetail.hit +" · "+adDetail.nickname);
-       contentsTextview.setText(adDetail.content);
+        titleTextview.setText(adDetail.eventTitle);
+        periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
+        viewPublisherTextview.setText("조회 " + adDetail.hit + " · " + adDetail.nickname);
+        contentsTextview.setText(adDetail.content);
 //       replyCountTextview.setText(adDetail.comentCount+"");
 //       viewCountTextview.setText(adDetail.hit+"");
 
@@ -118,7 +118,7 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
                 .load(adDetail.thumbnail)
                 .apply(glideOptions)
                 .into(eventImage);
-        ToastUtil.makeShortToast(context, "썸네일 URL확인해줘"+ adDetail.thumbnail);
+        ToastUtil.makeShortToast(context, "썸네일 URL확인해줘" + adDetail.thumbnail);
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.google.android.gms.common.data.AbstractDataBuffer;
 
@@ -42,6 +43,10 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @BindView(R.id.advertising_recyclerview)
     RecyclerView adRecyclerView;
+    @BindView(R.id.activity_advertising_processing_checkbox)
+    CheckBox adProcessingCheckBox1;
+    @BindView(R.id.activity_advertising_processing_checkbox2)
+    CheckBox adProcessingCheckBox2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         init();
     }
 
-    void init(){
+    void init() {
         ButterKnife.bind(this);
         context = this;
         adArrayList = new ArrayList<>();
@@ -60,14 +65,27 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     }
 
+    @OnClick(R.id.activity_advertising_processing_checkbox)
+    public void onClick1Checked(){
+        if(adProcessingCheckBox2.isChecked() == true){
+            ToastUtil.makeShortToast(context, "두 개를 모두 선택하실 수 없습니다.");
+        }
+    }
+    @OnClick(R.id.activity_advertising_processing_checkbox2)
+    public void onClick2Checked(){
+        if(adProcessingCheckBox1.isChecked() == true){
+            ToastUtil.makeShortToast(context, "두 개를 모두 선택하실 수 없습니다.");
+        }
+    }
+
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
         if (id == KoinBaseAppbarDark.getLeftButtonId()) {
             onBackPressed();
-        }else if (id == KoinBaseAppbarDark.getRightButtonId()) {
+        } else if (id == KoinBaseAppbarDark.getRightButtonId()) {
             //점주계정 확인하세요
-             Intent intent = new Intent(context, AdvertisingCreateActivity.class);
+            Intent intent = new Intent(context, AdvertisingCreateActivity.class);
             if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
@@ -118,7 +136,21 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     public void onAdvertisingDataReceived(ArrayList<Advertising> adList) {
         adRecyclerAdapter = new AdvertisingRecyclerAdapter(adList, this);
         adRecyclerView.setAdapter(adRecyclerAdapter);
+
+        checkBoxDataDisplay();
     }
+
+    /**
+     * 체크박스에 맞는 데이터로 재설정해주기
+     */
+    public void checkBoxDataDisplay(){
+        boolean isChecked1 = adProcessingCheckBox1.isChecked();
+        boolean isChecked2 = adProcessingCheckBox2.isChecked();
+        //프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
+        adPresenter.displayProcessingEvent(isChecked1, isChecked2);
+
+    }
+
 
     @Override
     public void showMessage(String message) {

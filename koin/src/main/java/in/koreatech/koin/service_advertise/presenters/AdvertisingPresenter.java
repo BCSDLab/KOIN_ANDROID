@@ -26,7 +26,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Advertising ads = (Advertising)object;
+            Advertising ads = (Advertising) object;
             adArrayList.clear();
             adArrayList.addAll(ads.ads);
             adView.onAdvertisingDataReceived(adArrayList);
@@ -39,8 +39,22 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
     };
 
     @Override
-    public void getAdList(){
+    public void getAdList() {
         adArrayList.clear();
         advertisingInteractor.readAdList(apiCallback);
+    }
+
+    @Override
+    public void displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
+        if(isChecked1 == true && isChecked2 == false){
+
+        }
+        if(isChecked1 == false && isChecked2 == true){
+
+        }
+        if(isChecked1 == false && isChecked2 == false){
+
+        }
+
     }
 }

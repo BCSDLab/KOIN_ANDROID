@@ -8,7 +8,7 @@ import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.service_advertise.contracts.AdDetailContract;
 
-public class AdDetailPresenter implements AdDetailContract.Presenter{
+public class AdDetailPresenter implements AdDetailContract.Presenter {
     private AdDetailContract.View adDetailView;
     private AdDetailInterator adDetailInterator;
 

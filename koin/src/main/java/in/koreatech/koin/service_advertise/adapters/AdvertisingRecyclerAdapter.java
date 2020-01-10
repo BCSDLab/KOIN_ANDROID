@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -81,11 +82,11 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
             if (ad.getStartDate() == null && ad.getEndDate() == null)
                 adPeriodTextview.setText("-");
             else
-                adPeriodTextview.setText(ad.startDate+"~"+ad.getEndDate());
+                adPeriodTextview.setText(ad.startDate + "~" + ad.getEndDate());
 
             String[] publishedDate = ad.getPublishedDate().split(" ");
 
-            if(ad.getPublishedDate() == null)
+            if (ad.getPublishedDate() == null)
                 adPublishedDateTextview.setText("-");
             else
                 adPublishedDateTextview.setText(publishedDate[0]);
@@ -111,10 +112,10 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
                 .apply(glideOptions)
                 .into(holder.adFoodImageview);
 
-            holder.view.setOnClickListener(i->{
-                Intent intent = new Intent(context, AdvertisingDetailActivity.class);
-                intent.putExtra("ID",ad.getId());
-                context.startActivity(intent);
+        holder.view.setOnClickListener(i -> {
+            Intent intent = new Intent(context, AdvertisingDetailActivity.class);
+            intent.putExtra("ID", ad.getId());
+            context.startActivity(intent);
         });
     }
 

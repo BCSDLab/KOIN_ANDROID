@@ -11,14 +11,17 @@ import in.koreatech.koin.service_advertise.presenters.AdDetailPresenter;
  * Created by hansol on 2020.1.3...
  */
 public interface AdDetailContract {
-    interface View extends BaseView<AdDetailPresenter>{
+    interface View extends BaseView<AdDetailPresenter> {
         void showLoading();
+
         void hideLoading();
+
         void onAdDetailDataReceived(AdDetail adDetail);
+
         void showMessage(String msg);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
         void getAdDetailInfo(int shopId);
     }
 }
