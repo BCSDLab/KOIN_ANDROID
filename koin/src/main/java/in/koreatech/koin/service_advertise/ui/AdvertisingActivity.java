@@ -1,6 +1,5 @@
 package in.koreatech.koin.service_advertise.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -9,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-
-import com.google.android.gms.common.data.AbstractDataBuffer;
 
 import java.util.ArrayList;
 
@@ -22,13 +19,11 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.core.networks.entity.Advertising;
-import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.core.networks.interactors.AdvertisingRestInteractor;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.adapters.AdvertisingRecyclerAdapter;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
-import in.koreatech.koin.service_land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.UserInfoEditedActivity;
 
 /**
@@ -43,9 +38,9 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @BindView(R.id.advertising_recyclerview)
     RecyclerView adRecyclerView;
-    @BindView(R.id.activity_advertising_processing_checkbox)
-    CheckBox adProcessingCheckBox1;
     @BindView(R.id.activity_advertising_processing_checkbox2)
+    CheckBox adProcessingCheckBox1;
+    @BindView(R.id.activity_advertising_processing_checkbox)
     CheckBox adProcessingCheckBox2;
 
     @Override
@@ -65,17 +60,14 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     }
 
-    @OnClick(R.id.activity_advertising_processing_checkbox)
-    public void onClick1Checked(){
-        if(adProcessingCheckBox2.isChecked() == true){
-            ToastUtil.makeShortToast(context, "두 개를 모두 선택하실 수 없습니다.");
-        }
-    }
     @OnClick(R.id.activity_advertising_processing_checkbox2)
-    public void onClick2Checked(){
-        if(adProcessingCheckBox1.isChecked() == true){
-            ToastUtil.makeShortToast(context, "두 개를 모두 선택하실 수 없습니다.");
-        }
+    public void onClick1Checked() {
+        checkBoxDataDisplay();
+    }
+
+    @OnClick(R.id.activity_advertising_processing_checkbox)
+    public void onClick2Checked() {
+        checkBoxDataDisplay();
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -136,19 +128,16 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     public void onAdvertisingDataReceived(ArrayList<Advertising> adList) {
         adRecyclerAdapter = new AdvertisingRecyclerAdapter(adList, this);
         adRecyclerView.setAdapter(adRecyclerAdapter);
-
-        checkBoxDataDisplay();
     }
 
     /**
      * 체크박스에 맞는 데이터로 재설정해주기
      */
-    public void checkBoxDataDisplay(){
-        boolean isChecked1 = adProcessingCheckBox1.isChecked();
-        boolean isChecked2 = adProcessingCheckBox2.isChecked();
+    public void checkBoxDataDisplay() {
         //프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
-        adPresenter.displayProcessingEvent(isChecked1, isChecked2);
-
+        ArrayList<Advertising> applyAdDataList = adPresenter.displayProcessingEvent(adProcessingCheckBox1.isChecked(), adProcessingCheckBox2.isChecked());
+        adRecyclerAdapter.setAdArrayList(applyAdDataList);
+        adRecyclerAdapter.notifyDataSetChanged();
     }
 
 

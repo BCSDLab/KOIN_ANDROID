@@ -77,7 +77,8 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
             ToastUtil.makeShortToast(context, "이벤트 정보를 불러오지 못했습니다.");
         } else {
             if (adDetailPresenter != null) {
-                adDetailPresenter.getAdDetailInfo(1);
+                ToastUtil.makeShortToast(context, "이벤트  넘버 넘어왔음 : "+ id);
+                adDetailPresenter.getAdDetailInfo(id);
             }
         }
     }
@@ -105,8 +106,8 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
         periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
         viewPublisherTextview.setText("조회 " + adDetail.hit + " · " + adDetail.nickname);
         contentsTextview.setText(adDetail.content);
-//       replyCountTextview.setText(adDetail.comentCount+"");
-//       viewCountTextview.setText(adDetail.hit+"");
+        replyCountTextview.setText(adDetail.comentCount + "");
+        viewCountTextview.setText(adDetail.hit + "");
 
         glideOptions = new RequestOptions()
                 .fitCenter()
@@ -118,7 +119,6 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
                 .load(adDetail.thumbnail)
                 .apply(glideOptions)
                 .into(eventImage);
-        ToastUtil.makeShortToast(context, "썸네일 URL확인해줘" + adDetail.thumbnail);
     }
 
     @Override

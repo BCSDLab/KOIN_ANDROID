@@ -123,4 +123,9 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
     public int getItemCount() {
         return adArrayList.size();
     }
+
+
+    public void setAdArrayList(ArrayList<Advertising> adArrayList) {
+        this.adArrayList = adArrayList;
+    }
 }

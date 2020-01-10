@@ -8,6 +8,9 @@ import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.service_advertise.contracts.AdDetailContract;
 
+/**
+ * Created by hansol on 2020.1.3...
+ */
 public class AdDetailPresenter implements AdDetailContract.Presenter {
     private AdDetailContract.View adDetailView;
     private AdDetailInterator adDetailInterator;
@@ -20,8 +23,7 @@ public class AdDetailPresenter implements AdDetailContract.Presenter {
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            AdDetail ad = (AdDetail) object;
-            adDetailView.onAdDetailDataReceived(ad);
+            adDetailView.onAdDetailDataReceived((AdDetail) object);
             adDetailView.hideLoading();
         }
 

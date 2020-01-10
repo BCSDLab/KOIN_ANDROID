@@ -21,6 +21,6 @@ public interface AdvertisingContract {
 
     interface Presenter extends BasePresenter {
         void getAdList();
-        void displayProcessingEvent(boolean isChecked1, boolean isChecked2);
+        ArrayList<Advertising> displayProcessingEvent(boolean isChecked1, boolean isChecked2);
     }
 }

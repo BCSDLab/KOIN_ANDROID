@@ -1,6 +1,10 @@
 package in.koreatech.koin.service_advertise.presenters;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.networks.ApiCallback;
@@ -45,16 +49,43 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
     }
 
     @Override
-    public void displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
-        if(isChecked1 == true && isChecked2 == false){
-
+    public ArrayList<Advertising> displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
+        ArrayList<Advertising> subAdDate = new ArrayList<>();
+        if(isChecked1 == true && isChecked2 == true){ //전체
+            subAdDate.addAll(adArrayList);
         }
-        if(isChecked1 == false && isChecked2 == true){
-
+        if(isChecked1 == false && isChecked2 == false){ //아무것도 없음
+            return subAdDate;
         }
-        if(isChecked1 == false && isChecked2 == false){
 
+        Date date = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+
+        if(isChecked1 == true && isChecked2 == false){ //진행중만
+            for(int i = 0; i < adArrayList.size(); i++){
+                try {
+                    if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate))  == 1)){
+                        subAdDate.add(adArrayList.get(i));
+                    }
+                }catch (ParseException e){
+                    adView.showMessage("에러");
+                }
+            }
         }
+        if(isChecked1 == false && isChecked2 == true){ //마감만
+            for(int i = 0; i < adArrayList.size(); i++){
+                try {
+                    if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate))  == -1)
+                            && (date.compareTo(formatDate.parse(adArrayList.get(i).startDate))  == 1)){
+                        subAdDate.add(adArrayList.get(i));
+                    }
+                }catch (ParseException e){
+                    adView.showMessage("에러");
+                }
+            }
+        }
+
+        return subAdDate;
 
     }
 }
