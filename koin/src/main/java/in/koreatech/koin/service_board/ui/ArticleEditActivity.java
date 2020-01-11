@@ -190,7 +190,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
             @Override
             public void onUpload(Bitmap bitmap, String uuid) {
-                View removeButton = null;
+//                View removeButton = null;
 //                View layout = findViewByTag(articleEditor.getParentView(), uuid);
 //                if (layout != null)
 //                    removeButton = layout.findViewById(R.id.btn_remove);
@@ -199,16 +199,16 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 //                        Log.d(TAG, "이미지 업로드 취소");
 //                        isUploadingImage = false;
 //                    });
-                ViewGroup viewGroup = articleEditor.getParentView().findViewWithTag(uuid);
-                if (viewGroup != null) removeButton = viewGroup.findViewById(R.id.btn_remove);
-                else Log.e(TAG, "뷰그룹 못찾음");
-                if (removeButton != null) {
-                    ToastUtil.makeShortToast(mContext, "삭제버튼 클릭");
-                    isUploadingImage = false;
-                }
-                else Log.e(TAG, "버튼 못찾음");
+//                ViewGroup viewGroup = articleEditor.getParentView().findViewWithTag(uuid);
+//                if (viewGroup != null) removeButton = viewGroup.findViewById(R.id.btn_remove);
+//                else Log.e(TAG, "뷰그룹 못찾음");
+//                if (removeButton != null) {
+//                    ToastUtil.makeShortToast(mContext, "삭제버튼 클릭");
+//                    isUploadingImage = false;
+//                }
+//                else Log.e(TAG, "버튼 못찾음");
                 isUploadingImage = true;
-                showLoading();
+
                 Observable.defer(() -> {
                     File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
                     return Observable.just(imageFile);
@@ -234,7 +234,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         });
         articleEditor.render();
     }
-
 
     private void findImageViewGroupByTag(ViewGroup viewGroup, String tag, int id, View searchView) {
 
@@ -309,7 +308,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onBackPressed() {
-        hideLoading();
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -510,7 +508,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         try {
             articleEditor.onImageUploadComplete(url, uploadImageId);
         } catch (Exception e) {
-            ToastUtil.makeShortToast(mContext, R.string.fail_upload);
+            //ToastUtil.makeShortToast(mContext, R.string.fail_upload);
         }
         hideLoading();
         isUploadingImage = false;

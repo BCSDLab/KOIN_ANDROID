@@ -14,7 +14,6 @@ import java.io.IOException;
 
 public class ImageUtil {
     public static final String TAG = ImageUtil.class.getName();
-
     public static byte[] reduceSize(Bitmap bitmap, int maxSize) {
         int quality = 100;
         int redeceQuality = 2;
