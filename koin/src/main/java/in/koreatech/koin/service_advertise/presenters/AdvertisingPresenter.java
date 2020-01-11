@@ -61,7 +61,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
         Date date = new Date();
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        if(isChecked1 == true && isChecked2 == false){ //진행중만
+        if(isChecked1 == true && isChecked2 == false){
             for(int i = 0; i < adArrayList.size(); i++){
                 try {
                     if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate))  == 1)){
@@ -72,7 +72,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
                 }
             }
         }
-        if(isChecked1 == false && isChecked2 == true){ //마감만
+        if(isChecked1 == false && isChecked2 == true){ 
             for(int i = 0; i < adArrayList.size(); i++){
                 try {
                     if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate))  == -1)

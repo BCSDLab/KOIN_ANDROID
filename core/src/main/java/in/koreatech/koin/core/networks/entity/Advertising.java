@@ -5,18 +5,55 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
+/**
+ * Created by hansol on 2020.1.1...
+ */
 public class Advertising {
     @SerializedName("event_articles")
     @Expose
     public ArrayList<Advertising> ads;
 
-    @SerializedName("comment_count")
+    @SerializedName("id")
     @Expose
-    public int comentCount;
+    public int id;
+
+    @SerializedName("shop_id")
+    @Expose
+    public int shopId;
+
+
+    @SerializedName("title")
+    @Expose
+    public String title;
+
+
+    @SerializedName("event_title")
+    @Expose
+    public String eventTitle;
 
     @SerializedName("content")
     @Expose
     public String content;
+
+    @SerializedName("user_id")
+    @Expose
+    public int userId;
+
+    @SerializedName("nickname")
+    @Expose
+    public String nickname;
+
+    @SerializedName("thumbnail")
+    @Expose
+    public String thumbnail;
+
+    @SerializedName("hit")
+    @Expose
+    public int hit;
+
+    @SerializedName("ip")
+    @Expose
+    public String ip;
 
     @SerializedName("start_date")
     @Expose
@@ -26,37 +63,22 @@ public class Advertising {
     @Expose
     public String endDate;
 
-    @SerializedName("event_title")
-    @Expose
-    public String eventTitle;
 
-    @SerializedName("hit")
+    @SerializedName("comment_count")
     @Expose
-    public int hit;
+    public int comentCount;
 
-    @SerializedName("id")
+    @SerializedName("is_deleted")
     @Expose
-    public int id;
+    public String isDeleted;
 
-    @SerializedName("nickname")
+    @SerializedName("created_at")
     @Expose
-    public String nickname;
+    public String PublishedDate;
 
-    @SerializedName("shop_id")
+    @SerializedName("updated_at")
     @Expose
-    public int shopId;
-
-    @SerializedName("thumbnail")
-    @Expose
-    public String thumbnail;
-
-    @SerializedName("title")
-    @Expose
-    public String title;
-
-    @SerializedName("user_id")
-    @Expose
-    public int userId;
+    public String updatedAt;
 
     @SerializedName("totalPage")
     @Expose
@@ -66,9 +88,6 @@ public class Advertising {
     @Expose
     public int totalCount;
 
-    @SerializedName("created_at")
-    @Expose
-    public String PublishedDate;
 
     public ArrayList<Advertising> getAds() {
         return ads;

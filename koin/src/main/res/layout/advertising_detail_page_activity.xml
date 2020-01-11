@@ -21,7 +21,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create"
                 app:title_text="홍보게시판" />
 
             <RelativeLayout
@@ -121,7 +120,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
 
                         <Button
-                            android:id="@+id/button__"
+                            android:id="@+id/advertising_detail_back_list_button"
                             android:layout_width="69dp"
                             android:layout_height="28dp"
                             android:layout_marginTop="8dp"
@@ -185,7 +184,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="13dp"
                             android:lineSpacingExtra="2sp"
-                            android:text="댓글 "
+                            android:text="댓글  "
                             android:textColor="@color/warm_grey_two"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -193,12 +192,13 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_reply_count_textview"
-                            android:layout_width="20dp"
+                            android:layout_width="10dp"
                             android:layout_height="15dp"
-                            android:layout_marginTop="13dp"
-                            android:text="3"
+                            android:layout_marginTop="12dp"
+                            android:lineSpacingExtra="2sp"
                             android:textColor="@color/dark_blue"
-                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:text="3"
                             app:layout_constraintStart_toEndOf="@+id/textView22"
                             app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
 
@@ -210,7 +210,7 @@
                             android:background="@color/divider"
                             android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/button__"></LinearLayout>
+                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_back_list_button"></LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/linearLayout6"
@@ -296,7 +296,6 @@
                             android:text="350"
                             android:textColor="@color/dark_blue"
                             android:textSize="13sp"
-                            android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/textView24"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 

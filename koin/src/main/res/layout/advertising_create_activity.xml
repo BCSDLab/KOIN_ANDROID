@@ -92,10 +92,10 @@
                             </LinearLayout>
 
 
-                            <TextView
+                            <EditText
                                 android:id="@+id/textView"
-                                android:layout_width="350dp"
-                                android:layout_height="wrap_content"
+                                android:layout_width="300dp"
+                                android:layout_height="20dp"
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginTop="19dp"
                                 android:layout_marginBottom="19dp"
@@ -103,6 +103,7 @@
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="2sp"
                                 android:textColorHint="#e7e7e7"
+                                android:background="@drawable/bg_white"
                                 android:textSize="16sp" />
 
                             <LinearLayout
@@ -115,28 +116,31 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="20dp"
+                                android:layout_height="22dp"
                                 android:layout_marginTop="19dp"
                                 android:layout_marginBottom="19dp"
                                 android:orientation="horizontal">
 
-                                <TextView
+                                <EditText
                                     android:id="@+id/textView9"
-                                    android:layout_width="350dp"
+                                    android:layout_width="300dp"
                                     android:layout_height="20dp"
                                     android:layout_marginLeft="16dp"
+                                    android:layout_marginBottom="19dp"
                                     android:hint="홍보 문구를 입력해주세요.(최대 50자)"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="2sp"
                                     android:textColorHint="#e7e7e7"
+                                    android:background="@drawable/bg_white"
                                     android:textSize="16sp" />
 
                                 <ImageView
-                                    android:id="@+id/imageView5"
-                                    android:layout_width="18dp"
-                                    android:layout_height="18dp"
+                                    android:id="@+id/advertising_create_question_mark_imageview"
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
                                     android:layout_marginTop="1dp"
-                                    android:background="@drawable/ic_add_3" />
+                                    android:layout_marginRight="18dp"
+                                    android:src="@drawable/ic_question_mark" />
 
                             </LinearLayout>
 
@@ -197,6 +201,7 @@
                                     tools:text="~" />
 
                                 <LinearLayout
+                                    android:id="@+id/advertising_calender2_reck_layout"
                                     android:layout_width="149dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="10dp"
@@ -213,7 +218,7 @@
                                         app:srcCompat="@drawable/ic_ad_calender" />
 
                                     <TextView
-                                        android:id="@+id/textView10"
+                                        android:id="@+id/advertising_create_calender_enddate_textview"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="7dp"

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by hyerim on 2018. 6. 4....
+ * Edited by hansol on 2020.1.10...
  */
 public class Comment {
     @SerializedName("id")
@@ -26,6 +27,10 @@ public class Comment {
     @SerializedName("nickname")
     @Expose
     public String authorNickname;
+
+    @SerializedName("is_deleted")
+    @Expose
+    public boolean isDeleted;
 
     @SerializedName("grantEdit")
     @Expose

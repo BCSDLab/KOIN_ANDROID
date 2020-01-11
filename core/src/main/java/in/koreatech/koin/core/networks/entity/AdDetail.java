@@ -24,7 +24,11 @@ public class AdDetail {
 
     @SerializedName("comments")
     @Expose
-    public ArrayList<String> comments;
+    public ArrayList<Comment> comments;
+
+    @SerializedName("grantEdit")
+    @Expose
+    public boolean grantEdit;
 
     @SerializedName("ip")
     @Expose
@@ -103,11 +107,11 @@ public class AdDetail {
         this.thumbnail = thumbnail;
     }
 
-    public ArrayList<String> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<String> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 
