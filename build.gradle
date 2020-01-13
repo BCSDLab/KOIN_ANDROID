@@ -32,18 +32,39 @@ buildscript {
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
         androidxMaterial = "com.google.android.material:material:$android_x_version"
 
-
         /* Dependency - Firebase */
         def firebase_version = "17.0.0"
         firebaseCore = "com.google.firebase:firebase-core:$firebase_version"
         firebaseDatabase = "com.google.firebase:firebase-database:$firebase_version"
         firebasePerformance = "com.google.firebase:firebase-perf:$firebase_version"
 
+        /* Dependency - Retrofit2 */
+        def retrofit_version = "2.3.0"
+        retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
+        retrofitGsonConvert = "com.squareup.retrofit2:converter-gson:$retrofit_version"
+        retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
+        /* Dependency - leakcanary */
+        def leakcanary_version = "1.6.3"
+        leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+        leakcanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+        leakcanrySupportFragment = "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanary_version"
 
+        /* Dependency - glide */
+        def glide_version = "4.9.0"
+        glide = "com.github.bumptech.glide:glide:$glide_version"
+        glideAnnotation = "com.github.bumptech.glide:compiler:$glide_version"
 
+        /* Dependency - butterknife */
+        def butterknife_version = "10.1.0"
+        butterknife = "com.jakewharton:butterknife:$butterknife_version"
+        butterknifeAnnotation = "com.jakewharton:butterknife-compiler:$butterknife_version"
+
+        /* Dependency - okhttp */
+        def okhttp_version = "3.4.2"
+        okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
+        okhttpLogging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     }
-
 
 
 }
