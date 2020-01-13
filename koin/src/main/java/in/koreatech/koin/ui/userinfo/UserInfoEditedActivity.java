@@ -39,7 +39,6 @@ import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
 
 /**
  * Created by hyerim on 2018. 7. 2....
- * Edited by yunjae on 2018. 8. 23.... check nickname
  */
 public class UserInfoEditedActivity extends KoinNavigationDrawerActivity implements UserInfoEditContract.View {
     private final String TAG = "UserInfoEditedActivity";

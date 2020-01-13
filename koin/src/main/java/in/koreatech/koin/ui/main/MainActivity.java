@@ -20,7 +20,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 /**
  * 로그인 후 처음 보여지는 화면
  * Created by hyerim on 2018. 5. 28....
- * Edited by yunjae on 2018.12.24...
  */
 public class MainActivity extends KoinNavigationDrawerActivity {
     public static final int TIMETABLE_REQUEST_CODE = 1;

@@ -44,8 +44,6 @@ import java.util.TreeMap;
 
 /**
  * Created by hyerim on 2018. 6. 21....
- * Edited by yunjae on 2018. 8. 24 .... feature changing date
- * Edited by seongyun on 2019.09.21 .... 시간대에 맞게 조.중.석식 출력, 한-일-양-특-능-수 순으로 식단 출력
  */
 public class DiningActivity extends KoinNavigationDrawerActivity implements DiningContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "DiningActivity";

@@ -20,7 +20,6 @@ import in.koreatech.koin.data.network.entity.Dining;
 
 /**
  * Created by hyerim on 2018. 6. 21....
- * Edited by yunjae on 2018. 8. 26.... checkDiningString  null일경우 0으로 change
  */
 public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAdapter.ViewHolder> {
     private final String TAG = "DiningRecyclerAdapter";
