@@ -30,13 +30,13 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.store_name_textview)
-        TextView mTextViewStoreName;  //업체의 이름을 표시할 TextView
+        TextView textViewStoreName;  //업체의 이름을 표시할 TextView
         @BindView(R.id.store_delivery_textview)
-        TextView mTextViewDelivery; //배달 여부
+        TextView textViewDelivery; //배달 여부
         @BindView(R.id.store_card_textview)
-        TextView mTextViewCard; //카드 결제 여부
+        TextView textViewCard; //카드 결제 여부
         @BindView(R.id.store_account_textview)
-        TextView mTextViewAccountTransfer;  //계좌이체 결제 여부
+        TextView textViewAccountTransfer;  //계좌이체 결제 여부
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -63,26 +63,26 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Store store = this.storeArrayList.get(position);
-        holder.mTextViewStoreName.setText(store.name); //콜밴 이름
+        holder.textViewStoreName.setText(store.name); //콜밴 이름
 
         //배달, 카드 결제, 계좌이체 사용 가능 유무를 체크하여 다른 이미지를 띄움
         //TODO:text -> image changed
         if (store.isDeliveryOk) { //카드결제 가능한 경우
-            holder.mTextViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.squash));
+            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.squash));
         } else {
-            holder.mTextViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
+            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
         }
 
         if (store.isCardOk) { //카드결제 가능한 경우
-            holder.mTextViewCard.setTextColor(ContextCompat.getColor(context, R.color.squash));
+            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.squash));
         } else {
-            holder.mTextViewCard.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
+            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
         }
 
         if (store.isBankOk) {
-            holder.mTextViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.squash));
+            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.squash));
         } else {
-            holder.mTextViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
+            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.cloudy_blue));
         }
     }
 
