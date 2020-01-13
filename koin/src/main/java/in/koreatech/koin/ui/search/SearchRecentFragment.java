@@ -56,12 +56,12 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
 
     @Override
     public void showLoading() {
-        ((SearchActivity)getActivity()).showProgressDialog("로딩 중");
+        ((SearchActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        ((SearchActivity)getActivity()).hideLoading();
+        ((SearchActivity) getActivity()).hideLoading();
     }
 
     @Override

@@ -14,18 +14,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by hyerim on 2018. 5. 31....
  */
 public class LoginPresenter implements LoginContract.Presenter {
-    private final LoginContract.View mLoginView;
+    private final LoginContract.View loginView;
 
-    private final UserInteractor mUserInteractor;
-    private final TokenSessionInteractor mTokenSessionInteractor;
+    private final UserInteractor userInteractor;
+    private final TokenSessionInteractor tokenSessionInteractor;
 
-    private String mUserPw;
+    private String userPw;
 
     public LoginPresenter(LoginContract.View loginView) {
-        mUserInteractor = new UserRestInteractor();
-        mTokenSessionInteractor = new TokenSessionLocalInteractor();
-        mLoginView = checkNotNull(loginView, "signUpView cannnot be null");
-        mLoginView.setPresenter(this);
+        this.userInteractor = new UserRestInteractor();
+        this.tokenSessionInteractor = new TokenSessionLocalInteractor();
+        this.loginView = checkNotNull(loginView, "signUpView cannnot be null");
+        this.loginView.setPresenter(this);
     }
 
     /**
@@ -37,9 +37,9 @@ public class LoginPresenter implements LoginContract.Presenter {
      */
     @Override
     public void login(String id, String password, Boolean isPasswordHash) {
-        mLoginView.showProgress();
-        mUserPw = HashGeneratorUtil.generateSHA256(password);
-        mUserInteractor.readToken(id, password, isPasswordHash, loginApiCallback);
+        this.loginView.showProgress();
+        this.userPw = HashGeneratorUtil.generateSHA256(password);
+        this.userInteractor.readToken(id, password, isPasswordHash, loginApiCallback);
     }
 
     /**
@@ -52,13 +52,13 @@ public class LoginPresenter implements LoginContract.Presenter {
         public void onSuccess(Object object) {
             Auth auth = (Auth) (object);
             saveSession(auth);
-            mLoginView.hideProgress();
+            loginView.hideProgress();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mLoginView.hideProgress();
-            mLoginView.showMessage("로그인에 실패하였습니다");
+            loginView.hideProgress();
+            loginView.showMessage("로그인에 실패하였습니다");
         }
     };
 
@@ -68,7 +68,7 @@ public class LoginPresenter implements LoginContract.Presenter {
      * @param auth token, user로 이루어진 파라미터
      */
     private void saveSession(Auth auth) {
-        mTokenSessionInteractor.saveSession(auth, mUserPw, sessionApiCallback);
+        this.tokenSessionInteractor.saveSession(auth, this.userPw, sessionApiCallback);
     }
 
     /**
@@ -78,13 +78,13 @@ public class LoginPresenter implements LoginContract.Presenter {
     private final ApiCallback sessionApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mLoginView.gotoMain();
-            mLoginView.hideProgress();
+            loginView.gotoMain();
+            loginView.hideProgress();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mLoginView.hideProgress();
+            loginView.hideProgress();
         }
     };
 }

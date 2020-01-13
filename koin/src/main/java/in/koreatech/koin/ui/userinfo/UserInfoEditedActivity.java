@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import android.text.InputFilter;
@@ -44,8 +45,8 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private final String TAG = "UserInfoEditedActivity";
     private Context context;
 
-    private User mUser;
-    private UserInfoEditContract.Presenter mUserInfoEditPresenter;
+    private User user;
+    private UserInfoEditContract.Presenter userInfoEditPresenter;
 
 
     private String changedNickname;
@@ -57,31 +58,31 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     //default data
     @BindView(R.id.userinfoedited_textview_id)
-    public TextView mUserinfoeditedTextviewId;
+    public TextView userinfoeditedTextviewId;
     @BindView(R.id.userinfoedited_edittext_name)
-    public EditText mUserinfoeditedEdittextName;
+    public EditText userinfoeditedEdittextName;
     @BindView(R.id.userinfoedited_edittext_nick_name)
-    public EditText mUserinfoeditedEdittextNickname;
+    public EditText userinfoeditedEdittextNickname;
     @BindView(R.id.userinfoedited_textview_anonymous_nick_name)
-    public TextView mUserinfoeditedTextviewAnonymousNickName;
+    public TextView userinfoeditedTextviewAnonymousNickName;
     @BindView(R.id.userinfoedited_button_nickname_check)
-    public LinearLayout mUserinfoeditedButtonNicknameCheck;
+    public LinearLayout userinfoeditedButtonNicknameCheck;
     @BindView(R.id.userinfoedited_edittext_phone_num_1)
-    public EditText mUserinfoeditedEdittextPhone1;
+    public EditText userinfoeditedEdittextPhone1;
     @BindView(R.id.userinfoedited_edittext_phone_num_2)
-    public EditText mUserinfoeditedEdittextPhone2;
+    public EditText userinfoeditedEdittextPhone2;
     @BindView(R.id.userinfoedited_edittext_phone_num_3)
-    public EditText mUserinfoeditedEdittextPhone3;
+    public EditText userinfoeditedEdittextPhone3;
     @BindView(R.id.userinfoedited_radiobutton_gender_woman)
-    public RadioButton mUserinfoeditedRadiobuttonGenderWoman;
+    public RadioButton userinfoeditedRadiobuttonGenderWoman;
     @BindView(R.id.userinfoedited_radiobutton_gender_man)
-    public RadioButton mUserinfoeditedRadiobuttonGenderMan;
+    public RadioButton userinfoeditedRadiobuttonGenderMan;
 
     //univ. data
     @BindView(R.id.userinfoedited_edittext_student_id)
-    public EditText mUserinfoeditedEdittextStudentId;
+    public EditText userinfoeditedEdittextStudentId;
     @BindView(R.id.userinfoedited_edittext_major)
-    public EditText mUserinfoeditedTextviewMajor;
+    public EditText userinfoeditedTextviewMajor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,7 +124,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void onBackPressed() {
-        SnackbarUtil.makeLongSnackbarActionYes(mUserinfoeditedTextviewId, getString(R.string.back_button_pressed), new Runnable() {
+        SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedTextviewId, getString(R.string.back_button_pressed), new Runnable() {
             @Override
             public void run() {
                 finish();
@@ -136,8 +137,8 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         new UserInfoEditPresenter(this);
 
 
-        mUserinfoeditedEdittextName.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_H), new InputFilter.LengthFilter(20)});
-        mUserinfoeditedEdittextNickname.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
+        this.userinfoeditedEdittextName.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_H), new InputFilter.LengthFilter(20)});
+        this.userinfoeditedEdittextNickname.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15)});
 
         changedNickname = "";
         isNicknameChecked = false;
@@ -152,19 +153,19 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         View view;
         switch (v.getId()) {
             case R.id.userinfoedited_edittext_name:
-                mUserinfoeditedEdittextNickname.requestFocus();
+                this.userinfoeditedEdittextNickname.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_nick_name:
-                mUserinfoeditedEdittextPhone1.requestFocus();
+                this.userinfoeditedEdittextPhone1.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_phone_num_1:
-                mUserinfoeditedEdittextPhone2.requestFocus();
+                this.userinfoeditedEdittextPhone2.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_phone_num_2:
-                mUserinfoeditedEdittextPhone3.requestFocus();
+                this.userinfoeditedEdittextPhone3.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_phone_num_3:
-                mUserinfoeditedEdittextStudentId.requestFocus();
+                this.userinfoeditedEdittextStudentId.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_student_id:
                 view = this.getCurrentFocus();
@@ -173,7 +174,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
 
-                checkStudentID(mUserinfoeditedEdittextStudentId.getText().toString().trim());
+                checkStudentID(this.userinfoeditedEdittextStudentId.getText().toString().trim());
                 break;
             default:
                 break;
@@ -185,49 +186,45 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @OnClick(R.id.userinfoedited_button_nickname_check)
     public void onClickNicknameCheckButton() {
         String beforeNickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
-        String currentNickName = mUserinfoeditedEdittextNickname.getText().toString().trim().replace(" ","");
+        String currentNickName = this.userinfoeditedEdittextNickname.getText().toString().trim().replace(" ", "");
 
-        if(beforeNickName==null&&currentNickName.isEmpty())
-        {
+        if (beforeNickName == null && currentNickName.isEmpty()) {
             ToastUtil.getInstance().makeShort("닉네임을 입력해주세요");
             return;
         }
-        if(beforeNickName==null||!beforeNickName.equals(currentNickName)) {
-            mUserInfoEditPresenter.getUserCheckNickName(currentNickName);
-            mUserinfoeditedEdittextNickname.setText(currentNickName);
-        }
-        else {
+        if (beforeNickName == null || !beforeNickName.equals(currentNickName)) {
+            this.userInfoEditPresenter.getUserCheckNickName(currentNickName);
+            this.userinfoeditedEdittextNickname.setText(currentNickName);
+        } else {
             ToastUtil.getInstance().makeShort("기존 닉네임과 동일 합니다.");
         }
     }
 
 
-
     @OnClick(R.id.koin_base_app_bar)
-    public void onClickBaseAppbar(View v)
-    {
+    public void onClickBaseAppbar(View v) {
         int id = v.getId();
-        if(id == AppbarBase.getLeftButtonId())
+        if (id == AppbarBase.getLeftButtonId())
             onBackPressed();
-        else if(id == AppbarBase.getRightButtonId())
+        else if (id == AppbarBase.getRightButtonId())
             checkInputUserStudentId();
     }
 
     private boolean checkInputUserStudentId() {
-        if (!FormValidatorUtil.validateStringIsEmpty(mUserinfoeditedEdittextStudentId.getText().toString().trim()) &&
-                !checkStudentID(mUserinfoeditedEdittextStudentId.getText().toString().trim())) {
+        if (!FormValidatorUtil.validateStringIsEmpty(this.userinfoeditedEdittextStudentId.getText().toString().trim()) &&
+                !checkStudentID(this.userinfoeditedEdittextStudentId.getText().toString().trim())) {
             ToastUtil.getInstance().makeShort("올바른 형태의 학번을 입력해주세요");
 
             return true;
         }
 
         //학번이 입력이 안되어있는 경우
-        if(mUserinfoeditedEdittextStudentId.getText().toString().trim().isEmpty())
+        if (this.userinfoeditedEdittextStudentId.getText().toString().trim().isEmpty())
             checkNickName();
 
-        //학번을 처음 입력할 경우
+            //학번을 처음 입력할 경우
         else if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().studentId)) {
-            SnackbarUtil.makeLongSnackbarActionYes(mUserinfoeditedEdittextStudentId, "학번은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
+            SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedEdittextStudentId, "학번은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
                     checkNickName();
@@ -243,28 +240,28 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private void checkNickName() {
         String curNickname = "";
         //닉네임 검사
-        if(!mUserinfoeditedEdittextNickname.getText().toString().trim().isEmpty())
-            curNickname = mUserinfoeditedEdittextNickname.getText().toString().trim();
-        if(curNickname.isEmpty() && ( mUser.userNickName == null))
+        if (!this.userinfoeditedEdittextNickname.getText().toString().trim().isEmpty())
+            curNickname = this.userinfoeditedEdittextNickname.getText().toString().trim();
+        if (curNickname.isEmpty() && (this.user.userNickName == null))
             checkInputUserData();
-        else if((!curNickname.isEmpty()) &&  (mUser.userNickName == null) &&  !isNicknameChecked)
-            ToastUtil.getInstance().makeShort( "닉네임 중복 검사를 해주세요");
-        else if((!curNickname.isEmpty())&& (mUser.userNickName == null) && isNicknameChecked)
+        else if ((!curNickname.isEmpty()) && (this.user.userNickName == null) && !isNicknameChecked)
+            ToastUtil.getInstance().makeShort("닉네임 중복 검사를 해주세요");
+        else if ((!curNickname.isEmpty()) && (this.user.userNickName == null) && isNicknameChecked)
             checkInputUserData();
-        else if (mUser.userNickName.equals(curNickname)) {
+        else if (this.user.userNickName.equals(curNickname)) {
             //기존 닉네임 여부 검사 / 입력 안 한 경우
             checkInputUserData();
         } else if (changedNickname.equals(curNickname) && isNicknameChecked) {
             //닉네임 검사 버튼 누른 경우
             checkInputUserData();
         } else {
-            ToastUtil.getInstance().makeShort( "닉네임 중복 검사를 해주세요");
+            ToastUtil.getInstance().makeShort("닉네임 중복 검사를 해주세요");
         }
     }
 
     private void checkInputUserData() {
         if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().userName)) {
-            SnackbarUtil.makeLongSnackbarActionYes(mUserinfoeditedTextviewId, "이름은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
+            SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedTextviewId, "이름은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
                     saveUserInfo();
@@ -277,58 +274,58 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     }
 
     private void readUser() {
-        mUser = UserInfoSharedPreferencesHelper.getInstance().loadUser();
+        this.user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
-        mUserinfoeditedTextviewId.setText(isNull(mUser.userId) + "@koreatech.ac.kr");
-        mUserinfoeditedTextviewAnonymousNickName.setText(isNull(mUser.anonymousNickName));
+        this.userinfoeditedTextviewId.setText(isNull(this.user.userId) + "@koreatech.ac.kr");
+        this.userinfoeditedTextviewAnonymousNickName.setText(isNull(this.user.anonymousNickName));
 
-        if (!FormValidatorUtil.validateStringIsEmpty(mUser.userName)) {
-            mUserinfoeditedEdittextName.setText(mUser.userName);
-            mUserinfoeditedEdittextName.setEnabled(false);
-            mUserinfoeditedEdittextName.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.userName)) {
+            this.userinfoeditedEdittextName.setText(this.user.userName);
+            this.userinfoeditedEdittextName.setEnabled(false);
+            this.userinfoeditedEdittextName.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         } else {
-            mUserinfoeditedEdittextName.setText(isNull(mUser.userName));
+            this.userinfoeditedEdittextName.setText(isNull(this.user.userName));
         }
 
-        mUserinfoeditedEdittextNickname.setText(isNull(mUser.userNickName));
-        changedNickname = isNull(mUser.userNickName);
+        this.userinfoeditedEdittextNickname.setText(isNull(this.user.userNickName));
+        changedNickname = isNull(this.user.userNickName);
 
-        if (FormValidatorUtil.validateStringIsEmpty(mUser.phoneNumber) || mUser.phoneNumber.equals("")) {
-            mUserinfoeditedEdittextPhone1.setText("");
-            mUserinfoeditedEdittextPhone2.setText("");
-            mUserinfoeditedEdittextPhone3.setText("");
+        if (FormValidatorUtil.validateStringIsEmpty(this.user.phoneNumber) || this.user.phoneNumber.equals("")) {
+            this.userinfoeditedEdittextPhone1.setText("");
+            this.userinfoeditedEdittextPhone2.setText("");
+            this.userinfoeditedEdittextPhone3.setText("");
         } else {
-            String[] phone = mUser.phoneNumber.split("-");
+            String[] phone = this.user.phoneNumber.split("-");
 
-            EditText[] phoneNumberArray = {mUserinfoeditedEdittextPhone1, mUserinfoeditedEdittextPhone2, mUserinfoeditedEdittextPhone3};
+            EditText[] phoneNumberArray = {this.userinfoeditedEdittextPhone1, this.userinfoeditedEdittextPhone2, this.userinfoeditedEdittextPhone3};
             for (int i = 0; i < phone.length; i++) {
                 phoneNumberArray[i].setText(phone[i]);
             }
         }
 
-        if (mUser.gender == 0) {
-            mUserinfoeditedRadiobuttonGenderMan.setChecked(true);
-            mUserinfoeditedRadiobuttonGenderWoman.setChecked(false);
+        if (this.user.gender == 0) {
+            this.userinfoeditedRadiobuttonGenderMan.setChecked(true);
+            this.userinfoeditedRadiobuttonGenderWoman.setChecked(false);
         } else {
-            mUserinfoeditedRadiobuttonGenderMan.setChecked(false);
-            mUserinfoeditedRadiobuttonGenderWoman.setChecked(true);
+            this.userinfoeditedRadiobuttonGenderMan.setChecked(false);
+            this.userinfoeditedRadiobuttonGenderWoman.setChecked(true);
         }
 
-        if (!FormValidatorUtil.validateStringIsEmpty(mUser.studentId)) {
-            mUserinfoeditedEdittextStudentId.setEnabled(false);
-            mUserinfoeditedEdittextStudentId.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.studentId)) {
+            this.userinfoeditedEdittextStudentId.setEnabled(false);
+            this.userinfoeditedEdittextStudentId.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         }
 
-        mUserinfoeditedEdittextStudentId.setText(isNull(mUser.studentId));
+        this.userinfoeditedEdittextStudentId.setText(isNull(this.user.studentId));
 
 
-        mUserinfoeditedTextviewMajor.setText("");
-        mUserinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
+        this.userinfoeditedTextviewMajor.setText("");
+        this.userinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
 
-        if (!FormValidatorUtil.validateStringIsEmpty(mUser.major)) {
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.major)) {
             for (int i = 0; i < ARRAY_MAJOR.size(); i++) {
-                if (mUser.major.equals(ARRAY_MAJOR.get(i))) {
-                    mUserinfoeditedTextviewMajor.setText(ARRAY_MAJOR.get(i));
+                if (this.user.major.equals(ARRAY_MAJOR.get(i))) {
+                    this.userinfoeditedTextviewMajor.setText(ARRAY_MAJOR.get(i));
                 }
             }
         }
@@ -341,57 +338,57 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     public void saveUserInfo() {
         User changeUserData = new User();
 
-        changeUserData.userName = mUserinfoeditedEdittextName.getText().toString().replaceAll(" ", "");
-        String nickname = mUserinfoeditedEdittextNickname.getText().toString().replaceAll(" ", "");
+        changeUserData.userName = this.userinfoeditedEdittextName.getText().toString().replaceAll(" ", "");
+        String nickname = this.userinfoeditedEdittextNickname.getText().toString().replaceAll(" ", "");
 
-        if((mUser.userNickName!=null) && !mUser.userNickName.equals(nickname))
+        if ((this.user.userNickName != null) && !this.user.userNickName.equals(nickname))
             changeUserData.userNickName = nickname;
-        else if((mUser.userNickName==null) && !nickname.isEmpty())
+        else if ((this.user.userNickName == null) && !nickname.isEmpty())
             changeUserData.userNickName = nickname;
         else
             changeUserData.userNickName = null;
 
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(mUserinfoeditedEdittextPhone1.getText().toString()).append("-");
-        stringBuffer.append(mUserinfoeditedEdittextPhone2.getText().toString()).append("-");
-        stringBuffer.append(mUserinfoeditedEdittextPhone3.getText().toString());
+        stringBuffer.append(this.userinfoeditedEdittextPhone1.getText().toString()).append("-");
+        stringBuffer.append(this.userinfoeditedEdittextPhone2.getText().toString()).append("-");
+        stringBuffer.append(this.userinfoeditedEdittextPhone3.getText().toString());
         changeUserData.phoneNumber = (stringBuffer.length() > 4 ? stringBuffer.toString() : "");
 
-        if (mUserinfoeditedRadiobuttonGenderMan.isChecked()) {
+        if (this.userinfoeditedRadiobuttonGenderMan.isChecked()) {
             changeUserData.gender = 0;
         } else {
             changeUserData.gender = 1;
         }
 
 
-        if(!mUserinfoeditedEdittextStudentId.getText().toString().trim().isEmpty())
-        changeUserData.studentId = mUserinfoeditedEdittextStudentId.getText().toString().trim();
+        if (!this.userinfoeditedEdittextStudentId.getText().toString().trim().isEmpty())
+            changeUserData.studentId = this.userinfoeditedEdittextStudentId.getText().toString().trim();
 
-        changeUserData.major = mUserinfoeditedTextviewMajor.getText().toString();
+        changeUserData.major = this.userinfoeditedTextviewMajor.getText().toString();
 
-        if(changeUserData.phoneNumber.isEmpty())
+        if (changeUserData.phoneNumber.isEmpty())
             changeUserData.phoneNumber = null;
-        if(changeUserData.major.isEmpty())
+        if (changeUserData.major.isEmpty())
             changeUserData.major = null;
-        if(changeUserData.userName.isEmpty())
+        if (changeUserData.userName.isEmpty())
             changeUserData.userName = null;
 
-        mUserInfoEditPresenter.updateUserInfo(changeUserData);
+        this.userInfoEditPresenter.updateUserInfo(changeUserData);
     }
 
     @Override
     public void showCheckNickNameSuccess() {
         // 닉네임 사용가능시 사용가능 Toast message onNicknameCheckSuccesst 실행
         ToastUtil.getInstance().makeShort("사용가능한 닉네임입니다.");
-        onNicknameCheckSuccess(mUserinfoeditedEdittextNickname.getText().toString());
-        mUserinfoeditedEdittextNickname.getBackground().setColorFilter(null);
+        onNicknameCheckSuccess(this.userinfoeditedEdittextNickname.getText().toString());
+        this.userinfoeditedEdittextNickname.getBackground().setColorFilter(null);
     }
 
     @Override
     public void showCheckNickNameFail() {
         // 닉네임 사용불가시 사용불가능 Toast message 후 밑줄 빨간색으로 변경
         ToastUtil.getInstance().makeShort("기존에 중복된 닉네임입니다.");
-        mUserinfoeditedEdittextNickname.getBackground().setColorFilter(Color.parseColor("#FF0000"), PorterDuff.Mode.SRC_IN);
+        this.userinfoeditedEdittextNickname.getBackground().setColorFilter(Color.parseColor("#FF0000"), PorterDuff.Mode.SRC_IN);
     }
 
     @Override
@@ -407,14 +404,14 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void setPresenter(UserInfoEditContract.Presenter presenter) {
-        this.mUserInfoEditPresenter = presenter;
+        this.userInfoEditPresenter = presenter;
 
     }
 
     private boolean checkStudentID(String studentId) {
         if (studentId.trim().length() < 10) {
-            mUserinfoeditedTextviewMajor.setText("");
-            mUserinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
+            this.userinfoeditedTextviewMajor.setText("");
+            this.userinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
             return false;
         }
 
@@ -426,30 +423,30 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         int departmentNum = Integer.parseInt(studentId.trim().substring(4, 7));
         switch (departmentNum) {
             case 120: //기계공학부
-                mUserinfoeditedTextviewMajor.setText("기계공학부");
+                this.userinfoeditedTextviewMajor.setText("기계공학부");
                 break;
             case 135: //컴퓨터공학부(인터넷미디어공학부)
             case 136: //컴퓨터공학부
-                mUserinfoeditedTextviewMajor.setText("컴퓨터공학부");
+                this.userinfoeditedTextviewMajor.setText("컴퓨터공학부");
                 break;
             case 140: //메카트로닉스공학부
-                mUserinfoeditedTextviewMajor.setText("메카트로닉스공학부");
+                this.userinfoeditedTextviewMajor.setText("메카트로닉스공학부");
                 break;
             case 161: //전기전자통신공학부
-                mUserinfoeditedTextviewMajor.setText("전기전자통신공학부");
+                this.userinfoeditedTextviewMajor.setText("전기전자통신공학부");
                 break;
             case 151: //디자인건축공학부
-                mUserinfoeditedTextviewMajor.setText("디자인건축공학부");
+                this.userinfoeditedTextviewMajor.setText("디자인건축공학부");
                 break;
             case 174: //에너지신소재화학공학부
-                mUserinfoeditedTextviewMajor.setText("에너지신소재화학공학부");
+                this.userinfoeditedTextviewMajor.setText("에너지신소재화학공학부");
                 break;
             case 180: //산업경영학부
-                mUserinfoeditedTextviewMajor.setText("산업경영학부");
+                this.userinfoeditedTextviewMajor.setText("산업경영학부");
                 break;
             default:
-                mUserinfoeditedTextviewMajor.setText("");
-                mUserinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
+                this.userinfoeditedTextviewMajor.setText("");
+                this.userinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
                 return false;
 
         }

@@ -39,33 +39,31 @@ import java.util.ArrayList;
  * @since 2018.09.16
  */
 public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements MarketUsedContract.View, SwipeRefreshLayoutBottom.OnRefreshListener {
-    private final String TAG = MarketUsedBuyFragment.class.getSimpleName();
+    private final String TAG = "MarketUsedBuyFragment";
 
 
-    private Unbinder mUnbinder;
-    private MarketUsedContract.Presenter mMarketUsedPresenter;
-    private ArrayList<Item> mMarketBuyArrayList = new ArrayList<>(); //DB의 중고장터 리스트를 저장할 ArrayList
+    private Unbinder unbinder;
+    private MarketUsedContract.Presenter marketUsedPresenter;
+    private ArrayList<Item> marketBuyArrayList = new ArrayList<>(); //DB의 중고장터 리스트를 저장할 ArrayList
 
     /* Adapter */
-    private MarketUsedBuyRecyclerAdapter mMarketUsedBuyRecyclerAdapter;
+    private MarketUsedBuyRecyclerAdapter marketUsedBuyRecyclerAdapter;
 
     /* View Component */
-    private View mView;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private View view;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
 
     private final int BUYMARKETID = 1;
-    private int mTotalItecount;
-    private int mPosition;
-    private boolean mGrantCheck;
+    private int position;
+    private boolean grantCheck;
     private int currentPage;
-    private int mTotalPage;
-    private boolean mIsResume;
-    private CustomProgressDialog customProgressDialog;
+    private int totalPage;
+    private boolean isResume;
 
     @BindView(R.id.market_used_buy_recyclerview)
-    RecyclerView mMarketBuyRecyclerView;
+    RecyclerView marketBuyRecyclerView;
     @BindView(R.id.market_used_buy_swiperefreshlayout)
-    SwipeRefreshLayoutBottom mMarketBuySwipeRefreshLayout;
+    SwipeRefreshLayoutBottom marketBuySwipeRefreshLayout;
 
     @Override
     public void onAttach(Context context) {
@@ -80,28 +78,22 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.market_used_fragment_buy, container, false);
-        mUnbinder = ButterKnife.bind(this, mView);
+        this.view = inflater.inflate(R.layout.market_used_fragment_buy, container, false);
+        this.unbinder = ButterKnife.bind(this, this.view);
 
         init();
 
-        return mView;
+        return this.view;
     }
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(getContext(), "로딩 중");
-            customProgressDialog.execute();
-        }
+        ((MarketUsedActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        ((MarketUsedActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -127,45 +119,45 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     @AddTrace(name = "MarketData_Received_Buy")
     @Override
     public void onMarketDataReceived(MarketPageResponse marketPageResponses) {
-        mTotalPage = marketPageResponses.totalPage;
+        this.totalPage = marketPageResponses.totalPage;
         if (currentPage == 1)
-            mMarketBuyArrayList.clear();
-        mMarketBuyArrayList.addAll(marketPageResponses.marketArrayList);
+            marketBuyArrayList.clear();
+        marketBuyArrayList.addAll(marketPageResponses.marketArrayList);
 
-        if (mMarketBuyArrayList == null)
+        if (marketBuyArrayList == null)
             return;
-        for (int i = 0; i < mMarketBuyArrayList.size(); i++) {
-            int id = mMarketBuyArrayList.get(i).id;
-            mMarketUsedPresenter.readDetailMarket(id);
+        for (int i = 0; i < marketBuyArrayList.size(); i++) {
+            int id = marketBuyArrayList.get(i).id;
+            marketUsedPresenter.readDetailMarket(id);
         }
     }
 
     @Override
     public void setPresenter(MarketUsedContract.Presenter presenter) {
-        this.mMarketUsedPresenter = presenter;
+        this.marketUsedPresenter = presenter;
     }
 
     @Override
     public void onMarketDataReceived(Item item) {
-        for (int i = 0; i < mMarketBuyArrayList.size(); i++) {
-            int id = mMarketBuyArrayList.get(i).id;
+        for (int i = 0; i < marketBuyArrayList.size(); i++) {
+            int id = marketBuyArrayList.get(i).id;
             if (id == item.id)
-                mMarketBuyArrayList.get(i).comments = item.comments;
+                marketBuyArrayList.get(i).comments = item.comments;
         }
         updateUserInterface();
     }
 
     public void updateUserInterface() {
 
-        mMarketUsedBuyRecyclerAdapter.notifyDataSetChanged();
+        marketUsedBuyRecyclerAdapter.notifyDataSetChanged();
     }
 
     //recyclerview item touch listener
-    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), mMarketBuyRecyclerView, new RecyclerViewClickListener() {
+    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), marketBuyRecyclerView, new RecyclerViewClickListener() {
         @Override
-        public void onClick(View view, final int position) {
-            mMarketUsedPresenter.readGrantedDetail(mMarketBuyArrayList.get(position).id);
-            mPosition = position;
+        public void onClick(View view, final int index) {
+            marketUsedPresenter.readGrantedDetail(marketBuyArrayList.get(position).id);
+            position = index;
         }
 
         @Override
@@ -178,17 +170,17 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     public void onRefresh() {
         // 새로고침 코드
 
-        if ((currentPage != mTotalPage) && !mIsResume) {
+        if ((currentPage != this.totalPage) && !this.isResume) {
             currentPage++;
-            mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
-        } else if (!mIsResume)
+            marketUsedPresenter.readMarket(BUYMARKETID, currentPage);
+        } else if (!this.isResume)
             ToastUtil.getInstance().makeShort(R.string.market_used_list_last_page);
         else
-            mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
+            marketUsedPresenter.readMarket(BUYMARKETID, currentPage);
 
-        mIsResume = false;
+        this.isResume = false;
         updateUserInterface();
-        mMarketBuySwipeRefreshLayout.setRefreshing(false);
+        marketBuySwipeRefreshLayout.setRefreshing(false);
 
 
     }
@@ -196,7 +188,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        this.unbinder.unbind();
     }
 
     @Override
@@ -217,33 +209,33 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
 
     public void init() {
         currentPage = 1;
-        mIsResume = false;
-        mMarketUsedBuyRecyclerAdapter = new MarketUsedBuyRecyclerAdapter(getActivity(), mMarketBuyArrayList);
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mMarketBuySwipeRefreshLayout.setOnRefreshListener(this);
-        mMarketBuyRecyclerView.setHasFixedSize(true);
-        mMarketBuyRecyclerView.setLayoutManager(mLayoutManager); //layout 설정
-        mMarketBuyRecyclerView.addOnItemTouchListener(recyclerItemtouchListener); //itemTouchListner 설정
-        mMarketBuyRecyclerView.setAdapter(mMarketUsedBuyRecyclerAdapter); //adapter 설정
+        this.isResume = false;
+        marketUsedBuyRecyclerAdapter = new MarketUsedBuyRecyclerAdapter(getActivity(), marketBuyArrayList);
+        this.layoutManager = new LinearLayoutManager(getActivity());
+        marketBuySwipeRefreshLayout.setOnRefreshListener(this);
+        marketBuyRecyclerView.setHasFixedSize(true);
+        marketBuyRecyclerView.setLayoutManager(this.layoutManager); //layout 설정
+        marketBuyRecyclerView.addOnItemTouchListener(recyclerItemtouchListener); //itemTouchListner 설정
+        marketBuyRecyclerView.setAdapter(marketUsedBuyRecyclerAdapter); //adapter 설정
         setPresenter(new MarketUsedPresenter(this, new MarketUsedRestInteractor()));
-        mMarketUsedPresenter.readMarket(BUYMARKETID, currentPage);
+        marketUsedPresenter.readMarket(BUYMARKETID, currentPage);
 
     }
 
     @Override
     public void onGrantedDataReceived(boolean granted) {
-        mGrantCheck = granted;
+        this.grantCheck = granted;
         Intent intent = new Intent(getActivity(), MarketUsedBuyDetailActivity.class);
-        intent.putExtra("ITEM_ID", mMarketBuyArrayList.get(mPosition).id);
+        intent.putExtra("ITEM_ID", marketBuyArrayList.get(this.position).id);
         intent.putExtra("MARKET_ID", BUYMARKETID);
-        intent.putExtra("GRANT_CHECK", mGrantCheck);
+        intent.putExtra("GRANT_CHECK", this.grantCheck);
         startActivity(intent);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mIsResume = true;
+        this.isResume = true;
         currentPage = 1;
         onRefresh();
     }

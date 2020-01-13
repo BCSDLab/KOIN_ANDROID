@@ -1,4 +1,4 @@
-package in.koreatech.koin.ui.store.presenter.contracts;
+package in.koreatech.koin.ui.store.presenter;
 
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Store;

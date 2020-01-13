@@ -96,7 +96,6 @@ public class MainActivity extends KoinNavigationDrawerActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UserInfoSharedPreferencesHelper.getInstance().init(this);
         if (requestCode == TIMETABLE_REQUEST_CODE)
             callDrawerItem(R.id.navi_item_timetable);
     }

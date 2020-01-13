@@ -22,7 +22,7 @@ public interface MarketUsedEditContract {
 
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
         void editMarketContent(int id, MarketItem marketItem);
 
         void uploadThumbnailImage(File file);

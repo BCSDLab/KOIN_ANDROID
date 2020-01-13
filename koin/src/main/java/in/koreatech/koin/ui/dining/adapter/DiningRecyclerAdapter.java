@@ -1,8 +1,10 @@
 package in.koreatech.koin.ui.dining.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +23,21 @@ import in.koreatech.koin.data.network.entity.Dining;
  * Edited by yunjae on 2018. 8. 26.... checkDiningString  null일경우 0으로 change
  */
 public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAdapter.ViewHolder> {
-    private final String TAG = DiningRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "DiningRecyclerAdapter";
 
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Dining> diningArrayList; //식단 정보 담긴 식당 List
     private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.dining_item_title)
-        TextView mTextViewTitle; // 식당이름(한식, 양식, 2캠퍼스 등)
+        TextView textViewTitle; // 식당이름(한식, 양식, 2캠퍼스 등)
         @BindView(R.id.dining_item_info)
-        TextView mTextViewInfo; // 정보(칼로리)
+        TextView textViewInfo; // 정보(칼로리)
         @BindView(R.id.dining_item_menu)
-        TextView mTextViewMenu; // 메뉴리스트
+        TextView textViewMenu; // 메뉴리스트
         @BindView(R.id.dining_item_price)
-        TextView mTextViewPrice; // 정보(카드가격, 현금가격)
+        TextView textViewPrice; // 정보(카드가격, 현금가격)
         @BindView(R.id.dining_divider)
         LinearLayout diningDivider;
 
@@ -47,7 +49,7 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
 
     public DiningRecyclerAdapter(Context context, ArrayList<Dining> diningArrayList) {
         context = context;
-        mLayoutInflater = LayoutInflater.from(context);
+        layoutInflater = LayoutInflater.from(context);
         this.diningArrayList = new ArrayList<>();
         this.diningArrayList.addAll(diningArrayList);
     }
@@ -63,30 +65,30 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dining dining = diningArrayList.get(position);
-        holder.mTextViewTitle.setText(dining.place);        // 식당이름(한식, 양식, 2캠퍼스 등)
+        holder.textViewTitle.setText(dining.place);        // 식당이름(한식, 양식, 2캠퍼스 등)
 
         StringBuilder sb = new StringBuilder();
         dining = checkDiningString(dining);
         sb.append(dining.kcal).append("kcal");
-        holder.mTextViewInfo.setText(sb.toString());        //식단 정보 (칼로리 정보)
+        holder.textViewInfo.setText(sb.toString());        //식단 정보 (칼로리 정보)
 
         sb = new StringBuilder();
         sb.append("캐시비 ")
                 .append(dining.priceCard).append("원 / 현금 ")
                 .append(dining.priceCash).append("원");
-        holder.mTextViewPrice.setText(sb.toString());       //가격 정보
+        holder.textViewPrice.setText(sb.toString());       //가격 정보
 
         sb = new StringBuilder();
         for (String menuItem : dining.menu) {
             sb.append(menuItem).append("\n");
         }
 
-        if(!dining.place.equals("능수관"))
+        if (!dining.place.equals("능수관"))
             holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.light_navy));
         else
             holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.squash));
 
-        holder.mTextViewMenu.setText(sb.toString());        //메뉴리스트
+        holder.textViewMenu.setText(sb.toString());        //메뉴리스트
     }
 
     @Override

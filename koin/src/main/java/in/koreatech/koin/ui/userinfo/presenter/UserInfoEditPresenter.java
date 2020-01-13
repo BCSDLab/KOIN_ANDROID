@@ -16,14 +16,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
 
-    private final UserInfoEditContract.View mUserInfoEditView;
+    private final UserInfoEditContract.View userInfoEditView;
 
-    private UserInteractor mUserInteractor;
+    private UserInteractor userInteractor;
 
     public UserInfoEditPresenter(@NonNull UserInfoEditContract.View userInfoEditView) {
-        mUserInteractor = new UserRestInteractor();
-        mUserInfoEditView = checkNotNull(userInfoEditView, "userInfoEditView cannnot be null");
-        mUserInfoEditView.setPresenter(this);
+        this.userInteractor = new UserRestInteractor();
+        this.userInfoEditView = checkNotNull(userInfoEditView, "userInfoEditView cannnot be null");
+        this.userInfoEditView.setPresenter(this);
     }
 
     private final ApiCallback updateUserApiCallback = new ApiCallback() {
@@ -31,12 +31,12 @@ public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
         public void onSuccess(Object object) {
             User user = (User) object;
             UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
-            mUserInfoEditView.showConfirm();
+            userInfoEditView.showConfirm();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mUserInfoEditView.showConfirmFail();
+            userInfoEditView.showConfirmFail();
         }
     };
 
@@ -46,24 +46,24 @@ public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
         public void onSuccess(Object object) {
             UserInfoEditResponse userInfoEditResponse = (UserInfoEditResponse) object;
             if (userInfoEditResponse.success != null)
-                mUserInfoEditView.showCheckNickNameSuccess();
+                userInfoEditView.showCheckNickNameSuccess();
             else
-                mUserInfoEditView.showCheckNickNameFail();
+                userInfoEditView.showCheckNickNameFail();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mUserInfoEditView.showCheckNickNameFail();
+            userInfoEditView.showCheckNickNameFail();
         }
     };
 
     @Override
     public void updateUserInfo(User user) {
-        mUserInteractor.updateUser(updateUserApiCallback, user);
+        this.userInteractor.updateUser(updateUserApiCallback, user);
     }
 
     public void getUserCheckNickName(String nickname) {
-        mUserInteractor.readCheckUserNickName(nickname, checkUserNickNameApiCallback);
+        this.userInteractor.readCheckUserNickName(nickname, checkUserNickNameApiCallback);
     }
 
 

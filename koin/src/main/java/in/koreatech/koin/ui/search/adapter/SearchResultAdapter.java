@@ -44,7 +44,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
                 try {
                     title = title.replaceAll(keyword, "<font color=\"#175c8e\">" + keyword + "</font>").replaceAll("\n", "");
                 } catch (PatternSyntaxException e) {
-                    title = title.replaceAll(String.format("\\%s",keyword), "<font color=\"#175c8e\">" + "\\" + keyword + "</font>").replaceAll("\n", "");
+                    title = title.replaceAll(String.format("\\%s", keyword), "<font color=\"#175c8e\">" + "\\" + keyword + "</font>").replaceAll("\n", "");
                 }
             }
             holder.searchResultTitle.setText(Html.fromHtml(title));

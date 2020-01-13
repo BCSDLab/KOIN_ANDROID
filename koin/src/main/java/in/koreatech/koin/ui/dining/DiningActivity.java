@@ -48,7 +48,7 @@ import java.util.TreeMap;
  * Edited by seongyun on 2019.09.21 .... 시간대에 맞게 조.중.석식 출력, 한-일-양-특-능-수 순으로 식단 출력
  */
 public class DiningActivity extends KoinNavigationDrawerActivity implements DiningContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = DiningActivity.class.getSimpleName();
+    private final String TAG = "DiningActivity";
     private final static String[] TYPE = {"BREAKFAST", "LUNCH", "DINNER"};
     private final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
     private final int LIMITDATE = 7; // 식단 조회 제한 날짜
@@ -57,12 +57,11 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     private Context context;
     private DiningRecyclerAdapter diningRecyclerAdapter;
-    private GestureDetector mGestureDetector;
-    private CustomProgressDialog customProgressDialog;
+    private GestureDetector gestureDetector;
 
     private String today;
     private DiningPresenter diningPresenter;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
     private Map<String, ArrayList<Dining>> diningMap;
     private int typeIndex; //0 아침 / 1 점심 / 2 저녁
     private int changeDate;
@@ -73,23 +72,23 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @BindView(R.id.dining_breakfast_button)
     TextView breakfastButton;
     @BindView(R.id.dining_lunch_button)
-    TextView mLunchButton;
+    TextView lunchButton;
     @BindView(R.id.dining_dinner_button)
     TextView dinnerButton;
 
 
     @BindView(R.id.dining_swiperefreshlayout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.dining_recyclerview)
     RecyclerView diningListRecyclerView;
     @BindView(R.id.dining_date_textView)
     TextView diningDateTextView;
 
     @BindView(R.id.empty_dining_list_frameLayout)
-    FrameLayout mEmptyBoardListFrameLayout;
+    FrameLayout emptyBoardListFrameLayout;
 
     @BindView(R.id.dining_next_date_button)
-    Button mNextDateButton;
+    Button nextDateButton;
     @BindView(R.id.dining_before_date_button)
     Button beforeDateButton;
     @BindView(R.id.koin_base_app_bar_dark)
@@ -136,21 +135,21 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     private void init() {
         today = TimeUtil.getDeviceCreatedDateOnlyString();
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         changeDate = 0; // 현재날짜와 바뀐 날짜 비교
         appbarBase.setTitleText("식단");
 
-        mLayoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         diningMap = new HashMap<String, ArrayList<Dining>>();
         typeIndex = 0;
 
         diningRecyclerAdapter = new DiningRecyclerAdapter(context, new ArrayList<Dining>());
 
         diningListRecyclerView.setHasFixedSize(true);
-        diningListRecyclerView.setLayoutManager(mLayoutManager);
+        diningListRecyclerView.setLayoutManager(layoutManager);
         diningListRecyclerView.setAdapter(diningRecyclerAdapter);
         diningListRecyclerView.setNestedScrollingEnabled(false);
-        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
                 return handleGestureEvent(e1, e2, velocityX, velocityY);
@@ -222,24 +221,18 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override
     public void showMessage(String message) {
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
         }
 
         ToastUtil.getInstance().makeShort(message);
@@ -250,7 +243,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void showNetworkError() {
         diningMap.clear();
         diningRecyclerAdapter.notifyDataSetChanged();
-        mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
+        emptyBoardListFrameLayout.setVisibility(View.VISIBLE);
         ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
@@ -274,12 +267,12 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         }
 
         if (!diningArrayList.isEmpty()) {
-            mEmptyBoardListFrameLayout.setVisibility(View.GONE);
+            emptyBoardListFrameLayout.setVisibility(View.GONE);
         } else {
-            mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
+            emptyBoardListFrameLayout.setVisibility(View.VISIBLE);
         }
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
         }
         updateUserInterface();
     }
@@ -331,7 +324,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
         diningArrayList.clear();
 
-        for( int key : tempDiningMap.keySet()){
+        for (int key : tempDiningMap.keySet()) {
             diningArrayList.add(tempDiningMap.get(key));
         }
 
@@ -360,11 +353,11 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
             if (diningMap.get(TYPE[typeIndex]) != null && diningMap.get(TYPE[typeIndex]).size() != 0) {
                 diningRecyclerAdapter = new DiningRecyclerAdapter(context, diningMap.get(TYPE[typeIndex]));
                 diningListRecyclerView.setAdapter(diningRecyclerAdapter);
-                mEmptyBoardListFrameLayout.setVisibility(View.GONE);
+                emptyBoardListFrameLayout.setVisibility(View.GONE);
             } else {
                 diningRecyclerAdapter = new DiningRecyclerAdapter(context, new ArrayList<Dining>());
                 diningListRecyclerView.setAdapter(diningRecyclerAdapter);
-                mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
+                emptyBoardListFrameLayout.setVisibility(View.VISIBLE);
             }
         } catch (NullPointerException e) {
             Log.d(TAG, e.getMessage());
@@ -374,8 +367,8 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @Override
     public void onRefresh() {
         diningPresenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
-        if (mSwipeRefreshLayout.isRefreshing()) {
-            mSwipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -383,7 +376,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void onClickBreakfastButton() {
         typeIndex = 0;
         breakfastButton.setText(Html.fromHtml(colorText("#f7941e", "아침")), TextView.BufferType.SPANNABLE);
-        mLunchButton.setText("점심");
+        lunchButton.setText("점심");
         dinnerButton.setText("저녁");
         updateUserInterface();
     }
@@ -392,7 +385,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void onClickLunchButton() {
         typeIndex = 1;
         breakfastButton.setText("아침");
-        mLunchButton.setText(Html.fromHtml(colorText("#f7941e", "점심")), TextView.BufferType.SPANNABLE);
+        lunchButton.setText(Html.fromHtml(colorText("#f7941e", "점심")), TextView.BufferType.SPANNABLE);
         dinnerButton.setText("저녁");
 
         updateUserInterface();
@@ -403,7 +396,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         typeIndex = 2;
 
         breakfastButton.setText("아침");
-        mLunchButton.setText("점심");
+        lunchButton.setText("점심");
         dinnerButton.setText(Html.fromHtml(colorText("#f7941e", "저녁")), TextView.BufferType.SPANNABLE);
         updateUserInterface();
     }
@@ -448,12 +441,12 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void showUserInterface() {
         diningMap.clear();
         diningRecyclerAdapter.notifyDataSetChanged();
-        mEmptyBoardListFrameLayout.setVisibility(View.VISIBLE);
+        emptyBoardListFrameLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
-        return mGestureDetector.onTouchEvent(ev);
+        return gestureDetector.onTouchEvent(ev);
     }
 }

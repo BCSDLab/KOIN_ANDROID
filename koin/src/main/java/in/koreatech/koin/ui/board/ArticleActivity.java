@@ -49,7 +49,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     private Context context;
 
     private InputMethodManager inputMethodManager;
-    private CustomProgressDialog customProgressDialog;
 
 
     private ArticlePresenter articlePresenter;
@@ -169,18 +168,12 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override

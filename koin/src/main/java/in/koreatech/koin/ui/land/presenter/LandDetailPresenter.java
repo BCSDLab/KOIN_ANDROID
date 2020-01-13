@@ -13,7 +13,7 @@ public class LandDetailPresenter implements BasePresenter {
     private LandInteractor landInteractor;
     private LandDetailContract.View landDetailView;
 
-    public LandDetailPresenter(LandDetailContract.View landDetailView, LandInteractor landInteractor){
+    public LandDetailPresenter(LandDetailContract.View landDetailView, LandInteractor landInteractor) {
         this.landInteractor = landInteractor;
         this.landDetailView = landDetailView;
     }
@@ -36,7 +36,7 @@ public class LandDetailPresenter implements BasePresenter {
         }
     };
 
-    public void getLandDetailInfo(int landId){
+    public void getLandDetailInfo(int landId) {
         landDetailView.showLoading();
         landInteractor.readLandDetail(landId, apiCallback);
     }

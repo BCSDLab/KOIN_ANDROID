@@ -307,7 +307,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void showLoading() {
-        ((BusActivity) getActivity()).showProgressDialog("로딩 중");
+        ((BusActivity) getActivity()).showProgressDialog(R.string.loading);
 
     }
 

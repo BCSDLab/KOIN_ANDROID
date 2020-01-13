@@ -44,7 +44,6 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     SwipeRefreshLayoutBottom lostfoundMainSwipeRefreshLayout;
 
     private LinearLayoutManager linearLayoutManager;
-    private CustomProgressDialog customProgressDialog;
     private LostFoundMainActivityRecyclerviewAdapter lostFoundMainActivityRecyclerviewAdapter;
     private ArrayList<LostItem> lostItemArrayList;
     private LostFoundMainContract.Presenter lostFoundMainPresenter;
@@ -132,18 +131,12 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     /**

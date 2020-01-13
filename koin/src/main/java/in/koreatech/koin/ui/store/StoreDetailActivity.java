@@ -41,55 +41,53 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
-import in.koreatech.koin.ui.store.presenter.contracts.StoreDetailContract;
+import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
 
-    private Context mContext;
-    private StoreDetailPresenter mStoreDetailPresenter;
-    private CustomProgressDialog customProgressDialog;
+    private Context context;
+    private StoreDetailPresenter storeDetailPresenter;
 
-    private Store mStore;
+    private Store store;
 
     /* View Component */
     @BindView(R.id.store_detail_title_textview)
-    TextView mTitleTextView;
+    TextView titleTextView;
     @BindView(R.id.store_detail_phone_textview)
-    TextView mPhoneTextView;
+    TextView phoneTextView;
     @BindView(R.id.store_detail_time_textview)
-    TextView mTimeTextView;
+    TextView timeTextView;
     @BindView(R.id.store_detail_address_textview)
-    TextView mAddressTextview;
+    TextView addressTextview;
     @BindView(R.id.store_detail_etc_textview)
-    TextView  mEtcTextview;
+    TextView etcTextview;
     @BindView(R.id.store_detail_deliver_textview)
     TextView deliverTextview;
     @BindView(R.id.store_detail_call_button)
     LinearLayout storeDetailCallButton;
 
 
-
     //배달/카드/계좌이체 여부
     @BindView(R.id.store_detail_is_delivery_textview)
-    TextView mIsDeliveryTextView;
+    TextView isDeliveryTextView;
     @BindView(R.id.store_detail_is_card_textview)
-    TextView mIsCardTextView;
+    TextView isCardTextView;
     @BindView(R.id.store_detail_is_bank_textview)
-    TextView mIsBankTextView;
+    TextView isBankTextView;
 
     // 메뉴 리스트
     @BindView(R.id.store_detail_recyclerview)
-    RecyclerView mMenuListRecyclerView;
+    RecyclerView menuListRecyclerView;
     @BindView(R.id.store_detail_flyer_recyclerview)
     RecyclerView flyerListRecyclerView;
 
-    private RecyclerView.LayoutManager mMenuLayoutManager; // Menu RecyclerView LayoutManager
-    private RecyclerView.LayoutManager mFlyerLayoutManger; // Flyer RecycerView LayoutManger
-    private ArrayList<Store> mStoreMenuArrayList; //store menu list
+    private RecyclerView.LayoutManager menuLayoutManager; // Menu RecyclerView LayoutManager
+    private RecyclerView.LayoutManager flyerLayoutManger; // Flyer RecycerView LayoutManger
+    private ArrayList<Store> storeMenuArrayList; //store menu list
     private ArrayList<String> storeFlyerArrayList;
-    private StoreDetailMenuRecyclerAdapter mStoreDetailMenuRecyclerAdapter;
+    private StoreDetailMenuRecyclerAdapter storeDetailMenuRecyclerAdapter;
     private StoreDetailFlyerRecyclerAdapter storeDetailFlyerRecyclerAdapter;
 
 
@@ -98,39 +96,39 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.store_activity_detail);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
 
         init();
     }
 
     private void init() {
-        mStore = new Store();
-        mStore.uid = getIntent().getIntExtra("STORE_UID", 0);
-        mStore.name = getIntent().getStringExtra("STORE_NAME");
+        this.store = new Store();
+        this.store.uid = getIntent().getIntExtra("STORE_UID", 0);
+        this.store.name = getIntent().getStringExtra("STORE_NAME");
 
         setPresenter(new StoreDetailPresenter(this, new StoreRestInteractor()));
-        mStoreDetailPresenter.getStore(mStore.uid);
+        this.storeDetailPresenter.getStore(this.store.uid);
 
-        mMenuLayoutManager = new LinearLayoutManager(this);
-        mFlyerLayoutManger = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mStoreMenuArrayList = new ArrayList<>();
+        menuLayoutManager = new LinearLayoutManager(this);
+        flyerLayoutManger = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        this.storeMenuArrayList = new ArrayList<>();
         storeFlyerArrayList = new ArrayList<>();
-        mStoreDetailMenuRecyclerAdapter = new StoreDetailMenuRecyclerAdapter(mContext, mStoreMenuArrayList);
-        storeDetailFlyerRecyclerAdapter = new StoreDetailFlyerRecyclerAdapter(mContext, storeFlyerArrayList);
+        this.storeDetailMenuRecyclerAdapter = new StoreDetailMenuRecyclerAdapter(this.context, this.storeMenuArrayList);
+        storeDetailFlyerRecyclerAdapter = new StoreDetailFlyerRecyclerAdapter(this.context, storeFlyerArrayList);
 
-        mMenuListRecyclerView.setHasFixedSize(true);
-        mMenuListRecyclerView.setLayoutManager(mMenuLayoutManager);
-        mMenuListRecyclerView.setAdapter(mStoreDetailMenuRecyclerAdapter);
+        menuListRecyclerView.setHasFixedSize(true);
+        menuListRecyclerView.setLayoutManager(menuLayoutManager);
+        menuListRecyclerView.setAdapter(this.storeDetailMenuRecyclerAdapter);
 
         flyerListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
         flyerListRecyclerView.setHasFixedSize(true);
-        flyerListRecyclerView.setLayoutManager(mFlyerLayoutManger);
+        flyerListRecyclerView.setLayoutManager(flyerLayoutManger);
         flyerListRecyclerView.setAdapter(storeDetailFlyerRecyclerAdapter);
     }
 
     @Override
     public void setPresenter(StoreDetailPresenter presenter) {
-        this.mStoreDetailPresenter = presenter;
+        this.storeDetailPresenter = presenter;
     }
 
     @OnClick(R.id.koin_base_appbar)
@@ -143,12 +141,12 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void onStoreDataReceived(Store store) {
         StringBuilder stringBuilder;
-        mStore = new Store();
-        mStore = store;
-        mStoreMenuArrayList.clear();
+        this.store = new Store();
+        this.store = store;
+        this.storeMenuArrayList.clear();
         storeFlyerArrayList.clear();
-        if (mStore.imageUrls != null)
-            storeFlyerArrayList.addAll(mStore.imageUrls);
+        if (this.store.imageUrls != null)
+            storeFlyerArrayList.addAll(this.store.imageUrls);
         storeDetailFlyerRecyclerAdapter.notifyDataSetChanged();
         if (!store.menus.isEmpty()) {
             for (int a = 0; a < store.menus.size(); a++) {
@@ -166,10 +164,10 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
                     }
                 }
                 storeItemDetail.detail = stringBuilder.toString();
-                mStoreMenuArrayList.add(storeItemDetail);
+                this.storeMenuArrayList.add(storeItemDetail);
             }
-            mStoreDetailMenuRecyclerAdapter.setStoreMenuArrayList(mStoreMenuArrayList);
-            mStoreDetailMenuRecyclerAdapter.notifyDataSetChanged();
+            this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(this.storeMenuArrayList);
+            this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
         }
 
 
@@ -182,49 +180,49 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        mStoreDetailMenuRecyclerAdapter.notifyDataSetChanged();
+        this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void updateUserInterface() {
         //상점 전화번호,주소,기타정보가 NULL일시에 - 표시를 한다
-        mTitleTextView.setText(mStore.name);
-        if(mStore.phone == null){
-            mPhoneTextView.setText("-");
+        titleTextView.setText(this.store.name);
+        if (this.store.phone == null) {
+            phoneTextView.setText("-");
             storeDetailCallButton.setVisibility(View.INVISIBLE);
         }
-        if(mStore.address == null){
-            mAddressTextview.setText("-");
+        if (this.store.address == null) {
+            addressTextview.setText("-");
         }
-        if(mStore.description == null){
-            mEtcTextview.setText("-");
+        if (this.store.description == null) {
+            etcTextview.setText("-");
         }
         /*
-        mPhoneTextView.setText(Objects.requireNonNull(mStore.phone,"-"));
-        mAddressTextview.setText(Objects.requireNonNullElse(mStore.address,"-"));
-        mEtcTextview.setText(Objects.requireNonNull(mStore.description,"-"));
+        phoneTextView.setText(Objects.requireNonNull(this.store.phone,"-"));
+        addressTextview.setText(Objects.requireNonNullElse(this.store.address,"-"));
+        etcTextview.setText(Objects.requireNonNull(this.store.description,"-"));
          */
-        if(mStore.deliveryPrice >= 0)
-        deliverTextview.setText(mStore.deliveryPrice + "원");
+        if (this.store.deliveryPrice >= 0)
+            deliverTextview.setText(this.store.deliveryPrice + "원");
         else
             deliverTextview.setText("-");
 
-        if (!FormValidatorUtil.validateStringIsEmpty(mStore.openTime)) {
-            mTimeTextView.setText(mStore.openTime + " ~ " + mStore.closeTime);
+        if (!FormValidatorUtil.validateStringIsEmpty(this.store.openTime)) {
+            timeTextView.setText(this.store.openTime + " ~ " + this.store.closeTime);
         } else {
-            mTimeTextView.setText("-");
+            timeTextView.setText("-");
         }
-        if (!mStore.isDeliveryOk)
-            mIsDeliveryTextView.setVisibility(View.GONE);
-        if (!mStore.isCardOk)
-            mIsCardTextView.setVisibility(View.GONE);
-        if (!mStore.isBankOk)
-            mIsBankTextView.setVisibility(View.GONE);
+        if (!this.store.isDeliveryOk)
+            isDeliveryTextView.setVisibility(View.GONE);
+        if (!this.store.isCardOk)
+            isCardTextView.setVisibility(View.GONE);
+        if (!this.store.isBankOk)
+            isBankTextView.setVisibility(View.GONE);
 
-//        setTextviewTextWithBackground(mIsDeliveryTextView, "#배달", mStore.isDeliveryOk);
-//        setTextviewTextWithBackground(mIsCardTextView, "#카드", mStore.isCardOk);
-//        setTextviewTextWithBackground(mIsBankTextView, "#계좌이체", mStore.isBankOk);
+//        setTextviewTextWithBackground(isDeliveryTextView, "#배달", this.store.isDeliveryOk);
+//        setTextviewTextWithBackground(isCardTextView, "#카드", this.store.isCardOk);
+//        setTextviewTextWithBackground(isBankTextView, "#계좌이체", this.store.isBankOk);
 
     }
 
@@ -246,9 +244,9 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         requestPermission();
 
         AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(new ContextThemeWrapper(mContext, R.style.KAPDialog));
+        builder = new AlertDialog.Builder(new ContextThemeWrapper(this.context, R.style.KAPDialog));
 
-        builder.setMessage(mStore.name + "\n\n" + mStore.phone);
+        builder.setMessage(this.store.name + "\n\n" + this.store.phone);
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
@@ -262,7 +260,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     }
 
     private void onClickCallButton() {
-        String callNumber = mStore.phone;
+        String callNumber = this.store.phone;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
             return;
@@ -296,7 +294,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void requestPermission() {
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(mContext), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {//해당 권한이 없을 경우 실행
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(this.context), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {//해당 권한이 없을 경우 실행
             //설명 dialog 표시
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {//사용자가 권한 거부시 재 요청
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
@@ -318,27 +316,21 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
-           Intent intent = new Intent(mContext, StoreFlyerViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-           intent.putExtra("POSITION",position);
-           intent.putStringArrayListExtra("URLS",mStore.imageUrls);
-           startActivity(intent);
+            Intent intent = new Intent(context, StoreFlyerViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            intent.putExtra("POSITION", position);
+            intent.putStringArrayListExtra("URLS", store.imageUrls);
+            startActivity(intent);
         }
 
         @Override

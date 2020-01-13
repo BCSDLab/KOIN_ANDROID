@@ -15,21 +15,21 @@ public class FilterUtil implements InputFilter {
     public final static String FILTER_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[`₩~!@#$%<>^&*()\\-=+_?<>:;\"',.{}|[]/\\\\]])(?=.*[0-9]).{6,18}$";
     public final static String FILTER_EMAIL = "^[a-z_0-9]{1,12}$";
 
-    private final Pattern mPattern;
+    private final Pattern pattern;
 
     public FilterUtil(String str) {
         if (str.compareTo(FILTER_E_N_H) == 0) {
-            mPattern = Pattern.compile(FILTER_E_N_H);
+            pattern = Pattern.compile(FILTER_E_N_H);
         } else if (str.compareTo(FILTER_E_H) == 0) {
-            mPattern = Pattern.compile(FILTER_E_H);
+            pattern = Pattern.compile(FILTER_E_H);
         } else {
-            mPattern = Pattern.compile(FILTER_E_N_H);
+            pattern = Pattern.compile(FILTER_E_N_H);
         }
     }
 
     @Override
     public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-        if (source.equals("") || mPattern.matcher(source).matches()) {
+        if (source.equals("") || pattern.matcher(source).matches()) {
             return source;
         }
 

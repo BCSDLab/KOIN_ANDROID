@@ -69,7 +69,7 @@ import java.util.concurrent.ExecutionException;
  * @since 2018. 09.15
  */
 public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity implements MarketUsedEditContract.View {
-    private final String TAG = MarketUsedSellEditActivity.class.getSimpleName();
+    private final String TAG = "MarketUsedSellEditActivity";
     private final int MAXTITLELENGTH = 39;
     private static final int MY_REQUEST_CODE = 100;
     private static final int REQUEST_GET_GALLERY = 1;
@@ -77,60 +77,59 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     private static final int REQUEST_CROP_IMAGE = 3;
     private Context context;
 
-    private int mMarketId;
-    private int mItemId;
-    private String mTitle;
+    private int marketId;
+    private int itemId;
+    private String title;
     private String content;
-    private String mPrice;
-    private String mPhoneNumber;
-    private boolean mIsPhoneOpen;
-    private int mItemState;
-    private String mThumbNail;
-    private ArrayList<String> mImageUrl;
+    private String price;
+    private String phoneNumber;
+    private boolean isPhoneOpen;
+    private int itemState;
+    private String thumbNail;
+    private ArrayList<String> imageUrl;
 
 
     private Item item;
-    private MarketItem mMarketItem;
-    private MarketUsedEditContract.Presenter mMarketUsedEditPresenter;
+    private MarketItem marketItem;
+    private MarketUsedEditContract.Presenter marketUsedEditPresenter;
     private Uri currentPhotoPath;
-    private File mImageFile;
+    private File imageFile;
 
-    private boolean mIsTitlecheck;
-    private boolean mIsPhoneCheck;
-    private boolean mIsContentCheck;
-    private CustomProgressDialog customProgressDialog;
+    private boolean isTitlecheck;
+    private boolean isPhoneCheck;
+    private boolean isContentCheck;
 
     @BindView(R.id.market_used_sell_edit_thumbnail_imageview)
-    ImageView mMarketSellEditThumbnailImageView;
+    ImageView marketSellEditThumbnailImageView;
     @BindView(R.id.market_used_sell_edit_thumbnail_change_button)
-    Button mMarketSellEditThumbnailChangeButton;
+    Button marketSellEditThumbnailChangeButton;
     @BindView(R.id.market_used_sell_edit_title_textview)
-    EditText mMarketSellEditTitleEditText;
+    EditText marketSellEditTitleEditText;
     @BindView(R.id.market_used_sell_edit_money_edittext)
-    EditText mMarketSellEditMoneyEditText;
+    EditText marketSellEditMoneyEditText;
 
     @BindView(R.id.market_used_sell_edit_phone_status_radiobutton_group)
-    RadioGroup mMarketSellEditPhoneStatusRadioButtonGroup;
+    RadioGroup marketSellEditPhoneStatusRadioButtonGroup;
     @BindView(R.id.market_used_sell_edit_is_phone_public_radiobutton)
-    RadioButton mMarketSellEditIsPhonePublicRadioButton;
+    RadioButton marketSellEditIsPhonePublicRadioButton;
     @BindView(R.id.market_used_sell_edit_is_phone_private_radiobutton)
-    RadioButton mMarketSellEditIsPhonePrivateRadioButton;
+    RadioButton marketSellEditIsPhonePrivateRadioButton;
 
     @BindView(R.id.market_used_sell_edit_edittext_phone_num)
-    EditText mMarketSellEditEditTextPhoneNum;
+    EditText marketSellEditEditTextPhoneNum;
 
 
     @BindView(R.id.market_used_sell_edit_selling_status_radiobutton_group)
-    RadioGroup mMarketSellEditSellingStatusRadioButtonGroup;
+    RadioGroup marketSellEditSellingStatusRadioButtonGroup;
     @BindView(R.id.market_used_sell_edit_is_selling_radiobutton)
-    RadioButton mMarketSellEditIsSellingRadioButton;
+    RadioButton marketSellEditIsSellingRadioButton;
     @BindView(R.id.market_used_sell_edit_is_stop_selling_radiobutton)
-    RadioButton mMarketSellEditIsStopSellingRadioButton;
+    RadioButton marketSellEditIsStopSellingRadioButton;
     @BindView(R.id.market_used_sell_edit_is_complete_selling_radiobutton)
-    RadioButton mMarketSellEditIsCompleteSellingRadioButton;
+    RadioButton marketSellEditIsCompleteSellingRadioButton;
 
     @BindView(R.id.market_used_sell_edit_content)
-    EditText mMarketSellEditContent;
+    EditText marketSellEditContent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,20 +139,19 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         ButterKnife.bind(this);
         item = new Item();
 
-        mMarketId = getIntent().getIntExtra("MARKET_ID", -1);
-        ;
-        mItemId = getIntent().getIntExtra("ITEM_ID", -1);
-        mTitle = getIntent().getStringExtra("MARKET_TITLE");
+        marketId = getIntent().getIntExtra("MARKET_ID", -1);
+        itemId = getIntent().getIntExtra("ITEM_ID", -1);
+        title = getIntent().getStringExtra("MARKET_TITLE");
         content = getIntent().getStringExtra("MARKET_CONTENT");
-        mPrice = Integer.toString(getIntent().getIntExtra("MARKET_PRICE", 0));
-        mPhoneNumber = getIntent().getStringExtra("MARKET_PHONE");
-        mIsPhoneOpen = getIntent().getBooleanExtra("MARKET_PHONE_STATUS", false);
-        mItemState = getIntent().getIntExtra("MARKET_STATE", 0);
-        mThumbNail = getIntent().getStringExtra("MARKET_THUMBNAIL_URL");
-        mImageFile = null;
+        price = Integer.toString(getIntent().getIntExtra("MARKET_PRICE", 0));
+        phoneNumber = getIntent().getStringExtra("MARKET_PHONE");
+        isPhoneOpen = getIntent().getBooleanExtra("MARKET_PHONE_STATUS", false);
+        itemState = getIntent().getIntExtra("MARKET_STATE", 0);
+        thumbNail = getIntent().getStringExtra("MARKET_THUMBNAIL_URL");
+        imageFile = null;
 
-        if (mPhoneNumber == null) {
-            mPhoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+        if (phoneNumber == null) {
+            phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
         }
 
         init();
@@ -183,60 +181,54 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     void init() {
         getPermisson();
-        mImageUrl = new ArrayList<>();
-        mMarketItem = new MarketItem();
+        imageUrl = new ArrayList<>();
+        marketItem = new MarketItem();
         setPresenter(new MarketUsedEditPresenter(this, new MarketUsedRestInteractor()));
 
-        mIsTitlecheck = false;
-        mIsPhoneCheck = false;
-        mIsContentCheck = false;
-        mMarketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
-        Glide.with(context).load(mThumbNail).apply(new RequestOptions()
+        isTitlecheck = false;
+        isPhoneCheck = false;
+        isContentCheck = false;
+        marketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
+        Glide.with(context).load(thumbNail).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
-        ).into(mMarketSellEditThumbnailImageView);
+        ).into(marketSellEditThumbnailImageView);
 
-        mMarketSellEditTitleEditText.setText(mTitle);
-        mMarketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(mPrice));
-
-
-        mMarketSellEditEditTextPhoneNum.setFocusable(false);
+        marketSellEditTitleEditText.setText(title);
+        marketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(price));
 
 
-        if (mIsPhoneOpen) {
-            mMarketSellEditPhoneStatusRadioButtonGroup.clearCheck();
-            mMarketSellEditIsPhonePublicRadioButton.setChecked(true);
+        marketSellEditEditTextPhoneNum.setFocusable(false);
+
+
+        if (isPhoneOpen) {
+            marketSellEditPhoneStatusRadioButtonGroup.clearCheck();
+            marketSellEditIsPhonePublicRadioButton.setChecked(true);
             setPhoneNumber();
         }
 
 
-        mMarketSellEditSellingStatusRadioButtonGroup.clearCheck();
-        if (mItemState == 0)
-            mMarketSellEditIsSellingRadioButton.setChecked(true);
-        else if (mItemState == 1)
-            mMarketSellEditIsStopSellingRadioButton.setChecked(true);
+        marketSellEditSellingStatusRadioButtonGroup.clearCheck();
+        if (itemState == 0)
+            marketSellEditIsSellingRadioButton.setChecked(true);
+        else if (itemState == 1)
+            marketSellEditIsStopSellingRadioButton.setChecked(true);
         else
-            mMarketSellEditIsCompleteSellingRadioButton.setChecked(true);
+            marketSellEditIsCompleteSellingRadioButton.setChecked(true);
 
         if (content != null) {
             Spanned spannedValue = Html.fromHtml(content, getImageHTML(), null);
-            mMarketSellEditContent.setText(spannedValue);
+            marketSellEditContent.setText(spannedValue);
         }
 
         moneyEditTextChangedListener();
@@ -245,7 +237,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
         InputFilter[] inputArray = new InputFilter[1];
         inputArray[0] = new InputFilter.LengthFilter(MAXTITLELENGTH);
-        mMarketSellEditTitleEditText.setFilters(inputArray);
+        marketSellEditTitleEditText.setFilters(inputArray);
 
     }
 
@@ -329,11 +321,11 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             switch (button.getId()) {
                 case R.id.market_used_sell_edit_is_phone_public_radiobutton:
                     setPhoneNumber();
-                    mIsPhoneOpen = true;
+                    isPhoneOpen = true;
                     break;
                 case R.id.market_used_sell_edit_is_phone_private_radiobutton:
                     unSetPhoneNumber();
-                    mIsPhoneOpen = false;
+                    isPhoneOpen = false;
                     break;
             }
         }
@@ -345,13 +337,13 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         if (checked) {
             switch (button.getId()) {
                 case R.id.market_used_sell_edit_is_selling_radiobutton:
-                    mItemState = 0;
+                    itemState = 0;
                     break;
                 case R.id.market_used_sell_edit_is_stop_selling_radiobutton:
-                    mItemState = 1;
+                    itemState = 1;
                     break;
                 case R.id.market_used_sell_edit_is_complete_selling_radiobutton:
-                    mItemState = 2;
+                    itemState = 2;
                     break;
             }
         }
@@ -362,23 +354,23 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
      * 번호 입력 Edittext 수정가능하도록 set
      */
     public void setPhoneNumber() {
-        mMarketSellEditEditTextPhoneNum.setTextIsSelectable(true);
-        mMarketSellEditEditTextPhoneNum.setClickable(true);
-        if (mPhoneNumber == null) {
+        marketSellEditEditTextPhoneNum.setTextIsSelectable(true);
+        marketSellEditEditTextPhoneNum.setClickable(true);
+        if (phoneNumber == null) {
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
             return;
         }
-        mMarketSellEditEditTextPhoneNum.setText(mPhoneNumber);
+        marketSellEditEditTextPhoneNum.setText(phoneNumber);
     }
 
     /**
      * 번호 입력 Edittext 수정 못하도록 set
      */
     public void unSetPhoneNumber() {
-        mPhoneNumber = mMarketSellEditEditTextPhoneNum.getText().toString();
-        mMarketSellEditEditTextPhoneNum.setText(null);
-        mMarketSellEditEditTextPhoneNum.setTextIsSelectable(false);
-        mMarketSellEditEditTextPhoneNum.setClickable(false);
+        phoneNumber = marketSellEditEditTextPhoneNum.getText().toString();
+        marketSellEditEditTextPhoneNum.setText(null);
+        marketSellEditEditTextPhoneNum.setTextIsSelectable(false);
+        marketSellEditEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
     }
 
@@ -390,7 +382,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     //TODO -> content edit
     public void contentEditTextChangedListener() {
-        mMarketSellEditContent.addTextChangedListener(new TextWatcher() {
+        marketSellEditContent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -400,7 +392,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                 if (!s.toString().equals(content)) {
                     content = s.toString();
                     int number = getCharNumber(content, (char) 65532);
-                    if (number < mImageUrl.size())
+                    if (number < imageUrl.size())
                         deleteImageUrlAtArrayList(content, start);
 
 
@@ -440,15 +432,15 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     public void deleteImageUrlAtArrayList(String content, int start) {
         int number;
-        if (!content.isEmpty() && !mImageUrl.isEmpty()) {
+        if (!content.isEmpty() && !imageUrl.isEmpty()) {
             number = getCharNumber(content, start, (char) 65532);
-            mImageUrl.remove(number);
+            imageUrl.remove(number);
         }
     }
 
 
     public void moneyEditTextChangedListener() {
-        mMarketSellEditMoneyEditText.addTextChangedListener(new TextWatcher() {
+        marketSellEditMoneyEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -456,9 +448,9 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = s.toString();
-                if (!text.equals(changeMoneyFormatToStringWithComma(mPrice))) {
+                if (!text.equals(changeMoneyFormatToStringWithComma(price))) {
                     if (text.length() == 1 && text.charAt(0) == '0')
-                        mMarketSellEditMoneyEditText.setText("");
+                        marketSellEditMoneyEditText.setText("");
                 }
 
 
@@ -466,19 +458,19 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!mMarketSellEditMoneyEditText.getText().toString().equals(changeMoneyFormatToStringWithComma(mPrice))) {
+                if (!marketSellEditMoneyEditText.getText().toString().equals(changeMoneyFormatToStringWithComma(price))) {
 
-                    if (mMarketSellEditMoneyEditText.getText().toString().length() != 0) {
-                        mPrice = changeMoneyFormatToStringWithoutComma(mMarketSellEditMoneyEditText.getText().toString());
-                        mMarketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(mPrice));
+                    if (marketSellEditMoneyEditText.getText().toString().length() != 0) {
+                        price = changeMoneyFormatToStringWithoutComma(marketSellEditMoneyEditText.getText().toString());
+                        marketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(price));
                     } else {
-                        mPrice = "0";
-                        mMarketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(mPrice));
+                        price = "0";
+                        marketSellEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(price));
                     }
 
 
-                    mPrice = changeMoneyFormatToStringWithoutComma((mMarketSellEditMoneyEditText.getText().toString()));
-                    mMarketSellEditMoneyEditText.setSelection(mMarketSellEditMoneyEditText.getText().length());
+                    price = changeMoneyFormatToStringWithoutComma((marketSellEditMoneyEditText.getText().toString()));
+                    marketSellEditMoneyEditText.setSelection(marketSellEditMoneyEditText.getText().length());
                 }
             }
         });
@@ -557,12 +549,12 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     OutputStream os;
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
-                    os = new FileOutputStream(mImageFile);
+                    os = new FileOutputStream(imageFile);
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
-                    // Glide.with(context).asBitmap().load(bitmap).into(mMarketSellEditThumbnailImageView);
-                    mMarketUsedEditPresenter.uploadThumbnailImage(mImageFile);
+                    // Glide.with(context).asBitmap().load(bitmap).into(marketSellEditThumbnailImageView);
+                    marketUsedEditPresenter.uploadThumbnailImage(imageFile);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
                 }
@@ -655,7 +647,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             File folder = new File(Environment.getExternalStorageDirectory() + "/Pictures/koin");
             File tempFile = new File(folder.toString(), croppedFileName.getName());
 
-            mImageFile = tempFile;
+            imageFile = tempFile;
             currentPhotoPath = FileProvider.getUriForFile(this,
                     "in.koreatech.koin.provider", tempFile);
 
@@ -755,59 +747,59 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
      * state를 확인해서 item edit
      */
     public void onClickEditButton() {
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mMarketSellEditContent.getText().toString().trim());
-        mPhoneNumber = mMarketSellEditEditTextPhoneNum.getText().toString().trim();
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(marketSellEditContent.getText().toString().trim());
+        phoneNumber = marketSellEditEditTextPhoneNum.getText().toString().trim();
 
 
-        if (mIsPhoneOpen) {
-            mMarketItem.isPhoneOpen = 1;
-            mMarketItem.phone = mPhoneNumber;
+        if (isPhoneOpen) {
+            marketItem.isPhoneOpen = 1;
+            marketItem.phone = phoneNumber;
         } else {
-            mMarketItem.isPhoneOpen = 0;
-            mMarketItem.phone = null;
+            marketItem.isPhoneOpen = 0;
+            marketItem.phone = null;
         }
 
-        mMarketItem.title = mMarketSellEditTitleEditText.getText().toString().trim();
-        mMarketItem.price = Integer.parseInt(mPrice);
-        mMarketItem.state = mItemState;
+        marketItem.title = marketSellEditTitleEditText.getText().toString().trim();
+        marketItem.price = Integer.parseInt(price);
+        marketItem.state = itemState;
 
-        if (mMarketSellEditContent.getText().toString().trim().length() != 0) {
-            mMarketItem.content = Html.toHtml(spannableStringBuilder);
-            mMarketItem.content = addImageSpan(mMarketItem.content, mImageUrl);
-            mIsContentCheck = true;
+        if (marketSellEditContent.getText().toString().trim().length() != 0) {
+            marketItem.content = Html.toHtml(spannableStringBuilder);
+            marketItem.content = addImageSpan(marketItem.content, imageUrl);
+            isContentCheck = true;
         } else {
-            mIsContentCheck = false;
+            isContentCheck = false;
         }
 
 
-        if (mIsPhoneOpen && (mMarketItem.phone.length() == 13)) {
-            if (mPhoneNumber.charAt(3) == '-' && mPhoneNumber.charAt(8) == '-')
-                mIsPhoneCheck = true;
+        if (isPhoneOpen && (marketItem.phone.length() == 13)) {
+            if (phoneNumber.charAt(3) == '-' && phoneNumber.charAt(8) == '-')
+                isPhoneCheck = true;
             else
-                mIsPhoneCheck = false;
+                isPhoneCheck = false;
 
-        } else if (!mIsPhoneOpen)
-            mIsPhoneCheck = true;
+        } else if (!isPhoneOpen)
+            isPhoneCheck = true;
         else
-            mIsPhoneCheck = false;
+            isPhoneCheck = false;
 
-        if (mMarketItem.title.length() == 0)
-            mIsTitlecheck = false;
+        if (marketItem.title.length() == 0)
+            isTitlecheck = false;
         else {
-            mIsTitlecheck = true;
+            isTitlecheck = true;
         }
 
-        if (mIsContentCheck && mIsTitlecheck && !mIsPhoneCheck)
+        if (isContentCheck && isTitlecheck && !isPhoneCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-        if (!mIsTitlecheck && mIsContentCheck)
+        if (!isTitlecheck && isContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-        if (!mIsContentCheck && mIsTitlecheck)
+        if (!isContentCheck && isTitlecheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-        if (!mIsTitlecheck && !mIsContentCheck)
+        if (!isTitlecheck && !isContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
-        mMarketItem.type = mMarketId;
-        if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
-            mMarketUsedEditPresenter.editMarketContent(mItemId, mMarketItem);
+        marketItem.type = marketId;
+        if (isPhoneCheck && isTitlecheck && isContentCheck)
+            marketUsedEditPresenter.editMarketContent(itemId, marketItem);
 
     }
 
@@ -834,12 +826,12 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showImageUploadSuccess(String url) {
-        mMarketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
+        marketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
         Glide.with(context).load(url).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
-        ).into(mMarketSellEditThumbnailImageView);
-        mMarketItem.thumbnail = url;
+        ).into(marketSellEditThumbnailImageView);
+        marketItem.thumbnail = url;
     }
 
     @Override
@@ -849,7 +841,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void setPresenter(MarketUsedEditContract.Presenter presenter) {
-        this.mMarketUsedEditPresenter = presenter;
+        this.marketUsedEditPresenter = presenter;
     }
 
 
@@ -862,7 +854,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                     int width = dm.widthPixels;
                     int height = dm.heightPixels;
                     Integer heigtbol = height / 3;
-                    mImageUrl.add(s);
+                    imageUrl.add(s);
                     //TODO -> Change image size
                     drawable.setBounds(0, 0, drawable.getCurrent().getIntrinsicWidth(), drawable.getCurrent().getIntrinsicHeight());
 

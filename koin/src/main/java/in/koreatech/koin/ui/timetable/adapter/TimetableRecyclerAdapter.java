@@ -26,8 +26,8 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int VIEW_TYPE_LOADING = 1;
 
     private Context context;
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Lecture> mLectureArrayList;
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
+    private ArrayList<Lecture> lectureArrayList;
     private RecyclerViewClickListener recyclerViewClickListener;
 
 
@@ -36,8 +36,8 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     }
 
     public TimetableRecyclerAdapter(Context context, ArrayList<Lecture> lectureArrayList) {
-        context = context;
-        mLectureArrayList = lectureArrayList;
+        this.context = context;
+        this.lectureArrayList = lectureArrayList;
     }
 
 
@@ -65,12 +65,12 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return mLectureArrayList == null ? 0 : mLectureArrayList.size();
+        return this.lectureArrayList == null ? 0 : this.lectureArrayList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return mLectureArrayList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        return this.lectureArrayList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
 
@@ -112,7 +112,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.setIsRecyclable(false);
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder stringBuilderTwo = new StringBuilder();
-        Lecture lecture = mLectureArrayList.get(position);
+        Lecture lecture = this.lectureArrayList.get(position);
         if (lecture.isItemClicked)
             holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white6));
         else

@@ -48,16 +48,16 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private Context context;
 
     private DrawerLayout drawerLayout;
-    private NavigationView mLeftNavigationView;
+    private NavigationView leftNavigationView;
 
-    private long mPressTime = 0;
+    private long pressTime = 0;
     private static int currentId = R.id.navi_item_home;
     private static int beforeId = R.id.navi_item_home;
 
-    private InputMethodManager mInputMethodManager;
-    private LinearLayout mOpenLeftNavigationDrawerOpenLinearLayout;
-    private LinearLayout mOpenHomeLinearLayout;
-    private LinearLayout mOpenSearchLinearLayout;
+    private InputMethodManager inputMethodManager;
+    private LinearLayout openLeftNavigationDrawerOpenLinearLayout;
+    private LinearLayout openHomeLinearLayout;
+    private LinearLayout openSearchLinearLayout;
 
 
     @Override
@@ -71,7 +71,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = setContext();
-        mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
 
     }
 
@@ -106,20 +106,20 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             }
         }
 
-        mLeftNavigationView = findViewById(getLeftNavigationDrawerID());
-        mOpenLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
-        mOpenHomeLinearLayout = findViewById(getBottomNavigationHomeID());
-        mOpenSearchLinearLayout = findViewById(getBottomNavigationSearchID());
-        mOpenLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
-        mOpenHomeLinearLayout.setOnClickListener(this);
-        mOpenSearchLinearLayout.setOnClickListener(this);
-        mLeftNavigationView.setNavigationItemSelectedListener(this);
-        mLeftNavigationView.setOnClickListener(this);
+        this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
+        this.openLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
+        this.openHomeLinearLayout = findViewById(getBottomNavigationHomeID());
+        this.openSearchLinearLayout = findViewById(getBottomNavigationSearchID());
+        this.openLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
+        this.openHomeLinearLayout.setOnClickListener(this);
+        this.openSearchLinearLayout.setOnClickListener(this);
+        this.leftNavigationView.setNavigationItemSelectedListener(this);
+        this.leftNavigationView.setOnClickListener(this);
 
         width = getResources().getDisplayMetrics().widthPixels * 667 / 1000;
-        ViewGroup.LayoutParams params = mLeftNavigationView.getLayoutParams();
+        ViewGroup.LayoutParams params = this.leftNavigationView.getLayoutParams();
         params.width = width;
-        mLeftNavigationView.setLayoutParams(params);
+        this.leftNavigationView.setLayoutParams(params);
         toggleIcon(currentId);
     }
 
@@ -144,7 +144,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             textView.setTextColor(getResources().getColor(R.color.black));
             imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
+            imageView.setBackgroundResource(R.drawable.ic_search_menu);
             textView.setTextColor(getResources().getColor(R.color.black));
         }
     }
@@ -450,11 +450,11 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         } else if (drawer.isDrawerOpen(RIGHTNAVI)) {
             drawer.closeDrawer(RIGHTNAVI);
         } else {
-            if (System.currentTimeMillis() > mPressTime + 2000) {
+            if (System.currentTimeMillis() > pressTime + 2000) {
                 if (currentId != R.id.navi_item_home)
                     callDrawerItem(R.id.navi_item_home);
                 else {
-                    mPressTime = System.currentTimeMillis();
+                    pressTime = System.currentTimeMillis();
                     ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
                 }
             } else {

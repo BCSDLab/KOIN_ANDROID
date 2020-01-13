@@ -1,12 +1,15 @@
 package in.koreatech.koin.ui.usedmarket.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
@@ -18,22 +21,22 @@ import java.util.Objects;
 public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketUsedDetailCommentAdapter.ViewHolder> implements View.OnClickListener {
 
     private Context context;
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Comment> mMarketCommentArrayList;
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
+    private ArrayList<Comment> marketCommentArrayList;
 
-    private OnCommentRemoveButtonClickListener mOnCommentRemoveButtonClickListener;
+    private OnCommentRemoveButtonClickListener onCommentRemoveButtonClickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.market_used_comment_writer)
-        TextView mMarketCommentWriterTextView;
+        TextView marketCommentWriterTextView;
         @BindView(R.id.market_used_comment_remove)
-        TextView mMarketCommentRemoveTextView;
+        TextView marketCommentRemoveTextView;
         @BindView(R.id.market_used_comment_edit)
-        TextView mMarketCommentEditTextView;
+        TextView marketCommentEditTextView;
         @BindView(R.id.market_used_comment_create_date)
-        TextView mMarketCommentCreateDateTextView;
+        TextView marketCommentCreateDateTextView;
         @BindView(R.id.market_used_comment_content)
-        TextView mMarketCommentConetentTextView;
+        TextView marketCommentConetentTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -42,11 +45,11 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
     }
 
 
-    public MarketUsedDetailCommentAdapter(Context context, ArrayList<Comment> mMarketCommentArrayList) {
-        mLayoutInflater = LayoutInflater.from(context);
+    public MarketUsedDetailCommentAdapter(Context context, ArrayList<Comment> marketCommentArrayList) {
+        layoutInflater = LayoutInflater.from(context);
         this.context = context;
-        this.mMarketCommentArrayList = new ArrayList<>();
-        this.mMarketCommentArrayList = mMarketCommentArrayList;
+        this.marketCommentArrayList = new ArrayList<>();
+        this.marketCommentArrayList = marketCommentArrayList;
     }
 
 
@@ -59,29 +62,29 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
 
     @Override
     public int getItemCount() {
-        return mMarketCommentArrayList.size();
+        return marketCommentArrayList.size();
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull MarketUsedDetailCommentAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        Comment comment = mMarketCommentArrayList.get(position);
-        holder.mMarketCommentWriterTextView.setText(comment.authorNickname);
-        holder.mMarketCommentCreateDateTextView.setText(comment.updateDate);
-        holder.mMarketCommentConetentTextView.setText(comment.content);
+        Comment comment = marketCommentArrayList.get(position);
+        holder.marketCommentWriterTextView.setText(comment.authorNickname);
+        holder.marketCommentCreateDateTextView.setText(comment.updateDate);
+        holder.marketCommentConetentTextView.setText(comment.content);
         if (!comment.grantEdit)
-            holder.mMarketCommentEditTextView.setVisibility(View.INVISIBLE);
+            holder.marketCommentEditTextView.setVisibility(View.INVISIBLE);
         else {
-            holder.mMarketCommentEditTextView.setOnClickListener(this);
-            Objects.requireNonNull(holder.mMarketCommentEditTextView).setTag(position);
+            holder.marketCommentEditTextView.setOnClickListener(this);
+            Objects.requireNonNull(holder.marketCommentEditTextView).setTag(position);
         }
 
         if (!comment.grantDelete)
-            holder.mMarketCommentRemoveTextView.setVisibility(View.INVISIBLE);
+            holder.marketCommentRemoveTextView.setVisibility(View.INVISIBLE);
         else {
-            holder.mMarketCommentRemoveTextView.setOnClickListener(this);
-            Objects.requireNonNull(holder.mMarketCommentRemoveTextView).setTag(position);
+            holder.marketCommentRemoveTextView.setOnClickListener(this);
+            Objects.requireNonNull(holder.marketCommentRemoveTextView).setTag(position);
         }
 
 
@@ -89,13 +92,13 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
 
     @Override
     public void onClick(View v) {
-        Comment comment = mMarketCommentArrayList.get((int) v.getTag());
+        Comment comment = marketCommentArrayList.get((int) v.getTag());
         switch (v.getId()) {
             case R.id.market_used_comment_edit:
-                mOnCommentRemoveButtonClickListener.onClickCommentModifyButton(comment);
+                onCommentRemoveButtonClickListener.onClickCommentModifyButton(comment);
                 break;
             case R.id.market_used_comment_remove:
-                mOnCommentRemoveButtonClickListener.onClickCommentRemoveButton(comment);
+                onCommentRemoveButtonClickListener.onClickCommentRemoveButton(comment);
                 break;
             default:
                 break;
@@ -105,7 +108,7 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
     }
 
     public void setCustomOnClickListener(OnCommentRemoveButtonClickListener callback) {
-        this.mOnCommentRemoveButtonClickListener = callback;
+        this.onCommentRemoveButtonClickListener = callback;
     }
 
     //onClick interface

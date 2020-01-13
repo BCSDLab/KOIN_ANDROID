@@ -30,16 +30,16 @@ public class MarketUsedCreatePresenter implements MarketUsedCreateContract.Prese
 
         @Override
         public void onFailure(Throwable throwable) {
-                marketCreateContractView.showMarketCreatefFail();
+            marketCreateContractView.showMarketCreatefFail();
             marketCreateContractView.hideLoading();
         }
     };
 
-    private final ApiCallback uploadImageApiCallback =  new ApiCallback() {
+    private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             Item marketItem = (Item) object;
-            if(marketItem.url != null)
+            if (marketItem.url != null)
                 marketCreateContractView.showImageUploadSuccess(marketItem.url);
             marketCreateContractView.hideLoading();
         }

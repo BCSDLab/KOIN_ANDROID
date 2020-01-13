@@ -91,7 +91,7 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements Appb
 
     @Override
     public void showLoading() {
-        showProgressDialog("로딩 중");
+        showProgressDialog(R.string.loading);
     }
 
     @Override

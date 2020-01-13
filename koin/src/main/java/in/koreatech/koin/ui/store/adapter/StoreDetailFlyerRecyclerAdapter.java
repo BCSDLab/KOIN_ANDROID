@@ -23,7 +23,7 @@ public class StoreDetailFlyerRecyclerAdapter extends RecyclerView.Adapter<StoreD
     private final String TAG = StoreDetailFlyerRecyclerAdapter.class.getSimpleName();
 
     private Context context;
-    private LayoutInflater mLayoutInflater;
+    private LayoutInflater layoutInflater;
     private ArrayList<String> storeFlyerArrayList;
     private final RequestOptions glideOptions;
 
@@ -40,7 +40,7 @@ public class StoreDetailFlyerRecyclerAdapter extends RecyclerView.Adapter<StoreD
 
     public StoreDetailFlyerRecyclerAdapter(Context context, ArrayList<String> storeFlyerArrayList) {
         this.context = context;
-        this.mLayoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(context);
         this.storeFlyerArrayList = storeFlyerArrayList;
         glideOptions = new RequestOptions()
                 .fitCenter()

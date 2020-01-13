@@ -21,7 +21,7 @@ public class DiningPresenter implements BasePresenter {
 
     private boolean diningListApiCallCheck;
 
-    private Resources mResources;
+    private Resources resources;
 
     public DiningPresenter(DiningContract.View diningView, DiningInteractor diningInteractor) {
         this.diningView = diningView;

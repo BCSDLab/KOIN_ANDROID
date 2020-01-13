@@ -26,27 +26,27 @@ import in.koreatech.koin.ui.callvan.adapter.CallvanViewPagerAdapter;
 public class CallvanActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "CallvanActivity";
 
-    private Context mContext;
-    private FirebasePerformanceUtil mFirebasePerformanceUtil;
+    private Context context;
+    private FirebasePerformanceUtil firebasePerformanceUtil;
 
     /* View Component */
     @BindView(R.id.koin_base_appbar)
-    AppbarBase mKoinBaseAppbar;
+    AppbarBase koinBaseAppbar;
     @BindView(R.id.callvan_main_viewpager)
-    ViewPager mViewPager;
+    ViewPager viewPager;
     @BindView(R.id.callvan_main_tabs)
-    TabLayout mTabLayout;
+    TabLayout tabLayout;
 
-    private InputMethodManager mInputMethodManager;
-    private CallvanViewPagerAdapter mViewPagerAdapter;
-    private int mSelectedPage;
+    private InputMethodManager inputMethodManager;
+    private CallvanViewPagerAdapter viewPagerAdapter;
+    private int selectedPage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.callvan_activity_main);
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         init();
     }
 
@@ -72,21 +72,21 @@ public class CallvanActivity extends KoinNavigationDrawerActivity {
 
     @Override
     public void onStop() {
-        mFirebasePerformanceUtil.stop();
+        firebasePerformanceUtil.stop();
         super.onStop();
     }
 
     private void init() {
-        mSelectedPage = 0;
-        mViewPagerAdapter = new CallvanViewPagerAdapter(getSupportFragmentManager(), 2);
-        mFirebasePerformanceUtil = new FirebasePerformanceUtil("Market_used");
-        mFirebasePerformanceUtil.start();
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setAdapter(mViewPagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
+        selectedPage = 0;
+        viewPagerAdapter = new CallvanViewPagerAdapter(getSupportFragmentManager(), 2);
+        firebasePerformanceUtil = new FirebasePerformanceUtil("Market_used");
+        firebasePerformanceUtil.start();
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         //hide keyboard
-        mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }
 
 //    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -129,8 +129,7 @@ public class CallvanActivity extends KoinNavigationDrawerActivity {
 //    }
 
     @OnClick(R.id.koin_base_appbar)
-    public void koinBaseAppbarClick(View view)
-    {
+    public void koinBaseAppbarClick(View view) {
         int id = view.getId();
         if (id == AppbarBase.getLeftButtonId())
             onBackPressed();

@@ -78,7 +78,7 @@ public class WebViewActivity extends ActivityBase {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                showProgressDialog("로딩 중");
+                showProgressDialog(R.string.loading);
             }
 
             @Override

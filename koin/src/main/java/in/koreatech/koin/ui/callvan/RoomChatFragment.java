@@ -45,36 +45,36 @@ import in.koreatech.koin.ui.callvan.presenter.CallvanRoomChatPresenter;
 /**
  * Created by hyerim on 2018. 6. 17....
  */
-public class RoomChatFragment extends CallvanBaseFragment implements RoomChatContract.View{
+public class RoomChatFragment extends CallvanBaseFragment implements RoomChatContract.View {
     private final String TAG = "RoomChatFragment";
 
-    private Unbinder mUnbinder;
+    private Unbinder unbinder;
 
     /* firebase */
-    private String mUid;
-    private int mRoomUid;
-    private ArrayList<Message> mMessageList = new ArrayList<>();
-    private ArrayList<String> mMessageKeyList = new ArrayList<>();
-    private DatabaseReference mMessageReference;
-    private ValueEventListener mMessageListener;
+    private String uid;
+    private int roouid;
+    private ArrayList<Message> messageListroouid = new ArrayList<>();
+    private ArrayList<String> messageKeyList = new ArrayList<>();
+    private DatabaseReference messageReference;
+    private ValueEventListener messageListroouidener;
 
     /* View Component */
     private View mView;
 
-    private MessageRecyclerAdapter mMessageRecyclerAdapter;
+    private MessageRecyclerAdapter messageRecyclerAdapter;
 
-//    @BindView(R.id.no_room_chat_frameLayout)
+    //    @BindView(R.id.no_room_chat_frameLayout)
 //    FrameLayout mNoRoomChatFrameLayout; //입장한 모임이 없을 경우 띄우는 화면
     @BindView(R.id.room_chat_frameLayout)
-    FrameLayout mRoomChatFrameLayout; //입장한 모임이 있을 경우 띄우는 화면
+    FrameLayout roomChatFrameLayout; //입장한 모임이 있을 경우 띄우는 화면
 
     @BindView(R.id.room_chat_main_recyclerView)
-    RecyclerView mRoomChatRecyclerView;
+    RecyclerView roomChatRecyclerView;
 
     @BindView(R.id.room_chat_main_input_text)
-    EditText mInputEditText;
+    EditText inputEditText;
     @BindView(R.id.room_chat_main_button)
-    Button mSendButton;
+    Button sendButton;
 
     @Override
     public void onAttach(Context context) {
@@ -85,14 +85,14 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
-        if (mRoomUid > 0) {
-            mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
-            if (FormValidatorUtil.validateStringIsEmpty(mUid)) {
+        roouid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        if (roouid > 0) {
+            uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+            if (FormValidatorUtil.validateStringIsEmpty(uid)) {
                 ToastUtil.getInstance().makeShort("채팅 정보를 일시적으로 불러올 수 없습니다");
-                mMessageReference = null;
+                messageReference = null;
             } else {
-                mMessageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(mRoomUid));
+                messageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(roouid));
             }
         }
     }
@@ -101,15 +101,15 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.callvan_fragment_room_chat, container, false);
-        mUnbinder = ButterKnife.bind(this, mView);
+        unbinder = ButterKnife.bind(this, mView);
         init();
 
-        if (FormValidatorUtil.validateStringIsEmpty(mUid)) {
+        if (FormValidatorUtil.validateStringIsEmpty(uid)) {
 //            mNoRoomChatFrameLayout.setVisibility(View.VISIBLE);
-            mRoomChatFrameLayout.setVisibility(View.INVISIBLE);
+            roomChatFrameLayout.setVisibility(View.INVISIBLE);
         } else {
 //            mNoRoomChatFrameLayout.setVisibility(View.INVISIBLE);
-            mRoomChatFrameLayout.setVisibility(View.VISIBLE);
+            roomChatFrameLayout.setVisibility(View.VISIBLE);
         }
 
         return mView;
@@ -124,18 +124,18 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     public void onStart() {
         super.onStart();
 
-        mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
         ValueEventListener messageListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mMessageList.clear();
-                mMessageKeyList.clear();
+                messageListroouid.clear();
+                messageKeyList.clear();
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Message msg = Message.parseSnapshot(child);
                     if (msg.isDeleted != null && !msg.isDeleted && msg.uid != null) {
-                        mMessageList.add(msg);
-                        mMessageKeyList.add(child.getKey());
+                        messageListroouid.add(msg);
+                        messageKeyList.add(child.getKey());
                     }
                 }
 
@@ -148,10 +148,10 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
             }
         };
 
-        if (mMessageReference != null) {
-            mMessageReference.addValueEventListener(messageListener);
+        if (messageReference != null) {
+            messageReference.addValueEventListener(messageListener);
         }
-        mMessageListener = messageListener;
+        messageListroouidener = messageListener;
     }
 
     @Override
@@ -167,9 +167,9 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     @Override
     public void onStop() {
         super.onStop();
-        if (mMessageListener != null) {
-            if (mMessageReference != null) {
-                mMessageReference.removeEventListener(mMessageListener);
+        if (messageListroouidener != null) {
+            if (messageReference != null) {
+                messageReference.removeEventListener(messageListroouidener);
             }
         }
     }
@@ -177,7 +177,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Override
@@ -191,8 +191,8 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     }
 
     private void init() {
-        mRoomChatRecyclerView.setHasFixedSize(true);
-        mRoomChatRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity())); //layout 설정
+        roomChatRecyclerView.setHasFixedSize(true);
+        roomChatRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity())); //layout 설정
     }
 
     @Override
@@ -227,47 +227,47 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     @Override
     @OnClick(R.id.room_chat_main_button)
     public void onClickSendButton() {
-        if (!FormValidatorUtil.validateStringIsEmpty(mInputEditText.getText().toString())) {
-            String meesageBody = mInputEditText.getText().toString();
+        if (!FormValidatorUtil.validateStringIsEmpty(inputEditText.getText().toString())) {
+            String meesageBody = inputEditText.getText().toString();
 
             String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
 
-            String messageKey = FirebaseDbManager.createRoomChatMessage(String.valueOf(mRoomUid));
+            String messageKey = FirebaseDbManager.createRoomChatMessage(String.valueOf(roouid));
 
-            FirebaseDbManager.updateMessage(mUid, messageKey, userName, meesageBody.trim(), String.valueOf(mRoomUid), false);
+            FirebaseDbManager.updateMessage(uid, messageKey, userName, meesageBody.trim(), String.valueOf(roouid), false);
 
-            mInputEditText.setText(null); //전송 후 edit text 초기화
+            inputEditText.setText(null); //전송 후 edit text 초기화
         }
 
-        mInputEditText.setText("");
+        inputEditText.setText("");
     }
 
     @Override
     public void updateRoomChatView() {
-        mRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        roouid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         //참여한 방이 없을 경우
-        if (mRoomUid <= 0) {
+        if (roouid <= 0) {
 //            mNoRoomChatFrameLayout.setVisibility(View.VISIBLE);
-            mRoomChatFrameLayout.setVisibility(View.INVISIBLE);
+            roomChatFrameLayout.setVisibility(View.INVISIBLE);
         }
         //참여한 방이 있을 경우
         else {
-            mMessageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(mRoomUid));
-            if (mMessageListener != null) {
-                mMessageReference.removeEventListener(mMessageListener);
-                mMessageReference.addValueEventListener(mMessageListener);
+            messageReference = FirebaseDatabase.getInstance().getReference().child(FirebaseDBConstant.getBaseChannel()).child(FirebaseDBConstant.CALL_VAN_SHARING).child(FirebaseDBConstant.ROOM_CHAT_MESSAGE).child(String.valueOf(roouid));
+            if (messageListroouidener != null) {
+                messageReference.removeEventListener(messageListroouidener);
+                messageReference.addValueEventListener(messageListroouidener);
             }
 //            mNoRoomChatFrameLayout.setVisibility(View.INVISIBLE);
-            mRoomChatFrameLayout.setVisibility(View.VISIBLE);
+            roomChatFrameLayout.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void updateUserInterface() {
-        mMessageRecyclerAdapter = new MessageRecyclerAdapter(getActivity(), mMessageList, mMessageKeyList);
-        mRoomChatRecyclerView.setAdapter(mMessageRecyclerAdapter);
-        mRoomChatRecyclerView.getLayoutManager().scrollToPosition(mMessageList.size() - 1);
+        messageRecyclerAdapter = new MessageRecyclerAdapter(getActivity(), messageListroouid, messageKeyList);
+        roomChatRecyclerView.setAdapter(messageRecyclerAdapter);
+        roomChatRecyclerView.getLayoutManager().scrollToPosition(messageListroouid.size() - 1);
     }
 
 }

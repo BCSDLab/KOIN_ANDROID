@@ -25,7 +25,7 @@ public interface MarketUsedCreateContract {
 
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
         void uploadThumbnailImage(File file);
 
         void createMarketItem(MarketItem marketItem);

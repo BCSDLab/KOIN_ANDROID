@@ -7,7 +7,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
 import in.koreatech.koin.data.network.response.StoresResponse;
-import in.koreatech.koin.ui.store.presenter.contracts.StoreContract;
 
 /**
  * Created by hyerim on 2018. 8. 12....

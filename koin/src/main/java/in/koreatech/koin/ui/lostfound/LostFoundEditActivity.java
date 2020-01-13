@@ -56,7 +56,6 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     private int lostDateYear;
     private int lostDateMonth;
     private int lostDateDay;
-    private CustomProgressDialog customProgressDialog;
     private LostFoundEditContract.Presenter lostAndFoundPresenter;
 
     @BindView(R.id.lostfound_create_nestedscrollview)
@@ -386,26 +385,18 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-
-        }
+        hideProgressDialog();
     }
 
     @Override
     public void showSuccessUpdate(LostItem lostItem) {
         finish();
-        ToastUtil.getInstance().makeShort( "수정되었습니다.");
+        ToastUtil.getInstance().makeShort("수정되었습니다.");
     }
 
     @Override

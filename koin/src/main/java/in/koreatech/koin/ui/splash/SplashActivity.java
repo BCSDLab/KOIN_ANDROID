@@ -34,9 +34,9 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private final String TAG = "SplashActivity";
 
     private Context context;
-    private SplashContract.Presenter mSplashPresenter;
-    private FirebasePerformanceUtil mFirebasePerformanceUtil;
-    private PackageInfo mPakageInfo;
+    private SplashContract.Presenter splashPresenter;
+    private FirebasePerformanceUtil firebasePerformanceUtil;
+    private PackageInfo pakageInfo;
     private String currentVersionName;
 
     @Override
@@ -47,26 +47,26 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
         this.context = this;
 
         init();
-        mSplashPresenter.checkUpdate(currentVersionName);
+        this.splashPresenter.checkUpdate(currentVersionName);
 
     }
 
     public void init() {
-        mFirebasePerformanceUtil = new FirebasePerformanceUtil("koin_start");
-        mFirebasePerformanceUtil.start();
+        this.firebasePerformanceUtil = new FirebasePerformanceUtil("koin_start");
+        this.firebasePerformanceUtil.start();
         RetrofitManager.getInstance().init();
         UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
         new SplashPresenter(this);
         currentVersionName = getVersionName();
         //TODO : 버전 확인, 업데이트
         //TODO : 자동로그인 방식 수정 필요 (토큰 업데이트)
-        if(!BuildConfig.IS_DEBUG)
-        Fabric.with(this,new Crashlytics());
+        if (!BuildConfig.IS_DEBUG)
+            Fabric.with(this, new Crashlytics());
     }
 
     @Override
     public void setPresenter(SplashContract.Presenter presenter) {
-        this.mSplashPresenter = presenter;
+        this.splashPresenter = presenter;
 
     }
 
@@ -83,11 +83,11 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     }
 
     @Override
-    public void gotoAppMarket(int type,String storeVersion) {
-        if(type!=Version.PRIORITY_LOW)
-                createVersionUpdateDialog(type,storeVersion);
+    public void gotoAppMarket(int type, String storeVersion) {
+        if (type != Version.PRIORITY_LOW)
+            createVersionUpdateDialog(type, storeVersion);
         else
-            mSplashPresenter.callActivity();
+            this.splashPresenter.callActivity();
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
             startActivity(new Intent(context, LoginActivity.class));
             overridePendingTransition(R.anim.fade, R.anim.hold);
             finish();
-            mFirebasePerformanceUtil.stop();
+            firebasePerformanceUtil.stop();
         }
     };
 
@@ -111,43 +111,41 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
             startActivity(new Intent(context, MainActivity.class));
             overridePendingTransition(R.anim.fade, R.anim.hold);
             finish();
-            mFirebasePerformanceUtil.stop();
+            firebasePerformanceUtil.stop();
         }
     };
 
-    private String getVersionName()
-    {
+    private String getVersionName() {
         try {
-            mPakageInfo = getPackageManager().getPackageInfo(
+            this.pakageInfo = getPackageManager().getPackageInfo(
                     this.getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return mPakageInfo.versionName;
+        return this.pakageInfo.versionName;
     }
 
-    public void createVersionUpdateDialog(int type,String storeVersion)
-    {
-        VersionUpdateDialog dialog = new VersionUpdateDialog(this,type,currentVersionName,storeVersion,this);
+    public void createVersionUpdateDialog(int type, String storeVersion) {
+        VersionUpdateDialog dialog = new VersionUpdateDialog(this, type, currentVersionName, storeVersion, this);
         dialog.getWindow().setGravity(Gravity.CENTER);
         dialog.show();
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         Window window = dialog.getWindow();
-        int x = (int)(size.x*0.8f);
-        int y = (int)(size.y*0.4f);
-        window.setLayout(x,y);
+        int x = (int) (size.x * 0.8f);
+        int y = (int) (size.y * 0.4f);
+        window.setLayout(x, y);
     }
 
     @Override
     public void onLaterClick() {
-        mSplashPresenter.callActivity();
+        this.splashPresenter.callActivity();
     }
 
     @Override
     public void onUpdateClick() {
-    finish();
+        finish();
     }
 
 

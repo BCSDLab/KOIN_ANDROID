@@ -13,12 +13,12 @@ import in.koreatech.koin.data.network.interactor.CircleInteractor;
 public class CirclePresenter implements BasePresenter {
 
     private ArrayList<Circle> mCirlceList;
-    private final CIrcleContract.View cirlcleView;
+    private final CircleContract.View cirlcleView;
     private int mCurrentPage = 1;
 
     private final CircleInteractor circleInteractor;
 
-    public CirclePresenter(CIrcleContract.View cirlcleView, CircleInteractor circleInteractor) {
+    public CirclePresenter(CircleContract.View cirlcleView, CircleInteractor circleInteractor) {
         this.cirlcleView = cirlcleView;
         this.circleInteractor = circleInteractor;
         mCirlceList = new ArrayList<>();

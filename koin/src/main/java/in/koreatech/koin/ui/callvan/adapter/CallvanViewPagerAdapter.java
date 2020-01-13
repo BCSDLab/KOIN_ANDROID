@@ -16,14 +16,14 @@ import in.koreatech.koin.ui.callvan.CallvanBaseFragment;
 public class CallvanViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "CallvanViewPagerAdapter";
 
-    private int mTabCount = 2;
-    private final String[] mTabTitle = new String[]{"콜밴쉐어링", "콜밴 연락처"};
+    private int tabCount = 2;
+    private final String[] tabTitle = new String[]{"콜밴쉐어링", "콜밴 연락처"};
 
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public CallvanViewPagerAdapter(@NonNull FragmentManager fragmentManager, int tabCount) {
         super(fragmentManager);
-        this.mTabCount = tabCount;
+        this.tabCount = tabCount;
     }
 
     @NonNull
@@ -47,12 +47,12 @@ public class CallvanViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mTabCount;
+        return tabCount;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTabTitle[position];
+        return tabTitle[position];
     }
 
 }

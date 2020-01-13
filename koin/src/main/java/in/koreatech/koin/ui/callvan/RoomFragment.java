@@ -41,53 +41,49 @@ import in.koreatech.koin.ui.callvan.presenter.CallvanRoomPresenter;
 public class RoomFragment extends CallvanBaseFragment implements CallvanRoomContract.View, RoomRecyclerAdapter.OnJoinButtonClickListener, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "RoomFragment";
 
-    private CallvanRoomPresenter mRoomPresenter;
-    private Unbinder mUnbinder;
-    private Context mContext;
+    private CallvanRoomPresenter roomPresenter;
+    private Unbinder unbinder;
+    private Context context;
 
     private boolean isJoinRoom = false;
-    private CallvanRoom mJoinedRoom;
-    private int mJoinedRoomUid;
-    private ArrayList<CallvanRoom> mRoomArrayList = new ArrayList<>(); //DB의 Room 정보를 저장할 ArrayList
+    private CallvanRoom joinedRoom;
+    private int joinedRoomUid;
+    private ArrayList<CallvanRoom> roomArrayList = new ArrayList<>(); //DB의 Room 정보를 저장할 ArrayList
 
     /* View Component */
-    private View mView;
+    private View view;
 
-    private RoomRecyclerAdapter mRoomRecyclerAdapter; // mRoomsRecyclerView에 데이터를 전해줄 RoomRecyclerAdapter
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private RoomRecyclerAdapter roomRecyclerAdapterview; // mRoomsRecyclerView에 데이터를 전해줄 RoomRecyclerAdapter
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
 
     @BindView(R.id.room_frameLayout)
-    ConstraintLayout mRoomLayout;
+    ConstraintLayout roomLayout;
     @BindView(R.id.rooms_swiperefreshlayout)
-    SwipeRefreshLayout mRoomSwiperefreshLayout;
+    SwipeRefreshLayout roomSwiperefreshLayout;
     @BindView(R.id.rooms_recyclerview)
-    RecyclerView mRoomRecyclerView; //CallvanSharingRoom의 List를 보여주는 RecyclerView
+    RecyclerView roomRecyclerView; //CallvanSharingRoom의 List를 보여주는 RecyclerView
 
     @BindView(R.id.selected_start_place_layout)
-    LinearLayout mSelectedStartPlaceLayout;
+    LinearLayout selectedStartPlaceLayout;
     @BindView(R.id.selected_start_place)
-    TextView mSelectedStartPlaceTextView;
+    TextView selectedStartPlaceTextView;
     @BindView(R.id.selected_end_place_layout)
-    LinearLayout mSelectedEndPlaceLayout;
+    LinearLayout selectedEndPlaceLayout;
     @BindView(R.id.selected_end_place)
-    TextView mSelectedEndPlaceTextView;
+    TextView selectedEndPlaceTextView;
 
     @BindView(R.id.room_chat_frameLayout)
-    ConstraintLayout mRoomChatLayout;
+    ConstraintLayout roomChatLayout;
     @BindView(R.id.callvan_room_info_layout)
-    LinearLayout mRoomInfoLayout;
+    LinearLayout roomInfoLayout;
     @BindView(R.id.info_starting_place_textview)
-    TextView mInfoStartingPlaceTextView;
+    TextView infoStartingPlaceTextView;
     @BindView(R.id.info_starting_data_and_time_textview)
-    TextView mInfoStartingTimeTextView;
+    TextView infoStartingTimeTextView;
     @BindView(R.id.info_ending_place_textview)
-    TextView mInfoEndingPlaceTextView;
+    TextView infoEndingPlaceTextView;
     @BindView(R.id.info_people_textview)
-    TextView mInfoPeopleCountTextView;
-//    @BindView(R.id.room_info_exit_button)
-//    RelativeLayout mInfoExitButton;
-//    @BindView(R.id.info_refresh_button)
-//    ImageView mInfoRefreshButton;
+    TextView infoPeopleCountTextView;
 
     @Override
     public void onAttach(Context context) {
@@ -103,13 +99,13 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.callvan_fragment_room, container, false);
-        mUnbinder = ButterKnife.bind(this, mView);
-        mContext = this.getContext();
+        view = inflater.inflate(R.layout.callvan_fragment_room, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        context = this.getContext();
 
         initRoom();
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -121,7 +117,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     public void onStart() {
         super.onStart();
 
-        updateRoomView();
+        updateRooview();
 
     }
 
@@ -143,7 +139,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Override
@@ -157,12 +153,12 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     }
 
     private void initRoom() {
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        layoutManager = new LinearLayoutManager(getActivity());
 
-        mRoomSwiperefreshLayout.setOnRefreshListener(this);
+        roomSwiperefreshLayout.setOnRefreshListener(this);
 
-        mRoomRecyclerView.setHasFixedSize(true);
-        mRoomRecyclerView.setLayoutManager(mLayoutManager); //layout 설정
+        roomRecyclerView.setHasFixedSize(true);
+        roomRecyclerView.setLayoutManager(layoutManager); //layout 설정
 
         setPresenter(new CallvanRoomPresenter(this, new CallvanRestInteractor()));
 
@@ -170,24 +166,24 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     @Override
     public void setPresenter(CallvanRoomPresenter presenter) {
-        this.mRoomPresenter = presenter;
+        this.roomPresenter = presenter;
     }
 
-    public void updateRoomView() {
-        mJoinedRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
-        Log.d(TAG, "join room uid" + mJoinedRoomUid);
+    public void updateRooview() {
+        joinedRoomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        Log.d(TAG, "join room uid" + joinedRoomUid);
 
         // 방에 참가중일 경우
-        if (mJoinedRoomUid > 0) {
-            mRoomLayout.setVisibility(View.INVISIBLE);
-            mRoomInfoLayout.setVisibility(View.VISIBLE);
+        if (joinedRoomUid > 0) {
+            roomLayout.setVisibility(View.INVISIBLE);
+            roomInfoLayout.setVisibility(View.VISIBLE);
 
-            mRoomPresenter.readRoom(mJoinedRoomUid);
+            roomPresenter.readRoom(joinedRoomUid);
         }
         // 방에 참가중이지 않을 경우
         else {
-            mRoomLayout.setVisibility(View.VISIBLE);
-            mRoomInfoLayout.setVisibility(View.INVISIBLE);
+            roomLayout.setVisibility(View.VISIBLE);
+            roomInfoLayout.setVisibility(View.INVISIBLE);
 
             updateRoomList();
         }
@@ -198,27 +194,27 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
             return;
         }
 
-        mRoomPresenter.readRoomList();
+        roomPresenter.readRoomList();
     }
 
 
     @Override
     public void onCallvanRoomListDataReceived(ArrayList<CallvanRoom> roomArrayList) {
-        int scrollPosition = mRoomRecyclerView.computeVerticalScrollOffset();
+        int scrollPosition = roomRecyclerView.computeVerticalScrollOffset();
 
-        mRoomArrayList.clear();
+        roomArrayList.clear();
 
-        mRoomArrayList.addAll(roomArrayList);
-        mRoomArrayList = sortRoomArrayList(mRoomArrayList);
+        roomArrayList.addAll(roomArrayList);
+        roomArrayList = sortRoomArrayList(roomArrayList);
 
         //필터 옵션이 default인 경우
         if (isFilterDefault()) {
-            updateUserInterface(mRoomArrayList, scrollPosition);
+            updateUserInterface(roomArrayList, scrollPosition);
         }
         //필터 옵션이 default 가 아닐 경우
         else {
             applySelectedFilter();  //recyclerView에 뿌릴 roomArrayList를 필터링 옵션에 따라 추림
-            mRoomRecyclerView.scrollBy(0, scrollPosition);  //이전 스크롤 유지
+            roomRecyclerView.scrollBy(0, scrollPosition);  //이전 스크롤 유지
         }
     }
 
@@ -231,12 +227,12 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     @Override
     public void updateUserInterface(ArrayList<CallvanRoom> renderingList, int scrollPosition) {
-        mRoomRecyclerAdapter = new RoomRecyclerAdapter(getContext(), renderingList);
-        mRoomRecyclerAdapter.setCustomOnClickListener(this);
-        mRoomRecyclerView.setAdapter(mRoomRecyclerAdapter); //adapter 설정
-        mRoomRecyclerAdapter.notifyDataSetChanged();
+        roomRecyclerAdapterview = new RoomRecyclerAdapter(getContext(), renderingList);
+        roomRecyclerAdapterview.setCustomOnClickListener(this);
+        roomRecyclerView.setAdapter(roomRecyclerAdapterview); //adapter 설정
+        roomRecyclerAdapterview.notifyDataSetChanged();
         if (scrollPosition != -1) {
-            mRoomRecyclerView.scrollBy(0, scrollPosition);  //이전 스크롤 위치를 유지
+            roomRecyclerView.scrollBy(0, scrollPosition);  //이전 스크롤 위치를 유지
         }
     }
 
@@ -250,31 +246,31 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
             return;
         }
 
-        mRoomLayout.setVisibility(View.INVISIBLE);
-        mRoomInfoLayout.setVisibility(View.VISIBLE);
+        roomLayout.setVisibility(View.INVISIBLE);
+        roomInfoLayout.setVisibility(View.VISIBLE);
 
-        mJoinedRoom = room;
-        mInfoStartingPlaceTextView.setText(room.startingPlace);
-        mInfoStartingTimeTextView.setText(room.startingDate);
-        mInfoEndingPlaceTextView.setText(room.endingPlace);
-        mInfoPeopleCountTextView.setText(room.currentPeople + "명/" + room.maximumPeople + "명");
+        joinedRoom = room;
+        infoStartingPlaceTextView.setText(room.startingPlace);
+        infoStartingTimeTextView.setText(room.startingDate);
+        infoEndingPlaceTextView.setText(room.endingPlace);
+        infoPeopleCountTextView.setText(room.currentPeople + "명/" + room.maximumPeople + "명");
 
         UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(room.uid);
     }
 
     @Override
     public void onClickJoinButton(CallvanRoom room) {
-        mRoomPresenter.updateIncreaseCurrentPeopleCount(room.uid);
+        roomPresenter.updateIncreaseCurrentPeopleCount(room.uid);
     }
 
     @Override
     public void onCallvanRoomIncreasePeopleReceived(int roomUid) {
-        mRoomPresenter.readRoom(roomUid);
+        roomPresenter.readRoom(roomUid);
     }
 
 //    @OnClick(R.id.info_refresh_button)
 //    public void onClickRoomInfoRefreshButton() {
-//        mRoomPresenter.readRoom(mJoinedRoom.uid);
+//        roomPresenter.readRoom(joinedRoom.uid);
 //    }
 
 //    @OnClick(R.id.room_info_exit_button)
@@ -284,7 +280,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 //        builder.setMessage("정말 모임에서 나가시겠습니까?");
 //
 //        builder.setPositiveButton("확인",
-//                (dialog, which) -> exitJoinedRoom(mJoinedRoom.uid));
+//                (dialog, which) -> exitJoinedRoom(joinedRoom.uid));
 //        builder.setNegativeButton("취소",
 //                (dialog, which) -> dialog.dismiss());
 //
@@ -293,7 +289,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 //    }
 
     private void exitJoinedRoom(int roomUid) {
-        mRoomPresenter.updateDecreaseCurrentPeopleCount(roomUid);
+        roomPresenter.updateDecreaseCurrentPeopleCount(roomUid);
     }
 
     @Override
@@ -301,8 +297,8 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         if (isSuccess) {
             //방에서 나올 경우 이전에 설정해둔 필터를 지움
             UserInfoSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
-            mSelectedStartPlaceTextView.setText("출발지");
-            mSelectedEndPlaceTextView.setText("목적지");
+            selectedStartPlaceTextView.setText("출발지");
+            selectedEndPlaceTextView.setText("목적지");
 //            ((CallvanActivity) getActivity()).refreshRoomFragment();
         } else {
             showMessage("실패하였습니다.");
@@ -318,9 +314,9 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
                             R.array.filter_place);
 
                     if (which == 0) {
-                        mSelectedStartPlaceTextView.setText("출발지");
+                        selectedStartPlaceTextView.setText("출발지");
                     } else {
-                        mSelectedStartPlaceTextView.setText(list[which]);
+                        selectedStartPlaceTextView.setText(list[which]);
                     }
                     applySelectedFilter();
                 });
@@ -336,9 +332,9 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
                             R.array.filter_place);
 
                     if (which == 0) {
-                        mSelectedEndPlaceTextView.setText("목적지");
+                        selectedEndPlaceTextView.setText("목적지");
                     } else {
-                        mSelectedEndPlaceTextView.setText(list[which]);
+                        selectedEndPlaceTextView.setText(list[which]);
                     }
                     applySelectedFilter();
 
@@ -349,25 +345,25 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
     private void applySelectedFilter() {
         ArrayList<CallvanRoom> filteredRoomArrayList = new ArrayList<>();
 
-        String startFilterText = mSelectedStartPlaceTextView.getText().toString();
-        String endFilterText = mSelectedEndPlaceTextView.getText().toString();
+        String startFilterText = selectedStartPlaceTextView.getText().toString();
+        String endFilterText = selectedEndPlaceTextView.getText().toString();
 
         if (startFilterText.compareTo(endFilterText) == 0) {
             ToastUtil.getInstance().makeShort("출발지와 목적지가 같습니다");
-            mSelectedStartPlaceTextView.setText("출발지");
-            mSelectedEndPlaceTextView.setText("목적지");
-            updateUserInterface(mRoomArrayList, -1);
+            selectedStartPlaceTextView.setText("출발지");
+            selectedEndPlaceTextView.setText("목적지");
+            updateUserInterface(roomArrayList, -1);
             return;
         }
 
 
         // 1) 출발지와 목적지가 둘 다 전체인 경우
         if (startFilterText.compareTo("출발지") == 0 && endFilterText.compareTo("목적지") == 0) {
-            updateUserInterface(mRoomArrayList, -1);
+            updateUserInterface(roomArrayList, -1);
         }
         // 2) 출발지만 설정된 경우
         else if (startFilterText.compareTo("출발지") != 0 && endFilterText.compareTo("목적지") == 0) {
-            for (CallvanRoom r : mRoomArrayList) {
+            for (CallvanRoom r : roomArrayList) {
                 if (r.startingPlace.compareTo(startFilterText) == 0) {
                     filteredRoomArrayList.add(r);
                 }
@@ -376,7 +372,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         }
         // 3) 목적지만 설정된 경우
         else if (startFilterText.compareTo("출발지") == 0 && endFilterText.compareTo("목적지") != 0) {
-            for (CallvanRoom r : mRoomArrayList) {
+            for (CallvanRoom r : roomArrayList) {
                 if (r.endingPlace.compareTo(endFilterText) == 0) {
                     filteredRoomArrayList.add(r);
                 }
@@ -385,7 +381,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         }
         // 4) 둘다 설정된 경우
         else if (startFilterText.compareTo("출발지") != 0 && endFilterText.compareTo("목적지") != 0) {
-            for (CallvanRoom r : mRoomArrayList) {
+            for (CallvanRoom r : roomArrayList) {
                 if (r.startingPlace.compareTo(startFilterText) == 0 && r.endingPlace.compareTo(
                         endFilterText) == 0) {
                     filteredRoomArrayList.add(r);
@@ -397,16 +393,16 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     //필터가 default인지 판별하는 메서드
     private boolean isFilterDefault() {
-        return mSelectedStartPlaceTextView.getText().toString().compareTo("출발지") == 0
-                && mSelectedEndPlaceTextView.getText().toString().compareTo("도착지") == 0;
+        return selectedStartPlaceTextView.getText().toString().compareTo("출발지") == 0
+                && selectedEndPlaceTextView.getText().toString().compareTo("도착지") == 0;
     }
 
     @Override
     public void onRefresh() {
         // 새로고침 코드
-        updateRoomView();
+        updateRooview();
 
-        mRoomSwiperefreshLayout.setRefreshing(false);
+        roomSwiperefreshLayout.setRefreshing(false);
     }
 
     @Override

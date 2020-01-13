@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,21 +43,21 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     private final String TAG = "CallvanBaseFragment";
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
 
-    private Unbinder mUnbinder;
-    private CompanyPresenter mCompanyPresenter;
-    private ArrayList<Company> mCompanyArrayList = new ArrayList<>();    //DB의 연락처 정보를 저장할 ArrayList
+    private Unbinder unbinder;
+    private CompanyPresenter companyPresenter;
+    private ArrayList<Company> companyArrayList = new ArrayList<>();    //DB의 연락처 정보를 저장할 ArrayList
 
     /* Adapter */
-    private CompanyRecyclerAdapter mCompanyRecyclerAdapter; // mContactRecyclerView에 데이터를 전해줄 ContactRecyclerAdapter
+    private CompanyRecyclerAdapter companyRecyclerAdapter; // contactRecyclerView에 데이터를 전해줄 ContactRecyclerAdapter
 
     /* View Component */
-    private View mView;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private View view;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
 
     @BindView(R.id.company_recyclerview)
-    RecyclerView mContactRecyclerView; //Contact fragment의 contact List를 보여주는 RecyclerView
+    RecyclerView contactRecyclerView; //Contact fragment의 contact List를 보여주는 RecyclerView
     @BindView(R.id.company_swiperefreshlayout)
-    SwipeRefreshLayout mContactSwipeRefreshLayout;
+    SwipeRefreshLayout contactSwipeRefreshLayout;
 
     @Override
     public void onAttach(Context context) {
@@ -72,12 +74,12 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.callvan_fragment_company, container, false);
-        mUnbinder = ButterKnife.bind(this, mView);
+        view = inflater.inflate(R.layout.callvan_fragment_company, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
         init();
 
-        return mView;
+        return view;
     }
 
     @Override
@@ -110,7 +112,7 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Override
@@ -125,34 +127,34 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
 
 
     private void init() {
-        mCompanyRecyclerAdapter = new CompanyRecyclerAdapter(getActivity(), mCompanyArrayList);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        companyRecyclerAdapter = new CompanyRecyclerAdapter(getActivity(), companyArrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
 
-        mContactSwipeRefreshLayout.setOnRefreshListener(this);
+        contactSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mContactRecyclerView.setHasFixedSize(true);
-        mContactRecyclerView.setLayoutManager(mLayoutManager); //layout 설정
-        mContactRecyclerView.setAdapter(mCompanyRecyclerAdapter); //adapter 설정
-        mContactRecyclerView.addOnItemTouchListener(recyclerItemtouchListener); //itemTouchListner 설정
+        contactRecyclerView.setHasFixedSize(true);
+        contactRecyclerView.setLayoutManager(layoutManager); //layout 설정
+        contactRecyclerView.setAdapter(companyRecyclerAdapter); //adapter 설정
+        contactRecyclerView.addOnItemTouchListener(recyclerItemtouchListener); //itemTouchListner 설정
 
         setPresenter(new CompanyPresenter(this, new CallvanRestInteractor()));
 
-        mCompanyPresenter.getCompanyList();
+        companyPresenter.getCompanyList();
     }
 
     @Override
     public void setPresenter(CompanyPresenter presenter) {
-        this.mCompanyPresenter = presenter;
+        this.companyPresenter = presenter;
     }
 
     @Override
     public void onCallvanCompaniesDataReceived(ArrayList<Company> companyArrayList) {
-        mCompanyArrayList.clear();
+        companyArrayList.clear();
 
-        mCompanyArrayList.addAll(companyArrayList);
+        companyArrayList.addAll(companyArrayList);
 
-        if (!mCompanyArrayList.isEmpty()) {
-            sortCompanyListDescendingByCallCount(mCompanyArrayList); //contactArrayList를 Call Count 순으로 정렬한다
+        if (!companyArrayList.isEmpty()) {
+            sortCompanyListDescendingByCallCount(companyArrayList); //contactArrayList를 Call Count 순으로 정렬한다
             updateUserInterface();
         }
     }
@@ -176,11 +178,11 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     /* 유저인터페이스를 업데이트 하는 메서드 */
     @Override
     public void updateUserInterface() {
-        mCompanyRecyclerAdapter.notifyDataSetChanged();
+        companyRecyclerAdapter.notifyDataSetChanged();
     }
 
     //recyclerview item touch listener
-    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), mContactRecyclerView, new RecyclerViewClickListener() {
+    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), contactRecyclerView, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
             showContactDialog(position);
@@ -196,7 +198,7 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     public void showContactDialog(final int clickedPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.KAPDialog);
 
-        builder.setMessage(mCompanyArrayList.get(clickedPosition).name + "\n\n" + mCompanyArrayList.get(clickedPosition).phone);
+        builder.setMessage(companyArrayList.get(clickedPosition).name + "\n\n" + companyArrayList.get(clickedPosition).phone);
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
@@ -211,8 +213,8 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
 
     @Override
     public void onClickCallButton(int clickedPosition) {
-        String callNumber = mCompanyArrayList.get(clickedPosition).phone; //선택된 Row의 contact의 callvanPhoneNum 값을 가져옴
-        startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:"+ callNumber)));
+        String callNumber = companyArrayList.get(clickedPosition).phone; //선택된 Row의 contact의 callvanPhoneNum 값을 가져옴
+        startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:" + callNumber)));
 
     }
 
@@ -245,8 +247,8 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     @Override
     public void onRefresh() {
         // 새로고침 코드
-        mCompanyPresenter.getCompanyList();
-        mContactSwipeRefreshLayout.setRefreshing(false);
+        companyPresenter.getCompanyList();
+        contactSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -7,16 +7,19 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMapOptions;
+
 /**
  * 복덕방 navermap 스크롤을 위한 맵 프래그먼트
  * Created by hansol on 2019. 09. 07...
  */
-public class NaverMapFragment extends MapFragment  {
+public class NaverMapFragment extends MapFragment {
     public static final String TAG = "NaverMapFragment";
     private MapView mapView;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);

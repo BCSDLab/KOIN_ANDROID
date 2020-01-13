@@ -19,14 +19,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class UserInfoPresenter implements UserInfoContract.Presenter {
 
-    private final UserInfoContract.View mUserInfoView;
-    private final UserInteractor mUserInteractor;
+    private final UserInfoContract.View userInfoView;
+    private final UserInteractor userInteractor;
     private final CallvanInteractor callvanInteractor;
 
     public UserInfoPresenter(@NonNull UserInfoContract.View userInfoView) {
-        mUserInfoView = checkNotNull(userInfoView, "userInfoView cannnot be null");
-        mUserInfoView.setPresenter(this);
-        this.mUserInteractor = new UserRestInteractor();
+        this.userInfoView = checkNotNull(userInfoView, "userInfoView cannnot be null");
+        this.userInfoView.setPresenter(this);
+        this.userInteractor = new UserRestInteractor();
         this.callvanInteractor = new CallvanRestInteractor();
     }
 
@@ -36,12 +36,12 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
             User user = (User) object;
             UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
 
-            mUserInfoView.onUserDataReceived();
+            userInfoView.onUserDataReceived();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mUserInfoView.showMessage(throwable.getMessage());
+            userInfoView.showMessage(throwable.getMessage());
         }
     };
 
@@ -49,12 +49,12 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
         @Override
         public void onSuccess(Object object) {
             UserInfoSharedPreferencesHelper.getInstance().clear();
-            mUserInfoView.onDeleteUserReceived();
+            userInfoView.onDeleteUserReceived();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mUserInfoView.showMessage(throwable.getMessage());
+            userInfoView.showMessage(throwable.getMessage());
         }
     };
 
@@ -66,25 +66,25 @@ public class UserInfoPresenter implements UserInfoContract.Presenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            mUserInfoView.showMessage(throwable.getMessage());
+            userInfoView.showMessage(throwable.getMessage());
         }
     };
 
-    @AddTrace(name ="UserInfoPresenter_getUserData")
+    @AddTrace(name = "UserInfoPresenter_getUserData")
     public void getUserData() {
-        mUserInteractor.readUser(readUserApiCallback);
+        this.userInteractor.readUser(readUserApiCallback);
     }
 
     public void deleteUser(int roomUid) {
         if (roomUid > 0) {
             updateDecreaseCurrentPeopleCount(roomUid);
         } else {
-            mUserInteractor.deleteUser(deleteUserApiCallback);
+            this.userInteractor.deleteUser(deleteUserApiCallback);
         }
     }
 
     public void updateDecreaseCurrentPeopleCount(int roomUid) {
-        callvanInteractor.deleteParticipant(roomUid, deleteParticipantApiCallback );
+        callvanInteractor.deleteParticipant(roomUid, deleteParticipantApiCallback);
     }
 
 }

@@ -60,7 +60,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private Context context;
 
     private ArticleEditPresenter articleEditPresenter;
-    private CustomProgressDialog customProgressDialog;
     private int boardUid;
     private int articleUid;
     private String mTitleTemp;
@@ -267,18 +266,12 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override

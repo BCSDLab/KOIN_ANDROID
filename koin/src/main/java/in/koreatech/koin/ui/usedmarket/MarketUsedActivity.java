@@ -31,22 +31,22 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
  * @since 2018.09.16
  */
 public class MarketUsedActivity extends KoinNavigationDrawerActivity {
-    private final String TAG = MarketUsedActivity.class.getSimpleName();
+    private final String TAG = "MarketUsedActivity";
     private final String TABLAYOUT_FONT_NAME = "fonts/notosanscjkkr_regular.otf";
     private Context context;
-    private FirebasePerformanceUtil mFirebasePerformanceUtil;
+    private FirebasePerformanceUtil firebasePerformanceUtil;
 
     /* View Component */
     @BindView(R.id.market_used_main_tabs)
-    TabLayout mTabLayout;
+    TabLayout tabLayout;
     @BindView(R.id.market_used_main_viewpager)
-    ViewPager mViewPager;
+    ViewPager viewPager;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase mKoinBaseAppbar;
+    AppbarBase koinBaseAppbar;
 
-    private MarketUsedMainViewPagerAdapter mMainViewPagerAdapter;
-    private InputMethodManager mInputMethodManager;
-    private int mPageSelected;
+    private MarketUsedMainViewPagerAdapter mainViewPagerAdapter;
+    private InputMethodManager inputMethodManager;
+    private int pageSelected;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     @Override
     public void onStart() {
         super.onStart();
-        mViewPager.addOnPageChangeListener(mPageChangeListener);
+        viewPager.addOnPageChangeListener(mPageChangeListener);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
 
     @Override
     protected void onDestroy() {
-        mFirebasePerformanceUtil.stop();
+        firebasePerformanceUtil.stop();
         super.onDestroy();
     }
 
@@ -95,7 +95,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         if (id == AppbarBase.getLeftButtonId())
             onBackPressed();
         else if (id == AppbarBase.getRightButtonId()) {
-            createActivityMove(mPageSelected);
+            createActivityMove(pageSelected);
         }
     }
 
@@ -133,17 +133,17 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
      * Hide keyboard using InputManager
      */
     private void init() {
-        mPageSelected = 0;
-        mMainViewPagerAdapter = new MarketUsedMainViewPagerAdapter(getSupportFragmentManager(), 2);
-        mFirebasePerformanceUtil = new FirebasePerformanceUtil("Market_used");
-        mFirebasePerformanceUtil.start();
-        mViewPager.setOffscreenPageLimit(2);
-        mViewPager.setAdapter(mMainViewPagerAdapter);
-        mViewPager.addOnPageChangeListener(mPageChangeListener);
-        mTabLayout.setupWithViewPager(mViewPager);
-        changeFont(mTabLayout.getChildAt(0), TABLAYOUT_FONT_NAME);
+        pageSelected = 0;
+        mainViewPagerAdapter = new MarketUsedMainViewPagerAdapter(getSupportFragmentManager(), 2);
+        firebasePerformanceUtil = new FirebasePerformanceUtil("Market_used");
+        firebasePerformanceUtil.start();
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(mainViewPagerAdapter);
+        viewPager.addOnPageChangeListener(mPageChangeListener);
+        tabLayout.setupWithViewPager(viewPager);
+        changeFont(tabLayout.getChildAt(0), TABLAYOUT_FONT_NAME);
         //hide keyboard
-        mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }
 
 
@@ -157,7 +157,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
             View viewChild = viewGroup.getChildAt(i);
             if (viewChild instanceof TextView) {
                 ((TextView) viewChild).setTypeface(Typeface.createFromAsset(getAssets(), fontName));
-            } else if(viewChild instanceof ViewGroup) {
+            } else if (viewChild instanceof ViewGroup) {
                 changeFont(viewChild, TABLAYOUT_FONT_NAME);
             }
         }
@@ -173,10 +173,10 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         public void onPageSelected(int position) {
             switch (position) {
                 case 0:
-                    mPageSelected = 0;
+                    pageSelected = 0;
                     break;
                 case 1:
-                    mPageSelected = 1;
+                    pageSelected = 1;
                     break;
                 default:
                     break;
@@ -185,7 +185,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            mInputMethodManager.hideSoftInputFromWindow(mViewPager.getWindowToken(), 0);
+            inputMethodManager.hideSoftInputFromWindow(viewPager.getWindowToken(), 0);
         }
     };
 }

@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -62,7 +63,7 @@ import java.util.*;
  * @since 2018. 09.15
  */
 public class MarketUsedSellCreateActivity extends ActivityBase implements MarketUsedCreateContract.View {
-    private final String TAG = MarketUsedSellEditActivity.class.getSimpleName();
+    private final String TAG = "MarketUsedSellEditActivity";
     private final int MAXTITLELENGTH = 39;
     private static final int MY_REQUEST_CODE = 100;
     private static final int REQUEST_GET_GALLERY = 1;
@@ -72,57 +73,51 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
     private Context context;
 
-    private int mId;
-    private String mTitle;
-    private String content;
-    private String mPrice;
-    private String mPhoneNumber;
-    private boolean mIsPhoneOpen;
-    private int mItemState;
-    private String mThumbNail;
-    private ArrayList<String> mImageUrl;
+    private String price;
+    private String phoneNumber;
+    private boolean isPhoneOpen;
+    private int itemState;
 
-    private MarketItem mMarketItem;
-    private MarketUsedCreateContract.Presenter mMarketUsedCreatePresenter;
+    private MarketItem marketItem;
+    private MarketUsedCreateContract.Presenter marketUsedCreatePresenter;
     private Uri currentPhotoPath;
-    private File mImageFile;
-    private CustomProgressDialog customProgressDialog;
+    private File imageFile;
 
-    private boolean mIsTitlecheck;
-    private boolean mIsPhoneCheck;
-    private boolean mIsContentCheck;
+    private boolean isTitlecheck;
+    private boolean isPhoneCheck;
+    private boolean isContentCheck;
 
     @BindView(R.id.market_used_sell_create_thumbnail_imageview)
-    ImageView mMarketSellCreateThumbnailImageView;
+    ImageView marketSellCreateThumbnailImageView;
     @BindView(R.id.market_used_sell_create_thumbnail_change_button)
-    Button mMarketSellCreateThumbnailChangeButton;
+    Button marketSellCreateThumbnailChangeButton;
     @BindView(R.id.market_used_sell_create_title_textview)
-    EditText mMarketSellCreateTitleEditText;
+    EditText marketSellCreateTitleEditText;
     @BindView(R.id.market_used_sell_create_money_edittext)
-    EditText mMarketSellCreateMoneyEditText;
+    EditText marketSellCreateMoneyEditText;
 
     @BindView(R.id.market_used_sell_create_phone_status_radiobutton_group)
-    RadioGroup mMarketSellCreatePhoneStatusRadioButtonGroup;
+    RadioGroup marketSellCreatePhoneStatusRadioButtonGroup;
     @BindView(R.id.market_used_sell_create_is_phone_public_radiobutton)
-    RadioButton mMarketSellCreateIsPhonePublicRadioButton;
+    RadioButton marketSellCreateIsPhonePublicRadioButton;
     @BindView(R.id.market_used_sell_create_is_phone_private_radiobutton)
-    RadioButton mMarketSellCreateIsPhonePrivateRadioButton;
+    RadioButton marketSellCreateIsPhonePrivateRadioButton;
 
     @BindView(R.id.market_used_sell_create_edittext_phone_num)
-    EditText mMarketSellCreateEditTextPhoneNum;
+    EditText marketSellCreateEditTextPhoneNum;
 
 
     @BindView(R.id.market_used_sell_create_selling_status_radiobutton_group)
-    RadioGroup mMarketSellCreateSellingStatusRadioButtonGroup;
+    RadioGroup marketSellCreateSellingStatusRadioButtonGroup;
     @BindView(R.id.market_used_sell_create_is_selling_radiobutton)
-    RadioButton mMarketSellCreateIsSellingRadioButton;
+    RadioButton marketSellCreateIsSellingRadioButton;
     @BindView(R.id.market_used_sell_create_is_stop_selling_radiobutton)
-    RadioButton mMarketSellCreateIsStopSellingRadioButton;
+    RadioButton marketSellCreateIsStopSellingRadioButton;
     @BindView(R.id.market_used_sell_create_is_complete_selling_radiobutton)
-    RadioButton mMarketSellCreateIsCompleteSellingRadioButton;
+    RadioButton marketSellCreateIsCompleteSellingRadioButton;
 
     @BindView(R.id.market_used_sell_create_content)
-    EditText mMarketSellCreateContent;
+    EditText marketSellCreateContent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +125,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         this.context = this;
         setContentView(R.layout.market_used_sell_create_activity);
         ButterKnife.bind(this);
-        mPhoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+        this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
         init();
 
 
@@ -158,23 +153,17 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     /**
-     * mPhone, mIsTitleCheck, mIsPhoneCheck, mIsPhoneOpen, mIsContentCheck false로 초기화
-     * mItemState 0 구매중으로 초기화 mPrice 0원으로 초기화
+     * mPhone, mIsTitleCheck, this.isPhoneCheck, this.isPhoneOpen, this.isContentCheck false로 초기화
+     * this.itemState 0 구매중으로 초기화 this.price 0원으로 초기화
      * thumbnail 변경을 위한 camera 권한 체크
      * 가격을 입력시 ',' event 처리를 위해 moneyEditTextChangedListener() 호출
      * 사용자 번호가 등록이 되어있을경우 사용자 번호로 set 아닐경우 unset
@@ -183,33 +172,33 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
      */
     void init() {
 
-        mIsTitlecheck = false;
-        mIsPhoneCheck = false;
-        mIsPhoneOpen = false;
-        mIsContentCheck = false;
-        mItemState = 0;
-        mPrice = "0";
+        this.isTitlecheck = false;
+        this.isPhoneCheck = false;
+        this.isPhoneOpen = false;
+        this.isContentCheck = false;
+        this.itemState = 0;
+        this.price = "0";
 
         getPermisson();
         moneyEditTextChangedListener();
         setPresenter(new MarketUsedCreatePresenter(this, new MarketUsedRestInteractor()));
 
 
-        mMarketItem = new MarketItem();
+        this.marketItem = new MarketItem();
 
         InputFilter[] inputArray = new InputFilter[1];
         inputArray[0] = new InputFilter.LengthFilter(MAXTITLELENGTH);
-        mMarketSellCreateTitleEditText.setFilters(inputArray);
-        mMarketSellCreateMoneyEditText.setText(mPrice);
-        if (mPhoneNumber != null) {
-            mIsPhoneOpen = true;
-            mMarketSellCreateIsPhonePublicRadioButton.setChecked(true);
+        marketSellCreateTitleEditText.setFilters(inputArray);
+        marketSellCreateMoneyEditText.setText(this.price);
+        if (this.phoneNumber != null) {
+            this.isPhoneOpen = true;
+            marketSellCreateIsPhonePublicRadioButton.setChecked(true);
             setPhoneNumber();
         } else {
-            mIsPhoneOpen = false;
-            mMarketSellCreateEditTextPhoneNum.setText(null);
-            mMarketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
-            mMarketSellCreateEditTextPhoneNum.setClickable(false);
+            this.isPhoneOpen = false;
+            marketSellCreateEditTextPhoneNum.setText(null);
+            marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
+            marketSellCreateEditTextPhoneNum.setClickable(false);
         }
 
 
@@ -276,11 +265,11 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             switch (button.getId()) {
                 case R.id.market_used_sell_create_is_phone_public_radiobutton:
                     setPhoneNumber();
-                    mIsPhoneOpen = true;
+                    this.isPhoneOpen = true;
                     break;
                 case R.id.market_used_sell_create_is_phone_private_radiobutton:
                     unSetPhoneNumber();
-                    mIsPhoneOpen = false;
+                    this.isPhoneOpen = false;
                     break;
             }
         }
@@ -292,13 +281,13 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         if (checked) {
             switch (button.getId()) {
                 case R.id.market_used_sell_create_is_selling_radiobutton:
-                    mItemState = 0;
+                    this.itemState = 0;
                     break;
                 case R.id.market_used_sell_create_is_stop_selling_radiobutton:
-                    mItemState = 1;
+                    this.itemState = 1;
                     break;
                 case R.id.market_used_sell_create_is_complete_selling_radiobutton:
-                    mItemState = 2;
+                    this.itemState = 2;
                     break;
             }
         }
@@ -309,13 +298,13 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
      * 번호 입력 Edittext 수정가능하도록 set
      */
     public void setPhoneNumber() {
-        mMarketSellCreateEditTextPhoneNum.setTextIsSelectable(true);
-        mMarketSellCreateEditTextPhoneNum.setClickable(true);
-        if (mPhoneNumber == null) {
+        marketSellCreateEditTextPhoneNum.setTextIsSelectable(true);
+        marketSellCreateEditTextPhoneNum.setClickable(true);
+        if (this.phoneNumber == null) {
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
             return;
         }
-        mMarketSellCreateEditTextPhoneNum.setText(mPhoneNumber);
+        marketSellCreateEditTextPhoneNum.setText(this.phoneNumber);
     }
 
     /**
@@ -323,10 +312,10 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
      */
 
     public void unSetPhoneNumber() {
-        mPhoneNumber = mMarketSellCreateEditTextPhoneNum.getText().toString();
-        mMarketSellCreateEditTextPhoneNum.setText(null);
-        mMarketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
-        mMarketSellCreateEditTextPhoneNum.setClickable(false);
+        this.phoneNumber = marketSellCreateEditTextPhoneNum.getText().toString();
+        marketSellCreateEditTextPhoneNum.setText(null);
+        marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
+        marketSellCreateEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
     }
 
@@ -342,7 +331,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
      * 숫자는 매 변경시 changeMoneyFormatStringWithoutComma() method를 통해서 ','를 제외하고 값 저장
      */
     public void moneyEditTextChangedListener() {
-        mMarketSellCreateMoneyEditText.addTextChangedListener(new TextWatcher() {
+        marketSellCreateMoneyEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -350,9 +339,9 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String text = s.toString();
-                if (!text.equals(changeMoneyFormatToStringWithComma(mPrice))) {
+                if (!text.equals(changeMoneyFormatToStringWithComma(price))) {
                     if (text.length() == 1 && text.charAt(0) == '0')
-                        mMarketSellCreateMoneyEditText.setText("");
+                        marketSellCreateMoneyEditText.setText("");
                 }
 
 
@@ -360,18 +349,18 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!mMarketSellCreateMoneyEditText.getText().toString().equals(changeMoneyFormatToStringWithComma(mPrice))) {
+                if (!marketSellCreateMoneyEditText.getText().toString().equals(changeMoneyFormatToStringWithComma(price))) {
 
-                    if (mMarketSellCreateMoneyEditText.getText().toString().length() != 0) {
-                        mPrice = changeMoneyFormatToStringWithoutComma(mMarketSellCreateMoneyEditText.getText().toString());
-                        mMarketSellCreateMoneyEditText.setText(changeMoneyFormatToStringWithComma(mPrice));
+                    if (marketSellCreateMoneyEditText.getText().toString().length() != 0) {
+                        price = changeMoneyFormatToStringWithoutComma(marketSellCreateMoneyEditText.getText().toString());
+                        marketSellCreateMoneyEditText.setText(changeMoneyFormatToStringWithComma(price));
                     } else {
-                        mPrice = "0";
-                        mMarketSellCreateMoneyEditText.setText(changeMoneyFormatToStringWithComma(mPrice));
+                        price = "0";
+                        marketSellCreateMoneyEditText.setText(changeMoneyFormatToStringWithComma(price));
                     }
 
-                    mPrice = changeMoneyFormatToStringWithoutComma((mMarketSellCreateMoneyEditText.getText().toString()));
-                    mMarketSellCreateMoneyEditText.setSelection(mMarketSellCreateMoneyEditText.getText().length());
+                    price = changeMoneyFormatToStringWithoutComma((marketSellCreateMoneyEditText.getText().toString()));
+                    marketSellCreateMoneyEditText.setSelection(marketSellCreateMoneyEditText.getText().length());
                 }
             }
         });
@@ -449,12 +438,12 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
                     ByteArrayOutputStream bs = new ByteArrayOutputStream();
                     OutputStream os;
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
-                    os = new FileOutputStream(mImageFile);
+                    os = new FileOutputStream(this.imageFile);
                     thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
                     // Glide.with(context).asBitmap().load(bitmap).into(mMarketSellEditThumbnailImageView);
-                    mMarketUsedCreatePresenter.uploadThumbnailImage(mImageFile);
+                    this.marketUsedCreatePresenter.uploadThumbnailImage(this.imageFile);
                 } catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
                 }
@@ -545,7 +534,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             File folder = new File(Environment.getExternalStorageDirectory() + "/Pictures/koin");
             File tempFile = new File(folder.toString(), croppedFileName.getName());
 
-            mImageFile = tempFile;
+            this.imageFile = tempFile;
             currentPhotoPath = FileProvider.getUriForFile(this,
                     "in.koreatech.koin.provider", tempFile);
 
@@ -651,56 +640,56 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
      */
     public void onClickEditButton() {
 
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mMarketSellCreateContent.getText().toString().trim());
-        mPhoneNumber = mMarketSellCreateEditTextPhoneNum.getText().toString().trim();
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(marketSellCreateContent.getText().toString().trim());
+        this.phoneNumber = marketSellCreateEditTextPhoneNum.getText().toString().trim();
 
-        if (mIsPhoneOpen) {
-            mMarketItem.isPhoneOpen = 1;
-            mMarketItem.phone = mPhoneNumber;
+        if (this.isPhoneOpen) {
+            this.marketItem.isPhoneOpen = 1;
+            this.marketItem.phone = this.phoneNumber;
         } else {
-            mMarketItem.isPhoneOpen = 0;
-            mMarketItem.phone = null;
+            this.marketItem.isPhoneOpen = 0;
+            this.marketItem.phone = null;
         }
-        mMarketItem.type = SELL_CODE;
-        mMarketItem.title = mMarketSellCreateTitleEditText.getText().toString().trim();
-        mMarketItem.price = Integer.parseInt(mPrice);
+        this.marketItem.type = SELL_CODE;
+        this.marketItem.title = marketSellCreateTitleEditText.getText().toString().trim();
+        this.marketItem.price = Integer.parseInt(this.price);
 
-        if (mMarketSellCreateContent.getText().toString().trim().length() != 0) {
-            mMarketItem.content = Html.toHtml(spannableStringBuilder).trim();
-            mIsContentCheck = true;
+        if (marketSellCreateContent.getText().toString().trim().length() != 0) {
+            this.marketItem.content = Html.toHtml(spannableStringBuilder).trim();
+            this.isContentCheck = true;
         } else {
-            mIsContentCheck = false;
+            this.isContentCheck = false;
         }
 
-        mMarketItem.state = mItemState;
-        if (mIsPhoneOpen && (mMarketItem.phone.length() == 13)) {
-            if (mPhoneNumber.charAt(3) == '-' && mPhoneNumber.charAt(8) == '-')
-                mIsPhoneCheck = true;
+        this.marketItem.state = this.itemState;
+        if (this.isPhoneOpen && (this.marketItem.phone.length() == 13)) {
+            if (this.phoneNumber.charAt(3) == '-' && this.phoneNumber.charAt(8) == '-')
+                this.isPhoneCheck = true;
             else
-                mIsPhoneCheck = false;
+                this.isPhoneCheck = false;
 
-        } else if (!mIsPhoneOpen)
-            mIsPhoneCheck = true;
+        } else if (!this.isPhoneOpen)
+            this.isPhoneCheck = true;
         else
-            mIsPhoneCheck = false;
+            this.isPhoneCheck = false;
 
-        if (mMarketItem.title.length() == 0)
-            mIsTitlecheck = false;
+        if (this.marketItem.title.length() == 0)
+            this.isTitlecheck = false;
         else
-            mIsTitlecheck = true;
+            this.isTitlecheck = true;
 
 
-        if (mIsContentCheck && mIsTitlecheck && !mIsPhoneCheck)
+        if (this.isContentCheck && this.isTitlecheck && !this.isPhoneCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-        if (!mIsTitlecheck && mIsContentCheck)
+        if (!this.isTitlecheck && this.isContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-        if (!mIsContentCheck && mIsTitlecheck)
+        if (!this.isContentCheck && this.isTitlecheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-        if (!mIsTitlecheck && !mIsContentCheck)
+        if (!this.isTitlecheck && !this.isContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
 
-        if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
-            mMarketUsedCreatePresenter.createMarketItem(mMarketItem);
+        if (this.isPhoneCheck && this.isTitlecheck && this.isContentCheck)
+            this.marketUsedCreatePresenter.createMarketItem(this.marketItem);
     }
 
     @Override
@@ -720,15 +709,15 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
     @Override
     public void setPresenter(MarketUsedCreateContract.Presenter presenter) {
-        this.mMarketUsedCreatePresenter = presenter;
+        this.marketUsedCreatePresenter = presenter;
     }
 
 
     @Override
     public void showImageUploadSuccess(String url) {
-        mMarketSellCreateThumbnailImageView.setVisibility(View.VISIBLE);
-        Glide.with(context).asBitmap().load(url).into(mMarketSellCreateThumbnailImageView);
-        mMarketItem.thumbnail = url;
+        marketSellCreateThumbnailImageView.setVisibility(View.VISIBLE);
+        Glide.with(context).asBitmap().load(url).into(marketSellCreateThumbnailImageView);
+        this.marketItem.thumbnail = url;
     }
 
     @Override

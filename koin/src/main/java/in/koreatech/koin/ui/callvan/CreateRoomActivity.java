@@ -31,48 +31,32 @@ import in.koreatech.koin.ui.callvan.presenter.CreateRoomPresenter;
 public class CreateRoomActivity extends ActivityBase implements CreateRoomContract.View {
     private final static String TAG = "CreateRoomActivity";
 
-    private Context mContext;
-    private int mMaxPeople;
+    private Context context;
+    private int maxPeople;
     private CreateRoomPresenter mCreateRoomPresenter;
 
     /* View Component */
     @BindView(R.id.koin_base_appbar)
-    AppbarBase mKoinBaseAppbar;
+    AppbarBase koinBaseAppbar;
 
     @BindView(R.id.create_room_start_place)
-    TextView mCreateRoomStartPlaceTextView;
-//    @BindView(R.id.create_room_start_place_direct_input)
-//    EditText mCreateRoomStartPlaceEditText;
+    TextView createRoomStartPlaceTextView;
 
     @BindView(R.id.create_room_end_place)
-    TextView mCreateRoomEndPlaceTextView;
-//    @BindView(R.id.create_room_end_place_direct_input)
-//    EditText mCreateRoomEndPlaceEditText;
-
-//    @BindView(R.id.create_room_start_year)
-//    TextView mCreateRoomStartYearTextView;
-//
-//    @BindView(R.id.create_room_start_month)
-//    TextView mCreateRoomStartMonthTextView;
+    TextView createRoomEndPlaceTextView;
 
     @BindView(R.id.create_room_start_day)
-    TextView mCreateRoomStartDayTextView;
-//
-//    @BindView(R.id.create_room_start_hour)
-//    TextView mCreateRoomStartHourTextView;
-//
-//    @BindView(R.id.create_room_start_minute)
-//    TextView mCreateRoomStartMinuteTextView;
+    TextView createRoomStartDayTextView;
 
     @BindView(R.id.create_room_button)
-    AppCompatButton mCreateRoomButton;
+    AppCompatButton createRoomButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.callvan_activity_create_room);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
         init();
     }
 
@@ -88,7 +72,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 
     @Override
     public void onBackPressed() {
-        SnackbarUtil.makeLongSnackbarActionYes(mCreateRoomButton, getString(R.string.back_button_pressed), new Runnable() {
+        SnackbarUtil.makeLongSnackbarActionYes(createRoomButton, getString(R.string.back_button_pressed), new Runnable() {
             @Override
             public void run() {
                 finish();
@@ -106,7 +90,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
     }
 
     private void init() {
-        mMaxPeople = 6;
+        maxPeople = 6;
 
 //        mCreateRoomStartYearTextView.setText(TimeUtil.getCurrentYear());
 //
@@ -117,9 +101,9 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 //        }
 
 //        if (TimeUtil.getCurrentDayOnlyLong() < 10) {
-//            mCreateRoomStartDayTextView.setText("0" + TimeUtil.getCurrentDay());
+//            createRoomStartDayTextView.setText("0" + TimeUtil.getCurrentDay());
 //        } else {
-//            mCreateRoomStartDayTextView.setText(TimeUtil.getCurrentDay());
+//            createRoomStartDayTextView.setText(TimeUtil.getCurrentDay());
 //        }
 //
 //        mCreateRoomStartHourTextView.setText("00");
@@ -144,7 +128,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
                         String[] list = CreateRoomActivity.this.getResources().getStringArray(
                                 R.array.favorite_place);
 
-                        mCreateRoomStartPlaceTextView.setText(list[which]);
+                        createRoomStartPlaceTextView.setText(list[which]);
                     }
                 });
         builder.show();
@@ -161,102 +145,16 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
                         String[] list = CreateRoomActivity.this.getResources().getStringArray(
                                 R.array.favorite_place);
 
-                        mCreateRoomEndPlaceTextView.setText(list[which]);
+                        createRoomEndPlaceTextView.setText(list[which]);
                     }
                 });
         builder.show();
     }
 
-//    @Override
-//    @OnClick(R.id.create_room_start_year_layout)
-//    public void onClickCreateRoomStartYearLayout() {
-//        final String[] yearList = {TimeUtil.getCurrentYear(), (Integer.parseInt(
-//                TimeUtil.getCurrentYear()) + 1) + ""};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("출발 년도 선택")
-//                .setItems(yearList, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                        mCreateRoomStartYearTextView.setText(yearList[which]);
-//                    }
-//                });
-//        builder.show();
-//
-//    }
-
-//    @Override
-//    @OnClick(R.id.create_room_start_month_layout)
-//    public void onClickCreateRoomStartMonthLayout() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("출발 월 선택")
-//                .setItems(R.array.month, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String[] list = CreateRoomActivity.this.getResources().getStringArray(
-//                                R.array.month);
-//
-//                        mCreateRoomStartMonthTextView.setText(list[which]);
-//                    }
-//                });
-//        builder.show();
-//    }
-
-//    @Override
-//    @OnClick(R.id.create_room_start_day_layout)
-//    public void onClickCreateRoomStartDayLayout() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("출발 일 선택")
-//                .setItems(R.array.day, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String[] list = CreateRoomActivity.this.getResources().getStringArray(
-//                                R.array.day);
-//
-//                        mCreateRoomStartDayTextView.setText(list[which]);
-//                    }
-//                });
-//        builder.show();
-//    }
-
-//    @Override
-//    @OnClick(R.id.create_room_start_hour_layout)
-//    public void onClickCreateRoomStartHourLayout() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("출발 시 선택")
-//                .setItems(R.array.hour, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String[] list = CreateRoomActivity.this.getResources().getStringArray(
-//                                R.array.hour);
-//
-//                        mCreateRoomStartHourTextView.setText(list[which]);
-//                    }
-//                });
-//        builder.show();
-//    }
-//
-//    @Override
-//    @OnClick(R.id.create_room_start_minute_layout)
-//    public void onClickCreateRoomStartMinuteLayout() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("출발 분 선택")
-//                .setItems(R.array.minute, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        String[] list = CreateRoomActivity.this.getResources().getStringArray(
-//                                R.array.minute);
-//
-//                        mCreateRoomStartMinuteTextView.setText(list[which]);
-//                    }
-//                });
-//        builder.show();
-//    }
-
     @Override
     @OnClick(R.id.create_room_button)
     public void onClickCreateRoomButton() {
-        String startPlaceTextView = mCreateRoomStartPlaceTextView.getText().toString();
+        String startPlaceTextView = createRoomStartPlaceTextView.getText().toString();
 //        String startPlaceEditText = mCreateRoomStartPlaceEditText.getText().toString();
         String startPlaceResult = startPlaceTextView;
         if (FormValidatorUtil.validateStartPlaceIsEmpty(startPlaceTextView)) {
@@ -270,7 +168,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 //            startPlaceResult = startPlaceEditText;
 //        }
 
-        String endPlaceTextView = mCreateRoomEndPlaceTextView.getText().toString();
+        String endPlaceTextView = this.createRoomEndPlaceTextView.getText().toString();
 //        String endPlaceEditText = mCreateRoomEndPlaceEditText.getText().toString();
         String endPlaceResult = endPlaceTextView;
         if (FormValidatorUtil.validateEndPlaceIsEmpty(endPlaceTextView)) {
@@ -285,13 +183,13 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 //        }
 
         if (startPlaceResult.compareTo(endPlaceResult) == 0) {
-            ToastUtil.getInstance().makeShort( "출발지와 목적지가 같습니다");
+            ToastUtil.getInstance().makeShort("출발지와 목적지가 같습니다");
             return;
         }
 
 //        String selectYear = mCreateRoomStartYearTextView.getText().toString();
 //        String selectMonth = mCreateRoomStartMonthTextView.getText().toString();
-        String selectDay = mCreateRoomStartDayTextView.getText().toString();
+        String selectDay = createRoomStartDayTextView.getText().toString();
 //        String selectHour = mCreateRoomStartHourTextView.getText().toString();
 //        String selectMinute = mCreateRoomStartMinuteTextView.getText().toString();
 
@@ -311,7 +209,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 //        sb.append(selectYear).append("-").append(selectMonth).append("-").append(selectDay).append(" ")
 //                .append(selectHour).append(":").append(selectMinute);
 
-        createRoomToServer(startPlaceResult.trim(), endPlaceResult.trim(), sb.toString(), mMaxPeople);
+        createRoomToServer(startPlaceResult.trim(), endPlaceResult.trim(), sb.toString(), maxPeople);
 
     }
 
@@ -339,6 +237,6 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.getInstance().makeShort( message);
+        ToastUtil.getInstance().makeShort(message);
     }
 }

@@ -85,7 +85,6 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
 
     private final int REQ_CODE_ARTICLE_EDIT = 1;
-    private CustomProgressDialog customProgressDialog;
     private CommentRecyclerAdapter commentRecyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Comment> commentArrayList;
@@ -363,7 +362,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorGrantedDeleteComment() {
-        ToastUtil.getInstance().makeShort( "비밀번호가 일치하지 않습니다.");
+        ToastUtil.getInstance().makeShort("비밀번호가 일치하지 않습니다.");
     }
 
     @Override
@@ -392,19 +391,19 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showErrorDeleteAnonymousComment() {
-        ToastUtil.getInstance().makeShort( "댓글 삭제에 실패하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 실패하였습니다.");
     }
 
     @Override
     public void showSuccessAnonymousDeleteComment() {
-        ToastUtil.getInstance().makeShort( "댓글 삭제에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 삭제에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
 
     }
 
     @Override
     public void showSuccessCreateAnonymousComment() {
-        ToastUtil.getInstance().makeShort( "댓글이 등록되었습니다.");
+        ToastUtil.getInstance().makeShort("댓글이 등록되었습니다.");
         onClickedAnonymousCommentCancelButton();
         mIsEditComment = false;
     }
@@ -421,7 +420,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showSuccessUpdateAnonymousComment() {
-        ToastUtil.getInstance().makeShort( "댓글 수정에 성공하였습니다.");
+        ToastUtil.getInstance().makeShort("댓글 수정에 성공하였습니다.");
         onClickedAnonymousCommentCancelButton();
     }
 
@@ -491,18 +490,12 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override

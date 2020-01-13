@@ -26,20 +26,20 @@ import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 public class SplashPresenter implements SplashContract.Presenter {
     private static final String TAG = "SplashPresenter";
     public static final String ANDROID_CODE = "android";
-    private final SplashContract.View mSplashView;
+    private final SplashContract.View splashView;
     private final UserInteractor authInteractor;
-    private final TokenSessionInteractor mTokenSessionInteractor;
+    private final TokenSessionInteractor tokenSessionInteractor;
     private final AppVersionRestInteractor appVersionRestInteractor;
     private String currentVersionName;
-    private String mStoreVersionName;
+    private String storeVersionName;
 
 
     public SplashPresenter(@NonNull SplashContract.View splashView) {
         authInteractor = new UserRestInteractor();
-        mTokenSessionInteractor = new TokenSessionLocalInteractor();
+        this.tokenSessionInteractor = new TokenSessionLocalInteractor();
         appVersionRestInteractor = new AppVersionRestInteractor();
-        mSplashView = checkNotNull(splashView, "splashView cannnot be null");
-        mSplashView.setPresenter(this);
+        this.splashView = checkNotNull(splashView, "splashView cannnot be null");
+        this.splashView.setPresenter(this);
     }
 
     /**
@@ -51,7 +51,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     public void callActivity() {
         //저장된 토큰이 없을 경우
         if (validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadToken())) {
-            mSplashView.gotoLogin();
+            this.splashView.gotoLogin();
         }
         //저장된 토큰이 있을 경우
         else {
@@ -80,9 +80,9 @@ public class SplashPresenter implements SplashContract.Presenter {
         long currentDate = TimeUtil.getDeviceCreatedDateOnlyLong() / 10000;
 
         if (Math.abs(currentDate - lastLoginDate) >= 100) { //접속한 지 한달 넘었을 경우
-            mSplashView.showMessage("사용자 인증이 만료되었습니다.");
+            this.splashView.showMessage("사용자 인증이 만료되었습니다.");
             UserInfoSharedPreferencesHelper.getInstance().clear();
-            mSplashView.gotoLogin();
+            this.splashView.gotoLogin();
         } else {
             updateToken();
         }
@@ -110,7 +110,7 @@ public class SplashPresenter implements SplashContract.Presenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            mSplashView.gotoLogin();
+            splashView.gotoLogin();
         }
     };
 
@@ -120,7 +120,7 @@ public class SplashPresenter implements SplashContract.Presenter {
      * @param auth token, user로 구성된 파라미터
      */
     private void validateCurrentSession(Auth auth) {
-        mTokenSessionInteractor.validateCurrentSession(auth, sessionApiCallback);
+        this.tokenSessionInteractor.validateCurrentSession(auth, sessionApiCallback);
     }
 
     /**
@@ -130,12 +130,12 @@ public class SplashPresenter implements SplashContract.Presenter {
     private final ApiCallback sessionApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mSplashView.gotoMain();
+            splashView.gotoMain();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mSplashView.gotoLogin();
+            splashView.gotoLogin();
         }
     };
 
@@ -146,12 +146,12 @@ public class SplashPresenter implements SplashContract.Presenter {
         @Override
         public void onSuccess(Object object) {
             Version version = (Version) object;
-            mStoreVersionName = version.getVersion();
+            storeVersionName = version.getVersion();
             int currentMajor, currentMinor, currentPoint;
             int storeMajor, storeMinor, storePoint;
             try {
                 StringTokenizer currentVersionTokenizer = new StringTokenizer(currentVersionName, ".");
-                StringTokenizer storeVersionTokenizer = new StringTokenizer(mStoreVersionName, ".");
+                StringTokenizer storeVersionTokenizer = new StringTokenizer(storeVersionName, ".");
                 currentMajor = Integer.parseInt(currentVersionTokenizer.nextToken());
                 currentMinor = Integer.parseInt(currentVersionTokenizer.nextToken());
                 currentPoint = Integer.parseInt(currentVersionTokenizer.nextToken());
@@ -159,19 +159,19 @@ public class SplashPresenter implements SplashContract.Presenter {
                 storeMinor = Integer.parseInt(storeVersionTokenizer.nextToken());
                 storePoint = Integer.parseInt(storeVersionTokenizer.nextToken());
                 if (storeMajor > currentMajor) {
-                    mSplashView.gotoAppMarket(Version.PRIORITY_HIGH, mStoreVersionName);
+                    splashView.gotoAppMarket(Version.PRIORITY_HIGH, storeVersionName);
                 } else if (storeMinor > currentMinor) {
-                    mSplashView.gotoAppMarket(Version.PRIORITY_MIDDLE, mStoreVersionName);
-                } else mSplashView.gotoAppMarket(Version.PRIORITY_LOW, mStoreVersionName);
+                    splashView.gotoAppMarket(Version.PRIORITY_MIDDLE, storeVersionName);
+                } else splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
             } catch (Exception e) {
-                Log.d(TAG, e.getMessage() + "current version : " + currentVersionName + "store version : " + mStoreVersionName);
-                mSplashView.gotoAppMarket(Version.PRIORITY_LOW, mStoreVersionName);
+                Log.d(TAG, e.getMessage() + "current version : " + currentVersionName + "store version : " + storeVersionName);
+                splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
             }
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mSplashView.gotoAppMarket(Version.PRIORITY_LOW, mStoreVersionName);
+            splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
         }
     };
 

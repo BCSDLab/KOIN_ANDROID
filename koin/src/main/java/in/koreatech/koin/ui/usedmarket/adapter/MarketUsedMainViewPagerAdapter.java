@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
 import in.koreatech.koin.ui.usedmarket.MarketUsedBaseFragment;
 
 /**
@@ -14,14 +16,14 @@ import in.koreatech.koin.ui.usedmarket.MarketUsedBaseFragment;
 public class MarketUsedMainViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "MarketUsedMainViewPagerAdapter";
 
-    private int mTabCount = 2;
-    private final String[] mTabTitle = new String[]{"팝니다", "삽니다"};
+    private int tabCount;
+    private final String[] tabTitle = new String[]{"팝니다", "삽니다"};
 
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public MarketUsedMainViewPagerAdapter(FragmentManager fragmentManager, int tabCount) {
         super(fragmentManager);
-        this.mTabCount = tabCount;
+        this.tabCount = tabCount;
     }
 
     @NonNull
@@ -45,12 +47,12 @@ public class MarketUsedMainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mTabCount;
+        return tabCount;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTabTitle[position];
+        return tabTitle[position];
     }
 
 }

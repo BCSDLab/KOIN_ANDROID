@@ -4,7 +4,6 @@ import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
-import in.koreatech.koin.ui.store.presenter.contracts.StoreDetailContract;
 
 /**
  * Created by hyerim on 2018. 8. 16....
@@ -34,8 +33,6 @@ public class StoreDetailPresenter implements BasePresenter {
             storeView.hideLoading();
         }
     };
-
-
 
 
     public void getStore(int id) {

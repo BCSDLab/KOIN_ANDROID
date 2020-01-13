@@ -261,7 +261,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @Override
     public void showLoading() {
-       showProgressDialog("로딩 중");
+       showProgressDialog(R.string.loading);
     }
 
     @Override

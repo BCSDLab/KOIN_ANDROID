@@ -1,4 +1,4 @@
-package in.koreatech.koin.ui.store.presenter.contracts;
+package in.koreatech.koin.ui.store.presenter;
 
 import java.util.ArrayList;
 

@@ -11,20 +11,20 @@ import in.koreatech.koin.ui.timetable.TimetableView;
 
 
 public class ScreenshotUtil {
-    private static ScreenshotUtil mInstance;
+    private static ScreenshotUtil instance;
 
     private ScreenshotUtil() {
     }
 
     public static ScreenshotUtil getInstance() {
-        if (mInstance == null) {
+        if (instance == null) {
             synchronized (ScreenshotUtil.class) {
-                if (mInstance == null) {
-                    mInstance = new ScreenshotUtil();
+                if (instance == null) {
+                    instance = new ScreenshotUtil();
                 }
             }
         }
-        return mInstance;
+        return instance;
     }
 
     /**

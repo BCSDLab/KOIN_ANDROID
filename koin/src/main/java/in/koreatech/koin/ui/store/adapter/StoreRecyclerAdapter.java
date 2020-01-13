@@ -1,6 +1,7 @@
 package in.koreatech.koin.ui.store.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,8 +25,8 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     private final String TAG = StoreRecyclerAdapter.class.getSimpleName();
 
     private Context context;
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<Store> mStoreArrayList; //학교 앞 상점 List
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
+    private ArrayList<Store> storeArrayList; //학교 앞 상점 List
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.store_name_textview)
@@ -45,9 +46,9 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
 
     public StoreRecyclerAdapter(Context context, ArrayList<Store> storeArrayList) {
         this.context = context;
-        this.mLayoutInflater = LayoutInflater.from(context);
-        this.mStoreArrayList = new ArrayList<>();
-        this.mStoreArrayList.addAll(storeArrayList);
+        this.layoutInflater = LayoutInflater.from(context);
+        this.storeArrayList = new ArrayList<>();
+        this.storeArrayList.addAll(storeArrayList);
     }
 
 
@@ -61,7 +62,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        Store store = mStoreArrayList.get(position);
+        Store store = this.storeArrayList.get(position);
         holder.mTextViewStoreName.setText(store.name); //콜밴 이름
 
         //배달, 카드 결제, 계좌이체 사용 가능 유무를 체크하여 다른 이미지를 띄움
@@ -87,7 +88,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
 
     @Override
     public int getItemCount() {
-        return mStoreArrayList.size();
+        return this.storeArrayList.size();
     }
 
 }

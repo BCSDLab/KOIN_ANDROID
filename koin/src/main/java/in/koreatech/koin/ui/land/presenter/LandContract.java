@@ -9,7 +9,9 @@ public interface LandContract {
     interface View extends BaseView<LandPresenter> {
 
         void onLandListDataReceived(ArrayList<BokdukRoom> landArrayList);
+
         void updateUserInterface();
+
         void showMessage(String message);
     }
 }

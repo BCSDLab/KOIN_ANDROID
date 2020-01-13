@@ -10,11 +10,11 @@ import in.koreatech.koin.data.network.interactor.CircleInteractor;
  */
 public class CircleDetailPresenter implements BasePresenter {
 
-    private final CIrcleDetailContract.View cirlcleView;
+    private final CircleDetailContract.View cirlcleView;
 
     private final CircleInteractor circleInteractor;
 
-    public CircleDetailPresenter(CIrcleDetailContract.View cirlcleView, CircleInteractor circleInteractor) {
+    public CircleDetailPresenter(CircleDetailContract.View cirlcleView, CircleInteractor circleInteractor) {
         this.cirlcleView = cirlcleView;
         this.circleInteractor = circleInteractor;
     }

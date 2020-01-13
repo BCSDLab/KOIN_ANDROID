@@ -13,23 +13,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ForgotPasswordPresenter implements ForgotPasswordContract.Presenter {
 
-    private final ForgotPasswordContract.View mForgotPasswordView;
+    private final ForgotPasswordContract.View forgotPasswordView;
 
     private final UserInteractor mUserInteractor;
 
     public ForgotPasswordPresenter(@NonNull ForgotPasswordContract.View forgotPasswordView) {
         mUserInteractor = new UserRestInteractor();
-        mForgotPasswordView = checkNotNull(forgotPasswordView, "forgatPasswordView cannnot be null");
-        mForgotPasswordView.setPresenter(this);
+        this.forgotPasswordView = checkNotNull(forgotPasswordView, "forgatPasswordView cannnot be null");
+        this.forgotPasswordView.setPresenter(this);
     }
 
     /**
      * 비밀번호 재설정 api 호출 메소드
+     *
      * @param id 포탈 계정 id
      */
     @Override
     public void findPassword(String id) {
-        mForgotPasswordView.showProgress();
+        this.forgotPasswordView.showProgress();
         mUserInteractor.createFindPassword(id, findPasswordApiCallback);
     }
 
@@ -41,14 +42,14 @@ public class ForgotPasswordPresenter implements ForgotPasswordContract.Presenter
     private final ApiCallback findPasswordApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mForgotPasswordView.goToEmail();
-            mForgotPasswordView.hideProgress();
+            forgotPasswordView.goToEmail();
+            forgotPasswordView.hideProgress();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mForgotPasswordView.showMessage(throwable.getMessage());
-            mForgotPasswordView.hideProgress();
+            forgotPasswordView.showMessage(throwable.getMessage());
+            forgotPasswordView.hideProgress();
         }
     };
 

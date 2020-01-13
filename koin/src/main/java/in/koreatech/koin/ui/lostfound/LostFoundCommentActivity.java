@@ -57,7 +57,6 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     Button lostfoundCommentRegisterButton;
 
     private LostFoundCommentContract.Presenter lostFoundCommentPresenter;
-    private CustomProgressDialog customProgressDialog;
     private LostFoundCommentRecyclerviewAdapter commentRecyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Comment> commentArrayList;
@@ -145,18 +144,13 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
+
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override

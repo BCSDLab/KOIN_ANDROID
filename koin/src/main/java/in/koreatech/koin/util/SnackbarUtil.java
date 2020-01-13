@@ -3,8 +3,11 @@ package in.koreatech.koin.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.content.res.ResourcesCompat;
+
 import android.view.View;
 
 
@@ -19,7 +22,7 @@ import in.koreatech.koin.core.activity.WebViewActivity;
  * Created by hyerim on 2018. 4. 9....
  */
 public class SnackbarUtil {
-    static Snackbar mSnackbar = null;
+    static Snackbar snackbar = null;
 
     public static void makeShortSnackbar(View view, String message) {
         Snackbar.make(view, message, LENGTH_SHORT).show();
@@ -30,38 +33,38 @@ public class SnackbarUtil {
     }
 
     public static void makeLongSnackbarActionYes(View view, String message) {
-        mSnackbar = Snackbar.make(view, message, LENGTH_LONG);
+        snackbar = Snackbar.make(view, message, LENGTH_LONG);
 
-        mSnackbar.setAction("YES", v -> mSnackbar.dismiss());
+        snackbar.setAction("YES", v -> snackbar.dismiss());
 
-        View snackbarView = mSnackbar.getView();
-        mSnackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
+        View snackbarView = snackbar.getView();
+        snackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
         snackbarView.setBackgroundColor(ResourcesCompat.getColor(view.getResources(), R.color.colorAccent, null));
 
-        mSnackbar.show();
+        snackbar.show();
     }
 
     public static void makeLongSnackbarActionYes(View view, String message, final Runnable runnable) {
-        mSnackbar = Snackbar.make(view, message, LENGTH_LONG);
+        snackbar = Snackbar.make(view, message, LENGTH_LONG);
 
-        mSnackbar.setAction("YES", v -> {
+        snackbar.setAction("YES", v -> {
             runnable.run();
-            mSnackbar.dismiss();
+            snackbar.dismiss();
         });
 
-        View snackbarView = mSnackbar.getView();
-        mSnackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
+        View snackbarView = snackbar.getView();
+        snackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
         snackbarView.setBackgroundColor(ResourcesCompat.getColor(view.getResources(), R.color.colorAccent, null));
 
-        mSnackbar.show();
+        snackbar.show();
     }
 
     public static void makeSnackbarActionWebView(final Activity activity, final int resourceId, String message, final String title, final String url, int duration) {
         final View view = activity.findViewById(resourceId);
-        mSnackbar = Snackbar.make(view, message, duration);
+        snackbar = Snackbar.make(view, message, duration);
 
-        mSnackbar.setAction("YES", v -> {
-            mSnackbar.dismiss();
+        snackbar.setAction("YES", v -> {
+            snackbar.dismiss();
 
             Intent intent = new Intent(view.getContext(), WebViewActivity.class);
             intent.putExtra("title", title);
@@ -70,11 +73,11 @@ public class SnackbarUtil {
             activity.finish();
         });
 
-        View snackbarView = mSnackbar.getView();
-        mSnackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
+        View snackbarView = snackbar.getView();
+        snackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
         snackbarView.setBackgroundColor(ResourcesCompat.getColor(view.getResources(), R.color.colorAccent, null));
 
-        mSnackbar.show();
+        snackbar.show();
     }
 
     public static void makeIndefiniteSnackbarActionYes(View view, String message, final Runnable runnnable) {

@@ -93,7 +93,7 @@
     <string name="market_used_list_last_page">마지막 품목입니다.</string>
     <string name="market_used_get_list_fail">리스트를 불러올수 없습니다.</string>
 
-    <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.core.helpers.UserLockBottomSheetBehavior</string>
+    <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.core.helper.UserLockBottomSheetBehavior</string>
 
     <string-array name="default_header_title">
         <item></item>
@@ -107,5 +107,7 @@
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
 
+    <string name="loading">로딩 중</string>
+    <string name="saving">저장 중</string>
 </resources>
 

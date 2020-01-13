@@ -187,8 +187,9 @@ public class DiningWidget extends AppWidgetProvider {
 
     /**
      * 식사제공장소에 맞는 식단이 있으면 식단을 출력하고 없으면 NULL 을 반환하는 메소드
+     *
      * @param diningArrayList 서버로부터 받아온 식단데이터
-     * @param place 원하는 장소
+     * @param place           원하는 장소
      * @return
      */
     public Dining searchDining(ArrayList<Dining> diningArrayList, String place) {

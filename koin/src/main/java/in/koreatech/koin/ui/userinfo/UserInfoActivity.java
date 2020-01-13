@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.userinfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 
 import android.view.Menu;
@@ -32,33 +33,33 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     private final String TAG = "UserInfoActivity";
     private Context context;
 
-    private User mUser;
-    private int mRequiredService;
-    private UserInfoContract.Presenter mUserInfoPresenter;
+    private User user;
+    private int requiredService;
+    private UserInfoContract.Presenter userInfoPresenter;
 
     /* View Component */
     @BindView(R.id.userinfo_scrollview)
-    public ScrollView mUserinfoScrollview;
+    public ScrollView userinfoScrollview;
 
     //default data
     @BindView(R.id.userinfo_textview_id)
-    public TextView mUserinfoTextviewId;
+    public TextView userinfoTextviewId;
     @BindView(R.id.userinfo_textview_name)
-    public TextView mUserinfoTextviewName;
+    public TextView userinfoTextviewName;
     @BindView(R.id.userinfo_textview_nick_name)
-    public TextView mUserinfoTextviewNickname;
+    public TextView userinfoTextviewNickname;
     @BindView(R.id.userinfo_textview_anonymous_nick_name)
-    public TextView mUserinfoTextviewAnonymousNickname;
+    public TextView userinfoTextviewAnonymousNickname;
     @BindView(R.id.userinfo_textview_phone_num)
-    public TextView mUserinfoTextviewPhone;
+    public TextView userinfoTextviewPhone;
     @BindView(R.id.userinfo_textview_gender)
-    public TextView mUserinfoTextviewGender;
+    public TextView userinfoTextviewGender;
 
     //univ. data
     @BindView(R.id.userinfo_textview_student_id)
-    public TextView mUserinfoTextviewStudentId;
+    public TextView userinfoTextviewStudentId;
     @BindView(R.id.userinfo_textview_major)
-    public TextView mUserinfoTextviewMajor;
+    public TextView userinfoTextviewMajor;
 
 
     @Override
@@ -75,7 +76,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     protected void onStart() {
         super.onStart();
 
-        mUserInfoPresenter.getUserData();
+        userInfoPresenter.getUserData();
     }
 
     @Override
@@ -122,22 +123,22 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @Override
     public void setPresenter(UserInfoContract.Presenter presenter) {
-        this.mUserInfoPresenter = presenter;
+        this.userInfoPresenter = presenter;
     }
 
     @Override
     public void onUserDataReceived() {
-        mUser = UserInfoSharedPreferencesHelper.getInstance().loadUser();
+        this.user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
-        mUserinfoTextviewId.setText(isNull(mUser.userId) + "@koreatech.ac.kr");
-        mUserinfoTextviewName.setText(isNull(mUser.userName));
-        mUserinfoTextviewNickname.setText(isNull(mUser.userNickName));
-        mUserinfoTextviewAnonymousNickname.setText(isNull(mUser.anonymousNickName));
-        mUserinfoTextviewPhone.setText(isNull(mUser.phoneNumber));
-        mUserinfoTextviewGender.setText(mUser.gender == 0 ? "남자" : "여자");
+        userinfoTextviewId.setText(isNull(this.user.userId) + "@koreatech.ac.kr");
+        userinfoTextviewName.setText(isNull(this.user.userName));
+        userinfoTextviewNickname.setText(isNull(this.user.userNickName));
+        userinfoTextviewAnonymousNickname.setText(isNull(this.user.anonymousNickName));
+        userinfoTextviewPhone.setText(isNull(this.user.phoneNumber));
+        userinfoTextviewGender.setText(this.user.gender == 0 ? "남자" : "여자");
 
-        mUserinfoTextviewStudentId.setText(isNull(mUser.studentId));
-        mUserinfoTextviewMajor.setText(isNull(mUser.major));
+        userinfoTextviewStudentId.setText(isNull(this.user.studentId));
+        userinfoTextviewMajor.setText(isNull(this.user.major));
 
         checkRequiredInfo();
     }
@@ -149,34 +150,34 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     @Override
     public void checkRequiredInfo() {
         Intent intent = getIntent();
-        mRequiredService = intent.getIntExtra("CONDITION", -1);
+        this.requiredService = intent.getIntExtra("CONDITION", -1);
 
-        switch (mRequiredService) {
+        switch (this.requiredService) {
             case R.string.navigation_item_free_board:
             case R.string.navigation_item_recruit_board:
                 String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
-                if (FormValidatorUtil.validateStringIsEmpty(userName) && mUserinfoTextviewName.getText().equals("-")) {
-                    mUserinfoTextviewName.setText("이름을 입력해주세요");
-//                    mUserinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
+                if (FormValidatorUtil.validateStringIsEmpty(userName) && userinfoTextviewName.getText().equals("-")) {
+                    userinfoTextviewName.setText("이름을 입력해주세요");
+//                    userinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
                 }
-                if (mUserinfoTextviewNickname.getText().equals("-")) {
-                    mUserinfoTextviewNickname.setText("닉네임을 입력해주세요");
-//                    mUserinfoTextviewNickname.setTypeface(Typeface.DEFAULT_BOLD);
+                if (userinfoTextviewNickname.getText().equals("-")) {
+                    userinfoTextviewNickname.setText("닉네임을 입력해주세요");
+//                    userinfoTextviewNickname.setTypeface(Typeface.DEFAULT_BOLD);
                 }
                 break;
             case R.string.navigation_item_callvan_sharing:
-                if (mUserinfoTextviewName.getText().equals("-")) {
-                    mUserinfoTextviewName.setText("이름을 입력해주세요");
-//                    mUserinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
+                if (userinfoTextviewName.getText().equals("-")) {
+                    userinfoTextviewName.setText("이름을 입력해주세요");
+//                    userinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
                 }
-                if (mUserinfoTextviewPhone.getText().equals("-")) {
-                    mUserinfoTextviewPhone.setText("전화 번호를 입력해주세요");
-//                    mUserinfoTextviewPhone.setTypeface(Typeface.DEFAULT_BOLD);
+                if (userinfoTextviewPhone.getText().equals("-")) {
+                    userinfoTextviewPhone.setText("전화 번호를 입력해주세요");
+//                    userinfoTextviewPhone.setTypeface(Typeface.DEFAULT_BOLD);
                 }
                 break;
             default:
-//                mUserinfoTextviewNickname.setTypeface(Typeface.DEFAULT);
-//                mUserinfoTextviewPhone.setTypeface(Typeface.DEFAULT);
+//                userinfoTextviewNickname.setTypeface(Typeface.DEFAULT);
+//                userinfoTextviewPhone.setTypeface(Typeface.DEFAULT);
                 break;
         }
     }
@@ -191,10 +192,10 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     public void onClickDeleteUserButton() {
         final int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
-        SnackbarUtil.makeLongSnackbarActionYes(mUserinfoScrollview, "정말 탈퇴하시려구요? 한번 더 생각해보세요 :)", new Runnable() {
+        SnackbarUtil.makeLongSnackbarActionYes(userinfoScrollview, "정말 탈퇴하시려구요? 한번 더 생각해보세요 :)", new Runnable() {
             @Override
             public void run() {
-                mUserInfoPresenter.deleteUser(roomUid);
+                userInfoPresenter.deleteUser(roomUid);
             }
         });
     }

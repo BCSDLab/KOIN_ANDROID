@@ -15,51 +15,51 @@ public abstract class TimerUtil {
     private final String TAG = "TimerUtil";
     public static final int SEND_CODE = 0;
     public static final int END_CODE = 1;
-    protected Handler mHandler;
-    protected Timer mTimer;
-    protected TextView mTextview;
-    protected int mEndTime;
-    protected TimerTask mTimerTask;
+    protected Handler handler;
+    protected Timer timer;
+    protected TextView textview;
+    protected int endTime;
+    protected TimerTask timerTask;
     protected String strTime;
 
     public TimerUtil() {
-        mHandler = new Handler();
+        handler = new Handler();
 
     }
 
     public void setEndTime(int endTime) {
-        this.mEndTime = endTime;
+        this.endTime = endTime;
     }
 
     public void setTextView(TextView textView) {
-        this.mTextview = textView;
+        this.textview = textView;
     }
 
     public void startTimer() {
         stopTimer();
-        mTimer = new Timer();
-        mHandler = new Handler(Looper.getMainLooper()) {
+        timer = new Timer();
+        handler = new Handler(Looper.getMainLooper()) {
             public void handleMessage(Message msg) {
                 {
                     if (msg.what == END_CODE) {
                         endTimer();
                     }
-                    if (mTextview != null) {
+                    if (textview != null) {
                         if (msg.what == END_CODE)
-                            mTextview.setText(R.string.bus_no_information);
+                            textview.setText(R.string.bus_no_information);
                         else
-                            mTextview.setText(strTime);
+                            textview.setText(strTime);
                     }
                 }
             }
         };
-        mTimerTask = new TimerTask() {
+        timerTask = new TimerTask() {
             public void run() {
                 try {
-                    mEndTime--;
-                    int hour = mEndTime / 3600;
-                    int min = (mEndTime / 60) % 60;
-                    int sec = mEndTime % 60;
+                    endTime--;
+                    int hour = endTime / 3600;
+                    int min = (endTime / 60) % 60;
+                    int sec = endTime % 60;
                     if (hour > 0)
                         strTime = String.format("%s시간 %s분 %s초 남음", hour, min, sec);
                     else {
@@ -71,30 +71,30 @@ public abstract class TimerUtil {
                         }
                     }
 
-                    if (mHandler == null) return;
-                    if (mEndTime > 0) {
-                        mHandler.obtainMessage(SEND_CODE).sendToTarget();
+                    if (handler == null) return;
+                    if (endTime > 0) {
+                        handler.obtainMessage(SEND_CODE).sendToTarget();
                     } else {
-                        mHandler.obtainMessage(END_CODE).sendToTarget();
+                        handler.obtainMessage(END_CODE).sendToTarget();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
-        mTimer.schedule(mTimerTask, 0, 1000);
+        timer.schedule(timerTask, 0, 1000);
     }
 
 
     public abstract void endTimer();
 
     public void stopTimer() {
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer.purge();
-            mTimerTask.cancel();
-            if (mHandler != null)
-                mHandler = null;
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+            timerTask.cancel();
+            if (handler != null)
+                handler = null;
         }
 
     }

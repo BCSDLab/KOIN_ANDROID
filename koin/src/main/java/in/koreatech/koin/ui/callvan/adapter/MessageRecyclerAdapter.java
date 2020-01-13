@@ -28,18 +28,18 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private static final int VIEW_TYPE_NOTICE = 2;
 
     private Context context;
-    private ArrayList<Message> mMessageList; //Message List
-    private ArrayList<String> mMessageKeyList;
-    private String mUid; //사용자 uid
+    private ArrayList<Message> messageList; //Message List
+    private ArrayList<String> messageKeyList;
+    private String uid; //사용자 uid
 
     //받은 메시지
     public class IncomingViewHolder extends RecyclerView.ViewHolder {
         @Nullable
         @BindView(R.id.message_user_name_incoming)
-        TextView mUserName;
+        TextView userName;
         @Nullable
         @BindView(R.id.message_body_incoming)
-        TextView mMessageBody;
+        TextView messageBody;
         @Nullable
         @BindView(R.id.create_time_incoming)
         TextView createTime;
@@ -54,10 +54,10 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public class OutgoingViewHolder extends RecyclerView.ViewHolder {
         @Nullable
         @BindView(R.id.message_user_name_outgoing)
-        TextView mUserName;
+        TextView userName;
         @Nullable
         @BindView(R.id.message_body_outgoing)
-        TextView mMessageBody;
+        TextView messageBody;
         @Nullable
         @BindView(R.id.create_time_outgoing)
         TextView createTime;
@@ -81,10 +81,10 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public MessageRecyclerAdapter(Context context, ArrayList<Message> messageList, ArrayList<String> messageKeyList) {
         this.context = context;
-        this.mMessageList = messageList;
-        this.mMessageKeyList = messageKeyList;
+        this.messageList = messageList;
+        this.messageKeyList = messageKeyList;
 
-        mUid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
     }
 
     @NonNull
@@ -108,20 +108,20 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Message message = mMessageList.get(position);
+        final Message message = messageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_INCOMING:
                 IncomingViewHolder incomingViewHolder = (IncomingViewHolder) holder;
-                incomingViewHolder.mUserName.setText(message.userName);
-                incomingViewHolder.mMessageBody.setText(message.message);
+                incomingViewHolder.userName.setText(message.userName);
+                incomingViewHolder.messageBody.setText(message.message);
                 incomingViewHolder.createTime.setText(message.createDate);
                 break;
 
             case VIEW_TYPE_OUTGOING:
                 OutgoingViewHolder outgoingViewHolder = (OutgoingViewHolder) holder;
-                outgoingViewHolder.mUserName.setText(message.userName);
-                outgoingViewHolder.mMessageBody.setText(message.message);
+                outgoingViewHolder.userName.setText(message.userName);
+                outgoingViewHolder.messageBody.setText(message.message);
                 outgoingViewHolder.createTime.setText(message.createDate);
                 break;
 
@@ -134,7 +134,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemCount() {
-        return mMessageList.size();
+        return messageList.size();
     }
 
     @Override
@@ -143,9 +143,9 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private int classifyViewType(int position) {
-        if (mMessageList.get(position).isNotice != null && mMessageList.get(position).isNotice) {
+        if (messageList.get(position).isNotice != null && messageList.get(position).isNotice) {
             return VIEW_TYPE_NOTICE;
-        } else if (mUid.equals(mMessageList.get(position).uid)) {
+        } else if (uid.equals(messageList.get(position).uid)) {
             return VIEW_TYPE_OUTGOING;
         } else {
             return VIEW_TYPE_INCOMING;

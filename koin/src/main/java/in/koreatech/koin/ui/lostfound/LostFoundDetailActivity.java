@@ -66,7 +66,6 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     @BindView(R.id.lostfound_detail_lost_date_textview)
     TextView lostfoundDetailLostDateTextview;
 
-    private CustomProgressDialog customProgressDialog;
     private LostFoundDetailContract.Presenter lostfoundDetailPresenter;
     private LostItem lostItem;
     private int id;
@@ -93,18 +92,12 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override

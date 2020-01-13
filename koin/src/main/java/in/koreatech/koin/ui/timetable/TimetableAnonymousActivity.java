@@ -74,63 +74,62 @@ import static in.koreatech.koin.util.TimeDuplicateCheckUtil.duplicateScheduleTos
 
 
 public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity implements TimetableAnonymousContract.View, TimetableSelectAnonymousMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
-    public static final String TAG = TimetableAnonymousActivity.class.getName();
+    public static final String TAG = "TimetableAnonymousActivity";
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
     public static final int LOAD_TIME_MS = 500;
 
     public static int select = -1;          //TimetableSelectAnonymousMajorDialog에서 선택했던것을 기억하는 변수
-    private CustomProgressDialog customProgressDialog;
     @BindView(R.id.timetable_timetableview)
-    TimetableView mTimetableView;
+    TimetableView timetableView;
     @BindView(R.id.timetable_add_schedule_bottom_sheet)
     LinearLayout bottomsheet;
     @BindView(R.id.timetable_container_relativelayout)
-    RelativeLayout mTimeTableContainerRelativeLayout;
+    RelativeLayout timeTableContainerRelativeLayout;
     @BindView(R.id.timetable_search_recyclerview)
-    RecyclerView mTimetableSearchRecyclerview;
+    RecyclerView timetableSearchRecyclerview;
     @BindView(R.id.timetable_add_schedule_bottom_sheet_center_textview)
-    TextView mTimetableAddTopTextView;
+    TextView timetableAddTopTextView;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet)
     LinearLayout detailBottomsheet;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_center_textview)
-    TextView mTimetableDetailTopTextView;
+    TextView timetableDetailTopTextView;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_class_title_textview)
-    TextView mTimetableDetailClassTitleTextview;
+    TextView timetableDetailClassTitleTextview;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_class_detail_textview)
-    TextView mTimetableDetailinformationTextview;
+    TextView timetableDetailinformationTextview;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_left_textview)
-    TextView mTimetableDetailLeftTextview;
+    TextView timetableDetailLeftTextview;
     @BindView(R.id.timetable_detail_schedule_bottom_sheet_right_textview)
-    TextView mTimetableDetailRightTextview;
+    TextView timetableDetailRightTextview;
     @BindView(R.id.timetable_add_schedule_search_edittext)
-    TextView mTimetableAddScheduleSearchEdittext;
+    TextView timetableAddScheduleSearchEdittext;
     @BindView(R.id.timetable_scrollview)
-    ScrollView mTimeTableScrollview;
+    ScrollView timeTableScrollview;
     @BindView(R.id.table_header)
-    TableLayout mTimeTableHeader;
+    TableLayout timeTableHeader;
 
     private Context context;
     private UserLockBottomSheetBehavior bottomSheetBehavior;
     private UserLockBottomSheetBehavior bottomSheetDetailBehavior;
     private boolean isBottomSheetOpen;
     private boolean isBottomDetailSheetOpen;
-    private TimetableAnonymousPresenter mTimetablePresenter;
+    private TimetableAnonymousPresenter timetablePresenter;
     private int categoryNumber;
 
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
-    private ArrayList<TimeTableItem> mTimeTableArrayList;
-    private ArrayList<TimeTableItem> mTimeTableEditArrayList;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
+    private ArrayList<TimeTableItem> timeTableArrayList;
+    private ArrayList<TimeTableItem> timeTableEditArrayList;
     private ArrayList<Lecture> totalLectureArrayList;
     private ArrayList<Lecture> selectedLectureArrayList;
     private ArrayList<Lecture> selectedLectureSeperateArrayList;
     private int selectedLectureSeperateClickIndex = -1;
 
-    private RecyclerView.ViewHolder mViewHolder;
-    private TimetableRecyclerAdapter mTimetableRecyclerAdapter;
-    private TimetableSelectAnonymousMajorDialog mTimetableSelectAnonymousMajorDialog;
+    private RecyclerView.ViewHolder viewHolder;
+    private TimetableRecyclerAdapter timetableRecyclerAdapter;
+    private TimetableSelectAnonymousMajorDialog timetableSelectAnonymousMajorDialog;
     private boolean isLoading;
-    private DepartmentCode mSelectedDepartmentCode;
+    private DepartmentCode selectedDepartmentCode;
     private int blockId;
 
     private String semester = "";
@@ -147,26 +146,26 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public void init() {
         isLoading = false;
-        mSelectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
+        selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
         setPresenter(new TimetableAnonymousPresenter(this));
         categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
         selectedLectureArrayList = new ArrayList<>();
-        mTimeTableArrayList = new ArrayList<>();
+        timeTableArrayList = new ArrayList<>();
         selectedLectureSeperateArrayList = new ArrayList<>();
         bottomSheetBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(bottomsheet);
         bottomSheetDetailBehavior = (UserLockBottomSheetBehavior) BottomSheetBehavior.from(detailBottomsheet);
         bottomsheet.setNestedScrollingEnabled(false);
         closeBottomSearchSheetButton();
         isBottomSheetOpen = false;
-        mLayoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         initBottomSheet();
         initDetailBottomSheet();
         initSearchRecyclerview();
         initScrollListener();
         initSearchEditText();
-        mTimetableView.setOnStickerSelectEventListener(this::onClickedSticker);
+        timetableView.setOnStickerSelectEventListener(this::onClickedSticker);
 //        tempInitSticker();
 
     }
@@ -178,37 +177,17 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             goToTimetableActivty();
         }
         TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
-        mTimetablePresenter.getTimeTableVersion();
-    }
-
-    public void tempInitSticker() {
-        int[] tempTimes = {0, 1, 2, 401, 402};
-        int[] tempTImes2 = {2, 3, 4, 6, 123};
-        ArrayList<Integer> time1 = new ArrayList<>();
-        ArrayList<Integer> time2 = new ArrayList<>();
-        for (int i : tempTimes)
-            time1.add(i);
-        for (int i : tempTImes2)
-            time2.add(i);
-        mTimetableView.add(new TimeTableItem("알라딘", time1, "노홍촐"));
-        mTimetableView.add(new TimeTableItem("성인학습론", time2, "파바사라"));
-
+        timetablePresenter.getTimeTableVersion();
     }
 
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     public boolean checkIsAnonoymous() {
@@ -239,8 +218,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void saveTimeTableViewInBMP(String semester) {
         File saveImageFile;
         removeAllCheckSticker();
-//        mTimeTableScrollview.smoothScrollBy(0, 0);
-        Bitmap bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(mTimeTableScrollview, mTimeTableHeader);
+//        timeTableScrollview.smoothScrollBy(0, 0);
+        Bitmap bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(timeTableScrollview, timeTableHeader);
         try {
             if (bitmap != null) {
                 String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
@@ -263,7 +242,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void initSearchEditText() {
-        mTimetableAddScheduleSearchEdittext.setOnKeyListener((v, keyCode, event) -> {
+        timetableAddScheduleSearchEdittext.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 onClickedSearchButton();
                 return true;
@@ -284,14 +263,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                customProgressDialog = new CustomProgressDialog(context, "저장 중");
-                customProgressDialog.execute();
+               showProgressDialog(R.string.saving);
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
                 saveTimeTableViewInBMP(semester);
-                customProgressDialog.cancel(true);
-                customProgressDialog = null;
+                hideProgressDialog();
             }, 2000);
 
         } else {
@@ -301,12 +278,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void initSearchRecyclerview() {
-        mTimetableSearchRecyclerview.setLayoutManager(mLayoutManager);
-        mTimetableRecyclerAdapter = new TimetableRecyclerAdapter(context, selectedLectureSeperateArrayList);
-        mTimetableSearchRecyclerview.setHasFixedSize(true);
-        mTimetableSearchRecyclerview.setNestedScrollingEnabled(false);
-        mTimetableRecyclerAdapter.setRecyclerViewClickListener(this);
-        mTimetableSearchRecyclerview.setAdapter(mTimetableRecyclerAdapter);
+        timetableSearchRecyclerview.setLayoutManager(layoutManager);
+        timetableRecyclerAdapter = new TimetableRecyclerAdapter(context, selectedLectureSeperateArrayList);
+        timetableSearchRecyclerview.setHasFixedSize(true);
+        timetableSearchRecyclerview.setNestedScrollingEnabled(false);
+        timetableRecyclerAdapter.setRecyclerViewClickListener(this);
+        timetableSearchRecyclerview.setAdapter(timetableRecyclerAdapter);
     }
 
 
@@ -317,14 +294,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 int height = bottomSheet.getHeight();
                 switch (state) {
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        mTimetableView.setMarginBottom(bottomSheet.getHeight());
+                        timetableView.setMarginBottom(bottomSheet.getHeight());
                         isBottomSheetOpen = true;
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         isBottomSheetOpen = false;
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
-                        mTimetableView.setMarginBottom(0);
+                        timetableView.setMarginBottom(0);
                         isBottomSheetOpen = false;
                         break;
                 }
@@ -342,14 +319,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             public void onStateChanged(@NonNull View bottomSheet, int state) {
                 switch (state) {
                     case BottomSheetBehavior.STATE_EXPANDED:
-                        mTimetableView.setMarginBottom(bottomSheet.getHeight());
+                        timetableView.setMarginBottom(bottomSheet.getHeight());
                         isBottomDetailSheetOpen = true;
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         isBottomDetailSheetOpen = false;
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
-                        mTimetableView.setMarginBottom(0);
+                        timetableView.setMarginBottom(0);
                         isBottomDetailSheetOpen = false;
                         break;
                 }
@@ -366,8 +343,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onClickedBottomSheetCenterTextview() {
         if (isBottomSheetOpen) {
             isBottomSheetOpen = false;
-            mTimetableView.setMarginBottom(mTimetableAddTopTextView.getHeight());
-            bottomSheetBehavior.setPeekHeight(mTimetableAddTopTextView.getHeight());
+            timetableView.setMarginBottom(timetableAddTopTextView.getHeight());
+            bottomSheetBehavior.setPeekHeight(timetableAddTopTextView.getHeight());
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             isBottomSheetOpen = true;
@@ -381,8 +358,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onClickedDetailBottomSheetCenterTextview() {
         if (isBottomDetailSheetOpen) {
             isBottomDetailSheetOpen = false;
-            mTimetableView.setMarginBottom(mTimetableDetailTopTextView.getHeight());
-            bottomSheetDetailBehavior.setPeekHeight(mTimetableDetailTopTextView.getHeight());
+            timetableView.setMarginBottom(timetableDetailTopTextView.getHeight());
+            bottomSheetDetailBehavior.setPeekHeight(timetableDetailTopTextView.getHeight());
             bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
             isBottomDetailSheetOpen = true;
@@ -435,8 +412,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 infoStringBuilder.append(timeTableItem.getProfessor()).append(" / ");
             else
                 infoStringBuilder.append("-").append(" / ");
-            mTimetableDetailClassTitleTextview.setText(timeTableItem.getClassTitle());
-            mTimetableDetailinformationTextview.setText(infoStringBuilder.toString());
+            timetableDetailClassTitleTextview.setText(timeTableItem.getClassTitle());
+            timetableDetailinformationTextview.setText(infoStringBuilder.toString());
             blockId = timeTableItem.getId();
 
         }
@@ -453,23 +430,23 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void onClickedBottomSheetRightButton() {
         clearFilterData();
         hideKeyboard(TimetableAnonymousActivity.this);
-        mTimetableSearchRecyclerview.setVisibility(View.INVISIBLE);
+        timetableSearchRecyclerview.setVisibility(View.INVISIBLE);
         closeBottomSearchSheetButton();
 
     }
 
     @OnClick(R.id.timetable_add_category_imageview)
     public void onClickedBottomSheetCategoryButton() {
-        mTimetableSearchRecyclerview.setVisibility(View.VISIBLE);
-        mTimetableSelectAnonymousMajorDialog = new TimetableSelectAnonymousMajorDialog(this);
-        mTimetableSelectAnonymousMajorDialog.setOnCLickedDialogItemListener(this);
-        mTimetableSelectAnonymousMajorDialog.setMajorDialogListener(new MajorDialogListener() {
+        timetableSearchRecyclerview.setVisibility(View.VISIBLE);
+        timetableSelectAnonymousMajorDialog = new TimetableSelectAnonymousMajorDialog(this);
+        timetableSelectAnonymousMajorDialog.setOnCLickedDialogItemListener(this);
+        timetableSelectAnonymousMajorDialog.setMajorDialogListener(new MajorDialogListener() {
             @Override
             public void sendActivity(String major, int number) {
                 setResult(major, number);
             }
         });
-        mTimetableSelectAnonymousMajorDialog.show();
+        timetableSelectAnonymousMajorDialog.show();
     }
 
     private void setResult(String major, int number) {
@@ -484,10 +461,10 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         hideKeyboard(TimetableAnonymousActivity.this);
         selectedLectureSeperateArrayList.clear();
         selectedLectureArrayList.clear();
-        String keyword = mTimetableAddScheduleSearchEdittext.getText().toString().trim();
-        selectedLectureArrayList.addAll(getFilterUtil(mSelectedDepartmentCode, keyword, totalLectureArrayList, mTimetableView.getAllTimeTableItems()));
+        String keyword = timetableAddScheduleSearchEdittext.getText().toString().trim();
+        selectedLectureArrayList.addAll(getFilterUtil(selectedDepartmentCode, keyword, totalLectureArrayList, timetableView.getAllTimeTableItems()));
         Log.d(TAG, "filter item :" + selectedLectureArrayList.size());
-        mTimetableSearchRecyclerview.setVisibility(View.VISIBLE);
+        timetableSearchRecyclerview.setVisibility(View.VISIBLE);
         if (selectedLectureArrayList.size() < MAX_ITEM_LOAD) {
             selectedLectureSeperateArrayList.addAll(selectedLectureArrayList);
         } else {
@@ -503,9 +480,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         selectedLectureSeperateArrayList.clear();
         selectedLectureArrayList.clear();
         String keyword = text.toString().trim();
-        selectedLectureArrayList.addAll(getFilterUtil(mSelectedDepartmentCode, keyword, totalLectureArrayList, mTimetableView.getAllTimeTableItems()));
+        selectedLectureArrayList.addAll(getFilterUtil(selectedDepartmentCode, keyword, totalLectureArrayList, timetableView.getAllTimeTableItems()));
         Log.d(TAG, "filter item :" + selectedLectureArrayList.size());
-        mTimetableSearchRecyclerview.setVisibility(View.VISIBLE);
+        timetableSearchRecyclerview.setVisibility(View.VISIBLE);
         if (selectedLectureArrayList.size() < MAX_ITEM_LOAD) {
             selectedLectureSeperateArrayList.addAll(selectedLectureArrayList);
         } else {
@@ -521,17 +498,17 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             selectedLectureSeperateArrayList.clear();
         if (selectedLectureArrayList != null)
             selectedLectureArrayList.clear();
-        if (mTimetableRecyclerAdapter != null)
-            mTimetableRecyclerAdapter.notifyDataSetChanged();
+        if (timetableRecyclerAdapter != null)
+            timetableRecyclerAdapter.notifyDataSetChanged();
     }
 
 
     public void addTimeTableItemSelctedByRecyclerview(int position) {
         ArrayList<TimeTableItem> duplicateTimeTableItems;
-        duplicateTimeTableItems = TimeDuplicateCheckUtil.checkDuplicateSchedule(mTimetableView.getAllTimeTableItems(), selectedLectureSeperateArrayList.get(position));
+        duplicateTimeTableItems = TimeDuplicateCheckUtil.checkDuplicateSchedule(timetableView.getAllTimeTableItems(), selectedLectureSeperateArrayList.get(position));
         if (duplicateTimeTableItems.isEmpty()) {
             selectedLectureSeperateClickIndex = position;
-            mTimetablePresenter.addTimeTableItem(new TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
+            timetablePresenter.addTimeTableItem(new TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
         } else {
             LogUtil.logdArrayList(duplicateTimeTableItems);
             showDuplicateDialog(position, duplicateTimeTableItems);
@@ -547,9 +524,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         builder.setMessage(duplicateClassTitile.toString());
         builder.setPositiveButton("확인",
                 (dialog, which) -> {
-                    mTimetablePresenter.addTimeTableItem(new TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
+                    timetablePresenter.addTimeTableItem(new TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                     for (TimeTableItem timeTableItem : duplicateTimeTableItems) {
-                        mTimetablePresenter.deleteItem(timeTableItem.getId());
+                        timetablePresenter.deleteItem(timeTableItem.getId());
                     }
                 });
         builder.setNegativeButton("취소",
@@ -563,7 +540,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         builder.setMessage("해당 수업을 삭제하시겠습니까?");
         builder.setPositiveButton("확인",
                 (dialog, which) -> {
-                    mTimetablePresenter.deleteItem(index);
+                    timetablePresenter.deleteItem(index);
                 });
         builder.setNegativeButton("취소",
                 (dialog, which) -> {
@@ -572,7 +549,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void removeAllCheckSticker() {
-        mTimetableView.removeCheckAll();
+        timetableView.removeCheckAll();
         for (Lecture lecture : selectedLectureSeperateArrayList) {
             if (lecture != null)
                 lecture.isItemClicked = false;
@@ -587,7 +564,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 break;
             case R.id.timetable_detail_schedule_bottom_sheet_right_textview:
                 bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                mTimetableSearchRecyclerview.setVisibility(View.GONE);
+                timetableSearchRecyclerview.setVisibility(View.GONE);
                 isBottomDetailSheetOpen = false;
                 break;
         }
@@ -629,9 +606,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void showSuccessAddTimeTableItem(TimeTable timeTable) {
         if (selectedLectureSeperateClickIndex != -1) {
             selectedLectureSeperateArrayList.get(selectedLectureSeperateClickIndex).isAddButtonClicked = true;
-            mTimetableView.removeAll();
+            timetableView.removeAll();
             for (TimeTableItem timeTableItem : timeTable.getTimeTableItems())
-                mTimetableView.add(timeTableItem);
+                timetableView.add(timeTableItem);
             updateSearchRectclerview();
         }
         selectedLectureSeperateClickIndex = -1;
@@ -659,14 +636,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showDeleteSuccessTimeTableItem(int id) {
-        mTimetablePresenter.getSavedTimeTableItem();
+        timetablePresenter.getSavedTimeTableItem();
         bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         isBottomDetailSheetOpen = false;
     }
 
     public void updateSearchRectclerview() {
-        getClikckedUtil(selectedLectureSeperateArrayList, mTimetableView.getAllTimeTableItems());
-        mTimetableRecyclerAdapter.notifyDataSetChanged();
+        getClikckedUtil(selectedLectureSeperateArrayList, timetableView.getAllTimeTableItems());
+        timetableRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -686,10 +663,10 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showSavedTimeTable(TimeTable timeTable) {
-        mTimetableView.removeAll();
+        timetableView.removeAll();
         for (TimeTableItem timeTableItem : timeTable.getTimeTableItems()) {
             timeTableItem.isSavedAtServer = true;
-            mTimetableView.add(timeTableItem);
+            timetableView.add(timeTableItem);
         }
         updateSearchRectclerview();
     }
@@ -701,11 +678,11 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void setPresenter(TimetableAnonymousPresenter presenter) {
-        this.mTimetablePresenter = presenter;
+        this.timetablePresenter = presenter;
     }
 
     private void initScrollListener() {
-        mTimetableSearchRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        timetableSearchRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -732,12 +709,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     private void loadMore() {
         selectedLectureSeperateArrayList.add(null);
         Handler handler = new Handler();
-        final Runnable r = () -> mTimetableRecyclerAdapter.notifyItemInserted(selectedLectureSeperateArrayList.size() - 1);
+        final Runnable r = () -> timetableRecyclerAdapter.notifyItemInserted(selectedLectureSeperateArrayList.size() - 1);
         handler.post(r);
         handler.postDelayed(() -> {
             selectedLectureSeperateArrayList.remove(selectedLectureSeperateArrayList.size() - 1);
             int scrollPosition = selectedLectureSeperateArrayList.size();
-            mTimetableRecyclerAdapter.notifyItemRemoved(scrollPosition);
+            timetableRecyclerAdapter.notifyItemRemoved(scrollPosition);
             int currentSize = scrollPosition;
             int nextLimit = currentSize + MAX_ITEM_LOAD;
             while (currentSize - 1 < nextLimit) {
@@ -749,7 +726,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 currentSize++;
             }
 
-            mTimetableRecyclerAdapter.notifyDataSetChanged();
+            timetableRecyclerAdapter.notifyDataSetChanged();
             isLoading = false;
         }, LOAD_TIME_MS);
 
@@ -759,11 +736,11 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     public void onClickedItemList(DepartmentCode departmentCode) {
         new Handler().postDelayed(() -> {
-            mSelectedDepartmentCode = departmentCode;
+            selectedDepartmentCode = departmentCode;
             isLoading = false;
-            mTimetableAddScheduleSearchEdittext.setText("");
+            timetableAddScheduleSearchEdittext.setText("");
             onClickedSearchButton();
-            mTimetableSearchRecyclerview.scrollToPosition(0);
+            timetableSearchRecyclerview.scrollToPosition(0);
         }, 200);
 
 
@@ -771,21 +748,21 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void onClick(View view, int position) {
-        mViewHolder = mTimetableSearchRecyclerview.findViewHolderForAdapterPosition(position);
+        viewHolder = timetableSearchRecyclerview.findViewHolderForAdapterPosition(position);
         switch (view.getId()) {
             case R.id.timetable_recyclerview_item_relativelayout:
                 removeAllCheckSticker();
                 selectedLectureSeperateArrayList.get(position).isItemClicked = true;
-                mTimetableView.addCheck(new TimeTableItem(selectedLectureArrayList.get(position)));
-                mTimetableRecyclerAdapter.notifyDataSetChanged();
+                timetableView.addCheck(new TimeTableItem(selectedLectureArrayList.get(position)));
+                timetableRecyclerAdapter.notifyDataSetChanged();
                 break;
             case R.id.add_lecture_button:
                 if (!selectedLectureSeperateArrayList.get(position).isAddButtonClicked)
                     addTimeTableItemSelctedByRecyclerview(position);
                 else {
-                    int index = mTimetableView.getSameIdWithLecture(selectedLectureSeperateArrayList.get(position));
+                    int index = timetableView.getSameIdWithLecture(selectedLectureSeperateArrayList.get(position));
                     if (index != -1)
-                        mTimetablePresenter.deleteItem(index);
+                        timetablePresenter.deleteItem(index);
                 }
                 break;
             default:
@@ -818,8 +795,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     public void updateSemesterCode(String semester) {
         this.semester = semester;
-        mTimetablePresenter.getLecture(semester);
-        mTimetablePresenter.getSavedTimeTableItem();
+        timetablePresenter.getLecture(semester);
+        timetablePresenter.getSavedTimeTableItem();
     }
 
     @Override
@@ -830,9 +807,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public void saveWidgetImage() {
         Bitmap bitmap;
-        mTimetableView.setCheckStickersVisibilty(false);
-        bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(mTimeTableScrollview, mTimeTableHeader);
-        mTimetableView.setCheckStickersVisibilty(true);
+        timetableView.setCheckStickersVisibilty(false);
+        bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(timeTableScrollview, timeTableHeader);
+        timetableView.setCheckStickersVisibilty(true);
         if (bitmap == null) return;
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir("timeTable", Context.MODE_PRIVATE);

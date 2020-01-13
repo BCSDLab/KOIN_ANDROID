@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class GsonHelper {
 
     public JSONObject objectToJSON(Object obj) {
-        GsonBuilder gsonb = new GsonBuilder();
-        Gson gson = gsonb.create();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(gson.toJson(obj));
@@ -25,8 +25,8 @@ public class GsonHelper {
     }
 
     public <T> String ArrayListToJSONString(ArrayList<T> arrayList) {
-        GsonBuilder gsonb = new GsonBuilder();
-        Gson gson = gsonb.create();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
         JSONObject jsonObject = null;
         String jsonText = "";
         try {
@@ -39,8 +39,8 @@ public class GsonHelper {
 
     public <T> T jsonToObject(String json, Class<T> cls) {
 
-        GsonBuilder gsonb = new GsonBuilder();
-        Gson gson = gsonb.create();
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
         return gson.fromJson(json, cls);
     }
 }

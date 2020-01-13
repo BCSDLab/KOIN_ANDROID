@@ -22,12 +22,12 @@ import in.koreatech.koin.data.network.entity.Company;
 public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecyclerAdapter.ViewHolder> {
     private final String TAG = "CompanyRecyclerAdapter";
 
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Company> companyArrayList; //콜밴 업체 정보를 저장할 List
     private Context context;
 
     public CompanyRecyclerAdapter(Context context, ArrayList<Company> companyArrayList) {
-        mLayoutInflater = LayoutInflater.from(context);
+        layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.companyArrayList = companyArrayList;
     }
@@ -35,9 +35,9 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.company_name_textview)
-        TextView mTextViewCallvanName;  //콜밴 업체의 이름을 표시할 TextView
+        TextView textViewCallvanName;  //콜밴 업체의 이름을 표시할 TextView
         @BindView(R.id.company_number_textview)
-        TextView mTextViewCallvanNumber;  //콜밴 업체의 번호를 표시할 TextView
+        TextView textViewCallvanNumber;  //콜밴 업체의 번호를 표시할 TextView
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,8 +56,8 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Company company = companyArrayList.get(position);
-        holder.mTextViewCallvanName.setText(company.name); //콜밴 이름
-        holder.mTextViewCallvanNumber.setText(company.phone); //콜밴 번호
+        holder.textViewCallvanName.setText(company.name); //콜밴 이름
+        holder.textViewCallvanNumber.setText(company.phone); //콜밴 번호
 
     }
 

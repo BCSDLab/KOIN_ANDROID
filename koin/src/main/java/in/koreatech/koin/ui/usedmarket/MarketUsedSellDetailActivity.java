@@ -58,24 +58,22 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
  * @since 2018.09.16
  */
 public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity implements MarketUsedDetailContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
-    private final String TAG = MarketUsedSellDetailActivity.class.getSimpleName();
+    private final String TAG = "MarketUsedSellDetail";
     private static final int REQUEST_PHONE_CALL = 1;
-    private static CustomProgressDialog mGenerateProgress;
 
 
     private Context context;
 
-    private MarketUsedDetailCommentAdapter mMarketDetailCommentRecyclerAdapter;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private MarketUsedDetailCommentAdapter marketDetailCommentRecyclerAdapter;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
 
     private Item mItem; //품목 정보 저장
-    private boolean mGrantedCheck; // 글쓴이 인지 확인
     private ArrayList<Comment> commentArrayList;
-    private MarketUsedDetailContract.Presenter mMarketDetailPresenter;
+    private MarketUsedDetailContract.Presenter marketDetailPresenter;
 
-    private String mPrevCommentContent;
-    private InputMethodManager mInputMethodManager;
-    private int mMarketID;
+    private String prevCommentContent;
+    private InputMethodManager inputMethodManager;
+    private int marketID;
 
     //    @BindView(R.id.market_used_sell_detail_scrollview)
 //    ScrollView mScrollView;
@@ -130,7 +128,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         ButterKnife.bind(this);
         this.context = this;
         mItem = new Item();
-        mMarketID = 0;
+        marketID = 0;
         mItem.id = getIntent().getIntExtra("ITEM_ID", 1);
         init();
     }
@@ -139,8 +137,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onStart() {
         super.onStart();
 //        checkRequiredInfo();
-        mMarketDetailPresenter.checkGranted(mItem.id);
-        mMarketDetailPresenter.readMarketDetail(mItem.id);
+        marketDetailPresenter.checkGranted(mItem.id);
+        marketDetailPresenter.readMarketDetail(mItem.id);
 
 
     }
@@ -169,20 +167,15 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onRestart() {
         super.onRestart();
     }
+
     @Override
     public void showLoading() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "로딩 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override
@@ -236,7 +229,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
             mMarketConetentTextView.setText(spannedValue);
         }
 
-//        mMarketDetailCommentRecyclerAdapter.notifyDataSetChanged();
+//        marketDetailCommentRecyclerAdapter.notifyDataSetChanged();
     }
 
 
@@ -259,23 +252,22 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void setPresenter(MarketUsedDetailContract.Presenter presenter) {
-        this.mMarketDetailPresenter = presenter;
+        this.marketDetailPresenter = presenter;
     }
 
     void init() {
         setPresenter(new MarketUsedDetailPresenter(this, new MarketUsedRestInteractor()));
         commentArrayList = new ArrayList<>();
-        mMarketDetailPresenter.readMarketDetail(mItem.id);
+        marketDetailPresenter.readMarketDetail(mItem.id);
 
 
-
-//        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
-//        mLayoutManager = new LinearLayoutManager(this);
+//        marketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
+//        layoutManager = new LinearLayoutManager(this);
 //        mMarketCommentRecyclerVIew.setHasFixedSize(true);
-//        mMarketCommentRecyclerVIew.setLayoutManager(mLayoutManager); //layout 설정
-//        mMarketCommentRecyclerVIew.setAdapter(mMarketDetailCommentRecyclerAdapter); //adapter 설정
+//        mMarketCommentRecyclerVIew.setLayoutManager(layoutManager); //layout 설정
+//        mMarketCommentRecyclerVIew.setAdapter(marketDetailCommentRecyclerAdapter); //adapter 설정
 //
-//        mMarketDetailCommentRecyclerAdapter.setCustomOnClickListener(this);
+//        marketDetailCommentRecyclerAdapter.setCustomOnClickListener(this);
 //        checkRequiredInfo();
     }
 
@@ -327,7 +319,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @OnClick(R.id.market_used_sell_comment_button)
     public void onClickedCommentButton() {
         Intent intent = new Intent(this, MarketUsedDetailCommentActivity.class);
-        intent.putExtra("MARKET_ID", mMarketID);
+        intent.putExtra("MARKET_ID", marketID);
         intent.putExtra("ITEM_ID", mItem.id);
         intent.putExtra("ITEM_STATE", mItem.state);
         intent.putExtra("ITEM_TITLE", mItem.title);
@@ -365,7 +357,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     public void onClickMarketUsedItemRemoveButton() {
         SnackbarUtil.makeLongSnackbarActionYes(mMarketUsedSellNestedscrollview, "삭제하시겠습니까??", () -> {
-            mMarketDetailPresenter.deleteItem(mItem.id);
+            marketDetailPresenter.deleteItem(mItem.id);
         });
     }
 
@@ -383,8 +375,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @Override
     public void showMarketCommentUpdate() {
 //        mMarketCommentInputEditText.setText("");
-//        mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        mInputMethodManager.hideSoftInputFromWindow(mMarketCommentInputEditText.getWindowToken(), 0);
+//        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(mMarketCommentInputEditText.getWindowToken(), 0);
         onRestart();
     }
 
@@ -392,7 +384,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 //    void onCreateCommentButton() {
 //        String comment = mMarketCommentInputEditText.getText().toString().trim();
 //        if (!comment.isEmpty())
-//            mMarketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
+//            marketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
 //        else
 //            ToastUtil.makeShort(context, "댓글을 입력해주세요.");
 //
@@ -402,14 +394,14 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     public void onClickCommentRemoveButton(Comment comment) {
 //        SnackbarUtil.makeLongSnackbarActionYes(mMarketCommentRecyclerVIew, "댓글을 삭제할까요?", () -> {
 //            if (comment.grantDelete) {
-//                mMarketDetailPresenter.deleteComment(comment, mItem);
+//                marketDetailPresenter.deleteComment(comment, mItem);
 //            }
 //        });
     }
 
     @Override
     public void onClickCommentModifyButton(Comment comment) {
-//        mPrevCommentContent = comment.content;
+//        prevCommentContent = comment.content;
 //        makeEditCommentDialog(comment);
     }
 
@@ -426,8 +418,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
                 (dialog, which) -> {
                     if (!FormValidatorUtil.validateStringIsEmpty(editTextContent.getText().toString())) {
                         comment.content = editTextContent.getText().toString().trim();
-                        if (mPrevCommentContent.compareTo(comment.content) != 0) {
-                            mMarketDetailPresenter.editComment(comment, mItem, comment.content);
+                        if (prevCommentContent.compareTo(comment.content) != 0) {
+                            marketDetailPresenter.editComment(comment, mItem, comment.content);
                         }
                     }
                 });
@@ -493,44 +485,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         }
     }
 
-//    public void checkRequiredInfo() {
-//        String nickName;
-//        AuthorizeConstant authorize = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
-//        if (authorize == AuthorizeConstant.ANONYMOUS) {
-//            mMarketCommentInputEditText.setFocusable(false);
-//            mMarketCreateCommentButton.setEnabled(false);
-//            mMarketCommentInputEditText.setText("로그인을 하셔야 입력할 수 있습니다.");
-//            return;
-//        } else {
-//            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
-//        }
-//
-//        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
-//            mMarketCommentInputEditText.setFocusable(false);
-//            mMarketCreateCommentButton.setEnabled(false);
-//            mMarketCommentInputEditText.setText("닉네임을 설정하지 않아 입력할 수 없습니다.");
-//        } else {
-//            mMarketCommentInputEditText.setFocusable(true);
-//            mMarketCommentInputEditText.setFocusableInTouchMode(true);
-//            mMarketCreateCommentButton.setEnabled(true);
-//            mMarketCommentInputEditText.setText("");
-//        }
-//    }
-
-//    @OnClick(R.id.market_used_sell_detail_comment_input_text)
-//    public void onTouchMarketUsedCommentInputText() {
-//        String nickName;
-//        AuthorizeConstant authorize = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
-//        if (authorize == AuthorizeConstant.ANONYMOUS) {
-//            showLoginRequestDialog();
-//            return;
-//        } else {
-//            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
-//        }
-//        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
-//            showNickNameRequestDialog();
-//        }
-//    }
 
     public void showLoginRequestDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

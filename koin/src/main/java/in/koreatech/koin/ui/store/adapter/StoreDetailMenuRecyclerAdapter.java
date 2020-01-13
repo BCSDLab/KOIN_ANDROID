@@ -1,6 +1,7 @@
 package in.koreatech.koin.ui.store.adapter;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
@@ -21,14 +23,14 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
     private final String TAG = StoreDetailMenuRecyclerAdapter.class.getSimpleName();
 
     private Context context;
-    private LayoutInflater mLayoutInflater;
-    private ArrayList<Store> mStoreMenuArrayList;
+    private LayoutInflater layoutInflater;
+    private ArrayList<Store> storeMenuArrayList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.store_detail_menu_name_textview)
-        TextView mStoreDetailMenuNameTextview;
+        TextView storeDetailMenuNameTextview;
         @BindView(R.id.store_detail_menu_price_textview)
-        TextView mStoreDetailMenuPriceTextview;
+        TextView storeDetailMenuPriceTextview;
 
 
         public ViewHolder(View itemView) {
@@ -40,13 +42,13 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
 
     public StoreDetailMenuRecyclerAdapter(Context context, ArrayList<Store> storeArrayList) {
         this.context = context;
-        this.mLayoutInflater = LayoutInflater.from(context);
-        this.mStoreMenuArrayList = new ArrayList<>();
-        this.mStoreMenuArrayList.addAll(storeArrayList);
+        this.layoutInflater = LayoutInflater.from(context);
+        this.storeMenuArrayList = new ArrayList<>();
+        this.storeMenuArrayList.addAll(storeArrayList);
     }
 
-    public void setStoreMenuArrayList(ArrayList<Store> mStoreMenuArrayList) {
-        this.mStoreMenuArrayList = mStoreMenuArrayList;
+    public void setStoreMenuArrayList(ArrayList<Store> storeMenuArrayList) {
+        this.storeMenuArrayList = storeMenuArrayList;
     }
 
     @NonNull
@@ -59,15 +61,16 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
     @Override
     public void onBindViewHolder(@NonNull StoreDetailMenuRecyclerAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        Store storeMenu = mStoreMenuArrayList.get(position);
-        holder.mStoreDetailMenuNameTextview.setText(storeMenu.name);
-        holder.mStoreDetailMenuPriceTextview.setText(storeMenu.detail);
+        Store storeMenu = this.storeMenuArrayList.get(position);
+        holder.storeDetailMenuNameTextview.setText(storeMenu.name);
+        holder.storeDetailMenuPriceTextview.setText(storeMenu.detail);
 
 
     }
+
     @Override
     public int getItemCount() {
-        return mStoreMenuArrayList.size();
+        return this.storeMenuArrayList.size();
     }
 
 }

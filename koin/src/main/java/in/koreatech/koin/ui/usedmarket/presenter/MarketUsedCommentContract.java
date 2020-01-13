@@ -29,10 +29,10 @@ public interface MarketUsedCommentContract {
         void showMarketCommentEditFail();
     }
 
-    interface Presenter extends BasePresenter{
-       void readMarketDetail(int id);
+    interface Presenter extends BasePresenter {
+        void readMarketDetail(int id);
 
-       void createComment(int id, String content);
+        void createComment(int id, String content);
 
         void deleteComment(Comment comment, Item item);
 

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+
 import androidx.annotation.NonNull;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -24,17 +26,17 @@ import static com.google.common.reflect.Reflection.getPackageName;
 public class VersionUpdateDialog extends Dialog {
 
     @BindView(R.id.version_update_dialog_later_textview)
-    TextView mVersionUpdateDialogLaterTextview;
+    TextView versionUpdateDialogLaterTextview;
     @BindView(R.id.version_update_dialog_update_textview)
-    TextView mVersionUpdateDialogUpdateTextview;
+    TextView versionUpdateDialogUpdateTextview;
     @BindView(R.id.version_update_dialog_current_version_textview)
-    TextView mVersionUpdateCurrentVersionTextview;
+    TextView versionUpdateCurrentVersionTextview;
     @BindView(R.id.version_update_dialog_update_version_textview)
-    TextView mVersionUpdateUpdateVersionTextview;
+    TextView versionUpdateUpdateVersionTextview;
     @BindView(R.id.version_update_dialog_info_textview)
-    TextView mVersionUpdateDialogInfoTextview;
+    TextView versionUpdateDialogInfoTextview;
     Context context;
-    VersionDialogClickListener mVersionDialogClickListener;
+    VersionDialogClickListener versionDialogClickListener;
 
 
     public VersionUpdateDialog(@NonNull Context context, int type, String currentVersion, String updateVersion, VersionDialogClickListener versionDialogClickListener) {
@@ -43,25 +45,23 @@ public class VersionUpdateDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setContentView(R.layout.version_update_dialog);
-        this.mVersionDialogClickListener = versionDialogClickListener;
+        this.versionDialogClickListener = versionDialogClickListener;
         ButterKnife.bind(this);
         if (type == Version.PRIORITY_HIGH) {
-            mVersionUpdateDialogLaterTextview.setVisibility(View.GONE);
-            mVersionUpdateDialogInfoTextview.setText("필수 업데이트가 있습니다.\n업데이트 하시겠습니까?");
+            this.versionUpdateDialogLaterTextview.setVisibility(View.GONE);
+            versionUpdateDialogInfoTextview.setText("필수 업데이트가 있습니다.\n업데이트 하시겠습니까?");
+        } else if (type == Version.PRIORITY_MIDDLE) {
+            versionUpdateDialogInfoTextview.setText("최신 업데이트가 있습니다.\n업데이트 하시겠습니까?");
         }
-        else if(type == Version.PRIORITY_MIDDLE)
-        {
-            mVersionUpdateDialogInfoTextview.setText("최신 업데이트가 있습니다.\n업데이트 하시겠습니까?");
-        }
-        mVersionUpdateCurrentVersionTextview.setText("현재버전 : " + currentVersion);
-        mVersionUpdateUpdateVersionTextview.setText("업데이트 버전 : " + updateVersion);
+        versionUpdateCurrentVersionTextview.setText("현재버전 : " + currentVersion);
+        versionUpdateUpdateVersionTextview.setText("업데이트 버전 : " + updateVersion);
         setCancelable(false);
         setCanceledOnTouchOutside(false);
     }
 
     @OnClick(R.id.version_update_dialog_later_textview)
     public void onlaterTextviewClick() {
-        mVersionDialogClickListener.onLaterClick();
+        versionDialogClickListener.onLaterClick();
         dismiss();
     }
 
@@ -75,7 +75,7 @@ public class VersionUpdateDialog extends Dialog {
         } catch (android.content.ActivityNotFoundException exception) {
             startActivity(context, new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)), null);
         }
-        mVersionDialogClickListener.onUpdateClick();
+        versionDialogClickListener.onUpdateClick();
         dismiss();
     }
 

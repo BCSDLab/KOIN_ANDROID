@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,13 +27,13 @@ import in.koreatech.koin.data.network.entity.Circle;
  * Created by hyerim on 2018. 8. 12....
  */
 public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAdapter.ViewHolder> {
-    private final String TAG = CircleRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "CircleRecyclerAdapter";
 
     private Context context;
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Circle> cirlceArrayList;
-    private final RequestOptions mGlideOptions;
-    private final Resources mResource;
+    private final RequestOptions glideOptions;
+    private final Resources resource;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -57,11 +58,11 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
 
     public CircleRecyclerAdapter(Context context, ArrayList<Circle> circleArrayList) {
         this.context = context;
-        this.mResource = context.getResources();
-        this.mLayoutInflater = LayoutInflater.from(context);
+        this.resource = context.getResources();
+        this.layoutInflater = LayoutInflater.from(context);
         this.cirlceArrayList = new ArrayList<>();
         this.cirlceArrayList.addAll(circleArrayList);
-        mGlideOptions = new RequestOptions()
+        glideOptions = new RequestOptions()
                 .fitCenter()
                 .override(300, 300)
                 .error(R.drawable.image_no_image)
@@ -90,7 +91,7 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
         if (circle.logoUrl != null) {
             Glide.with(context)
                     .load(circle.logoUrl)
-                    .apply(mGlideOptions)
+                    .apply(glideOptions)
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.circleItemLogoImageview);
         } else {
@@ -99,10 +100,10 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
         if (circle.backgroundImgUrl != null) {
             Glide.with(context)
                     .load(circle.backgroundImgUrl)
-                    .apply(mGlideOptions)
+                    .apply(glideOptions)
                     .into(holder.circleItemBackgroundImageview);
         } else {
-            holder.circleItemBackgroundImageview.setBackgroundColor(mResource.getColor(R.color.light_navy));
+            holder.circleItemBackgroundImageview.setBackgroundColor(resource.getColor(R.color.light_navy));
         }
 
     }

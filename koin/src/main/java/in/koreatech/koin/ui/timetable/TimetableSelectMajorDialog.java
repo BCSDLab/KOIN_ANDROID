@@ -23,14 +23,14 @@ import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
 import static in.koreatech.koin.ui.timetable.TimetableActivity.select;
 
 public class TimetableSelectMajorDialog extends Dialog implements View.OnClickListener {
-    public static final String TAG = TimetableSelectMajorDialog.class.getName();
-    private ToggleButton[] mToggleButton = new ToggleButton[10];
-    private MajorDialogListener mMajorDialogListener;
+    public static final String TAG = "TimetableSelectMajorDialog";
+    private ToggleButton[] toggleButton = new ToggleButton[10];
+    private MajorDialogListener majorDialogListener;
     @BindView(R.id.textSpace)
-    TextView mTextSpace;
+    TextView textSpace;
     private static final int[] buttonId = {R.id.select_major_computer_engineering, R.id.select_major_electonic_engineering, R.id.select_major_industrial_management, R.id.select_major_design_engineering,
             R.id.select_major_hrd, R.id.select_major_mechanical_engineering, R.id.select_major_chemical_engineering, R.id.select_major_mechatronics_engineering, R.id.select_major_cultural_department, R.id.select_major_mix};
-    private OnCLickedDialogItemListener mOnCLickedDialogItemListener;
+    private OnCLickedDialogItemListener onCLickedDialogItemListener;
     private DepartmentCode selectedDepartmentCode;
 
     @Override
@@ -51,10 +51,11 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
     }
 
     public void setOnCLickedDialogItemListener(OnCLickedDialogItemListener onCLickedDialogItemListener) {
-        mOnCLickedDialogItemListener = onCLickedDialogItemListener;
+        onCLickedDialogItemListener = onCLickedDialogItemListener;
     }
-    public void setMajorDialogListener(MajorDialogListener mMajorDialogListener){
-        this.mMajorDialogListener = mMajorDialogListener;
+
+    public void setMajorDialogListener(MajorDialogListener majorDialogListener) {
+        this.majorDialogListener = majorDialogListener;
     }
 
     public TimetableSelectMajorDialog(@NonNull Context context) {
@@ -65,74 +66,74 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
     @OnClick(R.id.select_major_button)
     public void onClickedCompleteButton() {
         int count = 0;
-        for(int i=0;i<mToggleButton.length;i++){
-            if(mToggleButton[i].isChecked())
+        for (int i = 0; i < toggleButton.length; i++) {
+            if (toggleButton[i].isChecked())
                 count++;
         }
-        if(count == 0){
+        if (count == 0) {
             selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
             select = -1;
         }
 
-        if (mOnCLickedDialogItemListener != null) {
-            mOnCLickedDialogItemListener.onClickedItemList(selectedDepartmentCode);
+        if (onCLickedDialogItemListener != null) {
+            onCLickedDialogItemListener.onClickedItemList(selectedDepartmentCode);
             Log.d(TAG, "selected: " + selectedDepartmentCode.getDepartMentString());
         }
-        Log.e("count",Integer.toString(count));
+        Log.e("count", Integer.toString(count));
         dismiss();
     }
 
-    void rememberRecord(){
-        if(select == -1){
+    void rememberRecord() {
+        if (select == -1) {
             OffToggleButton(-1);
         }
-        if(select == 0){
-            mToggleButton[0].performClick();
+        if (select == 0) {
+            toggleButton[0].performClick();
         }
-        if(select == 1){
-            mToggleButton[1].performClick();
+        if (select == 1) {
+            toggleButton[1].performClick();
         }
-        if(select == 2){
-            mToggleButton[2].performClick();
+        if (select == 2) {
+            toggleButton[2].performClick();
         }
-        if(select == 3){
-            mToggleButton[3].performClick();
+        if (select == 3) {
+            toggleButton[3].performClick();
         }
-        if(select == 4){
-            mToggleButton[4].performClick();
+        if (select == 4) {
+            toggleButton[4].performClick();
         }
-        if(select == 5){
-            mToggleButton[5].performClick();
+        if (select == 5) {
+            toggleButton[5].performClick();
         }
-        if(select == 6){
-            mToggleButton[6].performClick();
+        if (select == 6) {
+            toggleButton[6].performClick();
         }
-        if(select == 7){
-            mToggleButton[7].performClick();
+        if (select == 7) {
+            toggleButton[7].performClick();
         }
-        if(select == 8){
-            mToggleButton[8].performClick();
+        if (select == 8) {
+            toggleButton[8].performClick();
         }
-        if(select == 9){
-            mToggleButton[9].performClick();
+        if (select == 9) {
+            toggleButton[9].performClick();
         }
     }
 
     void OffToggleButton(int index) {
         Log.e("error", "check");
-        if(index == -1) {
+        if (index == -1) {
             for (int i = 0; i < 10; i++) {
-                mToggleButton[i].setChecked(false);
-                mToggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                mToggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                toggleButton[i].setChecked(false);
+                toggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
             }
-        }else {
+        } else {
             for (int i = 0; i < 10; i++) {
-                mToggleButton[i].setChecked(false);
-                mToggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                mToggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                toggleButton[i].setChecked(false);
+                toggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
             }
-            mToggleButton[index].setChecked(true);
+            toggleButton[index].setChecked(true);
         }
     }
 
@@ -150,9 +151,9 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
 
     void init() {
         for (int i = 0; i < 10; i++) {
-            mToggleButton[i] = (ToggleButton) findViewById(buttonId[i]);
-            mToggleButton[i].setOnClickListener(this);
-            
+            toggleButton[i] = (ToggleButton) findViewById(buttonId[i]);
+            toggleButton[i].setOnClickListener(this);
+
         }
     }
 
@@ -160,126 +161,126 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.select_major_computer_engineering:
-                if (mToggleButton[0].isChecked()) {
-                    Log.e("2", Boolean.toString(mToggleButton[0].isChecked()));
+                if (toggleButton[0].isChecked()) {
+                    Log.e("2", Boolean.toString(toggleButton[0].isChecked()));
                     OffToggleButton(0);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_1);
-                    mMajorDialogListener.sendActivity("computer", 0);
-                    mToggleButton[0].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("computer", 0);
+                    toggleButton[0].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
 
                 } else {
-                    Log.e("3", Boolean.toString(mToggleButton[0].isChecked()));
-                    mToggleButton[0].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    Log.e("3", Boolean.toString(toggleButton[0].isChecked()));
+                    toggleButton[0].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_electonic_engineering:
-                if (mToggleButton[1].isChecked()) {
+                if (toggleButton[1].isChecked()) {
                     OffToggleButton(1);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_3);
-                    mMajorDialogListener.sendActivity("elecronic", 1);
-                    mToggleButton[1].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("elecronic", 1);
+                    toggleButton[1].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[1].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[1].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_industrial_management:
-                if (mToggleButton[2].isChecked()) {
+                if (toggleButton[2].isChecked()) {
                     OffToggleButton(2);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_5);
-                    mMajorDialogListener.sendActivity("industrialManagement", 2);
-                    mToggleButton[2].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("industrialManagement", 2);
+                    toggleButton[2].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[2].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[2].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_design_engineering:
-                if (mToggleButton[3].isChecked()) {
+                if (toggleButton[3].isChecked()) {
                     OffToggleButton(3);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_7);
-                    mMajorDialogListener.sendActivity("design", 3);
-                    mToggleButton[3].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("design", 3);
+                    toggleButton[3].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[3].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[3].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_hrd:
-                if (mToggleButton[4].isChecked()) {
+                if (toggleButton[4].isChecked()) {
                     OffToggleButton(4);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_9);
-                    mMajorDialogListener.sendActivity("hrd", 4);
-                    mToggleButton[4].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("hrd", 4);
+                    toggleButton[4].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[4].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[4].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_mechanical_engineering:
-                if (mToggleButton[5].isChecked()) {
+                if (toggleButton[5].isChecked()) {
                     OffToggleButton(5);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_2);
-                    mMajorDialogListener.sendActivity("mecchanical", 5);
-                    mToggleButton[5].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("mecchanical", 5);
+                    toggleButton[5].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[5].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[5].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_chemical_engineering:
-                if (mToggleButton[6].isChecked()) {
+                if (toggleButton[6].isChecked()) {
                     OffToggleButton(6);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_4);
-                    mMajorDialogListener.sendActivity("chemical", 6);
-                    mToggleButton[6].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("chemical", 6);
+                    toggleButton[6].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[6].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[6].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_mechatronics_engineering:
-                if (mToggleButton[7].isChecked()) {
+                if (toggleButton[7].isChecked()) {
                     OffToggleButton(7);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_6);
-                    mMajorDialogListener.sendActivity("mechatronics", 7);
-                    mToggleButton[7].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("mechatronics", 7);
+                    toggleButton[7].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[7].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[7].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_cultural_department:
-                if (mToggleButton[8].isChecked()) {
+                if (toggleButton[8].isChecked()) {
                     OffToggleButton(8);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_8);
-                    mMajorDialogListener.sendActivity("cultural", 8);
-                    mToggleButton[8].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("cultural", 8);
+                    toggleButton[8].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[8].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[8].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
             case R.id.select_major_mix:
-                if (mToggleButton[9].isChecked()) {
+                if (toggleButton[9].isChecked()) {
                     OffToggleButton(9);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_10);
-                    mMajorDialogListener.sendActivity("mix", 9);
-                    mToggleButton[9].setBackgroundResource(R.drawable.button_rect_squash_radius);
-                    mToggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    majorDialogListener.sendActivity("mix", 9);
+                    toggleButton[9].setBackgroundResource(R.drawable.button_rect_squash_radius);
+                    toggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
-                    mToggleButton[9].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    mToggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[9].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
+                    toggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
                 }
                 break;
         }

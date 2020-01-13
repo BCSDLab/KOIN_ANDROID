@@ -41,7 +41,7 @@ import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_RECRUIT;
  * Edited by seongyun on 2019. 11. 15....
  */
 public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
-//시간표,복덕방,분실물
+    //시간표,복덕방,분실물
     private final int[] mMenuId = {
             R.id.navi_item_myinfo,
             R.id.navi_item_store, R.id.navi_item_bus,
@@ -136,7 +136,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     }
 
     @Override
-    protected void goToSearchActivity(){
+    protected void goToSearchActivity() {
         goToActivityFinish(new Intent(this, SearchActivity.class));
     }
 

@@ -4,22 +4,22 @@ import com.google.firebase.perf.FirebasePerformance;
 import com.google.firebase.perf.metrics.Trace;
 
 public class FirebasePerformanceUtil {
-    Trace mTrace;
+    Trace trace;
 
     public FirebasePerformanceUtil(String name) {
-        this.mTrace = FirebasePerformance.getInstance().newTrace(name);
+        this.trace = FirebasePerformance.getInstance().newTrace(name);
     }
 
     public void start() {
-        mTrace.start();
+        trace.start();
     }
 
     public void stop() {
-        mTrace.stop();
+        trace.stop();
     }
 
     public void incrementMetric(String name, long number) {
-        mTrace.incrementMetric(name, number);
+        trace.incrementMetric(name, number);
     }
 
 }

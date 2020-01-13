@@ -485,7 +485,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     @Override
     public void showLoading() {
-        ((BusActivity) getActivity()).showProgressDialog("로딩 중");
+        ((BusActivity) getActivity()).showProgressDialog(R.string.loading);
 
     }
 

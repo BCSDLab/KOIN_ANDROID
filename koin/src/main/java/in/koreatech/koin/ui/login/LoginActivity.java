@@ -34,21 +34,20 @@ import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 public class LoginActivity extends ActivityBase implements LoginContract.View {
     private final String TAG = "LoginActivity";
     private Context context;
-    private LoginContract.Presenter mLoginPresenter;
-    private boolean mIsMainActivity;
-    private CustomProgressDialog customProgressDialog;
+    private LoginContract.Presenter loginPresenter;
+    private boolean isMainActivity;
 
     /* View Components */
     @BindView(R.id.login_edittext_id)
-    EditText mEditTextID;
+    EditText editTextID;
     @BindView(R.id.login_edittext_pw)
-    EditText mEditTextPW;
+    EditText editTextPW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mIsMainActivity = getIntent().getBooleanExtra("FIRST_LOGIN", true);
+        this.isMainActivity = getIntent().getBooleanExtra("FIRST_LOGIN", true);
         ButterKnife.bind(this);
         init();
     }
@@ -60,14 +59,14 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
 
     @Override
     public void setPresenter(LoginContract.Presenter presenter) {
-        mLoginPresenter = presenter;
+        this.loginPresenter = presenter;
     }
 
     @OnEditorAction({R.id.login_edittext_id, R.id.login_edittext_pw})
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         switch (v.getId()) {
             case R.id.login_edittext_id:
-                mEditTextPW.requestFocus();
+                this.editTextPW.requestFocus();
                 break;
             case R.id.login_edittext_pw:
                 View view = this.getCurrentFocus();
@@ -96,10 +95,10 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
             Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        if (validateStringIsEmpty(mEditTextID.getText().toString()) || validateStringIsEmpty(mEditTextPW.getText().toString())) {
+        if (validateStringIsEmpty(this.editTextID.getText().toString()) || validateStringIsEmpty(this.editTextPW.getText().toString())) {
             ToastUtil.getInstance().makeShort("아이디와 비밀번호를 입력해주세요");
         } else {
-            mLoginPresenter.login(mEditTextID.getText().toString(), mEditTextPW.getText().toString(), false);
+            this.loginPresenter.login(this.editTextID.getText().toString(), this.editTextPW.getText().toString(), false);
         }
     }
 
@@ -115,36 +114,30 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
 
     @OnClick(R.id.anonymous_login_linearLayout)
     public void onClickAnonymousLogin() {
-        if (mIsMainActivity) {
+        if (this.isMainActivity) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            mIsMainActivity = false;
+            this.isMainActivity = false;
         }
         finish();
     }
 
     @Override
     public void gotoMain() {
-        if (mIsMainActivity) {
+        if (this.isMainActivity) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            mIsMainActivity = false;
+            this.isMainActivity = false;
         }
         finish();
     }
 
     @Override
     public void showProgress() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "진행 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog("진행 중");
     }
 
     @Override
     public void hideProgress() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     /**

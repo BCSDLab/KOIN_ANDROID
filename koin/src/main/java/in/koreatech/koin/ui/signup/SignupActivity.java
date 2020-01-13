@@ -43,12 +43,11 @@ import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
 public class SignupActivity extends ActivityBase implements SignupContract.View {
     final static String TAG = "SignupActivity";
 
-    private Context mContext;
-    private SignupContract.Presenter mSignupPresenter;
+    private Context context;
+    private SignupContract.Presenter signupPresenter;
     private boolean isverified;
-    private FirebasePerformanceUtil mFirebasePerformanceUtil;
-    private long mSignUpButtonClickCount; // Firebase Performance 측정 회원가입 버튼 클릭 빈도수 측정
-    private static CustomProgressDialog mGenerateProgress;
+    private FirebasePerformanceUtil firebasePerformanceUtil;
+    private long signUpButtonClickCount; // Firebase Performance 측정 회원가입 버튼 클릭 빈도수 측정
 
     /* View Components */
     @BindView(R.id.signup_edittext_id)
@@ -73,7 +72,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
-        mContext = this;
+        this.context = this;
 
         init();
 
@@ -111,11 +110,11 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     private void init() {
         isverified = false;
-        mFirebasePerformanceUtil = new FirebasePerformanceUtil("signup_activity");
+        this.firebasePerformanceUtil = new FirebasePerformanceUtil("signup_activity");
         mTextViewPersonalInfoTerms.setPaintFlags(mTextViewPersonalInfoTerms.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         mTextViewSignUpTerms.setPaintFlags(mTextViewPersonalInfoTerms.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        mFirebasePerformanceUtil.start();
-        mSignUpButtonClickCount = 0;
+        this.firebasePerformanceUtil.start();
+        this.signUpButtonClickCount = 0;
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -138,7 +137,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     @Override
     public void setPresenter(SignupContract.Presenter presenter) {
-        this.mSignupPresenter = presenter;
+        this.signupPresenter = presenter;
     }
 
     @OnTextChanged({R.id.signup_edittext_pw, R.id.signup_edittext_pw_confirm})
@@ -163,7 +162,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     @OnClick(R.id.signup_send_verification_button)
     public void onClickSendVerificationButton() {
         if (isverified) {
-            ToastUtil.getInstance().makeShort( "확인 메일 전송중입니다 잠시만 기다려 주세요");
+            ToastUtil.getInstance().makeShort("확인 메일 전송중입니다 잠시만 기다려 주세요");
             return;
         }
         View view = this.getCurrentFocus();
@@ -188,8 +187,8 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
             return;
         }
 
-        mFirebasePerformanceUtil.incrementMetric("signup_button_click", ++mSignUpButtonClickCount);
-        mSignupPresenter.signUp(mEditTextID.getText().toString(), mEditTextPW.getText().toString());
+        this.firebasePerformanceUtil.incrementMetric("signup_button_click", ++this.signUpButtonClickCount);
+        this.signupPresenter.signUp(mEditTextID.getText().toString(), mEditTextPW.getText().toString());
         isverified = true;
     }
 
@@ -211,7 +210,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     @Override
     public void gotoEmail() {
         SnackbarUtil.makeSnackbarActionWebView(this, R.id.signup_box, "10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?",
-                "KOREATECH E-mail 인증", mContext.getResources().getString(R.string.koreatech_url), 5000);
+                "KOREATECH E-mail 인증", this.context.getResources().getString(R.string.koreatech_url), 5000);
         isverified = false;
     }
 
@@ -283,7 +282,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     @Override
     protected void onDestroy() {
-        mFirebasePerformanceUtil.stop();
+        this.firebasePerformanceUtil.stop();
         super.onDestroy();
     }
 
@@ -294,12 +293,11 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     @Override
     public void showProgress() {
-        mGenerateProgress = new CustomProgressDialog(mContext, "이메일 전송 중");
-        mGenerateProgress.execute();
+        showProgressDialog("이메일 전송 중");
     }
 
     @Override
     public void hideProgress() {
-        mGenerateProgress.cancel(true); //프로그레스바 해제
+        hideProgressDialog();//프로그레스바 해제
     }
 }

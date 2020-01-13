@@ -11,20 +11,20 @@ import java.io.OutputStream;
 
 public class FileUtil {
 
-    private static FileUtil mInstance;
+    private static FileUtil instance;
 
     private FileUtil() {
     }
 
     public static FileUtil getInstance() {
-        if (mInstance == null) {
+        if (instance == null) {
             synchronized (FileUtil.class) {
-                if (mInstance == null) {
-                    mInstance = new FileUtil();
+                if (instance == null) {
+                    instance = new FileUtil();
                 }
             }
         }
-        return mInstance;
+        return instance;
     }
 
     /**

@@ -4,23 +4,23 @@ import in.koreatech.koin.core.helper.TimerRenewListener;
 
 public class BusTimerUtil extends TimerUtil {
 
-    private TimerRenewListener mTimerRenewListener;
-    private int mTimerCode;
+    private TimerRenewListener timerRenewListener;
+    private int timerCode;
 
     public BusTimerUtil(int code) {
-        this.mTimerCode = code;
+        this.timerCode = code;
     }
 
     @Override
     public void endTimer() {
         stopTimer();
-        if (mEndTime <= 0)
-            mTimerRenewListener.refreshTimer(mTimerCode);
+        if (endTime <= 0)
+            timerRenewListener.refreshTimer(timerCode);
     }
 
 
     public void setTimerRenewListener(TimerRenewListener timerRenewListener) {
-        this.mTimerRenewListener = timerRenewListener;
+        this.timerRenewListener = timerRenewListener;
     }
 
 

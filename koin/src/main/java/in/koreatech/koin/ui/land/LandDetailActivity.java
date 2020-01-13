@@ -44,7 +44,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     private int landId;
     private Double landLatitude;
     private Double landLongitude;
-    private CustomProgressDialog landDetailGenerateProgress;
     private LandDetailPresenter landDetailPresenter;
     private NaverMap naverMap;
     private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
@@ -264,8 +263,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void showLoading() {
-        landDetailGenerateProgress = new CustomProgressDialog(this, "로딩 중");
-        landDetailGenerateProgress.execute();
+        showProgressDialog(R.string.loading);
     }
 
     /**
@@ -273,7 +271,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void hideLoading() {
-        landDetailGenerateProgress.cancel(true);
+        hideProgressDialog();
 
     }
 

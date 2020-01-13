@@ -34,11 +34,10 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
     private final static String TAG = "ForgotPasswordActivity";
 
     private Context context;
-    private ForgotPasswordContract.Presenter mForgotPasswordPresenter;
-    private CustomProgressDialog customProgressDialog;
+    private ForgotPasswordContract.Presenter forgotPasswordPresenter;
 
     @BindView(R.id.forgot_password_id_edittext)
-    EditText mIdEditText;
+    EditText idEditText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +69,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
 
     @Override
     public void setPresenter(@NonNull ForgotPasswordContract.Presenter presenter) {
-        mForgotPasswordPresenter = checkNotNull(presenter);
+        forgotPasswordPresenter = checkNotNull(presenter);
     }
 
     @OnEditorAction(R.id.forgot_password_id_edittext)
@@ -91,18 +90,12 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
 
     @Override
     public void showProgress() {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(this, "진행 중");
-            customProgressDialog.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideProgress() {
-        if (customProgressDialog != null) {
-            customProgressDialog.cancel(true);
-            customProgressDialog = null;
-        }
+        hideProgressDialog();
     }
 
     @Override
@@ -118,7 +111,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
             Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        mForgotPasswordPresenter.findPassword(mIdEditText.getText().toString());
+        forgotPasswordPresenter.findPassword(idEditText.getText().toString());
     }
 
     @OnClick(R.id.forgot_password_to_login_button)

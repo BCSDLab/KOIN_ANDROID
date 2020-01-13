@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.transition.Explode;
 import android.util.Pair;
@@ -31,42 +33,41 @@ import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.circle.adapter.CircleRecyclerAdapter;
-import in.koreatech.koin.ui.circle.presenter.CIrcleContract;
+import in.koreatech.koin.ui.circle.presenter.CircleContract;
 import in.koreatech.koin.ui.circle.presenter.CirclePresenter;
 
 /**
  * Created by hyerim on 2018. 8. 12....
  */
-public class CircleActivity extends KoinNavigationDrawerActivity implements CIrcleContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = CircleActivity.class.getSimpleName();
+public class CircleActivity extends KoinNavigationDrawerActivity implements CircleContract.View, SwipeRefreshLayout.OnRefreshListener {
+    private final String TAG = "CircleActivity";
     public static final String SHARE_VIEW_NAME_APP_BAR = "KOIN_BASE_APPBAR";
     public static final String SHARE_VIEW_NAME_LOGO = "LOGO";
     public static final String SHARE_VIEW_DETAIL = "DETAIL";
     public static final String SHARE_VIEW_NAME = "NAME";
-    private Context mContext;
-    private CircleRecyclerAdapter mCircleRecyclerAdapyter;
-    private static CustomProgressDialog mGenerateProgress;
+    private Context context;
+    private CircleRecyclerAdapter circleRecyclerAdapytercontext;
 
-    private CirclePresenter mCirlcePresenter;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
-    private ArrayList<Circle> mCirlceArrayList; //store list
-    private ArrayList<Circle> mCircleAllArraylist; //All store list
-    private int mCategorySelectedNumber;
-    private Resources mResource;
-    private String[] mCategoryCode;
-    private RecyclerView.ViewHolder mViewHolder;
+    private CirclePresenter cirlcePresenter;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
+    private ArrayList<Circle> cirlceArrayList; //store list
+    private ArrayList<Circle> circleAllArraylist; //All store list
+    private int categorySelectedNumber;
+    private Resources resource;
+    private String[] categoryCode;
+    private RecyclerView.ViewHolder viewHolder;
 
 
     /* View Component */
     @BindView(R.id.koin_base_app_bar_dark)
     AppbarBase appbarBase;
     @BindView(R.id.circle_recyclerview)
-    RecyclerView mCircleListRecyclerView;
-    ImageView mCircleItemLogoImageview;
-    ImageView mCircleItemLogoBackgroundImageview;
-    ImageView mCircleItemBackgroundImageview;
-    TextView mCircleItemNameTextview;
-    TextView mCircleItemDetailTextview;
+    RecyclerView circleListRecyclerView;
+    ImageView circleItemLogoImageview;
+    ImageView circleItemLogoBackgroundImageview;
+    ImageView circleItemBackgroundImageview;
+    TextView circleItemNameTextview;
+    TextView circleItemDetailTextview;
 
     private final int[] mCircleCategoryListId = {
             R.id.circle_all_imageview,
@@ -109,14 +110,14 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.circle_activity_main);
         ButterKnife.bind(this);
-        mContext = this;
+        context = this;
         init();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mCirlcePresenter.getCirlceList(1);
+        this.cirlcePresenter.getCirlceList(1);
     }
 
 
@@ -141,19 +142,19 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
     }
 
     private void init() {
-        mResource = getResources();
-        mCategorySelectedNumber = 0; //메뉴 전체로 초기화
-        mLayoutManager = new LinearLayoutManager(this);
-        mCirlceArrayList = new ArrayList<>();
-        mCircleAllArraylist = new ArrayList<>();
-        mCategoryCode = mResource.getStringArray(R.array.cirlce_category_list_code);
-        mCircleRecyclerAdapyter = new CircleRecyclerAdapter(mContext, new ArrayList<>());
+        resource = getResources();
+        this.categorySelectedNumber = 0; //메뉴 전체로 초기화
+        layoutManager = new LinearLayoutManager(this);
+        cirlceArrayList = new ArrayList<>();
+        circleAllArraylist = new ArrayList<>();
+        categoryCode = resource.getStringArray(R.array.cirlce_category_list_code);
+        circleRecyclerAdapytercontext = new CircleRecyclerAdapter(context, new ArrayList<>());
         setCategoryColor(0, CLIICKED);
-        mCircleListRecyclerView.setHasFixedSize(true);
-        mCircleListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
-        mCircleListRecyclerView.setLayoutManager(mLayoutManager);
-        mCircleListRecyclerView.setAdapter(mCircleRecyclerAdapyter);
-        mCircleListRecyclerView.setNestedScrollingEnabled(false);
+        circleListRecyclerView.setHasFixedSize(true);
+        circleListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
+        circleListRecyclerView.setLayoutManager(layoutManager);
+        circleListRecyclerView.setAdapter(circleRecyclerAdapytercontext);
+        circleListRecyclerView.setNestedScrollingEnabled(false);
 
         setPresenter(new CirclePresenter(this, new CircleRestInteractor()));
     }
@@ -168,73 +169,71 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void setPresenter(CirclePresenter presenter) {
-        this.mCirlcePresenter = presenter;
+        this.cirlcePresenter = presenter;
     }
 
 
     @Override
     public void showLoading() {
-        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
-        mGenerateProgress.execute();
+        showProgressDialog(R.string.loading);
     }
 
     @OnClick({R.id.circle_all_linear_layout, R.id.circle_art_linear_layout, R.id.circle_show_linear_layout, R.id.circle_sport_linear_layout,
             R.id.circle_study_linear_layout, R.id.circle_religion_linear_layout, R.id.circle_service_linear_layout, R.id.circle_etc_linear_layout
     })
     public void onClickCircleCategory(View view) {
-        mGenerateProgress = new CustomProgressDialog(mContext, "로딩 중");
-        mGenerateProgress.execute();
+        showProgressDialog(R.string.loading);
         initCategoryColor();
         switch (view.getId()) {
             case R.id.circle_all_linear_layout:
                 setCategoryColor(0, CLIICKED);
-                mCategorySelectedNumber = 0;
+                this.categorySelectedNumber = 0;
                 break;
             case R.id.circle_art_linear_layout:
                 setCategoryColor(1, CLIICKED);
-                mCategorySelectedNumber = 1;
+                this.categorySelectedNumber = 1;
                 break;
             case R.id.circle_show_linear_layout:
                 setCategoryColor(2, CLIICKED);
-                mCategorySelectedNumber = 2;
+                this.categorySelectedNumber = 2;
                 break;
             case R.id.circle_sport_linear_layout:
                 setCategoryColor(3, CLIICKED);
-                mCategorySelectedNumber = 3;
+                this.categorySelectedNumber = 3;
                 break;
             case R.id.circle_study_linear_layout:
                 setCategoryColor(4, CLIICKED);
-                mCategorySelectedNumber = 4;
+                this.categorySelectedNumber = 4;
                 break;
             case R.id.circle_religion_linear_layout:
                 setCategoryColor(5, CLIICKED);
-                mCategorySelectedNumber = 5;
+                this.categorySelectedNumber = 5;
                 break;
             case R.id.circle_service_linear_layout:
                 setCategoryColor(6, CLIICKED);
-                mCategorySelectedNumber = 6;
+                this.categorySelectedNumber = 6;
                 break;
             case R.id.circle_etc_linear_layout:
                 setCategoryColor(7, CLIICKED);
-                mCategorySelectedNumber = 7;
+                this.categorySelectedNumber = 7;
                 break;
         }
-        sortByCategory(mCategoryCode[mCategorySelectedNumber]);
+        sortByCategory(categoryCode[this.categorySelectedNumber]);
     }
 
     public void sortByCategory(String categoryCode) {
-        mCirlceArrayList.clear();
+        cirlceArrayList.clear();
 
-        if (categoryCode.equals(mCategoryCode[0]))
-            mCirlceArrayList.addAll(mCircleAllArraylist);
+        if (categoryCode.equals(this.categoryCode[0]))
+            cirlceArrayList.addAll(circleAllArraylist);
         else {
-            for (Circle item : mCircleAllArraylist) {
+            for (Circle item : circleAllArraylist) {
                 if (item.category.equals(categoryCode))
-                    mCirlceArrayList.add(item);
+                    cirlceArrayList.add(item);
             }
         }
         updateUserInterface();
-        mGenerateProgress.cancel(true);
+        hideProgressDialog();
     }
 
     public void initCategoryColor() {
@@ -254,7 +253,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void hideLoading() {
-        mGenerateProgress.cancel(true);
+        hideProgressDialog();
     }
 
     @Override
@@ -264,12 +263,12 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void onCircleListDataReceived(ArrayList<Circle> circleArrayList) {
-        mCirlceArrayList.clear();
-        mCircleAllArraylist.clear();
+        cirlceArrayList.clear();
+        circleAllArraylist.clear();
 
-        mCirlceArrayList.addAll(circleArrayList);
-        mCircleAllArraylist.addAll(circleArrayList);
-        sortByCategory(mCategoryCode[mCategorySelectedNumber]);
+        cirlceArrayList.addAll(circleArrayList);
+        circleAllArraylist.addAll(circleArrayList);
+        sortByCategory(categoryCode[this.categorySelectedNumber]);
 
         updateUserInterface();
 
@@ -284,9 +283,9 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
         ActivityOptions options = ActivityOptions
                 .makeSceneTransitionAnimation(this,
                         Pair.create(appbarBase, SHARE_VIEW_NAME_APP_BAR),
-                        Pair.create(mCircleItemLogoImageview, SHARE_VIEW_NAME_LOGO),
-                        Pair.create(mCircleItemNameTextview, SHARE_VIEW_NAME),
-                        Pair.create(mCircleItemDetailTextview, SHARE_VIEW_DETAIL)
+                        Pair.create(circleItemLogoImageview, SHARE_VIEW_NAME_LOGO),
+                        Pair.create(circleItemNameTextview, SHARE_VIEW_NAME),
+                        Pair.create(circleItemDetailTextview, SHARE_VIEW_DETAIL)
                 );
         intent.putExtra("CIRCLE_ID", circleId);
         intent.putExtra("CIRCLE_NAME", circleName);
@@ -295,8 +294,8 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void updateUserInterface() {
-        mCircleRecyclerAdapyter = new CircleRecyclerAdapter(mContext, mCirlceArrayList);
-        mCircleListRecyclerView.setAdapter(mCircleRecyclerAdapyter);
+        circleRecyclerAdapytercontext = new CircleRecyclerAdapter(context, cirlceArrayList);
+        circleListRecyclerView.setAdapter(circleRecyclerAdapytercontext);
 
 
     }
@@ -304,11 +303,11 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
     private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
-            mViewHolder = mCircleListRecyclerView.findViewHolderForAdapterPosition(position);
-            mCircleItemLogoImageview = mViewHolder.itemView.findViewById(R.id.circle_item_logo_imageview);
-            mCircleItemNameTextview = mViewHolder.itemView.findViewById(R.id.circle_item_name_textview);
-            mCircleItemDetailTextview = mViewHolder.itemView.findViewById(R.id.circle_item_detail_textview);
-            goToCircleDetailActivity(mCirlceArrayList.get(position).id, mCirlceArrayList.get(position).name);
+            viewHolder = circleListRecyclerView.findViewHolderForAdapterPosition(position);
+            circleItemLogoImageview = viewHolder.itemView.findViewById(R.id.circle_item_logo_imageview);
+            circleItemNameTextview = viewHolder.itemView.findViewById(R.id.circle_item_name_textview);
+            circleItemDetailTextview = viewHolder.itemView.findViewById(R.id.circle_item_detail_textview);
+            goToCircleDetailActivity(cirlceArrayList.get(position).id, cirlceArrayList.get(position).name);
         }
 
         @Override
@@ -318,6 +317,6 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements CIrc
 
     @Override
     public void onRefresh() {
-        mCirlcePresenter.getCirlceList(1);
+        this.cirlcePresenter.getCirlceList(1);
     }
 }

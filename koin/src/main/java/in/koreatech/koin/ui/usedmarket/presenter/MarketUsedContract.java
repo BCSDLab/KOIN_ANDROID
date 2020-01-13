@@ -7,7 +7,7 @@ import in.koreatech.koin.data.network.response.MarketPageResponse;
 
 
 public interface MarketUsedContract {
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
         void showLoading();
 
         void hideLoading();
