@@ -190,23 +190,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
             @Override
             public void onUpload(Bitmap bitmap, String uuid) {
-//                View removeButton = null;
-//                View layout = findViewByTag(articleEditor.getParentView(), uuid);
-//                if (layout != null)
-//                    removeButton = layout.findViewById(R.id.btn_remove);
-//                if (removeButton != null)
-//                    removeButton.setOnClickListener(view -> {
-//                        Log.d(TAG, "이미지 업로드 취소");
-//                        isUploadingImage = false;
-//                    });
-//                ViewGroup viewGroup = articleEditor.getParentView().findViewWithTag(uuid);
-//                if (viewGroup != null) removeButton = viewGroup.findViewById(R.id.btn_remove);
-//                else Log.e(TAG, "뷰그룹 못찾음");
-//                if (removeButton != null) {
-//                    ToastUtil.makeShortToast(mContext, "삭제버튼 클릭");
-//                    isUploadingImage = false;
-//                }
-//                else Log.e(TAG, "버튼 못찾음");
                 isUploadingImage = true;
 
                 Observable.defer(() -> {
