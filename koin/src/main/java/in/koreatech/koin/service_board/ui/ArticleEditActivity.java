@@ -37,9 +37,11 @@ import android.webkit.URLUtil;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.github.irshulx.Editor;
 import com.github.irshulx.EditorListener;
+import com.github.irshulx.models.EditorControl;
 import com.github.irshulx.models.EditorTextStyle;
 import com.github.irshulx.models.Node;
 
@@ -49,6 +51,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -115,12 +118,13 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private boolean isEdit;
     private boolean isCreateBtnClicked;
     private boolean isUploadingImage;
+    private HashMap<String, Bitmap> uploadImageHashMap;
     private InputMethodManager mInputMethodManager;
 
     @BindView(R.id.article_edittext_title)
     EditText mEditTextTitle;
     @BindView(R.id.article_editor_content)
-    Editor articleEditor;
+    KoinRichEditor articleEditor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,11 +132,19 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         setContentView(R.layout.activity_article_edit);
         ButterKnife.bind(this);
         this.mContext = this;
+        uploadImageHashMap = new HashMap<>();
         initEditor();
         //isEdit = false로 게시물 작성을 기본값으로 함
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
         mBoardUid = getIntent().getIntExtra("BOARD_UID", 0);
         articleEditor.setEditorImageLayout(R.layout.rich_editor_image_layout);
+        articleEditor.setOnCancelListener(view -> {
+            uploadImageHashMap.remove(((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
+            Log.d(TAG, "remove id: "+((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
+            articleEditor.onImageUploadFailed(((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
+            articleEditor.getParentView().removeView(((RelativeLayout) view.getParent()));
+            ((RelativeLayout) view.getParent()).setVisibility(View.GONE);
+        });
         //게시물 수정인 경우
         if (isEdit) {
             mArticleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
@@ -147,7 +159,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 mArticleEdittextPassword.setText(mPassword);
                 mArticleEdittextPassword.setFocusableInTouchMode(false);
                 mArticleEdittextNickname.setFocusableInTouchMode(false);
-
             }
         }
 
@@ -180,7 +191,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             createURLCreateDialog();
         });
         findViewById(R.id.action_erase).setOnClickListener(v -> SnackbarUtil.makeLongSnackbarActionYes(articleEditor, getString(R.string.erase_button_pressed), this::eraseEditorText));
-        findViewById(R.id.action_blockquote).   setOnClickListener(v -> articleEditor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
+        findViewById(R.id.action_blockquote).setOnClickListener(v -> articleEditor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
         findViewById(R.id.action_color).setOnClickListener(view -> createColorPicker());
         articleEditor.setEditorListener(new EditorListener() {
             @Override
@@ -190,24 +201,24 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
             @Override
             public void onUpload(Bitmap bitmap, String uuid) {
-                isUploadingImage = true;
-
-                Observable.defer(() -> {
-                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
-                    return Observable.just(imageFile);
-                })
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(imageFile -> {
-                            if (isUploadingImage)
-                                mArticleEditPresenter.uploadImage(imageFile, uuid);
-                        }, throwable -> {
-                            new Handler().post(() -> {
-                                articleEditor.onImageUploadFailed(uuid);
-                                ToastUtil.makeLongToast(mContext, R.string.fail_upload);
-                                isUploadingImage = false;
-                            });
-
-                        });
+//                isUploadingImage = true;
+                uploadImageHashMap.put(uuid, bitmap);
+//                Observable.defer(() -> {
+//                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
+//                    return Observable.just(imageFile);
+//                })
+//                        .subscribeOn(Schedulers.io())
+//                        .subscribe(imageFile -> {
+//                            if (isUploadingImage)
+//                                mArticleEditPresenter.uploadImage(imageFile, uuid);
+//                        }, throwable -> {
+//                            new Handler().post(() -> {
+//                                articleEditor.onImageUploadFailed(uuid);
+//                                ToastUtil.makeLongToast(mContext, R.string.fail_upload);
+//                                isUploadingImage = false;
+//                            });
+//
+//                        });
             }
 
             @Override
@@ -218,45 +229,45 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         articleEditor.render();
     }
 
-    private void findImageViewGroupByTag(ViewGroup viewGroup, String tag, int id, View searchView) {
-
-        int count = viewGroup.getChildCount();
-        for (int i = 0; i < count; i++) {
-            View view = viewGroup.getChildAt(i);
-            if (view.getTag().equals(tag)) {
-                ToastUtil.makeShortToast(this, "찾았습니다!!");
-                Log.e(TAG, "findImageViewByTag: " + view.getId());
-                searchView = view.findViewById(id);
-
-            }
-            if (view instanceof ViewGroup)
-                findImageViewGroupByTag((ViewGroup) view, tag, id, searchView);
-
-        }
-    }
-
-    private View findViewByTag(View view, String tag) {
-        Stack<View> stack = new Stack<>();
-        stack.push(view);
-
-        while (!stack.isEmpty()) {
-            view = stack.pop();
-            if (view.findViewWithTag(tag) != null) {
-                ToastUtil.makeShortToast(this, "찾았습니다!!");
-                Log.e(TAG, "findImageViewByTag: " + view.getId());
-                return view.findViewWithTag(tag);
-            }
-            if (view instanceof ViewGroup) {
-                int count = ((ViewGroup) view).getChildCount();
-                for (int i = 0; i < count; i++) {
-                    View searchView = ((ViewGroup) view).getChildAt(i);
-                    stack.push(searchView);
-
-                }
-            }
-        }
-        return null;
-    }
+//    private void findImageViewGroupByTag(ViewGroup viewGroup, String tag, int id, View searchView) {
+//
+//        int count = viewGroup.getChildCount();
+//        for (int i = 0; i < count; i++) {
+//            View view = viewGroup.getChildAt(i);
+//            if (view.getTag().equals(tag)) {
+//                ToastUtil.makeShortToast(this, "찾았습니다!!");
+//                Log.e(TAG, "findImageViewByTag: " + view.getId());
+//                searchView = view.findViewById(id);
+//
+//            }
+//            if (view instanceof ViewGroup)
+//                findImageViewGroupByTag((ViewGroup) view, tag, id, searchView);
+//
+//        }
+//    }
+//
+//    private View findViewByTag(View view, String tag) {
+//        Stack<View> stack = new Stack<>();
+//        stack.push(view);
+//
+//        while (!stack.isEmpty()) {
+//            view = stack.pop();
+//            if (view.findViewWithTag(tag) != null) {
+//                ToastUtil.makeShortToast(this, "찾았습니다!!");
+//                Log.e(TAG, "findImageViewByTag: " + view.getId());
+//                return view.findViewWithTag(tag);
+//            }
+//            if (view instanceof ViewGroup) {
+//                int count = ((ViewGroup) view).getChildCount();
+//                for (int i = 0; i < count; i++) {
+//                    View searchView = ((ViewGroup) view).getChildAt(i);
+//                    stack.push(searchView);
+//
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
 
     @Override
