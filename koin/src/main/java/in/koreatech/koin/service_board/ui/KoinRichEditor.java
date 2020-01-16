@@ -18,8 +18,11 @@ import com.github.irshulx.models.EditorType;
 
 import in.koreatech.koin.R;
 
+/**
+ *  기존 Rich Editor에서 이미지를 지우는 기능을 하는
+ *  btn_remove의 클릭 리스너를 만들기 위해 Rich Editor를 상속 받은 클래스
+ */
 public class KoinRichEditor extends Editor {
-    private EditorCore editorCore;
     private OnClickListener cancelClickListener;
 
     public KoinRichEditor(Context context, AttributeSet attrs) {
@@ -33,8 +36,6 @@ public class KoinRichEditor extends Editor {
     @Override
     public void insertImage(Bitmap bitmap) {
         View view = getImageExtensions().insertImage(bitmap, null, -1, null, true);
-        view.findViewById(R.id.progress).setVisibility(View.GONE);
-        view.findViewById(R.id.lblStatus).setVisibility(View.GONE);
         if (cancelClickListener != null) {
            view.findViewById(R.id.btn_remove).setOnClickListener(cancelClickListener);
         }

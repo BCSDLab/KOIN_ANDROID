@@ -14,6 +14,7 @@ import in.koreatech.koin.core.networks.entity.MarketItem;
 import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.core.networks.responses.MarketPageResponse;
 import in.koreatech.koin.core.networks.services.MarketService;
+import in.koreatech.koin.core.networks.services.TemporaryCommunityService;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -426,10 +427,16 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
 
     @Override
     public void uploadImage(File file, ApiCallback apiCallback) {
+        Observable<Image> imageObservable;
         String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-        RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postUploadImage(addAuthorizationBearer(token), filePart)
-                .subscribeOn(Schedulers.io())
+        if (token != null) {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postUploadImage(addAuthorizationBearer(token), filePart);
+        } else {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(TemporaryCommunityService.class).postUploadImage(filePart);
+
+        }
+        imageObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Image>() {
 

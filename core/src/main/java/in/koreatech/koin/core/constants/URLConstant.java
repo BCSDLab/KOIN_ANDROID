@@ -87,6 +87,12 @@ public class URLConstant {
         public static final String ARTICLESEARCH = "articles/"+SEARCH;
     }
 
+    public static final class TEMP{
+        public static final String TEMP = "/temp";
+        public static final String TEMP_IMAGE_UPLOAD = TEMP + "/items/image/upload";
+
+    }
+
 
 
 }

@@ -118,7 +118,8 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private boolean isEdit;
     private boolean isCreateBtnClicked;
     private boolean isUploadingImage;
-    private HashMap<String, Bitmap> uploadImageHashMap;
+    private HashMap<String, Boolean> uploadImageHashMap;             // 갤러리에서 불러온 이미지의 HashMap
+    private HashMap<String, Boolean> isUploadImageCompeleteHashMap;  // 압축 과정을 완료한 이미지의 HashMap
     private InputMethodManager mInputMethodManager;
 
     @BindView(R.id.article_edittext_title)
@@ -133,17 +134,20 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         ButterKnife.bind(this);
         this.mContext = this;
         uploadImageHashMap = new HashMap<>();
+        isUploadImageCompeleteHashMap = new HashMap<>();
         initEditor();
         //isEdit = false로 게시물 작성을 기본값으로 함
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
         mBoardUid = getIntent().getIntExtra("BOARD_UID", 0);
         articleEditor.setEditorImageLayout(R.layout.rich_editor_image_layout);
+
+        // btn_remove 버튼을 클릭하여 이미지의 업로드를 취소할 경우
         articleEditor.setOnCancelListener(view -> {
-            uploadImageHashMap.remove(((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
-            Log.d(TAG, "remove id: "+((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
-            articleEditor.onImageUploadFailed(((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path);
+            String imageTag = ((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path;  // btn_remove 버튼을 포함하고 있는 이미지의 tag를 저장
+            uploadImageHashMap.put(imageTag, false);
+            articleEditor.onImageUploadFailed(imageTag);
+            isUploadImageCompeleteHashMap.remove(imageTag);
             articleEditor.getParentView().removeView(((RelativeLayout) view.getParent()));
-            ((RelativeLayout) view.getParent()).setVisibility(View.GONE);
         });
         //게시물 수정인 경우
         if (isEdit) {
@@ -183,9 +187,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         findViewById(R.id.action_unordered_numbered).setOnClickListener(v -> articleEditor.insertList(true));
         findViewById(R.id.action_hr).setOnClickListener(v -> articleEditor.insertDivider());
         findViewById(R.id.action_insert_image).setOnClickListener(v -> {
-            if (!isUploadingImage) articleEditor.openImagePicker();
-            else
-                ToastUtil.makeShortToast(mContext, R.string.uploading_image_now);
+            articleEditor.openImagePicker();
         });
         findViewById(R.id.action_insert_link).setOnClickListener(v -> {
             createURLCreateDialog();
@@ -202,23 +204,27 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             @Override
             public void onUpload(Bitmap bitmap, String uuid) {
 //                isUploadingImage = true;
-                uploadImageHashMap.put(uuid, bitmap);
-//                Observable.defer(() -> {
-//                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
-//                    return Observable.just(imageFile);
-//                })
-//                        .subscribeOn(Schedulers.io())
-//                        .subscribe(imageFile -> {
-//                            if (isUploadingImage)
-//                                mArticleEditPresenter.uploadImage(imageFile, uuid);
-//                        }, throwable -> {
-//                            new Handler().post(() -> {
-//                                articleEditor.onImageUploadFailed(uuid);
-//                                ToastUtil.makeLongToast(mContext, R.string.fail_upload);
-//                                isUploadingImage = false;
-//                            });
-//
-//                        });
+                uploadImageHashMap.put(uuid, true);
+                isUploadImageCompeleteHashMap.put(uuid, false);
+                Observable.defer(() -> {
+                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
+                    return Observable.just(imageFile);
+                })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(imageFile -> {
+                            if (uploadImageHashMap.containsKey(uuid) && uploadImageHashMap.get(uuid)) {
+                                mArticleEditPresenter.uploadImage(imageFile, uuid);
+                                isUploadImageCompeleteHashMap.put(uuid, true);
+                            }
+                        }, throwable -> {
+                            new Handler().post(() -> {
+                                articleEditor.onImageUploadFailed(uuid);
+                                ToastUtil.makeLongToast(mContext, R.string.fail_upload);
+                                isUploadingImage = false;
+                                isUploadImageCompeleteHashMap.put(uuid, true);
+                            });
+
+                        });
             }
 
             @Override
@@ -228,47 +234,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         });
         articleEditor.render();
     }
-
-//    private void findImageViewGroupByTag(ViewGroup viewGroup, String tag, int id, View searchView) {
-//
-//        int count = viewGroup.getChildCount();
-//        for (int i = 0; i < count; i++) {
-//            View view = viewGroup.getChildAt(i);
-//            if (view.getTag().equals(tag)) {
-//                ToastUtil.makeShortToast(this, "찾았습니다!!");
-//                Log.e(TAG, "findImageViewByTag: " + view.getId());
-//                searchView = view.findViewById(id);
-//
-//            }
-//            if (view instanceof ViewGroup)
-//                findImageViewGroupByTag((ViewGroup) view, tag, id, searchView);
-//
-//        }
-//    }
-//
-//    private View findViewByTag(View view, String tag) {
-//        Stack<View> stack = new Stack<>();
-//        stack.push(view);
-//
-//        while (!stack.isEmpty()) {
-//            view = stack.pop();
-//            if (view.findViewWithTag(tag) != null) {
-//                ToastUtil.makeShortToast(this, "찾았습니다!!");
-//                Log.e(TAG, "findImageViewByTag: " + view.getId());
-//                return view.findViewWithTag(tag);
-//            }
-//            if (view instanceof ViewGroup) {
-//                int count = ((ViewGroup) view).getChildCount();
-//                for (int i = 0; i < count; i++) {
-//                    View searchView = ((ViewGroup) view).getChildAt(i);
-//                    stack.push(searchView);
-//
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -382,12 +347,23 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void onClickEditButton() {
         String spannableStringBuilder = articleEditor.getContentAsHTML();
+        boolean imageUploadCheck = true;
         //blocking multi click
         if (isCreateBtnClicked) {
             return;
         }
 
+        for (Boolean isImageUploading : isUploadImageCompeleteHashMap.values()) {
+            if(!isImageUploading) {
+                imageUploadCheck = false;
+                break;
+            }
+        }
 
+        if(!imageUploadCheck) {
+            ToastUtil.makeShortToast(mContext, "이미지 업로드 중입니다.");
+            return;
+        }
         if (FormValidatorUtil.validateStringIsEmpty(mEditTextTitle.getText().toString())) {
             ToastUtil.makeShortToast(mContext, "제목을 입력하세요");
             return;
@@ -504,35 +480,13 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         } catch (Exception e) {
             //ToastUtil.makeShortToast(mContext, R.string.fail_upload);
         }
-        hideLoading();
-        isUploadingImage = false;
     }
 
     @Override
     public void showFailUploadImage(String uploadImageId) {
         articleEditor.onImageUploadFailed(uploadImageId);
-        isUploadingImage = false;
-    }
 
-//    public void createContentCreateDialog() {
-//        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mEditTextContent.getText().toString());
-//        AskNicknamePasswordDialog dialog = new AskNicknamePasswordDialog(this, "알림", "닉네임과 비밀번호를 입력해주세요", AskNicknamePasswordDialog.YES_NICKNAME);
-//        dialog.getWindow().setGravity(Gravity.CENTER);
-//        dialog.show();
-//        dialog.setOnDismissListener(dialog1 -> {
-//            if (!dialog.isCancelled()) {
-//                mArticleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), Html.toHtml(spannableStringBuilder), dialog.getNickName(), dialog.getPassword());
-//                mInputMethodManager.hideSoftInputFromWindow(Objects.requireNonNull(this.getCurrentFocus()).getWindowToken(), 0);
-//            }
-//        });
-//        Display display = getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        Window window = dialog.getWindow();
-//        int x = (int) (size.x * 0.8f);
-//        int y = (int) (size.y * 0.4f);
-//        window.setLayout(x, y);
-//    }
+    }
 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onKoinBaseAppbarClick(View v) {
