@@ -7,7 +7,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom
+        <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
             android:id="@+id/market_used_sell_swiperefreshlayout"
             android:layout_marginBottom="56dp"
             android:layout_width="match_parent"
@@ -19,7 +19,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/background"
                 android:scrollbars="vertical"/>
-        </in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+        </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
 
     </RelativeLayout>
 </LinearLayout>

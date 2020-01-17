@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedCommentContract;
 import in.koreatech.koin.data.network.entity.Comment;
@@ -40,7 +40,7 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivity implements MarketUsedCommentContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
 
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appBarBase;
+    AppBarBase appBarBase;
     @BindView(R.id.market_used_comment_title)
     TextView marketUsedCommentTitle;
     @BindView(R.id.market_used_comment_view_count_korean)
@@ -168,9 +168,9 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             finish();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             createActivityMove();
 
     }

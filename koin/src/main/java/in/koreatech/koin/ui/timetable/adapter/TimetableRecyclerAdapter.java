@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.data.network.entity.Lecture;
 
 import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;

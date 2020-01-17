@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -42,7 +42,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     @BindView(R.id.market_used_main_viewpager)
     ViewPager viewPager;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase koinBaseAppbar;
+    AppBarBase koinBaseAppbar;
 
     private MarketUsedMainViewPagerAdapter mainViewPagerAdapter;
     private InputMethodManager inputMethodManager;
@@ -92,9 +92,9 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId()) {
+        else if (id == AppBarBase.getRightButtonId()) {
             createActivityMove(pageSelected);
         }
     }

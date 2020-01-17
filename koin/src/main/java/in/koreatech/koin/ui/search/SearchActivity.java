@@ -19,8 +19,8 @@ import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 
-import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.appbar.AppbarSearchBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.appbar.AppBarSearchBase;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.ui.search.presenter.SearchArticleContract;
@@ -29,10 +29,10 @@ import in.koreatech.koin.ui.search.presenter.SeachArticlePresenter;
 /**
  * Created by seongyun on 2019. 11. 16....
  */
-public class SearchActivity extends KoinNavigationDrawerActivity implements AppbarSearchBase.SearchTextChange, SearchArticleContract.View, AppbarSearchBase.SearchEditorAction {
+public class SearchActivity extends KoinNavigationDrawerActivity implements AppBarSearchBase.SearchTextChange, SearchArticleContract.View, AppBarSearchBase.SearchEditorAction {
 
     @BindView(R.id.koin_base_appbar_dark)
-    AppbarSearchBase appbarSearchBase;
+    AppBarSearchBase appbarSearchBase;
     @BindView(R.id.search_main_framelayout)
     FrameLayout searchMainFrameLayout;
 
@@ -67,9 +67,9 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements Appb
     @OnClick(R.id.koin_base_appbar_dark)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
-        } else if (id == AppbarBase.getRightButtonId()) {
+        } else if (id == AppBarBase.getRightButtonId()) {
             searchCurrentText();
         }
     }

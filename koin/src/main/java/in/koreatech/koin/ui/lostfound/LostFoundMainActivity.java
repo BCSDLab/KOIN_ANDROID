@@ -16,12 +16,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
-import in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.response.LostAndFoundPageResponse;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -66,7 +66,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedKoinBaseAppbar(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             callDrawerItem(R.id.navi_item_home);
     }
 
@@ -171,9 +171,9 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             goToMainActivity();
-        } else if (id == AppbarBase.getRightButtonId()) {
+        } else if (id == AppBarBase.getRightButtonId()) {
             onClickCreateButton();
         }
     }

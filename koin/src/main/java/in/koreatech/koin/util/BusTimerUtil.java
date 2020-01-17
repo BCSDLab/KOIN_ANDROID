@@ -1,6 +1,6 @@
 package in.koreatech.koin.util;
 
-import in.koreatech.koin.core.helper.TimerRenewListener;
+import in.koreatech.koin.ui.bus.TimerRenewListener;
 
 public class BusTimerUtil extends TimerUtil {
 

@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.Article;
@@ -57,7 +57,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     @BindView(R.id.article_title)
     TextView mTextViewTitle;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appbarBase;
+    AppBarBase appbarBase;
     @BindView(R.id.article_view_count)
     TextView mTextViewViewCount;
     @BindView(R.id.article_content)
@@ -280,9 +280,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             onClickCreateButton();
 
     }

@@ -20,7 +20,6 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.ui.splash.presenter.SplashContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.core.helper.VersionDialogClickListener;
 import in.koreatech.koin.core.network.RetrofitManager;
 import in.koreatech.koin.data.network.entity.Version;
 import in.koreatech.koin.util.FirebasePerformanceUtil;

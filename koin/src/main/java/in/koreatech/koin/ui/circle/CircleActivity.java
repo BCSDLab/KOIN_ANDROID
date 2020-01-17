@@ -25,10 +25,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -60,7 +59,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
     /* View Component */
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appbarBase;
+    AppBarBase appbarBase;
     @BindView(R.id.circle_recyclerview)
     RecyclerView circleListRecyclerView;
     ImageView circleItemLogoImageview;
@@ -162,7 +161,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         }
     }

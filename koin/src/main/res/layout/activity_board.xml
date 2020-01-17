@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.appbar.AppbarBase
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:layout_marginTop="56dp"
                 android:orientation="vertical">
 
-                <in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom
+                <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
                     android:id="@+id/board_swiperefreshlayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -41,7 +41,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/background"
                         android:clipToPadding="false" />
-                </in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+                </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
 
                 <FrameLayout
                     android:id="@+id/empty_board_list_frameLayout"

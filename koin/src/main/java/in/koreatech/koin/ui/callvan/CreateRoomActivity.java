@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 import in.koreatech.koin.data.network.interactor.CallvanRestInteractor;
 import in.koreatech.koin.util.FormValidatorUtil;
@@ -37,7 +37,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
 
     /* View Component */
     @BindView(R.id.koin_base_appbar)
-    AppbarBase koinBaseAppbar;
+    AppBarBase koinBaseAppbar;
 
     @BindView(R.id.create_room_start_place)
     TextView createRoomStartPlaceTextView;
@@ -83,7 +83,7 @@ public class CreateRoomActivity extends ActivityBase implements CreateRoomContra
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
 
         }

@@ -21,7 +21,7 @@ import in.koreatech.koin.core.R;
 /**
  * Created by yunjae on 2019. 3. 17....
  */
-public class AppbarBase extends AppBarLayout {
+public class AppBarBase extends AppBarLayout {
     public AppBarLayout background;
     public TextView leftButton;
     public TextView rightButton;
@@ -30,18 +30,18 @@ public class AppbarBase extends AppBarLayout {
     public OnClickListener onClickListener;
 
 
-    public AppbarBase(Context context) {
+    public AppBarBase(Context context) {
         super(context);
         init();
     }
 
-    public AppbarBase(Context context, AttributeSet attrs) {
+    public AppBarBase(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         getAttribute(attrs, context);
     }
 
-    public AppbarBase(Context context, AttributeSet attrs, int defStyle) {
+    public AppBarBase(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs);
         init();
         getAttribute(attrs, context, defStyle);
@@ -70,29 +70,29 @@ public class AppbarBase extends AppBarLayout {
     }
 
     public void getAttribute(AttributeSet attrs, Context context) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AppbarBase);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AppBarBase);
         setTypeArray(typedArray);
     }
 
     public void getAttribute(AttributeSet attrs, Context context, @AttrRes int defStyle) {
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AppbarBase, defStyle, 0);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AppBarBase, defStyle, 0);
         setTypeArray(typedArray);
 
     }
 
     private void setTypeArray(TypedArray typedArray) {
-        int backgroundColor = typedArray.getColor(R.styleable.AppbarBase_background_color, getResources().getColor(R.color.light_navy));
-        int titleTextColor = typedArray.getColor(R.styleable.AppbarBase_title_text_color, getResources().getColor(R.color.white));
-        String titleText = typedArray.getString(R.styleable.AppbarBase_title_text);
-        int titleVisibility = typedArray.getInt(R.styleable.AppbarBase_title_visibility, View.VISIBLE);
-        Drawable leftButtonBackground = typedArray.getDrawable(R.styleable.AppbarBase_left_button_background);
-        int leftButtonColor = typedArray.getColor(R.styleable.AppbarBase_left_button_text_color, getResources().getColor(R.color.white));
-        String leftButtonString = typedArray.getString(R.styleable.AppbarBase_left_button_text);
-        int leftButtonVisibility = typedArray.getInt(R.styleable.AppbarBase_left_button_visibility, View.VISIBLE);
-        int rightButtonColor = typedArray.getColor(R.styleable.AppbarBase_right_button_text_color, getResources().getColor(R.color.white));
-        Drawable rightButtonBackground = typedArray.getDrawable(R.styleable.AppbarBase_right_button_background);
-        String rightButtonString = typedArray.getString(R.styleable.AppbarBase_right_button_text);
-        int rightButtonVisibility = typedArray.getInt(R.styleable.AppbarBase_right_button_visibility, View.VISIBLE);
+        int backgroundColor = typedArray.getColor(R.styleable.AppBarBase_background_color, getResources().getColor(R.color.light_navy));
+        int titleTextColor = typedArray.getColor(R.styleable.AppBarBase_title_text_color, getResources().getColor(R.color.white));
+        String titleText = typedArray.getString(R.styleable.AppBarBase_title_text);
+        int titleVisibility = typedArray.getInt(R.styleable.AppBarBase_title_visibility, View.VISIBLE);
+        Drawable leftButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_left_button_background);
+        int leftButtonColor = typedArray.getColor(R.styleable.AppBarBase_left_button_text_color, getResources().getColor(R.color.white));
+        String leftButtonString = typedArray.getString(R.styleable.AppBarBase_left_button_text);
+        int leftButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_left_button_visibility, View.VISIBLE);
+        int rightButtonColor = typedArray.getColor(R.styleable.AppBarBase_right_button_text_color, getResources().getColor(R.color.white));
+        Drawable rightButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_right_button_background);
+        String rightButtonString = typedArray.getString(R.styleable.AppBarBase_right_button_text);
+        int rightButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_right_button_visibility, View.VISIBLE);
         /* background */
         background.setBackgroundColor(backgroundColor);
         /* title */

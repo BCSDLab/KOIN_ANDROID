@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true">
 
-            <in.koreatech.koin.core.appbar.AppbarBase
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"

@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
@@ -111,9 +111,9 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     @OnClick(R.id.koin_base_app_bar)
     public void onClickBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             startActivity(new Intent(this, UserInfoEditedActivity.class));
     }
 

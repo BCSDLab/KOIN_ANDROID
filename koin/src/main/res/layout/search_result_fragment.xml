@@ -21,7 +21,7 @@
 
         />
 
-    <in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom
+    <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
         android:id="@+id/search_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_marginStart="16dp"
@@ -34,6 +34,6 @@
         android:layout_height="match_parent"
        />
 
-    </in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom>
+    </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
 
 </LinearLayout>

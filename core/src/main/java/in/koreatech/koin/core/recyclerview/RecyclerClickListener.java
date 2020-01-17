@@ -1,4 +1,4 @@
-package in.koreatech.koin.core.helper;
+package in.koreatech.koin.core.recyclerview;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;

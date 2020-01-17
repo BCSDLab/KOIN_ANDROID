@@ -21,9 +21,9 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.WebViewActivity;
 
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
-import in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;

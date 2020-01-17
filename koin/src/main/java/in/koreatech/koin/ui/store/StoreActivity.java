@@ -21,10 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -237,7 +236,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
     }
 

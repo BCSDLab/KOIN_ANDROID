@@ -16,7 +16,7 @@
             android:layout_height="match_parent">
 
 
-            <in.koreatech.koin.core.appbar.AppbarBase
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

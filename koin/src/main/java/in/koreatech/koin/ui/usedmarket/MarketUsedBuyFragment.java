@@ -20,11 +20,10 @@ import butterknife.Unbinder;
 import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedContract;
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
-import in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
 import in.koreatech.koin.data.network.response.MarketPageResponse;

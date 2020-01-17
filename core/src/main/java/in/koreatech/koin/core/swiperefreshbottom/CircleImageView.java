@@ -1,4 +1,4 @@
-package in.koreatech.koin.core.helper.swipeRefreshBottom;
+package in.koreatech.koin.core.swiperefreshbottom;
 
 /*
  * Copyright (C) 2014 The Android Open Source Project

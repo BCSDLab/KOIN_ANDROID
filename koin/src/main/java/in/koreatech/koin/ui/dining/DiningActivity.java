@@ -26,8 +26,7 @@ import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.util.TimeUtil;
@@ -90,7 +89,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @BindView(R.id.dining_before_date_button)
     Button beforeDateButton;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appbarBase;
+    AppBarBase appbarBase;
 
 
     @Override
@@ -332,7 +331,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedKoinBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             callDrawerItem(R.id.navi_item_home);
     }
 

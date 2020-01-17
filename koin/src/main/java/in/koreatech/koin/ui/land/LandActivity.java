@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -91,7 +91,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         }
     }

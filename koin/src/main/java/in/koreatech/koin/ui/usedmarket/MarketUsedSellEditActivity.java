@@ -43,8 +43,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedEditContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.Item;
@@ -262,9 +261,9 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             finish();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             onClickEditButton();
     }
 

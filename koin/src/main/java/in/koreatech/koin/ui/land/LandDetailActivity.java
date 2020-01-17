@@ -26,8 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.LandRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -49,7 +48,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
 
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appbarBase;
+    AppBarBase appbarBase;
 
     @BindView(R.id.land_detail_name_textview) // 원룸명
             TextView landDetailNameTextView;
@@ -215,7 +214,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         }
     }

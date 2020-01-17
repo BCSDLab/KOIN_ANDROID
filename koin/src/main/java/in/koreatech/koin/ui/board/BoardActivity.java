@@ -19,13 +19,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.board.presenter.BoardContract;
-import in.koreatech.koin.core.helper.RecyclerClickListener;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
-import in.koreatech.koin.core.helper.swipeRefreshBottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.response.ArticlePageResponse;
 import in.koreatech.koin.data.network.interactor.CommunityRestInteractor;
@@ -57,7 +57,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     private BoardPresenter boardPresenter;
 
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appbarBase;
+    AppBarBase appbarBase;
     @BindView(R.id.freeboard_layout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.board_swiperefreshlayout)
@@ -147,9 +147,9 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             onClickCreateButton();
     }
 

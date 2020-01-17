@@ -17,7 +17,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.helper.VersionDialogClickListener;
 import in.koreatech.koin.data.network.entity.Version;
 
 import static androidx.core.content.ContextCompat.startActivity;

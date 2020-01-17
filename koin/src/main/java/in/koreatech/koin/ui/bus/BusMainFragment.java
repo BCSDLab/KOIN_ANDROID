@@ -16,8 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.helper.TimerRenewListener;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.util.BusTimerUtil;
 import in.koreatech.koin.util.TimeUtil;

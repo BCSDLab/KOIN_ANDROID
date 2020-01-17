@@ -1,4 +1,4 @@
-package in.koreatech.koin.core.helper;
+package in.koreatech.koin.ui.timetable;
 
 import android.content.Context;
 import android.util.AttributeSet;

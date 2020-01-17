@@ -46,12 +46,11 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.core.helper.RecyclerViewClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
-import in.koreatech.koin.core.helper.UserLockBottomSheetBehavior;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
@@ -383,9 +382,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId()) {
+        else if (id == AppBarBase.getRightButtonId()) {
             onAddClassButtonClicked();
         }
     }

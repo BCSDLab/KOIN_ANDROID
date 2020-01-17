@@ -25,7 +25,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppbarBase;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.interactor.CommunityRestInteractor;
 import in.koreatech.koin.util.FormValidatorUtil;
@@ -45,7 +45,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private final static String TAG = "ArticleEditActivity";
     private final static int MAX_TITLE_LENGTH = 40;
     @BindView(R.id.koin_base_app_bar_dark)
-    AppbarBase appBarBase;
+    AppBarBase appBarBase;
     @BindView(R.id.title_nickname_border)
     LinearLayout mTitleNicknameBorder;
     @BindView(R.id.article_edittext_nickname)
@@ -320,9 +320,9 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onKoinBaseAppbarClick(View v) {
         int id = v.getId();
-        if (id == AppbarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
-        else if (id == AppbarBase.getRightButtonId())
+        else if (id == AppBarBase.getRightButtonId())
             onClickEditButton();
     }
 
