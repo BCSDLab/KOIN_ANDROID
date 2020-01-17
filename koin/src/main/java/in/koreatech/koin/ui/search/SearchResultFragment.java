@@ -35,9 +35,9 @@ import in.koreatech.koin.ui.search.presenter.SearchResultPresenter;
 import in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailActivity;
 import in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailActivity;
 
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_FREE;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_RECRUIT;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
 public class SearchResultFragment extends Fragment implements SwipeRefreshLayoutBottom.OnRefreshListener, SearchResultContract.View {
     @BindView(R.id.search_recyclerview)

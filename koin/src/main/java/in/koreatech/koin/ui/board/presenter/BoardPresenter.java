@@ -6,7 +6,7 @@ import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.response.ArticlePageResponse;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 
 /**
  * Created by hyerim on 2018. 6. 4....

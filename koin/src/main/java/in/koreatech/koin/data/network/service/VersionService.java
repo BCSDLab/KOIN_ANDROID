@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-import static in.koreatech.koin.core.constant.URLConstant.VERSION;
+import static in.koreatech.koin.constant.URLConstant.VERSION;
 
 /**
  * Created by hyerim on 2018. 5. 14....

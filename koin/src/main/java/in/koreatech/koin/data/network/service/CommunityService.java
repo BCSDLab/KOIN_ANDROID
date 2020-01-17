@@ -19,11 +19,11 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ARTICLES;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.BOARDS;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.COMMENTS;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.GRANTCHECK;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.TEMPBOARD;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ARTICLES;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.BOARDS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.COMMENTS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.GRANTCHECK;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.TEMPBOARD;
 
 /**
  * Created by hyerim on 2018. 6. 4....

@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-import static in.koreatech.koin.core.constant.URLConstant.LECTURE;
+import static in.koreatech.koin.constant.URLConstant.LECTURE;
 
 public interface LectureService {
     @GET(LECTURE)

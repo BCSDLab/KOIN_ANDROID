@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-import static in.koreatech.koin.core.constant.URLConstant.SHOPS;
+import static in.koreatech.koin.constant.URLConstant.SHOPS;
 
 /**
  * Created by hyerim on 2018. 8. 12....

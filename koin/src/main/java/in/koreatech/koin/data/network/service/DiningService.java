@@ -7,7 +7,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-import static in.koreatech.koin.core.constant.URLConstant.DINING;
+import static in.koreatech.koin.constant.URLConstant.DINING;
 
 /**
  * Created by hyerim on 2018. 6. 21....

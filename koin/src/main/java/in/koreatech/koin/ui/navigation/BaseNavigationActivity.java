@@ -24,7 +24,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;

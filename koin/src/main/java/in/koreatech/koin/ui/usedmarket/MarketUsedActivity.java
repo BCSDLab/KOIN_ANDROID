@@ -20,7 +20,7 @@ import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedMainViewPagerAdapter;

@@ -32,7 +32,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.constant.FirebaseDBConstant;
+import in.koreatech.koin.constant.FirebaseDBConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.firebase.FirebaseDbManager;
 import in.koreatech.koin.data.network.entity.Message;

@@ -17,9 +17,9 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-import static in.koreatech.koin.core.constant.URLConstant.CALLVANS.COMPANIES;
-import static in.koreatech.koin.core.constant.URLConstant.CALLVANS.PARTICIPANT;
-import static in.koreatech.koin.core.constant.URLConstant.CALLVANS.ROOMS;
+import static in.koreatech.koin.constant.URLConstant.CALLVANS.COMPANIES;
+import static in.koreatech.koin.constant.URLConstant.CALLVANS.PARTICIPANT;
+import static in.koreatech.koin.constant.URLConstant.CALLVANS.ROOMS;
 
 /**
  * Created by hyerim on 2018. 6. 17....

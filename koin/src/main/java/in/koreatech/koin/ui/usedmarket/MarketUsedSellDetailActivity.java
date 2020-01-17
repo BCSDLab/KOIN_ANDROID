@@ -38,7 +38,7 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailContract;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;

@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static in.koreatech.koin.core.constant.URLConstant.CIRCLE.CIRCLE;
+import static in.koreatech.koin.constant.URLConstant.CIRCLE.CIRCLE;
 
 /**
  * Created by hyerim on 2018. 8. 12....

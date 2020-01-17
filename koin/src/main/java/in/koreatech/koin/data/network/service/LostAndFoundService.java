@@ -20,8 +20,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import static in.koreatech.koin.core.constant.URLConstant.LOSTANDFOUND.GRANTCHECK;
-import static in.koreatech.koin.core.constant.URLConstant.LOSTANDFOUND.LOSTITEMS;
+import static in.koreatech.koin.constant.URLConstant.LOSTANDFOUND.GRANTCHECK;
+import static in.koreatech.koin.constant.URLConstant.LOSTANDFOUND.LOSTITEMS;
 
 public interface LostAndFoundService {
     @GET(LOSTITEMS)

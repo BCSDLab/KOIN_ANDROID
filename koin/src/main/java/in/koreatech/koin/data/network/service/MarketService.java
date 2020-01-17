@@ -10,7 +10,7 @@ import in.koreatech.koin.data.network.response.MarketPageResponse;
 import okhttp3.MultipartBody;
 import retrofit2.http.*;
 
-import static in.koreatech.koin.core.constant.URLConstant.MARKET.ITEMS;
+import static in.koreatech.koin.constant.URLConstant.MARKET.ITEMS;
 
 
 public interface MarketService {

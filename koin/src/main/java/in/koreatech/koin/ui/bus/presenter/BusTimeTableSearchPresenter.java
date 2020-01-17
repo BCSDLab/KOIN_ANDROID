@@ -4,7 +4,7 @@ import java.text.ParseException;
 
 import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.data.network.entity.Bus;
-import in.koreatech.koin.core.constant.BusType;
+import in.koreatech.koin.constant.BusType;
 import in.koreatech.koin.util.TimeUtil;
 
 

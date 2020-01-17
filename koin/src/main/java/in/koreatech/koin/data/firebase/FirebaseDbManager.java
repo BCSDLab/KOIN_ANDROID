@@ -5,7 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.Map;
 
-import in.koreatech.koin.core.constant.FirebaseDBConstant;
+import in.koreatech.koin.constant.FirebaseDBConstant;
 import in.koreatech.koin.data.network.entity.Message;
 
 /**

@@ -5,7 +5,7 @@ import android.util.Log;
 import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
-import in.koreatech.koin.core.constant.BusType;
+import in.koreatech.koin.constant.BusType;
 import in.koreatech.koin.data.network.interactor.CityBusInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
 

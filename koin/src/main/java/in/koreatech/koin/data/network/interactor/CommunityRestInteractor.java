@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;

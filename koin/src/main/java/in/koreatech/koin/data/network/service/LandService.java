@@ -6,7 +6,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-import static in.koreatech.koin.core.constant.URLConstant.LAND;
+import static in.koreatech.koin.constant.URLConstant.LAND;
 
 public interface LandService {
     @GET(LAND + "/{id}")

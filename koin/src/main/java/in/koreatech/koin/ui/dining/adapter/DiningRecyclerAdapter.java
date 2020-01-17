@@ -47,7 +47,7 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     }
 
     public DiningRecyclerAdapter(Context context, ArrayList<Dining> diningArrayList) {
-        context = context;
+        this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.diningArrayList = new ArrayList<>();
         this.diningArrayList.addAll(diningArrayList);

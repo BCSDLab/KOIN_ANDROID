@@ -19,12 +19,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.appbar.AppbarBase;
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.Article;
-import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityRestInteractor;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
@@ -34,9 +32,9 @@ import in.koreatech.koin.ui.board.presenter.ArticlePresenter;
 import in.koreatech.koin.ui.login.LoginActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_FREE;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_RECRUIT;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
 /**
  * Created by hyerim on 2018. 6. 4....

@@ -247,7 +247,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
     @Override
     public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
-        diningArrayList.clear();
+        this.diningMap.clear();
 
         for (Dining dining : arrangeDinings(diningArrayList)) {
             if (dining == null) {

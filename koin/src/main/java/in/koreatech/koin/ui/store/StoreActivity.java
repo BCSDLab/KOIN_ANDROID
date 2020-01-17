@@ -116,9 +116,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
 
     public void sortStoreCategorize(int position) {
-        showProgressDialog(R.string.loading);
         this.storeArrayList.clear();
-
         if (position == 0)
             this.storeArrayList.addAll(this.storeAllArraylist);
         else {
@@ -126,7 +124,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
                 if (isSameCategory(this.storeAllArraylist.get(a).category, categoryCode[position - 1]))
                     this.storeArrayList.add(this.storeAllArraylist.get(a));
         }
-        hideLoading();
         updateUserInterface();
 
     }
@@ -183,12 +180,12 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     @Override
     public void showLoading() {
-
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-
+        hideProgressDialog();
     }
 
     @Override

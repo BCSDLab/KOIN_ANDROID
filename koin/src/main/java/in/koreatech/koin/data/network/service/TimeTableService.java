@@ -18,8 +18,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 
-import static in.koreatech.koin.core.constant.URLConstant.TIMETABLE;
-import static in.koreatech.koin.core.constant.URLConstant.TIMETABLES;
+import static in.koreatech.koin.constant.URLConstant.TIMETABLE;
+import static in.koreatech.koin.constant.URLConstant.TIMETABLES;
 
 public interface TimeTableService {
 

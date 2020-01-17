@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.WebViewActivity;
-import in.koreatech.koin.core.constant.AuthorizeConstant;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.core.toast.ToastUtil;
@@ -29,9 +29,9 @@ import in.koreatech.koin.ui.login.LoginActivity;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_FREE;
-import static in.koreatech.koin.core.constant.URLConstant.COMMUNITY.ID_RECRUIT;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
+import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
 /**
  * koin enterprise 앱에서 navigation drawer가 사용되는 화면들의 기본 acitivity

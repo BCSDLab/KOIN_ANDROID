@@ -20,7 +20,7 @@ import in.koreatech.koin.data.network.entity.Bus;
 import in.koreatech.koin.data.network.interactor.CityBusInteractor;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
-import in.koreatech.koin.core.constant.BusDestinationEnum;
+import in.koreatech.koin.constant.BusDestinationEnum;
 
 /**
  * @author yunjae Na

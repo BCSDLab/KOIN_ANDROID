@@ -10,25 +10,25 @@ import in.koreatech.koin.core.R;
  * Created by hyerim on 2018. 9. 17....
  */
 public class CustomProgressDialog extends AsyncTask<Void, Void, Void> {
-    private final String TAG = "CustomProgressDialog";
+    private final String TAG = "CustoprogressDialog";
 
-    private ProgressDialog mProgressDialog;
+    private ProgressDialog progressDialog;
     private String message;
 
 
     public CustomProgressDialog(Context context, String msg) {
         this.message = msg;
-        mProgressDialog = new ProgressDialog(context, R.style.KAPProgress);
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setIndeterminate(true);
+        progressDialog = new ProgressDialog(context, R.style.KAPProgress);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setIndeterminate(true);
 
     }
 
     @Override
     protected void onPreExecute() {
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
+        progressDialog.setMessage(message);
+        progressDialog.show();
     }
 
     @Override
@@ -43,14 +43,14 @@ public class CustomProgressDialog extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        mProgressDialog.dismiss();
+        progressDialog.dismiss();
     }
 
     @Override
     protected void onCancelled(Void aVoid) {
-        mProgressDialog.dismiss();
+        progressDialog.dismiss();
         super.onCancelled(aVoid);
 
-        mProgressDialog = null;
+        progressDialog = null;
     }
 }

@@ -27,7 +27,7 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
 
     @Override
     public void showProgressDialog(@Nullable String message) {
-        if (customProgressDialog != null) {
+        if (customProgressDialog == null) {
             customProgressDialog = new CustomProgressDialog(context, message);
             customProgressDialog.execute();
         }
@@ -35,7 +35,7 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
 
     @Override
     public void showProgressDialog(@StringRes int resId) {
-        if (customProgressDialog != null) {
+        if (customProgressDialog == null) {
             customProgressDialog = new CustomProgressDialog(context, context.getResources().getString(resId));
             customProgressDialog.execute();
         }

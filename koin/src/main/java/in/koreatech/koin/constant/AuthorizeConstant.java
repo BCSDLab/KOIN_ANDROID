@@ -1,4 +1,4 @@
-package in.koreatech.koin.core.constant;
+package in.koreatech.koin.constant;
 
 public enum AuthorizeConstant {
     ADMIN, MEMBER, ANONYMOUS

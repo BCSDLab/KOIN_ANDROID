@@ -1,4 +1,4 @@
-package in.koreatech.koin.core.constant;
+package in.koreatech.koin.constant;
 
 import android.util.Pair;
 

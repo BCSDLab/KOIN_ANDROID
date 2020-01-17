@@ -3,7 +3,7 @@ package in.koreatech.koin.data.network.service;
 import com.google.gson.JsonObject;
 
 
-import in.koreatech.koin.core.constant.URLConstant;
+import in.koreatech.koin.constant.URLConstant;
 
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.data.network.response.AuthResponse;

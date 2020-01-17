@@ -27,15 +27,18 @@ public class StorePresenter implements BasePresenter {
         public void onSuccess(Object object) {
             ArrayList<Store> arrayList = ((StoresResponse) object).storeArrayList;
             storeView.onStoreListDataReceived(arrayList);
+            storeView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
             storeView.showMessage(throwable.getMessage());
+            storeView.hideLoading();
         }
     };
 
     public void getStoreList() {
+        storeView.showLoading();
         storeInteractor.readStoreList(apiCallback);
     }
 
