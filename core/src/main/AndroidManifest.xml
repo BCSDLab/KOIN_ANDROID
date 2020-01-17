@@ -1,17 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.koreatech.koin.core" >
+    package="in.koreatech.koin.core">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
-        android:allowBackup="true">
+    <application android:allowBackup="true">
 
         <activity
-            android:name=".activity.WebViewActivity"
+            android:name="in.koreatech.koin.core.activity.WebViewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.ActivityBase" />
+        <activity android:name="in.koreatech.koin.core.activity.ActivityBase" />
 
     </application>
 
