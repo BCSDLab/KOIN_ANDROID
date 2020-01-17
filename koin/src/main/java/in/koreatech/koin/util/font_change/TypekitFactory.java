@@ -12,7 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
-import in.koreatech.koin.core.R;
+import in.koreatech.koin.R;
 
 /**
  *

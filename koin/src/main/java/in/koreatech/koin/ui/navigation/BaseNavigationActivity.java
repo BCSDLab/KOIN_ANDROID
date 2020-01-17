@@ -22,7 +22,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-import in.koreatech.koin.core.R;
+
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
 

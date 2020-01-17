@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import in.koreatech.koin.core.R;
+import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
