@@ -36,8 +36,6 @@ import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
 /**
  * Created by hyerim on 2018. 5. 31....
  * Edited by yunjae on 2018. 8. 27....
- * Edited by hansol on 2019.11.14....
- * Edited by seongyun on 2019.11.15....
  */
 public abstract class BaseNavigationActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
     private final String TAG = BaseNavigationActivity.class.getSimpleName();
@@ -59,9 +57,8 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     private InputMethodManager mInputMethodManager;
     private LinearLayout mOpenLeftNavigationDrawerOpenLinearLayout;
     private LinearLayout mOpenHomeLinearLayout;
-    private LinearLayout mOpenSearchLinearLayout;
+    private LinearLayout mOpenMyInfoLinearLayout;
 
-    private LinearLayout myInfoLinearLayout;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -75,6 +72,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         super.onCreate(savedInstanceState);
         mContext = setContext();
         mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+
     }
 
     protected abstract Context setContext();
@@ -111,15 +109,12 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         mLeftNavigationView = findViewById(getLeftNavigationDrawerID());
         mOpenLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
         mOpenHomeLinearLayout = findViewById(getBottomNavigationHomeID());
-        mOpenSearchLinearLayout = findViewById(getBottomNavigationSearchID());
-        myInfoLinearLayout =  findViewById(R.id.navi_item_myinfo);
-
+        mOpenMyInfoLinearLayout = findViewById(getBottomNavigationMyInfoID());
         mOpenLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
         mOpenHomeLinearLayout.setOnClickListener(this);
-        mOpenSearchLinearLayout.setOnClickListener(this);
+        mOpenMyInfoLinearLayout.setOnClickListener(this);
         mLeftNavigationView.setNavigationItemSelectedListener(this);
         mLeftNavigationView.setOnClickListener(this);
-        myInfoLinearLayout.setOnClickListener(this);
 
         width = getResources().getDisplayMetrics().widthPixels * 667 / 1000;
         ViewGroup.LayoutParams params = mLeftNavigationView.getLayoutParams();
@@ -137,18 +132,19 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
             textView.setTextColor(getResources().getColor(R.color.light_navy));
-        }
-        else if (id == R.id.navi_item_search) {
-            callDrawerItem(id);
-        }
-        else {
+        } else if (id == R.id.navi_item_user_info) {
+            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo_on);
+            textView.setTextColor(getResources().getColor(R.color.light_navy));
+        } else {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home);
             textView.setTextColor(getResources().getColor(R.color.black));
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu);
+            imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+            textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+            imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
             textView.setTextColor(getResources().getColor(R.color.black));
         }
     }
@@ -166,9 +162,9 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
         imageView.setBackgroundResource(R.drawable.ic_bottom_home);
         textView.setTextColor(getResources().getColor(R.color.black));
-        imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-        textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-        imageView.setBackgroundResource(R.drawable.ic_search_menu);
+        imageView = findViewById(R.id.base_navigation_bar_bottom_myinfo_imageview);
+        textView = findViewById(R.id.base_navigation_bar_bottom_myinfo_textview);
+        imageView.setBackgroundResource(R.drawable.ic_bottom_myinfo);
         textView.setTextColor(getResources().getColor(R.color.black));
     }
 
@@ -249,7 +245,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
 
     protected abstract int getBottomNavigationHomeID();
 
-    protected abstract int getBottomNavigationSearchID();
+    protected abstract int getBottomNavigationMyInfoID();
 
     protected abstract int getDrawerLayoutID();
 
@@ -343,13 +339,7 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
             onClickTimeTable();
         } else if (itemId == R.id.navi_item_land) {
             goToLandActivity();
-        }else if (itemId == R.id.navi_item_myinfo) {
-            onClickNavigationUserInfo();
-        } else if (itemId == R.id.navi_item_search) {
-            goToSearchActivity();
-        }
-
-        else {
+        } else {
             ToastUtil.makeShortToast(this, "서비스예정입니다");
             mCurrentId = mBeforeId;
         }
@@ -358,9 +348,6 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
 
     }
 
-    /**
-     * 로그인, 비로그인 상태를 구분하여 내비게이션 드로어에 사용자 이름 설정
-     */
     public void setLeftNavigationDrawerName() {
         TextView mNameTextview = findViewById(R.id.base_naviagtion_drawer_nickname_textview);
         if (getAuthorize() == AuthorizeConstant.ANONYMOUS) // 비로그인일때 회원 정보 수정 비활성화
@@ -374,15 +361,14 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     @Override
     public void onClick(View v) {
         int i = v.getId();
-
         if (i == getBottomNavigationCategoryID()) {
             toggleNavigationDrawer();
             return;
         }
         if (i == getBottomNavigationHomeID())
             i = R.id.navi_item_home;
-        else if (i == getBottomNavigationSearchID())
-            i = R.id.navi_item_search;
+        else if (i == getBottomNavigationMyInfoID())
+            i = R.id.navi_item_user_info;
         else {
             selectNavigationItem(i);
             toggleNavigationDrawer();
@@ -571,8 +557,6 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     protected abstract void goToCircleActivity();
 
     protected abstract void goToLostFoundActivity();
-
-    protected abstract void goToSearchActivity();
 
 
     /*

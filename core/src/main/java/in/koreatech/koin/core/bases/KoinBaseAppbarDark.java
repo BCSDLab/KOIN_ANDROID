@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.AttrRes;
 import com.google.android.material.appbar.AppBarLayout;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -19,14 +17,12 @@ import in.koreatech.koin.core.R;
 
 /**
  * Created by yunjae on 2019. 3. 17....
- *
  */
 public class KoinBaseAppbarDark extends AppBarLayout {
     public AppBarLayout background;
     public TextView leftButton;
     public TextView rightButton;
     public TextView title;
-
     final Typeface textFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/notosans_medium.ttf");
     public OnClickListener onClickListener;
 
@@ -65,7 +61,6 @@ public class KoinBaseAppbarDark extends AppBarLayout {
         leftButton = (TextView) findViewById(R.id.base_appbar_dark_left_button);
         rightButton = (TextView) findViewById(R.id.base_appbar_dark_right_button);
         title = (TextView) findViewById(R.id.base_appbar_dark_title);
-
         title.setTypeface(textFont);
         leftButton.setTypeface(textFont);
         rightButton.setTypeface(textFont);
@@ -79,9 +74,10 @@ public class KoinBaseAppbarDark extends AppBarLayout {
     public void getAttribute(AttributeSet attrs, Context context, @AttrRes int defStyle) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.KoinBaseAppbarDark, defStyle, 0);
         setTypeArray(typedArray);
+
     }
 
-    public void setTypeArray(TypedArray typedArray) {
+    private void setTypeArray(TypedArray typedArray) {
         int backgroundColor = typedArray.getColor(R.styleable.KoinBaseAppbarDark_background_color, getResources().getColor(R.color.light_navy));
         int titleTextColor = typedArray.getColor(R.styleable.KoinBaseAppbarDark_title_text_color, getResources().getColor(R.color.white));
         String titleText = typedArray.getString(R.styleable.KoinBaseAppbarDark_title_text);
@@ -173,4 +169,6 @@ public class KoinBaseAppbarDark extends AppBarLayout {
     public void setRightButtonVisibility(int rightButtonVisibility) {
         rightButton.setVisibility(rightButtonVisibility);
     }
+
+
 }
