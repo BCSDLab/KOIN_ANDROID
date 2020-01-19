@@ -48,7 +48,19 @@
                         android:layout_height="match_parent"
                         android:background="@color/white">
 
+                        <FrameLayout
+                            android:layout_width="300dp"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="35dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.684"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+                        </FrameLayout>
+
                         <LinearLayout
+                            android:id="@+id/linearLayout4"
                             android:layout_width="match_parent"
                             android:layout_height="1000dp"
                             android:orientation="vertical"
@@ -77,9 +89,9 @@
                                     android:layout_height="26dp"
                                     android:layout_gravity="center"
                                     android:background="#ffffff"
+                                    android:gravity="center"
                                     android:lineSpacingExtra="2sp"
                                     android:text="노랑통닭"
-                                    android:gravity="center"
                                     android:textColor="#69717a"
                                     android:textSize="13sp" />
 
@@ -99,19 +111,18 @@
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginTop="19dp"
                                 android:layout_marginBottom="19dp"
+                                android:background="@drawable/bg_white"
                                 android:hint="제목을 입력해주세요(최대 20자)"
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="2sp"
                                 android:textColorHint="#e7e7e7"
-                                android:background="@drawable/bg_white"
                                 android:textSize="16sp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:orientation="horizontal"
                                 android:background="@color/divider"
-                                ></LinearLayout>
+                                android:orientation="horizontal"></LinearLayout>
 
 
                             <LinearLayout
@@ -127,11 +138,11 @@
                                     android:layout_height="20dp"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginBottom="19dp"
+                                    android:background="@drawable/bg_white"
                                     android:hint="홍보 문구를 입력해주세요.(최대 50자)"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="2sp"
                                     android:textColorHint="#e7e7e7"
-                                    android:background="@drawable/bg_white"
                                     android:textSize="16sp" />
 
                                 <ImageView

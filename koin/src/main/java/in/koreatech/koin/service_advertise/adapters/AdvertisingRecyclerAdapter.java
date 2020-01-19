@@ -2,6 +2,9 @@ package in.koreatech.koin.service_advertise.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +19,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.perf.metrics.AddTrace;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -60,6 +66,10 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
         TextView adPeriodTextview;
         @BindView(R.id.advertising_recyclerview_item_publish_date_textview)
         TextView adPublishedDateTextview;
+        @BindView(R.id.adviertising_recyclerview_margam_imageview)
+        ImageView adMargamImageview;
+        @BindView(R.id.advertising_recyclerview_item_margam_textview)
+        TextView adMargamTextview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -91,6 +101,18 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
             else
                 adPublishedDateTextview.setText(publishedDate[0]);
 
+            Date date = new Date();
+            SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                if ((date.compareTo(formatDate.parse(ad.endDate))  == 1)){
+                    adMargamImageview.setVisibility(View.VISIBLE);
+                    adMargamTextview.setVisibility(View.VISIBLE);
+                    adMargamImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
+                    adFoodImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 

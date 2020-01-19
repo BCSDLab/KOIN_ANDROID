@@ -134,7 +134,7 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
 
         glideOptions = new RequestOptions()
                 .fitCenter()
-                .override(328, 435)
+                .override(650, 870)
                 .error(R.drawable.img_noimage)
                 .placeholder(R.color.white);
 
