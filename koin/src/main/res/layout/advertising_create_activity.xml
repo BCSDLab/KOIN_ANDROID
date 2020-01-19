@@ -48,17 +48,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/white">
 
-                        <FrameLayout
-                            android:layout_width="300dp"
-                            android:layout_height="300dp"
-                            android:layout_marginTop="35dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.684"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-                        </FrameLayout>
-
                         <LinearLayout
                             android:id="@+id/linearLayout4"
                             android:layout_width="match_parent"
@@ -250,6 +239,27 @@
 
                             </LinearLayout>
                         </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/advertising_create_question_info_frame_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="145dp"
+                            android:layout_marginStart="70dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:visibility="invisible"
+                            >
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/question_info" />
+                        </FrameLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
