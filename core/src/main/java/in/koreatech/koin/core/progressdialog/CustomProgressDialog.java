@@ -10,7 +10,7 @@ import in.koreatech.koin.core.R;
  * Created by hyerim on 2018. 9. 17....
  */
 public class CustomProgressDialog extends AsyncTask<Void, Void, Void> {
-    private final String TAG = "CustoprogressDialog";
+    private final String TAG = "CustomProgressDialog";
 
     private ProgressDialog progressDialog;
     private String message;

@@ -33,7 +33,7 @@ public class RetrofitManager {
     public static final String BASE_URL_PRODUCTION = "https://api.koreatech.in"; //release server
     public static final String BASE_URL_STAGE = "http://stage.api.koreatech.in"; //development server
 
-    private Retrofit mRetrofit;
+    private Retrofit retrofit;
 
     private RetrofitManager() {
     }
@@ -50,7 +50,7 @@ public class RetrofitManager {
     }
 
     public void init() {
-        mRetrofit = getDefaultRetrofitSetting();
+        retrofit = getDefaultRetrofitSetting();
     }
 
     private Retrofit getDefaultRetrofitSetting() {
@@ -111,25 +111,15 @@ public class RetrofitManager {
     }
 
     public Retrofit getRetrofit() {
-        if (mRetrofit != null)
-            return mRetrofit;
+        if (retrofit != null)
+            return retrofit;
         else {
             init();
-            return mRetrofit;
+            return retrofit;
         }
     }
 
     public static String addAuthorizationBearer(String token) {
         return "Bearer " + token;
-    }
-
-    public static String catchAllThrowable(final Context context, final Throwable throwable) {
-        if (throwable instanceof NullPointerException) {
-            return context.getString(R.string.error_null);
-        } else if (throwable instanceof ConnectException) {
-            return context.getString(R.string.error_network);
-        } else {
-            return throwable.getMessage();
-        }
     }
 }

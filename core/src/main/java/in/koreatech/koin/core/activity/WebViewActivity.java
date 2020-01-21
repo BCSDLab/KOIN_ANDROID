@@ -91,7 +91,7 @@ public class WebViewActivity extends ActivityBase {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 hideProgressDialog();
-                ToastUtil.getInstance().makeShort("네트워크 환경을 확인해주세요");
+                ToastUtil.getInstance().makeShort(R.string.error_network);
 
             }
         });
