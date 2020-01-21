@@ -19,8 +19,8 @@
             android:id="@+id/koin_base_appbar_dark"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:left_button_background="@drawable/ic_back_arrow"
-            app:right_button_background="@drawable/ic_search_white" />
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:rightButtonBackground="@drawable/ic_search_white" />
 
         <FrameLayout
             android:id="@+id/search_main_framelayout"

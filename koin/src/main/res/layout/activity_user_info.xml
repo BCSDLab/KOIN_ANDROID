@@ -20,9 +20,9 @@
                 android:id="@+id/koin_base_app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create"
-                app:title_text="내정보" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create"
+                app:titleText="내정보" />
 
 
             <RelativeLayout
@@ -64,7 +64,7 @@
                                 android:includeFontPadding="false"
                                 android:text="기본정보"
                                 android:textColor="@color/warm_grey_two"
-                                app:font_name="Custom6" />
+                                app:fontName="Custom6" />
                         </FrameLayout>
 
                         <TextView
@@ -76,7 +76,7 @@
                             android:text="아이디"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/userinfo_base_info_framlayout" />
@@ -90,7 +90,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_id_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -108,7 +108,7 @@
                             android:text="이름"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toTopOf="@id/userinfo_nickname_textview"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_id_textview" />
@@ -122,7 +122,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_name_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -140,7 +140,7 @@
                             android:text="닉네임"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/userinfo_name_textview" />
 
@@ -152,7 +152,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_nickname_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -171,7 +171,7 @@
                             android:text="익명닉네임"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_nickname_textview" />
@@ -184,7 +184,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_anonymous_nick_name_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -202,7 +202,7 @@
                             android:text="휴대전화"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_anonymous_nick_name_textview" />
 
@@ -214,7 +214,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_phone_num_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -232,7 +232,7 @@
                             android:text="성별"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/userinfo_phone_num_textview" />
 
@@ -244,7 +244,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_gender_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -258,7 +258,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="31dp"
                             android:layout_marginTop="24dp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_textview_gender">
@@ -277,7 +277,7 @@
                                 android:includeFontPadding="false"
                                 android:text="학교정보"
                                 android:textColor="@color/warm_grey_two"
-                                app:font_name="Custom6" />
+                                app:fontName="Custom6" />
                         </FrameLayout>
 
                         <TextView
@@ -290,7 +290,7 @@
                             android:text="학번"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_school_info_framlayout" />
 
@@ -303,7 +303,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_student_id_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -322,7 +322,7 @@
                             android:text="전공"
                             android:textColor="@color/warm_grey"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/userinfo_student_id_textview" />
@@ -336,7 +336,7 @@
                             android:lineSpacingExtra="7sp"
                             android:textColor="@color/black"
                             android:textSize="15sp"
-                            app:font_name="Custom6"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfo_major_textview"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -383,7 +383,7 @@
                         android:text="회원탈퇴"
                         android:textColor="@color/warm_grey"
                         android:textSize="15sp"
-                        app:font_name="Custom6" />
+                        app:fontName="Custom6" />
 
 
                 </LinearLayout>
@@ -403,7 +403,7 @@
                         android:text="|"
                         android:textColor="@color/warm_grey"
                         android:textSize="15sp"
-                        app:font_name="Custom6" />
+                        app:fontName="Custom6" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -413,7 +413,7 @@
                         android:text="로그아웃"
                         android:textColor="@color/warm_grey"
                         android:textSize="15sp"
-                        app:font_name="Custom6" />
+                        app:fontName="Custom6" />
 
                 </LinearLayout>
 

@@ -106,7 +106,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:font_name="Custom5"
+                app:fontName="Custom5"
                 tools:text="동아리이름" />
 
             <TextView
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="13sp"
-                app:font_name="Custom6"
+                app:fontName="Custom6"
                 tools:text="설명" />
 
         </LinearLayout>

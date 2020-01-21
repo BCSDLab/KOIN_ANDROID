@@ -19,14 +19,14 @@ public class KoinApplication extends Application {
         super.onCreate();
         applicationContext = this;
         Typekit.getInstance()
-                .addBold(Typekit.createFromAsset(this, "fonts/notosanscjkkr_bold.otf"))
-                .addNormal(Typekit.createFromAsset(this, "fonts/notosans_regular.ttf"))
-                .addCustom1(Typekit.createFromAsset(this, "fonts/notosans_semibold.ttf"))
-                .addCustom2(Typekit.createFromAsset(this, "fonts/notosanscjkkr_light.otf"))
-                .addCustom3(Typekit.createFromAsset(this, "fonts/notosans_medium.ttf"))
-                .addCustom4(Typekit.createFromAsset(this, "fonts/notosans_light.ttf"))
-                .addCustom5(Typekit.createFromAsset(this, "fonts/notosanscjkkr_medium.otf"))
-                .addCustom6(Typekit.createFromAsset(this, "fonts/notosanscjkkr_regular.otf"));
+                .addBold(Typekit.createFromAsset(this, getString(R.string.font_kr_bold)))
+                .addNormal(Typekit.createFromAsset(this, getString(R.string.font_regular)))
+                .addCustom1(Typekit.createFromAsset(this, getString(R.string.font_semibold)))
+                .addCustom2(Typekit.createFromAsset(this, getString(R.string.font_kr_light)))
+                .addCustom3(Typekit.createFromAsset(this, getString(R.string.font_medium)))
+                .addCustom4(Typekit.createFromAsset(this, getString(R.string.font_light)))
+                .addCustom5(Typekit.createFromAsset(this, getString(R.string.font_kr_medium)))
+                .addCustom6(Typekit.createFromAsset(this, getString(R.string.font_kr_regular)));
         init();
     }
 

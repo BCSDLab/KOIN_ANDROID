@@ -30,7 +30,7 @@
             android:text="승차장소"
             android:textColor="@color/light_navy"
             android:textSize="15sp"
-            app:font_name="Bold" />
+            app:fontName="Bold" />
 
         <TextView
             android:layout_width="60dp"
@@ -48,7 +48,7 @@
             android:text="시간"
             android:textColor="@color/light_navy"
             android:textSize="15sp"
-            app:font_name="Bold" />
+            app:fontName="Bold" />
 
 
     </TableRow>

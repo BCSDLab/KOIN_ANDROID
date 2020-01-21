@@ -43,7 +43,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private final int RIGHTNAVI = GravityCompat.END;
     private final String CURRENT_ID = "CURRENT_ID";
     private final String BEFORE_ID = "BEFORE_ID";
-    private final String FONT_NAME = "fonts/notosanscjkkr_regular.otf";
+    private final String fontName = "fonts/notosanscjkkr_regular.otf";
 
     private Context context;
 
@@ -102,7 +102,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             View view = findViewById(id);
             if (view != null) {
                 view.setOnClickListener(this);
-                changeMenuFont(view, FONT_NAME);
+                changeMenuFont(view, fontName);
             }
         }
 

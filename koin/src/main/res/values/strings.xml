@@ -96,6 +96,16 @@
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
 
+    <string name="font_kr_bold">fonts/notosanscjkkr_bold.otf</string>
+    <string name="font_regular">fonts/notosans_regular.ttf</string>
+    <string name="font_semibold">fonts/notosans_semibold.ttf</string>
+    <string name="font_kr_light">fonts/notosanscjkkr_light.otf</string>
+    <string name="font_medium">fonts/notosans_medium.ttf</string>
+    <string name="font_light">fonts/notosans_light.ttf</string>
+    <string name="font_kr_medium">fonts/notosanscjkkr_medium.otf</string>
+    <string name="font_kr_regular">fonts/notosanscjkkr_regular.otf"</string>
+
+
     <string name="take_screen_shot_activity">Activity Screenshot</string>
     <string name="take_screen_shot_view">Layout Screenshot</string>
     <string name="take_save_screen_shot">Save Screenshot</string>

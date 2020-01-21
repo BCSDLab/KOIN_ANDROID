@@ -98,7 +98,7 @@
     <color name="default_side_header_font_color">#7d7d7d</color>
     <color name="default_header_font_color">#7d7d7d</color>
     <color name="default_header_highlight_font_color">#ffffff</color>
-    <color name="default_header_highlight_color">#74a4f3</color>
+    <color name="default_headerHighlightColor">#74a4f3</color>
     <color name="default_sticker_font_color">#ffffff</color>
     <color name="gray">#7c9fae</color>
     <color name="gray_30">#4d7c9fae</color>

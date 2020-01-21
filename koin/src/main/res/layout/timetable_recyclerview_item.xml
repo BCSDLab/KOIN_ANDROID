@@ -14,7 +14,7 @@
         android:id="@+id/lecture_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:font_name="Bold"
+        app:fontName="Bold"
         android:duplicateParentState="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -42,14 +42,14 @@
         android:lineSpacingExtra="6sp"
         android:textColor="@color/black"
         android:textSize="13sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         tools:text="화7A,7B 인문대학 314" />
 
     <TextView
         android:id="@+id/lecture_infromation2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         android:layout_below="@+id/lecture_information1"
         android:duplicateParentState="true"
         android:layout_alignParentStart="true"

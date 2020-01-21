@@ -21,9 +21,9 @@
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_text="취소"
-                app:right_button_text="등록"
-                app:title_text="분실물게시판" />
+                app:leftButtonText="취소"
+                app:rightButtonText="등록"
+                app:titleText="분실물게시판" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayout"

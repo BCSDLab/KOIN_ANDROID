@@ -14,8 +14,8 @@
             android:id="@+id/koin_base_appbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:left_button_background="@drawable/ic_back_arrow"
-            app:title_text="콜밴쉐어링 개설" />
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:titleText="콜밴쉐어링 개설" />
 
         <ScrollView
             android:id="@+id/create_room_scrollview"

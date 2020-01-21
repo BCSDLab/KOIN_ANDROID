@@ -20,9 +20,9 @@
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create"
-                app:title_text="분실물게시판" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create"
+                app:titleText="분실물게시판" />
 
             <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
                 android:id="@+id/lostfound_main_swiperefreshlayout"

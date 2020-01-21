@@ -28,7 +28,7 @@ import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
  */
 public class BusActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "BusActivity";
-    private final String TABLAYOUT_FONT_NAME = "fonts/notosanscjkkr_regular.otf";
+    private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;
     private FirebasePerformanceUtil firebasePerformanceUtil;
 
@@ -94,7 +94,7 @@ public class BusActivity extends KoinNavigationDrawerActivity {
         this.viewPager.setAdapter(this.mainViewPagerAdapter);
         this.viewPager.addOnPageChangeListener(mPageChangeListener);
         this.tabLayout.setupWithViewPager(this.viewPager);
-        changeFont(this.tabLayout.getChildAt(0), TABLAYOUT_FONT_NAME);
+        changeFont(this.tabLayout.getChildAt(0), TABLAYOUT_fontName);
 
         //hide keyboard
         this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
@@ -143,7 +143,7 @@ public class BusActivity extends KoinNavigationDrawerActivity {
             if (viewChild instanceof TextView) {
                 ((TextView) viewChild).setTypeface(Typeface.createFromAsset(getAssets(), fontName));
             } else if (viewChild instanceof ViewGroup) {
-                changeFont(viewChild, TABLAYOUT_FONT_NAME);
+                changeFont(viewChild, TABLAYOUT_fontName);
             }
         }
     }

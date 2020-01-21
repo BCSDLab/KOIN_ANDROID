@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AppBarBase">
-        <attr name="background_color" format="reference|color" />
-        <attr name="title_text_color" format="reference|color" />
-        <attr name="title_text" format="reference|string" />
-        <attr name="title_visibility">
+        <attr name="backgroundColor" format="reference|color" />
+        <attr name="titleTextColor" format="reference|color" />
+        <attr name="titleText" format="reference|string" />
+        <attr name="titleVisibility">
             <enum name="visible" value="0x00000000" />
             <enum name="invisible" value="0x00000004" />
             <enum name="gone" value="0x00000008" />
         </attr>
-        <attr name="left_button_text_color" format="reference|color" />
-        <attr name="left_button_background" format="reference" />
-        <attr name="left_button_text" format="reference|string" />
-        <attr name="left_button_visibility">
+        <attr name="leftButtonTextColor" format="reference|color" />
+        <attr name="leftButtonBackground" format="reference" />
+        <attr name="leftButtonText" format="reference|string" />
+        <attr name="leftButtonVisibility">
             <enum name="visible" value="0x00000000" />
             <enum name="invisible" value="0x00000004" />
             <enum name="gone" value="0x00000008" />
         </attr>
-        <attr name="right_button_text_color" format="reference|color" />
-        <attr name="right_button_visibility" >
+        <attr name="rightButtonTextColor" format="reference|color" />
+        <attr name="rightButtonVisibility" >
             <enum name="visible" value="0x00000000" />
             <enum name="invisible" value="0x00000004" />
             <enum name="gone" value="0x00000008" />
         </attr>
-        <attr name="right_button_background" format="reference" />
-        <attr name="right_button_text" format="reference|string" />
+        <attr name="rightButtonBackground" format="reference" />
+        <attr name="rightButtonText" format="reference|string" />
     </declare-styleable>
 
     <declare-styleable name="Typekit">
-        <attr name="font_name" format="string"/>
+        <attr name="fontName" format="string"/>
     </declare-styleable>
     
     <declare-styleable name="TimetableView">
-        <attr name="row_count" format="integer"/>
-        <attr name="column_count" format="integer"/>
-        <attr name="cell_height" format="dimension"/>
-        <attr name="side_cell_width" format="dimension"/>
-        <attr name="header_title" format="reference"/>
-        <attr name="sticker_colors" format="reference"/>
-        <attr name="start_time" format="integer"/>
-        <attr name="header_highlight_color" format="color"/>
-        <attr name="header_height" format="dimension"/>
-        <attr name="margin_bottom" format="dimension"/>
-        <attr name="activate_timebar" format="boolean"/>
+        <attr name="rowCount" format="integer"/>
+        <attr name="columnCount" format="integer"/>
+        <attr name="cellHeight" format="dimension"/>
+        <attr name="sideCellWidth" format="dimension"/>
+        <attr name="headerTitle" format="reference"/>
+        <attr name="stickerColors" format="reference"/>
+        <attr name="startTime" format="integer"/>
+        <attr name="headerHighlightColor" format="color"/>
+        <attr name="headerHeight" format="dimension"/>
+        <attr name="marginBottom" format="dimension"/>
+        <attr name="activateTimebar" format="boolean"/>
     </declare-styleable>
 </resources>

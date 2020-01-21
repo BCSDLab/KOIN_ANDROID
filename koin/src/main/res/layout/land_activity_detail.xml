@@ -22,8 +22,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:title_text="복덕방" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:titleText="복덕방" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

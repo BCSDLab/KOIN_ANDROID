@@ -56,7 +56,7 @@ public class TypekitFactory {
         Typekit typekit = Typekit.getInstance();
 
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Typekit);
-        String fontKey = (array != null) ? array.getString(R.styleable.Typekit_font_name) : null;
+        String fontKey = (array != null) ? array.getString(R.styleable.Typekit_fontName) : null;
 
         if (!TextUtils.isEmpty(fontKey)) {
             textView.setTypeface(typekit.get(fontKey));

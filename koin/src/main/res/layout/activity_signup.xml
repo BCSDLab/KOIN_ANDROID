@@ -245,7 +245,7 @@
         android:id="@+id/signup_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:font_name="Bold"
+        app:fontName="Bold"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="233dp"
         android:text="회원가입"
@@ -270,7 +270,7 @@
             android:id="@+id/signup_edittext_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:font_name="Regular"
+            app:fontName="Regular"
             android:layout_weight="1"
             android:background="@null"
             android:hint="KOREATECH 이메일"
@@ -285,7 +285,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:font_name="Regular"
+            app:fontName="Regular"
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/koreatech_email"
@@ -309,7 +309,7 @@
         android:id="@+id/signup_edittext_pw"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:background="@null"
         android:hint="비밀번호"
         android:imeOptions="actionGo"
@@ -340,7 +340,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@null"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:hint="비밀번호 확인"
         android:imeOptions="actionGo"
         android:inputType="textPassword"
@@ -371,7 +371,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:lineSpacingExtra="6sp"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:text="* 특수문자를 포함한 영어와 숫자 6~18 자리로 입력해주세요"
         android:textColor="@color/squash"
         android:textSize="11sp"
@@ -386,7 +386,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:text="개인정보 이용약관"
         android:textColor="@color/warm_grey"
         android:textSize="13sp"
@@ -413,7 +413,7 @@
         android:id="@+id/singup_agree_textview"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:gravity="center"
         android:text="동의"
         android:textColor="@color/warm_grey"
@@ -428,7 +428,7 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:text="코인 이용약관"
         android:textColor="@color/warm_grey"
         android:textSize="13sp"
@@ -454,7 +454,7 @@
         android:id="@+id/singup_agree_two_textview"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:gravity="center"
         android:text="동의"
         android:textColor="@color/warm_grey"
@@ -471,7 +471,7 @@
         android:gravity="center"
         android:text="이메일 인증하기"
         android:textColor="@color/white"
-        app:font_name="Regular"
+        app:fontName="Regular"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.789"
         app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
@@ -499,7 +499,7 @@
             android:text="Copyright @ "
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom4" />
+            app:fontName="Custom4" />
 
         <TextView
             android:id="@+id/textView7"
@@ -510,7 +510,7 @@
             android:text="BCSD Lab "
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom3" />
+            app:fontName="Custom3" />
 
         <TextView
             android:id="@+id/textView8"
@@ -521,7 +521,7 @@
             android:text="All rights reserved."
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom4" />
+            app:fontName="Custom4" />
 
     </LinearLayout>
 

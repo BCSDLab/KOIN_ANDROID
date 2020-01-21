@@ -81,18 +81,18 @@ public class AppBarBase extends AppBarLayout {
     }
 
     private void setTypeArray(TypedArray typedArray) {
-        int backgroundColor = typedArray.getColor(R.styleable.AppBarBase_background_color, getResources().getColor(R.color.light_navy));
-        int titleTextColor = typedArray.getColor(R.styleable.AppBarBase_title_text_color, getResources().getColor(R.color.white));
-        String titleText = typedArray.getString(R.styleable.AppBarBase_title_text);
-        int titleVisibility = typedArray.getInt(R.styleable.AppBarBase_title_visibility, View.VISIBLE);
-        Drawable leftButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_left_button_background);
-        int leftButtonColor = typedArray.getColor(R.styleable.AppBarBase_left_button_text_color, getResources().getColor(R.color.white));
-        String leftButtonString = typedArray.getString(R.styleable.AppBarBase_left_button_text);
-        int leftButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_left_button_visibility, View.VISIBLE);
-        int rightButtonColor = typedArray.getColor(R.styleable.AppBarBase_right_button_text_color, getResources().getColor(R.color.white));
-        Drawable rightButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_right_button_background);
-        String rightButtonString = typedArray.getString(R.styleable.AppBarBase_right_button_text);
-        int rightButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_right_button_visibility, View.VISIBLE);
+        int backgroundColor = typedArray.getColor(R.styleable.AppBarBase_backgroundColor, getResources().getColor(R.color.light_navy));
+        int titleTextColor = typedArray.getColor(R.styleable.AppBarBase_titleTextColor, getResources().getColor(R.color.white));
+        String titleText = typedArray.getString(R.styleable.AppBarBase_titleText);
+        int titleVisibility = typedArray.getInt(R.styleable.AppBarBase_titleVisibility, View.VISIBLE);
+        Drawable leftButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_leftButtonBackground);
+        int leftButtonColor = typedArray.getColor(R.styleable.AppBarBase_leftButtonTextColor, getResources().getColor(R.color.white));
+        String leftButtonString = typedArray.getString(R.styleable.AppBarBase_leftButtonText);
+        int leftButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_leftButtonVisibility, View.VISIBLE);
+        int rightButtonColor = typedArray.getColor(R.styleable.AppBarBase_rightButtonTextColor, getResources().getColor(R.color.white));
+        Drawable rightButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_rightButtonBackground);
+        String rightButtonString = typedArray.getString(R.styleable.AppBarBase_rightButtonText);
+        int rightButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_rightButtonVisibility, View.VISIBLE);
         /* background */
         background.setBackgroundColor(backgroundColor);
         /* title */

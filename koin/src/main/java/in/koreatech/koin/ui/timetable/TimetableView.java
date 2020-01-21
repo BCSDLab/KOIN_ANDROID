@@ -56,8 +56,8 @@ public class TimetableView extends LinearLayout {
     private static final int DEFAULT_STICKER_FONT_SIZE_DP = 9;
     private static final int DEFAULT_MARGINE_BOTTOM_DP = 0;
 
-    private static final String CLASS_TITLE_FONT_NAME = "fonts/notosanscjkkr_medium.otf";
-    private static final String CLASS_LECTURE_FONT_NAME = "fonts/notosans_regular.ttf";
+    private static final String CLASS_TITLE_fontName = "fonts/notosanscjkkr_medium.otf";
+    private static final String CLASS_LECTURE_fontName = "fonts/notosans_regular.ttf";
 
     private int rowCount;
     private int columnCount;
@@ -110,18 +110,18 @@ public class TimetableView extends LinearLayout {
 
     private void getAttrs(AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TimetableView);
-        rowCount = a.getInt(R.styleable.TimetableView_row_count, DEFAULT_ROW_COUNT) - 1;
-        columnCount = a.getInt(R.styleable.TimetableView_column_count, DEFAULT_COLUMN_COUNT);
-        cellHeight = a.getDimensionPixelSize(R.styleable.TimetableView_cell_height, dp2Px(DEFAULT_CELL_HEIGHT_DP));
-        sideCellWidth = a.getDimensionPixelSize(R.styleable.TimetableView_side_cell_width, dp2Px(DEFAULT_SIDE_CELL_WIDTH_DP));
-        int titlesId = a.getResourceId(R.styleable.TimetableView_header_title, R.array.default_header_title);
+        rowCount = a.getInt(R.styleable.TimetableView_rowCount, DEFAULT_ROW_COUNT) - 1;
+        columnCount = a.getInt(R.styleable.TimetableView_columnCount, DEFAULT_COLUMN_COUNT);
+        cellHeight = a.getDimensionPixelSize(R.styleable.TimetableView_cellHeight, dp2Px(DEFAULT_CELL_HEIGHT_DP));
+        sideCellWidth = a.getDimensionPixelSize(R.styleable.TimetableView_sideCellWidth, dp2Px(DEFAULT_SIDE_CELL_WIDTH_DP));
+        int titlesId = a.getResourceId(R.styleable.TimetableView_headerTitle, R.array.default_headerTitle);
         headerTitle = a.getResources().getStringArray(titlesId);
-        int colorsId = a.getResourceId(R.styleable.TimetableView_sticker_colors, R.array.default_sticker_color);
+        int colorsId = a.getResourceId(R.styleable.TimetableView_stickerColors, R.array.default_sticker_color);
         stickerColors = a.getResources().getStringArray(colorsId);
-        startTime = a.getInt(R.styleable.TimetableView_start_time, DEFAULT_START_TIME);
-        headerHighlightColor = a.getColor(R.styleable.TimetableView_header_highlight_color, getResources().getColor(R.color.default_header_highlight_color));
-        headerHeight = a.getDimensionPixelOffset(R.styleable.TimetableView_header_height, dp2Px(DEFAULT_CELL_HEIGHT_DP));
-        marginBottom = a.getDimensionPixelSize(R.styleable.TimetableView_margin_bottom, DEFAULT_MARGINE_BOTTOM_DP);
+        startTime = a.getInt(R.styleable.TimetableView_startTime, DEFAULT_START_TIME);
+        headerHighlightColor = a.getColor(R.styleable.TimetableView_headerHighlightColor, getResources().getColor(R.color.default_headerHighlightColor));
+        headerHeight = a.getDimensionPixelOffset(R.styleable.TimetableView_headerHeight, dp2Px(DEFAULT_CELL_HEIGHT_DP));
+        marginBottom = a.getDimensionPixelSize(R.styleable.TimetableView_marginBottom, DEFAULT_MARGINE_BOTTOM_DP);
 
         a.recycle();
     }
@@ -207,8 +207,8 @@ public class TimetableView extends LinearLayout {
             String firstWord = stringNullToNotValid(timeTableItem.getClassTitle()) + "\n\n";
             String secondWord = stringNullToNotValid(timeTableItem.getLectureClass()) + " " + stringNullToNotValid(timeTableItem.getProfessor());
             Spannable spannable = new SpannableString(firstWord + secondWord);
-            spannable.setSpan(new CustomTypefaceSpan(CLASS_TITLE_FONT_NAME, Typeface.DEFAULT, 9, context), 0, firstWord.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannable.setSpan(new CustomTypefaceSpan(CLASS_LECTURE_FONT_NAME, Typeface.DEFAULT, 9, context), firstWord.length(), firstWord.length() + secondWord.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new CustomTypefaceSpan(CLASS_TITLE_fontName, Typeface.DEFAULT, 9, context), 0, firstWord.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new CustomTypefaceSpan(CLASS_LECTURE_fontName, Typeface.DEFAULT, 9, context), firstWord.length(), firstWord.length() + secondWord.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             tv.setText(spannable);
             tv.setTextColor(Color.parseColor("#000000"));
@@ -584,10 +584,10 @@ public class TimetableView extends LinearLayout {
             columnCount = DEFAULT_COLUMN_COUNT;
             cellHeight = dp2Px(DEFAULT_CELL_HEIGHT_DP);
             sideCellWidth = dp2Px(DEFAULT_SIDE_CELL_WIDTH_DP);
-            headerTitle = context.getResources().getStringArray(R.array.default_header_title);
+            headerTitle = context.getResources().getStringArray(R.array.default_headerTitle);
             stickerColors = context.getResources().getStringArray(R.array.default_sticker_color);
             startTime = DEFAULT_START_TIME;
-            headerHighlightColor = context.getResources().getColor(R.color.default_header_highlight_color);
+            headerHighlightColor = context.getResources().getColor(R.color.default_headerHighlightColor);
         }
 
 

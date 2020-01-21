@@ -338,7 +338,7 @@
     </string-array>
 
 
-    <string-array name="default_header_title">
+    <string-array name="default_headerTitle">
         <item></item>
         <item>월</item>
         <item>화</item>

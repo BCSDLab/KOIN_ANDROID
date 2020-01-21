@@ -31,7 +31,7 @@
             android:text="삭제"
             android:textColor="@color/squash"
             android:textSize="15sp"
-            app:font_name="Custom6" />
+            app:fontName="Custom6" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_center_textview"
@@ -43,7 +43,7 @@
             android:text="수업상세"
             android:textColor="@color/light_navy"
             android:textSize="15sp"
-            app:font_name="Custom5" />
+            app:fontName="Custom5" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_right_textview"
@@ -55,7 +55,7 @@
             android:text="완료"
             android:textColor="@color/black"
             android:textSize="15sp"
-            app:font_name="Custom6" />
+            app:fontName="Custom6" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:letterSpacing="-0.03"
             android:lineSpacingExtra="3sp"
             android:textSize="15sp"
-            app:font_name="Bold"
+            app:fontName="Bold"
             tools:text="영어1" />
 
 
@@ -100,7 +100,7 @@
             android:letterSpacing="-0.03"
             android:lineSpacingExtra="3sp"
             android:textSize="12sp"
-            app:font_name="Custom6"
+            app:fontName="Custom6"
             tools:text="detail" />
 
 
