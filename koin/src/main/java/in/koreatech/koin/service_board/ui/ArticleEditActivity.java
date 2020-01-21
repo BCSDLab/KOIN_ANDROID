@@ -93,36 +93,36 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     private final static String TAG = ArticleEditActivity.class.getSimpleName();
     private final static int MAX_TITLE_LENGTH = 255;
     @BindView(R.id.koin_base_app_bar_dark)
-    KoinBaseAppbarDark mKoinBaseAppBarDark;
+    KoinBaseAppbarDark koinBaseAppBarDark;
     @BindView(R.id.title_nickname_border)
-    LinearLayout mTitleNicknameBorder;
+    LinearLayout titleNicknameBorder;
     @BindView(R.id.article_edittext_nickname)
-    EditText mArticleEdittextNickname;
+    EditText articleEdittextNickname;
     @BindView(R.id.nickname_password_border)
-    LinearLayout mNicknamePasswordBorder;
+    LinearLayout nicknamePasswordBorder;
     @BindView(R.id.article_edittext_password)
-    EditText mArticleEdittextPassword;
+    EditText articleEdittextPassword;
     @BindView(R.id.password_content_border)
-    LinearLayout mPasswordContentBorder;
-    private Context mContext;
+    LinearLayout passwordContentBorder;
+    private Context context;
 
-    private ArticleEditPresenter mArticleEditPresenter;
+    private ArticleEditPresenter articleEditPresenter;
     private GenerateProgressTask generateProgressTask;
-    private int mBoardUid;
-    private int mArticleUid;
-    private String mTitleTemp;
-    private String mPassword;
-    private String mNickname;
+    private int boardUid;
+    private int articleUid;
+    private String titleTemp;
+    private String password;
+    private String nickname;
 
 
     private boolean isEdit;
     private boolean isCreateBtnClicked;
     private HashMap<String, Boolean> uploadImageHashMap;             // 갤러리에서 불러온 이미지의 HashMap
     private HashMap<String, Boolean> isUploadImageCompeleteHashMap;  // 압축 과정을 완료한 이미지의 HashMap
-    private InputMethodManager mInputMethodManager;
+    private InputMethodManager inputMethodManager;
 
     @BindView(R.id.article_edittext_title)
-    EditText mEditTextTitle;
+    EditText editTextTitle;
     @BindView(R.id.article_editor_content)
     KoinRichEditor articleEditor;
 
@@ -131,30 +131,30 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_edit);
         ButterKnife.bind(this);
-        this.mContext = this;
+        this.context = this;
         uploadImageHashMap = new HashMap<>();
         isUploadImageCompeleteHashMap = new HashMap<>();
         initEditor();
 
         //isEdit = false로 게시물 작성을 기본값으로 함
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
-        mBoardUid = getIntent().getIntExtra("BOARD_UID", 0);
+        boardUid = getIntent().getIntExtra("BOARD_UID", 0);
         articleEditor.setEditorImageLayout(R.layout.rich_editor_image_layout);
 
         //게시물 수정인 경우
         if (isEdit) {
-            mArticleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
-            mEditTextTitle.setText(getIntent().getStringExtra("ARTICLE_TITLE"));
-            mPassword = getIntent().getStringExtra("PASSWORD");
-            mNickname = getIntent().getStringExtra("NICKNAME");
+            articleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
+            editTextTitle.setText(getIntent().getStringExtra("ARTICLE_TITLE"));
+            password = getIntent().getStringExtra("PASSWORD");
+            nickname = getIntent().getStringExtra("NICKNAME");
 
-            mEditTextTitle.setSelection(mEditTextTitle.getText().length());
+            editTextTitle.setSelection(editTextTitle.getText().length());
             articleEditor.render(renderHtmltoString(getIntent().getStringExtra("ARTICLE_CONTENT")));
-            if (mBoardUid == ID_ANONYMOUS) {
-                mArticleEdittextNickname.setText(mNickname);
-                mArticleEdittextPassword.setText(mPassword);
-                mArticleEdittextPassword.setFocusableInTouchMode(false);
-                mArticleEdittextNickname.setFocusableInTouchMode(false);
+            if (boardUid == ID_ANONYMOUS) {
+                articleEdittextNickname.setText(nickname);
+                articleEdittextPassword.setText(password);
+                articleEdittextPassword.setFocusableInTouchMode(false);
+                articleEdittextNickname.setFocusableInTouchMode(false);
             }
         }
 
@@ -211,19 +211,19 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 uploadImageHashMap.put(uuid, true);
                 isUploadImageCompeleteHashMap.put(uuid, false);
                 Observable.defer(() -> {
-                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, mContext);
+                    File imageFile = ImageUtil.changeBMPtoFILE(bitmap, uuid, 1, context);
                     return Observable.just(imageFile);
                 })
                         .subscribeOn(Schedulers.io())
                         .subscribe(imageFile -> {
                             if (uploadImageHashMap.containsKey(uuid) && uploadImageHashMap.get(uuid)) {
-                                mArticleEditPresenter.uploadImage(imageFile, uuid);
+                                articleEditPresenter.uploadImage(imageFile, uuid);
                                 isUploadImageCompeleteHashMap.put(uuid, true);
                             }
                         }, throwable -> {
                             new Handler().post(() -> {
                                 articleEditor.onImageUploadFailed(uuid);
-                                ToastUtil.makeLongToast(mContext, R.string.fail_upload);
+                                ToastUtil.makeLongToast(context, R.string.fail_upload);
                                 isUploadImageCompeleteHashMap.put(uuid, true);
                             });
 
@@ -265,25 +265,29 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     }
 
     public void init() {
-        switch (mBoardUid) {
+        switch (boardUid) {
             case ID_FREE:
-                mKoinBaseAppBarDark.setTitleText("자유게시판");
+                koinBaseAppBarDark.setTitleText("자유게시판");
                 break;
             case ID_RECRUIT:
-                mKoinBaseAppBarDark.setTitleText("취업게시판");
+                koinBaseAppBarDark.setTitleText("취업게시판");
                 break;
             case ID_ANONYMOUS:
-                mKoinBaseAppBarDark.setTitleText("익명게시판");
+                koinBaseAppBarDark.setTitleText("익명게시판");
                 break;
         }
-        setVisiblityInput(mBoardUid);
+        setVisiblityInput(boardUid);
         setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor()));
 
-        mEditTextTitle.addTextChangedListener(this);
+        editTextTitle.addTextChangedListener(this);
+
+        editTextTitle.setFocusableInTouchMode(true);
+        editTextTitle.requestFocus();
+        editTextTitle.setFocusable(true);
 
         isCreateBtnClicked = false;
 
-        mInputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }
 
     public void eraseEditorText() {
@@ -292,16 +296,16 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     public void setVisiblityInput(int id) {
         if (id != ID_ANONYMOUS) {
-            mTitleNicknameBorder.setVisibility(View.GONE);
-            mArticleEdittextNickname.setVisibility(View.GONE);
-            mNicknamePasswordBorder.setVisibility(View.GONE);
-            mArticleEdittextPassword.setVisibility(View.GONE);
+            titleNicknameBorder.setVisibility(View.GONE);
+            articleEdittextNickname.setVisibility(View.GONE);
+            nicknamePasswordBorder.setVisibility(View.GONE);
+            articleEdittextPassword.setVisibility(View.GONE);
         } else {
-            mTitleNicknameBorder.setVisibility(View.VISIBLE);
-            mArticleEdittextNickname.setVisibility(View.VISIBLE);
-            mNicknamePasswordBorder.setVisibility(View.VISIBLE);
-            mArticleEdittextPassword.setVisibility(View.VISIBLE);
-            mPasswordContentBorder.setVisibility(View.VISIBLE);
+            titleNicknameBorder.setVisibility(View.VISIBLE);
+            articleEdittextNickname.setVisibility(View.VISIBLE);
+            nicknamePasswordBorder.setVisibility(View.VISIBLE);
+            articleEdittextPassword.setVisibility(View.VISIBLE);
+            passwordContentBorder.setVisibility(View.VISIBLE);
         }
     }
 
@@ -317,14 +321,14 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void setPresenter(ArticleEditPresenter presenter) {
-        this.mArticleEditPresenter = presenter;
+        this.articleEditPresenter = presenter;
     }
 
     @OnEditorAction(R.id.article_edittext_title)
     public boolean onEditorAction(EditText v, int actionId, KeyEvent event) {
         switch (v.getId()) {
             case R.id.article_edittext_title:
-                mEditTextTitle.requestFocus();
+                editTextTitle.requestFocus();
                 break;
             default:
                 break;
@@ -349,47 +353,47 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         }
 
         if(!imageUploadCheck) {
-            ToastUtil.makeShortToast(mContext, "이미지 업로드 중입니다.");
+            ToastUtil.makeShortToast(context, "이미지 업로드 중입니다.");
             return;
         }
-        if (FormValidatorUtil.validateStringIsEmpty(mEditTextTitle.getText().toString())) {
-            ToastUtil.makeShortToast(mContext, "제목을 입력하세요");
+        if (FormValidatorUtil.validateStringIsEmpty(editTextTitle.getText().toString())) {
+            ToastUtil.makeShortToast(context, "제목을 입력하세요");
             return;
         }
         if (FormValidatorUtil.validateStringIsEmpty(articleEditor.getContent().toString().trim())) {
-            ToastUtil.makeShortToast(mContext, "내용을 입력하세요");
+            ToastUtil.makeShortToast(context, "내용을 입력하세요");
             return;
         }
 
-        if (mBoardUid == ID_ANONYMOUS) {
-            if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextNickname.getText().toString())) {
-                ToastUtil.makeShortToast(mContext, "제목을 입력하세요");
+        if (boardUid == ID_ANONYMOUS) {
+            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextNickname.getText().toString())) {
+                ToastUtil.makeShortToast(context, "제목을 입력하세요");
                 return;
             }
-            if (FormValidatorUtil.validateStringIsEmpty(mArticleEdittextPassword.getText().toString())) {
-                ToastUtil.makeShortToast(mContext, "내용을 입력하세요");
+            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextPassword.getText().toString())) {
+                ToastUtil.makeShortToast(context, "내용을 입력하세요");
                 return;
             }
         }
 
-        switch (mBoardUid) {
+        switch (boardUid) {
             case ID_FREE: //자유게시판
             case ID_RECRUIT: //채용게시판
                 if (isEdit) {
-                    mArticleEditPresenter.updateArticle(new Article(mBoardUid, mArticleUid, mEditTextTitle.getText().toString().trim(), spannableStringBuilder));
+                    articleEditPresenter.updateArticle(new Article(boardUid, articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder));
                 } else {
-                    mArticleEditPresenter.createArticle(new Article(mBoardUid, mEditTextTitle.getText().toString().trim(), spannableStringBuilder));
+                    articleEditPresenter.createArticle(new Article(boardUid, editTextTitle.getText().toString().trim(), spannableStringBuilder));
                 }
                 break;
             case ID_ANONYMOUS: //익명게시판
                 if (isEdit) {
-                    mArticleEditPresenter.updateAnonymousArticle(mArticleUid, mEditTextTitle.getText().toString().trim(), spannableStringBuilder, mPassword);
+                    articleEditPresenter.updateAnonymousArticle(articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder, password);
                 } else {
-                    mArticleEditPresenter.createAnonymousArticle(mEditTextTitle.getText().toString().trim(), spannableStringBuilder, mArticleEdittextNickname.getText().toString().replace(" ", ""), mArticleEdittextPassword.getText().toString());
+                    articleEditPresenter.createAnonymousArticle(editTextTitle.getText().toString().trim(), spannableStringBuilder, articleEdittextNickname.getText().toString().replace(" ", ""), articleEdittextPassword.getText().toString());
                 }
                 break;
             default:
-                ToastUtil.makeShortToast(mContext, "잘못된 접근입니다.");
+                ToastUtil.makeShortToast(context, "잘못된 접근입니다.");
                 break;
 
         }
@@ -399,14 +403,14 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        mTitleTemp = s.toString();
+        titleTemp = s.toString();
     }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.length() > MAX_TITLE_LENGTH) {
-            mEditTextTitle.setText(mTitleTemp);
-            mEditTextTitle.setSelection(mTitleTemp.length() - 1);
+            editTextTitle.setText(titleTemp);
+            editTextTitle.setSelection(titleTemp.length() - 1);
         }
     }
 
@@ -414,7 +418,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     public void afterTextChanged(Editable editable) {
 
     }
-
 
     @Override
     public void showLoading() {
@@ -447,7 +450,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     public void goToArticleActivity(Article article) {
         if (!isEdit) {
             Intent intent = new Intent(this, ArticleActivity.class);
-            intent.putExtra("BOARD_UID", mBoardUid);
+            intent.putExtra("BOARD_UID", boardUid);
             intent.putExtra("ARTICLE_UID", article.articleUid);
             intent.putExtra("ARTICLE_GRANT_EDIT", true);
             startActivity(intent);
@@ -504,7 +507,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     }
 
     public void createColorPicker() {
-        new ColorPickerPopup.Builder(mContext)
+        new ColorPickerPopup.Builder(context)
                 .initialColor(Color.RED) // 색초기화
                 .enableAlpha(true)
                 .okTitle("선택")

@@ -383,7 +383,8 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
     public void uploadThumbnailImage(File file, ApiCallback apiCallback) {
         String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-        RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postThumbanilImage(addAuthorizationBearer(token), filePart)
+        RetrofitManager.getInstance().getRetrofit().create(MarketService.class)
+                .postThumbanilImage(addAuthorizationBearer(token), filePart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Item>() {

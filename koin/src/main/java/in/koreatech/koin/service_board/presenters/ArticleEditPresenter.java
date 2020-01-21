@@ -50,10 +50,12 @@ public class ArticleEditPresenter implements BasePresenter {
         @Override
         public void onSuccess(Object object) {
             Image item = (Image) object;
-            if(item.getUrls() != null)
-                articleEditView.showUploadImage(item.getUrls().get(0),uploadImageId);
-            else
+
+            if(item.getUrls() != null) {
+                articleEditView.showUploadImage(item.getUrls().get(0), uploadImageId);
+            } else {
                 articleEditView.showFailUploadImage(uploadImageId);
+            }
 
         }
 
@@ -85,13 +87,10 @@ public class ArticleEditPresenter implements BasePresenter {
 
     public void uploadImage(File file, String uid) {
         uploadImageId = uid;
-        if(file == null)
-        {
+        if(file == null) {
             articleEditView.showFailUploadImage(uid);
             return;
         }
         marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
     }
-
 }
-

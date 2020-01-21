@@ -45,8 +45,6 @@
                     android:id="@+id/article_scrollview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:layout_marginTop="56dp"
                     android:layout_marginBottom="96dp"
                     android:scrollbars="vertical">
@@ -161,6 +159,7 @@
                             android:paddingLeft="20dp"
                             android:paddingTop="10dp"
                             android:paddingRight="20dp"
+                            app:auto_focus="false"
                             app:placeholder="내용을 입력해주세요.."
                             app:render_type="Editor" />
 

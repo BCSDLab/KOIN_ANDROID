@@ -18,12 +18,12 @@ public class ImageUtil {
         int quality = 100;
         int redeceQuality = 2;
         while (true) {
-            if (quality <= 0) return null;
+            if (quality <= 0) {
+                return null;
+            }
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            Log.d(TAG, "quality: " + quality);
             bitmap.compress(Bitmap.CompressFormat.JPEG, quality, bos);
             byte[] bitmapdata = bos.toByteArray();
-            Log.d(TAG, "size: " + bitmapdata.length/10000.0);
             if (bitmapdata.length /1000000.0 > maxSize) quality -= redeceQuality;
             else return bitmapdata;
         }
@@ -33,17 +33,12 @@ public class ImageUtil {
         File file = new File(context.getCacheDir(), fileName + ".jpg");
         file.createNewFile();
 
-
         byte[] bitmapdata = reduceSize(bitmap,maxSize);
         if(bitmapdata == null) return  null;
         Log.d(TAG, "size: " + bitmapdata.length/1000000.0 );
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
             fos.write(bitmapdata);
             fos.flush();
             fos.close();
