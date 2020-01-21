@@ -38,7 +38,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
 
 
     private Unbinder unbinder;
-    private MarketUsedContract.Presenter marketUsedPresenter;
+    private MarketUsedPresenter marketUsedPresenter;
     private ArrayList<Item> marketBuyArrayList = new ArrayList<>(); //DB의 중고장터 리스트를 저장할 ArrayList
 
     /* Adapter */
@@ -128,7 +128,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     }
 
     @Override
-    public void setPresenter(MarketUsedContract.Presenter presenter) {
+    public void setPresenter(MarketUsedPresenter presenter) {
         this.marketUsedPresenter = presenter;
     }
 

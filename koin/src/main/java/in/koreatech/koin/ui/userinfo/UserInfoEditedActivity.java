@@ -42,7 +42,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private Context context;
 
     private User user;
-    private UserInfoEditContract.Presenter userInfoEditPresenter;
+    private UserInfoEditPresenter userInfoEditPresenter;
 
 
     private String changedNickname;
@@ -399,7 +399,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     }
 
     @Override
-    public void setPresenter(UserInfoEditContract.Presenter presenter) {
+    public void setPresenter(UserInfoEditPresenter presenter) {
         this.userInfoEditPresenter = presenter;
 
     }

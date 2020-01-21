@@ -64,7 +64,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     private Item mItem; //품목 정보 저장
     private ArrayList<Comment> commentArrayList;
-    private MarketUsedDetailContract.Presenter marketDetailPresenter;
+    private MarketUsedDetailPresenter marketDetailPresenter;
 
     private String prevCommentContent;
     private InputMethodManager inputMethodManager;
@@ -246,7 +246,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     }
 
     @Override
-    public void setPresenter(MarketUsedDetailContract.Presenter presenter) {
+    public void setPresenter(MarketUsedDetailPresenter presenter) {
         this.marketDetailPresenter = presenter;
     }
 

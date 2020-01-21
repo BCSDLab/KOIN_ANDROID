@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.board.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.response.ArticlePageResponse;
@@ -8,7 +7,7 @@ import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 
-public class BoardPresenter implements BasePresenter {
+public class BoardPresenter {
 
     private final BoardContract.View boardView;
 

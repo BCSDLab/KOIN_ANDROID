@@ -1,11 +1,10 @@
 package in.koreatech.koin.ui.store.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
 
-public class StoreDetailPresenter implements BasePresenter {
+public class StoreDetailPresenter {
 
     private final StoreDetailContract.View storeView;
 

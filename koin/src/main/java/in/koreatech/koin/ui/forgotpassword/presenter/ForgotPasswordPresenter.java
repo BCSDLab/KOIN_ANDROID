@@ -9,7 +9,7 @@ import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class ForgotPasswordPresenter implements ForgotPasswordContract.Presenter {
+public class ForgotPasswordPresenter{
 
     private final ForgotPasswordContract.View forgotPasswordView;
 
@@ -26,7 +26,6 @@ public class ForgotPasswordPresenter implements ForgotPasswordContract.Presenter
      *
      * @param id 포탈 계정 id
      */
-    @Override
     public void findPassword(String id) {
         this.forgotPasswordView.showProgress();
         mUserInteractor.createFindPassword(id, findPasswordApiCallback);

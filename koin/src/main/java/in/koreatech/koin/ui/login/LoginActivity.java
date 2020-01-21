@@ -30,7 +30,7 @@ import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 public class LoginActivity extends ActivityBase implements LoginContract.View {
     private final String TAG = "LoginActivity";
     private Context context;
-    private LoginContract.Presenter loginPresenter;
+    private LoginPresenter loginPresenter;
     private boolean isMainActivity;
 
     /* View Components */
@@ -54,7 +54,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
     }
 
     @Override
-    public void setPresenter(LoginContract.Presenter presenter) {
+    public void setPresenter(LoginPresenter presenter) {
         this.loginPresenter = presenter;
     }
 

@@ -62,7 +62,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     @BindView(R.id.lostfound_detail_lost_date_textview)
     TextView lostfoundDetailLostDateTextview;
 
-    private LostFoundDetailContract.Presenter lostfoundDetailPresenter;
+    private LostFoundDetailPresenter lostfoundDetailPresenter;
     private LostItem lostItem;
     private int id;
 
@@ -184,7 +184,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     }
 
     @Override
-    public void setPresenter(LostFoundDetailContract.Presenter presenter) {
+    public void setPresenter(LostFoundDetailPresenter presenter) {
         this.lostfoundDetailPresenter = presenter;
     }
 

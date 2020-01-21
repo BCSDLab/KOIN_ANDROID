@@ -1,10 +1,9 @@
 package in.koreatech.koin.ui.forgotpassword.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 
 public interface ForgotPasswordContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<ForgotPasswordPresenter> {
         void showProgress();
 
         void hideProgress();
@@ -16,9 +15,5 @@ public interface ForgotPasswordContract {
         void onClickToLoginButton();
 
         void goToEmail();
-    }
-
-    interface Presenter extends BasePresenter {
-        void findPassword(String id);
     }
 }

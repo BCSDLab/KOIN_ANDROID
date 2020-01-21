@@ -9,7 +9,7 @@ import retrofit2.HttpException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SignupPresenter implements SignupContract.Presenter {
+public class SignupPresenter{
 
     private final SignupContract.View mSignUpView;
 
@@ -49,7 +49,6 @@ public class SignupPresenter implements SignupContract.Presenter {
      * @param id       학교 포털 IDㅌ
      * @param password koin 계정 비밀번호
      */
-    @Override
     public void signUp(String id, String password) {
         mSignUpView.showProgress();
         mUserInteractor.createToken(id, password, signUpApiCallback);

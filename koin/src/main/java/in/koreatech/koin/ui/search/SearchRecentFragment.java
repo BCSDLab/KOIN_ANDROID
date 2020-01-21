@@ -31,7 +31,7 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
     private SearchRecentAdapter searchRecentAdapter;
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<String> recentSearchData;
-    private SearchRecentContract.Presenter searchRecentPresenter;
+    private SearchRecentPresenter searchRecentPresenter;
 
 
     @Nullable
@@ -78,7 +78,7 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
     }
 
     @Override
-    public void setPresenter(SearchRecentContract.Presenter presenter) {
+    public void setPresenter(SearchRecentPresenter presenter) {
         this.searchRecentPresenter = presenter;
     }
 

@@ -1,10 +1,9 @@
 package in.koreatech.koin.ui.userinfo.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 
 public interface UserInfoContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<UserInfoPresenter> {
         void showLoading();
 
         void hideLoading();
@@ -18,12 +17,4 @@ public interface UserInfoContract {
         void checkRequiredInfo();
 
     }
-
-    interface Presenter extends BasePresenter {
-
-        void getUserData();
-
-        void deleteUser(int roomUid);
-    }
-
 }

@@ -41,7 +41,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     private LinearLayoutManager linearLayoutManager;
     private LostFoundMainActivityRecyclerviewAdapter lostFoundMainActivityRecyclerviewAdapter;
     private ArrayList<LostItem> lostItemArrayList;
-    private LostFoundMainContract.Presenter lostFoundMainPresenter;
+    private LostFoundMainPresenter lostFoundMainPresenter;
     private Context context;
     private int currentPage;
     private int totalPage;
@@ -175,7 +175,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     }
 
     @Override
-    public void setPresenter(LostFoundMainContract.Presenter presenter) {
+    public void setPresenter(LostFoundMainPresenter presenter) {
         lostFoundMainPresenter = presenter;
     }
 

@@ -33,7 +33,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private final String TAG = "SplashActivity";
 
     private Context context;
-    private SplashContract.Presenter splashPresenter;
+    private SplashPresenter splashPresenter;
     private FirebasePerformanceUtil firebasePerformanceUtil;
     private PackageInfo pakageInfo;
     private String currentVersionName;
@@ -64,7 +64,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     }
 
     @Override
-    public void setPresenter(SplashContract.Presenter presenter) {
+    public void setPresenter(SplashPresenter presenter) {
         this.splashPresenter = presenter;
 
     }

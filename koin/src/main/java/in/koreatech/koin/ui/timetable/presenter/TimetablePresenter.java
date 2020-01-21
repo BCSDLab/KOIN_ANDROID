@@ -9,7 +9,6 @@ import java.util.Locale;
 
 import android.text.format.DateFormat;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Lecture;
@@ -25,7 +24,7 @@ import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
 import in.koreatech.koin.util.SaveManager;
 
 
-public class TimetablePresenter implements BasePresenter {
+public class TimetablePresenter {
     public static final String TAG = TimetablePresenter.class.getName();
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 

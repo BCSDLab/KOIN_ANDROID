@@ -11,12 +11,12 @@ import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
 import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 
-public class SeachArticlePresenter implements SearchArticleContract.Presenter {
+public class SearchArticlePresenter {
     public static final int MAX_SAVE_SIZE = 20;
     private SearchArticleContract.View searchArticleView;
     private SearchArticleInteractor searchArticleInteractor;
 
-    public SeachArticlePresenter(SearchArticleContract.View searchArticleView, SearchArticleInteractor searchArticleInteractor) {
+    public SearchArticlePresenter(SearchArticleContract.View searchArticleView, SearchArticleInteractor searchArticleInteractor) {
         this.searchArticleView = searchArticleView;
         searchArticleView.setPresenter(this);
         this.searchArticleInteractor = searchArticleInteractor;
@@ -42,7 +42,6 @@ public class SeachArticlePresenter implements SearchArticleContract.Presenter {
         }
     };
 
-    @Override
     public void getArticleSearched(String searchText, int page) {
         searchArticleView.showLoading();
         if (searchText == null || searchText.replace(" ", "").isEmpty()) {
@@ -59,7 +58,6 @@ public class SeachArticlePresenter implements SearchArticleContract.Presenter {
 
     }
 
-    @Override
     public void saveText(String text) {
         if (text == null || text.replace(" ", "").isEmpty()) return;
         if (RecentSearchSharedPreference.getInstance().getRecentSearch().isEmpty()) {

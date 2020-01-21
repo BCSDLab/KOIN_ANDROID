@@ -10,7 +10,7 @@ import in.koreatech.koin.util.HashGeneratorUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class LoginPresenter implements LoginContract.Presenter {
+public class LoginPresenter{
     private final LoginContract.View loginView;
 
     private final UserInteractor userInteractor;
@@ -32,7 +32,6 @@ public class LoginPresenter implements LoginContract.Presenter {
      * @param password       koin 비밀번호
      * @param isPasswordHash 비밀번호 hash 여부
      */
-    @Override
     public void login(String id, String password, Boolean isPasswordHash) {
         this.loginView.showProgress();
         this.userPw = HashGeneratorUtil.generateSHA256(password);

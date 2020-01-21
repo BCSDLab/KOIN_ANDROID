@@ -52,7 +52,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     private int lostDateYear;
     private int lostDateMonth;
     private int lostDateDay;
-    private LostFoundEditContract.Presenter lostAndFoundPresenter;
+    private LostFoundEditPresenter lostAndFoundPresenter;
 
     @BindView(R.id.lostfound_create_nestedscrollview)
     NestedScrollView lostfoundCreateNestedScrollView;
@@ -410,7 +410,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     }
 
     @Override
-    public void setPresenter(LostFoundEditContract.Presenter presenter) {
+    public void setPresenter(LostFoundEditPresenter presenter) {
         this.lostAndFoundPresenter = presenter;
     }
 }

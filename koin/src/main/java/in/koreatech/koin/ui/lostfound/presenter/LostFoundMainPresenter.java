@@ -8,7 +8,7 @@ import in.koreatech.koin.data.network.response.LostAndFoundPageResponse;
 /**
  * 분실물 리스트 메인 Presenter
  */
-public class LostFoundMainPresenter implements LostFoundMainContract.Presenter {
+public class LostFoundMainPresenter{
     private LostAndFoundInteractor lostAndFoundInteractor;
     private LostFoundMainContract.View lostFoundMainView;
 
@@ -39,7 +39,6 @@ public class LostFoundMainPresenter implements LostFoundMainContract.Presenter {
         }
     };
 
-    @Override
     public void getLostItem(int page, int limit) {
         lostFoundMainView.showLoading();
         lostAndFoundInteractor.readLostAndFoundList(limit, page, lostItemApiCallback);

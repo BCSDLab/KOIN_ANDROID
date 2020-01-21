@@ -2,7 +2,6 @@ package in.koreatech.koin.ui.land.presenter;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.interactor.BokdukInteractor;
@@ -10,7 +9,7 @@ import in.koreatech.koin.data.network.interactor.BokdukInteractor;
 /**
  * 복덕방 presenter
  */
-public class LandPresenter implements BasePresenter {
+public class LandPresenter {
 
     private final LandContract.View landView;
     private final BokdukInteractor bokdukInteractor;

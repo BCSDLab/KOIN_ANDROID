@@ -11,7 +11,7 @@ import in.koreatech.koin.data.network.response.UserInfoEditResponse;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
+public class UserInfoEditPresenter{
 
     private final UserInfoEditContract.View userInfoEditView;
 
@@ -54,7 +54,6 @@ public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
         }
     };
 
-    @Override
     public void updateUserInfo(User user) {
         this.userInteractor.updateUser(updateUserApiCallback, user);
     }

@@ -74,7 +74,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     private int itemState;
 
     private MarketItem marketItem;
-    private MarketUsedCreateContract.Presenter marketUsedCreatePresenter;
+    private MarketUsedCreatePresenter marketUsedCreatePresenter;
     private Uri currentPhotoPath;
     private File imageFile;
 
@@ -700,7 +700,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     }
 
     @Override
-    public void setPresenter(MarketUsedCreateContract.Presenter presenter) {
+    public void setPresenter(MarketUsedCreatePresenter presenter) {
         this.marketUsedCreatePresenter = presenter;
     }
 

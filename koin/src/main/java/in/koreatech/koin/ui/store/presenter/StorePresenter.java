@@ -2,13 +2,12 @@ package in.koreatech.koin.ui.store.presenter;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
 import in.koreatech.koin.data.network.response.StoresResponse;
 
-public class StorePresenter implements BasePresenter {
+public class StorePresenter {
 
     private final StoreContract.View storeView;
 

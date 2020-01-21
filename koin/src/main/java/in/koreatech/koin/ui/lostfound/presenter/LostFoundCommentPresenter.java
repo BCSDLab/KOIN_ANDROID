@@ -9,7 +9,7 @@ import in.koreatech.koin.data.network.response.DefaultResponse;
 /**
  * 댓글 Presenter
  */
-public class LostFoundCommentPresenter implements LostFoundCommentContract.Presenter {
+public class LostFoundCommentPresenter {
     private LostFoundCommentContract.View lostFoundCommentView;
     private LostAndFoundInteractor lostAndFoundInteractor;
     private int id;
@@ -90,28 +90,24 @@ public class LostFoundCommentPresenter implements LostFoundCommentContract.Prese
         }
     };
 
-    @Override
     public void createComment(int id, String comment) {
         lostFoundCommentView.showLoading();
         this.id = id;
         lostAndFoundInteractor.createCommentDetail(id, comment, createCommentApiCallback);
     }
 
-    @Override
     public void updateComment(int id, int commentId, String comment) {
         lostFoundCommentView.showLoading();
         this.id = id;
         lostAndFoundInteractor.editCommentDetail(id, commentId, comment, updateCommentApiCallback);
     }
 
-    @Override
     public void deleteComment(int id, int commentId) {
         lostFoundCommentView.showLoading();
         this.id = id;
         lostAndFoundInteractor.deleteCommentDetail(id, commentId, deleteCommentApiCallback);
     }
 
-    @Override
     public void getLostItem(int id) {
         lostFoundCommentView.showLoading();
         this.id = id;

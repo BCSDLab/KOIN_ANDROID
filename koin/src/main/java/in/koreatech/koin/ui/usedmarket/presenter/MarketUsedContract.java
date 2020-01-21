@@ -1,13 +1,12 @@
 package in.koreatech.koin.ui.usedmarket.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.response.MarketPageResponse;
 
 
 public interface MarketUsedContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<MarketUsedPresenter> {
         void showLoading();
 
         void hideLoading();
@@ -19,13 +18,5 @@ public interface MarketUsedContract {
         void onGrantedDataReceived(boolean granted);
 
         void onMarketDataReceived(Item item);
-    }
-
-    interface Presenter extends BasePresenter {
-        void readMarket(int type, int page);
-
-        void readGrantedDetail(int id);
-
-        void readDetailMarket(int id);
     }
 }

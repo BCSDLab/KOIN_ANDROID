@@ -2,13 +2,12 @@ package in.koreatech.koin.ui.bus.presenter;
 
 import java.text.ParseException;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.data.network.entity.Bus;
 import in.koreatech.koin.constant.BusType;
 import in.koreatech.koin.util.TimeUtil;
 
 
-public class BusTimeTableSearchPresenter implements BasePresenter {
+public class BusTimeTableSearchPresenter {
     private String TAG = "BusTimeTableSearchPresenter";
     private final BusTimeTableSearchContract.View busTimeTableSearchView;
 

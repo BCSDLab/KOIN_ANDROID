@@ -40,7 +40,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     final static String TAG = "SignupActivity";
 
     private Context context;
-    private SignupContract.Presenter signupPresenter;
+    private SignupPresenter signupPresenter;
     private boolean isverified;
     private FirebasePerformanceUtil firebasePerformanceUtil;
     private long signUpButtonClickCount; // Firebase Performance 측정 회원가입 버튼 클릭 빈도수 측정
@@ -132,7 +132,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     }
 
     @Override
-    public void setPresenter(SignupContract.Presenter presenter) {
+    public void setPresenter(SignupPresenter presenter) {
         this.signupPresenter = presenter;
     }
 

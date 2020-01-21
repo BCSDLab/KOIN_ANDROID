@@ -1,10 +1,9 @@
 package in.koreatech.koin.ui.splash.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 
 public interface SplashContract {
-    interface View extends BaseView<Presenter> {
+    interface View extends BaseView<SplashPresenter> {
         void gotoMain();
 
         void gotoLogin();
@@ -13,15 +12,4 @@ public interface SplashContract {
 
         void showMessage(String message);
     }
-
-    interface Presenter extends BasePresenter {
-        void callActivity();
-
-        void checkUpdate(String currentVersion);
-
-        void checkToken();
-
-        void updateToken();
-    }
-
 }

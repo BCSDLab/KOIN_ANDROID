@@ -5,7 +5,7 @@ import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
 import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 
-public class LostFoundEditPresenter implements LostFoundEditContract.Presenter {
+public class LostFoundEditPresenter{
     private LostFoundEditContract.View lostFoundEditView;
     private LostAndFoundInteractor lostAndFoundInteractor;
 
@@ -49,14 +49,11 @@ public class LostFoundEditPresenter implements LostFoundEditContract.Presenter {
             lostFoundEditView.showMessage("네트워크 환경을 확인해주세요");
         }
     };
-
-    @Override
     public void updateLostItem(int id, LostItem lostItem) {
         lostFoundEditView.showLoading();
         lostAndFoundInteractor.editCotentEdit(id, lostItem, updateLostFoundItemApiCallback);
     }
 
-    @Override
     public void createLostItem(LostItem lostItem) {
         lostFoundEditView.showLoading();
         lostAndFoundInteractor.createLostAndFoundItem(lostItem, createLostFoundItemApiCallback);

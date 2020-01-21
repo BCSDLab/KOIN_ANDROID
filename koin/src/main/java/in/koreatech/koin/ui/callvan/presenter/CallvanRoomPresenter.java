@@ -2,12 +2,11 @@ package in.koreatech.koin.ui.callvan.presenter;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 import in.koreatech.koin.data.network.interactor.CallvanInteractor;
 
-public class CallvanRoomPresenter implements BasePresenter {
+public class CallvanRoomPresenter {
     private final CallvanRoomContract.View roomView;
 
     private final CallvanInteractor callvanInteractor;

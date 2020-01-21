@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.land.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.LandInteractor;
@@ -8,7 +7,7 @@ import in.koreatech.koin.data.network.interactor.LandInteractor;
 /**
  * 복덕방 presenter
  */
-public class LandDetailPresenter implements BasePresenter {
+public class LandDetailPresenter {
     private LandInteractor landInteractor;
     private LandDetailContract.View landDetailView;
 

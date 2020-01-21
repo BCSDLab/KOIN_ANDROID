@@ -86,7 +86,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     private Item item;
     private MarketItem marketItem;
-    private MarketUsedEditContract.Presenter marketUsedEditPresenter;
+    private MarketUsedEditPresenter marketUsedEditPresenter;
     private Uri currentPhotoPath;
     private File imageFile;
 
@@ -835,7 +835,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    public void setPresenter(MarketUsedEditContract.Presenter presenter) {
+    public void setPresenter(MarketUsedEditPresenter presenter) {
         this.marketUsedEditPresenter = presenter;
     }
 

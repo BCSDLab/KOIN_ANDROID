@@ -24,7 +24,7 @@ import in.koreatech.koin.core.appbar.AppBarSearchBase;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.ui.search.presenter.SearchArticleContract;
-import in.koreatech.koin.ui.search.presenter.SeachArticlePresenter;
+import in.koreatech.koin.ui.search.presenter.SearchArticlePresenter;
 
 public class SearchActivity extends KoinNavigationDrawerActivity implements AppBarSearchBase.SearchTextChange, SearchArticleContract.View, AppBarSearchBase.SearchEditorAction {
 
@@ -36,7 +36,7 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements AppB
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private SearchArticleContract.Presenter articleSearchPresenter;
+    private SearchArticlePresenter articleSearchPresenter;
     private String currentText;
 
 
@@ -49,7 +49,7 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements AppB
     }
 
     private void init() {
-        new SeachArticlePresenter(this, new SearchArticleRestInteractor());
+        new SearchArticlePresenter(this, new SearchArticleRestInteractor());
         appbarSearchBase.setOnTextChange(this);
         appbarSearchBase.setSearchEditorAction(this);
         showRecentSearch();
@@ -124,7 +124,7 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements AppB
     }
 
     @Override
-    public void setPresenter(SearchArticleContract.Presenter presenter) {
+    public void setPresenter(SearchArticlePresenter presenter) {
         this.articleSearchPresenter = presenter;
     }
 

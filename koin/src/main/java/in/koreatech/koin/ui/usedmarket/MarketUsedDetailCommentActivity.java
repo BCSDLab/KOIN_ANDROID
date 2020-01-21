@@ -86,7 +86,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     private boolean isEditPossible;
     private boolean isEditComment;
     private ArrayList<Comment> commentArrayList;
-    private MarketUsedCommentContract.Presenter marketUsedDetatailCommentPresenter;
+    private MarketUsedDetailCommentPresenter marketUsedDetatailCommentPresenter;
     private Context context;
     private Comment SelectedComment;
 
@@ -240,7 +240,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
 
     @Override
-    public void setPresenter(MarketUsedCommentContract.Presenter presenter) {
+    public void setPresenter(MarketUsedDetailCommentPresenter presenter) {
         marketUsedDetatailCommentPresenter = presenter;
     }
 

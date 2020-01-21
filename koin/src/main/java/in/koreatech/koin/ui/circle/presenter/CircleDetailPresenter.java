@@ -1,11 +1,10 @@
 package in.koreatech.koin.ui.circle.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleInteractor;
 
-public class CircleDetailPresenter implements BasePresenter {
+public class CircleDetailPresenter {
 
     private final CircleDetailContract.View cirlcleView;
 

@@ -9,7 +9,7 @@ import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 
 import java.io.File;
 
-public class MarketUsedCreatePresenter implements MarketUsedCreateContract.Presenter {
+public class MarketUsedCreatePresenter{
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedCreateContract.View marketCreateContractView;
@@ -52,13 +52,11 @@ public class MarketUsedCreatePresenter implements MarketUsedCreateContract.Prese
     };
 
     @AddTrace(name = "MarketUsedCreatePresenter_uploadThumbnailImage")
-    @Override
     public void uploadThumbnailImage(File file) {
         marketCreateContractView.showLoading();
         marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
     }
 
-    @Override
     public void createMarketItem(MarketItem marketItem) {
         marketCreateContractView.showLoading();
         marketUsedInteractor.createMarketItem(marketItem, createMarketApiCallback);

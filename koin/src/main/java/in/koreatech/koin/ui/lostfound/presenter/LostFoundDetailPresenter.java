@@ -7,7 +7,7 @@ import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.data.network.response.DefaultResponse;
 import in.koreatech.koin.data.network.response.GrantCheckResponse;
 
-public class LostFoundDetailPresenter implements LostFoundDetailContract.Presenter {
+public class LostFoundDetailPresenter{
     private LostFoundDetailContract.View lostFoundDetailView;
     private LostAndFoundInteractor lostAndFoundInteractor;
 
@@ -84,14 +84,12 @@ public class LostFoundDetailPresenter implements LostFoundDetailContract.Present
      *
      * @param id id를 통해 정보를 받아온다.
      */
-    @Override
     public void getLostFoundDetailById(int id) {
         lostFoundDetailView.showLoading();
         lostAndFoundInteractor.readGrantedDetail(id, grantCheckApiCallback);
         lostAndFoundInteractor.readLostAndFoundDetail(id, readLostAndFoundApiCallback);
     }
 
-    @Override
     public void removeItem(int id) {
         lostFoundDetailView.showLoading();
         lostAndFoundInteractor.deleteLostAndFoundItem(id, deleteLostFoundItemApiCallback);

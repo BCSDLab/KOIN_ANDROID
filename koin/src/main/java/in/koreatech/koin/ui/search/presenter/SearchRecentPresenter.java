@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 
-public class SearchRecentPresenter implements SearchRecentContract.Presenter {
+public class SearchRecentPresenter{
     private SearchRecentContract.View searchRecentView;
 
     public SearchRecentPresenter(SearchRecentContract.View searchRecentView) {
@@ -12,8 +12,6 @@ public class SearchRecentPresenter implements SearchRecentContract.Presenter {
         searchRecentView.setPresenter(this);
     }
 
-
-    @Override
     public void getRecentData() {
         searchRecentView.showLoading();
         ArrayList<String> recentSearchs = RecentSearchSharedPreference.getInstance().getRecentSearch();

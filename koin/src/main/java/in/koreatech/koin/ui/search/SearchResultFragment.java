@@ -52,7 +52,7 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
     private String currentText;
     private SearchedArticle searchedArticle;
     private ArrayList<SearchedArticle> searchedArticles;
-    private SearchResultContract.Presenter searchResultPresenter;
+    private SearchResultPresenter searchResultPresenter;
     private LinearLayoutManager linearLayoutManager;
     private SearchResultAdapter searchResultAdapter;
 
@@ -125,7 +125,7 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void setPresenter(SearchResultContract.Presenter presenter) {
+    public void setPresenter(SearchResultPresenter presenter) {
         this.searchResultPresenter = presenter;
     }
 

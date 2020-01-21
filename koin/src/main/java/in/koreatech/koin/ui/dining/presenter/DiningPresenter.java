@@ -1,16 +1,15 @@
 package in.koreatech.koin.ui.dining.presenter;
 
+import android.content.res.Resources;
+
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import android.content.res.Resources;
-
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.DiningInteractor;
 
-public class DiningPresenter implements BasePresenter {
+public class DiningPresenter {
 
     private final DiningContract.View diningView;
 

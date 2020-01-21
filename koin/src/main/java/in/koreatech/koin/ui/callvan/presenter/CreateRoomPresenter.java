@@ -1,12 +1,11 @@
 package in.koreatech.koin.ui.callvan.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 import in.koreatech.koin.data.network.interactor.CallvanInteractor;
 
-public class CreateRoomPresenter implements BasePresenter {
+public class CreateRoomPresenter {
 
     private final CreateRoomContract.View createRoomView;
 

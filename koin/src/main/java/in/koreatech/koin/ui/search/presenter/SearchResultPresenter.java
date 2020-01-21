@@ -4,7 +4,7 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
 
-public class SearchResultPresenter implements SearchResultContract.Presenter {
+public class SearchResultPresenter{
 
     private SearchResultContract.View searchResultView;
     private SearchArticleInteractor searchArticleInteractor;
@@ -33,7 +33,6 @@ public class SearchResultPresenter implements SearchResultContract.Presenter {
         }
     };
 
-    @Override
     public void getArticleSearched(String searchText, int page) {
         searchResultView.showLoading();
         searchArticleInteractor.readSearchArticleList(page, 1, searchText.trim(), searchArticleApiCallback);

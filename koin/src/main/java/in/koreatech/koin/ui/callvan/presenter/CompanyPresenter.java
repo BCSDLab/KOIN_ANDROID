@@ -3,12 +3,11 @@ package in.koreatech.koin.ui.callvan.presenter;
 import java.util.ArrayList;
 
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Company;
 import in.koreatech.koin.data.network.interactor.CallvanInteractor;
 
-public class CompanyPresenter implements BasePresenter {
+public class CompanyPresenter {
 
     private final CompanyContract.View companyView;
 

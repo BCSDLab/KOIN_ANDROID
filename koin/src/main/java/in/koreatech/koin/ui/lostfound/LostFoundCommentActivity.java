@@ -55,7 +55,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     @BindView(R.id.lostfound_comment_register_button)
     Button lostfoundCommentRegisterButton;
 
-    private LostFoundCommentContract.Presenter lostFoundCommentPresenter;
+    private LostFoundCommentPresenter lostFoundCommentPresenter;
     private LostFoundCommentRecyclerviewAdapter commentRecyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Comment> commentArrayList;
@@ -209,7 +209,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     }
 
     @Override
-    public void setPresenter(LostFoundCommentContract.Presenter presenter) {
+    public void setPresenter(LostFoundCommentPresenter presenter) {
         this.lostFoundCommentPresenter = presenter;
     }
 

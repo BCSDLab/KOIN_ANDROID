@@ -6,7 +6,7 @@ import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 
-public class MarketUsedDetailCommentPresenter implements MarketUsedCommentContract.Presenter {
+public class MarketUsedDetailCommentPresenter{
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedCommentContract.View mMarketCreateCommentContracView;
@@ -74,25 +74,21 @@ public class MarketUsedDetailCommentPresenter implements MarketUsedCommentContra
         }
     };
 
-    @Override
     public void readMarketDetail(int id) {
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.readMarketDetail(id, detailApiCallback);
     }
 
-    @Override
     public void createComment(int id, String content) {
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.createCommentDetail(id, content, commentApiCallback);
     }
 
-    @Override
     public void deleteComment(Comment comment, Item item) {
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.deleteCommentDetail(item.id, comment.commentUid, commentDeleteApiCallback);
     }
 
-    @Override
     public void editComment(Comment comment, Item item, String content) {
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.editCommentDetail(item.id, comment.commentUid, content, commentEditApiCallback);

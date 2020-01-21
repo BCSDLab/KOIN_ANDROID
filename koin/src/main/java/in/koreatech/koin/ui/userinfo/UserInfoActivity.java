@@ -32,7 +32,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     private User user;
     private int requiredService;
-    private UserInfoContract.Presenter userInfoPresenter;
+    private UserInfoPresenter userInfoPresenter;
 
     /* View Component */
     @BindView(R.id.userinfo_scrollview)
@@ -119,7 +119,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     }
 
     @Override
-    public void setPresenter(UserInfoContract.Presenter presenter) {
+    public void setPresenter(UserInfoPresenter presenter) {
         this.userInfoPresenter = presenter;
     }
 

@@ -20,7 +20,7 @@ import in.koreatech.koin.util.TimeUtil;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
-public class SplashPresenter implements SplashContract.Presenter {
+public class SplashPresenter{
     private static final String TAG = "SplashPresenter";
     public static final String ANDROID_CODE = "android";
     private final SplashContract.View splashView;
@@ -44,7 +44,6 @@ public class SplashPresenter implements SplashContract.Presenter {
      * 저장된 토큰이 없을 경우 로그인 화면으로 전환
      * 저장된 토큰이 없을 경우 토큰 검증 메소드로 이동
      */
-    @Override
     public void callActivity() {
         //저장된 토큰이 없을 경우
         if (validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadToken())) {
@@ -60,7 +59,6 @@ public class SplashPresenter implements SplashContract.Presenter {
      * 앱 버전을 확인하는 메소드
      * 업데이트가 필요할 경우 플레이스토어로 이동
      */
-    @Override
     public void checkUpdate(String currentVersion) {
         currentVersionName = currentVersion;
         appVersionRestInteractor.readAppVersion(ANDROID_CODE, versionApiCallback);
@@ -71,7 +69,6 @@ public class SplashPresenter implements SplashContract.Presenter {
      * 접속한지 한달이 넘은 경우 로그인화면으로 전환
      * 접속한지 한달이 되지 않은 경우 토큰을 업데이트하는 메소드로 이동
      */
-    @Override
     public void checkToken() {
         long lastLoginDate = (UserInfoSharedPreferencesHelper.getInstance().loadLastLoginDate()) / 10000;
         long currentDate = TimeUtil.getDeviceCreatedDateOnlyLong() / 10000;

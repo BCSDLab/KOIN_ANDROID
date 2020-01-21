@@ -31,7 +31,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
     private final static String TAG = "ForgotPasswordActivity";
 
     private Context context;
-    private ForgotPasswordContract.Presenter forgotPasswordPresenter;
+    private ForgotPasswordPresenter forgotPasswordPresenter;
 
     @BindView(R.id.forgot_password_id_edittext)
     EditText idEditText;
@@ -65,7 +65,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
     }
 
     @Override
-    public void setPresenter(@NonNull ForgotPasswordContract.Presenter presenter) {
+    public void setPresenter(@NonNull ForgotPasswordPresenter presenter) {
         forgotPasswordPresenter = checkNotNull(presenter);
     }
 

@@ -1,11 +1,10 @@
 package in.koreatech.koin.ui.board.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
-public class ArticleEditPresenter implements BasePresenter {
+public class ArticleEditPresenter {
     private final ArticleEditContract.View articleEditView;
 
     private final CommunityInteractor communityInteractor;

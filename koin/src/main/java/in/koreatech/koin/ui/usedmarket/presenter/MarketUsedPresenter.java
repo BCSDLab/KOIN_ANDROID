@@ -7,7 +7,7 @@ import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 import in.koreatech.koin.data.network.response.MarketPageResponse;
 
 
-public class MarketUsedPresenter implements MarketUsedContract.Presenter {
+public class MarketUsedPresenter{
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedContract.View marketView;
@@ -65,19 +65,16 @@ public class MarketUsedPresenter implements MarketUsedContract.Presenter {
         }
     };
 
-    @Override
     public void readMarket(int type, int limit) {
         marketView.showLoading();
         marketUsedInteractor.readMarketList(type, limit, listApiCallback);
     }
 
-    @Override
     public void readGrantedDetail(int id) {
         marketView.showLoading();
         marketUsedInteractor.readGrantedDetail(id, grantedApiCallback);
     }
 
-    @Override
     public void readDetailMarket(int id) {
         marketView.showLoading();
         marketUsedInteractor.readMarketDetail(id, detailApiCallback);

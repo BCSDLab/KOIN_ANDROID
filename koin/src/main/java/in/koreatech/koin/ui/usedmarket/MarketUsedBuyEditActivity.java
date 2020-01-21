@@ -86,7 +86,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     private ArrayList<String> imageUrl;
 
     private MarketItem marketItem;
-    private MarketUsedEditContract.Presenter mMarketUsedEditPresenter;
+    private MarketUsedEditPresenter mMarketUsedEditPresenter;
     private Uri currentPhotoPath;
     private File mImageFile;
     private CustomProgressDialog customProgressDialog;
@@ -841,7 +841,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     }
 
     @Override
-    public void setPresenter(MarketUsedEditContract.Presenter presenter) {
+    public void setPresenter(MarketUsedEditPresenter presenter) {
         this.mMarketUsedEditPresenter = presenter;
     }
 

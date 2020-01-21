@@ -2,7 +2,6 @@ package in.koreatech.koin.ui.bus.presenter;
 
 import android.util.Log;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
 import in.koreatech.koin.constant.BusType;
@@ -12,7 +11,7 @@ import in.koreatech.koin.data.network.response.BusResponse;
 import java.text.ParseException;
 
 
-public class BusMainPresenter implements BasePresenter {
+public class BusMainPresenter {
     private String TAG = "BusMainPresenter";
     private final BusMainContract.View busMainView;
     private final CityBusInteractor busInteractor;

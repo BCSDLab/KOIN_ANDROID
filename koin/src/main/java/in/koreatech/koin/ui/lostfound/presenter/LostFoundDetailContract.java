@@ -1,11 +1,10 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.LostItem;
 
 public interface LostFoundDetailContract {
-    interface View extends BaseView<LostFoundDetailContract.Presenter> {
+    interface View extends BaseView<LostFoundDetailPresenter> {
         void showLoading();
 
         void hideLoading();
@@ -17,11 +16,5 @@ public interface LostFoundDetailContract {
         void showGranted(boolean isGrant);
 
         void showSuccessDeleted();
-    }
-
-    interface Presenter extends BasePresenter {
-        void getLostFoundDetailById(int id);
-
-        void removeItem(int id);
     }
 }

@@ -2,12 +2,11 @@ package in.koreatech.koin.ui.circle.presenter;
 
 import java.util.ArrayList;
 
-import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleInteractor;
 
-public class CirclePresenter implements BasePresenter {
+public class CirclePresenter {
 
     private ArrayList<Circle> mCirlceList;
     private final CircleContract.View cirlcleView;

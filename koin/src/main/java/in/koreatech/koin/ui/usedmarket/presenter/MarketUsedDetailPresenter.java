@@ -6,7 +6,7 @@ import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 
-public class MarketUsedDetailPresenter implements MarketUsedDetailContract.Presenter {
+public class MarketUsedDetailPresenter{
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedDetailContract.View marketDetailView;
@@ -104,37 +104,31 @@ public class MarketUsedDetailPresenter implements MarketUsedDetailContract.Prese
         }
     };
 
-    @Override
     public void readMarketDetail(int id) {
         marketDetailView.showLoading();
         marketUsedInteractor.readMarketDetail(id, detailApiCallback);
     }
 
-    @Override
     public void createComment(int id, String content) {
         marketDetailView.showLoading();
         marketUsedInteractor.createCommentDetail(id, content, commentApiCallback);
     }
 
-    @Override
     public void deleteComment(Comment comment, Item item) {
         marketDetailView.showLoading();
         marketUsedInteractor.deleteCommentDetail(item.id, comment.commentUid, commentDeleteApiCallback);
     }
 
-    @Override
     public void editComment(Comment comment, Item item, String content) {
         marketDetailView.showLoading();
         marketUsedInteractor.editCommentDetail(item.id, comment.commentUid, content, commentEditApiCallback);
     }
 
-    @Override
     public void deleteItem(int id) {
         marketDetailView.showLoading();
         marketUsedInteractor.deleteMarketItem(id, itemDeleteApiCallback);
     }
 
-    @Override
     public void checkGranted(int id) {
         marketDetailView.showLoading();
         marketUsedInteractor.readGrantedDetail(id, grantCheckApiCallback);
