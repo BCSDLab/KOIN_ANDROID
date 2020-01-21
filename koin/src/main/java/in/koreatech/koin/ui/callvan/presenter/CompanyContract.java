@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Company;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public interface CompanyContract {
     interface View extends BaseView<CompanyPresenter> {
         void showLoading();

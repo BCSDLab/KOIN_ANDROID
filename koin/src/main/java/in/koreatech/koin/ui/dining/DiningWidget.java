@@ -19,9 +19,6 @@ import in.koreatech.koin.data.network.interactor.DiningInteractor;
 import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.util.TimeUtil;
 
-/**
- * Created by hansol, seongyun on 2019. 9. 22....
- */
 public class DiningWidget extends AppWidgetProvider {
     private static final String TAG = DiningWidget.class.getName();
     private static final String[] TYPE = {"BREAKFAST", "LUNCH", "DINNER"};    // 식단 유형

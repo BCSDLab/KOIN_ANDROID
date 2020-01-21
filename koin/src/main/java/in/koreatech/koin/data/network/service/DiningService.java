@@ -9,9 +9,6 @@ import retrofit2.http.Query;
 
 import static in.koreatech.koin.constant.URLConstant.DINING;
 
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public interface DiningService {
     //Get Specific Article API
     @GET(DINING)

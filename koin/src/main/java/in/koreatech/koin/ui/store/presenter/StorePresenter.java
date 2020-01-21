@@ -8,9 +8,6 @@ import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
 import in.koreatech.koin.data.network.response.StoresResponse;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class StorePresenter implements BasePresenter {
 
     private final StoreContract.View storeView;

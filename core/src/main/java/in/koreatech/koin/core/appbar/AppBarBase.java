@@ -18,9 +18,7 @@ import android.util.AttributeSet;
 
 import in.koreatech.koin.core.R;
 
-/**
- * Created by yunjae on 2019. 3. 17....
- */
+
 public class AppBarBase extends AppBarLayout {
     public AppBarLayout background;
     public TextView leftButton;

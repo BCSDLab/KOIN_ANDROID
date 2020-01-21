@@ -15,9 +15,6 @@ import retrofit2.http.Path;
 
 import static in.koreatech.koin.constant.URLConstant.VERSION;
 
-/**
- * Created by hyerim on 2018. 5. 14....
- */
 public interface VersionService {
     //version code ex) "1.0.0"
 

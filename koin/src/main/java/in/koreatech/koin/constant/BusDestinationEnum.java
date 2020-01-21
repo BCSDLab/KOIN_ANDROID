@@ -3,9 +3,7 @@ package in.koreatech.koin.constant;
 import android.util.Pair;
 
 /**
- * @author yunjae Na
- * @since 2019.09.24
- * <p>
+ *
  * 버스 도착지 및 출발지 열거형
  */
 public enum BusDestinationEnum {

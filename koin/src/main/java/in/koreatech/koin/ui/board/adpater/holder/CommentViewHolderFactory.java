@@ -10,9 +10,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 
-/**
- * Created by hyerim on 2018. 7. 27....
- */
 public class CommentViewHolderFactory {
     public static final int VIEW_TYPE_COMMENT = 0; //일반 댓글
     public static final int VIEW_TYPE_COMMENT_BOARD_AUTHOR = 1; //게시글 작성자 댓글

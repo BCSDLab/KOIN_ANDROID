@@ -3,9 +3,6 @@ package in.koreatech.koin.data.network.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class Company {
     //콜밴 연락처 Unique ID
     @SerializedName("id")

@@ -18,9 +18,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Dining;
 
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAdapter.ViewHolder> {
     private final String TAG = "DiningRecyclerAdapter";
 

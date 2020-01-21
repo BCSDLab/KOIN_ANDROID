@@ -8,9 +8,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.util.font_change.Typekit;
 import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 
-/**
- * Created by hyerim on 2018. 5. 28....
- */
 public class KoinApplication extends Application {
     private Context applicationContext;
 

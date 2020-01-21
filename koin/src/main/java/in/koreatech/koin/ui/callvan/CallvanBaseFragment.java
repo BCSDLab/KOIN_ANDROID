@@ -2,9 +2,6 @@ package in.koreatech.koin.ui.callvan;
 
 import in.koreatech.koin.core.fragment.BaseFragment;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class CallvanBaseFragment extends BaseFragment{
     /**
      * Change fragment method from TabView

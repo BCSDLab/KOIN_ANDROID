@@ -8,9 +8,7 @@ import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by hyerim on 2018. 7. 8....
- */
+
 public class ForgotPasswordPresenter implements ForgotPasswordContract.Presenter {
 
     private final ForgotPasswordContract.View forgotPasswordView;

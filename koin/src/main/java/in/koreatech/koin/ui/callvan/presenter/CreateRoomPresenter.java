@@ -6,9 +6,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 import in.koreatech.koin.data.network.interactor.CallvanInteractor;
 
-/**
- * Created by hyerim on 2018. 6. 25....
- */
 public class CreateRoomPresenter implements BasePresenter {
 
     private final CreateRoomContract.View createRoomView;

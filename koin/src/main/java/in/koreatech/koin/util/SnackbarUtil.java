@@ -18,9 +18,6 @@ import static com.google.android.material.snackbar.Snackbar.LENGTH_SHORT;
 import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.activity.WebViewActivity;
 
-/**
- * Created by hyerim on 2018. 4. 9....
- */
 public class SnackbarUtil {
     static Snackbar snackbar = null;
 

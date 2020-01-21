@@ -3,10 +3,6 @@ package in.koreatech.koin.ui.bus;
 import in.koreatech.koin.core.fragment.BaseFragment;
 
 
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class BusBaseFragment extends BaseFragment {
 
     /**

@@ -17,9 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * @author yunjaeNa
- * @since 2019-09-07
- *
  * Img 태그 주소를 통해 이미지를 받아서 textview 에다가 넣어준다.
  */
 public class LoadImageFromUrl extends AsyncTask<Object, Void, Bitmap> {

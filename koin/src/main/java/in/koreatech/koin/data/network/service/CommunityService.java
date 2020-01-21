@@ -25,9 +25,6 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.COMMENTS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.GRANTCHECK;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.TEMPBOARD;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public interface
 CommunityService {
     //Get Boards Lits API

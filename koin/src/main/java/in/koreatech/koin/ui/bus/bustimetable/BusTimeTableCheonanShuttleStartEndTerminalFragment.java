@@ -14,11 +14,6 @@ import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.ui.bus.BusMainFragment;
 
-
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class BusTimeTableCheonanShuttleStartEndTerminalFragment extends BusMainFragment {
     private final String TAG = "BusTimeTableCheonanShuttleStartEndTerminalFragment";
 

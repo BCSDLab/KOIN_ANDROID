@@ -1,8 +1,5 @@
 package in.koreatech.koin.util;
 
-/**
- * Created by hyerim on 2018. 4. 9....
- */
 public class FormValidatorUtil {
     public static boolean validateStringIsEmpty(String str) {
         return str == null || str.trim().length() < 1;

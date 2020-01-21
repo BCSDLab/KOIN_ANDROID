@@ -3,9 +3,6 @@ package in.koreatech.koin.data.network.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class CallvanRoom {
     // 콜밴 쉐어링 방 Unique Id
     @SerializedName("id")

@@ -4,9 +4,7 @@ import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
+
 public interface ArticleCommentContract {
     interface View extends BaseView<ArticleCommentPresenter> {
         void showLoading();

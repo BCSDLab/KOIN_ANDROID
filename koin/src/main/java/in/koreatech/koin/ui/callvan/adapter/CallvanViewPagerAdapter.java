@@ -10,9 +10,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import in.koreatech.koin.ui.callvan.CallvanBaseFragment;
 
-/**
- * Created by hyerim on 2019-05-06...
- */
 public class CallvanViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "CallvanViewPagerAdapter";
 

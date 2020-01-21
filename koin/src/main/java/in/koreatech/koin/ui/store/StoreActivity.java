@@ -31,9 +31,6 @@ import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class StoreActivity extends KoinNavigationDrawerActivity implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = StoreActivity.class.getSimpleName();
 

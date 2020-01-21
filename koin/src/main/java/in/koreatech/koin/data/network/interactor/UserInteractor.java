@@ -3,9 +3,6 @@ package in.koreatech.koin.data.network.interactor;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.User;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public interface UserInteractor {
     void readToken(String email, String password, boolean isPasswordHash, final ApiCallback apiCallback);
 

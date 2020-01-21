@@ -25,7 +25,6 @@ import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBea
 
 /**
  * 콜밴쉐어링과 관련된 api 호출 class
- * Created by hyerim on 2018. 6. 17....
  */
 public class CallvanRestInteractor implements CallvanInteractor {
     private final String TAG = "CallvanRestInteractor";

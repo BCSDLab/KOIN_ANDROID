@@ -36,7 +36,6 @@ import androidx.annotation.NonNull;
 
 /**
  * 복덕방 목록을 보여주는 Activity
- * Created by dongmin on 2019. 09. 02...
  */
 public class LandActivity extends KoinNavigationDrawerActivity implements LandContract.View, OnMapReadyCallback {
     private static final String TAG = "LandActivity";

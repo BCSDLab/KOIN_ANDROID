@@ -23,9 +23,6 @@ import in.koreatech.koin.data.network.response.BusResponse;
 import in.koreatech.koin.constant.BusDestinationEnum;
 
 /**
- * @author yunjae Na
- * @since 2019.09.24
- * <p>
  * 버스 위젯
  */
 public class BusWidget extends AppWidgetProvider {

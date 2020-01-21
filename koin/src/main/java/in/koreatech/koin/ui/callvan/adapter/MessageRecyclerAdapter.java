@@ -18,9 +18,6 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.Message;
 
-/**
- * Created by hyerim on 2018. 6. 18....
- */
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "MessageRecyclerAdapter";
     private static final int VIEW_TYPE_INCOMING = 0; //받은 메시지

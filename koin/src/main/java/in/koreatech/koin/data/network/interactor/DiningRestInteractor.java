@@ -15,9 +15,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public class DiningRestInteractor implements DiningInteractor {
     private final String TAG = "DiningRestInteractor";
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();

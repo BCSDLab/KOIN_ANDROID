@@ -26,10 +26,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedMainViewPagerAdapter;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "MarketUsedActivity";
     private final String TABLAYOUT_fontName = getString(R.string.font_kr_regular);

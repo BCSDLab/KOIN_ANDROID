@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class Store {
     //Unique ID
     @SerializedName("id")

@@ -8,9 +8,6 @@ import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class BoardPresenter implements BasePresenter {
 
     private final BoardContract.View boardView;

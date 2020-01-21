@@ -8,10 +8,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Company;
 import in.koreatech.koin.data.network.interactor.CallvanInteractor;
 
-
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class CompanyPresenter implements BasePresenter {
 
     private final CompanyContract.View companyView;

@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 
-/**
- * Created by hyerim on 2018. 6. 18....
- */
 public interface CallvanRoomContract {
     interface View extends BaseView<CallvanRoomPresenter> {
         void showMessage(String message);

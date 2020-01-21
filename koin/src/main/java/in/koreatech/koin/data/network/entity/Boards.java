@@ -3,9 +3,6 @@ package in.koreatech.koin.data.network.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class Boards {
     @SerializedName("id")
     @Expose

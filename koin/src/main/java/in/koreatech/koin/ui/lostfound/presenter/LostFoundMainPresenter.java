@@ -6,9 +6,6 @@ import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.data.network.response.LostAndFoundPageResponse;
 
 /**
- * @author yunjaeNa
- * @since 2019-09-04
- * <p>
  * 분실물 리스트 메인 Presenter
  */
 public class LostFoundMainPresenter implements LostFoundMainContract.Presenter {

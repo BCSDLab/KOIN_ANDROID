@@ -10,9 +10,6 @@ import in.koreatech.koin.util.HashGeneratorUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public class LoginPresenter implements LoginContract.Presenter {
     private final LoginContract.View loginView;
 

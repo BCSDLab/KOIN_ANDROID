@@ -3,9 +3,6 @@ package in.koreatech.koin.ui.signup.presenter;
 import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 
-/**
- * Created by hyerim on 2018. 6. 1....
- */
 public interface SignupContract {
     interface View extends BaseView<Presenter> {
         void makeDialogTerms(String title, String textFile);

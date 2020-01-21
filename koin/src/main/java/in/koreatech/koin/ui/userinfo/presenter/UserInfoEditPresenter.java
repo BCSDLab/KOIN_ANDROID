@@ -11,9 +11,6 @@ import in.koreatech.koin.data.network.response.UserInfoEditResponse;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by yunjae on 2018. 8. 23....
- */
 public class UserInfoEditPresenter implements UserInfoEditContract.Presenter {
 
     private final UserInfoEditContract.View userInfoEditView;

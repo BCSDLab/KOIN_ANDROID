@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class Article {
     @SerializedName("id")
     @Expose

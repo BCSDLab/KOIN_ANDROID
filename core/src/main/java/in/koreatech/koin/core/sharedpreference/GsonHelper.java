@@ -7,9 +7,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public class GsonHelper {
 
     public JSONObject objectToJSON(Object obj) {

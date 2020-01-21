@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Circle;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public interface CircleContract {
     interface View extends BaseView<CirclePresenter> {
         void showLoading();

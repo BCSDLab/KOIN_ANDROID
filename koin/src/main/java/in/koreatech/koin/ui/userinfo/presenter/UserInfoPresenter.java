@@ -14,9 +14,6 @@ import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by hyerim on 2018. 7. 2....
- */
 public class UserInfoPresenter implements UserInfoContract.Presenter {
 
     private final UserInfoContract.View userInfoView;

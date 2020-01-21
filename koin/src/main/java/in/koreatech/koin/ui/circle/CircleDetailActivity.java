@@ -31,9 +31,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.circle.presenter.CircleDetailContract;
 import in.koreatech.koin.ui.circle.presenter.CircleDetailPresenter;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class CircleDetailActivity extends KoinNavigationDrawerActivity implements CircleDetailContract.View {
     private final String TAG = "CircleDetailActivity";
 

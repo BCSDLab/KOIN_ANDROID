@@ -18,9 +18,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Store;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.ViewHolder> {
     private final String TAG = StoreRecyclerAdapter.class.getSimpleName();
 

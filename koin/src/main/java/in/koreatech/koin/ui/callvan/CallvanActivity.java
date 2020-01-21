@@ -20,9 +20,6 @@ import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.ui.callvan.adapter.CallvanViewPagerAdapter;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class CallvanActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "CallvanActivity";
 

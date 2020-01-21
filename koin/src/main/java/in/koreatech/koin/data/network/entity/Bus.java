@@ -9,11 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-/**
- * @author yunjae Na
- * @since 2019.09.20
- * 버스 관련 model
- */
 public class Bus {
     private static final String[] expressFromKoreatechToTerminal = {
             "08:00",

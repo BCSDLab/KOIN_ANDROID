@@ -62,10 +62,6 @@ import java.util.concurrent.ExecutionException;
 /**
  * This class edit item at MarketUsedSellEdit
  * if the item edit success activity will be finished and go back to MarketUsedSellDetailActivity
- *
- * @author Yunjae Na
- * @see MarketUsedSellDetailActivity
- * @since 2018. 09.15
  */
 public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity implements MarketUsedEditContract.View {
     private final String TAG = "MarketUsedSellEditActivity";

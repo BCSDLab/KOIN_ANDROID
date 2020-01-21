@@ -3,9 +3,6 @@ package in.koreatech.koin.util;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by hyerim on 2018. 4. 9....
- */
 public class HashGeneratorUtil {
     public static String generateMD5(String message) {
         return hashString(message, "MD5");

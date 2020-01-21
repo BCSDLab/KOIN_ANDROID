@@ -3,10 +3,6 @@ package in.koreatech.koin.data.network.entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by hyerim on 2018. 5. 14....
- */
-
 public class Version {
     public static final int PRIORITY_HIGH = 0; // 우선순위 높음
     public static final int  PRIORITY_MIDDLE = 1; // 우선순위 중간

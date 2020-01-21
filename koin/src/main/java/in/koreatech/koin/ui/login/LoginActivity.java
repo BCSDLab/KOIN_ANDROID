@@ -27,10 +27,6 @@ import in.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity;
 
 import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
-
-/**
- * Created by hyerim on 2018. 4. 30....
- */
 public class LoginActivity extends ActivityBase implements LoginContract.View {
     private final String TAG = "LoginActivity";
     private Context context;

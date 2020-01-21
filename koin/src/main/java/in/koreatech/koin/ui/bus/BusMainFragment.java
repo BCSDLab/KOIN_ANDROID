@@ -23,10 +23,6 @@ import in.koreatech.koin.ui.bus.presenter.BusMainContract;
 import in.koreatech.koin.ui.bus.presenter.BusMainPresenter;
 
 
-/**
- * @author yunjae na
- * @since 2018.12.02
- */
 public class BusMainFragment extends BusBaseFragment implements BusMainContract.View, SwipeRefreshLayout.OnRefreshListener, TimerRenewListener {
     private final String TAG = "BusMainFragment";
     public static final int REFRESH_TIME = 60; // 1분 갱신

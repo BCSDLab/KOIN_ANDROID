@@ -7,9 +7,6 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.data.network.entity.Store;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class StoresResponse {
     @SerializedName("shops")
     @Expose

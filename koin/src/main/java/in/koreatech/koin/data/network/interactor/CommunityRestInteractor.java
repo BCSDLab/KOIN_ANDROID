@@ -27,9 +27,6 @@ import retrofit2.HttpException;
 
 import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBearer;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class CommunityRestInteractor implements CommunityInteractor {
     private final String TAG = "CommunityRestInteractor";
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();

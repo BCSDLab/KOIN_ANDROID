@@ -3,9 +3,6 @@ package in.koreatech.koin.ui.login.presenter;
 import in.koreatech.koin.core.contract.BasePresenter;
 import in.koreatech.koin.core.contract.BaseView;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public interface LoginContract {
     interface View extends BaseView<Presenter> {
         void showProgress();

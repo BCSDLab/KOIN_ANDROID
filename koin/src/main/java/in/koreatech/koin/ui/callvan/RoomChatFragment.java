@@ -42,9 +42,6 @@ import in.koreatech.koin.ui.callvan.adapter.MessageRecyclerAdapter;
 import in.koreatech.koin.ui.callvan.presenter.RoomChatContract;
 import in.koreatech.koin.ui.callvan.presenter.CallvanRoomChatPresenter;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public class RoomChatFragment extends CallvanBaseFragment implements RoomChatContract.View {
     private final String TAG = "RoomChatFragment";
 

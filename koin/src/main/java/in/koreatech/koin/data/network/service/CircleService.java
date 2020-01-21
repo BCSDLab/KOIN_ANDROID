@@ -8,9 +8,6 @@ import retrofit2.http.Query;
 
 import static in.koreatech.koin.constant.URLConstant.CIRCLE.CIRCLE;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public interface CircleService {
     //Get Circle list API
     @GET(CIRCLE)

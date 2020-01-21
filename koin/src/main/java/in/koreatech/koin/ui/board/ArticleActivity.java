@@ -36,9 +36,6 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class ArticleActivity extends KoinNavigationDrawerActivity implements ArticleContract.View {
     private final String TAG = "ArticleActivity";
     private final int REQ_CODE_ARTICLE_EDIT = 1;

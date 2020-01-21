@@ -35,11 +35,6 @@ import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableSeoulShuttleFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableUnitoYawooriDaesungFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungFragment;
 
-
-/**
- * @author yunjae na
- * @since 2018.12.02
- */
 public class BusTimeTableFragment extends BusBaseFragment {
     private final String TAG = "BusTimeTableFragment";
 

@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Dining;
 
-
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public interface DiningContract {
     interface View extends BaseView<DiningPresenter> {
         void showLoading();

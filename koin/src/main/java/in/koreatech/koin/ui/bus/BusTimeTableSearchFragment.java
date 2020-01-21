@@ -34,11 +34,6 @@ import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchContract;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchPresenter;
 
-
-/**
- * @author yunjae na
- * @since 2018.12.02
- */
 public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTimeTableSearchContract.View {
     private final String TAG = "BusTimeTableSearchFragment";
 

@@ -26,9 +26,6 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.ui.login.LoginActivity;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class UserInfoActivity extends KoinNavigationDrawerActivity implements UserInfoContract.View {
     private final String TAG = "UserInfoActivity";
     private Context context;

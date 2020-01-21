@@ -3,9 +3,6 @@ package in.koreatech.koin.data.network.interactor;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public interface CallvanInteractor {
     //Company
     void readCompanyList(final ApiCallback apiCallback);

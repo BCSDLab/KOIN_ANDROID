@@ -8,9 +8,6 @@ import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.sharedpreference.BaseSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public class UserInfoSharedPreferencesHelper extends BaseSharedPreferencesHelper {
     private final String TAG = UserInfoSharedPreferencesHelper.class.getSimpleName();
     private final String KOIN_SHARED_PREFERENCES = "in.koin.sharedpreferences";

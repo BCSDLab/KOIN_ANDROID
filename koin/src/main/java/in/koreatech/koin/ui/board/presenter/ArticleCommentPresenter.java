@@ -6,9 +6,6 @@ import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class ArticleCommentPresenter implements BasePresenter {
     private final ArticleCommentContract.View articleCommentView;
 

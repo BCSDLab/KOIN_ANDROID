@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import in.koreatech.koin.ui.usedmarket.MarketUsedBaseFragment;
 
-/**
- * Created by yunjae on 2018. 8. 27....
- */
 public class MarketUsedMainViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "MarketUsedMainViewPagerAdapter";
 

@@ -41,9 +41,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public class DiningActivity extends KoinNavigationDrawerActivity implements DiningContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "DiningActivity";
     private final static String[] TYPE = {"BREAKFAST", "LUNCH", "DINNER"};

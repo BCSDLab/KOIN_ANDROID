@@ -7,9 +7,6 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.data.network.entity.Article;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class ArticlePageResponse {
 
     @SerializedName("articles")

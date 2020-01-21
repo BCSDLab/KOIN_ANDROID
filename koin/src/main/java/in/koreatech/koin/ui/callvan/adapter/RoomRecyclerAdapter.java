@@ -17,9 +17,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.CallvanRoom;
 
-/**
- * Created by hyerim on 2018. 6. 18....
- */
 public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapter.ViewHolder> implements View.OnClickListener {
     private final String TAG = "RoomRecyclerAdapter";
 

@@ -34,9 +34,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 
 import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
     private final String TAG = "BaseNavigationActivity";
     private final int LEFTNAVI = GravityCompat.START;

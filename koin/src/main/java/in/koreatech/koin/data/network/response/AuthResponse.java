@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import in.koreatech.koin.data.network.entity.User;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public class AuthResponse {
     @SerializedName("token")
     @Expose

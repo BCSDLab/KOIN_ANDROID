@@ -20,9 +20,6 @@ import in.koreatech.koin.util.TimeUtil;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
-/**
- * Created by hyerim on 2018. 6. 1....
- */
 public class SplashPresenter implements SplashContract.Presenter {
     private static final String TAG = "SplashPresenter";
     public static final String ANDROID_CODE = "android";

@@ -5,9 +5,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class ArticlePresenter implements BasePresenter {
     private final ArticleContract.View articleView;
 

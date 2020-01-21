@@ -40,9 +40,6 @@ import in.koreatech.koin.ui.lostfound.presenter.LostFoundEditContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundEditPresenter;
 
 /**
- * @author yunjaeNa
- * @since 2019-09-07
- * <p>
  * 분실물 게시판 글 수정 및 작성
  */
 public class LostFoundEditActivity extends KoinNavigationDrawerActivity implements CompoundButton.OnCheckedChangeListener, Html.ImageGetter, LostFoundEditContract.View {

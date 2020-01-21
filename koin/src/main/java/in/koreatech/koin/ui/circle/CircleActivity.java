@@ -35,9 +35,6 @@ import in.koreatech.koin.ui.circle.adapter.CircleRecyclerAdapter;
 import in.koreatech.koin.ui.circle.presenter.CircleContract;
 import in.koreatech.koin.ui.circle.presenter.CirclePresenter;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class CircleActivity extends KoinNavigationDrawerActivity implements CircleContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "CircleActivity";
     public static final String SHARE_VIEW_NAME_APP_BAR = "KOIN_BASE_APPBAR";

@@ -21,8 +21,6 @@ import in.koreatech.koin.core.activity.ActivityBase;
 
 
 /**
- * @author yunjaeNa
- * @since 2019.10.6
  * 전단지를 보여주는 화면
  */
 public class StoreFlyerViewActivity extends ActivityBase {

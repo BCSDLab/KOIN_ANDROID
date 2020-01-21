@@ -12,10 +12,6 @@ import in.koreatech.koin.data.network.response.UserInfoEditResponse;
 import io.reactivex.Observable;
 import retrofit2.http.*;
 
-/**
- * Created by hyerim on 2018. 4. 29....
- * Edited by yunjae on 2018. 8 .22.... Add getNickName
- */
 public interface UserService {
     @POST(URLConstant.USER.LOGIN)
     Observable<AuthResponse> getToken(@Body JsonObject body);

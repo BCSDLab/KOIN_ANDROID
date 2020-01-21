@@ -51,10 +51,6 @@ import in.koreatech.koin.ui.login.LoginActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity implements MarketUsedDetailContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
     private final String TAG = "MarketUsedBuyDetailActivity";
     private static final int REQUEST_PHONE_CALL = 1;

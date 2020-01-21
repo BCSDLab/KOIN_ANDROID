@@ -36,7 +36,6 @@ import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
 
 /**
  * 복덕방 상세페이지 Activity
- * Created by SeongYun on 2019.09.04
  */
 public class LandDetailActivity extends KoinNavigationDrawerActivity implements LandDetailContract.View, OnMapReadyCallback {
     private final String TAG = "LandDetailActivity";

@@ -22,9 +22,6 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by hyerim on 2018. 5. 28....
- */
 public class RetrofitManager {
     private static final String TAG = RetrofitManager.class.getSimpleName();
 

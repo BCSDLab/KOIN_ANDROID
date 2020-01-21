@@ -33,11 +33,6 @@ import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedSellRecyclerAdapter;
 
 import java.util.ArrayList;
 
-
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class MarketUsedSellFragment extends MarketUsedBaseFragment implements MarketUsedContract.View, SwipeRefreshLayoutBottom.OnRefreshListener {
     private final String TAG = "MarketUsedSellFragment";
 

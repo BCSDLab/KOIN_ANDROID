@@ -7,9 +7,6 @@ import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.data.network.response.DefaultResponse;
 
 /**
- * @author yunjaeaNa
- * @since 2019-09-08
- * <p>
  * 댓글 Presenter
  */
 public class LostFoundCommentPresenter implements LostFoundCommentContract.Presenter {

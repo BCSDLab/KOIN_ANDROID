@@ -14,11 +14,6 @@ import android.view.ViewGroup;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 
-
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class BusTimeTableUnitoYawooriDaesungFragment extends Fragment {
     private final String TAG = "BusTimeTableUnitoYawooriDaesungFragment";
 

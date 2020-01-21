@@ -3,11 +3,6 @@ package in.koreatech.koin.core.toast;
 import android.content.Context;
 import android.widget.Toast;
 
-/**
- * @author hyerim
- * @author nayunjae
- * @since 2018.4.9
- */
 public class ToastUtil {
     private static Context applicationContext;
 

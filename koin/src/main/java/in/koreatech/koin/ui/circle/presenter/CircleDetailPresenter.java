@@ -5,9 +5,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleInteractor;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class CircleDetailPresenter implements BasePresenter {
 
     private final CircleDetailContract.View cirlcleView;

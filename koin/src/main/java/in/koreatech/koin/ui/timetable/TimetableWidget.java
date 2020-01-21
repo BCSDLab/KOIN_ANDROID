@@ -20,7 +20,6 @@ import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.ui.splash.SplashActivity;
 
 /**
- * Created by hansol on 2019. 7. 25....
  * 외부저장소(/storage/emulated/0)에 저장된 test.png파일을 홈화면에 표현하는 위젯
  * test.png파일은 ScreenshotActivity기능을 통해 스크린샷 찍으면 만들 수 있다.
  */

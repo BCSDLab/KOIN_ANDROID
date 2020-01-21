@@ -18,9 +18,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapter<TimetableBottomSheetTimeRecyclerAdapter.ViewHolder> {
     private final String TAG = TimetableBottomSheetTimeRecyclerAdapter.class.getSimpleName();
 

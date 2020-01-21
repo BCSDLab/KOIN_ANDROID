@@ -23,9 +23,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Circle;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAdapter.ViewHolder> {
     private final String TAG = "CircleRecyclerAdapter";
 

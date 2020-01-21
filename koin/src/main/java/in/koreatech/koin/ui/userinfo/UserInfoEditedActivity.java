@@ -37,9 +37,6 @@ import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
 
-/**
- * Created by hyerim on 2018. 7. 2....
- */
 public class UserInfoEditedActivity extends KoinNavigationDrawerActivity implements UserInfoEditContract.View {
     private final String TAG = "UserInfoEditedActivity";
     private Context context;

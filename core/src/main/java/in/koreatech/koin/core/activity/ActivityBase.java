@@ -10,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.progressdialog.IProgressDialog;
 
-/**
- * @author nayunjae
- * @since 2019.11.23
- */
+
 public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     private CustomProgressDialog customProgressDialog;
     private Context context;

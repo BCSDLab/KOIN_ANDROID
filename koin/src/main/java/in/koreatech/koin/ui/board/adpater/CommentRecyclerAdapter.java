@@ -24,9 +24,6 @@ import in.koreatech.koin.ui.board.adpater.holder.CommentViewHolderFactory;
 import static in.koreatech.koin.ui.board.adpater.holder.CommentViewHolderFactory.VIEW_TYPE_COMMENT;
 import static in.koreatech.koin.ui.board.adpater.holder.CommentViewHolderFactory.VIEW_TYPE_COMMENT_BOARD_AUTHOR;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private static final String TAG = "CommentRecyclerAdapter";
 

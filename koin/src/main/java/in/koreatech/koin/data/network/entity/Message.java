@@ -8,9 +8,7 @@ import java.util.Map;
 
 import in.koreatech.koin.util.TimeUtil;
 
-/**
- * Created by hyerim on 2018. 6. 18....
- */
+
 public class Message {
     public String uid;
     public String userName;

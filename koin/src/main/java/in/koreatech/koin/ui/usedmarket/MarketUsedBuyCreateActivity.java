@@ -56,10 +56,6 @@ import java.util.*;
 /**
  * This class create item at MarketUsed Buy
  * if the item create success activity will be finished and go back to MarketUsedBuyFragment
- *
- * @author Yunjae Na
- * @see MarketUsedBuyFragment
- * @since 2018. 09.15
  */
 public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketUsedCreateContract.View {
     private final String TAG = "MarketUsedBuyEditActivity";

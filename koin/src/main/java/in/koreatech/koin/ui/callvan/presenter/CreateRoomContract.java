@@ -2,9 +2,6 @@ package in.koreatech.koin.ui.callvan.presenter;
 
 import in.koreatech.koin.core.contract.BaseView;
 
-/**
- * Created by hyerim on 2018. 6. 25....
- */
 public interface CreateRoomContract {
     interface View extends BaseView<CreateRoomPresenter> {
         void showLoading();

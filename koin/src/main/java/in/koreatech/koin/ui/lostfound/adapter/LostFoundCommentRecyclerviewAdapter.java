@@ -19,9 +19,6 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Comment;
 
 /**
- * @author yunjaeNa
- * @since 2019-09-08
- * <p>
  * 댓글 recyclerview item
  */
 public class LostFoundCommentRecyclerviewAdapter extends RecyclerView.Adapter<LostFoundCommentRecyclerviewAdapter.ViewHolder> implements View.OnClickListener {
@@ -103,7 +100,7 @@ public class LostFoundCommentRecyclerviewAdapter extends RecyclerView.Adapter<Lo
                 break;
             case R.id.lostfound_comment_edit:
                 if (onCommentRemoveButtonClickListener != null)
-                onCommentRemoveButtonClickListener.onClickCommentModifyButton(comment);
+                    onCommentRemoveButtonClickListener.onClickCommentModifyButton(comment);
                 break;
             default:
                 break;

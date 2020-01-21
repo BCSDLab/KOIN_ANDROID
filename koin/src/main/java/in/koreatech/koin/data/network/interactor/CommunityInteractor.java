@@ -4,9 +4,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public interface CommunityInteractor {
     //Boards
     void readBoardsList(final ApiCallback apiCallback);

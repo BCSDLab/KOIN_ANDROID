@@ -26,9 +26,6 @@ import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.ui.search.presenter.SearchArticleContract;
 import in.koreatech.koin.ui.search.presenter.SeachArticlePresenter;
 
-/**
- * Created by seongyun on 2019. 11. 16....
- */
 public class SearchActivity extends KoinNavigationDrawerActivity implements AppBarSearchBase.SearchTextChange, SearchArticleContract.View, AppBarSearchBase.SearchEditorAction {
 
     @BindView(R.id.koin_base_appbar_dark)

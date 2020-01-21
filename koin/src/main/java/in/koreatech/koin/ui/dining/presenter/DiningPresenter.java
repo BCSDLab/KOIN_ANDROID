@@ -10,9 +10,6 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.DiningInteractor;
 
-/**
- * Created by hyerim on 2018. 6. 21....
- */
 public class DiningPresenter implements BasePresenter {
 
     private final DiningContract.View diningView;

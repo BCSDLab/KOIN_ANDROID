@@ -13,9 +13,6 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
-/**
- * Created by hyerim on 2018. 8. 13....
- */
 public class CityBusRestInteractor implements CityBusInteractor {
     private final String TAG = "CityBusRestInteractor";
 

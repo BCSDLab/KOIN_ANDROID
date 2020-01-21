@@ -6,9 +6,6 @@ import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.response.ArticlePageResponse;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public interface BoardContract {
     interface View extends BaseView<BoardPresenter> {
         void showLoading();

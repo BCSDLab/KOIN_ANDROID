@@ -22,7 +22,6 @@ import in.koreatech.koin.ui.land.LandDetailActivity;
 
 /**
  * 복덕방 목록을 보여주는 RecyclerView Adapter
- * Created by dongmin on 2019. 09. 02...
  */
 public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapter.ViewHolder> {
 

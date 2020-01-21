@@ -7,7 +7,6 @@ import in.koreatech.koin.data.network.interactor.LandInteractor;
 
 /**
  * 복덕방 presenter
- * Created by SeongYun on 2019.09.04
  */
 public class LandDetailPresenter implements BasePresenter {
     private LandInteractor landInteractor;

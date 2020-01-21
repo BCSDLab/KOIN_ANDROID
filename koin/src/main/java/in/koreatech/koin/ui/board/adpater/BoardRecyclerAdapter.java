@@ -17,9 +17,6 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Article;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class BoardRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = "BoardRecyclerAdapter";
 

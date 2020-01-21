@@ -25,9 +25,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.callvan.presenter.CreateRoomContract;
 import in.koreatech.koin.ui.callvan.presenter.CreateRoomPresenter;
 
-/**
- * Created by hyerim on 2018. 6. 18....
- */
 public class CreateRoomActivity extends ActivityBase implements CreateRoomContract.View {
     private final static String TAG = "CreateRoomActivity";
 

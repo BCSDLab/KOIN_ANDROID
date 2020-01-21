@@ -9,7 +9,6 @@ import in.koreatech.koin.data.network.interactor.BokdukInteractor;
 
 /**
  * 복덕방 presenter
- * Created by dongmin on 2019. 09. 02...
  */
 public class LandPresenter implements BasePresenter {
 

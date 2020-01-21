@@ -20,7 +20,6 @@ import in.koreatech.koin.R;
 
 /**
  * 복덕방 상세페이지에서 건물의 외관,내관을 보여주는 PagerAdapter
- * Created by SeongYun on 2019.09.04
  */
 public class LandDetailPagerAdapter extends PagerAdapter {
     private ArrayList<String> landImageUrls;
@@ -58,7 +57,7 @@ public class LandDetailPagerAdapter extends PagerAdapter {
         ImageView landDetailRoomImageView = view.findViewById(R.id.land_detail_land_imageview);
         Glide.with(context).load(landViewUrl).apply(glideOption).into(landDetailRoomImageView);
 
-        String page = (position+1) + " / " + getCount();
+        String page = (position + 1) + " / " + getCount();
         TextView landDetailPageTextview = view.findViewById(R.id.land_detail_page_textview);
         landDetailPageTextview.setText(page);
 

@@ -5,9 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by hyerim on 2018. 4. 29....
- */
 public class User {
     // Firebase User Id
     @SerializedName("id")

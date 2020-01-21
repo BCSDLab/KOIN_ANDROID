@@ -36,10 +36,6 @@ import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
 
-
-/**
- * Created by hyerim on 2018. 6. 1....
- */
 public class SignupActivity extends ActivityBase implements SignupContract.View {
     final static String TAG = "SignupActivity";
 

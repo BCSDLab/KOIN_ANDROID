@@ -29,10 +29,6 @@ import in.koreatech.koin.ui.lostfound.presenter.LostFoundMainContract;
 import in.koreatech.koin.ui.lostfound.adapter.LostFoundMainActivityRecyclerviewAdapter;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundMainPresenter;
 
-/**
- * @author yunjaeNa
- * @since 2019-09-14
- */
 public class LostFoundMainActivity extends KoinNavigationDrawerActivity implements SwipeRefreshLayoutBottom.OnRefreshListener, LostFoundMainContract.View {
     public static final String TAG = "LostFoundMainActivity";
     public static final int LIMITITEM = 10;

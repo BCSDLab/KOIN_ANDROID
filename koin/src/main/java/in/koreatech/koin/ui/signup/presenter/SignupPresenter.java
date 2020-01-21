@@ -9,9 +9,6 @@ import retrofit2.HttpException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by hyerim on 2018. 6. 1....
- */
 public class SignupPresenter implements SignupContract.Presenter {
 
     private final SignupContract.View mSignUpView;

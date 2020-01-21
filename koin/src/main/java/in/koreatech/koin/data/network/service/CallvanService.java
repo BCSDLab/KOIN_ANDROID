@@ -21,9 +21,6 @@ import static in.koreatech.koin.constant.URLConstant.CALLVANS.COMPANIES;
 import static in.koreatech.koin.constant.URLConstant.CALLVANS.PARTICIPANT;
 import static in.koreatech.koin.constant.URLConstant.CALLVANS.ROOMS;
 
-/**
- * Created by hyerim on 2018. 6. 17....
- */
 public interface CallvanService {
     /**
      * Get Callvan Company List API

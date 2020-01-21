@@ -10,10 +10,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import in.koreatech.koin.ui.bus.BusMainFragment;
 
-
-/**
- * Created by yunjae on 2018. 8. 27....
- */
 public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "BusMainViewPagerAdapter";
 

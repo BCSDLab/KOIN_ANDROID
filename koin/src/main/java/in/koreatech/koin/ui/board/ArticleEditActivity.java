@@ -38,9 +38,6 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class ArticleEditActivity extends KoinNavigationDrawerActivity implements ArticleEditContract.View, TextWatcher {
     private final static String TAG = "ArticleEditActivity";
     private final static int MAX_TITLE_LENGTH = 40;

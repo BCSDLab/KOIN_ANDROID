@@ -29,9 +29,6 @@ import in.koreatech.koin.ui.lostfound.presenter.LostFoundDetailContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundDetailPresenter;
 
 /**
- * @author yunjaeNa
- * @since 2019-09-06
- * <p>
  * 분실물 게시판 상세화면
  */
 public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implements LostFoundDetailContract.View, Html.ImageGetter {

@@ -37,9 +37,6 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
-/**
- * Created by hyerim on 2018. 6. 4....
- */
 public class BoardActivity extends KoinNavigationDrawerActivity implements BoardContract.View, SwipeRefreshLayoutBottom.OnRefreshListener {
     private final String TAG = BoardActivity.class.getSimpleName();
     private final int REQ_CODE_ARTICLE_EDIT = 1;
@@ -50,7 +47,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
     private int boardUid;
 
     private BoardRecyclerAdapter boardRecyclerAdapter;
-    private RecyclerView.LayoutManager mLayoutManager; // RecyclerView LayoutManager
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
     private ArrayList<Article> articleArrayList;
     private int pageNum;   //다음 호출할 페이지 인덱스
 
@@ -110,13 +107,13 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
         appbarBase.setTitleText((boardUid == ID_FREE) ? "자유게시판" : (boardUid == ID_RECRUIT) ? "취업게시판" : "익명게시판");
         boardSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mLayoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         articleArrayList = new ArrayList<>();
 
         boardRecyclerAdapter = new BoardRecyclerAdapter(articleArrayList);
 
         boardListRecyclerView.setHasFixedSize(true);
-        boardListRecyclerView.setLayoutManager(mLayoutManager);
+        boardListRecyclerView.setLayoutManager(layoutManager);
         boardListRecyclerView.setAdapter(boardRecyclerAdapter);
         boardListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
         setPresenter(new BoardPresenter(this, new CommunityRestInteractor()));
@@ -138,7 +135,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     public void onClickRefreshBoardList() {
         boardListRecyclerView.stopScroll();
-        mLayoutManager.scrollToPosition(0);
+        layoutManager.scrollToPosition(0);
         this.pageNum = 1;
         //첫 페이지 다시 로드
         boardPresenter.getArticlePage(boardUid, this.pageNum);

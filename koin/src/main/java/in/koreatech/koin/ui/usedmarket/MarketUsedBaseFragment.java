@@ -2,10 +2,6 @@ package in.koreatech.koin.ui.usedmarket;
 
 import in.koreatech.koin.core.fragment.BaseFragment;
 
-/**
- * @author yunjae na
- * @since 2018.09.16
- */
 public class MarketUsedBaseFragment extends BaseFragment{
 
     /**

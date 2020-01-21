@@ -35,9 +35,6 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
 /**
  * koin enterprise 앱에서 navigation drawer가 사용되는 화면들의 기본 acitivity
- * <p>
- * Created by hyerim on 2018. 7. 26....
- * Edited by seongyun on 2019. 11. 15....
  */
 public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     //시간표,복덕방,분실물

@@ -3,9 +3,6 @@ package in.koreatech.koin.core.recyclerview;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * Created by hyerim on 2018. 7. 1....
- */
 public abstract class EndlessRecyclerViewScrollListener  extends RecyclerView.OnScrollListener {
     // The minimum amount of items to have below your current scroll position
     // before loading more.
@@ -19,10 +16,10 @@ public abstract class EndlessRecyclerViewScrollListener  extends RecyclerView.On
     // Sets the starting page index
     private int startingPageIndex = 0;
 
-    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.LayoutManager layoutManager;
 
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
-        this.mLayoutManager = layoutManager;
+        this.layoutManager = layoutManager;
     }
 
 
@@ -45,10 +42,10 @@ public abstract class EndlessRecyclerViewScrollListener  extends RecyclerView.On
     @Override
     public void onScrolled(RecyclerView view, int dx, int dy) {
         int lastVisibleItemPosition = 0;
-        int totalItemCount = mLayoutManager.getItemCount();
+        int totalItemCount = layoutManager.getItemCount();
 
-        if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findFirstCompletelyVisibleItemPosition();
+        if (layoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findFirstCompletelyVisibleItemPosition();
         }
 
         // If it’s still loading, we check to see if the dataset count has

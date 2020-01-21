@@ -9,7 +9,6 @@ import in.koreatech.koin.constant.FirebaseDBConstant;
 import in.koreatech.koin.data.network.entity.Message;
 
 /**
- * Created by hyerim on 2018. 7. 1....
  */
 public class FirebaseDbManager {
     public static String createTotalChatMessage() {

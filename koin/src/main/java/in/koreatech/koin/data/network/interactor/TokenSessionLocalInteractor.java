@@ -6,9 +6,6 @@ import in.koreatech.koin.data.network.entity.Auth;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.util.TimeUtil;
 
-/**
- * Created by hyerim on 2018. 5. 31....
- */
 public class TokenSessionLocalInteractor implements TokenSessionInteractor {
 
 

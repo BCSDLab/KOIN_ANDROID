@@ -2,8 +2,6 @@ package in.koreatech.koin.constant;
 
 
 /**
- * Created by hyerim on 2018. 4. 29....
- * <p>
  * KOIN API URL
  */
 public class URLConstant {

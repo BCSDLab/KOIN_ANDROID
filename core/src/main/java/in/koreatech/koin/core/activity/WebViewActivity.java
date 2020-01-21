@@ -19,11 +19,7 @@ import android.webkit.WebViewClient;
 import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.toast.ToastUtil;
 
-/**
- * @author hyerim
- * @author nayunjae
- * @since 2018.7.8
- */
+
 public class WebViewActivity extends ActivityBase {
 
     private WebView webView;

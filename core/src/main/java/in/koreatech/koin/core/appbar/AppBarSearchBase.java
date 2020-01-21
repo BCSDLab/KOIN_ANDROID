@@ -20,9 +20,6 @@ import com.google.android.material.appbar.AppBarLayout;
 
 import in.koreatech.koin.core.R;
 
-/**
- * Created by yunjae on 2019. 3. 17....
- */
 public class AppBarSearchBase extends AppBarLayout {
     public AppBarLayout background;
     public TextView leftButton;
