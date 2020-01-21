@@ -23,6 +23,7 @@
     <!--<string name="navigation_item_real_estate">복덕방</string>-->
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
+    <string name="navigation_item_search">검색</string>
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
@@ -71,7 +72,6 @@
     <string name="board_create">작성</string>
     <string name="board_edit">수정</string>
 
-
     <!-- Comment -->
     <string name="comment_edit">수정</string>
     <string name="comment_remove">삭제</string>
@@ -107,7 +107,7 @@
 
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
-    <string name="fail_upload">업로드에 실패했습니다.</string>
+
+    <string name="fail_upload">업로드에 실패하였습니다.</string>
     <string name="uploading_image_now">이미지 업로드 중입니다.</string>
 </resources>
-
