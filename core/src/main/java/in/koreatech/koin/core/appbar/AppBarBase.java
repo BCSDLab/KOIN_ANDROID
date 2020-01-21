@@ -60,10 +60,10 @@ public class AppBarBase extends AppBarLayout {
     public void init() {
         View view = inflate(getContext(), R.layout.base_appbar_dark, null);
         addView(view);
-        background = (AppBarLayout) findViewById(R.id.base_appbar_dark);
-        leftButton = (TextView) findViewById(R.id.base_appbar_dark_left_button);
-        rightButton = (TextView) findViewById(R.id.base_appbar_dark_right_button);
-        title = (TextView) findViewById(R.id.base_appbar_dark_title);
+        background = findViewById(R.id.base_appbar_dark);
+        leftButton = findViewById(R.id.base_appbar_dark_left_button);
+        rightButton = findViewById(R.id.base_appbar_dark_right_button);
+        title = findViewById(R.id.base_appbar_dark_title);
         title.setTypeface(textFont);
         leftButton.setTypeface(textFont);
         rightButton.setTypeface(textFont);
