@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,11 +76,12 @@ import static in.koreatech.koin.core.util.timetable.TimeDuplicateCheckUtil.dupli
 
 
 public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
-    public static final String TAG = TimetableActivity.class.getName();
+    public static final String TAG = "TimetableActivity";
     private GenerateProgressTask generateProgressTask;
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
     public static final int LOAD_TIME_MS = 500;
+    public static final float BOTTOM_NAVIGATION_HEIGHT_PX = Resources.getSystem().getDisplayMetrics().density * 56;
 
     public static int select = -1;          //TimetableSelectMajorDialog에서 선택했던것을 기억하는 변수
     @BindView(R.id.timetable_timetableview)
@@ -106,7 +109,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @BindView(R.id.timetable_add_schedule_search_edittext)
     TextView mTimetableAddScheduleSearchEdittext;
     @BindView(R.id.timetable_scrollview)
-    ScrollView mTimeTableScrollview;
+    NestedScrollView mTimeTableScrollview;
     @BindView(R.id.table_header)
     TableLayout mTimeTableHeader;
 
@@ -271,7 +274,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         clearFilterData();
     }
 
-    @OnClick(R.id.timetable_add_schedule_bottom_sheet_left_textview)
+    @OnClick(R.id.timetable_save_timetable_image_linearlayout)
     public void clickedSaveTimetable() {
         Handler handler = new Handler();
         Runnable runnable;
@@ -317,7 +320,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                         isBottomSheetOpen = false;
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
-                        mTimetableView.setMarginBottom(0);
+                        mTimetableView.setMarginBottom((int) BOTTOM_NAVIGATION_HEIGHT_PX);
                         isBottomSheetOpen = false;
                         break;
                 }
@@ -342,7 +345,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                         isBottomDetailSheetOpen = false;
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
-                        mTimetableView.setMarginBottom(0);
+                        mTimetableView.setMarginBottom((int) BOTTOM_NAVIGATION_HEIGHT_PX);
                         isBottomDetailSheetOpen = false;
                         break;
                 }
