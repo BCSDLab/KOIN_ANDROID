@@ -60,7 +60,6 @@ public class SeachArticlePresenter implements SearchArticleContract.Presenter {
         } catch (UnsupportedEncodingException e) {
             searchArticleView.showMessage("검색결과 없습니다.");
         }
-
     }
 
     @Override

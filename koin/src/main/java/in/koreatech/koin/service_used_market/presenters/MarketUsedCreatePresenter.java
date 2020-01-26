@@ -55,7 +55,7 @@ public class MarketUsedCreatePresenter implements MarketUsedCreateContract.Prese
     @Override
     public void uploadThumbnailImage(File file) {
         marketCreateContractView.showLoading();
-        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+        marketUsedInteractor.uploadThumbnailImage(file, uploadImageApiCallback);
     }
 
     @Override
