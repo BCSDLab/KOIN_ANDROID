@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/timetable_add_schedule_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="310dp"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:includeFontPadding="false"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    tools:ignore="MissingPrefix"
+    app:layout_behavior="@string/user_lock_bottom_sheet_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_pale_grey_rectangle"
+        android:includeFontPadding="false"
+        android:orientation="horizontal"
+        android:weightSum="6">
+
+        <TextView
+            android:id="@+id/timetable_add_schedule_bottom_sheet_left_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            app:font_name="Custom6"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="저장" />
+
+        <TextView
+            android:id="@+id/timetable_add_schedule_bottom_sheet_center_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:includeFontPadding="false"
+            app:font_name="Custom5"
+            android:gravity="center"
+            android:text="학기선택"
+            android:textColor="@color/light_navy"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/timetable_add_schedule_bottom_sheet_right_textview"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:font_name="Custom6"
+            android:includeFontPadding="false"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="완료"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/timetable_search_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
