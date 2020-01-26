@@ -59,6 +59,6 @@ public class MarketUsedEditPresenter implements MarketUsedEditContract.Presenter
     @Override
     public void uploadThumbnailImage(File file) {
         marketEditView.showLoading();
-        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+        marketUsedInteractor.uploadThumbnailImage(file, uploadImageApiCallback);
     }
 }

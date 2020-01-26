@@ -21,6 +21,8 @@ public interface MarketUsedInteractor {
 
     void editCotentEdit(int id, MarketItem marketItem, final ApiCallback apiCallback);
 
+    void uploadThumbnailImage(File file, final ApiCallback apiCallback);
+
     void uploadImage(File file, final ApiCallback apiCallback);
 
     void createMarketItem(MarketItem marketItem, final ApiCallback apiCallback);
