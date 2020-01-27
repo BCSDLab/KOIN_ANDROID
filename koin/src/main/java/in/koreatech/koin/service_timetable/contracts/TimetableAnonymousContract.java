@@ -1,6 +1,4 @@
-package in.koreatech.koin.service_timetable.Contracts;
-
-import com.google.gson.JsonObject;
+package in.koreatech.koin.service_timetable.contracts;
 
 import java.util.ArrayList;
 
@@ -8,10 +6,10 @@ import in.koreatech.koin.core.bases.BaseView;
 import in.koreatech.koin.core.networks.entity.Lecture;
 import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
-import in.koreatech.koin.service_timetable.presenters.TimetablePresenter;
+import in.koreatech.koin.service_timetable.presenters.TimetableAnonymousPresenter;
 
-public interface TimetableContract {
-    interface View extends BaseView<TimetablePresenter> {
+public interface TimetableAnonymousContract {
+    interface View extends BaseView<TimetableAnonymousPresenter> {
         void showLoading();
 
         void hideLoading();
@@ -44,12 +42,11 @@ public interface TimetableContract {
 
         void showFailSavedTimeTable();
 
-        void updateWidget();
-
-        //동민 추가
         void showUpdateAlertDialog(String message);
 
         void updateSemesterCode(String semester);
+
+        void updateWidget();
 
         void getSemester(ArrayList<Semester> semesters);
     }

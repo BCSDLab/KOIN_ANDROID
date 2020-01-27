@@ -1,4 +1,4 @@
-package in.koreatech.koin.service_timetable.Contracts;
+package in.koreatech.koin.service_timetable.contracts;
 
 import java.util.ArrayList;
 
@@ -6,11 +6,10 @@ import in.koreatech.koin.core.bases.BaseView;
 import in.koreatech.koin.core.networks.entity.Lecture;
 import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
-import in.koreatech.koin.service_timetable.presenters.TimetableAnonymousPresenter;
 import in.koreatech.koin.service_timetable.presenters.TimetablePresenter;
 
-public interface TimetableAnonymousContract {
-    interface View extends BaseView<TimetableAnonymousPresenter> {
+public interface TimetableContract {
+    interface View extends BaseView<TimetablePresenter> {
         void showLoading();
 
         void hideLoading();
@@ -43,11 +42,12 @@ public interface TimetableAnonymousContract {
 
         void showFailSavedTimeTable();
 
+        void updateWidget();
+
+        //동민 추가
         void showUpdateAlertDialog(String message);
 
         void updateSemesterCode(String semester);
-
-        void updateWidget();
 
         void getSemester(ArrayList<Semester> semesters);
     }

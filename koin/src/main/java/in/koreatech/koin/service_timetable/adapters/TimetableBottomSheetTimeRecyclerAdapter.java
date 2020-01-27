@@ -19,16 +19,13 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 
-/**
- * Created by hyerim on 2018. 8. 12....
- */
 public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapter<TimetableBottomSheetTimeRecyclerAdapter.ViewHolder> {
     private final String TAG = TimetableBottomSheetTimeRecyclerAdapter.class.getSimpleName();
 
 
-    private Context mContext;
-    private LayoutInflater mLayoutInflater; //inflate 사용위한 inflater
-    private ArrayList<TimeTableItem> mTimeTableItemArrayList;
+    private Context context;
+    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
+    private ArrayList<TimeTableItem> timeTableItemArrayList;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -50,10 +47,10 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
     }
 
     public TimetableBottomSheetTimeRecyclerAdapter(Context context, ArrayList<TimeTableItem> lectureArrayList) {
-        this.mContext = context;
-        this.mLayoutInflater = LayoutInflater.from(context);
-        this.mTimeTableItemArrayList = new ArrayList<>();
-        this.mTimeTableItemArrayList.addAll(lectureArrayList);
+        this.context = context;
+        this.layoutInflater = LayoutInflater.from(context);
+        this.timeTableItemArrayList = new ArrayList<>();
+        this.timeTableItemArrayList.addAll(lectureArrayList);
     }
 
 
@@ -67,9 +64,9 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        TimeTableItem timeTableItem = mTimeTableItemArrayList.get(position);
+        TimeTableItem timeTableItem = this.timeTableItemArrayList.get(position);
         if (position > 0)
-            holder.mTimetableCustomTimeEditImageview.setBackground(mContext.getResources().getDrawable(R.drawable.ic_delete_timetable_time));
+            holder.mTimetableCustomTimeEditImageview.setBackground(this.context.getResources().getDrawable(R.drawable.ic_delete_timetable_time));
 //        holder.mTimetableCustomTimeAddDaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view,
@@ -85,7 +82,7 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 //        holder.mTimetableCustomTimeAddStartTimeTextview.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(mContext,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
+//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(this.context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
 //                dialog.show();
 //            }
 //
@@ -99,7 +96,7 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 //        holder.mTimetableCustomTimeAddEndTimeTextview.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(mContext,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
+//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(this.context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
 //                dialog.show();
 //            }
 //
@@ -115,7 +112,7 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 
     @Override
     public int getItemCount() {
-        return mTimeTableItemArrayList.size();
+        return this.timeTableItemArrayList.size();
     }
 
 }
