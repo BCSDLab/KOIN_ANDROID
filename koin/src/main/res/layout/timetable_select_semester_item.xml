@@ -8,7 +8,9 @@
     
     <RadioButton
         android:id="@+id/timetable_semester_radiobutton"
-        android:layout_margin="16dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginStart="20dp"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
@@ -16,11 +18,13 @@
 
     <TextView
         android:id="@+id/timetable_semester_textview"
-        android:layout_margin="16dp"
+        android:layout_marginStart="20dp"
+        android:gravity="center"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="16sp"
         tools:text="2020년 2학기"
         />
 
