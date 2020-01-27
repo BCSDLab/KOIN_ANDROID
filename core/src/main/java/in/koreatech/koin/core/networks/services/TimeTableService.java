@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 
 
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.core.networks.entity.TimeTableTest;
@@ -20,7 +21,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 
-
+import static in.koreatech.koin.core.constants.URLConstant.SEMESTERS;
 import static in.koreatech.koin.core.constants.URLConstant.TIMETABLE;
 import static in.koreatech.koin.core.constants.URLConstant.TIMETABLES;
 
@@ -42,5 +43,7 @@ public interface TimeTableService {
     @PUT(TIMETABLES)
     Observable<ArrayList<TimeTable>> putEditTimeTables( @Header("Authorization") String authHeader, @Body JsonObject TimeTableUid);
 
+    @GET(SEMESTERS)
+    Observable<ArrayList<Semester>> getSemesters();
 
 }

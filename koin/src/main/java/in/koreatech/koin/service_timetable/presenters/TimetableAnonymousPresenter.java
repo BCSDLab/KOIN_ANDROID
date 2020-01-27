@@ -14,6 +14,7 @@ import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Lecture;
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.core.networks.entity.Version;
@@ -29,7 +30,7 @@ import in.koreatech.koin.service_timetable.Contracts.TimetableContract;
 
 
 public class TimetableAnonymousPresenter implements BasePresenter {
-    public static final String TAG = TimetableAnonymousPresenter.class.getName();
+    public static final String TAG = "TimetableAnonymous";
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
     private AppVersionInteractor mAppVersionInteractor;
@@ -96,6 +97,21 @@ public class TimetableAnonymousPresenter implements BasePresenter {
         }
     };
 
+    final ApiCallback readSemestersApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Semester> semesters = (ArrayList<Semester>) object;
+            mTimeTableView.getSemester(semesters);
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            mTimeTableView.showFailMessage("정보를 불러오지 못했습니다.");
+            mTimeTableView.hideLoading();
+        }
+    };
+
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.KOREA);
         cal.setTimeInMillis(time * 1000);
@@ -111,7 +127,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
     public void addTimeTableItem(TimeTableItem timeTableItem, String semester) {
         mTimeTableView.showLoading();
         TimeTable savedTimeTable = new TimeTable();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 savedTimeTable = SaveManager.loadTimeTable(timeTable);
@@ -126,7 +142,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
             timeTableItem.setId(++id);
             TimeTableSharedPreferencesHelper.getInstance().saveTimeTableBlockID(id);
             savedTimeTable.addTimeTableItem(timeTableItem);
-            TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(SaveManager.saveTimeTable(savedTimeTable, semester));
+            TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(savedTimeTable, semester));
         }
 
 
@@ -135,9 +151,9 @@ public class TimetableAnonymousPresenter implements BasePresenter {
         mTimeTableView.hideLoading();
     }
 
-    public void getSavedTimeTableItem() {
+    public void getSavedTimeTableItem(String semester) {
         mTimeTableView.showLoading();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 TimeTable savedTimeTable = SaveManager.loadTimeTable(timeTable);
@@ -154,9 +170,9 @@ public class TimetableAnonymousPresenter implements BasePresenter {
         mTimeTableView.hideLoading();
     }
 
-    public TimeTable getSavedTimeTable() {
+    public TimeTable getSavedTimeTable(String semester) {
         TimeTable savedTimeTable = new TimeTable();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 savedTimeTable = SaveManager.loadTimeTable(timeTable);
@@ -167,10 +183,10 @@ public class TimetableAnonymousPresenter implements BasePresenter {
         return savedTimeTable;
     }
 
-    public void deleteItem(int id) {
+    public void deleteItem(String semester, int id) {
         mTimeTableView.showLoading();
         deleteId = id;
-        TimeTable timeTable = getSavedTimeTable();
+        TimeTable timeTable = getSavedTimeTable(semester);
         TimeTable saveTable = new TimeTable();
         if (timeTable == null) return;
         saveTable.setSemester(timeTable.semester);
@@ -179,7 +195,7 @@ public class TimetableAnonymousPresenter implements BasePresenter {
                 saveTable.addTimeTableItem(timeTableItem);
             }
         }
-        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(SaveManager.saveTimeTable(saveTable, saveTable.semester));
+        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(saveTable, saveTable.semester));
         mTimeTableView.showDeleteSuccessTimeTableItem(deleteId);
         mTimeTableView.hideLoading();
     }
@@ -190,5 +206,8 @@ public class TimetableAnonymousPresenter implements BasePresenter {
         mAppVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
     }
 
-
+    public void readSemesters() {
+        mTimeTableView.showLoading();
+        mTimeTableInteractor.readSemesters(readSemestersApiCallback);
+    }
 }

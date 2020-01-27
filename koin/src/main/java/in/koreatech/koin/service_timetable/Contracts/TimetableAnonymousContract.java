@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.core.bases.BaseView;
 import in.koreatech.koin.core.networks.entity.Lecture;
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.service_timetable.presenters.TimetableAnonymousPresenter;
 import in.koreatech.koin.service_timetable.presenters.TimetablePresenter;
@@ -47,6 +48,8 @@ public interface TimetableAnonymousContract {
         void updateSemesterCode(String semester);
 
         void updateWidget();
+
+        void getSemester(ArrayList<Semester> semesters);
     }
 
 }
