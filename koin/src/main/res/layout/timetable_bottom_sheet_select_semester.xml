@@ -62,6 +62,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timetable_semester_recyclerview"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
