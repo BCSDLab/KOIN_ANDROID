@@ -13,6 +13,7 @@ import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Lecture;
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.core.networks.entity.Version;
@@ -142,6 +143,21 @@ public class TimetablePresenter implements BasePresenter {
         }
     };
 
+    final ApiCallback readSemestersApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Semester> semesters = (ArrayList<Semester>) object;
+            mTimeTableView.getSemester(semesters);
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            mTimeTableView.showFailMessage("정보를 불러오지 못했습니다.");
+            mTimeTableView.hideLoading();
+        }
+    };
+
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.KOREA);
         cal.setTimeInMillis(time * 1000);
@@ -154,9 +170,9 @@ public class TimetablePresenter implements BasePresenter {
         mLectureInteractor.readLecture(semester, lectureApiCallback);
     }
 
-    public void addTimeTableItem(TimeTableItem timeTableItem, String semster) {
+    public void addTimeTableItem(TimeTableItem timeTableItem, String semester) {
         mTimeTableView.showLoading();
-        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semster);
+        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semester);
         mTimeTableInteractor.createTimeTable(addTimetableApiCallback, timetableJson);
     }
 
@@ -174,6 +190,11 @@ public class TimetablePresenter implements BasePresenter {
     public void getTimetTableVersion() {
         mTimeTableView.showLoading();
         mAppVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+    }
+
+    public void readSemesters() {
+        mTimeTableView.showLoading();
+        mTimeTableInteractor.readSemesters(readSemestersApiCallback);
     }
 
 

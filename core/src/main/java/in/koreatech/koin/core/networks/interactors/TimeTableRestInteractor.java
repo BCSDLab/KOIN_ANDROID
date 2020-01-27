@@ -12,6 +12,7 @@ import in.koreatech.koin.core.networks.RetrofitManager;
 
 import in.koreatech.koin.core.networks.entity.Lecture;
 
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.core.networks.entity.TimeTableTest;
@@ -199,6 +200,41 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onNext(ArrayList<TimeTable> response) {
+                        if (response != null) {
+                            apiCallback.onSuccess(response);
+                        } else {
+                            apiCallback.onFailure(new Throwable("fail"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void readSemesters(ApiCallback apiCallback) {
+        RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).getSemesters()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Semester>>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        mCompositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Semester> response) {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {

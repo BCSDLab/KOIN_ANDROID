@@ -50,6 +50,8 @@
 
         <include layout="@layout/timetable_bottom_sheet_add" />
 
+        <include layout="@layout/timetable_bottom_sheet_select_semester" />
+
         <include layout="@layout/timetable_bottom_sheet_show_detail" />
 
 

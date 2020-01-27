@@ -33,7 +33,7 @@
                     android:layout_marginBottom="9dp"
                     android:weightSum="1"
                     android:layout_weight="1"
-                    android:background="@color/cloudy_blue">
+                    android:background="@drawable/bg_cloudy_blue_rectangle">
 
                     <TextView
                         android:id="@+id/timetable_select_semester_textview"

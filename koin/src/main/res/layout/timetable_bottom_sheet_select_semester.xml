@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/timetable_add_schedule_bottom_sheet"
+    android:id="@+id/timetable_select_semester_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="310dp"
     android:background="@color/white"
@@ -24,7 +24,6 @@
         android:weightSum="6">
 
         <TextView
-            android:id="@+id/timetable_add_schedule_bottom_sheet_left_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -36,7 +35,7 @@
             tools:text="저장" />
 
         <TextView
-            android:id="@+id/timetable_add_schedule_bottom_sheet_center_textview"
+            android:id="@+id/timetable_select_semester_bottom_sheet_center_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -48,7 +47,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/timetable_add_schedule_bottom_sheet_right_textview"
+            android:id="@+id/timetable_elect_semester_bottom_sheet_right_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:font_name="Custom6"
@@ -62,7 +61,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/timetable_search_recyclerview"
+        android:id="@+id/timetable_semester_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
