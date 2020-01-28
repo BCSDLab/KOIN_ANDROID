@@ -238,6 +238,18 @@
                                 android:orientation="horizontal">
 
                             </LinearLayout>
+
+                            <in.koreatech.koin.service_board.ui.KoinRichEditor
+                                android:id="@+id/article_editor_content"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:paddingLeft="20dp"
+                                android:paddingTop="10dp"
+                                android:paddingRight="20dp"
+                                app:auto_focus="false"
+                                app:placeholder="내용을 입력해주세요.."
+                                app:render_type="Editor" />
                         </LinearLayout>
 
                         <FrameLayout
