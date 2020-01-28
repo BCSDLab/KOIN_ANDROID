@@ -1,0 +1,62 @@
+package in.koreatech.koin.core.networks.interactors;
+
+import android.util.Log;
+
+import in.koreatech.koin.core.networks.ApiCallback;
+import in.koreatech.koin.core.networks.RetrofitManager;
+import in.koreatech.koin.core.networks.entity.Advertising;
+import in.koreatech.koin.core.networks.entity.BokdukRoom;
+import in.koreatech.koin.core.networks.services.AdvertisingService;
+import in.koreatech.koin.core.networks.services.LandService;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.HttpException;
+
+/**
+ * Created by hansol on 2020.1.1...
+ */
+public class AdvertisingRestInteractor implements AdvertisingInteractor{
+    private final String TAG = AdvertisingInteractor.class.getSimpleName();
+    private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    public AdvertisingRestInteractor() {
+    }
+
+    @Override
+    public void readAdList(ApiCallback apiCallback) {
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).getAdList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Advertising>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+
+                    }
+
+                    @Override
+                    public void onNext(Advertising ad) {
+                        if (!ad.ads.isEmpty()) {
+                            apiCallback.onSuccess(ad);
+                        } else {
+                            apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mCompositeDisposable.dispose();
+                    }
+                });
+    }
+}

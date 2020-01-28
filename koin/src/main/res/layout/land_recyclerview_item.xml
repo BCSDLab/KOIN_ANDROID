@@ -6,11 +6,9 @@
     android:layout_height="140dp"
     android:background="@color/white">
 
-
     <LinearLayout
         android:layout_width="160dp"
         android:layout_height="127dp"
-
         android:background="@drawable/bg_rect_cloudy_blue"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"

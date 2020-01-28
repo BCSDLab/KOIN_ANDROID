@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="14dp"
+        android:orientation="horizontal"
+        >
+
+        <Button
+            android:id="@+id/adverting_detail_comment_master_imageview"
+            android:layout_width="41dp"
+            android:layout_height="16dp"
+            android:background="@drawable/bg_rect_squash_radius_18dp"
+            android:lineSpacingExtra="4sp"
+            android:text="점주"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/advertising_comment_item_nickname_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:lineSpacingExtra="18sp"
+            android:text="한솥"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/advertising_comment_item_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:lineSpacingExtra="18sp"
+            android:text="2019.11.25 [13:11]"
+            android:textColor="@color/warm_grey_three"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/advertising_comment_item_contents_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="19sp"
+        android:text="감사합니다~ 가성비 최고는 역시 한솥!!"
+        android:textColor="#565656"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/advertising_comment_item_fix_button"
+        android:layout_width="46dp"
+        android:layout_height="26dp"
+        android:background="@drawable/bg_cloudy_blue_rectangle"
+        android:lineSpacingExtra="1sp"
+        android:text="수정"
+        android:visibility="invisible"
+        android:textColor="@color/warm_grey_two"
+        android:textSize="11sp"
+        android:layout_marginTop="10dp"
+        />
+
+</LinearLayout>

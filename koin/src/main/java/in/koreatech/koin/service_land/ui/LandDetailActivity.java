@@ -152,7 +152,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     TextView landDetailRoomAddressText;
     @BindView(R.id.activity_land_detail_navermap)
     LinearLayout landDetailRoomAddressNavermap;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
