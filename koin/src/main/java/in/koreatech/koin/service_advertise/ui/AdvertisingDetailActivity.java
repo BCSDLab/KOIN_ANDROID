@@ -79,11 +79,10 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
         ButterKnife.bind(this);
         setPresenter(new AdDetailPresenter(this, new AdDetailRestInterator()));
         layoutManager = new LinearLayoutManager(this);
-//        initRecyclerView();
     }
 
     public void initRecyclerView(){
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(this,adDetailData);
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailData);
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
@@ -123,8 +122,8 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
     @Override
     public void onAdDetailDataReceived(AdDetail adDetail) {
 
-        adDetailData = adDetail.comments;
-
+        adDetailData = adDetail.comments; //댓글 ArrayList
+        initRecyclerView();
         titleTextview.setText(adDetail.eventTitle);
         periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
         viewPublisherTextview.setText("조회 " + adDetail.getHit() + " · " + adDetail.getNickname());
