@@ -38,11 +38,13 @@ public class KoinURIControllerActivity extends Activity {
         super.onCreate(savedInstanceState);
         Uri uri = getIntent().getData();
         Intent intent = null;
+
         if (uri == null) {
-            Toast.makeText(getApplicationContext(), "잘못된 경로 입니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.wrong_path, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
+
         if (isURIContainPath(uri, BUS)) {
             intent = new Intent(this, BusActivity.class);
         } else if (isURIContainPath(uri, STORE)) {
@@ -85,12 +87,13 @@ public class KoinURIControllerActivity extends Activity {
         } else if ((isURIContainPath(uri, MARKET_BUY) || isURIContainPath(uri, MARKET_SELL)) && !isDetailPath(uri)) {
             intent = new Intent(this, MarketUsedActivity.class);
         } else {
-            Toast.makeText(getApplicationContext(), "잘못된 경로 입니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.wrong_path, Toast.LENGTH_SHORT).show();
             finish();
-
         }
+
         if (intent != null)
             startActivity(intent);
+
         finish();
     }
 

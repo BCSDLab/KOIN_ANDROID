@@ -121,4 +121,5 @@
     <string name="uri_path_circle">/circle</string>
     <string name="uri_path_market_sell">/market/sell</string>
     <string name="uri_path_market_buy">/market/buy</string>
+    <string name="wrong_path">잘못된 경로 입니다.</string>
 </resources>
