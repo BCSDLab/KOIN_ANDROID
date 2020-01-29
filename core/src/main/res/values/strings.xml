@@ -110,4 +110,15 @@
 
     <string name="fail_upload">업로드에 실패하였습니다.</string>
     <string name="uploading_image_now">이미지 업로드 중입니다.</string>
+
+    <string name="uri_path_bus">/bus</string>
+    <string name="uri_path_store">/store</string>
+    <string name="uri_path_board_free">/board/free</string>
+    <string name="uri_path_board_job">/board/job</string>
+    <string name="uri_path_board_anonymous">/board/anonymous</string>
+    <string name="uri_path_diet">/diet</string>
+    <string name="uri_path_timetable">/timetable</string>
+    <string name="uri_path_circle">/circle</string>
+    <string name="uri_path_market_sell">/market/sell</string>
+    <string name="uri_path_market_buy">/market/buy</string>
 </resources>

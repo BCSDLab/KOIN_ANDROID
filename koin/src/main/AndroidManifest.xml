@@ -262,6 +262,28 @@
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
+        <activity android:name=".KoinURIControllerActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:host="www.koreatech.in"/>
+                <data android:host="koreatech.in"/>
+                <data android:host="stage.koreatech.in"/>
+                <data android:pathPrefix="@string/uri_path_bus" />
+                <data android:pathPrefix="@string/uri_path_store" />
+                <data android:pathPrefix="@string/uri_path_board_free" />
+                <data android:pathPrefix="@string/uri_path_board_job" />
+                <data android:pathPrefix="@string/uri_path_board_anonymous" />
+                <data android:pathPrefix="@string/uri_path_diet" />
+                <data android:pathPrefix="@string/uri_path_timetable" />
+                <data android:pathPrefix="@string/uri_path_circle" />
+                <data android:pathPrefix="@string/uri_path_market_sell" />
+                <data android:pathPrefix="@string/uri_path_market_buy" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
