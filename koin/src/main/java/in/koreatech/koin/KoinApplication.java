@@ -5,11 +5,13 @@ import com.squareup.leakcanary.LeakCanary;
 import in.koreatech.koin.core.bases.BaseApplication;
 import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.util.font_change.Typekit;
+import in.koreatech.koin.helper.ExceptionHandlerHelper;
 
 /**
  * Created by hyerim on 2018. 5. 28....
  */
 public class KoinApplication extends BaseApplication {
+    private Thread.UncaughtExceptionHandler defaultExceptionHandler;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,5 +29,7 @@ public class KoinApplication extends BaseApplication {
                 .addCustom4(Typekit.createFromAsset(this, "fonts/notosans_light.ttf"))
                 .addCustom5(Typekit.createFromAsset(this, "fonts/notosanscjkkr_medium.otf"))
                 .addCustom6(Typekit.createFromAsset(this, "fonts/notosanscjkkr_regular.otf"));
+        defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandlerHelper(this, defaultExceptionHandler));
     }
 }

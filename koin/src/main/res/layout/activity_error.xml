@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingPrefix">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_app_bar_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                app:title_text="코인" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="56dp"
+                android:orientation="vertical">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineHeight="24sp"
+                            android:text="페이지를 찾을 수 없습니다!"
+                            android:textAlignment="center"
+                            android:textColor="@color/squash"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="14dp"
+                            android:text="" />
+
+                        <TextView
+                            android:id="@+id/error_info_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineHeight="22sp"
+                            tools:text="예상치 못한 오류가 발생되었습니다."
+                            android:textAlignment="center"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/error_guide_message"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineHeight="22sp"
+                            tools:text="다음과 같은 상황이 지속되신다면 문의바랍니다."
+                            android:textAlignment="center"
+                            android:textColor="@color/warm_grey"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="39dp"
+                            android:text="" />
+
+                        <Button
+                            android:id="@+id/error_home_button"
+                            android:layout_width="79.4dp"
+                            android:layout_height="28.7dp"
+                            android:background="@drawable/button_rect_primary"
+                            android:text="홈으로"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <include layout="@layout/base_navigation_drawer_left" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
