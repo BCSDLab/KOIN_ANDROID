@@ -240,7 +240,7 @@
                             </LinearLayout>
 
                             <in.koreatech.koin.service_board.ui.KoinRichEditor
-                                android:id="@+id/article_editor_content"
+                                android:id="@+id/advertising_create_content"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
