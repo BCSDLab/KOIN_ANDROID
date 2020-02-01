@@ -217,20 +217,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
     }
 
-    public void tempInitSticker() {
-        int[] tempTimes = {0, 1, 2, 401, 402};
-        int[] tempTImes2 = {2, 3, 4, 6, 123};
-        ArrayList<Integer> time1 = new ArrayList<>();
-        ArrayList<Integer> time2 = new ArrayList<>();
-        for (int i : tempTimes)
-            time1.add(i);
-        for (int i : tempTImes2)
-            time2.add(i);
-        this.timetableView.add(new TimeTableItem("알라딘", time1, "노홍촐"));
-        this.timetableView.add(new TimeTableItem("성인학습론", time2, "파바사라"));
-
-    }
-
     public void askSaveToImagePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
