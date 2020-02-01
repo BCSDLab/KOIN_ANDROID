@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.R;
 
 /**
@@ -21,6 +23,17 @@ public class GenerateProgressTask extends AsyncTask<Void, Void, Void> {
     public GenerateProgressTask(Context context, String msg) {
         this.mContext = context;
         this.mMessage = msg;
+
+        mProgressDialog = new ProgressDialog(context, R.style.KAPProgress);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setIndeterminate(true);
+
+    }
+
+    public GenerateProgressTask(Context context, @StringRes int id) {
+        this.mContext = context;
+        this.mMessage = context.getResources().getString(id);
 
         mProgressDialog = new ProgressDialog(context, R.style.KAPProgress);
         mProgressDialog.setCancelable(false);
