@@ -39,15 +39,12 @@ public class ExceptionHandlerHelper implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(@Nullable Thread thread, @NotNull Throwable throwable) {
 
         StringWriter stringWriter = new StringWriter();
-        throwable.printStackTrace(new PrintWriter((Writer) stringWriter));
+        throwable.printStackTrace(new PrintWriter((Writer) stringWriter));  //오류 메시지를 얻는다.
         String ErrorMessage = stringWriter.toString();
         if (ErrorMessage != null) {
             startErrorActivity(context, ErrorMessage);
-            Process.killProcess(Process.myPid());
-            System.exit(-1);
-        }else{
-            //this.defaultExceptionHandler.uncaughtException(thread, throwable);
-            Process.killProcess(Process.myPid());
+            System.exit(-1);                    //가장 위에 있는 액티비티를 종료 finish()와 같다.
+        } else {
             System.exit(-1);
         }
 

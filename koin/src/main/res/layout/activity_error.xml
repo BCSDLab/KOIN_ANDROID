@@ -31,18 +31,22 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:foregroundGravity="center_vertical">
+
                     <LinearLayout
+                        android:id="@+id/error_linear_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:gravity="center"
                         android:orientation="vertical">
 
 
                         <TextView
+                            android:id="@+id/error_title_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:lineHeight="24sp"
                             android:text="페이지를 찾을 수 없습니다!"
                             android:textAlignment="center"
@@ -58,21 +62,23 @@
                             android:id="@+id/error_info_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:lineHeight="22sp"
-                            tools:text="예상치 못한 오류가 발생되었습니다."
                             android:textAlignment="center"
                             android:textColor="@color/warm_grey"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="예상치 못한 오류가 발생되었습니다." />
 
                         <TextView
                             android:id="@+id/error_guide_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:lineHeight="22sp"
-                            tools:text="다음과 같은 상황이 지속되신다면 문의바랍니다."
                             android:textAlignment="center"
                             android:textColor="@color/warm_grey"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            tools:text="다음과 같은 상황이 지속되신다면 문의바랍니다." />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -83,6 +89,7 @@
                             android:id="@+id/error_home_button"
                             android:layout_width="79.4dp"
                             android:layout_height="28.7dp"
+                            android:layout_gravity="center"
                             android:background="@drawable/button_rect_primary"
                             android:text="홈으로"
                             android:textColor="@color/white" />
