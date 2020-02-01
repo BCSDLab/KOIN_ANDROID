@@ -61,9 +61,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -99,9 +96,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -136,9 +130,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -173,9 +164,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -209,9 +197,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -244,9 +229,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
