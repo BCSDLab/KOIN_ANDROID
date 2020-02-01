@@ -85,7 +85,7 @@
                         android:layout_gravity="center"
                         android:gravity="end"
                         android:textSize="12sp"
-                        android:textColor="#fdfdfd"
+                        android:textColor="@color/white7"
                         android:lineSpacingExtra="12sp"
                         android:layout_marginEnd="10dp"
                         android:text="이미지 저장하기" />
