@@ -26,7 +26,6 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int VIEW_TYPE_LOADING = 1;
 
     private Context context;
-    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Lecture> lectureArrayList;
     private RecyclerViewClickListener recyclerViewClickListener;
 
