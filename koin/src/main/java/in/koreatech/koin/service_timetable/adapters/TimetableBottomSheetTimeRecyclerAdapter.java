@@ -24,7 +24,6 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 
 
     private Context context;
-    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<TimeTableItem> timeTableItemArrayList;
 
 
