@@ -61,12 +61,18 @@ public class TimetableSemesterRecyclerAdapter extends RecyclerView.Adapter<Timet
             if (recyclerViewClickListener == null) return;
             recyclerViewClickListener.onClick(viewHolder.semesterLinearLayout, position);
         });
+
+        viewHolder.semesterRadioButton.setOnClickListener(v -> {
+            if (recyclerViewClickListener == null) return;
+            recyclerViewClickListener.onClick(viewHolder.semesterLinearLayout, position);
+        });
+
         if (semesterInfo.isSelected)
             viewHolder.semesterRadioButton.setChecked(true);
         else
             viewHolder.semesterRadioButton.setChecked(false);
 
-        if(semesterInfo.semester != null)
+        if (semesterInfo.semester != null)
             viewHolder.semesterTextview.setText(yearString + "년 " + semesterString + "학기");
     }
 
