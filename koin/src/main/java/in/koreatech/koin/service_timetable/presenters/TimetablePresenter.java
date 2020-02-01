@@ -13,6 +13,7 @@ import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.helpers.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Lecture;
+import in.koreatech.koin.core.networks.entity.Semester;
 import in.koreatech.koin.core.networks.entity.TimeTable;
 import in.koreatech.koin.core.networks.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.core.networks.entity.Version;
@@ -23,24 +24,24 @@ import in.koreatech.koin.core.networks.interactors.LectureRestInteractor;
 import in.koreatech.koin.core.networks.interactors.TimeTableInteractor;
 import in.koreatech.koin.core.networks.interactors.TimeTableRestInteractor;
 import in.koreatech.koin.core.util.timetable.SaveManager;
-import in.koreatech.koin.service_timetable.Contracts.TimetableContract;
+import in.koreatech.koin.service_timetable.contracts.TimetableContract;
 
 
 public class TimetablePresenter implements BasePresenter {
     public static final String TAG = TimetablePresenter.class.getName();
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
-    private AppVersionInteractor mAppVersionInteractor;
-    private TimeTableInteractor mTimeTableInteractor;
-    private LectureInteractor mLectureInteractor;
-    private TimetableContract.View mTimeTableView;
+    private AppVersionInteractor appVersionInteractor;
+    private TimeTableInteractor timeTableInteractor;
+    private LectureInteractor lectureInteractor;
+    private TimetableContract.View timeTableView;
     private int deleteId;
 
-    public TimetablePresenter(TimetableContract.View mTimeTableView) {
-        this.mTimeTableView = mTimeTableView;
-        this.mAppVersionInteractor = new AppVersionRestInteractor();
-        this.mTimeTableInteractor = new TimeTableRestInteractor();
-        this.mLectureInteractor = new LectureRestInteractor();
+    public TimetablePresenter(TimetableContract.View timeTableView) {
+        this.timeTableView = timeTableView;
+        this.appVersionInteractor = new AppVersionRestInteractor();
+        this.timeTableInteractor = new TimeTableRestInteractor();
+        this.lectureInteractor = new LectureRestInteractor();
         //
     }
 
@@ -48,14 +49,14 @@ public class TimetablePresenter implements BasePresenter {
         @Override
         public void onSuccess(Object object) {
             ArrayList<Lecture> lecture = (ArrayList<Lecture>) object;
-            mTimeTableView.showLecture(lecture);
-            mTimeTableView.hideLoading();
+            timeTableView.showLecture(lecture);
+            timeTableView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mTimeTableView.showFailMessage("리스트를 받아오지 못했습니다.");
-            mTimeTableView.hideLoading();
+            timeTableView.showFailMessage("리스트를 받아오지 못했습니다.");
+            timeTableView.hideLoading();
         }
     };
 
@@ -65,16 +66,16 @@ public class TimetablePresenter implements BasePresenter {
             if (!(object instanceof TimeTable))
                 return;
             TimeTable timeTable = (TimeTable) object;
-            mTimeTableView.showSuccessAddTimeTableItem(timeTable);
-            mTimeTableView.updateWidget();
-            mTimeTableView.hideLoading();
+            timeTableView.showSuccessAddTimeTableItem(timeTable);
+            timeTableView.updateWidget();
+            timeTableView.hideLoading();
 
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mTimeTableView.showFailAddTimeTableItem();
-            mTimeTableView.hideLoading();
+            timeTableView.showFailAddTimeTableItem();
+            timeTableView.hideLoading();
         }
     };
 
@@ -84,30 +85,30 @@ public class TimetablePresenter implements BasePresenter {
             if (!(object instanceof TimeTable))
                 return;
             TimeTable timeTable = (TimeTable) object;
-            mTimeTableView.showSavedTimeTable(timeTable);
-            mTimeTableView.updateWidget();
-            mTimeTableView.hideLoading();
+            timeTableView.showSavedTimeTable(timeTable);
+            timeTableView.updateWidget();
+            timeTableView.hideLoading();
 
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mTimeTableView.showFailSavedTimeTable();
-            mTimeTableView.hideLoading();
+            timeTableView.showFailSavedTimeTable();
+            timeTableView.hideLoading();
         }
     };
 
     final ApiCallback deleteTimetableItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mTimeTableView.showDeleteSuccessTimeTableItem(deleteId);
-            mTimeTableView.hideLoading();
+            timeTableView.showDeleteSuccessTimeTableItem(deleteId);
+            timeTableView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mTimeTableView.showFailSavedTimeTable();
-            mTimeTableView.hideLoading();
+            timeTableView.showFailSavedTimeTable();
+            timeTableView.hideLoading();
         }
     };
     final ApiCallback readTableVersionApiCallback = new ApiCallback() {
@@ -127,18 +128,33 @@ public class TimetablePresenter implements BasePresenter {
                 StringBuilder timeStringBuilder = new StringBuilder();
                 timeStringBuilder.append("강의가 업데이트 되었습니다.\n");
                 timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
-                mTimeTableView.showUpdateAlertDialog(timeStringBuilder.toString());
+                timeTableView.showUpdateAlertDialog(timeStringBuilder.toString());
             }
             if (version.getVersion() != null) {
                 TimeTableSharedPreferencesHelper.getInstance().saveTimeTableVersion(serverVersionCode);
-                mTimeTableView.updateSemesterCode(serverVersionCode.split("_")[0]);
+                timeTableView.updateSemesterCode(serverVersionCode.split("_")[0]);
             }
-            mTimeTableView.hideLoading();
+            timeTableView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mTimeTableView.hideLoading();
+            timeTableView.hideLoading();
+        }
+    };
+
+    final ApiCallback readSemestersApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Semester> semesters = (ArrayList<Semester>) object;
+            timeTableView.getSemester(semesters);
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            timeTableView.showFailMessage("정보를 불러오지 못했습니다.");
+            timeTableView.hideLoading();
         }
     };
 
@@ -150,30 +166,35 @@ public class TimetablePresenter implements BasePresenter {
     }
 
     public void getLecture(String semester) {
-        mTimeTableView.showLoading();
-        mLectureInteractor.readLecture(semester, lectureApiCallback);
+        timeTableView.showLoading();
+        this.lectureInteractor.readLecture(semester, lectureApiCallback);
     }
 
-    public void addTimeTableItem(TimeTableItem timeTableItem, String semster) {
-        mTimeTableView.showLoading();
-        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semster);
-        mTimeTableInteractor.createTimeTable(addTimetableApiCallback, timetableJson);
+    public void addTimeTableItem(TimeTableItem timeTableItem, String semester) {
+        this.timeTableView.showLoading();
+        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semester);
+        this.timeTableInteractor.createTimeTable(addTimetableApiCallback, timetableJson);
     }
 
     public void getSavedTimeTableItem(String semester) {
-        mTimeTableView.showLoading();
-        mTimeTableInteractor.readTimeTable(getSavedTimetableApiCallback, semester);
+        this.timeTableView.showLoading();
+        this.timeTableInteractor.readTimeTable(getSavedTimetableApiCallback, semester);
     }
 
     public void deleteItem(int id) {
-        mTimeTableView.showLoading();
+        this.timeTableView.showLoading();
         deleteId = id;
-        mTimeTableInteractor.deleteTimeTable(deleteTimetableItemApiCallback, id);
+        this.timeTableInteractor.deleteTimeTable(deleteTimetableItemApiCallback, id);
     }
 
     public void getTimetTableVersion() {
-        mTimeTableView.showLoading();
-        mAppVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+        this.timeTableView.showLoading();
+        this.appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+    }
+
+    public void readSemesters() {
+        this.timeTableView.showLoading();
+        this.timeTableInteractor.readSemesters(readSemestersApiCallback);
     }
 
 
