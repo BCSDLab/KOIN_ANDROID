@@ -47,7 +47,6 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 
     public TimetableBottomSheetTimeRecyclerAdapter(Context context, ArrayList<TimeTableItem> lectureArrayList) {
         this.context = context;
-        this.layoutInflater = LayoutInflater.from(context);
         this.timeTableItemArrayList = new ArrayList<>();
         this.timeTableItemArrayList.addAll(lectureArrayList);
     }
