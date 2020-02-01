@@ -204,7 +204,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @Override
     public void showLoading() {
         if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
+            generateProgressTask = new GenerateProgressTask(this, R.string.loading);
             generateProgressTask.execute();
         }
     }
@@ -254,13 +254,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
                     sendBroadcast(mediaIntent);
-                    Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_LONG).show();
+                    ToastUtil.makeShortToast(getApplicationContext(), R.string.timetable_saved);
                 } else {
-                    Toast.makeText(this, "저장에 실패했습니다.", Toast.LENGTH_LONG).show();
+                    ToastUtil.makeShortToast(getApplicationContext(), R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            Toast.makeText(this, "저장에 실패하였습니다.", Toast.LENGTH_LONG).show();
+            ToastUtil.makeShortToast(getApplicationContext(), R.string.timetable_saved_fail);
         }
     }
 
@@ -286,7 +286,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                generateProgressTask = new GenerateProgressTask(this.context, "저장 중");
+                generateProgressTask = new GenerateProgressTask(this.context, R.string.saving);
                 generateProgressTask.execute();
             };
             handler.post(runnable);
@@ -297,7 +297,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }, 2000);
 
         } else {
-            ToastUtil.makeShortToast(this.context, "권한이 필요합니다.");
+            ToastUtil.makeShortToast(this.context, R.string.need_permission);
             askSaveToImagePermission();
         }
     }
@@ -619,19 +619,19 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     public void showDuplicateDialog(int position, ArrayList<TimeTableItem> duplicateTimeTableItems) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("과목 중복 / 시간 중복");
+        builder.setTitle(R.string.timetable_duplicate_warning_message);
         StringBuilder duplicateClassTitile = new StringBuilder();
         duplicateClassTitile.append(duplicateScheduleTostring(duplicateTimeTableItems));
-        duplicateClassTitile.append("바꾸시겠습니까?");
+        duplicateClassTitile.append(getResources().getString(R.string.timetable_want_to_change_message));
         builder.setMessage(duplicateClassTitile.toString());
-        builder.setPositiveButton("확인",
+        builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
                     for (TimeTableItem timeTableItem : duplicateTimeTableItems) {
                         this.timetablePresenter.deleteItem(timeTableItem.getId());
                     }
                     this.timetablePresenter.addTimeTableItem(new TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                 });
-        builder.setNegativeButton("취소",
+        builder.setNegativeButton(R.string.neutral,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -639,12 +639,12 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     public void showAskDeleteTimeTableItemDialog(int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("해당 수업을 삭제하시겠습니까?");
-        builder.setPositiveButton("확인",
+        builder.setMessage(R.string.timetable_delete_class_message);
+        builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
                     this.timetablePresenter.deleteItem(index);
                 });
-        builder.setNegativeButton("취소",
+        builder.setNegativeButton(R.string.neutral,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -722,7 +722,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.makeShortToast(this.context, "인터넷 환경을 확인해주세요");
+        ToastUtil.makeShortToast(this.context, R.string.error_network);
     }
 
     @Override
@@ -737,7 +737,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.makeShortToast(this.context, "인터넷 환경을 확인해주세요");
+        ToastUtil.makeShortToast(this.context, R.string.error_network);
     }
 
     @Override
@@ -754,7 +754,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.makeShortToast(this.context, "인터넷 환경을 확인해주세요");
+        ToastUtil.makeShortToast(this.context, R.string.error_network);
     }
 
     @Override
@@ -890,9 +890,9 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @Override
     public void showUpdateAlertDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("업데이트");
+        builder.setTitle(R.string.timetable_update_message);
         builder.setMessage(message);
-        builder.setPositiveButton("확인",
+        builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
                 });
         builder.show();
