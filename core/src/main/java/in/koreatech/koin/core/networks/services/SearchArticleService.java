@@ -18,6 +18,6 @@ public interface SearchArticleService {
      * @return
      */
     @GET(ARTICLESEARCH)
-    Observable<SearchedArticle> getSearchedArticles(@Query("page") int page, @Query("searchType") int searchType, @Query("query") String query);
+    Observable<SearchedArticle> getSearchedArticles(@Query("page") int page, @Query("searchType") int searchType, @Query(value = "query", encoded = true) String query);
 
 }
