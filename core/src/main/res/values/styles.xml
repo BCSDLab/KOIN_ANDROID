@@ -11,6 +11,8 @@
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+
+        <item name="colorOnSurface">@color/black</item>
     </style>
 
     <style name="KAPTheme" parent="AppTheme">

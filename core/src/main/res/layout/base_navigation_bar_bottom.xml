@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_gray_top_border"
+        android:background="?attr/colorSurface"
         android:weightSum="3">
 
         <LinearLayout
@@ -32,7 +32,8 @@
                     android:layout_width="38dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_bottom_home" />
+                    android:src="@drawable/ic_bottom_home"
+                    android:tint="?attr/colorOnSurface"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_home_textview"
@@ -41,7 +42,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="홈"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -59,7 +60,8 @@
                     android:layout_width="38dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_bottom_category" />
+                    android:src="@drawable/ic_bottom_category"
+                    android:tint="?attr/colorOnSurface"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_category_textview"
@@ -68,7 +70,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="카테고리"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -86,7 +88,8 @@
                     android:layout_width="38dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_search_menu" />
+                    android:src="@drawable/ic_search_menu"
+                    android:tint="?attr/colorOnSurface"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_search_textview"
@@ -95,7 +98,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="검색"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />
 
             </LinearLayout>
