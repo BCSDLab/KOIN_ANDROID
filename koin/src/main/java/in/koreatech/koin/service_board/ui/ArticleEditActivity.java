@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -92,6 +93,11 @@ import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_RECRUIT;
 public class ArticleEditActivity extends KoinNavigationDrawerActivity implements ArticleEditContract.View, TextWatcher {
     private final static String TAG = ArticleEditActivity.class.getSimpleName();
     private final static int MAX_TITLE_LENGTH = 255;
+    private final static int EDITOR_LEFT_PADDING = 0;       // Editor 내 EditText의 왼쪽 Padding 값
+    private final static int EDITOR_TOP_PADDING = 10;       // Editor 내 EditText의 위쪽 Padding 값
+    private final static int EDITOR_RIGHT_PADDING = 0;      // Editor 내 EditText의 오른쪽 Padding 값
+    private final static int EDITOR_BOTTOM_PADDING = 10;    // Editor 내 EditText의 아래쪽 Padding 값
+
     @BindView(R.id.koin_base_app_bar_dark)
     KoinBaseAppbarDark koinBaseAppBarDark;
     @BindView(R.id.title_nickname_border)
@@ -159,11 +165,13 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         }
 
         init();
+        changeEditorChildViewPadding(articleEditor, EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
     }
 
     public String renderHtmltoString(String url) {
         if (url == null) return "";
-        return url.replace("<div>", " ").replace("<div/>", " ");
+        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img","<img").replace(".jpg\\\"></p>",".jpg\\\">")
+                .replace(".png\\\"></p>",".png\\\">");
     }
 
     /**
@@ -199,10 +207,15 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         findViewById(R.id.action_blockquote).setOnClickListener(v -> articleEditor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
         findViewById(R.id.action_color).setOnClickListener(view -> createColorPicker());
 
+
+        // 리치 에디터 폰트 설정
+        articleEditor.setHeadingTypeface(getEditorTypeface());
+        articleEditor.setContentTypeface(getEditorTypeface());
+
         articleEditor.setEditorListener(new EditorListener() {
             @Override
             public void onTextChanged(EditText editText, Editable text) {
-                // Toast.makeText(EditorTestActivity.this, text, Toast.LENGTH_SHORT).show();
+                editText.setPadding(EDITOR_LEFT_PADDING,EDITOR_TOP_PADDING,EDITOR_RIGHT_PADDING,EDITOR_BOTTOM_PADDING);
             }
 
             // 갤러리에서 이미지를 선택하고 호출되는 insertImage() 메소드 안에서 인자값을 넘겨받는 메소드
@@ -235,7 +248,38 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 return null;
             }
         });
+
         articleEditor.render();
+    }
+
+    public Map<Integer, String> getEditorTypeface() {
+        Map<Integer, String> typefaceMap = new HashMap<>();
+        typefaceMap.put(Typeface.NORMAL,"fonts/notosans_regular.ttf");
+        typefaceMap.put(Typeface.BOLD,"fonts/notosanscjkkr_bold.otf");
+        typefaceMap.put(Typeface.ITALIC,"fonts/notosans_medium.ttf");
+        typefaceMap.put(Typeface.BOLD_ITALIC,"fonts/notosans_light.ttf");
+
+        return typefaceMap;
+    }
+
+    /**
+     * Editor 영역의 Padding 값을 설정하여 LineSpacing 값을 수정하는 메소드
+     * @param view LinearLayout를 상속받은 Editor
+     * @param left EditText(한 줄)의 왼쪽 Padding
+     * @param top EditText(한 줄)의 위쪽 Padding
+     * @param right EditText(한 줄)의 오른쪽 Padding
+     * @param bottom EditText(한 줄)의 아래쪽 Padding
+     */
+    public void changeEditorChildViewPadding(View view,  int left, int top, int right, int bottom) {
+        if (view == null)
+            return;
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                changeEditorChildViewPadding(((ViewGroup) view).getChildAt((i)), left, top, right, bottom);
+            }
+        } else {
+            view.setPadding(left, top, right, bottom);
+        }
     }
 
     @Override
