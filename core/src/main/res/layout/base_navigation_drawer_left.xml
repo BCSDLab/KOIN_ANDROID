@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/background"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="false"
     android:theme="@style/KAPNavigationHeader">
 
@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_drawer_myinfo" />
+                    android:src="@drawable/ic_drawer_myinfo"
+                    android:tint="?attr/colorOnSurface"/>
 
                 <TextView
                     android:id="@+id/navi_item_myinfo_textview"
@@ -82,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
                     android:text="내 정보"
-                    android:textColor="#252525"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -132,7 +133,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="주변 상점"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -153,7 +154,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="버스 / 교통"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -174,7 +175,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="식단"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -195,7 +196,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="동아리"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -216,7 +217,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="시간표"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -237,7 +238,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="복덕방"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -286,7 +287,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="익명게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -307,7 +308,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="자유게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -328,7 +329,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="취업게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -370,7 +371,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="중고장터"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -391,7 +392,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="분실물"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -439,7 +440,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="카카오톡 1:1 대화"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -516,7 +517,7 @@
                     android:layout_marginEnd="8dp"
                     android:lineSpacingExtra="7sp"
                     android:text="만든이"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
