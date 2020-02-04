@@ -33,7 +33,7 @@
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_bottom_home"
-                    android:tint="?attr/colorOnSurface"/>
+                    android:tint="@color/drawer_color_state_list"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_home_textview"
@@ -42,7 +42,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="홈"
-                    android:textColor="?attr/colorOnSurface"
+                    android:textColor="@color/drawer_color_state_list"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -61,7 +61,7 @@
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_bottom_category"
-                    android:tint="?attr/colorOnSurface"/>
+                    android:tint="@color/drawer_color_state_list"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_category_textview"
@@ -70,7 +70,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="카테고리"
-                    android:textColor="?attr/colorOnSurface"
+                    android:textColor="@color/drawer_color_state_list"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -89,7 +89,7 @@
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_search_menu"
-                    android:tint="?attr/colorOnSurface"/>
+                    android:tint="@color/drawer_color_state_list"/>
 
                 <TextView
                     android:id="@+id/base_navigation_bar_bottom_search_textview"
@@ -98,7 +98,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginBottom="7dp"
                     android:text="검색"
-                    android:textColor="?attr/colorOnSurface"
+                    android:textColor="@color/drawer_color_state_list"
                     android:textSize="12sp" />
 
             </LinearLayout>

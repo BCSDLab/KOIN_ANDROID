@@ -135,8 +135,10 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         if (id == R.id.navi_item_home) {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
-            textView.setTextColor(getResources().getColor(R.color.light_navy));
+            //imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
+            //textView.setTextColor(getResources().getColor(R.color.light_navy));
+            imageView.setSelected(true);
+            textView.setSelected(true);
         }
         else if (id == R.id.navi_item_search) {
             callDrawerItem(id);
@@ -144,12 +146,16 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         else {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            //imageView.setBackgroundResource(R.drawable.ic_bottom_home);
+            //textView.setTextColor(getResources().getColor(R.color.black));
+            imageView.setSelected(false);
+            textView.setSelected(false);
             imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            //imageView.setBackgroundResource(R.drawable.ic_search_menu);
+            //textView.setTextColor(getResources().getColor(R.color.black));
+            imageView.setSelected(false);
+            textView.setSelected(false);
         }
     }
 
@@ -164,12 +170,16 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         TextView textView;
         imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
         textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_home);
-        textView.setTextColor(getResources().getColor(R.color.black));
+        //imageView.setBackgroundResource(R.drawable.ic_bottom_home);
+        //textView.setTextColor(getResources().getColor(R.color.black));
+        imageView.setSelected(false);
+        textView.setSelected(false);
         imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
         textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-        imageView.setBackgroundResource(R.drawable.ic_search_menu);
-        textView.setTextColor(getResources().getColor(R.color.black));
+        //imageView.setBackgroundResource(R.drawable.ic_search_menu);
+        //textView.setTextColor(getResources().getColor(R.color.black));
+        imageView.setSelected(false);
+        textView.setSelected(false);
     }
 
     @Override
@@ -199,16 +209,20 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
     public void onDrawerOpened(@NonNull View drawerView) {
         ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
         TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-        textView.setTextColor(getResources().getColor(R.color.light_navy));
+        //imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
+        //textView.setTextColor(getResources().getColor(R.color.light_navy));
+        imageView.setSelected(true);
+        textView.setSelected(true);
     }
 
     @Override
     public void onDrawerClosed(@NonNull View drawerView) {
         ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
         TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-        textView.setTextColor(getResources().getColor(R.color.black));
+        //imageView.setBackgroundResource(R.drawable.ic_bottom_category);
+        //textView.setTextColor(getResources().getColor(R.color.black));
+        imageView.setSelected(false);
+        textView.setSelected(false);
     }
 
     @Override
@@ -216,13 +230,17 @@ public abstract class BaseNavigationActivity extends BaseActivity implements Nav
         if (newState == STATE_DRAGGING) {
             ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
             TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-            textView.setTextColor(getResources().getColor(R.color.light_navy));
+            //imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
+            //textView.setTextColor(getResources().getColor(R.color.light_navy));
+            imageView.setSelected(true);
+            textView.setSelected(true);
         } else {
             ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
             TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            //imageView.setBackgroundResource(R.drawable.ic_bottom_category);
+            //textView.setTextColor(getResources().getColor(R.color.black));
+            imageView.setSelected(false);
+            textView.setSelected(false);
         }
     }
 
