@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background_light"
+    android:background="?attr/colorSurface"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="Title"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp" />
 
     </LinearLayout>
