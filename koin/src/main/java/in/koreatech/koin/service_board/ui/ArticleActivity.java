@@ -2,17 +2,27 @@ package in.koreatech.koin.service_board.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
+
+import com.github.irshulx.Editor;
+import com.github.irshulx.models.EditorContent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +56,10 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     private final int REQ_CODE_ARTICLE_EDIT = 1;
     private final int REQ_CODE_ARTICLE = 2;
     private final int RES_CODE_ARTICLE_DELETED = 1;
+    private final static int EDITOR_LEFT_PADDING = 0;       // Editor 내 EditText의 왼쪽 Padding 값
+    private final static int EDITOR_TOP_PADDING = 10;       // Editor 내 EditText의 위쪽 Padding 값
+    private final static int EDITOR_RIGHT_PADDING = 0;      // Editor 내 EditText의 오른쪽 Padding 값
+    private final static int EDITOR_BOTTOM_PADDING = 10;    // Editor 내 EditText의 아래쪽 Padding 값
     private Context mContext;
 
     private InputMethodManager mInputMethodManager;
@@ -74,7 +88,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     @BindView(R.id.article_view_count)
     TextView mTextViewViewCount;
     @BindView(R.id.article_content)
-    TextView mTextViewContent;
+    Editor mEditorContent;
 
     @BindView(R.id.article_writer)
     TextView mTextViewWriter;
@@ -117,16 +131,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mArticlePresenter.checkGranted(mArticle.articleUid);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (mArticle.boardUid == ID_ANONYMOUS) {
-            mArticlePresenter.getAnonymousArticle(mArticle.articleUid);
-            return;
-        }
-        mArticlePresenter.getArticle(mArticle.articleUid);
-        mArticlePresenter.checkGranted(mArticle.articleUid);
-    }
 
     @Override
     protected void onResume() {
@@ -319,9 +323,52 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mTextViewWriter.setText(mArticle.authorNickname);
         mTextViewCreateDate.setText(Html.fromHtml(mArticle.createDate));
         mTextViewViewCount.setText(String.valueOf(mArticle.hitCount));
-        mTextViewContent.setText(Html.fromHtml(mArticle.content));
+        mEditorContent.setDividerLayout(R.layout.tmpl_divider_layout);
+        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
+        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
+        mEditorContent.clearAllContents();
 
+        // 리치 에디터 폰트 설정
+        mEditorContent.setHeadingTypeface(getEditorTypeface());
+        mEditorContent.setContentTypeface(getEditorTypeface());
+        mEditorContent.render(renderHtmltoString(mArticle.content));
+
+        changeEditorChildViewSetting(mEditorContent, EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Editor 영역의 Padding 값을 설정하여 LineSpacing 값을 수정하는 메소드
+     * @param view Editor extends LinearLayout
+     * @param left EditText(한 줄)의 왼쪽 Padding
+     * @param top EditText(한 줄)의 위쪽 Padding
+     * @param right EditText(한 줄)의 오른쪽 Padding
+     * @param bottom EditText(한 줄)의 아래쪽 Padding
+     */
+    public void changeEditorChildViewSetting(View view,  int left, int top, int right, int bottom) {
+        // TODO: TextView일때 Copy가 가능하도록 구현(한줄씩만 Copy가 됨)
+        if (view == null)
+            return;
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                changeEditorChildViewSetting(((ViewGroup) view).getChildAt((i)), left, top, right, bottom);
+            }
+        } else {
+            view.setPadding(left, top, right, bottom);
+            if(view instanceof TextView) {
+                ((TextView) view).setTextIsSelectable(true);
+            }
+        }
+    }
+
+    public Map<Integer, String> getEditorTypeface() {
+        Map<Integer, String> typefaceMap = new HashMap<>();
+        typefaceMap.put(Typeface.NORMAL,"fonts/notosans_regular.ttf");
+        typefaceMap.put(Typeface.BOLD,"fonts/notosanscjkkr_bold.otf");
+        typefaceMap.put(Typeface.ITALIC,"fonts/notosans_medium.ttf");
+        typefaceMap.put(Typeface.BOLD_ITALIC,"fonts/notosans_light.ttf");
+
+        return typefaceMap;
     }
 
     @Override
@@ -329,6 +376,15 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         setResult(RES_CODE_ARTICLE_DELETED);
         finish();
 
+    }
+
+
+    public String renderHtmltoString(String url) {
+        if (url == null) return "";
+        String str = url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img","<img").replace(".jpg\\\"></p>",".jpg\\\">")
+                .replace(".png\\\"></p>",".png\\\">");
+        Log.d("render : ", str);
+        return str;
     }
 
     public void onClickEditButton() {

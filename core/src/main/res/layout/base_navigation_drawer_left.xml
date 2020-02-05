@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="@color/background"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:theme="@style/KAPNavigationHeader">
 
     <ScrollView
@@ -17,6 +17,7 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/navi_item_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -25,58 +26,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="25dp"
                 android:textColor="@color/light_navy"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@id/base_naviagtion_drawer_school_info_linearlayout"
+                app:layout_constraintBottom_toBottomOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1"
                 tools:text="홍길동" />
 
+
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="43dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="28dp"
                 android:text="님, 안녕하세요!"
                 android:textColor="@color/light_navy"
                 android:textSize="13sp"
-                app:layout_constraintBottom_toTopOf="@+id/base_naviagtion_drawer_school_info_linearlayout"
                 app:layout_constraintStart_toEndOf="@+id/base_naviagtion_drawer_nickname_textview"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/img_menu_logo"
-                app:layout_constraintBottom_toTopOf="@+id/base_naviagtion_drawer_school_info_linearlayout"
+                app:layout_constraintBottom_toBottomOf="@+id/base_naviagtion_drawer_nickname_textview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="@+id/base_naviagtion_drawer_nickname_textview" />
 
-            <FrameLayout
-                android:id="@+id/base_naviagtion_drawer_school_info_linearlayout"
+            <LinearLayout
+                android:id="@+id/navi_item_myinfo"
                 android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center|start"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_nickname_textview">
 
                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_drawer_myinfo" />
+
+                <TextView
+                    android:id="@+id/navi_item_myinfo_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:text="내 정보"
+                    android:textColor="#252525"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+            <FrameLayout
+                android:id="@+id/base_naviagtion_drawer_school_info_linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="31dp"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/navi_item_myinfo">
+
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="32dp"
                     android:alpha="0.2"
                     android:background="@color/cloudy_blue" />
 
@@ -425,19 +448,20 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="17dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_kakaotalk"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/navi_item_version_info"
                 android:layout_width="match_parent"
                 android:layout_height="22dp"
-                android:visibility="gone"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_kakao_talk">

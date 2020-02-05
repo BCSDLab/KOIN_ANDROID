@@ -8,10 +8,12 @@ import in.koreatech.koin.core.helpers.DefaultSharedPreferencesHelper;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.Comment;
+import in.koreatech.koin.core.networks.entity.Image;
 import in.koreatech.koin.core.networks.entity.Item;
 import in.koreatech.koin.core.networks.entity.MarketItem;
 import in.koreatech.koin.core.networks.responses.MarketPageResponse;
 import in.koreatech.koin.core.networks.services.MarketService;
+import in.koreatech.koin.core.networks.services.TemporaryCommunityService;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -378,10 +380,11 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
     }
 
     @Override
-    public void uploadImage(File file, ApiCallback apiCallback) {
+    public void uploadThumbnailImage(File file, ApiCallback apiCallback) {
         String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
-        RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postImage(addAuthorizationBearer(token), filePart)
+        RetrofitManager.getInstance().getRetrofit().create(MarketService.class)
+                .postThumbanilImage(addAuthorizationBearer(token), filePart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Item>() {
@@ -415,5 +418,51 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 });
 
     }
+
+    @Override
+    public void uploadImage(File file, ApiCallback apiCallback) {
+        Observable<Image> imageObservable;
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+        if (token != null) {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postUploadImage(addAuthorizationBearer(token), filePart);
+        } else {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(TemporaryCommunityService.class).postUploadImage(filePart);
+
+        }
+        imageObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Image>() {
+
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        mCompositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(Image response) {
+                        if (response != null) {
+                            apiCallback.onSuccess(response);
+                        } else {
+                            apiCallback.onFailure(new Throwable("fail"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
 }
 

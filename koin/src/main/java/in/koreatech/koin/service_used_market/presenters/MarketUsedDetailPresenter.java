@@ -1,5 +1,6 @@
 package in.koreatech.koin.service_used_market.presenters;
 
+import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.service_used_market.contracts.MarketUsedDetailContract;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Comment;
@@ -87,9 +88,26 @@ public class MarketUsedDetailPresenter implements MarketUsedDetailContract.Prese
         }
     };
 
+    private final ApiCallback grantCheckApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            DefaultResponse defaultResponse = (DefaultResponse) object;
+            if (defaultResponse.isGrantEdit())
+                marketDetailView.showGrantCheck(true);
+            else
+                marketDetailView.showGrantCheck(false);
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            marketDetailView.showGrantCheck(false);
+            marketDetailView.hideLoading();
+        }
+    };
+
     @Override
-    public void readMarketDetail(int id)
-    {   marketDetailView.showLoading();
+    public void readMarketDetail(int id) {
+        marketDetailView.showLoading();
         marketUsedInteractor.readMarketDetail(id, detailApiCallback);
     }
 
@@ -112,8 +130,14 @@ public class MarketUsedDetailPresenter implements MarketUsedDetailContract.Prese
     }
 
     @Override
-    public void deleteItem(int id){
+    public void deleteItem(int id) {
         marketDetailView.showLoading();
-        marketUsedInteractor.deleteMarketItem(id,itemDeleteApiCallback);
+        marketUsedInteractor.deleteMarketItem(id, itemDeleteApiCallback);
+    }
+
+    @Override
+    public void checkGranted(int id) {
+        marketDetailView.showLoading();
+        marketUsedInteractor.readGrantedDetail(id, grantCheckApiCallback);
     }
 }

@@ -33,6 +33,7 @@ public class URLConstant {
     public static final String LECTURE = "lectures";
     public static final String TIMETABLE = "timetable";
     public static final String TIMETABLES = "timetables";
+    public static final String SEMESTERS = "semesters";
     public static final String LAND = "lands";
 
 
@@ -79,5 +80,14 @@ public class URLConstant {
     }
 
 
+    public static final class SEARCH{
+        public static final String SEARCH = "search";
+        public static final String ARTICLESEARCH = "articles/"+SEARCH;
+    }
 
+    public static final class TEMP{
+        public static final String TEMP = "/temp";
+        public static final String TEMP_IMAGE_UPLOAD = TEMP + "/items/image/upload";
+
+    }
 }

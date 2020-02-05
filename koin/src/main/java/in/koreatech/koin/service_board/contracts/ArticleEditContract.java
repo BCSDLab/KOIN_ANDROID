@@ -20,5 +20,9 @@ public interface ArticleEditContract {
         void onArticleDataReceived(Article article);
 
         void goToArticleActivity(Article article);
+
+        void showUploadImage(String url, String uploadImageId);
+
+        void showFailUploadImage(String uploadImageId);
     }
 }

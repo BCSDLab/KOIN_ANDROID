@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
-import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.core.networks.interactors.BokdukInteractor;
-import in.koreatech.koin.core.networks.interactors.LandInteractor;
 import in.koreatech.koin.service_land.contracts.LandContract;
 
 /**
@@ -21,6 +19,7 @@ public class LandPresenter implements BasePresenter {
     private final LandContract.View landView;
     private final BokdukInteractor bokdukInteractor;
     private ArrayList<BokdukRoom> landList;
+
 
     public LandPresenter(LandContract.View landView, BokdukInteractor bokdukInteractor) {
         this.landView = landView;

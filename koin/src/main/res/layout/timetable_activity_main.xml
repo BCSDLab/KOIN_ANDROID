@@ -23,8 +23,7 @@
                 android:layout_height="56dp"
                 app:left_button_background="@drawable/ic_back_arrow"
                 app:right_button_background="@drawable/ic_create"
-                app:title_text="시간표" />
-
+                app:title_text="시간표"/>
 
             <RelativeLayout
                 android:id="@+id/timetable_container_relativelayout"
@@ -32,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
                 android:orientation="vertical"
-                android:paddingBottom="60dp">
+              >
 
 
                 <in.koreatech.koin.core.util.timetable.TimetableView
@@ -50,6 +49,8 @@
         <include layout="@layout/base_navigation_bar_bottom" />
 
         <include layout="@layout/timetable_bottom_sheet_add" />
+
+        <include layout="@layout/timetable_bottom_sheet_select_semester" />
 
         <include layout="@layout/timetable_bottom_sheet_show_detail" />
 

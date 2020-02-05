@@ -31,6 +31,8 @@ public interface MarketUsedDetailContract {
         void showMarketItemDelete();
 
         void showMarketItemDeleteFail();
+
+        void showGrantCheck(boolean isGranted);
     }
 
     interface Presenter extends BasePresenter{
@@ -43,5 +45,7 @@ public interface MarketUsedDetailContract {
         void editComment(Comment comment, Item item, String content);
 
         void deleteItem(int id);
+
+        void checkGranted(int id);
     }
 }

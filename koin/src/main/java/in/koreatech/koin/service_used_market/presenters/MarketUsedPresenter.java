@@ -1,5 +1,6 @@
 package in.koreatech.koin.service_used_market.presenters;
 
+import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.service_used_market.contracts.MarketUsedContract;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.Item;
@@ -36,9 +37,11 @@ public class MarketUsedPresenter implements MarketUsedContract.Presenter {
     private final ApiCallback grantedApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item item = (Item) object;
-            marketView.onGrantedDataReceived(item.grantEdit);
-            marketView.hideLoading();
+            DefaultResponse defaultResponse = (DefaultResponse) object;
+            if (defaultResponse.isGrantEdit())
+                marketView.onGrantedDataReceived(true);
+            else
+                marketView.onGrantedDataReceived(false);
         }
 
         @Override
@@ -62,6 +65,7 @@ public class MarketUsedPresenter implements MarketUsedContract.Presenter {
             marketView.hideLoading();
         }
     };
+
     @Override
     public void readMarket(int type, int limit) {
         marketView.showLoading();
