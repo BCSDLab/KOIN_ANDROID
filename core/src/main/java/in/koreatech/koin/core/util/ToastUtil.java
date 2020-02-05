@@ -3,6 +3,8 @@ package in.koreatech.koin.core.util;
 import android.content.Context;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
+
 /**
  * Created by hyerim on 2018. 4. 9....
  */
@@ -15,11 +17,11 @@ public class ToastUtil {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-    public static void makeShortToast(Context context, int message) {
+    public static void makeShortToast(Context context, @StringRes int message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
-    public static void makeLongToast(Context context, int message) {
+    public static void makeLongToast(Context context, @StringRes int message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

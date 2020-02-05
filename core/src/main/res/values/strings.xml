@@ -3,6 +3,14 @@
 
     <string name="sign_up">회원 가입</string>
 
+    <!--common-->
+    <string name="loading">로딩 중</string>
+    <string name="saving">저장 중</string>
+    <string name="need_permission">권한이 필요합니다.</string>
+    <string name="positive">확인</string>
+    <string name="negative">아니오</string>
+    <string name="neutral">취소</string>
+
     <!--left drawer menu -->
     <string name="home">홈</string>
 
@@ -23,6 +31,7 @@
     <!--<string name="navigation_item_real_estate">복덕방</string>-->
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
+    <string name="navigation_item_search">검색</string>
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
@@ -61,6 +70,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="signup_to_login">이미 계정이 있으신가요? <b> 로그인하기 </b> </string>
     <string name="back_button_pressed">정말 저장하지 않고 나가시겠어요?</string>
+    <string name="erase_button_pressed">정말 전체를 지우겠어요?</string>
 
     <!-- Board -->
     <string name="board_number">글번호</string>
@@ -92,6 +102,15 @@
     <string name="market_used_list_last_page">마지막 품목입니다.</string>
     <string name="market_used_get_list_fail">리스트를 불러올수 없습니다.</string>
 
+    <!--Timetable-->
+    <string name="timetable_saved">저장되었습니다.</string>
+    <string name="timetable_saved_fail">저장에 실패했습니다.</string>
+    <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
+    <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
+    <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
+    <string name="timetable_update_message">업데이트</string>
+
+
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.core.helpers.UserLockBottomSheetBehavior</string>
 
     <string-array name="default_header_title">
@@ -106,5 +125,6 @@
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
 
+    <string name="fail_upload">업로드에 실패하였습니다.</string>
+    <string name="uploading_image_now">이미지 업로드 중입니다.</string>
 </resources>
-

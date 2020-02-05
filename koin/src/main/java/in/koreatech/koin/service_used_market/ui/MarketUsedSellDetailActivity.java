@@ -77,8 +77,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     private InputMethodManager mInputMethodManager;
     private int mMarketID;
 
-    //    @BindView(R.id.market_used_sell_detail_scrollview)
-//    ScrollView mScrollView;
     @BindView(R.id.market_used_sell_nestedscrollview)
     NestedScrollView mMarketUsedSellNestedscrollview;
     @BindView(R.id.market_used_sell_detail_thumbnail_imageview)
@@ -93,8 +91,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     TextView mMarketTimeTextView;
     @BindView(R.id.market_used_sell_detail_phone_textview)
     TextView mMarketPhoneTextView;
-    //    @BindView(R.id.market_used_sell_detail_is_selling_textview)
-//    TextView mMarketIsSellingTextView;
     @BindView(R.id.market_used_sell_comment_button)
     Button mMarketCommentButton;
     @BindView(R.id.market_used_sell_edit_button)
@@ -107,21 +103,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     TextView mMarkethitCountTextView;
 
     private GenerateProgressTask generateProgressTask;
-//    @BindView(R.id.market_used_sell_detail_comment_count_textview)
-//    TextView mMarketCommentCountTextView;
-//
-//    @BindView(R.id.market_used_sell_detail_comment_recyclerview)
-//    RecyclerView mMarketCommentRecyclerVIew;
-//    @BindView(R.id.market_used_sell_detail_comment_input_text)
-//    EditText mMarketCommentInputEditText;
-//
-//
-//    @BindView(R.id.market_used_sell_detail_create_comment_button)
-//    Button mMarketCreateCommentButton;
-//    @BindView(R.id.market_used_sell_detail_call_button)
-//    Button mMarketCallButton;
-//    @BindView(R.id.market_used_sell_detail_message_button)
-//    Button mMarketMessageButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -132,7 +113,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         mItem = new Item();
         mMarketID = 0;
         mItem.id = getIntent().getIntExtra("ITEM_ID", 1);
-        mGrantedCheck = getIntent().getBooleanExtra("GRANT_CHECK", false);
         init();
     }
 
@@ -140,6 +120,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onStart() {
         super.onStart();
 //        checkRequiredInfo();
+        mMarketDetailPresenter.checkGranted(mItem.id);
+        mMarketDetailPresenter.readMarketDetail(mItem.id);
 
 
     }
@@ -167,7 +149,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @Override
     protected void onRestart() {
         super.onRestart();
-        mMarketDetailPresenter.readMarketDetail(mItem.id);
     }
     @Override
     public void showLoading() {
@@ -199,8 +180,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         mMarketNickNameTextView.setText(item.nickname);
         if (!item.isPhoneOpen || item.phone == null) {
             mMarketPhoneTextView.setText("비공개");
-//            mMarketCallButton.setVisibility(View.GONE);
-//            mMarketMessageButton.setVisibility(View.GONE);
         } else
             mMarketPhoneTextView.setText(item.phone);
 
@@ -266,41 +245,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         setPresenter(new MarketUsedDetailPresenter(this, new MarketUsedRestInteractor()));
         mCommentArrayList = new ArrayList<>();
         mMarketDetailPresenter.readMarketDetail(mItem.id);
-
-        if (mGrantedCheck) {
-            mMarketEditButton.setVisibility(View.VISIBLE);
-            mMarketDeleteButton.setVisibility(View.VISIBLE);
-        } else {
-            mMarketEditButton.setVisibility(View.INVISIBLE);
-            mMarketDeleteButton.setVisibility(View.INVISIBLE);
-        }
-
-
-//        mMarketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, mCommentArrayList);
-//        mLayoutManager = new LinearLayoutManager(this);
-//        mMarketCommentRecyclerVIew.setHasFixedSize(true);
-//        mMarketCommentRecyclerVIew.setLayoutManager(mLayoutManager); //layout 설정
-//        mMarketCommentRecyclerVIew.setAdapter(mMarketDetailCommentRecyclerAdapter); //adapter 설정
-//
-//        mMarketDetailCommentRecyclerAdapter.setCustomOnClickListener(this);
-//        checkRequiredInfo();
     }
-
-
-//    @OnClick(R.id.market_used_sell_detail_call_button)
-//    void onCallButtonClick() {
-//        Intent phoneIntent = new Intent(Intent.ACTION_VIEW);
-//        phoneIntent.setData(Uri.parse("tel:" + mItem.phone));
-//        startActivity(phoneIntent);
-//
-//    }
-//
-//    @OnClick(R.id.market_used_sell_detail_message_button)
-//    void onMessageButtonClick() {
-//        Intent messageIntent = new Intent(Intent.ACTION_VIEW);
-//        messageIntent.setData(Uri.parse("sms:" + mItem.phone));
-//        startActivity(messageIntent);
-//    }
 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
@@ -389,21 +334,9 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void showMarketCommentUpdate() {
-//        mMarketCommentInputEditText.setText("");
-//        mInputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        mInputMethodManager.hideSoftInputFromWindow(mMarketCommentInputEditText.getWindowToken(), 0);
         onRestart();
     }
 
-//    @OnClick(R.id.market_used_sell_detail_create_comment_button)
-//    void onCreateCommentButton() {
-//        String comment = mMarketCommentInputEditText.getText().toString().trim();
-//        if (!comment.isEmpty())
-//            mMarketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
-//        else
-//            ToastUtil.makeShortToast(mContext, "댓글을 입력해주세요.");
-//
-//    }
 
     @Override
     public void onClickCommentRemoveButton(Comment comment) {
@@ -486,6 +419,17 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @Override
     public void showMarketItemDeleteFail() {
         ToastUtil.makeShortToast(mContext, R.string.server_failed);
+    }
+
+    @Override
+    public void showGrantCheck(boolean isGranted) {
+        if (isGranted) {
+            mMarketEditButton.setVisibility(View.VISIBLE);
+            mMarketDeleteButton.setVisibility(View.VISIBLE);
+        } else {
+            mMarketEditButton.setVisibility(View.INVISIBLE);
+            mMarketDeleteButton.setVisibility(View.INVISIBLE);
+        }
     }
 
 //    public void checkRequiredInfo() {

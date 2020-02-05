@@ -3,6 +3,9 @@
     <item
         android:id="@+id/navi_item_home"
         android:title="@string/home" />
+    <item
+        android:id="@+id/navi_item_search"
+        android:title="@string/navigation_item_search" />
 
     <item android:title="학교 정보">
         <menu>
@@ -42,8 +45,8 @@
         android:id="@+id/group3"
         android:checkableBehavior="single">
         <!--<item-->
-            <!--android:id="@+id/navi_item_callvansharing"-->
-            <!--android:title="@string/navigation_item_callvan_sharing" />-->
+        <!--android:id="@+id/navi_item_callvansharing"-->
+        <!--android:title="@string/navigation_item_callvan_sharing" />-->
         <!--<item-->
         <!--android:id="@+id/navi_item_realestate"-->
         <!--android:title="@string/real_estate" />-->
