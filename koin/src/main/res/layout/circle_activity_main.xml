@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="?attr/colorSurface"
     tools:ignore="MissingPrefix">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,7 +36,7 @@
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     app:layout_constrainedHeight="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +47,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/circle_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white">
+                        android:layout_height="wrap_content">
 
 
                         <TextView
@@ -58,7 +58,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="270dp"
                             android:text="CATEGORY"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:textStyle="bold"
                             app:font_name="Bold"
@@ -88,7 +88,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_all"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -100,7 +99,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="전체보기"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
                         </LinearLayout>
 
@@ -120,7 +119,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_art"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -132,7 +130,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="예술분야"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -153,7 +151,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:gravity="start"
                                 android:src="@drawable/ic_club_show"
                                 android:textSize="16sp"
@@ -166,7 +163,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="공연분야"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -189,7 +186,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_sport"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -200,7 +196,7 @@
                                 android:layout_height="wrap_content"
                                 app:font_name="Custom6"
                                 android:text="운동분야"
-                                android:textColor="@color/black" />
+                                android:textColor="?attr/colorOnSurface" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -219,7 +215,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_study"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -231,7 +226,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="학술분야"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -253,7 +248,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_religion"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -265,7 +259,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="종교분야"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -287,7 +281,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_service"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -299,7 +292,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="사회봉사"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -322,7 +315,6 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
-                                android:background="@color/white"
                                 android:src="@drawable/ic_club_etc"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -334,7 +326,7 @@
                                 app:font_name="Custom6"
                                 android:layout_gravity="center"
                                 android:text="준동아리"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="13sp" />
 
                         </LinearLayout>
@@ -370,7 +362,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:layout_marginBottom="68dp"
-                            android:background="@color/background"
                             app:layout_constrainedHeight="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/circle_category_list_border" />

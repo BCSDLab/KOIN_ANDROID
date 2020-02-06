@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -46,7 +47,8 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/circle_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="?attr/colorSurface">
 
 
                         <RelativeLayout
@@ -86,7 +88,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginEnd="8dp"
-                            android:textColor="@color/colorPrimaryText"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="20sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +193,7 @@
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginBottom="4dp"
                                 android:includeFontPadding="false"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 app:font_name="Custom6"
                                 app:layout_constrainedWidth="true"
@@ -226,7 +228,7 @@
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginBottom="4dp"
                                 android:includeFontPadding="false"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 app:font_name="Custom6"
                                 app:layout_constrainedWidth="true"
@@ -260,7 +262,7 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="16dp"
                                 android:includeFontPadding="false"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp"
                                 app:font_name="Custom6"
                                 app:layout_constrainedWidth="true"
@@ -322,7 +324,7 @@
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="40dp"
-                            android:textColor="@color/colorPrimaryText"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@+id/circle_detail_facebook_button"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -346,6 +348,7 @@
                             android:textColor="@color/white"
                             android:textSize="13sp"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             app:layout_goneMarginBottom="72dp"
                             app:layout_constraintBottom_toTopOf="@+id/circle_detail_cyworld_button"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -366,6 +369,7 @@
                             android:textColor="@color/white"
                             android:textSize="13sp"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             app:layout_goneMarginBottom="72dp"
                             app:layout_constraintBottom_toTopOf="@+id/circle_detail_naver_button"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -386,6 +390,7 @@
                             android:textColor="@color/white"
                             android:textSize="13sp"
                             android:visibility="gone"
+                            tools:visibility="visible"
                             app:layout_goneMarginBottom="72dp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
