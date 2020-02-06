@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/colorSurface"
     android:orientation="vertical">
 
     <LinearLayout
@@ -21,7 +21,7 @@
             android:lineSpacingExtra="9sp"
             android:padding="16dp"
             android:text="운행 정보 조회"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -56,12 +56,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
-                android:background="@color/white"
+                android:background="?attr/colorSurface"
                 android:gravity="right|center_vertical"
                 android:letterSpacing="-0.02"
                 android:lineHeight="22sp"
                 android:lineSpacingExtra="7sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -90,12 +90,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.7"
-                android:background="@color/white"
+                android:background="?attr/colorSurface"
                 android:gravity="right|center_vertical"
                 android:letterSpacing="-0.02"
                 android:lineHeight="22sp"
                 android:lineSpacingExtra="7sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="15sp" />
         </LinearLayout>
 

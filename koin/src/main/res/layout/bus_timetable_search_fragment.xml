@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurface"
     tools:ignore="MissingPrefix">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/spinner_no_border"
                 android:entries="@array/bus_place"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -53,7 +54,7 @@
                 android:includeFontPadding="false"
                 android:lineSpacingExtra="9sp"
                 android:text="에서"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 app:font_name="Custom2" />
 
@@ -65,7 +66,7 @@
                 android:background="@drawable/spinner_no_border"
                 android:entries="@array/bus_place"
                 android:lineSpacingExtra="9sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -77,7 +78,7 @@
                 android:includeFontPadding="false"
                 android:lineSpacingExtra="9sp"
                 android:text="갑니다"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 app:font_name="Custom2" />
 
@@ -129,7 +130,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:lineSpacingExtra="9sp"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 tools:text="오늘 - 3월 24일 (일)" />
 
@@ -183,8 +184,8 @@
                 android:id="@+id/bus_search_timePicker"
                 android:layout_width="match_parent"
                 android:layout_height="168dp"
-                android:amPmTextColor="@color/black"
-                android:numbersTextColor="@color/black"
+                android:amPmTextColor="?attr/colorSurface"
+                android:numbersTextColor="?attr/colorSurface"
                 android:theme="@style/KAPTimePicker"
                 android:timePickerMode="spinner"
                 app:font_name="Custom2"

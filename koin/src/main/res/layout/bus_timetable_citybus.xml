@@ -16,7 +16,7 @@
             android:layout_column="0"
             android:layout_marginTop="2dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
@@ -35,7 +35,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="2dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
@@ -63,7 +63,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -71,7 +71,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="시간표(터미널) "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -81,12 +81,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="6:00(첫)-22:30(막) (10분간격)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -106,7 +106,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -114,7 +114,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="시간표(병천)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -124,12 +124,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="6:10(첫)-22:45(막) (10분간격)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -149,7 +149,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -157,7 +157,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="소요시간"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -167,12 +167,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="약 40분"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -192,7 +192,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingLeft="8dp"

@@ -20,7 +20,7 @@
             android:layout_column="0"
             android:layout_marginTop="2dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
@@ -39,7 +39,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="2dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
@@ -68,7 +68,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -76,7 +76,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="용암동(현대APT) "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -86,12 +86,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:30"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
 
@@ -112,7 +112,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -120,7 +120,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="GS 대청주유소(용암동) "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -130,12 +130,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:31"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
 
@@ -156,7 +156,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -164,7 +164,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="석교동육거리"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -174,12 +174,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:33"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
 
@@ -200,7 +200,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -208,7 +208,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="상당공원(상공회의소) "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -218,12 +218,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:36"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
 
@@ -244,7 +244,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -252,7 +252,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="청주시청(방아다리) "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -262,12 +262,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:37"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
 
@@ -289,7 +289,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -297,7 +297,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="문화산업단지(구 제조창)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -308,12 +308,12 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:40"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -334,7 +334,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -342,7 +342,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="성모병원(율량 맥도날드)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -353,12 +353,12 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:45"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -379,7 +379,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -387,7 +387,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="과학단지(오창프라자)"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -398,12 +398,12 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="08:00"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -424,7 +424,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -432,7 +432,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="한기대"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -443,12 +443,12 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="08:50"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>
@@ -469,7 +469,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -477,7 +477,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text=" "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
         <TextView
@@ -488,12 +488,12 @@
             android:layout_marginTop="1dp"
             android:layout_marginBottom="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="  "
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="13sp" />
 
     </TableRow>

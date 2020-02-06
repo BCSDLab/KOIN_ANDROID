@@ -4,7 +4,6 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -31,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
                 android:layout_marginBottom="56dp"
-                android:background="@android:color/white">
+                android:background="?attr/colorSurface">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/bus_main_tabs"
