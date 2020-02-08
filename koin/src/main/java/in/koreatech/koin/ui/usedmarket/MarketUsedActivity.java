@@ -28,7 +28,7 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
 public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "MarketUsedActivity";
-    private final String TABLAYOUT_fontName = getString(R.string.font_kr_regular);
+    private String tableLayoutFontName;
     private Context context;
     private FirebasePerformanceUtil firebasePerformanceUtil;
 
@@ -137,7 +137,8 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         viewPager.setAdapter(mainViewPagerAdapter);
         viewPager.addOnPageChangeListener(mPageChangeListener);
         tabLayout.setupWithViewPager(viewPager);
-        changeFont(tabLayout.getChildAt(0), TABLAYOUT_fontName);
+        changeFont(tabLayout.getChildAt(0), tableLayoutFontName);
+        tableLayoutFontName = getResources().getString(R.string.font_kr_regular);
         //hide keyboard
         inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }
@@ -154,7 +155,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
             if (viewChild instanceof TextView) {
                 ((TextView) viewChild).setTypeface(Typeface.createFromAsset(getAssets(), fontName));
             } else if (viewChild instanceof ViewGroup) {
-                changeFont(viewChild, TABLAYOUT_fontName);
+                changeFont(viewChild, tableLayoutFontName);
             }
         }
     }
