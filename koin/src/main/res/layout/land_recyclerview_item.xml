@@ -84,7 +84,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
+                    android:textColor="@color/gray7"
                     android:textSize="12sp"
                     tools:text="880만원 (1학기)" />
             </LinearLayout>
@@ -123,7 +123,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
+                    android:textColor="@color/gray7"
                     android:textSize="12sp"
                     tools:text="X" />
             </LinearLayout>

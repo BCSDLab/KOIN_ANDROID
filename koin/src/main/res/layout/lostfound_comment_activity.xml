@@ -71,7 +71,7 @@
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text="@string/board_view_count"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Normal"
                             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Normal"
                             app:layout_constraintStart_toEndOf="@id/lostfound_comment_view_count_korean"
@@ -99,7 +99,7 @@
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text=" · "
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Normal"
                             app:layout_constraintStart_toEndOf="@id/lostfound_comment_view_count"
@@ -112,7 +112,7 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Normal"
                             app:layout_constraintStart_toEndOf="@id/lostfound_comment_dot"
@@ -126,7 +126,7 @@
                             android:layout_marginTop="1dp"
                             android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Custom4"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -199,7 +199,7 @@
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"
-                                android:textColorHint="@color/white_three"
+                                android:textColorHint="@color/gray3"
                                 android:textSize="14sp"
                                 app:fontName="Normal" />
 
@@ -234,7 +234,7 @@
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp"
                                     app:fontName="Normal" />
 
@@ -258,7 +258,7 @@
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp"
                                     app:fontName="Normal" />
                             </LinearLayout>

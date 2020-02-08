@@ -44,7 +44,7 @@
             app:fontName="Custom5"
             android:gravity="center"
             android:text="수업추가"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
         <TextView
@@ -115,7 +115,7 @@
                     android:inputType="text"
                     android:imeOptions="actionSearch"
                     android:textColor="@color/black"
-                    android:textColorHint="@color/cloudy_blue"
+                    android:textColorHint="@color/blue1"
                     />
 
             </LinearLayout>
@@ -171,7 +171,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="수업명*"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -197,7 +197,7 @@
     <!--android:hint="필수 입력사항입니다."-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->
@@ -220,7 +220,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="담당교수"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -245,7 +245,7 @@
     <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->
@@ -268,7 +268,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="학점"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -376,7 +376,7 @@
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:layout_marginStart="20dp"-->
     <!--android:text="시긴"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -399,7 +399,7 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:layout_marginStart="10dp"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->

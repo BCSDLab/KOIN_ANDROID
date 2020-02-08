@@ -92,7 +92,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         int width;
         drawerLayout = findViewById(getDrawerLayoutID());
         drawerLayout.addDrawerListener(this);
-        drawerLayout.setScrimColor(getResources().getColor(R.color.black__20));
+        drawerLayout.setScrimColor(getResources().getColor(R.color.black_alpha20));
 
 
         for (int id : getMenuId()) {
@@ -128,12 +128,12 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
-            textView.setTextColor(getResources().getColor(R.color.light_navy));
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else if (id == R.id.navi_item_search) {
             imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
             imageView.setBackgroundResource(R.drawable.ic_search_menu_blue);
-            textView.setTextColor(getResources().getColor(R.color.light_navy));
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
             imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
             textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
@@ -193,7 +193,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
         TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
         imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-        textView.setTextColor(getResources().getColor(R.color.light_navy));
+        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -210,7 +210,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
             TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
             imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-            textView.setTextColor(getResources().getColor(R.color.light_navy));
+            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
         } else {
             ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
             TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);

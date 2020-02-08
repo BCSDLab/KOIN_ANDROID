@@ -114,7 +114,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         StringBuilder stringBuilderTwo = new StringBuilder();
         Lecture lecture = this.lectureArrayList.get(position);
         if (lecture.isItemClicked)
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white6));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white4));
         else
             holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white));
 

@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
-                android:textColor="@color/light_navy"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="28dp"
                 android:text="님, 안녕하세요!"
-                android:textColor="@color/light_navy"
+                android:textColor="@color/colorPrimary"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/base_naviagtion_drawer_nickname_textview"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:alpha="0.2"
-                    android:background="@color/cloudy_blue" />
+                    android:background="@color/blue1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -255,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.2"
-                    android:background="@color/cloudy_blue" />
+                    android:background="@color/blue1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -409,7 +409,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.2"
-                    android:background="@color/cloudy_blue" />
+                    android:background="@color/blue1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -530,7 +530,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="BCSD Lab"
-                    android:textColor="@color/cloudy_blue"
+                    android:textColor="@color/blue1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

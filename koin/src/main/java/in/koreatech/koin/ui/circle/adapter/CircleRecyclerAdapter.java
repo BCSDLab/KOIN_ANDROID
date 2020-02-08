@@ -79,7 +79,7 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
         holder.setIsRecyclable(false);
         Circle circle = cirlceArrayList.get(position);
         Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundImageview);
-        Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.cloudy_blue))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundBorderImageview);
+        Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.blue1))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundBorderImageview);
 
         if (circle.name != null)
             holder.circleItemNameTextview.setText(circle.name);
@@ -92,7 +92,7 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.circleItemLogoImageview);
         } else {
-            Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.gray1))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoImageview);
+            Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoImageview);
         }
         if (circle.backgroundImgUrl != null) {
             Glide.with(context)
@@ -100,7 +100,7 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
                     .apply(glideOptions)
                     .into(holder.circleItemBackgroundImageview);
         } else {
-            holder.circleItemBackgroundImageview.setBackgroundColor(resource.getColor(R.color.light_navy));
+            holder.circleItemBackgroundImageview.setBackgroundColor(resource.getColor(R.color.colorPrimary));
         }
 
     }

@@ -10,5 +10,5 @@
 
     <solid
         android:width="1dp"
-        android:color="@color/dark_green_30" />
+        android:color="@color/green_alpha30" />
 </shape>

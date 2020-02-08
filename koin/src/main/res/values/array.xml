@@ -235,21 +235,6 @@
 
     </integer-array>
 
-    <integer-array name="chart_color">
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-    </integer-array>
-
     <string-array name="dining_time">
         <item>평일</item>
         <item>08:00 ~ 09:00</item>

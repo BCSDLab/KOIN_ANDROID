@@ -6,5 +6,5 @@
 
     <solid
         android:width="2dp"
-        android:color="@color/black_12" />
+        android:color="@color/black_alpha12" />
 </shape>

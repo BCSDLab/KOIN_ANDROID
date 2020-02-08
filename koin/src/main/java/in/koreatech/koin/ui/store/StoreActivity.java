@@ -102,7 +102,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         for (int i = 0; i < CATEGORY_ID.length; i++) {
             if (CATEGORY_ID[i] == view.getId() || CATEGORY_TEXT_ID[i] == view.getId()) {
                 TextView textview = findViewById(CATEGORY_TEXT_ID[i]);
-                textview.setTextColor(getResources().getColor(R.color.squash));
+                textview.setTextColor(getResources().getColor(R.color.colorAccent));
                 return i + 1;
             }
         }

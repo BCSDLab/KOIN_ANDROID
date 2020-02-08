@@ -40,8 +40,8 @@
                     android:layout_height="47dp"
                     android:layout_gravity="top"
                     app:tabSelectedTextColor="@color/black"
-                    app:tabTextColor="@color/warm_grey"
-                    app:tabIndicatorColor="@color/squash"
+                    app:tabTextColor="@color/gray9"
+                    app:tabIndicatorColor="@color/colorAccent"
                     />
 
             </androidx.viewpager.widget.ViewPager>

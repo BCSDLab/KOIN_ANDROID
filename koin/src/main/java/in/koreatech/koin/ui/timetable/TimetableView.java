@@ -328,7 +328,7 @@ public class TimetableView extends LinearLayout {
         int size = timeTable.getTimeTableItems().size();
         int colorSize = stickerColors.length;
         int strokeWidth = dp2Px(1);
-        int strokeColor = getResources().getColor(R.color.white4);
+        int strokeColor = getResources().getColor(R.color.white2);
 
         for (int i = 0; i < size; i++) {
             for (TextView v : timeTable.getTimeTableItems().get(i).getStickerTextview()) {
@@ -438,8 +438,8 @@ public class TimetableView extends LinearLayout {
             } else {
                 tv.setLayoutParams(createTableRowParam(headerHeight));
             }
-            tv.setTextColor(getResources().getColor(R.color.greyish_brown));
-            tv.setBackgroundColor(getResources().getColor(R.color.white5));
+            tv.setTextColor(getResources().getColor(R.color.gray12));
+            tv.setBackgroundColor(getResources().getColor(R.color.white3));
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_HEADER_FONT_SIZE_DP);
             tv.setText(headerTitle[i]);
             tv.setIncludeFontPadding(false);

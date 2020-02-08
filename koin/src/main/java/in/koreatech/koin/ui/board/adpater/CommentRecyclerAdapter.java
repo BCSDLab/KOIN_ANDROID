@@ -64,7 +64,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     Objects.requireNonNull(commentViewHolder.commentContent).setText(comment.content);
                 } else {    //edited
                     SpannableStringBuilder spannableTextEdited = new SpannableStringBuilder(comment.content + EDITED);
-                    spannableTextEdited.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray1, null)), spannableTextEdited.length() - EDITED.length(), spannableTextEdited.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableTextEdited.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray4, null)), spannableTextEdited.length() - EDITED.length(), spannableTextEdited.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     Objects.requireNonNull(commentViewHolder.commentContent).setText(spannableTextEdited);
                 }
@@ -98,7 +98,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentContent).setText(comment.content);
                 } else {    //edited
                     SpannableStringBuilder spannableText = new SpannableStringBuilder(comment.content + EDITED);
-                    spannableText.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray1, null)), comment.content.length(), comment.content.length() + EDITED.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    spannableText.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray4, null)), comment.content.length(), comment.content.length() + EDITED.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentContent).setText(spannableText);
                 }

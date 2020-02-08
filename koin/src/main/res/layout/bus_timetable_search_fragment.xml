@@ -97,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/cloudy_blue" />
+                android:background="@color/blue1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                 android:text="날짜 선택"
                 app:fontName="Custom2"
                 android:includeFontPadding="false"
-                android:textColor="@color/warm_grey"
+                android:textColor="@color/gray9"
                 android:textSize="13sp" />
         </FrameLayout>
 
@@ -155,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/cloudy_blue" />
+                android:background="@color/blue1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -166,7 +166,7 @@
                 android:text="시간 선택"
                 app:fontName="Custom2"
                 android:includeFontPadding="false"
-                android:textColor="@color/warm_grey"
+                android:textColor="@color/gray9"
                 android:textSize="13sp" />
         </FrameLayout>
 
@@ -232,7 +232,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0.2"
-            android:background="@color/cloudy_blue" />
+            android:background="@color/blue1" />
 
         <TextView
             android:id="@+id/bus_timetable_search_fragment_information_textview"
@@ -241,7 +241,7 @@
             android:gravity="center_vertical"
             android:lineSpacingExtra="7sp"
             android:text=""
-            android:textColor="@color/squash"
+            android:textColor="@color/colorAccent"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHeight_percent="0.43"
@@ -258,7 +258,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/squash"
+            android:background="@color/colorAccent"
             android:elevation="0dp"
             android:gravity="center"
             android:lineSpacingExtra="7sp"

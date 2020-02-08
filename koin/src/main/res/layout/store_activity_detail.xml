@@ -133,7 +133,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="전화번호"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
@@ -162,7 +162,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="운영시간"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
@@ -192,7 +192,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="주소정보"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
@@ -225,7 +225,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="배달금액"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
@@ -259,7 +259,7 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="기타정보"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
@@ -388,7 +388,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -398,7 +398,7 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
                         android:text="메뉴 소개"
-                        android:textColor="@color/warm_grey"
+                        android:textColor="@color/gray9"
                         android:textSize="13sp"
                         app:fontName="Custom6" />
                 </FrameLayout>

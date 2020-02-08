@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#175C8F</color>
-    <color name="colorPrimaryDark">#194460</color>
-    <color name="colorPrimaryLight">#18608F</color>
-    <color name="colorAccent">#F18E1C</color>
-
+    <color name="colorPrimary">#175c8e</color>
+    <color name="colorPrimaryDark">#003360</color>
+    <color name="colorPrimaryLight">#5289be</color>
+    <color name="colorAccent">#f7941e</color>
+    <color name="colorBackground">#ffffff</color>
     <color name="colorPrimaryText">#252525</color>
-    <color name="colorSecondaryText">#757575</color>
+    <color name="colorSecondaryText">#a1a1a1</color>
+    <color name="colorHintText">#e3e3e3</color>
+
     <color name="divider">#ECECEC</color>
 
     <color name="background">#FFFEFF</color>
@@ -14,73 +16,77 @@
     <color name="background_light">#fcfcfc</color>
 
     <!-- Default Pallete -->
-    <color name="transparent">#00ff0000</color>
     <color name="white">#ffffff</color>
     <color name="black">#252525</color>
     <color name="red">#FF0000</color>
     <color name="blue">#0000FF</color>
 
     <!-- Custom Palette -->
-    <color name="button_disabled">#828082</color>
 
-    <color name="gold">#ffd700</color>
-    <color name="gray1">#D1D0CE</color>
-    <color name="gray2">#c0c0c0</color>
-    <color name="gray51">#828282</color>
-    <color name="gray60">#999999</color>
-    <color name="white4">#dadada</color>
-    <color name="white5">#f1f1f1</color>
-    <color name="white6">#f6f6f6</color>
-    <color name="warm_grey">#858585</color>
-    <color name="warm_grey_two">#a1a1a1</color>
-    <color name="pinkish_grey">#c4c4c4</color>
-    <color name="orange_red">#ff3030</color>
-    <color name="white_87">#dee3e3e3</color>
-    <color name="white_three">#e3e3e3</color>
-    <color name="white_two">#f2f2f2</color>
-    <color name="white_smoke">#f8f8f8</color>
-    <color name="warm_grey_three">#707070</color>
-    <color name="greyish_brown">#555555</color>
-    <color name="pale_grey">#e0e5eb</color>
+    <color name="red1">#ff3030</color>
+    <color name="red_alpha0">#00ff0000</color>
 
-    <color name="black__20">#33000000</color>
-    <color name="black__80">#cc000000</color>
+    <color name="white1">#f8f8f8</color>
+    <color name="white2">#dadada</color>
+    <color name="white3">#f1f1f1</color>
+    <color name="white4">#f6f6f6</color>
+    <color name="white_alpha87">#dee3e3e3</color>
 
-    <color name="colorPrimary_complementary">#88c72f</color>
-    <color name="colorPrimary_triadic_orange">#c76e2f</color>
-    <color name="squash">#f7941e</color>
-    <color name="colorPrimary_triadic_green">#2fc76e</color>
-    <color name="tomato">#e85521</color>
-    <color name="shamrock_green">#00c73c</color>
 
-    <color name="colorAccentLightLess0">#fdf3e8</color>
-    <color name="cloudy_blue">#d2dae2</color>
-    <color name="cloudy_blue_two">#33d2dae2</color>
-    <color name="colorPrimaryLightLess0">#194460</color>
-    <color name="colorPrimaryLightLess1">#18608F</color>
-    <color name="colorPrimaryLightLess2">#175C8F</color>
-    <color name="light_navy">#175c8e</color>
-    <color name="alice_blue">#f0f8ff</color>
-    <color name="light_blue">#add8e6</color>
-    <color name="light_steel_blue">#b0c4de</color>
+    <color name="gray1">#fcfcfc</color>
+    <color name="gray2">#f2f2f2</color>
+    <color name="gray3">#e3e3e3</color>
+    <color name="gray4">#D1D0CE</color>
+    <color name="gray5">#c4c4c4</color>
+    <color name="gray6">#c0c0c0</color>
+    <color name="gray7">#a1a1a1</color>
+    <color name="gray8">#999999</color>
+    <color name="gray9">#858585</color>
+    <color name="gray10">#828282</color>
+    <color name="gray11">#707070</color>
+    <color name="gray12">#555555</color>
+    <color name="gray13">#757575</color>
+
+
+    <color name="black_alpha12">#1f252525</color>
+    <color name="black_alpha20">#33000000</color>
+    <color name="black_alpha80">#cc000000</color>
+
+    <color name="orange1">#fdf3e8</color>
+    <color name="orange2">#c76e2f</color>
+    <color name="orange3">#e85521</color>
+
+    <color name="green1">#00c73c</color>
+    <color name="green2">#2fc76e</color>
+    <color name="green3">#4db297</color>
+    <color name="green_alpha30">#4d4db297</color>
+    ​
+    <color name="blue1">#d2dae2</color>
+    <color name="blue2">#e0e5eb</color>
+    <color name="blue3">#eaf3fc</color>
+    <color name="blue4">#b0c4de</color>
+    <color name="blue5">#7c9fae</color>
+    <color name="blue6">#165c8f</color>
+    <color name="blue7">#0a2335</color>
+    <color name="blue8">#9fa9b3</color>
+    <color name="blue_alpha30">#4d7c9fae</color>
+    <color name="blue_alpha51">#33d2dae2</color>
 
     <!-- BusWidget -->
-    <color name="deep_light_navy">#165c8f</color>
-    <color name="deep_dark_navy">#0a2335</color>
-
-
-    <!--- timetable -->
-    <color name="colorHeader">#eaf3fc</color>
-    <color name="colorHeaderText">#555555</color>
-    <color name="colorTableItem">#dadada</color>
-    <color name="colorTableCenterItem">#f6f6f6</color>
-    <color name="duck_egg_blue">#eaf3fc</color>
+    <color name="deep_light_navy">@color/blue5</color>
+    <color name="deep_dark_navy">@color/blue7</color>
 
     <!-- Dining Widget -->
     <color name="dark_blue">#165c8f</color>
     <color name="very_dark_gray">#323232</color>
     <color name="very_dark_blue">#0a2335</color>
     <color name="vivid_orange">#f28e1c</color>
+
+    <!--- timetable -->
+    <color name="colorHeader">#eaf3fc</color>
+    <color name="colorHeaderText">#555555</color>
+    <color name="colorTableItem">#dadada</color>
+    <color name="colorTableCenterItem">#f6f6f6</color>
 
     <string-array name="default_sticker_color">
         <item>#fdbcf5</item>
@@ -101,7 +107,4 @@
     <color name="default_headerHighlightColor">#74a4f3</color>
     <color name="default_sticker_font_color">#ffffff</color>
     <color name="gray">#7c9fae</color>
-    <color name="gray_30">#4d7c9fae</color>
-    <color name="dark_green">#4db297</color>
-    <color name="dark_green_30">#4d4db297</color>
 </resources>

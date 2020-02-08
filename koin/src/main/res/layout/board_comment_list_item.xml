@@ -36,7 +36,7 @@
             android:layout_marginStart="5dp"
             android:letterSpacing="-0.05"
             android:lineSpacingExtra="10sp"
-            android:textColor="@color/warm_grey"
+            android:textColor="@color/gray9"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/comment_content"
             app:layout_constraintStart_toEndOf="@+id/comment_writer"

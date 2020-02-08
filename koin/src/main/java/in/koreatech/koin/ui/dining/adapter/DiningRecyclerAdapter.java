@@ -80,9 +80,9 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
         }
 
         if (!dining.place.equals("능수관"))
-            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.light_navy));
+            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         else
-            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.squash));
+            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
 
         holder.textViewMenu.setText(sb.toString());        //메뉴리스트
     }

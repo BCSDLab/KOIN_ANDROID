@@ -54,7 +54,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:alpha="0.2"
-                                android:background="@color/cloudy_blue" />
+                                android:background="@color/blue1" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                                 android:layout_marginStart="16dp"
                                 android:includeFontPadding="false"
                                 android:text="기본정보"
-                                android:textColor="@color/warm_grey_two"
+                                android:textColor="@color/gray7"
                                 app:fontName="Custom6" />
                         </FrameLayout>
 
@@ -74,7 +74,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:text="아이디"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintHorizontal_bias="0"
@@ -106,7 +106,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="이름"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintBottom_toTopOf="@id/userinfo_nickname_textview"
@@ -138,7 +138,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="닉네임"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
@@ -169,7 +169,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="익명닉네임"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintHorizontal_bias="0"
@@ -200,7 +200,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="휴대전화"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +230,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="성별"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
@@ -267,7 +267,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:alpha="0.2"
-                                android:background="@color/cloudy_blue" />
+                                android:background="@color/blue1" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -276,7 +276,7 @@
                                 android:layout_marginStart="16dp"
                                 android:includeFontPadding="false"
                                 android:text="학교정보"
-                                android:textColor="@color/warm_grey_two"
+                                android:textColor="@color/gray7"
                                 app:fontName="Custom6" />
                         </FrameLayout>
 
@@ -288,7 +288,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="7sp"
                             android:text="학번"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintStart_toStartOf="parent"
@@ -320,7 +320,7 @@
                             android:layout_marginBottom="36dp"
                             android:lineSpacingExtra="7sp"
                             android:text="전공"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="15sp"
                             app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -360,7 +360,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/cloudy_blue" />
+                android:background="@color/blue1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -381,7 +381,7 @@
                         android:layout_marginEnd="36dp"
                         android:lineSpacingExtra="7sp"
                         android:text="회원탈퇴"
-                        android:textColor="@color/warm_grey"
+                        android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6" />
 
@@ -401,7 +401,7 @@
                         android:gravity="center_horizontal"
                         android:lineSpacingExtra="7sp"
                         android:text="|"
-                        android:textColor="@color/warm_grey"
+                        android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6" />
 
@@ -411,7 +411,7 @@
                         android:layout_marginStart="35dp"
                         android:lineSpacingExtra="7sp"
                         android:text="로그아웃"
-                        android:textColor="@color/warm_grey"
+                        android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6" />
 

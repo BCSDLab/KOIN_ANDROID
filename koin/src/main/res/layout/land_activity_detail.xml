@@ -96,7 +96,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="전세"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -113,7 +113,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="17dp"
                                     android:text="방 종류"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -138,7 +138,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="월세"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -155,7 +155,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="17dp"
                                     android:text="보증금"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -180,7 +180,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="층수"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -197,7 +197,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="17dp"
                                     android:text="관리비"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -223,7 +223,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="방 크기"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -240,7 +240,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="17dp"
                                     android:text="연락처"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="13sp" />
 
                                 <TextView
@@ -261,7 +261,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@color/cloudy_blue"
+                            android:background="@color/blue1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/land_detail_room_info_tablelayout">
@@ -271,7 +271,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_margin="1dp"
-                                android:background="@color/white_smoke"
+                                android:background="@color/white1"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -302,7 +302,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:background="@color/squash"
+                                android:background="@color/colorAccent"
                                 android:gravity="center_vertical"
                                 android:paddingStart="3dp"
                                 android:paddingTop="1dp"
@@ -367,7 +367,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="에어컨"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -393,7 +393,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="냉장고"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -419,7 +419,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="옷장"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -446,7 +446,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="TV"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -472,7 +472,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="전자레인지"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -498,7 +498,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="가스레인지"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -525,7 +525,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="인덕션"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -551,7 +551,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="정수기"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -577,7 +577,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="세탁기"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -603,7 +603,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="침대"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -629,7 +629,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="책상"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -655,7 +655,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="신발장"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -683,7 +683,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="도어락"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -711,7 +711,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="비데"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -739,7 +739,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
                                     android:text="베란다"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 
@@ -767,7 +767,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="엘리베이터"
-                                    android:textColor="@color/gray51"
+                                    android:textColor="@color/gray10"
                                     android:textSize="10sp" />
                             </LinearLayout>
 

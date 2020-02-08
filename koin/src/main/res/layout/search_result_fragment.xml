@@ -14,7 +14,7 @@
         android:layout_marginStart="16dp"
         android:lineSpacingExtra="6sp"
         android:text="2학기 다담여행 검색 결과입니다."
-        android:textColor="@color/light_navy"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"

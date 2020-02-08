@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
-            android:textColor="@color/warm_grey_two"
+            android:textColor="@color/gray7"
             android:text="조회 "
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/warm_grey_two"
+            android:textColor="@color/gray7"
             android:layout_marginStart="1dp"
             tools:text="19" />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:layout_marginStart="1dp"
-            android:textColor="@color/warm_grey_two"
+            android:textColor="@color/gray7"
             android:text=" · "
            />
 
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:layout_marginStart="1dp"
-            android:textColor="@color/warm_grey_two"
+            android:textColor="@color/gray7"
             tools:text="닉네임"
           />
 
@@ -86,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:textColor="@color/warm_grey_two"
+            android:textColor="@color/gray7"
             android:gravity="end"
             tools:text="2019.10.05" />
 

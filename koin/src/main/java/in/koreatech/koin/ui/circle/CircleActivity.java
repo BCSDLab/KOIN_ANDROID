@@ -243,7 +243,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
         ImageView icon = findViewById(mCircleCategoryListId[index]);
         TextView text = findViewById(mCircleCategoryTextviewListId[index]);
-        text.setTextColor(getResources().getColor((type == UN_CLICKED) ? R.color.black : R.color.squash));
+        text.setTextColor(getResources().getColor((type == UN_CLICKED) ? R.color.black : R.color.colorAccent));
         icon.setImageDrawable(getResources().getDrawable(mCircleCategoryIconListId[index][type]));
     }
 

@@ -132,10 +132,10 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     @Override
     public void onCircleDataReceived(Circle circle) {
         this.circle = circle;
-        Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray1))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoBoderImageview);
+        Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoBoderImageview);
         Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoBackgroundImageview);
         if (circle.logoUrl == null)
-            Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray1))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
+            Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
         else {
             Glide.with(context).load(circle.logoUrl).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
             Glide.with(context).load(circle.logoUrl).into(this.circleDetailMainLogoImageview);

@@ -125,13 +125,13 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
             for (int i = 0; i < 10; i++) {
                 toggleButton[i].setChecked(false);
                 toggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
             }
         } else {
             for (int i = 0; i < 10; i++) {
                 toggleButton[i].setChecked(false);
                 toggleButton[i].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                toggleButton[i].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
             }
             toggleButton[index].setChecked(true);
         }
@@ -172,7 +172,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                 } else {
                     Log.e("3", Boolean.toString(toggleButton[0].isChecked()));
                     toggleButton[0].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[0].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_electonic_engineering:
@@ -184,7 +184,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[1].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_industrial_management:
@@ -196,7 +196,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[2].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[2].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_design_engineering:
@@ -208,7 +208,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[3].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[3].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_hrd:
@@ -220,7 +220,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[4].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[4].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_mechanical_engineering:
@@ -232,7 +232,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[5].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_chemical_engineering:
@@ -244,7 +244,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[6].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[6].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_mechatronics_engineering:
@@ -256,7 +256,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[7].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[7].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_cultural_department:
@@ -268,7 +268,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[8].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[8].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
             case R.id.select_major_mix:
@@ -280,7 +280,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                     toggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
                     toggleButton[9].setBackgroundResource(R.drawable.button_rect_white_radius_13dp);
-                    toggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.warm_grey_two));
+                    toggleButton[9].setTextColor(ContextCompat.getColor(getContext(), R.color.gray7));
                 }
                 break;
         }

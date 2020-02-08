@@ -5,7 +5,7 @@
     android:id="@+id/timetable_recyclerview_item_relativelayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background_light_two"
+    android:background="@color/white4"
     tools:ignore="MissingPrefix"
     android:orientation="vertical">
 

@@ -70,7 +70,7 @@
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text="@string/board_view_count"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title" />
@@ -83,7 +83,7 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_view_count_korean"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -98,7 +98,7 @@
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text=" · "
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_view_count"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title" />
@@ -111,7 +111,7 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_dot"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -125,7 +125,7 @@
                             android:layout_marginTop="1dp"
                             android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -197,7 +197,7 @@
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"
-                                android:textColorHint="@color/white_three"
+                                android:textColorHint="@color/gray3"
                                 android:textSize="14sp" />
 
 
@@ -232,7 +232,7 @@
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp" />
 
 
@@ -256,7 +256,7 @@
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>

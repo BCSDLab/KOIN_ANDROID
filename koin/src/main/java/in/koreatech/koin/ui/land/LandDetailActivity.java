@@ -315,7 +315,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      * @param land Land 객체
      */
     private void setRoomOption(Land land) {
-        PorterDuffColorFilter grayFilter = new PorterDuffColorFilter(getResources().getColor(R.color.gray1), PorterDuff.Mode.SRC_ATOP);
+        PorterDuffColorFilter grayFilter = new PorterDuffColorFilter(getResources().getColor(R.color.gray4), PorterDuff.Mode.SRC_ATOP);
         if (!land.optAirConditioner)
             setGray(landDetailAirconditionerImageview, landDetailAirconditionerTextview, grayFilter);
         if (!land.optRefrigerator)
@@ -356,7 +356,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     private void setGray(ImageView landDetailImageview, TextView landDetailTextview, PorterDuffColorFilter grayFilter) {
         landDetailImageview.setColorFilter(grayFilter);
-        landDetailTextview.setTextColor(getResources().getColor(R.color.gray1));
+        landDetailTextview.setTextColor(getResources().getColor(R.color.gray4));
     }
 
     /**

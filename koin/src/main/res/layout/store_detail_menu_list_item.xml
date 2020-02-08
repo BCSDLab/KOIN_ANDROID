@@ -46,7 +46,7 @@
                 android:layout_weight="5"
                 android:gravity="end"
                 android:text="0원"
-                android:textColor="@color/light_navy"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 

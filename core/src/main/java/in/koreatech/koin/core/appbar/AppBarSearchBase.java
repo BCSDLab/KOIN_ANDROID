@@ -72,7 +72,7 @@ public class AppBarSearchBase extends AppBarLayout {
         title.setTypeface(textFont);
         leftButton.setTypeface(textFont);
         rightButton.setTypeface(textFont);
-        title.getBackground().setColorFilter(getContext().getResources().getColor(R.color.cloudy_blue), PorterDuff.Mode.SRC_ATOP);
+        title.getBackground().setColorFilter(getContext().getResources().getColor(R.color.blue1), PorterDuff.Mode.SRC_ATOP);
         eraseButton.setOnClickListener(v -> {
             title.getText().clear();
         });
@@ -89,7 +89,7 @@ public class AppBarSearchBase extends AppBarLayout {
     }
 
     public void setTypeArray(TypedArray typedArray) {
-        int backgroundColor = typedArray.getColor(R.styleable.AppBarBase_backgroundColor, getResources().getColor(R.color.light_navy));
+        int backgroundColor = typedArray.getColor(R.styleable.AppBarBase_backgroundColor, getResources().getColor(R.color.colorPrimary));
         int titleTextColor = typedArray.getColor(R.styleable.AppBarBase_titleTextColor, getResources().getColor(R.color.white));
         String titleText = typedArray.getString(R.styleable.AppBarBase_titleText);
         int titleVisibility = typedArray.getInt(R.styleable.AppBarBase_titleVisibility, View.VISIBLE);
