@@ -88,3 +88,5 @@
 #    boolean mShiftingMode;
 #}
 
+-keep class afu.org.checkerframework.** { *; }
+-dontwarn afu.org.checkerframework.**
