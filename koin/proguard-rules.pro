@@ -88,4 +88,3 @@
 #    boolean mShiftingMode;
 #}
 
--keep public class * extends androidx.versionedparcelable.VersionedParcelable
