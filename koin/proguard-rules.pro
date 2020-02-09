@@ -88,4 +88,4 @@
 #    boolean mShiftingMode;
 #}
 
--dontwarn afu.org.checkerframework.**
+-keep public class * extends androidx.versionedparcelable.VersionedParcelable
