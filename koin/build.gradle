@@ -76,7 +76,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "${applicationName}_${defaultConfig.versionName}_${variant.buildType.name}.apk"
+            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
         }
     }
 }
