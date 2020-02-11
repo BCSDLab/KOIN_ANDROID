@@ -154,7 +154,7 @@
                             android:layout_marginStart="18dp"
                             android:layout_marginTop="13.5dp"
                             android:layout_marginBottom="14.8dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:text="이미지 첨부"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"

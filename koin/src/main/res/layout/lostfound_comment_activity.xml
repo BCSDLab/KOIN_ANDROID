@@ -179,7 +179,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:visibility="gone"
                             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +213,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:orientation="vertical"
                             app:layout_constraintTop_toBottomOf="@+id/lostfound_comment_password_linearlayout">
 
@@ -282,7 +282,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소"
                                 app:fontName="Normal" />
 
@@ -292,7 +292,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록"
                                 app:fontName="Normal" />
 
@@ -317,7 +317,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소"
                                 app:fontName="Normal" />
 
@@ -328,7 +328,7 @@
                                 android:layout_marginStart="4.3dp"
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="삭제"
                                 android:textColor="@color/red"
                                 app:fontName="Normal" />
@@ -339,7 +339,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록"
                                 app:fontName="Normal" />
 

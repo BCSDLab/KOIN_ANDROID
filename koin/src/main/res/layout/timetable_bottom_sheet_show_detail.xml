@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_pale_grey_rectangle"
+        android:background="@drawable/bg_rect_gray1"
         android:orientation="horizontal"
         android:weightSum="6">
 
@@ -160,7 +160,7 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_marginStart="10dp"-->
-    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:background="@drawable/bg_gray_underline"-->
     <!--android:hint="필수 입력사항입니다."-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
@@ -209,7 +209,7 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_marginStart="10dp"-->
-    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:background="@drawable/bg_gray_underline"-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
     <!--android:textColorHint="@color/blue1" />-->

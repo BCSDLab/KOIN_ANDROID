@@ -137,8 +137,8 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
         viewPager.setAdapter(mainViewPagerAdapter);
         viewPager.addOnPageChangeListener(mPageChangeListener);
         tabLayout.setupWithViewPager(viewPager);
-        changeFont(tabLayout.getChildAt(0), tableLayoutFontName);
         tableLayoutFontName = getResources().getString(R.string.font_kr_regular);
+        changeFont(tabLayout.getChildAt(0), tableLayoutFontName);
         //hide keyboard
         inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
     }

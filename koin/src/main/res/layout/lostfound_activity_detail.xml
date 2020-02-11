@@ -178,7 +178,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="14.8dp"
                             android:layout_marginBottom="0dp"
-                            android:background="@drawable/bg_gray_border"
+                            android:background="@drawable/bg_gray4_border"
                             android:orientation="horizontal"
                             app:layout_constraintTop_toBottomOf="@+id/lostfound_detail_comment_button" />
 

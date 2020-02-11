@@ -179,7 +179,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -213,7 +213,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:orientation="vertical"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_password_linearlayout"
                           >
@@ -284,7 +284,7 @@
                                 app:fontName="Regular"
                                 android:layout_marginEnd="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
 
                             <Button
@@ -294,7 +294,7 @@
                                 app:fontName="Regular"
                                 android:layout_marginStart="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>
@@ -319,7 +319,7 @@
                                 android:layout_marginEnd="4.3dp"
                                 app:fontName="Regular"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
                             <Button
                                 android:id="@+id/article_comment_anonymous_delete_button"
@@ -330,7 +330,7 @@
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
                                 android:textColor="@color/red"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="삭제" />
                             <Button
                                 android:id="@+id/article_comment_anonymous_register_button"
@@ -339,7 +339,7 @@
                                 app:fontName="Regular"
                                 android:layout_marginStart="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>
