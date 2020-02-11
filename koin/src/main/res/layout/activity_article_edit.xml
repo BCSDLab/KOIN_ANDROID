@@ -18,12 +18,12 @@
             android:layout_height="match_parent">
 
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -49,11 +49,11 @@
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginBottom="17.5dp"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/title_nickname_border"
@@ -80,7 +80,7 @@
                             android:id="@+id/article_edittext_nickname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
@@ -88,7 +88,7 @@
                             android:background="@android:color/transparent"
                             android:hint="닉네임을 입력해주세요"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/nickname_password_border"
@@ -115,7 +115,7 @@
                             android:id="@+id/article_edittext_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:maxLines="1"
                             android:inputType="textPassword"
                             android:layout_marginStart="16dp"
@@ -124,7 +124,7 @@
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
                             android:hint="비밀번호를 입력해주세요"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/password_content_border"
@@ -151,7 +151,7 @@
                             android:id="@+id/article_edittext_content"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="10sp"
                             android:layout_marginStart="16dp"
@@ -161,7 +161,7 @@
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
                             android:hint="내용을 입력해주세요."
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="parent"

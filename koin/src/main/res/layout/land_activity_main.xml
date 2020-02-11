@@ -16,15 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:title_text="복덕방" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:titleText="복덕방" />
 
             <RelativeLayout
                 android:layout_width="match_parent"

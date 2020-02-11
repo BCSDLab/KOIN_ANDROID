@@ -16,13 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:font_name="Bold"
-                app:title_text="버스 / 교통" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:fontName="Bold"
+                app:titleText="버스 / 교통" />
 
 
             <androidx.viewpager.widget.ViewPager
@@ -40,7 +40,7 @@
                     android:lineSpacingExtra="7sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     android:layout_gravity="top"
                     android:layout_marginBottom="5dp" />
 

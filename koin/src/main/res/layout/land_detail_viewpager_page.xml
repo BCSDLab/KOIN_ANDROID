@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="326dp"
     android:layout_height="182dp"
-    tools:background="@color/light_navy">
+    tools:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/land_detail_land_imageview"

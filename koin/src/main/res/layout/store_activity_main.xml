@@ -18,12 +18,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:title_text="상점" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:titleText="상점" />
 
         </LinearLayout>
 
@@ -135,7 +135,7 @@
                         android:text="CATEGORY"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        app:font_name="Custom5"
+                        app:fontName="Custom5"
                         app:layout_constraintStart_toEndOf="@id/guideline_vertical_0.044"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_goneMarginTop="16dp" />
@@ -205,7 +205,7 @@
                         android:text="치킨"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@id/store_category_chicken"
                         app:layout_constraintStart_toStartOf="@+id/store_category_chicken"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_chicken" />
@@ -222,7 +222,7 @@
                         android:text="피자"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_pizza"
                         app:layout_constraintStart_toStartOf="@+id/store_category_pizza"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_pizza" />
@@ -239,7 +239,7 @@
                         android:text="탕수육"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_pork"
                         app:layout_constraintStart_toStartOf="@+id/store_category_sweet_pork"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_sweet_pork" />
@@ -256,7 +256,7 @@
                         android:text="도시락"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_dosirak"
                         app:layout_constraintStart_toStartOf="@+id/store_category_sweet_dosirak"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_sweet_dosirak" />
@@ -273,7 +273,7 @@
                         android:text="족발"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_pork_feet"
                         app:layout_constraintStart_toStartOf="@+id/store_category_sweet_pork_feet"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_sweet_pork_feet" />
@@ -333,7 +333,7 @@
                         android:text="중국집"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_chinese"
                         app:layout_constraintStart_toStartOf="@+id/store_category_chinese"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_chinese" />
@@ -351,7 +351,7 @@
                         android:text="일반음식점"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_normal"
                         app:layout_constraintStart_toStartOf="@+id/store_category_normal"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_normal" />
@@ -369,7 +369,7 @@
                         android:text="미용실"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_hair"
                         app:layout_constraintStart_toStartOf="@+id/store_category_hair"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_hair" />
@@ -387,7 +387,7 @@
                         android:text="기타"
                         android:textColor="@color/black"
                         android:textSize="13sp"
-                        app:font_name="Custom6"
+                        app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_etc"
                         app:layout_constraintStart_toStartOf="@+id/store_category_etc"
                         app:layout_constraintTop_toBottomOf="@+id/store_category_etc" />
@@ -406,7 +406,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:alpha="0.2"
-                            android:background="@color/cloudy_blue" />
+                            android:background="@color/blue1" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -416,9 +416,9 @@
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="6sp"
                             android:text="상점 목록"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
-                            app:font_name="Custom6" />
+                            app:fontName="Custom6" />
                     </FrameLayout>
 
 
