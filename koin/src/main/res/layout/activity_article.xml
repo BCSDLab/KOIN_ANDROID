@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <in.koreatech.koin.core.bases.KoinBaseAppbarDark
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
@@ -29,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="?attr/colorSurface">
 
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/article_scrollview"
@@ -48,7 +48,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -209,7 +209,7 @@
                             android:layout_marginBottom="56dp"
                             android:gravity="start"
                             android:lineSpacingExtra="10sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="parent"

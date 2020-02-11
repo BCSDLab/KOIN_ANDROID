@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     tools:ignore="MissingPrefix"
+    android:background="?attr/colorSurface"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -16,7 +17,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
 
             <in.koreatech.koin.core.bases.KoinBaseAppbarDark
                 android:id="@+id/koin_base_app_bar_dark"
@@ -51,7 +51,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:font_name="Regular"
                             app:layout_constrainedWidth="true"
@@ -151,7 +151,7 @@
                             android:layout_marginTop="22.5dp"
                             android:layout_marginEnd="16dp"
                             android:lineSpacingExtra="10sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"

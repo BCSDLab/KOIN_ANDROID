@@ -167,7 +167,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            android:textColor="@color/black"
+            android:textColor="?attr/colorOnSurface"
             android:textColorHint="@color/cloudy_blue"
             android:textSize="15sp"
             app:font_name="Normal" />
@@ -210,7 +210,7 @@
         android:maxLength="18"
         android:maxLines="1"
         android:paddingLeft="10dp"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSurface"
         android:textColorHint="@color/cloudy_blue"
         android:textSize="15sp"
         app:font_name="Normal"

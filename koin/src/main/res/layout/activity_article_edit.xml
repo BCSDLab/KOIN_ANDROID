@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
@@ -21,8 +21,7 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+                android:layout_height="match_parent">
 
 
                 <com.google.android.material.appbar.AppBarLayout

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="?attr/colorSurface"
     tools:ignore="MissingPrefix">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -91,7 +92,7 @@
                             android:layout_marginEnd="16dp"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             app:font_name="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_id_textview"
@@ -125,7 +126,7 @@
                             android:layout_marginEnd="16dp"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             app:font_name="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_name_textview"
@@ -160,7 +161,7 @@
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="13sp"
                             android:theme="@style/EditTextTheme"
                             app:font_name="Custom6"
@@ -222,7 +223,7 @@
                             android:layout_marginStart="20dp"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             app:font_name="Custom6"
                             app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_anonymous_nick_name_textview"
@@ -257,7 +258,7 @@
                             android:inputType="number"
                             android:lineSpacingExtra="7sp"
                             android:maxLength="3"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:theme="@style/EditTextTheme"
                             app:font_name="Custom6"
@@ -291,7 +292,7 @@
                             android:inputType="number"
                             android:lineSpacingExtra="7sp"
                             android:maxLength="4"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:theme="@style/EditTextTheme"
                             app:font_name="Custom6"
@@ -324,7 +325,7 @@
                             android:inputType="number"
                             android:lineSpacingExtra="7sp"
                             android:maxLength="4"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             android:theme="@style/EditTextTheme"
                             app:font_name="Custom6"
@@ -371,7 +372,7 @@
                                 android:drawablePadding="4dp"
                                 android:includeFontPadding="false"
                                 android:text="남자"
-                                android:textColor="@color/colorPrimaryText"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp" />
 
                             <RadioButton
@@ -387,7 +388,7 @@
                                 android:includeFontPadding="false"
                                 android:paddingBottom="1dp"
                                 android:text="여자"
-                                android:textColor="@color/colorPrimaryText"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="15sp" />
                         </RadioGroup>
 
@@ -442,7 +443,7 @@
                             android:hint="학번을 입력해주세요"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textColorHint="@color/cloudy_blue"
                             android:textSize="13sp"
                             app:font_name="Custom6"
@@ -480,7 +481,7 @@
                             android:editable="false"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="15sp"
                             app:font_name="Custom6"
                             app:layout_constraintEnd_toEndOf="parent"
