@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.2"
-                    android:background="@color/cloudy_blue" />
+                    android:background="@color/blue1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
                     android:layout_gravity="start|center"
                     android:layout_marginStart="16dp"
                     android:text="콜밴 목록"
-                    android:textColor="@color/warm_grey" />
+                    android:textColor="@color/gray9" />
             </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView

@@ -21,7 +21,7 @@
         android:text="전공선택"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,11 +36,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="컴퓨터공학부"
         android:textOn="컴퓨터공학부"
         android:textSize="12sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,11 +56,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="전자전기통신공학부"
         android:textOn="전자전기통신공학부"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <ToggleButton
         android:id="@+id/select_major_industrial_management"
@@ -74,11 +74,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="산업경영학부"
         android:textOn="산업경영학부"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <ToggleButton
         android:id="@+id/select_major_design_engineering"
@@ -92,11 +92,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="디자인 ·건축공학부"
         android:textOn="디자인 ·건축공학부"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <ToggleButton
         android:id="@+id/select_major_hrd"
@@ -111,11 +111,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="HRD"
         android:textOn="HRD"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <ToggleButton
         android:id="@+id/select_major_mechanical_engineering"
@@ -129,11 +129,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="기계공학부"
         android:textOn="기계공학부"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <ToggleButton
         android:id="@+id/select_major_chemical_engineering"
@@ -147,11 +147,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="에너지신소재화학공학부"
         android:textOn="에너지신소재화학공학부"
         android:textSize="12sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -167,11 +167,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="메카트로닉스공학부"
         android:textOn="메카트로닉스공학부"
         android:textSize="12sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -187,11 +187,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="교양학부"
         android:textOn="교양학부"
         android:textSize="12sp"
-        app:font_name="Custom6"
+        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -207,11 +207,11 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/gray7"
         android:textOff="융합"
         android:textOn="융합"
         android:textSize="12sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <Button
         android:id="@+id/select_major_button"
@@ -230,9 +230,9 @@
         android:letterSpacing="-0.04"
         android:lineSpacingExtra="7sp"
         android:text="완료"
-        android:textColor="@color/light_navy"
+        android:textColor="@color/colorPrimary"
         android:textSize="15sp"
-        app:font_name="Custom6" />
+        app:fontName="Custom6" />
 
     <TextView
         android:id="@+id/textSpace"

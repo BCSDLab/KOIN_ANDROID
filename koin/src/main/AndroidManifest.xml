@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".KoinApplication"
+        android:name="in.koreatech.koin.KoinApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_koin"
         android:label="@string/app_name"
@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name">
-        <receiver android:name=".service_dining.widget.DiningWidget">
+        <receiver android:name="in.koreatech.koin.ui.dining.DiningWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -35,7 +35,7 @@
 
         </receiver>
         <receiver
-            android:name=".service_bus.widget.BusWidget"
+            android:name="in.koreatech.koin.ui.bus.BusWidget"
             android:label="@string/navigation_item_bus">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -51,7 +51,7 @@
             android:value="@string/navermap_keyvalue" />
 
         <receiver
-            android:name=".service_timetable.widget.TimetableWidget"
+            android:name="in.koreatech.koin.ui.timetable.TimetableWidget"
             android:label="@string/navigation_item_timetable">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -73,7 +73,7 @@
         </provider>
 
         <activity
-            android:name=".ui.StartActivity"
+            android:name="in.koreatech.koin.ui.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
@@ -84,179 +84,179 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.LoginActivity"
+            android:name="in.koreatech.koin.ui.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.SignupActivity"
+            android:name="in.koreatech.koin.ui.signup.SignupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.ForgotPasswordActivity"
+            android:name="in.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name="in.koreatech.koin.ui.main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreActivity"
+            android:name="in.koreatech.koin.ui.store.StoreActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_dining.ui.DiningActivity"
+            android:name="in.koreatech.koin.ui.dining.DiningActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_bus.ui.BusActivity"
+            android:name="in.koreatech.koin.ui.bus.BusActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.BoardActivity"
+            android:name="in.koreatech.koin.ui.board.BoardActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleActivity"
+            android:name="in.koreatech.koin.ui.board.ArticleActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleEditActivity"
+            android:name="in.koreatech.koin.ui.board.ArticleEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_callvan.ui.CallvanActivity"
+            android:name="in.koreatech.koin.ui.callvan.CallvanActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_callvan.ui.CreateRoomActivity"
+            android:name="in.koreatech.koin.ui.callvan.CreateRoomActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellDetailActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyDetailActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyEditActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellEditActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellEditActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedBuyCreateActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyCreateActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedSellCreateActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellCreateActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.UserInfoActivity"
+            android:name="in.koreatech.koin.ui.userinfo.UserInfoActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.UserInfoEditedActivity"
+            android:name="in.koreatech.koin.ui.userinfo.UserInfoEditedActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreDetailActivity"
+            android:name="in.koreatech.koin.ui.store.StoreDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_circle.ui.CircleActivity"
+            android:name="in.koreatech.koin.ui.circle.CircleActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_circle.ui.CircleDetailActivity"
+            android:name="in.koreatech.koin.ui.circle.CircleDetailActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_board.ui.ArticleCommentActivity"
+            android:name="in.koreatech.koin.ui.board.ArticleCommentActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_used_market.ui.MarketUsedDetailCommentActivity"
+            android:name="in.koreatech.koin.ui.usedmarket.MarketUsedDetailCommentActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_timetable.ui.TimetableActivity"
+            android:name="in.koreatech.koin.ui.timetable.TimetableActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_timetable.ui.TimetableAnonymousActivity"
+            android:name="in.koreatech.koin.ui.timetable.TimetableAnonymousActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_land.ui.LandActivity"
+            android:name="in.koreatech.koin.ui.land.LandActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_land.ui.LandDetailActivity"
+            android:name="in.koreatech.koin.ui.land.LandDetailActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundMainActivity"
+            android:name="in.koreatech.koin.ui.lostfound.LostFoundMainActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundDetailActivity"
+            android:name="in.koreatech.koin.ui.lostfound.LostFoundDetailActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundEditActivity"
+            android:name="in.koreatech.koin.ui.lostfound.LostFoundEditActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_lostfound.ui.LostFoundCommentActivity"
+            android:name="in.koreatech.koin.ui.lostfound.LostFoundCommentActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".service_store.ui.StoreFlyerViewActivity"
+            android:name="in.koreatech.koin.ui.store.StoreFlyerViewActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".service_search.ui.SearchActivity"
+            android:name="in.koreatech.koin.ui.search.SearchActivity"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
