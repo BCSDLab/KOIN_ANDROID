@@ -112,7 +112,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 
-
     implementation 'javax.inject:javax.inject:1'
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
