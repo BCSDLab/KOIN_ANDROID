@@ -27,7 +27,7 @@
         <activity android:name=".service_advertise.ui.AdvertisingCreateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar"
-            ></activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".service_advertise.ui.AdvertisingDetailActivity"
             android:screenOrientation="portrait"

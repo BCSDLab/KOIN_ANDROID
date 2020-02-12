@@ -23,14 +23,14 @@
                 app:left_button_background="@drawable/ic_back_arrow"
                 app:title_text="홍보게시판" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
                 android:layout_marginBottom="56dp"
                 android:orientation="vertical">
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
@@ -275,13 +275,29 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
 
+            </LinearLayout>
 
-            </RelativeLayout>
+            <HorizontalScrollView
+                android:id="@+id/advertising_editor_tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#e6e6e6"
+                android:scrollbars="none"
+                android:layout_above="@id/adverting_navigation_bar_bottom">
+                <include layout="@layout/editor_toolbar_linearlayout_horizontal"/>
+            </HorizontalScrollView>
+
+            <include
+                android:id="@+id/adverting_navigation_bar_bottom"
+                layout="@layout/base_navigation_bar_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"/>
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

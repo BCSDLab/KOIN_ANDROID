@@ -36,6 +36,7 @@ import butterknife.BindBitmap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
@@ -55,7 +56,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
 /**
  * Created by hansol on 2020.1.8...
  */
-public class AdvertisingCreateActivity extends AppCompatActivity implements ArticleEditContract.View {
+public class AdvertisingCreateActivity extends KoinEditorActivity implements ArticleEditContract.View {
     Calendar SelectDate;
     DatePickerDialog.OnDateSetListener dataPicker;
     DatePickerDialog.OnDateSetListener dataPicker2;
@@ -95,6 +96,21 @@ public class AdvertisingCreateActivity extends AppCompatActivity implements Arti
         setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor()));
 
         init();
+    }
+
+    @Override
+    protected int getRichEditorId() {
+        return R.id.advertising_create_content;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return true;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+
     }
 
     void init() {
@@ -185,6 +201,6 @@ public class AdvertisingCreateActivity extends AppCompatActivity implements Arti
 
     @Override
     public void setPresenter(ArticleEditPresenter presenter) {
-        
+
     }
 }
