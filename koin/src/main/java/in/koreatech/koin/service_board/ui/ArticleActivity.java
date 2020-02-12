@@ -18,9 +18,12 @@ import androidx.core.widget.NestedScrollView;
 import com.github.irshulx.Editor;
 import com.github.irshulx.models.EditorContent;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
@@ -45,7 +48,7 @@ import static in.koreatech.koin.core.constants.URLConstant.COMMUNITY.ID_RECRUIT;
 /**
  * Created by hyerim on 2018. 6. 4....
  */
-public class ArticleActivity extends KoinNavigationDrawerActivity implements ArticleContract.View {
+public class ArticleActivity extends KoinEditorActivity implements ArticleContract.View {
     private final String TAG = ArticleActivity.class.getSimpleName();
     private final int REQ_CODE_ARTICLE_EDIT = 1;
     private final int REQ_CODE_ARTICLE = 2;
@@ -58,7 +61,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 //    private CommentRecyclerAdapter mCommentRecyclerAdapter;
 //    private RecyclerView.LayoutManager mLayoutManager;
 //    private ArrayList<Comment> mCommentArrayList;
-
 
     private ArticlePresenter mArticlePresenter;
 
@@ -77,8 +79,8 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     KoinBaseAppbarDark mKoinBaseAppbarDark;
     @BindView(R.id.article_view_count)
     TextView mTextViewViewCount;
-    @BindView(R.id.article_content)
-    Editor mEditorContent;
+//    @BindView(R.id.article_content)
+//    Editor mEditorContent;
 
     @BindView(R.id.article_writer)
     TextView mTextViewWriter;
@@ -97,8 +99,8 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
+        super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         this.mContext = this;
 
@@ -108,6 +110,21 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mArticle.isGrantEdit = getIntent().getBooleanExtra("ARTICLE_GRANT_EDIT", false);
 
         init();
+    }
+
+    @Override
+    protected int getRichEditorId() {
+        return R.id.article_content;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return false;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+
     }
 
     @Override
@@ -313,11 +330,11 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         mTextViewWriter.setText(mArticle.authorNickname);
         mTextViewCreateDate.setText(Html.fromHtml(mArticle.createDate));
         mTextViewViewCount.setText(String.valueOf(mArticle.hitCount));
-        mEditorContent.setDividerLayout(R.layout.tmpl_divider_layout);
-        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
-        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
-        mEditorContent.clearAllContents();
-        mEditorContent.render(renderHtmltoString(mArticle.content));
+//        mEditorContent.setDividerLayout(R.layout.tmpl_divider_layout);
+//        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
+//        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
+//        mEditorContent.clearAllContents();
+        renderEditor(renderHtmltoString(mArticle.content));
 
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
     }
