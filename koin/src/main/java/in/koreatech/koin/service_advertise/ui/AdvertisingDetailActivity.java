@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,11 +15,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
@@ -36,7 +39,7 @@ import in.koreatech.koin.service_lostfound.adapter.LostFoundCommentRecyclerviewA
 /**
  * created by hansol on 2020.1.3...
  */
-public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity implements AdDetailContract.View {
+public class AdvertisingDetailActivity extends KoinEditorActivity implements AdDetailContract.View {
 
     AdDetailPresenter adDetailPresenter;
     Context context;
@@ -56,8 +59,6 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
     TextView publishDateTextview;
     @BindView(R.id.advertising_detail_event_imageview)
     ImageView eventImage;
-    @BindView(R.id.advertising_detail_contents_textview)
-    TextView contentsTextview;
     @BindView(R.id.advertising_detail_reply_count_textview)
     TextView replyCountTextview;
     @BindView(R.id.advertising_detail_view_count_textview)
@@ -68,10 +69,25 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.advertising_detail_page_activity);
+        super.onCreate(savedInstanceState);
 
         init();
+    }
+
+    @Override
+    protected int getRichEditorId() {
+        return R.id.advertising_detail_contents;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return false;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+
     }
 
     private void init() {
@@ -127,7 +143,8 @@ public class AdvertisingDetailActivity extends KoinNavigationDrawerActivity impl
         titleTextview.setText(adDetail.eventTitle);
         periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
         viewPublisherTextview.setText("조회 " + adDetail.getHit() + " · " + adDetail.getNickname());
-        contentsTextview.setText(adDetail.content);
+        Log.d("ImageTag", adDetail.content);
+        renderEditor(renderHtmltoString(adDetail.content));
         replyCountTextview.setText(adDetail.comentCount + "");
         viewCountTextview.setText(adDetail.hit + "");
 

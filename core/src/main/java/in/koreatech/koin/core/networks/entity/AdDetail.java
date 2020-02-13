@@ -82,6 +82,16 @@ public class AdDetail {
     @Expose
     public String startDate;
 
+    // Create
+    public AdDetail(String title, String eventTitle, String content, int shopId, String startDate, String endDate, String thumbnail) {
+        this.title = title;
+        this.eventTitle = eventTitle;
+        this.content = content;
+        this.shopId = shopId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.thumbnail = thumbnail;
+    }
 
     public int getComentCount() {
         return comentCount;

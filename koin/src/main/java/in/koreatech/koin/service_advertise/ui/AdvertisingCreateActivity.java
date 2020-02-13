@@ -44,6 +44,7 @@ import in.koreatech.koin.core.util.ImageUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
+import in.koreatech.koin.service_advertise.contracts.AdvertisingCreatingContract;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 import in.koreatech.koin.service_board.contracts.ArticleEditContract;
 import in.koreatech.koin.service_board.presenters.ArticleEditPresenter;
@@ -56,7 +57,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
 /**
  * Created by hansol on 2020.1.8...
  */
-public class AdvertisingCreateActivity extends KoinEditorActivity implements ArticleEditContract.View {
+public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View {
     Calendar SelectDate;
     DatePickerDialog.OnDateSetListener dataPicker;
     DatePickerDialog.OnDateSetListener dataPicker2;
@@ -74,6 +75,8 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Art
     @BindView(R.id.advertising_create_content)
     KoinRichEditor advertisingRichEditor;
     private Context context;
+
+    AdvertisingPresenter advertisingPresenter;
 
     @OnClick(R.id.advertising_create_question_mark_imageview)
     public void questionMarkOnClicked() {
@@ -200,7 +203,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Art
     }
 
     @Override
-    public void setPresenter(ArticleEditPresenter presenter) {
-
+    public void setPresenter(AdvertisingPresenter presenter) {
+        this.advertisingPresenter = presenter;
     }
 }

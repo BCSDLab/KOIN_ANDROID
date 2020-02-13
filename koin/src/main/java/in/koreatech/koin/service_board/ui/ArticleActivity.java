@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -334,6 +335,8 @@ public class ArticleActivity extends KoinEditorActivity implements ArticleContra
 //        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
 //        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
 //        mEditorContent.clearAllContents();
+        Log.d("ImageTag", mArticle.content);
+
         renderEditor(renderHtmltoString(mArticle.content));
 
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
@@ -347,11 +350,11 @@ public class ArticleActivity extends KoinEditorActivity implements ArticleContra
     }
 
 
-    public String renderHtmltoString(String url) {
-        if (url == null) return "";
-        return url.replace("<div>", " ").replace("<div/>", " ");
-
-    }
+//    public String renderHtmltoString(String url) {
+//        if (url == null) return "";
+//        return url.replace("<div>", " ").replace("<div/>", " ");
+//
+//    }
 
     public void onClickEditButton() {
         String password = mArticlePasswordEdittext.getText().toString();

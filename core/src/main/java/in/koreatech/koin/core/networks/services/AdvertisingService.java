@@ -1,12 +1,17 @@
 package in.koreatech.koin.core.networks.services;
 
+import com.google.gson.JsonObject;
+
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import io.reactivex.Observable;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING;
@@ -20,6 +25,9 @@ public interface AdvertisingService {
 
     @GET(ADVERTISING+ "/{id}")
     Observable<AdDetail> getAdDetailList(@Path("id") int id);
+
+    @POST(ADVERTISING)
+    Observable<AdDetail> postAdDetail(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
 
 
 //Observable<Land> getLandDetail(@Path("id") int landId);

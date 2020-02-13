@@ -253,15 +253,21 @@
                                 android:layout_height="wrap_content"
                                 app:srcCompat="@drawable/advertising_default_image" />
 
-                            <TextView
-                                android:id="@+id/advertising_detail_contents_textview"
-                                android:layout_width="match_parent"
+                            <in.koreatech.koin.service_board.ui.KoinRichEditor
+                                android:id="@+id/advertising_detail_contents"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="21dp"
-                                android:lineSpacingExtra="4sp"
-                                android:text="홍보문구 홍보문구 \n 홍보문구 홍보문구 홍보문구"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="56dp"
+                                android:gravity="start"
+                                android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"
-                                android:textSize="14sp" />
+                                android:textSize="14sp"
+                                app:layout_constrainedWidth="true"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:render_type="Renderer" />
 
                             <Button
                                 android:id="@+id/advertising_detail_order_button"
