@@ -35,6 +35,7 @@ public class URLConstant {
     public static final String TIMETABLES = "timetables";
     public static final String SEMESTERS = "semesters";
     public static final String LAND = "lands";
+    public static final String TERM = "term";
 
 
     public static final class CALLVANS {

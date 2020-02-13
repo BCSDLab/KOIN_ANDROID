@@ -33,9 +33,11 @@ public class BusMainPresenter implements BasePresenter {
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            BusResponse busResponse = (BusResponse) object;
-            busMainView.updateCityBusDepartInfo(busResponse.busNumber, busResponse.nextBusNumber);
-            busMainView.updateCityBusTime(busResponse.remainTime, busResponse.nextRemainTime);
+            Bus busResponse = (Bus) object;
+            Log.e("bus",Integer.toString(busResponse.getTerm().getTerm()));
+            Log.e("bus",Integer.toString(busResponse.getBusResponse().getBusNumber()));
+            busMainView.updateCityBusDepartInfo(busResponse.getBusResponse().getBusNumber(), busResponse.getBusResponse().getNextBusNumber());
+            busMainView.updateCityBusTime(busResponse.getBusResponse().getRemainTime(), busResponse.getBusResponse().getNextRemainTime());
             busMainView.hideLoading();
         }
 
