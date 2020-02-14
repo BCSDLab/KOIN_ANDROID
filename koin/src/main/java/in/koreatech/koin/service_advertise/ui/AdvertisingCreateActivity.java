@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,13 +39,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Article;
+import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
 import in.koreatech.koin.core.util.ImageUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingCreatingContract;
+import in.koreatech.koin.service_advertise.presenters.AdvertisingCreatingPresenter;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
 import in.koreatech.koin.service_board.contracts.ArticleEditContract;
 import in.koreatech.koin.service_board.presenters.ArticleEditPresenter;
@@ -58,6 +62,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
  * Created by hansol on 2020.1.8...
  */
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View {
+    private final static String TAG = "AdCreateActivity";
     Calendar SelectDate;
     DatePickerDialog.OnDateSetListener dataPicker;
     DatePickerDialog.OnDateSetListener dataPicker2;
@@ -65,6 +70,10 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @BindView(R.id.advertising_create_question_mark_imageview)
     ImageView questionMark;
+    @BindView(R.id.advertising_detail_title_edittext)
+    EditText createTitle;
+    @BindView(R.id.advertising_detail_event_title_edittext)
+    EditText eventTitle;
     @BindView(R.id.advertising_create_calender_startdate_textview)
     TextView startDateTextview;
     @BindView(R.id.advertising_create_calender_enddate_textview)
@@ -76,7 +85,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     KoinRichEditor advertisingRichEditor;
     private Context context;
 
-    AdvertisingPresenter advertisingPresenter;
+    AdvertisingCreatingPresenter advertisingCreatingPresenter;
 
     @OnClick(R.id.advertising_create_question_mark_imageview)
     public void questionMarkOnClicked() {
@@ -96,7 +105,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         super.onCreate(savedInstanceState);
 
         context = this;
-        setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor()));
+        setPresenter(new AdvertisingCreatingPresenter(this, new AdDetailRestInterator()));
 
         init();
     }
@@ -113,7 +122,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     protected void successImageProcessing(File imageFile, String uuid) {
-
+        advertisingCreatingPresenter.uploadImage(imageFile, uuid);
     }
 
     void init() {
@@ -174,27 +183,40 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void showMessage(String message) {
-
+        ToastUtil.makeLongToast(context, message);
     }
 
     @Override
     public void onClickEditButton() {
+        String title = createTitle.getText().toString().trim();
+        String eventTitle = this.eventTitle.getText().toString().trim();
+        String content = getContentAsHTML();
+        int shopId;
+        String startDate = startDateTextview.getText().toString();
+        String endDate = endDateTextview.getText().toString();
+        String thumbnail;
+
+        Log.d(TAG, title);
+        Log.d(TAG, eventTitle);
+        Log.d(TAG, content);
+        Log.d(TAG, startDate);
+        Log.d(TAG, endDate);
+//        advertisingCreatingPresenter.createAdDetail(new AdDetail());
+    }
+
+    @Override
+    public void onAdDetailDataReceived(AdDetail adDetail) {
 
     }
 
     @Override
-    public void onArticleDataReceived(Article article) {
-
-    }
-
-    @Override
-    public void goToArticleActivity(Article article) {
+    public void goToAdvertisingActivity(AdDetail adDetail) {
 
     }
 
     @Override
     public void showUploadImage(String url, String uploadImageId) {
-
+        onImageUploadComplete(url, uploadImageId);
     }
 
     @Override
@@ -203,7 +225,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     }
 
     @Override
-    public void setPresenter(AdvertisingPresenter presenter) {
-        this.advertisingPresenter = presenter;
+    public void setPresenter(AdvertisingCreatingPresenter presenter) {
+        this.advertisingCreatingPresenter = presenter;
     }
 }

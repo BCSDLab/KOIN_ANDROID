@@ -13,9 +13,9 @@ public interface AdvertisingCreatingContract  {
 
         void onClickEditButton();//create, edited button
 
-        void onAdvertisingDataReceived(Article article);
+        void onAdDetailDataReceived(AdDetail adDetail);
 
-        void goToAdvertisingActivity(Article article);
+        void goToAdvertisingActivity(AdDetail adDetail);
 
         void showUploadImage(String url, String uploadImageId);
 

@@ -94,7 +94,7 @@
 
 
                             <EditText
-                                android:id="@+id/textView"
+                                android:id="@+id/advertising_detail_title_edittext"
                                 android:layout_width="300dp"
                                 android:layout_height="20dp"
                                 android:layout_marginLeft="16dp"
@@ -122,7 +122,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/textView9"
+                                    android:id="@+id/advertising_detail_event_title_edittext"
                                     android:layout_width="300dp"
                                     android:layout_height="20dp"
                                     android:layout_marginLeft="16dp"
