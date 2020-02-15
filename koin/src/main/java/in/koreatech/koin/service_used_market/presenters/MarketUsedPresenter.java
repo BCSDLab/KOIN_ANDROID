@@ -42,6 +42,8 @@ public class MarketUsedPresenter implements MarketUsedContract.Presenter {
                 marketView.onGrantedDataReceived(true);
             else
                 marketView.onGrantedDataReceived(false);
+
+            marketView.hideLoading();
         }
 
         @Override
