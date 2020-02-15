@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -63,11 +64,13 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
     }
 
     abstract protected int getRichEditorId();
+
     abstract protected boolean isEditable();
+
     abstract protected void successImageProcessing(File imageFile, String uuid);
 
     private void init() {
-        if(isEditable()){
+        if (isEditable()) {
             findViewById(R.id.action_h1).setOnClickListener(v -> richEditor.updateTextStyle(EditorTextStyle.H1));
             findViewById(R.id.action_h2).setOnClickListener(v -> richEditor.updateTextStyle(EditorTextStyle.H2));
             findViewById(R.id.action_h3).setOnClickListener(v -> richEditor.updateTextStyle(EditorTextStyle.H3));
@@ -148,7 +151,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
     }
 
-    public String getContent(){
+    public String getContent() {
         return richEditor.getContent().toString().trim();
     }
 
@@ -245,10 +248,14 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
     public boolean isImageAllUploaded() {
         for (Boolean isImageUploading : isUploadImageCompeleteHashMap.values()) {
-            if(!isImageUploading) {
+            if (!isImageUploading) {
                 return false;
             }
         }
         return true;
+    }
+
+    public String getThumbnail() {
+        return null;
     }
 }

@@ -8,6 +8,7 @@ import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Image;
 import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.core.networks.interactors.MarketUsedInteractor;
+import in.koreatech.koin.core.networks.interactors.MarketUsedRestInteractor;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingCreatingContract;
 
 public class AdvertisingCreatingPresenter implements BasePresenter {
@@ -20,6 +21,7 @@ public class AdvertisingCreatingPresenter implements BasePresenter {
     public AdvertisingCreatingPresenter(AdvertisingCreatingContract.View adCreatingView, AdDetailInterator adDetailInterator) {
         this.adCreatingView = adCreatingView;
         this.adDetailInterator = adDetailInterator;
+        this.marketUsedInteractor = new MarketUsedRestInteractor();
     }
 
     private final ApiCallback advertisingApiCallback = new ApiCallback() {

@@ -47,6 +47,7 @@ import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
 import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
+import in.koreatech.koin.core.util.FormValidatorUtil;
 import in.koreatech.koin.core.util.ImageUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -67,10 +68,10 @@ import top.defaults.colorpicker.ColorPickerPopup;
  */
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
     private final static String TAG = "AdCreateActivity";
-    Calendar SelectDate;
-    DatePickerDialog.OnDateSetListener dataPicker;
-    DatePickerDialog.OnDateSetListener dataPicker2;
-    int questionMarkClickCount = 0;
+    private Calendar SelectDate;
+    private DatePickerDialog.OnDateSetListener dataPicker;
+    private DatePickerDialog.OnDateSetListener dataPicker2;
+    private boolean isClickedQuestion = false;
 
     @BindView(R.id.koin_base_app_bar_dark)
     KoinBaseAppbarDark koinBaseAppbar;
@@ -92,18 +93,6 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     private Context context;
 
     AdvertisingCreatingPresenter advertisingCreatingPresenter;
-
-    @OnClick(R.id.advertising_create_question_mark_imageview)
-    public void questionMarkOnClicked() {
-        questionMarkClickCount++;
-        if (questionMarkClickCount % 2 == 0) {
-            questionMark.setImageResource(R.drawable.ic_question_mark2);
-            questionInfoFrameLayout.setVisibility(View.VISIBLE);
-        } else {
-            questionMark.setImageResource(R.drawable.ic_question_mark);
-            questionInfoFrameLayout.setVisibility(View.INVISIBLE);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +168,29 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
                 SelectDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    @OnClick(R.id.advertising_create_question_mark_imageview)
+    public void questionMarkOnClicked() {
+        if (!isClickedQuestion) {
+            questionMark.setImageResource(R.drawable.ic_question_mark2);
+            questionInfoFrameLayout.setVisibility(View.VISIBLE);
+            isClickedQuestion = true;
+        } else {
+            questionMark.setImageResource(R.drawable.ic_question_mark);
+            questionInfoFrameLayout.setVisibility(View.INVISIBLE);
+            isClickedQuestion = false;
+        }
+    }
+
+    @OnClick(R.id.koin_base_app_bar_dark)
+    public void onClickKoinBaseAppbar(View v) {
+        int viewId = v.getId();
+
+        if (viewId == KoinBaseAppbarDark.getLeftButtonId())
+            onBackPressed();
+        else if (viewId == KoinBaseAppbarDark.getRightButtonId())
+            onClickEditButton();
+    }
+
     @Override
     public void showLoading() {
 
@@ -194,15 +206,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         ToastUtil.makeLongToast(context, message);
     }
 
-    @OnClick(R.id.koin_base_app_bar_dark)
-    public void onClickKoinBaseAppbar(View v) {
-        int viewId = v.getId();
 
-        if (viewId == KoinBaseAppbarDark.getLeftButtonId())
-            onBackPressed();
-        else if (viewId == KoinBaseAppbarDark.getRightButtonId())
-            onClickEditButton();
-    }
 
     @Override
     public void onBackPressed(){
@@ -220,20 +224,45 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void onClickEditButton() {
+        if(!isImageAllUploaded()) {
+            ToastUtil.makeShortToast(context, "이미지 업로드 중입니다.");
+            return;
+        }
+        if (FormValidatorUtil.validateStringIsEmpty(createTitle.getText().toString())) {
+            ToastUtil.makeShortToast(context, "제목을 입력하세요");
+            return;
+        }
+        if (FormValidatorUtil.validateStringIsEmpty(eventTitle.getText().toString())) {
+            ToastUtil.makeShortToast(context, "홍보 문구를 입력하세요");
+            return;
+        }
+        if (FormValidatorUtil.validateStringIsEmpty(getContent())) {
+            ToastUtil.makeShortToast(context, "내용을 입력하세요");
+            return;
+        }
+
         String title = createTitle.getText().toString().trim();
         String eventTitle = this.eventTitle.getText().toString().trim();
         String content = getContentAsHTML();
-        int shopId;
+        int shopId = 12;
         String startDate = startDateTextview.getText().toString();
         String endDate = endDateTextview.getText().toString();
-        String thumbnail;
+//        if(getThumbnail() != null) {
+//            String thumbnail = getThumbnail();
+//            Log.d(TAG, thumbnail);
+//        }
 
         Log.d(TAG, title);
         Log.d(TAG, eventTitle);
         Log.d(TAG, content);
         Log.d(TAG, startDate);
         Log.d(TAG, endDate);
-//        advertisingCreatingPresenter.createAdDetail(new AdDetail());
+
+        String thumbnail = getThumbnail();
+        if(thumbnail == null)
+            advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate));
+        else
+            advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
     }
 
     @Override

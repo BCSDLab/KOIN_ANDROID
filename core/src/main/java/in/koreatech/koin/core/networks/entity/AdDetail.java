@@ -83,6 +83,16 @@ public class AdDetail {
     public String startDate;
 
     // Create
+    public AdDetail(String title, String eventTitle, String content, int shopId, String startDate, String endDate) {
+        this.title = title;
+        this.eventTitle = eventTitle;
+        this.content = content;
+        this.shopId = shopId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    // Create Wit Thumbnail
     public AdDetail(String title, String eventTitle, String content, int shopId, String startDate, String endDate, String thumbnail) {
         this.title = title;
         this.eventTitle = eventTitle;
