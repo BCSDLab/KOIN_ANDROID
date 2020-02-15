@@ -122,6 +122,10 @@ public class Item {
 
     }
 
+    public boolean isGrantEdit() {
+        return grantEdit;
+    }
+
 //    public int getImageURLIndex() {
 //        return urls.size();
 //    }

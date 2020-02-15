@@ -7,8 +7,8 @@ android {
         applicationId "in.koreatech.koin"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 20207
-        versionName "2.2.7"
+        versionCode 20208
+        versionName "2.2.8"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -69,6 +69,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'

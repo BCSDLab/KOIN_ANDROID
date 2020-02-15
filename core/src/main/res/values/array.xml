@@ -86,7 +86,7 @@
         <item>야우리</item>
         <item>천안역</item>
     </string-array>
-
+<!-- 학기중
     <string-array name="bus_stop_place">
         <item>천안 등교/하교</item>
         <item>천안 셔틀</item>
@@ -95,7 +95,19 @@
         <item>서울 등교/하교</item>
         <item>대전 등교/하교</item>
     </string-array>
-
+-->
+    <!-- 방학중 -->
+    <string-array name="bus_stop_place">
+        <item>천안계절등교/하교</item>
+        <item>천안방학등교/하교</item>
+        <item>두정동등교/하교</item>
+        <item>청주계절(월/금)</item>
+        <item>청주방학등교</item>
+        <item>청주방학하교</item>
+        <item>서울(방학전체)</item>
+        <item>천안순환(월~금)</item>
+    </string-array>
+<!-- 학기중
     <string-array name="bus_stop_cheonan_start_end">
         <item>천안역</item>
         <item>터미널</item>
@@ -103,19 +115,33 @@
         <item>고속철</item>
         <item>신방동</item>
     </string-array>
+-->
+    <!-- 방학중 -->
+    <string-array name="bus_stop_cheonan_start_end">
+        <item>터미널</item>
+        <item>천안역</item>
+
+    </string-array>
 
     <string-array name="bus_stop_daesung">
         <item>한기대->야우리</item>
         <item>야우리->한기대</item>
     </string-array>
-
+<!-- 학기중
     <string-array name="bus_stop_chungju">
         <item>체육관</item>
         <item>용암동</item>
         <item>산남동</item>
         <item>분평동</item>
     </string-array>
-
+-->
+    <!-- 방학중 -->
+    <string-array name="bus_stop_chungju">
+        <item>용암동 등교</item>
+        <item>체육관 등교</item>
+        <item>용암동 하교</item>
+        <item>체육관 하교</item>
+    </string-array>
 
     <string-array name="favorite_place">
         <item>한기대</item>
