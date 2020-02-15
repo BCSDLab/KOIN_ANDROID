@@ -12,8 +12,10 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Layout;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -32,6 +34,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindBitmap;
 import butterknife.BindView;
@@ -39,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
@@ -61,13 +65,15 @@ import top.defaults.colorpicker.ColorPickerPopup;
 /**
  * Created by hansol on 2020.1.8...
  */
-public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View {
+public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
     private final static String TAG = "AdCreateActivity";
     Calendar SelectDate;
     DatePickerDialog.OnDateSetListener dataPicker;
     DatePickerDialog.OnDateSetListener dataPicker2;
     int questionMarkClickCount = 0;
 
+    @BindView(R.id.koin_base_app_bar_dark)
+    KoinBaseAppbarDark koinBaseAppbar;
     @BindView(R.id.advertising_create_question_mark_imageview)
     ImageView questionMark;
     @BindView(R.id.advertising_detail_title_edittext)
@@ -128,6 +134,8 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     void init() {
         ButterKnife.bind(this);
         calenderCheck();
+        koinBaseAppbar.setLeftButtonText("취소");
+        koinBaseAppbar.setRightButtonText("등록");
     }
 
     void calenderCheck() {
@@ -186,6 +194,30 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         ToastUtil.makeLongToast(context, message);
     }
 
+    @OnClick(R.id.koin_base_app_bar_dark)
+    public void onClickKoinBaseAppbar(View v) {
+        int viewId = v.getId();
+
+        if (viewId == KoinBaseAppbarDark.getLeftButtonId())
+            onBackPressed();
+        else if (viewId == KoinBaseAppbarDark.getRightButtonId())
+            onClickEditButton();
+    }
+
+    @Override
+    public void onBackPressed(){
+        View view = this.getCurrentFocus();
+
+        if(view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
+            SnackbarUtil.makeLongSnackbarActionYes(view, getString(R.string.back_button_pressed), this::finish);
+        }
+        else {
+            finish();
+        }
+    }
+
     @Override
     public void onClickEditButton() {
         String title = createTitle.getText().toString().trim();
@@ -206,12 +238,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void onAdDetailDataReceived(AdDetail adDetail) {
-
+        goToAdvertisingActivity(adDetail);
     }
 
     @Override
     public void goToAdvertisingActivity(AdDetail adDetail) {
-
+        finish();
     }
 
     @Override
@@ -221,11 +253,26 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void showFailUploadImage(String uploadImageId) {
-
+        onImageUploadFailed(uploadImageId);
     }
 
     @Override
     public void setPresenter(AdvertisingCreatingPresenter presenter) {
         this.advertisingCreatingPresenter = presenter;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }
