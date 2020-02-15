@@ -17,34 +17,22 @@ import in.koreatech.koin.core.networks.responses.BusResponse;
  * 버스 관련 model
  */
 public class Bus {
-    private Term term;
-    private BusResponse busResponse;
 
-    public Bus(Term term, BusResponse busResponse) {
-        this.term = term;
-        this.busResponse = busResponse;
-    }
-
-    public Term getTerm() {
-        return term;
-    }
-
-    public BusResponse getBusResponse() {
-        return busResponse;
-    }
 
     private static final String[] expressFromKoreatechToTerminal = {
             "08:00",
             "09:35",
-            "10:30",
-            "11:45",
-            "12:35",
-            "14:00",
+            "10:35",
+            "11:35",
+            "12:25",
+            "13:15",
+            "14:05",
             "15:05",
-            "16:00",
+            "16:05",
             "16:55",
             "18:05",
             "18:55",
+            "19:35",
             "20:00",
             "21:05",
             "21:55"
@@ -55,7 +43,6 @@ public class Bus {
             "07:30",
             "09:00",
             "10:00",
-            "10:30",
             "11:00",
             "12:00",
             "13:00",
@@ -352,7 +339,7 @@ public class Bus {
             // 오늘 일자로 시간 설정
             long timeDifference = currentBusTime.getTimeInMillis() - currentTime.getTimeInMillis();
             if (timeDifference > 0) { // 오늘 남은 버스가 존재한다면 ?
-                return timeDifference/1000;
+                return timeDifference / 1000;
             }
         }
         return -1;
@@ -392,9 +379,9 @@ public class Bus {
     }
 
     /**
-     * @param timetable  index 값을 받고 싶은 시간표를 인자로 받는다.
-     * @param hour       시간 입력 받는다.
-     * @param min        분 입력 받는다.
+     * @param timetable index 값을 받고 싶은 시간표를 인자로 받는다.
+     * @param hour      시간 입력 받는다.
+     * @param min       분 입력 받는다.
      * @return 현 시간에서 가장 가까운 남은 버스 시간 값의 index를 반환해준다.
      * @throws ParseException
      */

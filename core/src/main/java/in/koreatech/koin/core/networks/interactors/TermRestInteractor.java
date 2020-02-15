@@ -11,7 +11,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class TermRestInteractor implements TermInteractor{
+public class TermRestInteractor implements TermInteractor {
     private final String TAG = TermInteractor.class.getSimpleName();
     private final CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
