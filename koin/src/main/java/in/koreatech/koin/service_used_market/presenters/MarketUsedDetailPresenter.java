@@ -96,6 +96,8 @@ public class MarketUsedDetailPresenter implements MarketUsedDetailContract.Prese
                 marketDetailView.showGrantCheck(true);
             else
                 marketDetailView.showGrantCheck(false);
+
+            marketDetailView.hideLoading();
         }
 
         @Override
