@@ -20,6 +20,7 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.helpers.TimerRenewListener;
 import in.koreatech.koin.core.networks.interactors.CityBusRestInteractor;
+import in.koreatech.koin.core.networks.interactors.TermRestInteractor;
 import in.koreatech.koin.core.util.BusTimerUtil;
 import in.koreatech.koin.core.util.TimeUtil;
 import in.koreatech.koin.service_bus.contracts.BusMainContract;
@@ -43,7 +44,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     private BusMainPresenter mBusMainPresenter;
     /* View Component */
     private View mView;
-
+    private boolean isVacation;
 
     private BusTimerUtil mCityNextBusTimerUtil;
     private BusTimerUtil mCitySoonBusTimerUtil;
@@ -171,7 +172,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     public void onRefresh() {
         mBusMainPresenter.getCityBus(mDepartureState, mArrivalState);
         mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
-        mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+        mBusMainPresenter.getTermInfo();
         mBusSwipeRefreshLayout.setRefreshing(false);
 
 
@@ -211,7 +212,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         mDepartureState = 0;
         mArrivalState = 1;
         mBusSwipeRefreshLayout.setOnRefreshListener(this);
-        setPresenter(new BusMainPresenter(this, new CityBusRestInteractor()));
+        setPresenter(new BusMainPresenter(this, new CityBusRestInteractor(), new TermRestInteractor()));
         mBusMainPresenter.getCityBus(0, 1);
         mCitybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
         mCitybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
@@ -281,7 +282,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         if (!mIsCreate) {
             mBusMainPresenter.getCityBus(mDepartureState, mArrivalState);
             mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
-            mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+            mBusMainPresenter.getTermInfo();
         }
         mIsCreate = false;
 
@@ -305,7 +306,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         if (!mIsCreate) {
             mBusMainPresenter.getCityBus(mDepartureState, mArrivalState);
             mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
-            mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+            mBusMainPresenter.getTermInfo();
 
         }
         mIsCreate = false;
@@ -440,7 +441,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         if (mBusMainPresenter != null) {
             mBusMainPresenter.getCityBus(mDepartureState, mArrivalState);
             mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
-            mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+            mBusMainPresenter.getTermInfo();
             mBusSwipeRefreshLayout.setRefreshing(false);
 
         }
@@ -459,11 +460,11 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         else if (code == 2)
             mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
         else if (code == 4)
-            mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+            mBusMainPresenter.getTermInfo();
         else if (code == 6) {
             mBusMainPresenter.getCityBus(mDepartureState, mArrivalState);
             mBusMainPresenter.getDaesungBus(mDepartureState, mArrivalState);
-            mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState);
+            mBusMainPresenter.getTermInfo();
             mRefreshBusTimerUtil.setEndTime(REFRESH_TIME);
             mRefreshBusTimerUtil.startTimer();
         }
@@ -487,6 +488,20 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         mCitybusSoonArrivalTimeTextview.setText(R.string.bus_no_information);
         mCitybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
         mCitybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 받아온 학기 정보로 셔틀버스의 시간을 계산하여 update하는 함수
+     *
+     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름방학, 20 - 2학기, 21 - 2학기 겨울방학
+     */
+    @Override
+    public void updateShuttleBusInfo(int term) {
+        if (term == 10 || term == 20)                                                //학기중
+            isVacation = false;
+        else                                                                        //방학중
+            isVacation = true;
+        mBusMainPresenter.getShuttleBus(mDepartureState, mArrivalState, isVacation);
     }
 
     @Override
