@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-
+String applicationName = 'koin'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -17,6 +17,15 @@ android {
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+    }
+
+    signingConfigs {
+            release {
+                storeFile file("./team_kap_android.jks")
+                storePassword getPassword()
+                keyAlias "koin_release_key"
+                keyPassword getPassword()
+            }
     }
 
     buildTypes {
@@ -45,6 +54,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "false"
+            signingConfig signingConfigs.release
         }
     }
 
@@ -62,6 +72,24 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
+        }
+    }
+}
+
+def getPassword() {
+    try {
+        def stringsFile = file("./src/main/res/values/keys.xml")
+        return new XmlParser().parse(stringsFile).string.find {
+            it.@name.equals 'koin_store_password'
+        }.text()
+    } catch (e) {
+        println(e)
+        return ""
     }
 }
 
