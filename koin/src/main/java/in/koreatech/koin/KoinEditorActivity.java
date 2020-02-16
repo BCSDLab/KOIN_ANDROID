@@ -28,6 +28,7 @@ import com.github.irshulx.models.EditorTextStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -48,6 +49,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
     private HashMap<String, Boolean> uploadImageHashMap;             // 갤러리에서 불러온 이미지의 HashMap
     private HashMap<String, Boolean> isUploadImageCompeleteHashMap;  // 압축 과정을 완료한 이미지의 HashMap
+    private ArrayList<String> uploadedImageUrlList; // 업로드 완료된 이미지들의 URL 목록
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
         richEditor = findViewById(getRichEditorId());
         uploadImageHashMap = new HashMap<>();
         isUploadImageCompeleteHashMap = new HashMap<>();
+        uploadedImageUrlList = new ArrayList<>();
 
         richEditor.setEditorImageLayout(R.layout.rich_editor_image_layout);
 
@@ -92,7 +95,10 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
                 richEditor.openImagePicker();
 
                 richEditor.setOnCancelListener(view -> {
-                    String imageTag = ((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path;
+                    String imageTag = ((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path;  // "url" 값 반환
+                    if(uploadedImageUrlList.contains(imageTag)) {
+                        uploadedImageUrlList.remove(imageTag);
+                    }
                     uploadImageHashMap.put(imageTag, false);
                     richEditor.onImageUploadFailed(imageTag);
                     isUploadImageCompeleteHashMap.remove(imageTag);
@@ -142,6 +148,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
     public void onImageUploadComplete(String url, String uploadImageId) {
         try {
+            uploadedImageUrlList.add(url);
             richEditor.onImageUploadComplete(url, uploadImageId);
         } catch (Exception e) {
             //ToastUtil.makeShortToast(mContext, R.string.fail_upload);
@@ -257,7 +264,14 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
         return true;
     }
 
+    /**
+     * 업로드된 이미지들 중 썸네일 이미지를 반환하는 메소드
+     * @return 업로드된 이미지 리스트 중 첫번째 이미지
+     */
     public String getThumbnail() {
+        if(uploadedImageUrlList.size() > 0) {
+            return uploadedImageUrlList.get(0);
+        }
         return null;
     }
 }

@@ -42,6 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Article;
@@ -65,14 +66,9 @@ import top.defaults.colorpicker.ColorPickerPopup;
 
 /**
  * Created by hansol on 2020.1.8...
+ * Edited by seongyun on 2020. 02. 17...
  */
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
-    private final static String TAG = "AdCreateActivity";
-    private Calendar SelectDate;
-    private DatePickerDialog.OnDateSetListener dataPicker;
-    private DatePickerDialog.OnDateSetListener dataPicker2;
-    private boolean isClickedQuestion = false;
-
     @BindView(R.id.koin_base_app_bar_dark)
     KoinBaseAppbarDark koinBaseAppbar;
     @BindView(R.id.advertising_create_question_mark_imageview)
@@ -91,8 +87,14 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     @BindView(R.id.advertising_create_content)
     KoinRichEditor advertisingRichEditor;
     private Context context;
+    private final static String TAG = "AdCreateActivity";
+    private Calendar SelectDate;
+    private DatePickerDialog.OnDateSetListener dataPicker;
+    private DatePickerDialog.OnDateSetListener dataPicker2;
+    private boolean isClickedQuestion = false;
+    private GenerateProgressTask generateProgressTask;
+    private AdvertisingCreatingPresenter advertisingCreatingPresenter;
 
-    AdvertisingCreatingPresenter advertisingCreatingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,12 +195,18 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void showLoading() {
-
+        if (generateProgressTask == null) {
+            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
+            generateProgressTask.execute();
+        }
     }
 
     @Override
     public void hideLoading() {
-
+        if (generateProgressTask != null) {
+            generateProgressTask.cancel(true);
+            generateProgressTask = null;
+        }
     }
 
     @Override
@@ -244,25 +252,19 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         String title = createTitle.getText().toString().trim();
         String eventTitle = this.eventTitle.getText().toString().trim();
         String content = getContentAsHTML();
+
+        // TODO : shopId를 어떻게 받아와야하는가
         int shopId = 12;
         String startDate = startDateTextview.getText().toString();
         String endDate = endDateTextview.getText().toString();
-//        if(getThumbnail() != null) {
-//            String thumbnail = getThumbnail();
-//            Log.d(TAG, thumbnail);
-//        }
-
-        Log.d(TAG, title);
-        Log.d(TAG, eventTitle);
-        Log.d(TAG, content);
-        Log.d(TAG, startDate);
-        Log.d(TAG, endDate);
 
         String thumbnail = getThumbnail();
-        if(thumbnail == null)
+        if(thumbnail == null) {
             advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate));
-        else
+        }
+        else {
             advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+        }
     }
 
     @Override
