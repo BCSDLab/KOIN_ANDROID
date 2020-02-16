@@ -35,6 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.core.util.ImageUtil;
+import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_board.ui.KoinRichEditor;
 import io.reactivex.Observable;
@@ -83,6 +84,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
             findViewById(R.id.action_hr).setOnClickListener(v -> richEditor.insertDivider());
             findViewById(R.id.action_blockquote).setOnClickListener(v -> richEditor.updateTextStyle(EditorTextStyle.BLOCKQUOTE));
             findViewById(R.id.action_color).setOnClickListener(v -> createColorPicker());
+            findViewById(R.id.action_erase).setOnClickListener(v -> SnackbarUtil.makeLongSnackbarActionYes(richEditor, getString(R.string.erase_button_pressed), this::eraseEditorText));
             findViewById(R.id.action_insert_link).setOnClickListener(v -> {
                 createURLCreateDialog();
             });
