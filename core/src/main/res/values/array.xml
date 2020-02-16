@@ -86,35 +86,37 @@
         <item>야우리</item>
         <item>천안역</item>
     </string-array>
+    <!-- 학기중-->
+        <string-array name="bus_stop_place">
+            <item>천안 등교/하교</item>
+            <item>천안 셔틀</item>
+            <item>청주 등교/하교</item>
+            <item>청주 셔틀</item>
+            <item>서울 등교/하교</item>
+            <item>대전 등교/하교</item>
+        </string-array>
 
-    <string-array name="bus_stop_place">
-        <item>천안 등교/하교</item>
-        <item>천안 셔틀</item>
-        <item>청주 등교/하교</item>
-        <item>청주 셔틀</item>
-        <item>서울 등교/하교</item>
-        <item>대전 등교/하교</item>
-    </string-array>
-
+    <!-- 방학중 -->
     <string-array name="bus_stop_place_season">
-    <item>천안계절등교/하교</item>
-    <item>천안방학등교/하교</item>
-    <item>두정동등교/하교</item>
-    <item>청주계절(월/금)</item>
-    <item>청주방학등교</item>
-    <item>청주방학하교</item>
-    <item>서울(방학전체)</item>
-    <item>천안순환(월~금)</item>
+        <item>천안계절등교/하교</item>
+        <item>천안방학등교/하교</item>
+        <item>두정동등교/하교</item>
+        <item>청주계절(월/금)</item>
+        <item>청주방학등교</item>
+        <item>청주방학하교</item>
+        <item>서울(방학전체)</item>
+        <item>천안순환(월~금)</item>
     </string-array>
+    <!-- 학기중-->
+        <string-array name="bus_stop_cheonan_start_end">
+            <item>천안역</item>
+            <item>터미널</item>
+            <item>두정역</item>
+            <item>고속철</item>
+            <item>신방동</item>
+        </string-array>
 
-    <string-array name="bus_stop_cheonan_start_end">
-        <item>천안역</item>
-        <item>터미널</item>
-        <item>두정역</item>
-        <item>고속철</item>
-        <item>신방동</item>
-    </string-array>
-
+    <!-- 방학중 -->
     <string-array name="bus_stop_cheonan_start_end_season">
         <item>터미널</item>
         <item>천안역</item>
@@ -125,21 +127,21 @@
         <item>한기대->야우리</item>
         <item>야우리->한기대</item>
     </string-array>
+    <!-- 학기중-->
+        <string-array name="bus_stop_chungju">
+            <item>체육관</item>
+            <item>용암동</item>
+            <item>산남동</item>
+            <item>분평동</item>
+        </string-array>
 
-    <string-array name="bus_stop_chungju">
-        <item>체육관</item>
-        <item>용암동</item>
-        <item>산남동</item>
-        <item>분평동</item>
-    </string-array>
-
+    <!-- 방학중 -->
     <string-array name="bus_stop_chungju_season">
         <item>용암동 등교</item>
         <item>체육관 등교</item>
         <item>용암동 하교</item>
         <item>체육관 하교</item>
     </string-array>
-
 
     <string-array name="favorite_place">
         <item>한기대</item>
@@ -287,18 +289,17 @@
 
     <string-array name="daesung_koreatech_to_terminal_timetables_start">
         <item>08시 00분</item>
-        <item>09시 35분</item>
-        <item>10시 35분</item>
-        <item>11시 35분</item>
-        <item>12시 25분</item>
-        <item>13시 15분</item>
-        <item>14시 05분</item>
+        <item>09시 45분</item>
+        <item>10시 30분</item>
+        <item>11시 45분</item>
+        <item>12시 35분</item>
+        <item>14시 00분</item>
         <item>15시 05분</item>
-        <item>16시 05분</item>
+        <item>16시 00분</item>
         <item>16시 55분</item>
         <item>18시 05분</item>
+        <item>18시 50분</item>
         <item>18시 55분</item>
-        <item>19시 35분</item>
         <item>20시 00분</item>
         <item>21시 05분</item>
         <item>21시 55분</item>
@@ -306,18 +307,17 @@
 
     <string-array name="daesung_koreatech_to_terminal_timetables_end">
         <item>08시 20분</item>
-        <item>09시 55분</item>
-        <item>10시 55분</item>
-        <item>11시 55분</item>
-        <item>12시 45분</item>
-        <item>13시 35분</item>
-        <item>14시 25분</item>
+        <item>10시 00분</item>
+        <item>10시 50분</item>
+        <item>12시 00분</item>
+        <item>12시 55분</item>
+        <item>14시 20분</item>
         <item>15시 25분</item>
-        <item>16시 25분</item>
+        <item>16시 20분</item>
         <item>17시 15분</item>
         <item>18시 25분</item>
+        <item>19시 10분</item>
         <item>19시 15분</item>
-        <item>19시 55분</item>
         <item>20시 20분</item>
         <item>21시 25분</item>
         <item>22시 15분</item>
@@ -363,4 +363,3 @@
         <item>C007</item>
     </string-array>
 </resources>
-
