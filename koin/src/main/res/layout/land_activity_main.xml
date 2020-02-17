@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
@@ -35,7 +36,7 @@
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     app:layout_constrainedHeight="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +48,7 @@
                         android:id="@+id/land_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white">
+                        android:background="?attr/colorSurface">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/land_recyclerlayout"
