@@ -68,11 +68,12 @@
         <item name="android:windowBackground">@drawable/bg_dialog</item>
     </style>
 
-    <style name="KAPTimePicker" parent="@android:style/Widget.Material.DatePicker">
+    <style name="KAPTimePicker" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="android:datePickerMode">spinner</item>
         <item name="android:calendarViewShown">false</item>
         <item name="android:textSize">20sp</item>
         <item name="colorControlNormal">@color/transparent</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
     <style name="KAPDatePicker" parent="Theme.AppCompat.Light.Dialog">

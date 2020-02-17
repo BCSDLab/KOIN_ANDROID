@@ -37,6 +37,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatSpinner
+                android:theme="@style/Theme.MaterialComponents.DayNight.Dialog"
                 android:id="@+id/bus_search_bus_departure_spinner"
                 android:layout_width="90dp"
                 android:overlapAnchor="false"
@@ -59,6 +60,7 @@
                 app:font_name="Custom2" />
 
             <Spinner
+                android:theme="@style/Theme.MaterialComponents.DayNight.Dialog"
                 android:id="@+id/bus_search_bus_arrival_spinner"
                 android:layout_width="90dp"
                 android:overlapAnchor="false"
@@ -184,8 +186,6 @@
                 android:id="@+id/bus_search_timePicker"
                 android:layout_width="match_parent"
                 android:layout_height="168dp"
-                android:amPmTextColor="?attr/colorSurface"
-                android:numbersTextColor="?attr/colorSurface"
                 android:theme="@style/KAPTimePicker"
                 android:timePickerMode="spinner"
                 app:font_name="Custom2"
