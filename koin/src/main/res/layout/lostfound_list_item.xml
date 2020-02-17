@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         app:layout_constrainedWidth="true"
         app:layout_constraintEnd_toStartOf="@+id/lostfound_create_comment_count_textview"

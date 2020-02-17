@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
+    android:background="?attr/colorSurface"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -53,7 +54,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +129,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/lostfound_detail_title_textview"
                             tools:text="2019.03.02" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/lostfound_detail_comment_button"
                             android:layout_width="69.2dp"
                             android:layout_height="28.7dp"
@@ -138,12 +139,13 @@
                             android:background="@drawable/button_rect_normal"
                             android:text="댓글"
                             android:textSize="12sp"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintBottom_toTopOf="@id/lostfound_detail_comment_edit_button_title_content_border"
                             app:layout_constraintHorizontal_chainStyle="packed"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/lostfound_detail_comment_edit_button_dot" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/lostfound_detail_edit_button"
                             android:layout_width="51.4dp"
                             android:layout_height="28.7dp"
@@ -152,11 +154,13 @@
                             android:text="수정"
                             android:textSize="12sp"
                             android:visibility="invisible"
+                            tools:visibility="visible"
+                            android:textColor="?attr/colorOnSurface"
                             app:layout_constraintBottom_toBottomOf="@+id/lostfound_detail_comment_button"
                             app:layout_constraintStart_toEndOf="@+id/lostfound_detail_comment_button"
                             app:layout_constraintTop_toTopOf="@+id/lostfound_detail_comment_button" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/lostfound_detail_delete_button"
                             android:layout_width="51.4dp"
                             android:layout_height="28.7dp"
@@ -166,6 +170,7 @@
                             android:textColor="#ff3030"
                             android:textSize="12sp"
                             android:visibility="invisible"
+                            tools:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="@+id/lostfound_detail_comment_button"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -190,7 +195,7 @@
                             android:layout_marginTop="16dp"
                             android:lineSpacingExtra="8sp"
                             android:text="분실일"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/guideline_0.3"
@@ -206,7 +211,7 @@
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="8sp"
                             android:text="분실장소"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/guideline_0.3"
@@ -222,7 +227,7 @@
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="8sp"
                             android:text="연락처"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toStartOf="@+id/guideline_0.3"
@@ -237,7 +242,7 @@
                             android:layout_marginEnd="16dp"
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="8sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="@+id/lostfound_detail_phone_textview"
@@ -255,7 +260,7 @@
                             android:layout_marginEnd="16dp"
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="8sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -272,7 +277,7 @@
                             android:layout_marginEnd="16dp"
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="8sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -291,7 +296,7 @@
                             android:layout_marginBottom="8dp"
                             android:gravity="start"
                             android:lineSpacingExtra="10sp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="14sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="parent"

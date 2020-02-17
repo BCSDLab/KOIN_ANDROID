@@ -5,6 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
@@ -52,7 +53,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:font_name="Normal"
                             app:layout_constrainedWidth="true"
@@ -276,7 +277,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/lostfound_comment_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -284,9 +285,10 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/bg_warm_grey_rectangle"
                                 android:text="취소"
+                                android:textColor="?attr/colorOnSurface"
                                 app:font_name="Normal" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/lostfound_comment_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -294,6 +296,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/bg_warm_grey_rectangle"
                                 android:text="등록"
+                                android:textColor="?attr/colorOnSurface"
                                 app:font_name="Normal" />
 
                         </LinearLayout>
@@ -311,7 +314,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/lostfound_comment_anonymous_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -319,9 +322,10 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/bg_warm_grey_rectangle"
                                 android:text="취소"
+                                android:textColor="?attr/colorOnSurface"
                                 app:font_name="Normal" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/lostfound_comment_anonymous_delete_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -333,7 +337,7 @@
                                 android:textColor="@color/red"
                                 app:font_name="Normal" />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/lostfound_comment_anonymous_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -341,6 +345,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/bg_warm_grey_rectangle"
                                 android:text="등록"
+                                android:textColor="?attr/colorOnSurface"
                                 app:font_name="Normal" />
 
                         </LinearLayout>
