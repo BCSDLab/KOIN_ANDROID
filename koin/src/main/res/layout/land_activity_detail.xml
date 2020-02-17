@@ -360,7 +360,8 @@
                                     android:id="@+id/land_detail_airconditioner_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_airconditioner" />
+                                    android:src="@drawable/ic_airconditioner"
+                                    android:tint="?attr/colorOnSurface"/>
 
                                 <TextView
                                     android:id="@+id/land_detail_airconditioner_textview"
@@ -386,7 +387,8 @@
                                     android:id="@+id/land_detail_refrigerator_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_refrigerator" />
+                                    android:src="@drawable/ic_refrigerator"
+                                    android:tint="?attr/colorOnSurface"/>
 
                                 <TextView
                                     android:id="@+id/land_detail_refrigerator_textview"
@@ -412,7 +414,8 @@
                                     android:id="@+id/land_detail_closet_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_closet" />
+                                    android:src="@drawable/ic_closet"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_closet_textview"
@@ -439,7 +442,8 @@
                                     android:id="@+id/land_detail_tv_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_tv" />
+                                    android:src="@drawable/ic_tv"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_tv_textview"
@@ -466,7 +470,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_microwave_range" />
+                                    android:src="@drawable/ic_microwave_range"
+                                    android:tint="?attr/colorOnSurface"/>
 
                                 <TextView
                                     android:id="@+id/land_detail_microwave_textview"
@@ -492,7 +497,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_gas_stove" />
+                                    android:src="@drawable/ic_gas_stove"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_gas_range_textview"
@@ -518,7 +524,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_induction_range" />
+                                    android:src="@drawable/ic_induction_range"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_induction_textview"
@@ -544,7 +551,8 @@
                                     android:id="@+id/land_detail_water_purifier_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_water_purifier" />
+                                    android:src="@drawable/ic_water_purifier"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_water_purifier_textview"
@@ -570,7 +578,8 @@
                                     android:id="@+id/land_detail_washer_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_clothes_washer" />
+                                    android:src="@drawable/ic_clothes_washer"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_washer_textview"
@@ -596,7 +605,8 @@
                                     android:id="@+id/land_detail_bed_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_bed" />
+                                    android:src="@drawable/ic_bed"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_bed_textview"
@@ -622,7 +632,8 @@
                                     android:id="@+id/land_detail_desk_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_desk" />
+                                    android:src="@drawable/ic_desk"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_desk_textview"
@@ -648,7 +659,8 @@
                                     android:id="@+id/land_detail_shoe_closet_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_shoe_rack" />
+                                    android:src="@drawable/ic_shoe_rack"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_shoe_closet_textview"
@@ -676,7 +688,8 @@
                                     android:id="@+id/land_detail_doorlock_imageview"
                                     android:layout_width="30dp"
                                     android:layout_height="30dp"
-                                    android:src="@drawable/ic_doorlock" />
+                                    android:src="@drawable/ic_doorlock"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_doorlock_textview"
@@ -704,7 +717,8 @@
                                     android:id="@+id/land_detail_bidet_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_bidet" />
+                                    android:src="@drawable/ic_bidet"
+                                    android:tint="?attr/colorOnSurface"/>
 
                                 <TextView
                                     android:id="@+id/land_detail_bidet_textview"
@@ -732,7 +746,8 @@
                                     android:id="@+id/land_detail_veranda_imageview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_veranda" />
+                                    android:src="@drawable/ic_veranda"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_veranda_textview"
@@ -761,7 +776,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:src="@drawable/ic_elevator" />
+                                    android:src="@drawable/ic_elevator"
+                                    android:tint="?attr/colorOnSurface" />
 
                                 <TextView
                                     android:id="@+id/land_detail_elevator_textview"

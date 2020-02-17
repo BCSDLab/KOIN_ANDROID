@@ -2,7 +2,9 @@ package in.koreatech.koin.service_land.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -199,6 +201,11 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     public void onMapReady(@NonNull NaverMap naverMap) {
 
         this.naverMap = naverMap;
+        //Naver map SDK에서는 Navi(차량 내비게이션 모드)에서만 Night mode가 작동합니다(임시로 적용해봄).
+        naverMap.setMapType(NaverMap.MapType.Navi);
+        naverMap.setNightModeEnabled(
+                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES);
         landPresenter.getLandList();
 
     }

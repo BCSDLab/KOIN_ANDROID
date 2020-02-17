@@ -1,5 +1,6 @@
 package in.koreatech.koin.service_land.ui;
 
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
@@ -202,6 +203,10 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+        naverMap.setMapType(NaverMap.MapType.Navi);
+        naverMap.setNightModeEnabled(
+                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES);
         Marker marker = new Marker();
 
         if (landLatitude == null || landLongitude == null) {
