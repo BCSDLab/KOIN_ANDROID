@@ -277,7 +277,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/article_comment_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
@@ -285,9 +285,10 @@
                                 android:layout_marginEnd="4dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/bg_warm_grey_rectangle"
-                                android:text="취소" />
+                                android:text="취소"
+                                />
 
-                            <Button
+                            <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/article_comment_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"

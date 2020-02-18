@@ -66,6 +66,7 @@
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
                             android:textColorHint="@color/white_87"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:font_name="Normal" />
 
@@ -91,6 +92,7 @@
                             android:hint="닉네임을 입력해주세요"
                             android:maxLines="1"
                             android:textColorHint="@color/white_87"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:font_name="Normal"
                             app:layout_constrainedWidth="true"
@@ -127,6 +129,7 @@
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:textColorHint="@color/white_87"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:font_name="Normal"
                             app:layout_constrainedWidth="true"

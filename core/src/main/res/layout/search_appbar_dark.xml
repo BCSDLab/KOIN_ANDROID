@@ -54,7 +54,7 @@
 
                 />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/base_appbar_dark_erase_button"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
