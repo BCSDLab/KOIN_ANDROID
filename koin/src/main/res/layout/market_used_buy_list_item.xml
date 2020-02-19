@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="90dp"
     android:background="@drawable/bg_gray_border"
-    tools:ignore="MissingPrefix"
-    app:cardBackgroundColor="@color/white">
+    tools:ignore="MissingPrefix">
 
     <TextView
         android:id="@+id/market_used_buy_title_textview"
@@ -17,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="16sp"
         app:font_name="Normal"
         app:layout_constrainedWidth="true"
