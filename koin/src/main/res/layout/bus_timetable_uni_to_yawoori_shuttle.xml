@@ -152,7 +152,7 @@
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="10:30"
+            android:text="10:35"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -167,7 +167,7 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="10:50"
+            android:text="10:55"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -194,7 +194,7 @@
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="11:45"
+            android:text="11:35"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -209,7 +209,7 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="12:00"
+            android:text="11:55"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -236,7 +236,7 @@
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="12:35"
+            android:text="12:25"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -251,7 +251,7 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="12:55"
+            android:text="12:45"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -278,7 +278,7 @@
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="14:00"
+            android:text="13:15"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -293,7 +293,49 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="14:20"
+            android:text="13:35"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/cloudy_blue"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="14:05"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="14:25"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -362,7 +404,7 @@
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="16:00"
+            android:text="16:05"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -377,7 +419,7 @@
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
-            android:text="16:20"
+            android:text="16:25"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
@@ -504,6 +546,48 @@
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="19:15"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/cloudy_blue"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="19:35"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="19:55"
             android:textColor="@color/black"
             android:textSize="13sp" />
 
