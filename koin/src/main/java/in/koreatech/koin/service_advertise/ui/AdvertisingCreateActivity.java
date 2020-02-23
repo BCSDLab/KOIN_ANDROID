@@ -184,14 +184,18 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
                 SelectDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    // 도움말 버튼 클릭 이벤트
     @OnClick(R.id.advertising_create_question_mark_imageview)
     public void questionMarkOnClicked() {
         if (!isClickedQuestion) {
             questionMark.setImageResource(R.drawable.ic_question_mark2);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             questionInfoFrameLayout.setVisibility(View.VISIBLE);
+            questionInfoFrameLayout.bringToFront();
             isClickedQuestion = true;
         } else {
             questionMark.setImageResource(R.drawable.ic_question_mark);
+            inputMethodManager.showSoftInput(createTitle, 0);
             questionInfoFrameLayout.setVisibility(View.INVISIBLE);
             isClickedQuestion = false;
         }
@@ -268,6 +272,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
         // TODO : shopId를 어떻게 받아와야하는가
         int shopId = 12;
+
         String startDate = startDateTextview.getText().toString();
         String endDate = endDateTextview.getText().toString();
 
