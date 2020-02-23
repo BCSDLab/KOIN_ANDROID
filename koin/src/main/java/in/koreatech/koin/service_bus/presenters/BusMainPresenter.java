@@ -123,7 +123,6 @@ public class BusMainPresenter implements BasePresenter {
         busMainView.showLoading();
         if (!isVacation) {                                                     //학기중
             try {
-                Log.e("방학중 셔틀버스", "방학중 셔틀버스");
                 int soonArrival = (int) Bus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
                 int laterArrival = (int) Bus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
                 String soonDeparture = Bus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
@@ -135,7 +134,6 @@ public class BusMainPresenter implements BasePresenter {
             }
         } else {                                                                //방학중
             try {
-                Log.e("방학중 셔틀버스", "방학중 셔틀버스");
                 int soonArrival = (int) VacationBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
                 int laterArrival = (int) VacationBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
                 String soonDeparture = VacationBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
