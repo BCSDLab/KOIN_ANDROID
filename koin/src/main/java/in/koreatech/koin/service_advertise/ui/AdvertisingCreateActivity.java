@@ -51,6 +51,8 @@ import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
 import in.koreatech.koin.core.util.FormValidatorUtil;
 import in.koreatech.koin.core.util.ImageUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
+import in.koreatech.koin.core.util.TimeUtil;
+import in.koreatech.koin.core.util.TimerUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingCreatingContract;
@@ -69,6 +71,16 @@ import top.defaults.colorpicker.ColorPickerPopup;
  * Edited by seongyun on 2020. 02. 17...
  */
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
+    private Context context;
+    private final static String TAG = "AdCreateActivity";
+    private Calendar SelectDate;
+    private DatePickerDialog.OnDateSetListener dataPicker;
+    private DatePickerDialog.OnDateSetListener dataPicker2;
+    private boolean isClickedQuestion = false;
+    private GenerateProgressTask generateProgressTask;
+    private AdvertisingCreatingPresenter advertisingCreatingPresenter;
+    private InputMethodManager inputMethodManager;
+
     @BindView(R.id.koin_base_app_bar_dark)
     KoinBaseAppbarDark koinBaseAppbar;
     @BindView(R.id.advertising_create_question_mark_imageview)
@@ -86,15 +98,6 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @BindView(R.id.advertising_create_content)
     KoinRichEditor advertisingRichEditor;
-    private Context context;
-    private final static String TAG = "AdCreateActivity";
-    private Calendar SelectDate;
-    private DatePickerDialog.OnDateSetListener dataPicker;
-    private DatePickerDialog.OnDateSetListener dataPicker2;
-    private boolean isClickedQuestion = false;
-    private GenerateProgressTask generateProgressTask;
-    private AdvertisingCreatingPresenter advertisingCreatingPresenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
         context = this;
         setPresenter(new AdvertisingCreatingPresenter(this, new AdDetailRestInterator()));
+        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
         init();
     }
@@ -125,35 +129,44 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     void init() {
         ButterKnife.bind(this);
         calenderCheck();
+        startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
+        endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
         koinBaseAppbar.setLeftButtonText("취소");
         koinBaseAppbar.setRightButtonText("등록");
+
+        // 자동으로 제목에 포커스를 주면서 키보드 올리기
+        createTitle.setFocusableInTouchMode(true);
+        createTitle.requestFocus();
+        inputMethodManager.showSoftInput(createTitle, 0);
     }
 
     void calenderCheck() {
         SelectDate = Calendar.getInstance();
-        dataPicker = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                SelectDate.set(Calendar.YEAR, year);
-                SelectDate.set(Calendar.MONTH, month);
-                SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                startDateTextview.setText(year + "." + (month + 1) + "." + dayOfMonth);
 
-            }
+        // 시작 일자 캘린더 클릭 이벤트
+        dataPicker = (view, year, month, dayOfMonth) -> {
+            SelectDate.set(Calendar.YEAR, year);
+            SelectDate.set(Calendar.MONTH, month);
+            SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            if(month < 10)
+                startDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
+            else
+                startDateTextview.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
         };
 
-        dataPicker2 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                SelectDate.set(Calendar.YEAR, year);
-                SelectDate.set(Calendar.MONTH, month);
-                SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                endDateTextview.setText(year + "." + (month + 1) + "." + dayOfMonth);
-
-            }
+        // 종료 일자 캘린더 클릭 이벤트
+        dataPicker2 = (view, year, month, dayOfMonth) -> {
+            SelectDate.set(Calendar.YEAR, year);
+            SelectDate.set(Calendar.MONTH, month);
+            SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            if(month < 10)
+                endDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
+            else
+                endDateTextview.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
         };
     }
 
+    // 시작 일자를 선택하기 위한 달력 표시
     @OnClick({R.id.advertising_calender_reck_layout})
     void calender1OnClicked() {
         new DatePickerDialog(AdvertisingCreateActivity.this, dataPicker,
@@ -162,6 +175,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
                 SelectDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    // 종료 일자를 선택하기 위한 달력 표시
     @OnClick({R.id.advertising_calender2_reck_layout})
     void calender2OnClicked() {
         new DatePickerDialog(AdvertisingCreateActivity.this, dataPicker2,
@@ -221,8 +235,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         View view = this.getCurrentFocus();
 
         if(view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
+            Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0);
             SnackbarUtil.makeLongSnackbarActionYes(view, getString(R.string.back_button_pressed), this::finish);
         }
         else {

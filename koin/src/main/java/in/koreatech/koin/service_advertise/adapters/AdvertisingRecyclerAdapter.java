@@ -82,12 +82,12 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
             if (ad.getEventTitle() == null)
                 adTitleTextview.setText("-");
             else
-                adTitleTextview.setText(ad.getEventTitle());
+                adTitleTextview.setText(ad.getTitle());
 
             if (ad.getContent() == null)
                 adContentsTextview.setText("-");
             else
-                adContentsTextview.setText(ad.getContent());
+                adContentsTextview.setText(ad.getEventTitle());
 
             if (ad.getStartDate() == null && ad.getEndDate() == null)
                 adPeriodTextview.setText("-");

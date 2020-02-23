@@ -76,7 +76,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         if (id == KoinBaseAppbarDark.getLeftButtonId()) {
             onBackPressed();
         } else if (id == KoinBaseAppbarDark.getRightButtonId()) {
-            //점주계정 확인하세요
+            // 점주계정 확인하세요
             Intent intent = new Intent(context, AdvertisingCreateActivity.class);
             if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
@@ -134,7 +134,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
      * 체크박스에 맞는 데이터로 재설정해주기
      */
     public void checkBoxDataDisplay() {
-        //프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
+        // 프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
         ArrayList<Advertising> applyAdDataList = adPresenter.displayProcessingEvent(adProcessingCheckBox1.isChecked(), adProcessingCheckBox2.isChecked());
         adRecyclerAdapter.setAdArrayList(applyAdDataList);
         adRecyclerAdapter.notifyDataSetChanged();

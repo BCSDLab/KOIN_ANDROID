@@ -143,7 +143,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         titleTextview.setText(adDetail.eventTitle);
         periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
         viewPublisherTextview.setText("조회 " + adDetail.getHit() + " · " + adDetail.getNickname());
-        Log.d("ImageTag", adDetail.content);
         renderEditor(renderHtmltoString(adDetail.content));
         replyCountTextview.setText(adDetail.comentCount + "");
         viewCountTextview.setText(adDetail.hit + "");
