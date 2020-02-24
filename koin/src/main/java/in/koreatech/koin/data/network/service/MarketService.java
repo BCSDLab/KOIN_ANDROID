@@ -3,6 +3,7 @@ package in.koreatech.koin.data.network.service;
 import com.google.gson.JsonObject;
 
 import in.koreatech.koin.data.network.entity.Comment;
+import in.koreatech.koin.data.network.entity.Image;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import io.reactivex.Observable;
@@ -46,7 +47,11 @@ public interface MarketService {
 
     @Multipart
     @POST(ITEMS + "/image/thumbnail/upload")
-    Observable<Item> postImage(@Header("Authorization") String authHeader, @Part MultipartBody.Part file);
+    Observable<Item> postThumbanilImage(@Header("Authorization") String authHeader, @Part MultipartBody.Part file);
+
+    @Multipart
+    @POST(ITEMS + "/image/upload")
+    Observable<Image> postUploadImage(@Header("Authorization") String authHeader, @Part MultipartBody.Part file);
 
 
 }

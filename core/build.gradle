@@ -22,7 +22,6 @@ android {
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }

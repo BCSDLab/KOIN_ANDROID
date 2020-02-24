@@ -34,44 +34,35 @@ import java.util.concurrent.ExecutionException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailContract;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
-import in.koreatech.koin.util.FormValidatorUtil;
-import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedDetailCommentAdapter;
-import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailPresenter;
 import in.koreatech.koin.ui.login.LoginActivity;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedDetailCommentAdapter;
+import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailContract;
+import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailPresenter;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
+import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.util.SnackbarUtil;
 
 public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity implements MarketUsedDetailContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
-    private final String TAG = "MarketUsedSellDetail";
+    private final String TAG = "MarketUsedSellDetailActivity";
     private static final int REQUEST_PHONE_CALL = 1;
-
-
     private Context context;
-
-    private MarketUsedDetailCommentAdapter marketDetailCommentRecyclerAdapter;
-    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
-
-    private Item mItem; //품목 정보 저장
+    private Item item; //품목 정보 저장
     private ArrayList<Comment> commentArrayList;
     private MarketUsedDetailPresenter marketDetailPresenter;
 
     private String prevCommentContent;
     private InputMethodManager inputMethodManager;
-    private int marketID;
+    private int mMarketID;
 
-    //    @BindView(R.id.market_used_sell_detail_scrollview)
-//    ScrollView mScrollView;
     @BindView(R.id.market_used_sell_nestedscrollview)
     NestedScrollView mMarketUsedSellNestedscrollview;
     @BindView(R.id.market_used_sell_detail_thumbnail_imageview)
@@ -86,8 +77,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     TextView mMarketTimeTextView;
     @BindView(R.id.market_used_sell_detail_phone_textview)
     TextView mMarketPhoneTextView;
-    //    @BindView(R.id.market_used_sell_detail_is_selling_textview)
-//    TextView mMarketIsSellingTextView;
     @BindView(R.id.market_used_sell_comment_button)
     Button mMarketCommentButton;
     @BindView(R.id.market_used_sell_edit_button)
@@ -99,32 +88,15 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @BindView(R.id.market_used_sell_detail_hit_count_textview)
     TextView mMarkethitCountTextView;
 
-    private CustomProgressDialog customProgressDialog;
-//    @BindView(R.id.market_used_sell_detail_comment_count_textview)
-//    TextView mMarketCommentCountTextView;
-//
-//    @BindView(R.id.market_used_sell_detail_comment_recyclerview)
-//    RecyclerView mMarketCommentRecyclerVIew;
-//    @BindView(R.id.market_used_sell_detail_comment_input_text)
-//    EditText mMarketCommentInputEditText;
-//
-//
-//    @BindView(R.id.market_used_sell_detail_create_comment_button)
-//    Button mMarketCreateCommentButton;
-//    @BindView(R.id.market_used_sell_detail_call_button)
-//    Button mMarketCallButton;
-//    @BindView(R.id.market_used_sell_detail_message_button)
-//    Button mMarketMessageButton;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.market_used_sell_activity_detail);
         ButterKnife.bind(this);
         this.context = this;
-        mItem = new Item();
-        marketID = 0;
-        mItem.id = getIntent().getIntExtra("ITEM_ID", 1);
+        this.item = new Item();
+        mMarketID = 0;
+        this.item.id = getIntent().getIntExtra("ITEM_ID", 1);
         init();
     }
 
@@ -132,8 +104,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onStart() {
         super.onStart();
 //        checkRequiredInfo();
-        marketDetailPresenter.checkGranted(mItem.id);
-        marketDetailPresenter.readMarketDetail(mItem.id);
+        this.marketDetailPresenter.checkGranted(this.item.id);
+        this.marketDetailPresenter.readMarketDetail(this.item.id);
 
 
     }
@@ -177,23 +149,21 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     public void onMarketDataReceived(Item item) {
         StringBuilder title = new StringBuilder();
         String styledText;
-        mItem = item;
-        commentArrayList.clear();
-        commentArrayList.addAll(item.comments);
+        this.item = item;
+        this.commentArrayList.clear();
+        this.commentArrayList.addAll(item.comments);
 
 
-        mMarketMoneyTextView.setText(changeMoneyFormat(Integer.toString(mItem.price)) + "원");
+        mMarketMoneyTextView.setText(changeMoneyFormat(Integer.toString(this.item.price)) + "원");
         mMarketTimeTextView.setText(item.createdAt);
         mMarketNickNameTextView.setText(item.nickname);
         if (!item.isPhoneOpen || item.phone == null) {
             mMarketPhoneTextView.setText("비공개");
-//            mMarketCallButton.setVisibility(View.GONE);
-//            mMarketMessageButton.setVisibility(View.GONE);
         } else
             mMarketPhoneTextView.setText(item.phone);
 
 
-        Glide.with(context).load(item.thumbnail).apply(new RequestOptions()
+        Glide.with(this.context).load(item.thumbnail).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketThumbnailImageview);
@@ -224,7 +194,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
             mMarketConetentTextView.setText(spannedValue);
         }
 
-//        marketDetailCommentRecyclerAdapter.notifyDataSetChanged();
+//        mMarketDetailCommentRecyclerAdapter.notifyDataSetChanged();
     }
 
 
@@ -252,35 +222,9 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     void init() {
         setPresenter(new MarketUsedDetailPresenter(this, new MarketUsedRestInteractor()));
-        commentArrayList = new ArrayList<>();
-        marketDetailPresenter.readMarketDetail(mItem.id);
-
-
-//        marketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
-//        layoutManager = new LinearLayoutManager(this);
-//        mMarketCommentRecyclerVIew.setHasFixedSize(true);
-//        mMarketCommentRecyclerVIew.setLayoutManager(layoutManager); //layout 설정
-//        mMarketCommentRecyclerVIew.setAdapter(marketDetailCommentRecyclerAdapter); //adapter 설정
-//
-//        marketDetailCommentRecyclerAdapter.setCustomOnClickListener(this);
-//        checkRequiredInfo();
+        this.commentArrayList = new ArrayList<>();
+        this.marketDetailPresenter.readMarketDetail(this.item.id);
     }
-
-
-//    @OnClick(R.id.market_used_sell_detail_call_button)
-//    void onCallButtonClick() {
-//        Intent phoneIntent = new Intent(Intent.ACTION_VIEW);
-//        phoneIntent.setData(Uri.parse("tel:" + mItem.phone));
-//        startActivity(phoneIntent);
-//
-//    }
-//
-//    @OnClick(R.id.market_used_sell_detail_message_button)
-//    void onMessageButtonClick() {
-//        Intent messageIntent = new Intent(Intent.ACTION_VIEW);
-//        messageIntent.setData(Uri.parse("sms:" + mItem.phone));
-//        startActivity(messageIntent);
-//    }
 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
@@ -300,7 +244,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         if (getUser().userNickName != null)
             startActivity(intent);
         else {
-            ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
+            ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
             intent = new Intent(this, UserInfoEditedActivity.class);
             startActivity(intent);
         }
@@ -314,18 +258,18 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @OnClick(R.id.market_used_sell_comment_button)
     public void onClickedCommentButton() {
         Intent intent = new Intent(this, MarketUsedDetailCommentActivity.class);
-        intent.putExtra("MARKET_ID", marketID);
-        intent.putExtra("ITEM_ID", mItem.id);
-        intent.putExtra("ITEM_STATE", mItem.state);
-        intent.putExtra("ITEM_TITLE", mItem.title);
-        intent.putExtra("ITEM_NICKNAME", mItem.nickname);
-        intent.putExtra("ITEM_CREATE", mItem.createdAt);
-        intent.putExtra("ITEM_HIT", mItem.hit);
-        intent.putExtra("ITEM_CONTENT", mItem.content);
-        intent.putExtra("ITEM_PRICE", mItem.price);
-        intent.putExtra("ITEM_PHONE", mItem.phone);
-        intent.putExtra("ITEM_PHONE_STATUS", mItem.isPhoneOpen);
-        intent.putExtra("ITEM_THUMBNAIL_URL", mItem.thumbnail);
+        intent.putExtra("MARKET_ID", mMarketID);
+        intent.putExtra("ITEM_ID", this.item.id);
+        intent.putExtra("ITEM_STATE", this.item.state);
+        intent.putExtra("ITEM_TITLE", this.item.title);
+        intent.putExtra("ITEM_NICKNAME", this.item.nickname);
+        intent.putExtra("ITEM_CREATE", this.item.createdAt);
+        intent.putExtra("ITEM_HIT", this.item.hit);
+        intent.putExtra("ITEM_CONTENT", this.item.content);
+        intent.putExtra("ITEM_PRICE", this.item.price);
+        intent.putExtra("ITEM_PHONE", this.item.phone);
+        intent.putExtra("ITEM_PHONE_STATUS", this.item.isPhoneOpen);
+        intent.putExtra("ITEM_THUMBNAIL_URL", this.item.thumbnail);
         startActivity(intent);
     }
 
@@ -337,22 +281,22 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @OnClick(R.id.market_used_sell_edit_button)
     public void onEditButton() {
         Intent intent = new Intent(this, MarketUsedSellEditActivity.class);
-        intent.putExtra("MARKET_ID", mItem.type);
-        intent.putExtra("ITEM_ID", mItem.id);
-        intent.putExtra("MARKET_STATE", mItem.state);
-        intent.putExtra("MARKET_TITLE", mItem.title);
-        intent.putExtra("MARKET_CONTENT", mItem.content);
-        intent.putExtra("MARKET_PRICE", mItem.price);
-        intent.putExtra("MARKET_PHONE", mItem.phone);
-        intent.putExtra("MARKET_PHONE_STATUS", mItem.isPhoneOpen);
-        intent.putExtra("MARKET_THUMBNAIL_URL", mItem.thumbnail);
+        intent.putExtra("MARKET_ID", this.item.type);
+        intent.putExtra("ITEM_ID", this.item.id);
+        intent.putExtra("MARKET_STATE", this.item.state);
+        intent.putExtra("MARKET_TITLE", this.item.title);
+        intent.putExtra("MARKET_CONTENT", this.item.content);
+        intent.putExtra("MARKET_PRICE", this.item.price);
+        intent.putExtra("MARKET_PHONE", this.item.phone);
+        intent.putExtra("MARKET_PHONE_STATUS", this.item.isPhoneOpen);
+        intent.putExtra("MARKET_THUMBNAIL_URL", this.item.thumbnail);
         startActivity(intent);
     }
 
 
     public void onClickMarketUsedItemRemoveButton() {
         SnackbarUtil.makeLongSnackbarActionYes(mMarketUsedSellNestedscrollview, "삭제하시겠습니까??", () -> {
-            marketDetailPresenter.deleteItem(mItem.id);
+            this.marketDetailPresenter.deleteItem(this.item.id);
         });
     }
 
@@ -369,34 +313,22 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void showMarketCommentUpdate() {
-//        mMarketCommentInputEditText.setText("");
-//        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        inputMethodManager.hideSoftInputFromWindow(mMarketCommentInputEditText.getWindowToken(), 0);
         onRestart();
     }
 
-//    @OnClick(R.id.market_used_sell_detail_create_comment_button)
-//    void onCreateCommentButton() {
-//        String comment = mMarketCommentInputEditText.getText().toString().trim();
-//        if (!comment.isEmpty())
-//            marketDetailPresenter.createComment(mItem.id, mMarketCommentInputEditText.getText().toString());
-//        else
-//            ToastUtil.makeShort(context, "댓글을 입력해주세요.");
-//
-//    }
 
     @Override
     public void onClickCommentRemoveButton(Comment comment) {
 //        SnackbarUtil.makeLongSnackbarActionYes(mMarketCommentRecyclerVIew, "댓글을 삭제할까요?", () -> {
 //            if (comment.grantDelete) {
-//                marketDetailPresenter.deleteComment(comment, mItem);
+//                this.marketDetailPresenter.deleteComment(comment, this.item);
 //            }
 //        });
     }
 
     @Override
     public void onClickCommentModifyButton(Comment comment) {
-//        prevCommentContent = comment.content;
+//        this.prevCommentContent = comment.content;
 //        makeEditCommentDialog(comment);
     }
 
@@ -413,8 +345,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
                 (dialog, which) -> {
                     if (!FormValidatorUtil.validateStringIsEmpty(editTextContent.getText().toString())) {
                         comment.content = editTextContent.getText().toString().trim();
-                        if (prevCommentContent.compareTo(comment.content) != 0) {
-                            marketDetailPresenter.editComment(comment, mItem, comment.content);
+                        if (this.prevCommentContent.compareTo(comment.content) != 0) {
+                            this.marketDetailPresenter.editComment(comment, this.item, comment.content);
                         }
                     }
                 });
@@ -470,7 +402,6 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
 
     @Override
     public void showGrantCheck(boolean isGranted) {
-        Log.e(TAG, "showGrantCheck: " + isGranted);
         if (isGranted) {
             mMarketEditButton.setVisibility(View.VISIBLE);
             mMarketDeleteButton.setVisibility(View.VISIBLE);
@@ -480,6 +411,44 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         }
     }
 
+//    public void checkRequiredInfo() {
+//        String nickName;
+//        AuthorizeConstant authorize = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+//        if (authorize == AuthorizeConstant.ANONYMOUS) {
+//            mMarketCommentInputEditText.setFocusable(false);
+//            mMarketCreateCommentButton.setEnabled(false);
+//            mMarketCommentInputEditText.setText("로그인을 하셔야 입력할 수 있습니다.");
+//            return;
+//        } else {
+//            nickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+//        }
+//
+//        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
+//            mMarketCommentInputEditText.setFocusable(false);
+//            mMarketCreateCommentButton.setEnabled(false);
+//            mMarketCommentInputEditText.setText("닉네임을 설정하지 않아 입력할 수 없습니다.");
+//        } else {
+//            mMarketCommentInputEditText.setFocusable(true);
+//            mMarketCommentInputEditText.setFocusableInTouchMode(true);
+//            mMarketCreateCommentButton.setEnabled(true);
+//            mMarketCommentInputEditText.setText("");
+//        }
+//    }
+
+//    @OnClick(R.id.market_used_sell_detail_comment_input_text)
+//    public void onTouchMarketUsedCommentInputText() {
+//        String nickName;
+//        AuthorizeConstant authorize = DefaultSharedPreferencesHelper.getInstance().checkAuthorize();
+//        if (authorize == AuthorizeConstant.ANONYMOUS) {
+//            showLoginRequestDialog();
+//            return;
+//        } else {
+//            nickName = DefaultSharedPreferencesHelper.getInstance().loadUser().userNickName;
+//        }
+//        if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
+//            showNickNameRequestDialog();
+//        }
+//    }
 
     public void showLoginRequestDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

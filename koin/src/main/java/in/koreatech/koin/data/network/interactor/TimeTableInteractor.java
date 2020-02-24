@@ -16,5 +16,6 @@ public interface TimeTableInteractor {
 
     void editTimeTable(final ApiCallback apiCallback, JsonObject jsonObject);
 
+    void readSemesters(final ApiCallback apiCallback);
 
 }

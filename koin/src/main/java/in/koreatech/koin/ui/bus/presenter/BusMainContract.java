@@ -27,6 +27,8 @@ public interface BusMainContract {
 
         void updateFailCityBusDepartInfo();
 
+        void updateShuttleBusInfo(int term);
+
     }
 
 }

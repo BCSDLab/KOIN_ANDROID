@@ -340,8 +340,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickNavigationUserInfo();
         } else if (itemId == R.id.navi_item_search) {
             goToSearchActivity();
-
-
         } else {
             ToastUtil.getInstance().makeShort("서비스예정입니다");
             currentId = beforeId;
