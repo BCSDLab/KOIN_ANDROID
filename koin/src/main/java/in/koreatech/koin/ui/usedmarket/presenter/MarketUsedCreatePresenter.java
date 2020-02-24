@@ -54,7 +54,7 @@ public class MarketUsedCreatePresenter{
     @AddTrace(name = "MarketUsedCreatePresenter_uploadThumbnailImage")
     public void uploadThumbnailImage(File file) {
         marketCreateContractView.showLoading();
-        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+        marketUsedInteractor.uploadThumbnailImage(file, uploadImageApiCallback);
     }
 
     public void createMarketItem(MarketItem marketItem) {

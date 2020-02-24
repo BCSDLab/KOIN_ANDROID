@@ -4,6 +4,7 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 
+
 public interface CommunityInteractor {
     //Boards
     void readBoardsList(final ApiCallback apiCallback);

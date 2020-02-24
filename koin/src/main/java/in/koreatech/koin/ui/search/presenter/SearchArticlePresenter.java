@@ -55,7 +55,6 @@ public class SearchArticlePresenter {
         } catch (UnsupportedEncodingException e) {
             searchArticleView.showMessage("검색결과 없습니다.");
         }
-
     }
 
     public void saveText(String text) {

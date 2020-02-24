@@ -90,11 +90,13 @@ public class MarketUsedDetailPresenter{
     private final ApiCallback grantCheckApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            DefaultResponse defaultResponse = (DefaultResponse) object;
-            if (defaultResponse.isGrantEdit())
+            Item item = (Item) object;
+            if (item.isGrantEdit())
                 marketDetailView.showGrantCheck(true);
             else
                 marketDetailView.showGrantCheck(false);
+
+            marketDetailView.hideLoading();
         }
 
         @Override

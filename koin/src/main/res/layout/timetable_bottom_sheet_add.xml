@@ -33,7 +33,7 @@
             app:fontName="Custom6"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:text="저장" />
+            tools:text="저장" />
 
         <TextView
             android:id="@+id/timetable_add_schedule_bottom_sheet_center_textview"

@@ -36,11 +36,13 @@ public class MarketUsedPresenter{
     private final ApiCallback grantedApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            DefaultResponse defaultResponse = (DefaultResponse) object;
-            if (defaultResponse.isGrantEdit())
+            Item item = (Item) object;
+            if (item.isGrantEdit())
                 marketView.onGrantedDataReceived(true);
             else
                 marketView.onGrantedDataReceived(false);
+
+            marketView.hideLoading();
         }
 
         @Override

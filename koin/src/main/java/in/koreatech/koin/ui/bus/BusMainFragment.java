@@ -17,6 +17,7 @@ import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
+import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.util.BusTimerUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.ui.bus.presenter.BusMainContract;
@@ -26,7 +27,6 @@ import in.koreatech.koin.ui.bus.presenter.BusMainPresenter;
 public class BusMainFragment extends BusBaseFragment implements BusMainContract.View, SwipeRefreshLayout.OnRefreshListener, TimerRenewListener {
     private final String TAG = "BusMainFragment";
     public static final int REFRESH_TIME = 60; // 1분 갱신
-    
     private Unbinder unbinder;
     private boolean isCreate;
     private int departureState; // 0 : 한기대 1 : 야우리 2 : 천안역
@@ -34,7 +34,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     private BusMainPresenter busMainPresenter;
     /* View Component */
     private View view;
-
+    private boolean isVacation;
 
     private BusTimerUtil cityNextBusTimerUtil;
     private BusTimerUtil citySoonBusTimerUtil;
@@ -100,6 +100,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @BindView(R.id.bus_main_fragment_city_bus_type_textview)
     TextView citybusTypeTextview;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +110,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.bus_main_fragment, container, false);
-        this.unbinder = ButterKnife.bind(this, this.view);
+        unbinder = ButterKnife.bind(this, this.view);
         this.isCreate = true;
         init();
         return this.view;
@@ -118,23 +119,23 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void onStart() {
         super.onStart();
-        if (this.refreshBusTimerUtil != null) {
-            this.refreshBusTimerUtil.setEndTime(REFRESH_TIME); // 5분마다 갱신
-            this.refreshBusTimerUtil.startTimer();
+        if (refreshBusTimerUtil != null) {
+            refreshBusTimerUtil.setEndTime(REFRESH_TIME); // 5분마다 갱신
+            refreshBusTimerUtil.startTimer();
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (cityNextBusTimerUtil != null) {
-            cityNextBusTimerUtil.stopTimer();
-            citySoonBusTimerUtil.stopTimer();
+        if (this.cityNextBusTimerUtil != null) {
+            this.cityNextBusTimerUtil.stopTimer();
+            this.citySoonBusTimerUtil.stopTimer();
             daesungBusNextBusTimerUtil.stopTimer();
             daesungBusSoonBusTimerUtil.stopTimer();
-            this.shuttleBusNextBusTimerUtil.stopTimer();
-            this.shuttleBusSoonBusTimerUtil.stopTimer();
-            this.refreshBusTimerUtil.stopTimer();
+            shuttleBusNextBusTimerUtil.stopTimer();
+            shuttleBusSoonBusTimerUtil.stopTimer();
+            refreshBusTimerUtil.stopTimer();
         }
     }
 
@@ -146,7 +147,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        departureState = 0;
+        this.departureState = 0;
         this.arrivalState = 1;
     }
 
@@ -157,9 +158,9 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     @Override
     public void onRefresh() {
-        busMainPresenter.getCityBus(departureState, this.arrivalState);
-        busMainPresenter.getDaesungBus(departureState, this.arrivalState);
-        busMainPresenter.getShuttleBus(departureState, this.arrivalState);
+        this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
+        this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
+        this.busMainPresenter.getTermInfo();
         busSwipeRefreshLayout.setRefreshing(false);
 
 
@@ -168,16 +169,16 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (this.unbinder != null)
-            this.unbinder.unbind();
-        if (cityNextBusTimerUtil != null) {
-            cityNextBusTimerUtil.stopTimer();
-            citySoonBusTimerUtil.stopTimer();
+        if (unbinder != null)
+            unbinder.unbind();
+        if (this.cityNextBusTimerUtil != null) {
+            this.cityNextBusTimerUtil.stopTimer();
+            this.citySoonBusTimerUtil.stopTimer();
             daesungBusNextBusTimerUtil.stopTimer();
             daesungBusSoonBusTimerUtil.stopTimer();
-            this.shuttleBusNextBusTimerUtil.stopTimer();
-            this.shuttleBusSoonBusTimerUtil.stopTimer();
-            this.refreshBusTimerUtil.stopTimer();
+            shuttleBusNextBusTimerUtil.stopTimer();
+            shuttleBusSoonBusTimerUtil.stopTimer();
+            refreshBusTimerUtil.stopTimer();
         }
     }
 
@@ -196,52 +197,52 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     public void init() {
         busDepartureSpinner.setSelection(0);
         busArrivalSpinner.setSelection(1);
-        departureState = 0;
+        this.departureState = 0;
         this.arrivalState = 1;
         busSwipeRefreshLayout.setOnRefreshListener(this);
-        setPresenter(new BusMainPresenter(this, new CityBusRestInteractor()));
-        busMainPresenter.getCityBus(0, 1);
+        setPresenter(new BusMainPresenter(this, new CityBusRestInteractor(), new TermRestInteractor()));
+        this.busMainPresenter.getCityBus(0, 1);
         citybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
         citybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
         daesungNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
         daesungSoonDepartureTimeTextView.setVisibility(View.INVISIBLE);
-        this.shuttleNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
-        this.shuttleSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
+        shuttleNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
+        shuttleSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
         citybusTypeTextview.setVisibility(View.INVISIBLE);
-        citySoonBusTimerUtil = new BusTimerUtil(0);
-        citySoonBusTimerUtil.setTimerRenewListener(this);
-        cityNextBusTimerUtil = new BusTimerUtil(1);
-        cityNextBusTimerUtil.setTimerRenewListener(this);
+        this.citySoonBusTimerUtil = new BusTimerUtil(0);
+        this.citySoonBusTimerUtil.setTimerRenewListener(this);
+        this.cityNextBusTimerUtil = new BusTimerUtil(1);
+        this.cityNextBusTimerUtil.setTimerRenewListener(this);
         daesungBusSoonBusTimerUtil = new BusTimerUtil(2);
         daesungBusSoonBusTimerUtil.setTimerRenewListener(this);
         daesungBusNextBusTimerUtil = new BusTimerUtil(3);
         daesungBusNextBusTimerUtil.setTimerRenewListener(this);
-        this.shuttleBusSoonBusTimerUtil = new BusTimerUtil(4);
-        this.shuttleBusSoonBusTimerUtil.setTimerRenewListener(this);
-        this.shuttleBusNextBusTimerUtil = new BusTimerUtil(5);
-        this.shuttleBusNextBusTimerUtil.setTimerRenewListener(this);
-        this.refreshBusTimerUtil = new BusTimerUtil(6);
-        this.refreshBusTimerUtil.setTimerRenewListener(this);
+        shuttleBusSoonBusTimerUtil = new BusTimerUtil(4);
+        shuttleBusSoonBusTimerUtil.setTimerRenewListener(this);
+        shuttleBusNextBusTimerUtil = new BusTimerUtil(5);
+        shuttleBusNextBusTimerUtil.setTimerRenewListener(this);
+        refreshBusTimerUtil = new BusTimerUtil(6);
+        refreshBusTimerUtil.setTimerRenewListener(this);
     }
 
 
     public void setDepartureText() {
-        citybusDepartureTextview.setText(getResources().getStringArray(R.array.bus_place)[departureState]);
-        this.shuttleDepatureTextview.setText(getResources().getStringArray(R.array.bus_place)[departureState]);
-        daesungDepartureTextview.setText(getResources().getStringArray(R.array.bus_place)[departureState]);
+        citybusDepartureTextview.setText(getResources().getStringArray(R.array.bus_place)[this.departureState]);
+        shuttleDepatureTextview.setText(getResources().getStringArray(R.array.bus_place)[this.departureState]);
+        daesungDepartureTextview.setText(getResources().getStringArray(R.array.bus_place)[this.departureState]);
     }
 
     public void setArrivalText() {
         citybusArrivalTextview.setText(getResources().getStringArray(R.array.bus_place)[this.arrivalState]);
-        this.shuttleArrivalTextview.setText(getResources().getStringArray(R.array.bus_place)[this.arrivalState]);
+        shuttleArrivalTextview.setText(getResources().getStringArray(R.array.bus_place)[this.arrivalState]);
         daesungArrivalTextview.setText(getResources().getStringArray(R.array.bus_place)[this.arrivalState]);
     }
 
     public void setDaesungTypeSet() {
-        if (departureState == 0 && this.arrivalState == 1) {
+        if (this.departureState == 0 && this.arrivalState == 1) {
             daesungBusTypeTextView.setVisibility(View.VISIBLE);
             daesungBusTypeTextView.setText(R.string.daesung_depature_place_university_to_yawoori);
-        } else if (departureState == 1 && this.arrivalState == 0) {
+        } else if (this.departureState == 1 && this.arrivalState == 0) {
             daesungBusTypeTextView.setVisibility(View.VISIBLE);
             daesungBusTypeTextView.setText(R.string.daesung_depature_place_yawoori_to_university);
         } else
@@ -250,26 +251,26 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     public void setSpinner() {
 
-        busDepartureSpinner.setSelection(departureState);
+        busDepartureSpinner.setSelection(this.departureState);
         busArrivalSpinner.setSelection(this.arrivalState);
     }
 
     @OnItemSelected(R.id.bus_main_fragment_bus_departure_spinner)
     public void onItemSelectedBuDepartureSpinner(Spinner spinner, int position) {
         if (position != this.arrivalState)
-            departureState = position;
+            this.departureState = position;
         else {
-            this.arrivalState = departureState;
-            departureState = position;
+            this.arrivalState = this.departureState;
+            this.departureState = position;
         }
         setArrivalText();
         setDepartureText();
         setDaesungTypeSet();
         setSpinner();
         if (!this.isCreate) {
-            busMainPresenter.getCityBus(departureState, this.arrivalState);
-            busMainPresenter.getDaesungBus(departureState, this.arrivalState);
-            busMainPresenter.getShuttleBus(departureState, this.arrivalState);
+            this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getTermInfo();
         }
         this.isCreate = false;
 
@@ -279,10 +280,10 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @OnItemSelected(R.id.bus_main_fragment_bus_arrival_spinner)
     public void onItemSelectedBusArrivalSpinner(Spinner spinner, int position) {
 
-        if (position != departureState)
+        if (position != this.departureState)
             this.arrivalState = position;
         else {
-            departureState = this.arrivalState;
+            this.departureState = this.arrivalState;
             this.arrivalState = position;
 
         }
@@ -291,9 +292,9 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         setDaesungTypeSet();
         setSpinner();
         if (!this.isCreate) {
-            busMainPresenter.getCityBus(departureState, this.arrivalState);
-            busMainPresenter.getDaesungBus(departureState, this.arrivalState);
-            busMainPresenter.getShuttleBus(departureState, this.arrivalState);
+            this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getTermInfo();
 
         }
         this.isCreate = false;
@@ -302,21 +303,21 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void updateShuttleBusTime(int current, int next) {
         if (current >= 0) {
-            this.shuttleBusSoonBusTimerUtil.setEndTime(current);
-            this.shuttleBusSoonBusTimerUtil.setTextView(this.shuttleSoonArrivalTimeTextView);
-            this.shuttleBusSoonBusTimerUtil.startTimer();
+            shuttleBusSoonBusTimerUtil.setEndTime(current);
+            shuttleBusSoonBusTimerUtil.setTextView(shuttleSoonArrivalTimeTextView);
+            shuttleBusSoonBusTimerUtil.startTimer();
         } else {
-            this.shuttleBusSoonBusTimerUtil.stopTimer();
-            this.shuttleSoonArrivalTimeTextView.setText(R.string.bus_no_information);
+            shuttleBusSoonBusTimerUtil.stopTimer();
+            shuttleSoonArrivalTimeTextView.setText(R.string.bus_no_information);
         }
 
         if (next >= 0) {
-            this.shuttleBusNextBusTimerUtil.setEndTime(next);
-            this.shuttleBusNextBusTimerUtil.setTextView(this.shuttleNextArrivalTimeTextview);
-            this.shuttleBusNextBusTimerUtil.startTimer();
+            shuttleBusNextBusTimerUtil.setEndTime(next);
+            shuttleBusNextBusTimerUtil.setTextView(shuttleNextArrivalTimeTextview);
+            shuttleBusNextBusTimerUtil.startTimer();
         } else {
-            this.shuttleBusNextBusTimerUtil.stopTimer();
-            this.shuttleNextArrivalTimeTextview.setText(R.string.bus_no_information);
+            shuttleBusNextBusTimerUtil.stopTimer();
+            shuttleNextArrivalTimeTextview.setText(R.string.bus_no_information);
         }
 
     }
@@ -326,26 +327,26 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         if (current > 0) {
             citybusSoonDepartureTimeTextview.setVisibility(View.VISIBLE);
             citybusSoonDepartureTimeTextview.setText("(" + TimeUtil.getAddTimeSecond(current) + ")분 출발");
-            citySoonBusTimerUtil.setEndTime(current);
-            citySoonBusTimerUtil.setTextView(citybusSoonArrivalTimeTextview);
-            citySoonBusTimerUtil.startTimer();
+            this.citySoonBusTimerUtil.setEndTime(current);
+            this.citySoonBusTimerUtil.setTextView(citybusSoonArrivalTimeTextview);
+            this.citySoonBusTimerUtil.startTimer();
 
         } else {
             citybusSoonArrivalTimeTextview.setText(R.string.bus_no_information);
             citybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
-            citySoonBusTimerUtil.stopTimer();
+            this.citySoonBusTimerUtil.stopTimer();
         }
 
         if (next > 0) {
             citybusNextDepartureTimeTextview.setVisibility(View.VISIBLE);
             citybusNextDepartureTimeTextview.setText("(" + TimeUtil.getAddTimeSecond(next) + ")분 출발");
-            cityNextBusTimerUtil.setEndTime(next);
-            cityNextBusTimerUtil.setTextView(citybusNextArrivalTimeTextView);
-            cityNextBusTimerUtil.startTimer();
+            this.cityNextBusTimerUtil.setEndTime(next);
+            this.cityNextBusTimerUtil.setTextView(citybusNextArrivalTimeTextView);
+            this.cityNextBusTimerUtil.startTimer();
         } else {
             citybusNextArrivalTimeTextView.setText(R.string.bus_no_information);
             citybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
-            cityNextBusTimerUtil.stopTimer();
+            this.cityNextBusTimerUtil.stopTimer();
         }
     }
 
@@ -359,10 +360,10 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
         }
 
 //        if (next == 0) {
-//            citybusNextTypeTextview.setVisibility(View.INVISIBLE);
+//            mCitybusNextTypeTextview.setVisibility(View.INVISIBLE);
 //        } else {
-//            citybusNextTypeTextview.setVisibility(View.VISIBLE);
-//            citybusNextTypeTextview.setText(Integer.toString(current) + "번 버스");
+//            mCitybusNextTypeTextview.setVisibility(View.VISIBLE);
+//            mCitybusNextTypeTextview.setText(Integer.toString(current) + "번 버스");
 //        }
     }
 
@@ -389,12 +390,12 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     @Override
     public void updateShuttleBusDepartInfo(String current, String next) {
-        if (this.shuttleSoonDepartureTimeTextview != null) {
-            this.shuttleSoonDepartureTimeTextview.setVisibility(current.isEmpty() ? View.INVISIBLE : View.VISIBLE);
-            this.shuttleSoonDepartureTimeTextview.setText("(" + current + ")분 출발");
+        if (shuttleSoonDepartureTimeTextview != null) {
+            shuttleSoonDepartureTimeTextview.setVisibility(current.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            shuttleSoonDepartureTimeTextview.setText("(" + current + ")분 출발");
 
-            this.shuttleNextDepartureTimeTextview.setVisibility(next.isEmpty() ? View.INVISIBLE : View.VISIBLE);
-            this.shuttleNextDepartureTimeTextview.setText("(" + next + ")분 출발");
+            shuttleNextDepartureTimeTextview.setVisibility(next.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            shuttleNextDepartureTimeTextview.setText("(" + next + ")분 출발");
         }
     }
 
@@ -425,10 +426,10 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void onResume() {
         super.onResume();
-        if (busMainPresenter != null) {
-            busMainPresenter.getCityBus(departureState, this.arrivalState);
-            busMainPresenter.getDaesungBus(departureState, this.arrivalState);
-            busMainPresenter.getShuttleBus(departureState, this.arrivalState);
+        if (this.busMainPresenter != null) {
+            this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getTermInfo();
             busSwipeRefreshLayout.setRefreshing(false);
 
         }
@@ -443,38 +444,52 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     @Override
     public void refreshTimer(int code) {
         if (code == 0)
-            busMainPresenter.getCityBus(departureState, this.arrivalState);
+            this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
         else if (code == 2)
-            busMainPresenter.getDaesungBus(departureState, this.arrivalState);
+            this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
         else if (code == 4)
-            busMainPresenter.getShuttleBus(departureState, this.arrivalState);
+            this.busMainPresenter.getTermInfo();
         else if (code == 6) {
-            busMainPresenter.getCityBus(departureState, this.arrivalState);
-            busMainPresenter.getDaesungBus(departureState, this.arrivalState);
-            busMainPresenter.getShuttleBus(departureState, this.arrivalState);
-            this.refreshBusTimerUtil.setEndTime(REFRESH_TIME);
-            this.refreshBusTimerUtil.startTimer();
+            this.busMainPresenter.getCityBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getDaesungBus(this.departureState, this.arrivalState);
+            this.busMainPresenter.getTermInfo();
+            refreshBusTimerUtil.setEndTime(REFRESH_TIME);
+            refreshBusTimerUtil.startTimer();
         }
     }
 
     @Override
     public void updateFailShuttleBusDepartInfo() {
-        this.shuttleBusSoonBusTimerUtil.stopTimer();
-        this.shuttleBusNextBusTimerUtil.stopTimer();
-        this.shuttleNextArrivalTimeTextview.setText(R.string.bus_no_information);
-        this.shuttleSoonArrivalTimeTextView.setText(R.string.bus_no_information);
-        this.shuttleNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
-        this.shuttleSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
+        shuttleBusSoonBusTimerUtil.stopTimer();
+        shuttleBusNextBusTimerUtil.stopTimer();
+        shuttleNextArrivalTimeTextview.setText(R.string.bus_no_information);
+        shuttleSoonArrivalTimeTextView.setText(R.string.bus_no_information);
+        shuttleNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
+        shuttleSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void updateFailCityBusDepartInfo() {
-        citySoonBusTimerUtil.stopTimer();
-        cityNextBusTimerUtil.stopTimer();
+        this.citySoonBusTimerUtil.stopTimer();
+        this.cityNextBusTimerUtil.stopTimer();
         citybusNextArrivalTimeTextView.setText(R.string.bus_no_information);
         citybusSoonArrivalTimeTextview.setText(R.string.bus_no_information);
         citybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
         citybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
+    }
+
+    /**
+     * 받아온 학기 정보로 셔틀버스의 시간을 계산하여 update하는 함수
+     *
+     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름방학, 20 - 2학기, 21 - 2학기 겨울방학
+     */
+    @Override
+    public void updateShuttleBusInfo(int term) {
+        if (term == 10 || term == 20)                                                //학기중
+            isVacation = false;
+        else                                                                        //방학중
+            isVacation = true;
+        this.busMainPresenter.getShuttleBus(this.departureState, this.arrivalState, isVacation);
     }
 
     @Override

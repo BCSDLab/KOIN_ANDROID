@@ -27,6 +27,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,7 +79,7 @@ public class TimetableView extends LinearLayout {
 
     TableLayout tableHeader;
     TableLayout tableBox;
-    ScrollView scrollView;
+    NestedScrollView scrollView;
 
 
     private Context context;
