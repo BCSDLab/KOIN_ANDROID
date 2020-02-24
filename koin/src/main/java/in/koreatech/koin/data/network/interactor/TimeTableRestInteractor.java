@@ -1,25 +1,23 @@
 package in.koreatech.koin.data.network.interactor;
 
-import android.util.Log;
 
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
+import in.koreatech.koin.data.network.entity.Semester;
+import in.koreatech.koin.data.network.service.TimeTableService;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
 
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.response.DefaultResponse;
-
-import in.koreatech.koin.data.network.service.TimeTableService;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBearer;
 
@@ -54,9 +52,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -92,9 +87,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -129,9 +121,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -166,9 +155,6 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
                         apiCallback.onFailure(throwable);
                     }
 
@@ -202,9 +188,38 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void readSemesters(ApiCallback apiCallback) {
+        RetrofitManager.getInstance().getRetrofit().create(TimeTableService.class).getSemesters()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<Semester>>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        compositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<Semester> response) {
+                        if (response != null) {
+                            apiCallback.onSuccess(response);
+                        } else {
+                            apiCallback.onFailure(new Throwable("fail"));
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
                         apiCallback.onFailure(throwable);
                     }
 

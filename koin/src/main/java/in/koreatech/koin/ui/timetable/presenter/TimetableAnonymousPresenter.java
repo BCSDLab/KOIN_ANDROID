@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Lecture;
+import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
-import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.data.network.entity.Version;
 import in.koreatech.koin.data.network.interactor.AppVersionInteractor;
 import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
@@ -19,11 +18,12 @@ import in.koreatech.koin.data.network.interactor.LectureInteractor;
 import in.koreatech.koin.data.network.interactor.LectureRestInteractor;
 import in.koreatech.koin.data.network.interactor.TimeTableInteractor;
 import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
+import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.util.SaveManager;
 
 
-public class TimetableAnonymousPresenter{
-    public static final String TAG = TimetableAnonymousPresenter.class.getName();
+public class TimetableAnonymousPresenter {
+    public static final String TAG = "TimetableAnonymous";
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
     private AppVersionInteractor appVersionInteractor;
@@ -37,7 +37,6 @@ public class TimetableAnonymousPresenter{
         this.appVersionInteractor = new AppVersionRestInteractor();
         this.timeTableInteractor = new TimeTableRestInteractor();
         this.lectureInteractor = new LectureRestInteractor();
-        //
     }
 
     final ApiCallback lectureApiCallback = new ApiCallback() {
@@ -90,6 +89,21 @@ public class TimetableAnonymousPresenter{
         }
     };
 
+    final ApiCallback readSemestersApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Semester> semesters = (ArrayList<Semester>) object;
+            timeTableView.getSemester(semesters);
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            timeTableView.showFailMessage("정보를 불러오지 못했습니다.");
+            timeTableView.hideLoading();
+        }
+    };
+
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.KOREA);
         cal.setTimeInMillis(time * 1000);
@@ -98,19 +112,19 @@ public class TimetableAnonymousPresenter{
     }
 
     public void getLecture(String semester) {
-        this.timeTableView.showLoading();
-        this.lectureInteractor.readLecture(semester, lectureApiCallback);
+        timeTableView.showLoading();
+        lectureInteractor.readLecture(semester, lectureApiCallback);
     }
 
-    public void addTimeTableItem(TimeTableItem timeTableItem, String semester) {
-        this.timeTableView.showLoading();
+    public void addTimeTableItem(TimeTable.TimeTableItem timeTableItem, String semester) {
+        timeTableView.showLoading();
         TimeTable savedTimeTable = new TimeTable();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 savedTimeTable = SaveManager.loadTimeTable(timeTable);
             } catch (Exception e) {
-                this.timeTableView.showFailSavedTimeTable();
+                timeTableView.showFailSavedTimeTable();
             }
         }
 
@@ -120,37 +134,37 @@ public class TimetableAnonymousPresenter{
             timeTableItem.setId(++id);
             TimeTableSharedPreferencesHelper.getInstance().saveTimeTableBlockID(id);
             savedTimeTable.addTimeTableItem(timeTableItem);
-            TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(SaveManager.saveTimeTable(savedTimeTable, semester));
+            TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(savedTimeTable, semester));
         }
 
 
-        this.timeTableView.showSuccessAddTimeTableItem(savedTimeTable);
-        this.timeTableView.updateWidget();
-        this.timeTableView.hideLoading();
+        timeTableView.showSuccessAddTimeTableItem(savedTimeTable);
+        timeTableView.updateWidget();
+        timeTableView.hideLoading();
     }
 
-    public void getSavedTimeTableItem() {
-        this.timeTableView.showLoading();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+    public void getSavedTimeTableItem(String semester) {
+        timeTableView.showLoading();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 TimeTable savedTimeTable = SaveManager.loadTimeTable(timeTable);
                 if (savedTimeTable != null) {
-                    this.timeTableView.showSavedTimeTable(savedTimeTable);
+                    timeTableView.showSavedTimeTable(savedTimeTable);
                 }
             } catch (Exception e) {
                 Log.e(TAG, "getSavedTimeTableItem: ", e);
-                this.timeTableView.showFailSavedTimeTable();
+                timeTableView.showFailSavedTimeTable();
             }
         } else
-            this.timeTableView.showFailSavedTimeTable();
-        this.timeTableView.updateWidget();
-        this.timeTableView.hideLoading();
+            timeTableView.showFailSavedTimeTable();
+        timeTableView.updateWidget();
+        timeTableView.hideLoading();
     }
 
-    public TimeTable getSavedTimeTable() {
+    public TimeTable getSavedTimeTable(String semester) {
         TimeTable savedTimeTable = new TimeTable();
-        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable();
+        String timeTable = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester);
         if (timeTable != null) {
             try {
                 savedTimeTable = SaveManager.loadTimeTable(timeTable);
@@ -161,28 +175,31 @@ public class TimetableAnonymousPresenter{
         return savedTimeTable;
     }
 
-    public void deleteItem(int id) {
-        this.timeTableView.showLoading();
+    public void deleteItem(String semester, int id) {
+        timeTableView.showLoading();
         deleteId = id;
-        TimeTable timeTable = getSavedTimeTable();
+        TimeTable timeTable = getSavedTimeTable(semester);
         TimeTable saveTable = new TimeTable();
         if (timeTable == null) return;
         saveTable.setSemester(timeTable.semester);
-        for (TimeTableItem timeTableItem : timeTable.getTimeTableItems()) {
+        for (TimeTable.TimeTableItem timeTableItem : timeTable.getTimeTableItems()) {
             if (timeTableItem.getId() != id) {
                 saveTable.addTimeTableItem(timeTableItem);
             }
         }
-        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(SaveManager.saveTimeTable(saveTable, saveTable.semester));
-        this.timeTableView.showDeleteSuccessTimeTableItem(deleteId);
-        this.timeTableView.hideLoading();
+        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(saveTable, saveTable.semester));
+        timeTableView.showDeleteSuccessTimeTableItem(deleteId);
+        timeTableView.hideLoading();
     }
 
 
     public void getTimeTableVersion() {
-        this.timeTableView.showLoading();
-        appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+        timeTableView.showLoading();
+        this.appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
     }
 
-
+    public void readSemesters() {
+        timeTableView.showLoading();
+        timeTableInteractor.readSemesters(readSemestersApiCallback);
+    }
 }

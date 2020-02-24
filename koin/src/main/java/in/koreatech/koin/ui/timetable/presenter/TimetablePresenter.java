@@ -9,11 +9,10 @@ import java.util.Locale;
 
 import android.text.format.DateFormat;
 
-import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Lecture;
+import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
-import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.data.network.entity.Version;
 import in.koreatech.koin.data.network.interactor.AppVersionInteractor;
 import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
@@ -21,11 +20,11 @@ import in.koreatech.koin.data.network.interactor.LectureInteractor;
 import in.koreatech.koin.data.network.interactor.LectureRestInteractor;
 import in.koreatech.koin.data.network.interactor.TimeTableInteractor;
 import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
+import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.util.SaveManager;
 
-
-public class TimetablePresenter {
-    public static final String TAG = TimetablePresenter.class.getName();
+public class TimetablePresenter{
+    public static final String TAG = "TimetablePresenter";
     public static final String TIMETABLE_SERVICE_CODE = "timetable";
 
     private AppVersionInteractor appVersionInteractor;
@@ -140,6 +139,21 @@ public class TimetablePresenter {
         }
     };
 
+    final ApiCallback readSemestersApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Semester> semesters = (ArrayList<Semester>) object;
+            timeTableView.getSemester(semesters);
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            timeTableView.showFailMessage("정보를 불러오지 못했습니다.");
+            timeTableView.hideLoading();
+        }
+    };
+
     private String getDate(long time) {
         Calendar cal = Calendar.getInstance(Locale.KOREA);
         cal.setTimeInMillis(time * 1000);
@@ -148,13 +162,13 @@ public class TimetablePresenter {
     }
 
     public void getLecture(String semester) {
-        this.timeTableView.showLoading();
+        timeTableView.showLoading();
         this.lectureInteractor.readLecture(semester, lectureApiCallback);
     }
 
-    public void addTimeTableItem(TimeTableItem timeTableItem, String semster) {
+    public void addTimeTableItem(TimeTable.TimeTableItem timeTableItem, String semester) {
         this.timeTableView.showLoading();
-        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semster);
+        JsonObject timetableJson = SaveManager.saveTimeTableItemAsJson(timeTableItem, semester);
         this.timeTableInteractor.createTimeTable(addTimetableApiCallback, timetableJson);
     }
 
@@ -171,7 +185,12 @@ public class TimetablePresenter {
 
     public void getTimetTableVersion() {
         this.timeTableView.showLoading();
-        appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+        this.appVersionInteractor.readAppVersion(TIMETABLE_SERVICE_CODE, readTableVersionApiCallback);
+    }
+
+    public void readSemesters() {
+        this.timeTableView.showLoading();
+        this.timeTableInteractor.readSemesters(readSemestersApiCallback);
     }
 
 

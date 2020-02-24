@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-
+String applicationName = 'koin'
 android {
     compileSdkVersion project.compileSdkVersion
 
     defaultConfig {
         applicationId "in.koreatech.koin"
         minSdkVersion 21
-        targetSdkVersion 26
-        versionCode 20206
-        versionName "2.2.6"
+        targetSdkVersion 28
+        versionCode 20208
+        versionName "2.2.8"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -18,6 +18,15 @@ android {
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+    }
+
+    signingConfigs {
+            release {
+                storeFile file("./team_kap_android.jks")
+                storePassword getPassword()
+                keyAlias "koin_release_key"
+                keyPassword getPassword()
+            }
     }
 
     buildTypes {
@@ -32,6 +41,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "false"
+            signingConfig signingConfigs.release
         }
     }
 
@@ -51,12 +61,31 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
+        }
+    }
+}
+
+def getPassword() {
+    try {
+        def stringsFile = file("./src/main/res/values/keys.xml")
+        return new XmlParser().parse(stringsFile).string.find {
+            it.@name.equals 'koin_store_password'
+        }.text()
+    } catch (e) {
+        println(e)
+        return ""
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
@@ -82,6 +111,9 @@ dependencies {
 
     //naver map
     implementation 'com.naver.maps:map-sdk:3.5.0'
+    // https://github.com/irshuLx/Android-WYSIWYG-Editor
+    implementation 'com.github.irshulx:laser-native-editor:3.0.4'
+    implementation 'com.github.duanhong169:colorpicker:1.1.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
 }
 repositories {

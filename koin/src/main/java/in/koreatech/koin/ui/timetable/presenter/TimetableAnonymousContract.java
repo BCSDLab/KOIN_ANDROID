@@ -1,12 +1,13 @@
 package in.koreatech.koin.ui.timetable.presenter;
 
 import java.util.ArrayList;
-
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Lecture;
+import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 
-public interface TimetableAnonymousContract {
+
+public interface TimetableAnonymousContract{
     interface View extends BaseView<TimetableAnonymousPresenter> {
         void showLoading();
 
@@ -45,6 +46,7 @@ public interface TimetableAnonymousContract {
         void updateSemesterCode(String semester);
 
         void updateWidget();
-    }
 
+        void getSemester(ArrayList<Semester> semesters);
+    }
 }

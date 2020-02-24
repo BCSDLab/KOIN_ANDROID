@@ -56,6 +56,6 @@ public class MarketUsedEditPresenter {
 
     public void uploadThumbnailImage(File file) {
         marketEditView.showLoading();
-        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+        marketUsedInteractor.uploadThumbnailImage(file, uploadImageApiCallback);
     }
 }

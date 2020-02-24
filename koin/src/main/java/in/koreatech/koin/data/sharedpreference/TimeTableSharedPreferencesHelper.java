@@ -55,12 +55,12 @@ public class TimeTableSharedPreferencesHelper extends BaseSharedPreferencesHelpe
         return getString(KEY_LAST_LOGIN_TIMETABLE_PICTURE_NAME, null);
     }
 
-    public void saveTimeTable(String jsonFile) {
-        putString(SAVE_ANONYMOUS_USER_TIMETABLE, jsonFile);
+    public void saveTimeTable(String semester, String jsonFile) {
+        putString(semester, jsonFile);
     }
 
-    public String loadSaveTimeTable() {
-        return getString(SAVE_ANONYMOUS_USER_TIMETABLE, null);
+    public String loadSaveTimeTable(String semester) {
+        return getString(semester, null);
     }
 
     public void saveTimeTableBlockID(int savedId) {

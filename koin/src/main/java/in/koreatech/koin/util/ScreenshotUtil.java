@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 
-import in.koreatech.koin.ui.timetable.TimetableView;
+import androidx.core.widget.NestedScrollView;
 
+import in.koreatech.koin.ui.timetable.TimetableView;
 
 public class ScreenshotUtil {
     private static ScreenshotUtil instance;
@@ -43,7 +43,7 @@ public class ScreenshotUtil {
     }
 
 
-    public Bitmap takeTimeTableScreenShot(ScrollView scrollView) {
+    public Bitmap takeTimeTableScreenShot(NestedScrollView scrollView) {
 
         Bitmap bitmap = Bitmap.createBitmap(scrollView.getWidth(), TimetableView.getCellHeight() * 9, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -53,7 +53,7 @@ public class ScreenshotUtil {
         return bitmap;
     }
 
-    public Bitmap takeTimeTableScreenShot(ScrollView scrollView, TableLayout tableLayout) {
+    public Bitmap takeTimeTableScreenShot(NestedScrollView scrollView, TableLayout tableLayout) {
         Bitmap gatherBitmap;
         Bitmap header = takeScreenshotForView(tableLayout);
         Bitmap table = takeTimeTableScreenShot(scrollView);
