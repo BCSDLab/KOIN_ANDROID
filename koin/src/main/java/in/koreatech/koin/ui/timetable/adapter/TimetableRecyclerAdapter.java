@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.data.network.entity.Lecture;
+import in.koreatech.koin.util.SeparateTime;
 
-import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 
 public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -26,7 +26,6 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     private final int VIEW_TYPE_LOADING = 1;
 
     private Context context;
-    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Lecture> lectureArrayList;
     private RecyclerViewClickListener recyclerViewClickListener;
 
@@ -80,7 +79,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         TextView mLectureTitle;
         TextView mLectureInformationOne;
         TextView mLectureInfromationTwo;
-        ImageButton addLectureButton;
+        ImageButton mAddLectureButton;
 
 
         public ItemViewHolder(@NonNull View itemView) {
@@ -89,7 +88,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
             mLectureTitle = itemView.findViewById(R.id.lecture_title);
             mLectureInformationOne = itemView.findViewById(R.id.lecture_information1);
             mLectureInfromationTwo = itemView.findViewById(R.id.lecture_infromation2);
-            addLectureButton = itemView.findViewById(R.id.add_lecture_button);
+            mAddLectureButton = itemView.findViewById(R.id.add_lecture_button);
         }
     }
 
@@ -114,17 +113,17 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         StringBuilder stringBuilderTwo = new StringBuilder();
         Lecture lecture = this.lectureArrayList.get(position);
         if (lecture.isItemClicked)
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white4));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(this.context.getResources().getColor(R.color.white4));
         else
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(this.context.getResources().getColor(R.color.white));
 
         if (lecture.isAddButtonClicked)
-            holder.addLectureButton.setBackground(context.getDrawable(R.drawable.ic_delete_lecture_item_button));
+            holder.mAddLectureButton.setBackground(this.context.getDrawable(R.drawable.ic_delete_lecture_item_button));
         else
-            holder.addLectureButton.setBackground(context.getDrawable(R.drawable.ic_add_lecture_item_button));
+            holder.mAddLectureButton.setBackground(this.context.getDrawable(R.drawable.ic_add_lecture_item_button));
         holder.mLectureTitle.setText(lecture.name);
 
-        stringBuilder.append(getSpertateTimeToString(lecture.classTime)).append("/ 정원 ").append(lecture.regularNumber);
+        stringBuilder.append(SeparateTime.getSpertateTimeToString(lecture.classTime)).append("/ 정원 ").append(lecture.regularNumber);
         holder.mLectureInformationOne.setText(stringBuilder.toString());
 
         stringBuilderTwo.append(lecture.department).append("/").append(lecture.grades).append("학점").append("/").append(lecture.code).append("/").append(lecture.professor);
@@ -136,7 +135,7 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         holder.mLectureInfromationTwo.setText(stringBuilderTwo.toString());
 
         if (recyclerViewClickListener != null) {
-            holder.addLectureButton.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
+            holder.mAddLectureButton.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
             holder.mTmetableRecyclerviewItemRelativelayout.setOnClickListener(v -> recyclerViewClickListener.onClick(v, position));
         }
     }

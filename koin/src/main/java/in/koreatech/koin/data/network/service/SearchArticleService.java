@@ -7,6 +7,7 @@ import retrofit2.http.Query;
 
 import static in.koreatech.koin.constant.URLConstant.SEARCH.ARTICLESEARCH;
 
+
 public interface SearchArticleService {
     /**
      * @param page       페이지 숫자
@@ -15,6 +16,6 @@ public interface SearchArticleService {
      * @return
      */
     @GET(ARTICLESEARCH)
-    Observable<SearchedArticle> getSearchedArticles(@Query("page") int page, @Query("searchType") int searchType, @Query("query") String query);
+    Observable<SearchedArticle> getSearchedArticles(@Query("page") int page, @Query("searchType") int searchType, @Query(value = "query", encoded = true) String query);
 
 }

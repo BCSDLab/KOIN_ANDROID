@@ -20,5 +20,19 @@ public class BusResponse {
     @Expose
     public int nextRemainTime;
 
+    public int getBusNumber() {
+        return busNumber;
+    }
 
+    public int getRemainTime() {
+        return remainTime;
+    }
+
+    public int getNextBusNumber() {
+        return nextBusNumber;
+    }
+
+    public int getNextRemainTime() {
+        return nextRemainTime;
+    }
 }

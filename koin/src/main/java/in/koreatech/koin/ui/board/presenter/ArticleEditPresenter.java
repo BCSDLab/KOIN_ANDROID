@@ -1,17 +1,25 @@
 package in.koreatech.koin.ui.board.presenter;
+import java.io.File;
 
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
+import in.koreatech.koin.data.network.entity.Image;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
+import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
+import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
 
 public class ArticleEditPresenter {
     private final ArticleEditContract.View articleEditView;
 
     private final CommunityInteractor communityInteractor;
+    private final MarketUsedInteractor marketUsedInteractor;
+    private String uploadImageId;
 
     public ArticleEditPresenter(ArticleEditContract.View articleEditView, CommunityInteractor communityInteractor) {
         this.articleEditView = articleEditView;
         this.communityInteractor = communityInteractor;
+        // TODO -> API 변경시 바꾸기
+        this.marketUsedInteractor = new MarketUsedRestInteractor();
     }
 
     private final ApiCallback articleApiCallback = new ApiCallback() {
@@ -25,6 +33,25 @@ public class ArticleEditPresenter {
         public void onFailure(Throwable throwable) {
             articleEditView.showMessage(throwable.getMessage());
             articleEditView.hideLoading();
+        }
+    };
+
+    private final ApiCallback uploadImageApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            Image item = (Image) object;
+
+            if(item.getUrls() != null) {
+                articleEditView.showUploadImage(item.getUrls().get(0), uploadImageId);
+            } else {
+                articleEditView.showFailUploadImage(uploadImageId);
+            }
+
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            articleEditView.showFailUploadImage(uploadImageId);
         }
     };
 
@@ -48,5 +75,12 @@ public class ArticleEditPresenter {
         communityInteractor.updateAnonymousArticle(articleId, title, content, password, articleApiCallback);
     }
 
+    public void uploadImage(File file, String uid) {
+        uploadImageId = uid;
+        if(file == null) {
+            articleEditView.showFailUploadImage(uid);
+            return;
+        }
+        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+    }
 }
-

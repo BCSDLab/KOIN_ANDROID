@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="70dp"
+    android:gravity="center_vertical"
+    tools:ignore="MissingPrefix">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/colorPrimary"
+        android:weightSum="6">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginTop="2dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="7sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="승차장소"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            app:fontName="Bold" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="7sp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="시간"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            app:fontName="Bold" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="한기대"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="18:10"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="옥산(가산3리BS)"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="청주역A 건너편"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="솔밭공원"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="갤러리호텔(봉명우체국BS)"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="사창사거리"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="체육관(NEPA)"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text="하차"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_column="0"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="5"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text=" "
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_column="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:gravity="center"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="6sp"
+            android:text=" "
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+    </TableRow>
+
+</TableLayout>

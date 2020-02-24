@@ -2,7 +2,7 @@ package in.koreatech.koin.util;
 
 public class FormValidatorUtil {
     public static boolean validateStringIsEmpty(String str) {
-        return str == null || str.trim().length() < 1;
+        return str == null || str.trim().replace(" ","").length() < 1;
     }
 
     public static boolean validateStartPlaceIsEmpty(String str) {

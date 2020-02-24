@@ -1,6 +1,5 @@
 package in.koreatech.koin.constant;
 
-
 /**
  * KOIN API URL
  */
@@ -32,7 +31,9 @@ public class URLConstant {
     public static final String LECTURE = "lectures";
     public static final String TIMETABLE = "timetable";
     public static final String TIMETABLES = "timetables";
+    public static final String SEMESTERS = "semesters";
     public static final String LAND = "lands";
+    public static final String TERM = "term";
 
 
     public static final class CALLVANS {
@@ -82,5 +83,9 @@ public class URLConstant {
         public static final String ARTICLESEARCH = "articles/" + SEARCH;
     }
 
+    public static final class TEMP{
+        public static final String TEMP = "/temp";
+        public static final String TEMP_IMAGE_UPLOAD = TEMP + "/items/image/upload";
 
+    }
 }

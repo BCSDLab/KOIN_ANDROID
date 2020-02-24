@@ -16,15 +16,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
-import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
+import in.koreatech.koin.data.network.entity.TimeTable;
 
 public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapter<TimetableBottomSheetTimeRecyclerAdapter.ViewHolder> {
-    private final String TAG = TimetableBottomSheetTimeRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "TimetableBottomSheetTimeRecyclerAdapter";
 
 
     private Context context;
-    private LayoutInflater layoutInflater; //inflate 사용위한 inflater
-    private ArrayList<TimeTableItem> timeTableItemArrayList;
+    private ArrayList<TimeTable.TimeTableItem> timeTableItemArrayList;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,9 +44,8 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 
     }
 
-    public TimetableBottomSheetTimeRecyclerAdapter(Context context, ArrayList<TimeTableItem> lectureArrayList) {
+    public TimetableBottomSheetTimeRecyclerAdapter(Context context, ArrayList<TimeTable.TimeTableItem> lectureArrayList) {
         this.context = context;
-        this.layoutInflater = LayoutInflater.from(context);
         this.timeTableItemArrayList = new ArrayList<>();
         this.timeTableItemArrayList.addAll(lectureArrayList);
     }
@@ -63,9 +61,9 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        TimeTableItem timeTableItem = timeTableItemArrayList.get(position);
+        TimeTable.TimeTableItem timeTableItem = this.timeTableItemArrayList.get(position);
         if (position > 0)
-            holder.timetableCustomTimeEditImageview.setBackground(context.getResources().getDrawable(R.drawable.ic_delete_timetable_time));
+            holder.timetableCustomTimeEditImageview.setBackground(this.context.getResources().getDrawable(R.drawable.ic_delete_timetable_time));
 //        holder.timetableCustomTimeAddDaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view,
@@ -78,29 +76,29 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 //            }
 //        });
 //
-//        holder.timetableCustomTimeAddStartTimeTextview.setOnClickListener(new View.OnClickListener() {
+//        holder.mTimetableCustomTimeAddStartTimeTextview.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
+//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(this.context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
 //                dialog.show();
 //            }
 //
 //            private TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minute) -> {
-//                holder.timetableCustomTimeAddStartTimeTextview.setText(hourOfDay + ":" + minute);
+//                holder.mTimetableCustomTimeAddStartTimeTextview.setText(hourOfDay + ":" + minute);
 //                schedule.getStartTime().setHour(hourOfDay);
 //                schedule.getStartTime().setMinute(minute);
 //            };
 //        });
 //
-//        holder.timetableCustomTimeAddEndTimeTextview.setOnClickListener(new View.OnClickListener() {
+//        holder.mTimetableCustomTimeAddEndTimeTextview.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
+//                CustomTimePickerDialog dialog = new CustomTimePickerDialog(this.context,listener,schedule.getStartTime().getHour(), schedule.getStartTime().getMinute(), false);
 //                dialog.show();
 //            }
 //
 //            private TimePickerDialog.OnTimeSetListener listener = (view, hourOfDay, minute) -> {
-//                holder.timetableCustomTimeAddEndTimeTextview.setText(hourOfDay + ":" + minute);
+//                holder.mTimetableCustomTimeAddEndTimeTextview.setText(hourOfDay + ":" + minute);
 //                schedule.getEndTime().setHour(hourOfDay);
 //                schedule.getEndTime().setMinute(minute);
 //            };
@@ -111,7 +109,7 @@ public class TimetableBottomSheetTimeRecyclerAdapter extends RecyclerView.Adapte
 
     @Override
     public int getItemCount() {
-        return timeTableItemArrayList.size();
+        return this.timeTableItemArrayList.size();
     }
 
 }
