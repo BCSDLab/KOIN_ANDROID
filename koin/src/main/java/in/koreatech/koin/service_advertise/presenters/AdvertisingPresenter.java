@@ -38,7 +38,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            adView.showMessage("원룸 리스트를 받아오지 못했습니다");
+            adView.showMessage("홍보 게시물을 받아오지 못했습니다");
         }
     };
 

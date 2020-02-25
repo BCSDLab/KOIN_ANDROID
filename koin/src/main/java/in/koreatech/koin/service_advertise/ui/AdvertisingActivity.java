@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.core.networks.entity.Advertising;
@@ -35,6 +36,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     private AdvertisingPresenter adPresenter;
     private GridLayoutManager adGridLayoutManager;
     private AdvertisingRecyclerAdapter adRecyclerAdapter;
+    private GenerateProgressTask generateProgressTask;
 
     @BindView(R.id.advertising_recyclerview)
     RecyclerView adRecyclerView;
@@ -144,6 +146,22 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void showMessage(String message) {
         ToastUtil.makeShortToast(this, message);
+    }
+
+    @Override
+    public void showLoading() {
+        if (generateProgressTask == null) {
+            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
+            generateProgressTask.execute();
+        }
+    }
+
+    @Override
+    public void hideLoading() {
+        if (generateProgressTask != null) {
+            generateProgressTask.cancel(true);
+            generateProgressTask = null;
+        }
     }
 }
 

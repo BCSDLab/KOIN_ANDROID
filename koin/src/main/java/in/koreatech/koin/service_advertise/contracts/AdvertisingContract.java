@@ -17,6 +17,8 @@ public interface AdvertisingContract {
     interface View extends BaseView<AdvertisingPresenter> {
         void onAdvertisingDataReceived(ArrayList<Advertising> adArrayList);
         void showMessage(String message);
+        void showLoading();
+        void hideLoading();
     }
 
     interface Presenter extends BasePresenter {

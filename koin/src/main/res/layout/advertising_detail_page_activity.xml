@@ -50,12 +50,14 @@
 
 
                         <LinearLayout
+                            android:id="@+id/edit_delete_buttons_linearlayout"
                             android:layout_width="wrap_content"
                             android:layout_height="28dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="18dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@id/advertising_detail_back_list_button"
                             app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview">
 
                             <Button
@@ -65,7 +67,8 @@
                                 android:background="@drawable/button_rect_normal"
                                 android:text="수정"
                                 android:textSize="12sp"
-                                android:visibility="invisible" />
+                                android:visibility="invisible"
+                                tools:visibility="visible" />
 
                             <Button
                                 android:id="@+id/advertising_detail_page_delete_button"
@@ -76,7 +79,8 @@
                                 android:text="삭제"
                                 android:textColor="#ff3030"
                                 android:textSize="12sp"
-                                android:visibility="invisible" />
+                                android:visibility="invisible"
+                                tools:visibility="visible" />
                         </LinearLayout>
 
                         <TextView
@@ -131,6 +135,7 @@
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@id/edit_delete_buttons_linearlayout"
                             app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview" />
 
                         <TextView
