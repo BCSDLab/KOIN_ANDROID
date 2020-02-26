@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -174,6 +175,9 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         adDetailInfo.hit = adDetail.hit;
         adDetailInfo.comments = adDetail.comments; //댓글 ArrayList
         adDetailInfo.thumbnail = adDetail.thumbnail;
+        adDetailInfo.shopId = adDetail.shopId;
+        adDetailInfo.userId = adDetail.userId;
+        adDetailInfo.nickname = adDetail.nickname;
 
         initView();
     }
@@ -205,5 +209,35 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @OnClick({R.id.advertising_detail_page_edit_button, R.id.advertising_detail_page_delete_button})
+    public void onClickButton(View view) {
+        switch(view.getId()){
+            case R.id.advertising_detail_page_edit_button :
+                onClickEditButton();
+                break;
+            case R.id.advertising_detail_page_delete_button :
+                onClickDeleteButton();
+                break;
+        }
+    }
+
+    // [삭제] 버튼 클릭 시 해당 글을 삭제 시켜주는 메소드
+    private void onClickDeleteButton() {
+
+    }
+
+    // [수정] 버튼 클릭 시 AdvertisingCreateActivity 로 이동하여 글 수정
+    private void onClickEditButton() {
+        Intent intent = new Intent(this, AdvertisingCreateActivity.class);
+        intent.putExtra("IS_EDIT", adDetailInfo.grantEdit);
+        intent.putExtra("TITLE", adDetailInfo.title);
+        intent.putExtra("EVENT_TITLE", adDetailInfo.eventTitle);
+        intent.putExtra("START_DATE", adDetailInfo.startDate);
+        intent.putExtra("END_DATE", adDetailInfo.endDate);
+        intent.putExtra("CONTENT", adDetailInfo.content);
+        intent.putExtra("SHOP_ID", adDetailInfo.shopId);
+        startActivity(intent);
     }
 }

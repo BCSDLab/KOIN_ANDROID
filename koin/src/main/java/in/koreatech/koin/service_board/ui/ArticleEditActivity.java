@@ -170,7 +170,6 @@ public class ArticleEditActivity extends KoinEditorActivity implements ArticleEd
         }
     }
 
-
     @Override
     public void setPresenter(ArticleEditPresenter presenter) {
         this.articleEditPresenter = presenter;

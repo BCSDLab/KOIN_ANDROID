@@ -86,9 +86,9 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     @BindView(R.id.advertising_create_question_mark_imageview)
     ImageView questionMark;
     @BindView(R.id.advertising_detail_title_edittext)
-    EditText createTitle;
+    EditText createTitleEditText;
     @BindView(R.id.advertising_detail_event_title_edittext)
-    EditText eventTitle;
+    EditText eventTitleEditText;
     @BindView(R.id.advertising_create_calender_startdate_textview)
     TextView startDateTextview;
     @BindView(R.id.advertising_create_calender_enddate_textview)
@@ -99,14 +99,24 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     @BindView(R.id.advertising_create_content)
     KoinRichEditor advertisingRichEditor;
 
+    private boolean isEdit;
+    private String title;
+    private String eventTitle;
+    private String startDate;
+    private String endDate;
+    private String content;
+    private int shopId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.advertising_create_activity);
         super.onCreate(savedInstanceState);
-
+        ButterKnife.bind(this);
         context = this;
         setPresenter(new AdvertisingCreatingPresenter(this, new AdDetailRestInterator()));
         inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
 
         init();
     }
@@ -133,17 +143,24 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     }
 
     void init() {
-        ButterKnife.bind(this);
+        if(isEdit) {
+            createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
+            eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
+            startDateTextview.setText(getIntent().getStringExtra("START_DATE"));
+            endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
+            renderEditor(getIntent().getStringExtra("CONTENT"));
+        } else {
+            startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
+            endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
+        }
         calenderCheck();
-        startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
-        endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
         koinBaseAppbar.setLeftButtonText("취소");
         koinBaseAppbar.setRightButtonText("등록");
 
         // 자동으로 제목에 포커스를 주면서 키보드 올리기
-        createTitle.setFocusableInTouchMode(true);
-        createTitle.requestFocus();
-        inputMethodManager.showSoftInput(createTitle, 0);
+        createTitleEditText.setFocusableInTouchMode(true);
+        createTitleEditText.requestFocus();
+        inputMethodManager.showSoftInput(createTitleEditText, 0);
     }
 
     void calenderCheck() {
@@ -201,7 +218,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             isClickedQuestion = true;
         } else {
             questionMark.setImageResource(R.drawable.ic_question_mark);
-            inputMethodManager.showSoftInput(createTitle, 0);
+            inputMethodManager.showSoftInput(createTitleEditText, 0);
             questionInfoFrameLayout.setVisibility(View.INVISIBLE);
             isClickedQuestion = false;
         }
@@ -259,11 +276,11 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             ToastUtil.makeShortToast(context, "이미지 업로드 중입니다.");
             return;
         }
-        if (FormValidatorUtil.validateStringIsEmpty(createTitle.getText().toString())) {
+        if (FormValidatorUtil.validateStringIsEmpty(createTitleEditText.getText().toString())) {
             ToastUtil.makeShortToast(context, "제목을 입력하세요");
             return;
         }
-        if (FormValidatorUtil.validateStringIsEmpty(eventTitle.getText().toString())) {
+        if (FormValidatorUtil.validateStringIsEmpty(eventTitleEditText.getText().toString())) {
             ToastUtil.makeShortToast(context, "홍보 문구를 입력하세요");
             return;
         }
@@ -272,15 +289,15 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             return;
         }
 
-        String title = createTitle.getText().toString().trim();
-        String eventTitle = this.eventTitle.getText().toString().trim();
-        String content = getContentAsHTML();
+        title = createTitleEditText.getText().toString().trim();
+        eventTitle = this.eventTitleEditText.getText().toString().trim();
+        content = getContentAsHTML();
 
         // TODO : shopId를 어떻게 받아와야하는가
-        int shopId = 12;
+        shopId = 12;
 
-        String startDate = startDateTextview.getText().toString();
-        String endDate = endDateTextview.getText().toString();
+        startDate = startDateTextview.getText().toString();
+        endDate = endDateTextview.getText().toString();
 
         String thumbnail = getThumbnail();
         if(thumbnail == null) {
