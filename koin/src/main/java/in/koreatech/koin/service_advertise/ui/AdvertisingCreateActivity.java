@@ -30,6 +30,8 @@ import com.github.irshulx.models.EditorTextStyle;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -73,7 +75,8 @@ import top.defaults.colorpicker.ColorPickerPopup;
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
     private Context context;
     private final static String TAG = "AdCreateActivity";
-    private Calendar SelectDate;
+    private Calendar SelectStartDate;
+    private Calendar SelectEndDate;
     private DatePickerDialog.OnDateSetListener dataPicker;
     private DatePickerDialog.OnDateSetListener dataPicker2;
     private boolean isClickedQuestion = false;
@@ -164,13 +167,25 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     }
 
     void calenderCheck() {
-        SelectDate = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SelectStartDate = Calendar.getInstance();
+        SelectEndDate = Calendar.getInstance();
+
+        if(isEdit) {
+            try {
+                SelectStartDate.setTime(sdf.parse(startDateTextview.getText().toString()));
+                SelectEndDate.setTime(sdf.parse(endDateTextview.getText().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         // 시작 일자 캘린더 클릭 이벤트
         dataPicker = (view, year, month, dayOfMonth) -> {
-            SelectDate.set(Calendar.YEAR, year);
-            SelectDate.set(Calendar.MONTH, month);
-            SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            SelectStartDate.set(Calendar.YEAR, year);
+            SelectStartDate.set(Calendar.MONTH, month);
+            SelectStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             if(month < 10)
                 startDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
             else
@@ -179,9 +194,9 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
         // 종료 일자 캘린더 클릭 이벤트
         dataPicker2 = (view, year, month, dayOfMonth) -> {
-            SelectDate.set(Calendar.YEAR, year);
-            SelectDate.set(Calendar.MONTH, month);
-            SelectDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            SelectEndDate.set(Calendar.YEAR, year);
+            SelectEndDate.set(Calendar.MONTH, month);
+            SelectEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             if(month < 10)
                 endDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
             else
@@ -193,18 +208,18 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     @OnClick({R.id.advertising_calender_reck_layout})
     void calender1OnClicked() {
         new DatePickerDialog(AdvertisingCreateActivity.this, dataPicker,
-                SelectDate.get(Calendar.YEAR),
-                SelectDate.get(Calendar.MONTH),
-                SelectDate.get(Calendar.DAY_OF_MONTH)).show();
+                SelectStartDate.get(Calendar.YEAR),
+                SelectStartDate.get(Calendar.MONTH),
+                SelectStartDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     // 종료 일자를 선택하기 위한 달력 표시
     @OnClick({R.id.advertising_calender2_reck_layout})
     void calender2OnClicked() {
         new DatePickerDialog(AdvertisingCreateActivity.this, dataPicker2,
-                SelectDate.get(Calendar.YEAR),
-                SelectDate.get(Calendar.MONTH),
-                SelectDate.get(Calendar.DAY_OF_MONTH)).show();
+                SelectEndDate.get(Calendar.YEAR),
+                SelectEndDate.get(Calendar.MONTH),
+                SelectEndDate.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     // 도움말 버튼 클릭 이벤트
