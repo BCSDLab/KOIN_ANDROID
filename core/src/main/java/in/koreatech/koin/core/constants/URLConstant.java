@@ -38,6 +38,8 @@ public class URLConstant {
     public static final class ADVERTISING {
         public static final String ADVERTISING = "events";
         public static final String GRANTCHECK = ADVERTISING + "/grant/check";
+        public static final String COMMENTS = "comments";
+        public static final String MYSHOP = ADVERTISING + "/my/shops";
     }
 
 

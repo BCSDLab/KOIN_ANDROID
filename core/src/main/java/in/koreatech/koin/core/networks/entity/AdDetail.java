@@ -110,6 +110,15 @@ public class AdDetail {
         this.thumbnail = thumbnail;
     }
 
+    // Update Advertising
+    public AdDetail(String title, String eventTitle, String content, String startDate, String endDate) {
+        this.title = title;
+        this.eventTitle = eventTitle;
+        this.content = content;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public int getComentCount() {
         return comentCount;
     }

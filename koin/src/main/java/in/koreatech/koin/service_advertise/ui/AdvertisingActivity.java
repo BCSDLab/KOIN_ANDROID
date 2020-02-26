@@ -32,6 +32,7 @@ import in.koreatech.koin.ui.UserInfoEditedActivity;
 
 /**
  * Created by hansol on 2020.1.1...
+ * Edited by seongyun on 2020. 02. 27...
  */
 public class AdvertisingActivity extends KoinNavigationDrawerActivity implements AdvertisingContract.View {
     Context context;

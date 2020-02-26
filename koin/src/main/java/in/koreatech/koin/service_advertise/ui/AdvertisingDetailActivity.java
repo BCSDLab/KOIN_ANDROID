@@ -69,7 +69,8 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     RecyclerView detailRecyclerview;
     @BindView(R.id.advertising_detail_page_edit_button)
     Button editButton;
-
+    @BindView(R.id.advertising_detail_page_delete_button)
+    Button deleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +126,11 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         replyCountTextview.setText(adDetailInfo.comentCount + "");
         viewCountTextview.setText(adDetailInfo.hit + "");
 
-        if(adDetailInfo.grantEdit)
+        if(adDetailInfo.grantEdit) {
             editButton.setVisibility(View.VISIBLE);
-
+            deleteButton.setVisibility(View.VISIBLE);
+        }
+        
         glideOptions = new RequestOptions()
                 .fitCenter()
                 .override(650, 870)
@@ -231,6 +234,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     // [수정] 버튼 클릭 시 AdvertisingCreateActivity 로 이동하여 글 수정
     private void onClickEditButton() {
         Intent intent = new Intent(this, AdvertisingCreateActivity.class);
+        intent.putExtra("ID", adDetailInfo.id);
         intent.putExtra("IS_EDIT", adDetailInfo.grantEdit);
         intent.putExtra("TITLE", adDetailInfo.title);
         intent.putExtra("EVENT_TITLE", adDetailInfo.eventTitle);

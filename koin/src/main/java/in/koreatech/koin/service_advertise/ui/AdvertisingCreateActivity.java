@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -70,7 +71,7 @@ import top.defaults.colorpicker.ColorPickerPopup;
 
 /**
  * Created by hansol on 2020.1.8...
- * Edited by seongyun on 2020. 02. 17...
+ * Edited by seongyun on 2020. 02. 27...
  */
 public class AdvertisingCreateActivity extends KoinEditorActivity implements AdvertisingCreatingContract.View, TextWatcher {
     private Context context;
@@ -103,6 +104,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     KoinRichEditor advertisingRichEditor;
 
     private boolean isEdit;
+    private int articleId;
     private String title;
     private String eventTitle;
     private String startDate;
@@ -117,8 +119,9 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         ButterKnife.bind(this);
         context = this;
         setPresenter(new AdvertisingCreatingPresenter(this, new AdDetailRestInterator()));
-        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        articleId = getIntent().getIntExtra("ID", -1);
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
 
         init();
@@ -146,12 +149,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     }
 
     void init() {
-        if(isEdit) {
+        if (isEdit) {
             createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
             eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
             startDateTextview.setText(getIntent().getStringExtra("START_DATE"));
             endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
-            renderEditor(getIntent().getStringExtra("CONTENT"));
+            renderEditor(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
         } else {
             startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
             endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
@@ -171,7 +174,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         SelectStartDate = Calendar.getInstance();
         SelectEndDate = Calendar.getInstance();
 
-        if(isEdit) {
+        if (isEdit) {
             try {
                 SelectStartDate.setTime(sdf.parse(startDateTextview.getText().toString()));
                 SelectEndDate.setTime(sdf.parse(endDateTextview.getText().toString()));
@@ -188,7 +191,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             SelectStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             String startDate = "" + year
-                    + ((month < 10) ? ("-0" + month) : ("-" + month))
+                    + (((month+1) < 10) ? ("-0" + (month+1)) : ("-" + (month+1)))
                     + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
 
             startDateTextview.setText(startDate);
@@ -201,7 +204,7 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             SelectEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             String endDate = "" + year
-                    + ((month < 10) ? ("-0" + month) : ("-" + month))
+                    + (((month+1) < 10) ? ("-0" + (month+1)) : ("-" + (month+1)))
                     + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
 
             endDateTextview.setText(endDate);
@@ -274,24 +277,21 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         ToastUtil.makeLongToast(context, message);
     }
 
-
-
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         View view = this.getCurrentFocus();
 
-        if(view != null) {
+        if (view != null) {
             Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0);
             SnackbarUtil.makeLongSnackbarActionYes(view, getString(R.string.back_button_pressed), this::finish);
-        }
-        else {
+        } else {
             finish();
         }
     }
 
     @Override
     public void onClickEditButton() {
-        if(!isImageAllUploaded()) {
+        if (!isImageAllUploaded()) {
             ToastUtil.makeShortToast(context, "이미지 업로드 중입니다.");
             return;
         }
@@ -312,17 +312,19 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         eventTitle = this.eventTitleEditText.getText().toString().trim();
         content = getContentAsHTML();
 
-        // TODO : shopId를 어떻게 받아와야하는가
+        // TODO : shopId를 어떻게 받아와야하는가 -> 412 에러(이미 진행중인 이벤트가 있습니다) 해결책
         shopId = 12;
 
         startDate = startDateTextview.getText().toString();
         endDate = endDateTextview.getText().toString();
 
-        String thumbnail = getThumbnail();
-        if(thumbnail == null) {
-            advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate));
+        if (isEdit) {
+            advertisingCreatingPresenter.updateAdDetail(articleId, new AdDetail(title, eventTitle, content, startDate, endDate));
         }
-        else {
+        String thumbnail = getThumbnail();
+        if (thumbnail == null) {
+            advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate));
+        } else {
             advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         }
     }
@@ -334,6 +336,11 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void goToAdvertisingActivity(AdDetail adDetail) {
+        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
+        intent.putExtra("ID", adDetail.id);
+        intent.putExtra("GRANT_EDIT", true);
+        startActivity(intent);
+
         finish();
     }
 

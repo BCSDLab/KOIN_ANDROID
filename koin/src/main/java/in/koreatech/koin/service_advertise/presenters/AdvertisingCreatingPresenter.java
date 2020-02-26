@@ -70,4 +70,9 @@ public class AdvertisingCreatingPresenter implements BasePresenter {
 
         marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
     }
+
+    public void updateAdDetail(int articleId, AdDetail adDetail) {
+        adCreatingView.showLoading();
+        adDetailInterator.updateAdDetail(articleId, adDetail, advertisingApiCallback);
+    }
 }

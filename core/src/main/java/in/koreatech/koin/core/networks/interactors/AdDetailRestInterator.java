@@ -77,7 +77,7 @@ public class AdDetailRestInterator implements AdDetailInterator {
         jsonObject.addProperty("shop_id", ad.shopId);
         jsonObject.addProperty("start_date", ad.startDate);
         jsonObject.addProperty("end_date", ad.endDate);
-        if(ad.thumbnail != null)
+        if (ad.thumbnail != null)
             jsonObject.addProperty("thumbnail", ad.thumbnail);
 
         RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).postAdDetail(addAuthorizationBearer(token), jsonObject)
@@ -111,6 +111,48 @@ public class AdDetailRestInterator implements AdDetailInterator {
                     @Override
                     public void onComplete() {
 
+                    }
+                });
+    }
+
+    @Override
+    public void updateAdDetail(int articleId, AdDetail adDetail, ApiCallback apiCallback) {
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("title", adDetail.title);
+        jsonObject.addProperty("event_title", adDetail.eventTitle);
+        jsonObject.addProperty("content", adDetail.content);
+        jsonObject.addProperty("start_date", adDetail.startDate);
+        jsonObject.addProperty("end_date", adDetail.endDate);
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).updateAdDetail(articleId, addAuthorizationBearer(token), jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AdDetail>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(AdDetail adDetail) {
+                        if (adDetail != null)
+                            apiCallback.onSuccess(adDetail);
+                        else
+                            apiCallback.onFailure(new Throwable("Fail"));
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if(throwable instanceof HttpException){
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
                     }
                 });
     }
