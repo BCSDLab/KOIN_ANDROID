@@ -118,7 +118,7 @@
                             android:orientation="vertical"
                             app:layout_constraintGuide_percent="0.7" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/dining_before_date_button"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -148,7 +148,7 @@
                             tools:text="2019년 3월 24일" />
 
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/dining_next_date_button"
                             android:layout_width="24dp"
                             android:layout_height="24dp"

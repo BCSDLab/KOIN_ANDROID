@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
-                android:background="@android:color/white">
+                android:background="?attr/colorSurface">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/market_used_main_tabs"

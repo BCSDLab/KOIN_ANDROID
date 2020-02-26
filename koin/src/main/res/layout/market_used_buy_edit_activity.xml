@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -51,6 +52,7 @@
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
+                            android:textColor="?attr/colorOnSurface"
                             android:maxLines="1"
                             android:textColorHint="@color/white_87"
                             android:textSize="16sp"
@@ -84,7 +86,7 @@
                             android:layout_marginTop="17.5dp"
                             android:gravity="center_vertical"
                             android:text="가격"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/title_price_border" />
@@ -101,6 +103,7 @@
                             android:layout_marginBottom="17.5dp"
                             android:inputType="number"
                             android:maxLength="11"
+                            android:textColor="?attr/colorOnSurface"
                             android:background="@android:color/transparent"
                             android:hint="가격을 입력해주세요."
                             android:maxLines="1"
@@ -137,14 +140,14 @@
                             android:layout_marginBottom="18.5dp"
                             android:gravity="center_vertical"
                             android:text="대표이미지"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="@+id/thumbnail_phone_number_border"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/price_thumbnail_border"
                             app:layout_constraintVertical_bias="0.5" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/market_used_buy_edit_thumbnail_change_button"
                             android:layout_width="wrap_content"
                             android:layout_height="28.7dp"
@@ -153,6 +156,7 @@
                             android:layout_marginTop="13.5dp"
                             android:layout_marginBottom="14.8dp"
                             android:background="@drawable/bg_warm_grey_rectangle"
+                            android:textColor="?attr/colorOnSurface"
                             android:text="이미지 첨부"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
@@ -200,7 +204,7 @@
                             android:layout_marginTop="18.5dp"
                             android:gravity="center_vertical"
                             android:text="연락처"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/thumbnail_phone_number_border" />
@@ -249,7 +253,7 @@
                                 android:layout_marginTop="12dp"
                                 android:layout_marginEnd="8dp"
                                 android:text="공개"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
                                 />
 
@@ -264,7 +268,7 @@
                                 android:buttonTint="@color/light_navy"
                                 android:checked="true"
                                 android:text="비공개"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
 
                                 />
@@ -309,7 +313,7 @@
                                 android:buttonTint="@color/light_navy"
                                 android:checked="true"
                                 android:text="구매중"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp" />
 
 
@@ -322,7 +326,7 @@
                                 android:layout_weight="1"
                                 android:buttonTint="@color/light_navy"
                                 android:text="구매중지"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
 
                                 />
@@ -336,7 +340,7 @@
                                 android:layout_weight="1"
                                 android:buttonTint="@color/light_navy"
                                 android:text="구매완료"
-                                android:textColor="@color/black"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
 
                                 />
@@ -367,6 +371,7 @@
                             android:layout_marginTop="18.5dp"
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
+                            android:textColor="?attr/colorOnSurface"
                             android:hint="내용을 입력해주세요."
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="10sp"

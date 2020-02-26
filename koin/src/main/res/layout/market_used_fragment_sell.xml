@@ -17,7 +17,7 @@
                 android:id="@+id/market_used_sell_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background"
+                android:background="?attr/colorSurface"
                 android:scrollbars="vertical"/>
         </in.koreatech.koin.core.helpers.swipeRefreshBottom.SwipeRefreshLayoutBottom>
 
