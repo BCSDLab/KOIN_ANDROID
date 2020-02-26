@@ -45,5 +45,7 @@
         <attr name="activate_timebar" format="boolean"/>
     </declare-styleable>
 
+    <!-- For dark mode -->
     <attr name="colorTextMainMenu" format="color" />
+    <attr name="toolbarBackgroundColor" format="color" />
 </resources>
