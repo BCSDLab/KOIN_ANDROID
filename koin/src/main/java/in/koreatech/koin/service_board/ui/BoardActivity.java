@@ -226,7 +226,6 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
                 mBoardPresenter.getArticleGrant(mArticleArrayList.get(position).articleUid);
             else
                 goToArticleActivity(mArticleArrayList.get(position).articleUid, mBoardUid == ID_ANONYMOUS);
-
         }
 
         @Override

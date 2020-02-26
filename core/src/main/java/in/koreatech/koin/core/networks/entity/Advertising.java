@@ -63,7 +63,6 @@ public class Advertising {
     @Expose
     public String endDate;
 
-
     @SerializedName("comment_count")
     @Expose
     public int comentCount;

@@ -19,6 +19,9 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.constants.AuthorizeConstant;
+import in.koreatech.koin.core.helpers.RecyclerClickListener;
+import in.koreatech.koin.core.helpers.RecyclerViewClickListener;
+import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.interactors.AdvertisingRestInteractor;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -49,17 +52,17 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advertising);
+        ButterKnife.bind(this);
+
         init();
     }
 
     void init() {
-        ButterKnife.bind(this);
         context = this;
         adArrayList = new ArrayList<>();
         adGridLayoutManager = new GridLayoutManager(this, 2);
         adRecyclerView.setLayoutManager(adGridLayoutManager);
         setPresenter(new AdvertisingPresenter(this, new AdvertisingRestInteractor()));
-
     }
 
     @OnClick(R.id.activity_advertising_processing_checkbox2)
@@ -78,7 +81,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         if (id == KoinBaseAppbarDark.getLeftButtonId()) {
             onBackPressed();
         } else if (id == KoinBaseAppbarDark.getRightButtonId()) {
-            // 점주계정 확인하세요
+            // TODO: 점주계정 확인 -> my/shops
             Intent intent = new Intent(context, AdvertisingCreateActivity.class);
             if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
@@ -128,8 +131,15 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onAdvertisingDataReceived(ArrayList<Advertising> adList) {
+        adArrayList = adList;
         adRecyclerAdapter = new AdvertisingRecyclerAdapter(adList, this);
         adRecyclerView.setAdapter(adRecyclerAdapter);
+        adRecyclerView.addOnItemTouchListener(recyclerClickListener);
+    }
+
+    @Override
+    public void onGrantCheckReceived(AdDetail adDetail) {
+
     }
 
     /**
@@ -163,6 +173,18 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
             generateProgressTask = null;
         }
     }
+
+    public final RecyclerClickListener recyclerClickListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, int position) {
+            adPresenter.getAdGrantCheck(adArrayList.get(position).id);
+        }
+
+        @Override
+        public void onLongClick(View view, int position) {
+
+        }
+    });
 }
 
 

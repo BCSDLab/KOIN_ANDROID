@@ -88,4 +88,9 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
         return subAdDate;
 
     }
+
+    public void getAdGrantCheck(int articleUid) {
+        adView.showLoading();
+
+    }
 }

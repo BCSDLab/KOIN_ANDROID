@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.bases.BaseView;
 import in.koreatech.koin.core.networks.ApiCallback;
+import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
@@ -16,6 +17,7 @@ public interface AdvertisingContract {
 
     interface View extends BaseView<AdvertisingPresenter> {
         void onAdvertisingDataReceived(ArrayList<Advertising> adArrayList);
+        void onGrantCheckReceived(AdDetail adDetail);
         void showMessage(String message);
         void showLoading();
         void hideLoading();

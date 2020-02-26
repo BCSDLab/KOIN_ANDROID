@@ -134,11 +134,11 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
                 .apply(glideOptions)
                 .into(holder.adFoodImageview);
 
-        holder.view.setOnClickListener(i -> {
-            Intent intent = new Intent(context, AdvertisingDetailActivity.class);
-            intent.putExtra("ID", ad.getId());
-            context.startActivity(intent);
-        });
+//        holder.view.setOnClickListener(i -> {
+//            Intent intent = new Intent(context, AdvertisingDetailActivity.class);
+//            intent.putExtra("ID", ad.getId());
+//            context.startActivity(intent);
+//        });
     }
 
     @Override
