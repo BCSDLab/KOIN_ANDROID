@@ -34,11 +34,28 @@ public class AdDetailPresenter implements AdDetailContract.Presenter {
         }
     };
 
+    private final ApiCallback deleteApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            adDetailView.onAdDetailDeleteCompleted(true);
+            adDetailView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            adDetailView.showMessage(throwable.getMessage());
+            adDetailView.hideLoading();
+        }
+    };
+
     @Override
     public void getAdDetailInfo(int id) {
         adDetailView.showLoading();
         adDetailInterator.readAdDetailList(id, apiCallback);
     }
 
-
+    public void deleteAdDetail(int articleId) {
+        adDetailView.showLoading();
+        adDetailInterator.deleteAdDetail(articleId, deleteApiCallback);
+    }
 }

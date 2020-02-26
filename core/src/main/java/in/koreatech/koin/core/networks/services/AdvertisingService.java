@@ -7,8 +7,10 @@ import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
 import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.core.networks.entity.LostItem;
+import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -38,6 +40,9 @@ public interface AdvertisingService {
 
     @PUT(ADVERTISING + "/{id}")
     Observable<AdDetail> updateAdDetail(@Path("id") int articleId, @Header("Authorization") String authHeader, @Body JsonObject adDetail);
+
+    @DELETE(ADVERTISING + "/{id}")
+    Observable<DefaultResponse> deleteAdDetail(@Path("id") int articleId, @Header("Authorization") String authHeader);
 
 //Observable<Land> getLandDetail(@Path("id") int landId);
 //

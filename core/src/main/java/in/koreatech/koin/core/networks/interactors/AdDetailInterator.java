@@ -12,4 +12,6 @@ public interface AdDetailInterator {
     void createAdDetail(AdDetail ad, final ApiCallback apiCallback);
 
     void updateAdDetail(int articleId, AdDetail ad, final ApiCallback apiCallback);
+
+    void deleteAdDetail(int articleId, final ApiCallback apiCallback);
 }

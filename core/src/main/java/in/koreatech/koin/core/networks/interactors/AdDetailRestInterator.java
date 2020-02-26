@@ -9,6 +9,7 @@ import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
+import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.core.networks.services.AdvertisingService;
 import in.koreatech.koin.core.util.FormValidatorUtil;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -144,7 +145,43 @@ public class AdDetailRestInterator implements AdDetailInterator {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if(throwable instanceof HttpException){
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteAdDetail(int articleId, ApiCallback apiCallback) {
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).deleteAdDetail(articleId, addAuthorizationBearer(token))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DefaultResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(DefaultResponse defaultResponse) {
+                        if (FormValidatorUtil.validateStringIsEmpty(defaultResponse.getError())) {
+                            apiCallback.onSuccess(defaultResponse);
+                        } else {
+                            apiCallback.onFailure(new Throwable("Fail"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
                             Log.d(TAG, ((HttpException) throwable).code() + " ");
                         }
                         apiCallback.onFailure(throwable);

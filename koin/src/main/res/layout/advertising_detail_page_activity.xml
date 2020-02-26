@@ -31,6 +31,7 @@
                 android:orientation="vertical">
 
                 <ScrollView
+                    android:id="@+id/advertising_detail_scrollview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"

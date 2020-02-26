@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,6 +32,7 @@ import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
+import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.adapters.AdvertisingCommentAdapter;
 import in.koreatech.koin.service_advertise.contracts.AdDetailContract;
@@ -51,6 +53,8 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     private RequestOptions glideOptions;
     private AdDetail adDetailInfo;
 
+    @BindView(R.id.advertising_detail_scrollview)
+    ScrollView scrollView;
     @BindView(R.id.advertising_detail_title_textview)
     TextView titleTextview;
     @BindView(R.id.advertising_detail_period_textview)
@@ -130,7 +134,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
-        
+
         glideOptions = new RequestOptions()
                 .fitCenter()
                 .override(650, 870)
@@ -186,6 +190,11 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     @Override
+    public void onAdDetailDeleteCompleted(boolean inSuccess) {
+        finish();
+    }
+
+    @Override
     public void setPresenter(AdDetailPresenter presenter) {
         this.adDetailPresenter = presenter;
     }
@@ -228,7 +237,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
 
     // [삭제] 버튼 클릭 시 해당 글을 삭제 시켜주는 메소드
     private void onClickDeleteButton() {
-
+        SnackbarUtil.makeLongSnackbarActionYes(scrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> adDetailPresenter.deleteAdDetail(adDetailInfo.id));
     }
 
     // [수정] 버튼 클릭 시 AdvertisingCreateActivity 로 이동하여 글 수정
