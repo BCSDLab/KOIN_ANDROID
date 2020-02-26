@@ -186,10 +186,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             SelectStartDate.set(Calendar.YEAR, year);
             SelectStartDate.set(Calendar.MONTH, month);
             SelectStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            if(month < 10)
-                startDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
-            else
-                startDateTextview.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+
+            String startDate = "" + year
+                    + ((month < 10) ? ("-0" + month) : ("-" + month))
+                    + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
+
+            startDateTextview.setText(startDate);
         };
 
         // 종료 일자 캘린더 클릭 이벤트
@@ -197,10 +199,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
             SelectEndDate.set(Calendar.YEAR, year);
             SelectEndDate.set(Calendar.MONTH, month);
             SelectEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            if(month < 10)
-                endDateTextview.setText(year + "-0" + (month + 1) + "-" + dayOfMonth);
-            else
-                endDateTextview.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
+
+            String endDate = "" + year
+                    + ((month < 10) ? ("-0" + month) : ("-" + month))
+                    + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
+
+            endDateTextview.setText(endDate);
         };
     }
 
