@@ -105,4 +105,11 @@
     <color name="gray_30">#4d7c9fae</color>
     <color name="dark_green">#4db297</color>
     <color name="dark_green_30">#4d4db297</color>
+
+    <!-- Dark Mode -->
+    <color name="dark_gray">#1d1d1d</color>
+
+    <color name="gray3">#222222</color>
+    <color name="gray4">#2c2c2c</color>
+    <color name="gray5">#e1e1e1</color>
 </resources>

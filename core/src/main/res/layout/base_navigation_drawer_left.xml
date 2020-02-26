@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:background="?attr/colorSurface"
-    android:fitsSystemWindows="false"
+    android:fitsSystemWindows="true"
     android:theme="@style/KAPNavigationHeader">
 
     <ScrollView

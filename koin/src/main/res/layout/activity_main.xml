@@ -5,8 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix"
-    android:fitsSystemWindows="true">
+    tools:ignore="MissingPrefix">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/callvan_main_layout"
@@ -21,8 +20,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:background="?attr/colorSurface"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.Guideline
@@ -121,7 +120,8 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:background="@color/squash"
+                    android:background="@android:color/black"
+                    android:backgroundTint="@color/color_squash"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@id/guideline_horizental_0.5"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -133,13 +133,13 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/img_bg"
+                    android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@id/guideline_horizental_0.3905"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    android:orientation="horizontal" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -154,8 +154,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="-0.02"
                     android:alpha="0.6"
+                    android:letterSpacing="-0.02"
                     android:text="'코인' 모바일앱 출시"
                     android:textColor="@color/white"
                     android:textSize="14sp"
@@ -179,537 +179,529 @@
                     app:layout_constraintTop_toTopOf="@+id/guideline_vertical_0.2945" />
 
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
                     android:layout_marginBottom="96dp"
-                    android:background="?attr/colorSurface"
+                    android:background="@android:color/black"
+                    android:backgroundTint="@color/bg_main_panel_color"
                     android:elevation="6dp"
                     app:cardCornerRadius="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline_horizental_0.917"
                     app:layout_constraintStart_toStartOf="@+id/guideline_horizental_0.083"
-                    app:layout_constraintTop_toTopOf="@+id/guideline_horizental_0.422" >
+                    app:layout_constraintTop_toTopOf="@+id/guideline_horizental_0.422">
 
-                    <LinearLayout
+                    <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center">
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_main_border"
+                        android:stretchColumns="*">
 
-                        <TableLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:background="@drawable/button_border_bottom_left_white_two_1dp"
-                            android:stretchColumns="*">
+                        <TableRow
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
 
-                            <TableRow
-                                android:layout_height="0dp"
-                                android:layout_weight="1">
+                            <LinearLayout
+                                android:id="@+id/activity_main_circle_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_circle_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_circle_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground"
                                     android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_circle_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_circle_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_circle_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_circle_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_circle_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:id="@+id/circle_imageview"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_circles"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_circle_vertical_0.244" />
 
-                                        <ImageView
-                                            android:id="@+id/circle_imageview"
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_circles"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_circle_vertical_0.244" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="동아리"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_circle_vertical_0.58" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="동아리"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_circle_vertical_0.58" />
 
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_bus_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                            <LinearLayout
+                                android:id="@+id/activity_main_bus_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_bus_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
+
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_bus_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
+
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_bus_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
+
+                                    <ImageView
+                                        android:id="@+id/imageView2"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_bus"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_bus_vertical_0.244" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="버스/교통"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_bus_vertical_0.58" />
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/activity_main_timetable_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_timetable_constraint_layout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground"
                                     android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_bus_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_timetable_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_bus_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_timetable_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_bus_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:id="@+id/timetable_imageview"
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_timetable"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_timetable_vertical_0.244" />
 
-                                        <ImageView
-                                            android:id="@+id/imageView2"
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_bus"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_bus_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="시간표"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_timetable_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="버스/교통"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_bus_vertical_0.58" />
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                </LinearLayout>
+                        </TableRow>
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_timetable_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                        <TableRow
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:id="@+id/activity_main_store_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_store_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_timetable_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_store_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_timetable_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_store_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_timetable_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_store"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_store_vertical_0.244" />
 
-                                        <ImageView
-                                            android:id="@+id/timetable_imageview"
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_timetable"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_timetable_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="주변상점"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_store_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="시간표"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_timetable_vertical_0.58" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/activity_main_dining_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
-
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_height="0dp"
-                                android:layout_weight="1">
-
-                                <LinearLayout
-                                    android:id="@+id/activity_main_store_linear_layout"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_dining_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_store_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_dining_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_store_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_dining_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_store_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_restaurant"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_dining_vertical_0.244" />
 
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_store"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_store_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="식단"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_dining_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="주변상점"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_store_vertical_0.58" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_dining_linear_layout"
+                            <LinearLayout
+                                android:id="@+id/activity_main_used_market_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_used_market_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_dining_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_used_market_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_dining_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_used_market_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_dining_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_market"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_used_market_vertical_0.244" />
 
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_restaurant"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_dining_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="중고장터"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_used_market_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="식단"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_dining_vertical_0.58" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_used_market_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+
+                            <LinearLayout
+                                android:id="@+id/activity_main_free_board_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_free_board_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_used_market_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_free_board_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_used_market_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_free_board_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_used_market_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_board_free"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_free_board_vertical_0.244" />
 
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_market"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_used_market_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="자유게시판"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_free_board_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="중고장터"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_used_market_vertical_0.58" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/activity_main_recruit_board_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_height="0dp"
-                                android:layout_weight="1">
-
-
-                                <LinearLayout
-                                    android:id="@+id/activity_main_free_board_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_recruit_board_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_recruit_board_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_free_board_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_recruit_board_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_free_board_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_board_recruit"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toBottomOf="@+id/guideline_recruit_board_vertical_0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_free_board_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="취업게시판"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_recruit_board_vertical_0.58" />
 
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_board_free"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_free_board_vertical_0.244" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="자유게시판"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_free_board_vertical_0.58" />
+                            <LinearLayout
+                                android:id="@+id/activity_main_anonymous_board_linear_layout"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/button_main_border"
+                                android:gravity="center"
+                                android:orientation="vertical">
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/activity_main_recruit_board_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/activity_main_anonymous_board_constraint_layout"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
+                                    android:layout_margin="1dp"
+                                    android:background="?attr/selectableItemBackground">
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_recruit_board_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_anonymous_board_vertical_0.244"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.244" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_recruit_board_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
+                                    <androidx.constraintlayout.widget.Guideline
+                                        android:id="@+id/guideline_anonymous_board_vertical_0.58"
+                                        android:layout_width="1dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintGuide_percent="0.58" />
 
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_recruit_board_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
+                                    <ImageView
+                                        android:layout_width="24dp"
+                                        android:layout_height="24dp"
+                                        android:background="@drawable/ic_board_secret"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_anonymous_board_vertical_0.244" />
 
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_board_recruit"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toBottomOf="@+id/guideline_recruit_board_vertical_0.244" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="익명게시판"
+                                        android:textColor="?attr/colorTextMainMenu"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        app:font_name="Custom5"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="@+id/guideline_anonymous_board_vertical_0.58" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:text="취업게시판"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:font_name="Custom5"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_recruit_board_vertical_0.58" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </LinearLayout>
 
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
+                        </TableRow>
 
-                                <LinearLayout
-                                    android:id="@+id/activity_main_anonymous_board_linear_layout"
-                                    android:background="@drawable/button_border_bottom_left_white_two_1dp"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:orientation="vertical">
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:id="@+id/activity_main_anonymous_board_constraint_layout"
-                                        android:background="?attr/selectableItemBackground"
-                                        android:layout_margin="1dp"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent">
-
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_anonymous_board_vertical_0.244"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.244" />
-
-                                        <androidx.constraintlayout.widget.Guideline
-                                            android:id="@+id/guideline_anonymous_board_vertical_0.58"
-                                            android:layout_width="1dp"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintGuide_percent="0.58" />
-
-                                        <ImageView
-                                            android:layout_width="24dp"
-                                            android:layout_height="24dp"
-                                            android:background="@drawable/ic_board_secret"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_anonymous_board_vertical_0.244" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            app:font_name="Custom5"
-                                            android:text="익명게시판"
-                                            android:textColor="@color/warm_grey_three"
-                                            android:textSize="15sp"
-                                            android:textStyle="bold"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="@+id/guideline_anonymous_board_vertical_0.58" />
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                </LinearLayout>
-
-
-                            </TableRow>
-
-
-                        </TableLayout>
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                    </TableLayout>
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

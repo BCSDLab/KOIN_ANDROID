@@ -44,4 +44,6 @@
         <attr name="margin_bottom" format="dimension"/>
         <attr name="activate_timebar" format="boolean"/>
     </declare-styleable>
+
+    <attr name="colorTextMainMenu" format="color" />
 </resources>
