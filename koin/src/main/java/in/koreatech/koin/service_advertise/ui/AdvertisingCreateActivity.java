@@ -112,6 +112,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.bind(this).unbind();
+    }
+
+    @Override
     protected int getRichEditorId() {
         return R.id.advertising_create_content;
     }

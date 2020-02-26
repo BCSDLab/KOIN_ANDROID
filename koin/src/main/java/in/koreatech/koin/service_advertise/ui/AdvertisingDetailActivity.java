@@ -46,7 +46,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     private Context context;
     private RecyclerView.LayoutManager layoutManager;
     private AdvertisingCommentAdapter commentRecyclerAdapter;
-    private ArrayList<Comment> adDetailData;
     private GenerateProgressTask adDetailGenerateProgress;
     private RequestOptions glideOptions;
     private AdDetail adDetailInfo;
@@ -67,6 +66,8 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     TextView viewCountTextview;
     @BindView(R.id.advertising_recyclerview)
     RecyclerView detailRecyclerview;
+    @BindView(R.id.advertising_detail_page_edit_button)
+    Button editButton;
 
 
     @Override
@@ -74,6 +75,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         setContentView(R.layout.advertising_detail_page_activity);
         super.onCreate(savedInstanceState);
 
+        adDetailInfo = new AdDetail();
         adDetailInfo.id = getIntent().getIntExtra("ID", -1);
         adDetailInfo.grantEdit = getIntent().getBooleanExtra("GRANT_EDIT", false);
 
@@ -110,11 +112,31 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         }
     }
 
-    public void initRecyclerView() {
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailData);
+    public void initView() {
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
+        titleTextview.setText(adDetailInfo.eventTitle);
+        periodTextview.setText(adDetailInfo.startDate + " ~ " + adDetailInfo.endDate);
+        viewPublisherTextview.setText("조회 " + adDetailInfo.getHit() + " · " + adDetailInfo.getNickname());
+        renderEditor(renderHtmltoString(adDetailInfo.content));
+        replyCountTextview.setText(adDetailInfo.comentCount + "");
+        viewCountTextview.setText(adDetailInfo.hit + "");
+
+        if(adDetailInfo.grantEdit)
+            editButton.setVisibility(View.VISIBLE);
+
+        glideOptions = new RequestOptions()
+                .fitCenter()
+                .override(650, 870)
+                .error(R.drawable.img_noimage)
+                .placeholder(R.color.white);
+
+        Glide.with(context)
+                .load(adDetailInfo.thumbnail)
+                .apply(glideOptions)
+                .into(eventImage);
     }
 
     @Override
@@ -143,26 +165,17 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
 
     @Override
     public void onAdDetailDataReceived(AdDetail adDetail) {
+        adDetailInfo.title = adDetail.title;
+        adDetailInfo.eventTitle = adDetail.eventTitle;
+        adDetailInfo.startDate = adDetail.startDate;
+        adDetailInfo.endDate = adDetail.endDate;
+        adDetailInfo.content = adDetail.content;
+        adDetailInfo.comentCount = adDetail.comentCount;
+        adDetailInfo.hit = adDetail.hit;
+        adDetailInfo.comments = adDetail.comments; //댓글 ArrayList
+        adDetailInfo.thumbnail = adDetail.thumbnail;
 
-        adDetailData = adDetail.comments; //댓글 ArrayList
-        initRecyclerView();
-        titleTextview.setText(adDetail.eventTitle);
-        periodTextview.setText(adDetail.startDate + " ~ " + adDetail.endDate);
-        viewPublisherTextview.setText("조회 " + adDetail.getHit() + " · " + adDetail.getNickname());
-        renderEditor(renderHtmltoString(adDetail.content));
-        replyCountTextview.setText(adDetail.comentCount + "");
-        viewCountTextview.setText(adDetail.hit + "");
-
-        glideOptions = new RequestOptions()
-                .fitCenter()
-                .override(650, 870)
-                .error(R.drawable.img_noimage)
-                .placeholder(R.color.white);
-
-        Glide.with(context)
-                .load(adDetail.thumbnail)
-                .apply(glideOptions)
-                .into(eventImage);
+        initView();
     }
 
     @Override
@@ -183,6 +196,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         }
     }
 
+    // [목록으로] 버튼 클릭 메소드
     @OnClick(R.id.advertising_detail_back_list_button)
     public void goBackListClicked(View view) {
         onBackPressed();

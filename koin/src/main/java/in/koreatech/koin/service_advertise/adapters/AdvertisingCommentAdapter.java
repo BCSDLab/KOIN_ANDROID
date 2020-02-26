@@ -69,6 +69,4 @@ public class AdvertisingCommentAdapter extends RecyclerView.Adapter<AdvertisingC
     public int getItemCount() {
         return adDetailComment.size();
     }
-
-
 }
