@@ -14,7 +14,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING;
+import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.ADVERTISING;
+import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.GRANTCHECK;
+
 
 /**
  * Created by hansol on 2020.1.1...
@@ -29,6 +31,8 @@ public interface AdvertisingService {
     @POST(ADVERTISING)
     Observable<AdDetail> postAdDetail(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
 
+    @POST(GRANTCHECK)
+    Observable<AdDetail> postGrantCheck(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
 
 //Observable<Land> getLandDetail(@Path("id") int landId);
 //
@@ -37,7 +41,4 @@ public interface AdvertisingService {
 //
 //    @GET(ADVERTISING+"/{id}")
 //    Observable<...> getAdDetailList();
-
-
-
 }

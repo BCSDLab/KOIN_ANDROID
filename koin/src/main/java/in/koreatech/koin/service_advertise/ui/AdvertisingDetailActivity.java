@@ -38,16 +38,18 @@ import in.koreatech.koin.service_lostfound.adapter.LostFoundCommentRecyclerviewA
 
 /**
  * created by hansol on 2020.1.3...
+ * edited by seongyun on 2020. 02. 26...
  */
 public class AdvertisingDetailActivity extends KoinEditorActivity implements AdDetailContract.View {
 
-    AdDetailPresenter adDetailPresenter;
-    Context context;
+    private AdDetailPresenter adDetailPresenter;
+    private Context context;
     private RecyclerView.LayoutManager layoutManager;
     private AdvertisingCommentAdapter commentRecyclerAdapter;
     private ArrayList<Comment> adDetailData;
     private GenerateProgressTask adDetailGenerateProgress;
     private RequestOptions glideOptions;
+    private AdDetail adDetailInfo;
 
     @BindView(R.id.advertising_detail_title_textview)
     TextView titleTextview;
@@ -72,6 +74,14 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         setContentView(R.layout.advertising_detail_page_activity);
         super.onCreate(savedInstanceState);
 
+        adDetailInfo.id = getIntent().getIntExtra("ID", -1);
+        adDetailInfo.grantEdit = getIntent().getBooleanExtra("GRANT_EDIT", false);
+
+        if (adDetailInfo.id == -1) {
+            ToastUtil.makeShortToast(context, "이벤트 정보를 불러오지 못했습니다.");
+            finish();
+        }
+
         init();
     }
 
@@ -95,9 +105,12 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         ButterKnife.bind(this);
         setPresenter(new AdDetailPresenter(this, new AdDetailRestInterator()));
         layoutManager = new LinearLayoutManager(this);
+        if (adDetailPresenter != null) {
+            adDetailPresenter.getAdDetailInfo(adDetailInfo.id);
+        }
     }
 
-    public void initRecyclerView(){
+    public void initRecyclerView() {
         commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailData);
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
@@ -108,14 +121,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     protected void onStart() {
         super.onStart();
 
-        int id = getIntent().getIntExtra("ID", -1);
-        if (id == -1) {
-            ToastUtil.makeShortToast(context, "이벤트 정보를 불러오지 못했습니다.");
-        } else {
-            if (adDetailPresenter != null) {
-                adDetailPresenter.getAdDetailInfo(id);
-            }
-        }
+
     }
 
     @Override
@@ -176,10 +182,10 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
             onBackPressed();
         }
     }
-    @OnClick(R.id.advertising_detail_back_list_button)
-    public void goBackListClicked(View view){
-            onBackPressed();
 
+    @OnClick(R.id.advertising_detail_back_list_button)
+    public void goBackListClicked(View view) {
+        onBackPressed();
     }
 
     @Override

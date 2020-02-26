@@ -82,7 +82,14 @@ public class AdDetail {
     @Expose
     public String startDate;
 
+    @SerializedName("error")
+    @Expose
+    public String error;
+
     // Create
+    public AdDetail() {
+    }
+
     public AdDetail(String title, String eventTitle, String content, int shopId, String startDate, String endDate) {
         this.title = title;
         this.eventTitle = eventTitle;

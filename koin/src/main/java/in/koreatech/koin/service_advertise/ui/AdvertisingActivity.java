@@ -139,7 +139,10 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onGrantCheckReceived(AdDetail adDetail) {
-
+        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
+        intent.putExtra("ID", adDetail.id);
+        intent.putExtra("GRANT_EDIT", adDetail.grantEdit);
+        startActivity(intent);
     }
 
     /**

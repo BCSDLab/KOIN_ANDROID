@@ -7,4 +7,6 @@ import in.koreatech.koin.core.networks.ApiCallback;
  */
 public interface AdvertisingInteractor {
     void readAdList(final ApiCallback apiCallback);
+
+    void updateGrantCheck(int articleId, final ApiCallback apiCallback);
 }
