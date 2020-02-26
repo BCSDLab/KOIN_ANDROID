@@ -1,45 +1,24 @@
 package in.koreatech.koin.service_advertise.ui;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
-import android.text.InputType;
-import android.text.Layout;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.irshulx.EditorListener;
-import com.github.irshulx.models.EditorControl;
-import com.github.irshulx.models.EditorTextStyle;
-
 import java.io.File;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
-import butterknife.BindBitmap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,26 +27,14 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.AdDetail;
-import in.koreatech.koin.core.networks.entity.Article;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
-import in.koreatech.koin.core.networks.interactors.CommunityRestInteractor;
 import in.koreatech.koin.core.util.FormValidatorUtil;
-import in.koreatech.koin.core.util.ImageUtil;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.TimeUtil;
-import in.koreatech.koin.core.util.TimerUtil;
 import in.koreatech.koin.core.util.ToastUtil;
-import in.koreatech.koin.service_advertise.contracts.AdvertisingContract;
 import in.koreatech.koin.service_advertise.contracts.AdvertisingCreatingContract;
 import in.koreatech.koin.service_advertise.presenters.AdvertisingCreatingPresenter;
-import in.koreatech.koin.service_advertise.presenters.AdvertisingPresenter;
-import in.koreatech.koin.service_board.contracts.ArticleEditContract;
-import in.koreatech.koin.service_board.presenters.ArticleEditPresenter;
 import in.koreatech.koin.service_board.ui.KoinRichEditor;
-import in.koreatech.koin.ui.MainActivity;
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
-import top.defaults.colorpicker.ColorPickerPopup;
 
 /**
  * Created by hansol on 2020.1.8...

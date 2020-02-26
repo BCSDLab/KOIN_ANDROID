@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
 import in.koreatech.koin.core.networks.entity.BokdukRoom;
+import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.entity.Land;
 import in.koreatech.koin.core.networks.entity.LostItem;
 import in.koreatech.koin.core.networks.responses.DefaultResponse;
@@ -18,6 +19,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.ADVERTISING;
+import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.COMMENTS;
 import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.GRANTCHECK;
 
 
@@ -26,12 +28,14 @@ import static in.koreatech.koin.core.constants.URLConstant.ADVERTISING.GRANTCHEC
  * Edited by seongyun on 2020. 02. 27...
  */
 public interface AdvertisingService {
+    // Advertising
     @GET(ADVERTISING)
     Observable<Advertising> getAdList();
 
     @GET(ADVERTISING + "/{id}")
     Observable<AdDetail> getAdDetailList(@Path("id") int id);
 
+    // AdDetail
     @POST(ADVERTISING)
     Observable<AdDetail> postAdDetail(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
 
@@ -44,11 +48,13 @@ public interface AdvertisingService {
     @DELETE(ADVERTISING + "/{id}")
     Observable<DefaultResponse> deleteAdDetail(@Path("id") int articleId, @Header("Authorization") String authHeader);
 
-//Observable<Land> getLandDetail(@Path("id") int landId);
-//
-//    @GET(ADVERTISING+"/events/{articleId}/comment/{commentId}")
-//    Observable<...> getAdDetailList();
-//
-//    @GET(ADVERTISING+"/{id}")
-//    Observable<...> getAdDetailList();
+    // AdDetail Comment
+    @POST(ADVERTISING + "/{articleId}/" + COMMENTS)
+    Observable<Comment> postAdDetailComment(@Path("articleId") int articleId, @Header("Authorization") String authHeader, @Body JsonObject content);
+
+    @PUT(ADVERTISING + "/{articleId}/" + COMMENTS + "/{commentId}")
+    Observable<Comment> updateAdDetailComment(@Path("articleId") int articleId, @Path("commentId") int commentId, @Header("Authorization") String authHeader, @Body JsonObject content);
+
+    @DELETE(ADVERTISING + "/{articleId}/" + COMMENTS + "/{commentId}")
+    Observable<DefaultResponse> deleteAdDetailComment(@Path("articleId") int articleId, @Path("commentId") int commentId, @Header("Authorization") String authHeader);
 }

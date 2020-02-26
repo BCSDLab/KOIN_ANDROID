@@ -6,6 +6,7 @@ import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.bases.BaseView;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.AdDetail;
+import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.service_advertise.presenters.AdDetailPresenter;
 
 /**
@@ -23,6 +24,10 @@ public interface AdDetailContract {
         void onAdDetailDeleteCompleted(boolean inSuccess);
 
         void showMessage(String msg);
+
+        void onAdDetailCommentReceived(Comment comment);
+
+        void onAdDetailCommentDeleted(boolean isSuccess);
     }
 
     interface Presenter extends BasePresenter {

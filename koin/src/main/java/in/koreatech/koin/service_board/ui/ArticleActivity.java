@@ -349,7 +349,6 @@ public class ArticleActivity extends KoinEditorActivity implements ArticleContra
 
     }
 
-
 //    public String renderHtmltoString(String url) {
 //        if (url == null) return "";
 //        return url.replace("<div>", " ").replace("<div/>", " ");

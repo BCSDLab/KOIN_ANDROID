@@ -5,6 +5,7 @@ import android.bluetooth.le.AdvertiseData;
 import in.koreatech.koin.core.bases.BasePresenter;
 import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.entity.AdDetail;
+import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.service_advertise.contracts.AdDetailContract;
 
@@ -48,6 +49,35 @@ public class AdDetailPresenter implements AdDetailContract.Presenter {
         }
     };
 
+    // Comment ApiCallback
+    private final ApiCallback commentApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            adDetailView.onAdDetailCommentReceived((Comment) object);
+            adDetailView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            adDetailView.showMessage(throwable.getMessage());
+            adDetailView.hideLoading();
+        }
+    };
+
+    private final ApiCallback deleteCommentApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            adDetailView.onAdDetailCommentDeleted(true);
+            adDetailView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            adDetailView.showMessage(throwable.getMessage());
+            adDetailView.hideLoading();
+        }
+    };
+
     @Override
     public void getAdDetailInfo(int id) {
         adDetailView.showLoading();
@@ -57,5 +87,20 @@ public class AdDetailPresenter implements AdDetailContract.Presenter {
     public void deleteAdDetail(int articleId) {
         adDetailView.showLoading();
         adDetailInterator.deleteAdDetail(articleId, deleteApiCallback);
+    }
+
+    public void createComment(int articleId, Comment comment) {
+        adDetailView.showLoading();
+        adDetailInterator.createAdDetailComment(articleId, comment, commentApiCallback);
+    }
+
+    public void updateComment(Comment comment) {
+        adDetailView.showLoading();
+        adDetailInterator.updateAdDetailComment(comment, commentApiCallback);
+    }
+
+    public void deleteComment(Comment comment) {
+        adDetailView.showLoading();
+        adDetailInterator.deleteAdDetailComment(comment.articleUid, comment.commentUid, deleteApiCallback);
     }
 }

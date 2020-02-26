@@ -9,6 +9,7 @@ import in.koreatech.koin.core.networks.ApiCallback;
 import in.koreatech.koin.core.networks.RetrofitManager;
 import in.koreatech.koin.core.networks.entity.AdDetail;
 import in.koreatech.koin.core.networks.entity.Advertising;
+import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.responses.DefaultResponse;
 import in.koreatech.koin.core.networks.services.AdvertisingService;
 import in.koreatech.koin.core.util.FormValidatorUtil;
@@ -176,6 +177,123 @@ public class AdDetailRestInterator implements AdDetailInterator {
                             apiCallback.onSuccess(defaultResponse);
                         } else {
                             apiCallback.onFailure(new Throwable("Fail"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
+    }
+
+    @Override
+    public void createAdDetailComment(int articleId, Comment comment, ApiCallback apiCallback) {
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("content", comment.content);
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).postAdDetailComment(articleId, addAuthorizationBearer(token), jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Comment>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Comment comment) {
+                        if (FormValidatorUtil.validateStringIsEmpty(comment.error)) {
+                            comment.articleUid = articleId;
+                            apiCallback.onSuccess(comment);
+                        } else {
+                            apiCallback.onFailure(new Throwable(comment.error));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
+    }
+
+    @Override
+    public void updateAdDetailComment(Comment comment, ApiCallback apiCallback) {
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("content", comment.content);
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).updateAdDetailComment(comment.articleUid, comment.commentUid, addAuthorizationBearer(token), jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Comment>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Comment response) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
+                            response.articleUid = comment.articleUid;
+                            response.commentUid = comment.commentUid;
+                            apiCallback.onSuccess(response);
+                        } else {
+                            apiCallback.onFailure(new Throwable(response.error));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
+    }
+
+    @Override
+    public void deleteAdDetailComment(int articleId, int commentId, ApiCallback apiCallback) {
+        String token = DefaultSharedPreferencesHelper.getInstance().loadToken();
+        RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).deleteAdDetailComment(articleId, commentId, addAuthorizationBearer(token))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<DefaultResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(DefaultResponse response) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            Comment comment = new Comment();
+                            comment.articleUid = articleId;
+                            apiCallback.onSuccess(comment);
+                        } else {
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 

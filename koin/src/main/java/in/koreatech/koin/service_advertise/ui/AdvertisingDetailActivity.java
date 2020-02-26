@@ -1,43 +1,36 @@
 package in.koreatech.koin.service_advertise.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.KoinEditorActivity;
-import in.koreatech.koin.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
 import in.koreatech.koin.core.networks.entity.AdDetail;
-import in.koreatech.koin.core.networks.entity.Comment;
-import in.koreatech.koin.core.networks.interactors.AdDetailInterator;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
 import in.koreatech.koin.service_advertise.adapters.AdvertisingCommentAdapter;
 import in.koreatech.koin.service_advertise.contracts.AdDetailContract;
 import in.koreatech.koin.service_advertise.presenters.AdDetailPresenter;
-import in.koreatech.koin.service_lostfound.adapter.LostFoundCommentRecyclerviewAdapter;
 
 /**
  * created by hansol on 2020.1.3...
