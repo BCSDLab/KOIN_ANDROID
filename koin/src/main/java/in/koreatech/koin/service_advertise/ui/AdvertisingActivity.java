@@ -52,7 +52,7 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advertising);
+        setContentView(R.layout.advertising_list_activity);
         ButterKnife.bind(this);
 
         init();

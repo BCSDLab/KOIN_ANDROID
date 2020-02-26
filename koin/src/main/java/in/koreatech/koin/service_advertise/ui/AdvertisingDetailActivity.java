@@ -3,8 +3,11 @@ package in.koreatech.koin.service_advertise.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -24,7 +27,9 @@ import in.koreatech.koin.KoinEditorActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.asynctasks.GenerateProgressTask;
 import in.koreatech.koin.core.bases.KoinBaseAppbarDark;
+import in.koreatech.koin.core.constants.AuthorizeConstant;
 import in.koreatech.koin.core.networks.entity.AdDetail;
+import in.koreatech.koin.core.networks.entity.Comment;
 import in.koreatech.koin.core.networks.interactors.AdDetailRestInterator;
 import in.koreatech.koin.core.util.SnackbarUtil;
 import in.koreatech.koin.core.util.ToastUtil;
@@ -62,12 +67,18 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     TextView replyCountTextview;
     @BindView(R.id.advertising_detail_view_count_textview)
     TextView viewCountTextview;
-    @BindView(R.id.advertising_recyclerview)
-    RecyclerView detailRecyclerview;
     @BindView(R.id.advertising_detail_page_edit_button)
     Button editButton;
     @BindView(R.id.advertising_detail_page_delete_button)
     Button deleteButton;
+    @BindView(R.id.advertising_comment_recyclerview)
+    RecyclerView detailRecyclerview;
+    @BindView(R.id.advertising_comment_content_edittext)
+    EditText commentEditText;
+    @BindView(R.id.advertising_comment_create_button)
+    Button commentCreateButton;
+    @BindView(R.id.advertising_comment_erase_button)
+    Button commentDeleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +123,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     public void initView() {
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
@@ -123,7 +133,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         replyCountTextview.setText(adDetailInfo.comentCount + "");
         viewCountTextview.setText(adDetailInfo.hit + "");
 
-        if(adDetailInfo.grantEdit) {
+        if (adDetailInfo.grantEdit) {
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
@@ -138,6 +148,9 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
                 .load(adDetailInfo.thumbnail)
                 .apply(glideOptions)
                 .into(eventImage);
+
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
+
     }
 
     @Override
@@ -197,6 +210,24 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         ToastUtil.makeShortToast(context, msg);
     }
 
+    @Override
+    public void onAdDetailCommentReceived(Comment comment) {
+        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
+        intent.putExtra("ID", adDetailInfo.id);
+        intent.putExtra("GRANT_EDIT", adDetailInfo.grantEdit);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAdDetailCommentDeleted(boolean isSuccess) {
+        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
+        intent.putExtra("ID", adDetailInfo.id);
+        intent.putExtra("GRANT_EDIT", adDetailInfo.grantEdit);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.koin_base_app_bar_dark)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
@@ -218,13 +249,36 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
 
     @OnClick({R.id.advertising_detail_page_edit_button, R.id.advertising_detail_page_delete_button})
     public void onClickButton(View view) {
-        switch(view.getId()){
-            case R.id.advertising_detail_page_edit_button :
+        switch (view.getId()) {
+            case R.id.advertising_detail_page_edit_button:
                 onClickEditButton();
                 break;
-            case R.id.advertising_detail_page_delete_button :
+            case R.id.advertising_detail_page_delete_button:
                 onClickDeleteButton();
                 break;
+        }
+    }
+
+    @OnClick(R.id.advertising_comment_content_edittext)
+    public void onClickCommentContent(View view) {
+        if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
+            showLoginRequestDialog();
+        } else {
+            commentEditText.setEnabled(true);
+        }
+    }
+
+    @OnClick(R.id.advertising_comment_create_button)
+    public void onClickCommentCreate(View view) {
+        if(getAuthority() == AuthorizeConstant.ANONYMOUS)
+            return;
+
+        if(commentEditText.getText().toString().isEmpty()) {
+            ToastUtil.makeShortToast(this, "댓글을 입력하세요.");
+        } else {
+            Comment comment = new Comment();
+            comment.content = commentEditText.getText().toString();
+            adDetailPresenter.createComment(adDetailInfo.id, comment);
         }
     }
 
