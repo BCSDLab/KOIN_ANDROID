@@ -331,10 +331,11 @@
                                 android:layout_marginLeft="16dp"
                                 android:layout_marginRight="16dp"
                                 android:background="@drawable/bg_black_rectangle"
-                                android:hint="댓글을 작성해주세요."
+                                android:hint="로그인 후 이용해주세요."
                                 android:lineSpacingExtra="18sp"
                                 android:textColorHint="#b7bbbf"
-                                android:textSize="14sp"/>
+                                android:textSize="14sp"
+                                android:focusable="false"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -3,21 +3,15 @@ package in.koreatech.koin.service_advertise.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.io.File;
 
@@ -49,8 +43,8 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     private RecyclerView.LayoutManager layoutManager;
     private AdvertisingCommentAdapter commentRecyclerAdapter;
     private GenerateProgressTask adDetailGenerateProgress;
-    private RequestOptions glideOptions;
     private AdDetail adDetailInfo;
+    private InputMethodManager commentInputManager;
 
     @BindView(R.id.advertising_detail_scrollview)
     NestedScrollView scrollView;
@@ -70,6 +64,8 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     Button editButton;
     @BindView(R.id.advertising_detail_page_delete_button)
     Button deleteButton;
+
+    // Comment View Binding
     @BindView(R.id.advertising_comment_recyclerview)
     RecyclerView detailRecyclerview;
     @BindView(R.id.advertising_comment_content_edittext)
@@ -84,8 +80,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         setContentView(R.layout.advertising_detail_page_activity);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-
-        Log.d("WTF", "AdDetailCreated");
 
         adDetailInfo = new AdDetail();
         adDetailInfo.id = getIntent().getIntExtra("ID", -1);
@@ -121,14 +115,10 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         if (adDetailPresenter != null) {
             adDetailPresenter.getAdDetailInfo(adDetailInfo.id);
         }
+        commentInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public void initView() {
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
-        detailRecyclerview.setHasFixedSize(true);
-        detailRecyclerview.setLayoutManager(layoutManager);
-        detailRecyclerview.setAdapter(commentRecyclerAdapter);
-        detailRecyclerview.setNestedScrollingEnabled(false);
         titleTextview.setText(adDetailInfo.eventTitle);
         periodTextview.setText(adDetailInfo.startDate + " ~ " + adDetailInfo.endDate);
         viewPublisherTextview.setText("조회 " + adDetailInfo.getHit() + " · " + adDetailInfo.getNickname());
@@ -140,11 +130,22 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
+
+        if(getAuthority() != AuthorizeConstant.ANONYMOUS) {
+            commentEditText.setFocusable(true);
+            commentEditText.setFocusableInTouchMode(true);
+            commentEditText.setHint("댓글을 작성해주세요.");
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
+        detailRecyclerview.setHasFixedSize(true);
+        detailRecyclerview.setLayoutManager(layoutManager);
+        detailRecyclerview.setAdapter(commentRecyclerAdapter);
+        detailRecyclerview.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -246,26 +247,39 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         }
     }
 
-    @OnClick(R.id.advertising_comment_content_edittext)
-    public void onClickCommentContent(View view) {
+    @OnClick({R.id.advertising_comment_content_edittext, R.id.advertising_comment_create_button, R.id.advertising_comment_erase_button})
+    public void onClickCommentView(View view) {
         if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
         } else {
-            commentEditText.setEnabled(true);
+            switch(view.getId()) {
+                case R.id.advertising_comment_content_edittext :
+//                    commentInputManager.showSoftInput(commentEditText, 0);
+                    scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
+                    break;
+                case R.id.advertising_comment_create_button :
+                    onClickCommentCreate();
+                    break;
+                case R.id.advertising_comment_erase_button :
+                    onClickCommentErase();
+                    break;
+            }
         }
     }
 
-    @OnClick(R.id.advertising_comment_create_button)
-    public void onClickCommentCreate(View view) {
-        if(getAuthority() == AuthorizeConstant.ANONYMOUS)
-            return;
-
+    public void onClickCommentCreate() {
         if(commentEditText.getText().toString().isEmpty()) {
-            ToastUtil.makeShortToast(this, "댓글을 입력하세요.");
+            ToastUtil.makeShortToast(this, "댓글을 입력해주세요.");
         } else {
             Comment comment = new Comment();
             comment.content = commentEditText.getText().toString();
             adDetailPresenter.createComment(adDetailInfo.id, comment);
+        }
+    }
+
+    public void onClickCommentErase() {
+        if(!commentEditText.getText().toString().isEmpty()) {
+            SnackbarUtil.makeLongSnackbarActionYes(scrollView, "입력한 댓글을 지우시겠습니까?", () -> commentEditText.setText(""));
         }
     }
 
