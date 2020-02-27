@@ -286,5 +286,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         intent.putExtra("CONTENT", adDetailInfo.content);
         intent.putExtra("SHOP_ID", adDetailInfo.shopId);
         startActivity(intent);
+
+        finish();
     }
 }

@@ -285,12 +285,10 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
         startDate = startDateTextview.getText().toString();
         endDate = endDateTextview.getText().toString();
 
-        if (isEdit) {
-            advertisingCreatingPresenter.updateAdDetail(articleId, new AdDetail(title, eventTitle, content, startDate, endDate));
-        }
         String thumbnail = getThumbnail();
-        if (thumbnail == null) {
-            advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate));
+
+        if (isEdit) {
+            advertisingCreatingPresenter.updateAdDetail(articleId, new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         } else {
             advertisingCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         }
@@ -303,10 +301,12 @@ public class AdvertisingCreateActivity extends KoinEditorActivity implements Adv
 
     @Override
     public void goToAdvertisingActivity(AdDetail adDetail) {
-        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
-        intent.putExtra("ID", adDetail.id);
-        intent.putExtra("GRANT_EDIT", true);
-        startActivity(intent);
+        if(!isEdit){
+            Intent intent = new Intent(this, AdvertisingDetailActivity.class);
+            intent.putExtra("ID", adDetail.id);
+            intent.putExtra("GRANT_EDIT", true);
+            startActivity(intent);
+        }
 
         finish();
     }

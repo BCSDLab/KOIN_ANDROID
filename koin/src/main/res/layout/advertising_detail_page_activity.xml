@@ -256,12 +256,8 @@
 
                             <in.koreatech.koin.service_board.ui.KoinRichEditor
                                 android:id="@+id/advertising_detail_contents"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="56dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:gravity="start"
                                 android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"

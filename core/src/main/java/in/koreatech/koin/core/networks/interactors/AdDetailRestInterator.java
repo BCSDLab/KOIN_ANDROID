@@ -126,6 +126,9 @@ public class AdDetailRestInterator implements AdDetailInterator {
         jsonObject.addProperty("content", adDetail.content);
         jsonObject.addProperty("start_date", adDetail.startDate);
         jsonObject.addProperty("end_date", adDetail.endDate);
+        jsonObject.addProperty("shop_id", adDetail.shopId);
+        if(adDetail.thumbnail != null)
+            jsonObject.addProperty("thumbnail", adDetail.thumbnail);
         RetrofitManager.getInstance().getRetrofit().create(AdvertisingService.class).updateAdDetail(articleId, addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
