@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -63,6 +64,9 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
         adArrayList = new ArrayList<>();
         adGridLayoutManager = new GridLayoutManager(this, 2);
         adRecyclerView.setLayoutManager(adGridLayoutManager);
+        adRecyclerAdapter = new AdvertisingRecyclerAdapter(adArrayList, this);
+        adRecyclerView.setAdapter(adRecyclerAdapter);
+        adRecyclerView.addOnItemTouchListener(recyclerClickListener);
         setPresenter(new AdvertisingPresenter(this, new AdvertisingRestInteractor()));
     }
 
@@ -132,10 +136,9 @@ public class AdvertisingActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onAdvertisingDataReceived(ArrayList<Advertising> adList) {
-        adArrayList = adList;
-        adRecyclerAdapter = new AdvertisingRecyclerAdapter(adList, this);
-        adRecyclerView.setAdapter(adRecyclerAdapter);
-        adRecyclerView.addOnItemTouchListener(recyclerClickListener);
+        adArrayList.clear();
+        adArrayList.addAll(adList);
+        adRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override

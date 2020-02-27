@@ -1,5 +1,7 @@
 package in.koreatech.koin.service_advertise.presenters;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -52,17 +54,17 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
     @Override
     public ArrayList<Advertising> displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
         ArrayList<Advertising> subAdDate = new ArrayList<>();
-        if (isChecked1 == true && isChecked2 == true) { //전체
+        if (isChecked1 && isChecked2) { //전체
             subAdDate.addAll(adArrayList);
         }
-        if (isChecked1 == false && isChecked2 == false) { //아무것도 없음
+        if (!isChecked1 && !isChecked2) { //아무것도 없음
             return subAdDate;
         }
 
         Date date = new Date();
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
-        if (isChecked1 == true && isChecked2 == false) {
+        if (isChecked1 && !isChecked2) {
             for (int i = 0; i < adArrayList.size(); i++) {
                 try {
                     if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate)) == 1)) {
@@ -73,7 +75,7 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
                 }
             }
         }
-        if (isChecked1 == false && isChecked2 == true) {
+        if (!isChecked1 && isChecked2) {
             for (int i = 0; i < adArrayList.size(); i++) {
                 try {
                     if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate)) == -1)
@@ -106,5 +108,6 @@ public class AdvertisingPresenter implements AdvertisingContract.Presenter {
     public void getAdGrantCheck(int articleUid) {
         adView.showLoading();
         advertisingInteractor.updateGrantCheck(articleUid, grantCheckApiCallback);
+        Log.d("AdverstisingActivity", "clicked");
     }
 }

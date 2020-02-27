@@ -1,15 +1,11 @@
 package in.koreatech.koin.service_advertise.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.firebase.perf.metrics.AddTrace;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,10 +24,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.networks.entity.Advertising;
-import in.koreatech.koin.core.networks.entity.BokdukRoom;
-import in.koreatech.koin.service_advertise.ui.AdvertisingDetailActivity;
-import in.koreatech.koin.service_dining.adapters.DiningRecyclerAdapter;
-import in.koreatech.koin.service_land.adapter.LandRecyclerAdapter;
 
 /**
  * Created by hansol on 2020.1.1...
@@ -134,12 +125,6 @@ public class AdvertisingRecyclerAdapter extends RecyclerView.Adapter<Advertising
                 .load(ad.thumbnail)
                 .apply(glideOptions)
                 .into(holder.adFoodImageview);
-
-//        holder.view.setOnClickListener(i -> {
-//            Intent intent = new Intent(context, AdvertisingDetailActivity.class);
-//            intent.putExtra("ID", ad.getId());
-//            context.startActivity(intent);
-//        });
     }
 
     @Override

@@ -23,24 +23,24 @@
                 app:left_button_background="@drawable/ic_back_arrow"
                 app:title_text="홍보게시판" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:layout_marginBottom="56dp"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_below="@id/koin_base_app_bar_dark"-->
+<!--                android:layout_marginBottom="56dp"-->
+<!--                android:orientation="vertical">-->
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:id="@+id/advertising_detail_scrollview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:layout_below="@id/koin_base_app_bar_dark"
                     android:scrollbarAlwaysDrawVerticalTrack="true"
                     app:layout_constrainedHeight="true"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0">
+                    app:layout_constraintStart_toStartOf="parent">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -226,7 +226,7 @@
                             android:background="@color/divider"
                             android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/advertising_detail_layout_content_linearlayout"></LinearLayout>
+                            app:layout_constraintTop_toBottomOf="@id/advertising_detail_order_button"></LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/linearLayout7"
@@ -253,11 +253,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-                            <ImageView
-                                android:id="@+id/advertising_detail_event_imageview"
-                                android:layout_width="328dp"
-                                android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/advertising_default_image" />
 
                             <in.koreatech.koin.service_board.ui.KoinRichEditor
                                 android:id="@+id/advertising_detail_contents"
@@ -275,17 +270,20 @@
                                 app:layout_constraintHorizontal_bias="0.0"
                                 app:render_type="Renderer" />
 
-                            <Button
-                                android:id="@+id/advertising_detail_order_button"
-                                android:layout_width="159dp"
-                                android:layout_height="29dp"
-                                android:layout_marginTop="46dp"
-                                android:background="#f7941e"
-                                android:gravity="center"
-                                android:text="주문하러가기"
-                                android:textColor="#ffffff" />
-
                         </LinearLayout>
+
+                        <Button
+                            android:id="@+id/advertising_detail_order_button"
+                            android:layout_width="159dp"
+                            android:layout_height="29dp"
+                            android:layout_marginTop="46dp"
+                            android:background="#f7941e"
+                            android:text="주문하러가기"
+                            app:layout_constraintTop_toBottomOf="@id/advertising_detail_layout_content_linearlayout"
+                            app:layout_constraintStart_toStartOf="@id/advertising_detail_layout_content_linearlayout"
+                            app:layout_constraintEnd_toEndOf="@id/advertising_detail_layout_content_linearlayout"
+                            app:layout_constraintBottom_toTopOf="@id/linearLayout6"
+                            android:textColor="#ffffff" />
 
                         <TextView
                             android:id="@+id/textView24"
@@ -313,12 +311,15 @@
 
                         <LinearLayout
                             android:layout_width="400dp"
-                            android:layout_height="300dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
+                            android:layout_marginBottom="66dp"
                             android:layout_marginTop="15dp"
                             android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout7">
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/advertising_comment_recyclerview"
@@ -371,17 +372,17 @@
                             </LinearLayout>
 
                         </LinearLayout>
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
 
 
-            </RelativeLayout>
+<!--            </LinearLayout>-->
         </RelativeLayout>
 
         <include layout="@layout/base_navigation_bar_bottom" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +53,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     private AdDetail adDetailInfo;
 
     @BindView(R.id.advertising_detail_scrollview)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
     @BindView(R.id.advertising_detail_title_textview)
     TextView titleTextview;
     @BindView(R.id.advertising_detail_period_textview)
@@ -61,8 +62,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     TextView viewPublisherTextview;
     @BindView(R.id.advertising_detail_publish_date_textview)
     TextView publishDateTextview;
-    @BindView(R.id.advertising_detail_event_imageview)
-    ImageView eventImage;
     @BindView(R.id.advertising_detail_reply_count_textview)
     TextView replyCountTextview;
     @BindView(R.id.advertising_detail_view_count_textview)
@@ -84,6 +83,9 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.advertising_detail_page_activity);
         super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
+
+        Log.d("WTF", "AdDetailCreated");
 
         adDetailInfo = new AdDetail();
         adDetailInfo.id = getIntent().getIntExtra("ID", -1);
@@ -114,7 +116,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
 
     private void init() {
         context = this;
-        ButterKnife.bind(this);
         setPresenter(new AdDetailPresenter(this, new AdDetailRestInterator()));
         layoutManager = new LinearLayoutManager(this);
         if (adDetailPresenter != null) {
@@ -123,9 +124,11 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     public void initView() {
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
+        detailRecyclerview.setNestedScrollingEnabled(false);
         titleTextview.setText(adDetailInfo.eventTitle);
         periodTextview.setText(adDetailInfo.startDate + " ~ " + adDetailInfo.endDate);
         viewPublisherTextview.setText("조회 " + adDetailInfo.getHit() + " · " + adDetailInfo.getNickname());
@@ -137,27 +140,11 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
-
-        glideOptions = new RequestOptions()
-                .fitCenter()
-                .override(650, 870)
-                .error(R.drawable.img_noimage)
-                .placeholder(R.color.white);
-
-        Glide.with(context)
-                .load(adDetailInfo.thumbnail)
-                .apply(glideOptions)
-                .into(eventImage);
-
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     @Override

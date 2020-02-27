@@ -130,7 +130,6 @@ public class AdDetailRestInterator implements AdDetailInterator {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<AdDetail>() {
-
                     @Override
                     public void onSubscribe(Disposable d) {
 
@@ -138,10 +137,10 @@ public class AdDetailRestInterator implements AdDetailInterator {
 
                     @Override
                     public void onNext(AdDetail adDetail) {
-                        if (adDetail != null)
+                        if (FormValidatorUtil.validateStringIsEmpty(adDetail.error))
                             apiCallback.onSuccess(adDetail);
                         else
-                            apiCallback.onFailure(new Throwable("Fail"));
+                            apiCallback.onFailure(new Throwable(adDetail.error));
                     }
 
                     @Override
