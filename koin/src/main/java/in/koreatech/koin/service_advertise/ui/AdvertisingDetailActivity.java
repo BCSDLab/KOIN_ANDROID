@@ -119,6 +119,11 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     public void initView() {
+        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
+        detailRecyclerview.setHasFixedSize(true);
+        detailRecyclerview.setLayoutManager(layoutManager);
+        detailRecyclerview.setAdapter(commentRecyclerAdapter);
+        detailRecyclerview.setNestedScrollingEnabled(false);
         titleTextview.setText(adDetailInfo.eventTitle);
         periodTextview.setText(adDetailInfo.startDate + " ~ " + adDetailInfo.endDate);
         viewPublisherTextview.setText("조회 " + adDetailInfo.getHit() + " · " + adDetailInfo.getNickname());
@@ -141,11 +146,6 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     @Override
     protected void onStart() {
         super.onStart();
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
-        detailRecyclerview.setHasFixedSize(true);
-        detailRecyclerview.setLayoutManager(layoutManager);
-        detailRecyclerview.setAdapter(commentRecyclerAdapter);
-        detailRecyclerview.setNestedScrollingEnabled(false);
     }
 
     @Override
@@ -198,13 +198,19 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         ToastUtil.makeShortToast(context, msg);
     }
 
+    /**
+     * Comment를 추가했을 때 Comment 수와 Comment 리사이클러 뷰를 새로고침하고,
+     * 키보드를 내리면서 댓글 입력창의 포커스를 없애는 메소드
+     * @param comment 새로 추가한 댓글
+     */
     @Override
     public void onAdDetailCommentReceived(Comment comment) {
-        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
-        intent.putExtra("ID", adDetailInfo.id);
-        intent.putExtra("GRANT_EDIT", adDetailInfo.grantEdit);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        adDetailInfo.comments.add(comment);
+        commentRecyclerAdapter.notifyDataSetChanged();
+        replyCountTextview.setText(adDetailInfo.comments.size());
+        commentEditText.clearFocus();
+        commentEditText.setText("");
+        commentInputManager.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
     }
 
     @Override

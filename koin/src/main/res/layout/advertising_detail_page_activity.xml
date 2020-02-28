@@ -198,13 +198,13 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_reply_count_textview"
-                            android:layout_width="10dp"
-                            android:layout_height="15dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="2sp"
                             android:textColor="@color/dark_blue"
                             android:textSize="13sp"
-                            android:text="3"
+                            tools:text="111"
                             app:layout_constraintStart_toEndOf="@+id/textView22"
                             app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
 
@@ -295,11 +295,11 @@
 
                         <TextView
                             android:id="@+id/advertising_detail_view_count_textview"
-                            android:layout_width="30dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="15dp"
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="2sp"
-                            android:text="350"
+                            tools:text="350"
                             android:textColor="@color/dark_blue"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@+id/textView24"
