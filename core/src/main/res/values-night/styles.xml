@@ -2,19 +2,27 @@
 <resources>
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/dark_gray</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/black</item>
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
-        <item name="colorOnSurface">@color/white_87</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#e1e1e1</item>
         <item name="colorControlHighlight">#666666</item>
 
+        <item name="base_alpha">1</item>
+
         <item name="colorTextMainMenu">@color/gray5</item>
+        <item name="toolbarBackgroundColor">#222222</item>
+        <item name="colotTextCircleTitle">@color/lighter_navy</item>
+        <item name="colorListSubTitleBackgroundColor">#181818</item>
+        <item name="colorListSubTitleTextColor">@color/gray6</item>
+        <item name="colorDivider">#1f1f1f</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">

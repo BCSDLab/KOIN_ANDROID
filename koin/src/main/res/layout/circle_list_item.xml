@@ -30,6 +30,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="0dp"
             android:scaleType="fitXY"
+            android:background="?attr/toolbarBackgroundColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:gravity="center"
-                android:textColor="?attr/colorOnSurface"
+                android:textColor="?attr/colotTextCircleTitle"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:font_name="Custom5"

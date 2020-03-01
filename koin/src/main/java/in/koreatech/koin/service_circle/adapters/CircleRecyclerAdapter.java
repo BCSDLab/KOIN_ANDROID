@@ -103,7 +103,7 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
                     .apply(mGlideOptions)
                     .into(holder.mCircleItemBackgroundImageview);
         } else {
-            holder.mCircleItemBackgroundImageview.setBackgroundColor(mResource.getColor(R.color.light_navy));
+            //holder.mCircleItemBackgroundImageview.setBackgroundColor(mResource.getColor(R.color.light_navy));
         }
 
     }

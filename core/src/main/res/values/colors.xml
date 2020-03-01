@@ -112,5 +112,7 @@
     <color name="gray3">#222222</color>
     <color name="gray4">#2c2c2c</color>
     <color name="gray5">#e1e1e1</color>
+    <color name="gray6">#6C6F74</color>
+    <color name="color_bg_list_subtitle_dark">#181818</color>
     <color name="lighter_navy">#72AAD3</color>
 </resources>

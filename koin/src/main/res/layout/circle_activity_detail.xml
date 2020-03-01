@@ -120,7 +120,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="24dp"
-                            android:background="@color/cloudy_blue"
+                            android:background="#000000"
+                            android:backgroundTint="?attr/colorDivider"
                             app:layout_constraintTop_toBottomOf="@id/circle_detail_logo_relative_layout">
 
                             <TextView
@@ -158,8 +159,9 @@
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:alpha="0.2"
-                                android:background="@color/cloudy_blue"
+                                android:alpha="?attr/base_alpha"
+                                android:background="@android:color/black"
+                                android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -336,7 +338,7 @@
                             app:layout_goneMarginBottom="72dp"
                             tools:text="설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명설명란설명란란설명란설명란설명란설명란설명란" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/circle_detail_facebook_button"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -357,7 +359,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/circle_detail_description_textview" />
 
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/circle_detail_cyworld_button"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -377,7 +379,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/circle_detail_facebook_button" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/circle_detail_naver_button"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"

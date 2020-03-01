@@ -91,7 +91,7 @@ public class KoinBaseAppbarDark extends AppBarLayout {
         String rightButtonString = typedArray.getString(R.styleable.KoinBaseAppbarDark_right_button_text);
         int rightButtonVisibility = typedArray.getInt(R.styleable.KoinBaseAppbarDark_right_button_visibility, View.VISIBLE);
         /* background */
-        background.setBackgroundColor(backgroundColor);
+        //background.setBackgroundColor(backgroundColor);
         /* title */
         title.setTextColor(titleTextColor);
         title.setText(titleText);
