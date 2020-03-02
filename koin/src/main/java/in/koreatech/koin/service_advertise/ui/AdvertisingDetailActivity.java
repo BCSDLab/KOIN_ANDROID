@@ -130,13 +130,14 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         renderEditor(renderHtmltoString(adDetailInfo.content));
         replyCountTextview.setText(adDetailInfo.comentCount + "");
         viewCountTextview.setText(adDetailInfo.hit + "");
+        publishDateTextview.setText(adDetailInfo.createdAt);
 
         if (adDetailInfo.grantEdit) {
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
 
-        if(getAuthority() != AuthorizeConstant.ANONYMOUS) {
+        if (getAuthority() != AuthorizeConstant.ANONYMOUS) {
             commentEditText.setFocusable(true);
             commentEditText.setFocusableInTouchMode(true);
             commentEditText.setHint("댓글을 작성해주세요.");
@@ -179,6 +180,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         adDetailInfo.shopId = adDetail.shopId;
         adDetailInfo.userId = adDetail.userId;
         adDetailInfo.nickname = adDetail.nickname;
+        adDetailInfo.createdAt = adDetail.createdAt;
 
         initView();
     }
@@ -201,13 +203,14 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     /**
      * Comment를 추가했을 때 Comment 수와 Comment 리사이클러 뷰를 새로고침하고,
      * 키보드를 내리면서 댓글 입력창의 포커스를 없애는 메소드
+     *
      * @param comment 새로 추가한 댓글
      */
     @Override
     public void onAdDetailCommentReceived(Comment comment) {
         adDetailInfo.comments.add(comment);
         commentRecyclerAdapter.notifyDataSetChanged();
-        replyCountTextview.setText(adDetailInfo.comments.size());
+        replyCountTextview.setText(Integer.toString(adDetailInfo.comments.size()));
         commentEditText.clearFocus();
         commentEditText.setText("");
         commentInputManager.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
@@ -258,15 +261,14 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
         if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
         } else {
-            switch(view.getId()) {
-                case R.id.advertising_comment_content_edittext :
-//                    commentInputManager.showSoftInput(commentEditText, 0);
+            switch (view.getId()) {
+                case R.id.advertising_comment_content_edittext:
                     scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
                     break;
-                case R.id.advertising_comment_create_button :
+                case R.id.advertising_comment_create_button:
                     onClickCommentCreate();
                     break;
-                case R.id.advertising_comment_erase_button :
+                case R.id.advertising_comment_erase_button:
                     onClickCommentErase();
                     break;
             }
@@ -274,7 +276,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     public void onClickCommentCreate() {
-        if(commentEditText.getText().toString().isEmpty()) {
+        if (commentEditText.getText().toString().isEmpty()) {
             ToastUtil.makeShortToast(this, "댓글을 입력해주세요.");
         } else {
             Comment comment = new Comment();
@@ -284,7 +286,7 @@ public class AdvertisingDetailActivity extends KoinEditorActivity implements AdD
     }
 
     public void onClickCommentErase() {
-        if(!commentEditText.getText().toString().isEmpty()) {
+        if (!commentEditText.getText().toString().isEmpty()) {
             SnackbarUtil.makeLongSnackbarActionYes(scrollView, "입력한 댓글을 지우시겠습니까?", () -> commentEditText.setText(""));
         }
     }

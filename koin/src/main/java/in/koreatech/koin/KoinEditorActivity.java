@@ -240,7 +240,7 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
     public String renderHtmltoString(String url) {
         if (url == null) return "";
-        return url.replace("<div>", " ").replace("<div/>", " ");
+        return url.replace("<div>", " ").replace("<div/>", " ").replace("<p><img", "<img");
     }
 
     public void renderEditor(String content) {

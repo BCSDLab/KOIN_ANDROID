@@ -335,7 +335,6 @@ public class ArticleActivity extends KoinEditorActivity implements ArticleContra
 //        mEditorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
 //        mEditorContent.setListItemLayout(R.layout.tmpl_list_item);
 //        mEditorContent.clearAllContents();
-        Log.d("ImageTag", mArticle.content);
 
         renderEditor(renderHtmltoString(mArticle.content));
 
