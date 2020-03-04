@@ -35,7 +35,9 @@ import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableCityBusFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableDaejeonShuttleFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableSeoulShuttleFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableUnitoYawooriDaesungFragment;
+import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableUnitoYawooriDaesungTemporaryFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungFragment;
+import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungTemporaryFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleGymEveningFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleGymMorningFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleYongamEveningFragment;
@@ -370,10 +372,12 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungTemporaryFragment());
+                //fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungTemporaryFragment());
+                //fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungFragment());
                 break;
 
         }
