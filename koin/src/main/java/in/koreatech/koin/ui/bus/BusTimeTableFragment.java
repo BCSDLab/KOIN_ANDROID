@@ -367,6 +367,7 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
 
     }
 
+    // TODO -> 코로나 바이러스 끝난 후 교체 필요
     @OnItemSelected(R.id.bus_timetable_fragment_daesung_spinner)
     public void onBusArrivalDaesungSpinnerSelect(Spinner spinner, int position) {
         FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
