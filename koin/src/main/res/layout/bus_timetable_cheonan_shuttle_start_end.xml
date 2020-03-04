@@ -21,7 +21,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimaryDivider"
 
                 >
 
@@ -33,7 +33,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text=" 구간 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="천안역 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="터미널"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -72,7 +72,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="두정역"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -85,7 +85,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="고속철"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -98,7 +98,7 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="신방동"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimaryDivider"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -109,7 +109,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimaryDivider"
                 android:gravity="center">
 
                 <TextView
@@ -184,7 +184,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorDivider"
                 android:gravity="center">
 
                 <TextView
@@ -259,7 +259,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -333,7 +333,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -403,7 +403,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -473,7 +473,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -543,7 +543,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -613,7 +613,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -683,7 +683,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -753,7 +753,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -823,7 +823,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -894,7 +894,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -964,7 +964,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1033,7 +1033,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1102,7 +1102,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1171,7 +1171,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1240,7 +1240,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1309,7 +1309,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1379,7 +1379,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1448,7 +1448,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1518,7 +1518,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1587,7 +1587,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1656,7 +1656,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1725,7 +1725,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1795,7 +1795,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1864,7 +1864,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1935,7 +1935,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2008,7 +2008,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2077,7 +2077,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2147,7 +2147,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2220,7 +2220,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2290,7 +2290,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2360,7 +2360,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2431,7 +2431,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2505,7 +2505,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"

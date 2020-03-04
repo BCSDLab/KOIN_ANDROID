@@ -54,4 +54,6 @@
     <attr name="colorListSubTitleBackgroundColor" format="color" />
     <attr name="colorListSubTitleTextColor" format="color" />
     <attr name="colorDivider" format="color" />
+    <attr name="colorPrimaryDivider" format="color" />
+
 </resources>

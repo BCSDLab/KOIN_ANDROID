@@ -3,7 +3,7 @@
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
@@ -21,6 +21,7 @@
         <item name="colotTextCircleTitle">@color/black</item>
         <item name="colorListSubTitleBackgroundColor">@color/cloudy_blue</item>
         <item name="colorListSubTitleTextColor">@color/warm_grey</item>
+        <item name="colorPrimaryDivider">@color/light_navy</item>
         <item name="colorDivider">@color/cloudy_blue</item>
     </style>
 

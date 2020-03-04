@@ -95,7 +95,6 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center_vertical"
-                    app:cardBackgroundColor="?attr/colorSurface"
                     app:layout_constraintTop_toBottomOf="@id/bus_main_fragment_select_linearLayout">
 
                     <LinearLayout
@@ -106,11 +105,12 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorAccent"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="16dp"
                             android:paddingRight="16dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_shuttle"
                             android:paddingBottom="13dp">
 
                             <LinearLayout
@@ -156,7 +156,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_shuttle"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -168,7 +169,7 @@
                                         android:lineHeight="20sp"
                                         android:lineSpacingExtra="6sp"
                                         android:text="학교셔틀"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_shuttle"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
                                 </LinearLayout>
@@ -250,18 +251,18 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="86dp"
-                            android:layout_marginTop="4dp"
-                            android:background="@color/colorAccent"
                             android:orientation="vertical"
+                            android:layout_marginTop="4dp"
                             android:paddingLeft="16dp"
                             android:paddingTop="12dp"
                             android:paddingRight="16dp"
-                            android:paddingBottom="13dp">
+                            android:paddingBottom="13dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_shuttle">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="22dp"
-                                android:background="@color/colorAccent">
+                                android:layout_height="22dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -269,7 +270,7 @@
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="7sp"
                                     android:text="다음버스"
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/text_bus_shuttle"
                                     android:textSize="15sp"
                                     app:font_name="Custom6" />
 
@@ -282,7 +283,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_shuttle"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -293,7 +295,7 @@
                                         android:letterSpacing="-0.04"
                                         android:lineSpacingExtra="6sp"
                                         android:text="학교셔틀"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_shuttle"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
                                 </LinearLayout>
@@ -303,7 +305,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="23dp"
                                 android:layout_marginTop="16dp"
-                                android:background="@color/colorAccent"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -350,7 +351,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center_vertical"
-                    app:cardBackgroundColor="?attr/colorSurface"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -364,12 +364,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="118dp"
-                            android:background="@color/gray"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="16dp"
                             android:paddingRight="9dp"
-                            android:paddingBottom="13dp">
+                            android:paddingBottom="13dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_express">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -413,7 +414,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_express"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -424,7 +426,7 @@
                                         android:letterSpacing="-0.04"
                                         android:lineSpacingExtra="6sp"
                                         android:text="대성고속"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_express"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
                                 </LinearLayout>
@@ -526,17 +528,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="86dp"
                             android:layout_marginTop="4dp"
-                            android:background="@color/gray"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="12dp"
                             android:paddingRight="16dp"
-                            android:paddingBottom="13dp">
+                            android:paddingBottom="13dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_express">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="22dp"
-                                android:background="@color/gray">
+                                android:layout_height="22dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -544,7 +546,7 @@
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="7sp"
                                     android:text="다음버스"
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/text_bus_express"
                                     android:textSize="15sp"
                                     app:font_name="Custom6" />
 
@@ -557,7 +559,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_express"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -568,7 +571,7 @@
                                         android:letterSpacing="-0.04"
                                         android:lineSpacingExtra="6sp"
                                         android:text="대성고속"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_express"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
                                 </LinearLayout>
@@ -578,7 +581,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="23dp"
                                 android:layout_marginTop="16dp"
-                                android:background="@color/gray"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -625,7 +627,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center_vertical"
-                    app:cardBackgroundColor="?attr/colorSurface"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -639,12 +640,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="118dp"
-                            android:background="@color/dark_green"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="16dp"
                             android:paddingRight="16dp"
-                            android:paddingBottom="13dp">
+                            android:paddingBottom="13dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_city">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -688,7 +690,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_city"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -699,7 +702,7 @@
                                         android:letterSpacing="-0.04"
                                         android:lineSpacingExtra="6sp"
                                         android:text="시내버스"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_city"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
                                 </LinearLayout>
@@ -790,17 +793,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="86dp"
                             android:layout_marginTop="4dp"
-                            android:background="@color/dark_green"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="12dp"
                             android:paddingRight="16dp"
-                            android:paddingBottom="13dp">
+                            android:paddingBottom="13dp"
+                            android:background="@android:color/black"
+                            android:backgroundTint="@color/bg_bus_city">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="22dp"
-                                android:background="@color/dark_green">
+                                android:layout_height="22dp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -808,7 +811,7 @@
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="7sp"
                                     android:text="다음버스"
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/text_bus_city"
                                     android:textSize="15sp"
                                     app:font_name="Custom6" />
 
@@ -821,7 +824,8 @@
                                     <ImageView
                                         android:layout_width="11dp"
                                         android:layout_height="match_parent"
-                                        android:src="@drawable/ic_bus02" />
+                                        android:src="@drawable/ic_bus02"
+                                        android:tint="@color/text_bus_city"/>
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -832,7 +836,7 @@
                                         android:letterSpacing="-0.04"
                                         android:lineSpacingExtra="6sp"
                                         android:text="시내버스"
-                                        android:textColor="@color/white"
+                                        android:textColor="@color/text_bus_city"
                                         android:textSize="14sp"
                                         app:font_name="Custom6" />
 
@@ -853,7 +857,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="23dp"
                                 android:layout_marginTop="16dp"
-                                android:background="@color/dark_green"
                                 android:orientation="horizontal">
 
                                 <TextView

@@ -37,8 +37,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="47dp"
                     android:lineSpacingExtra="7sp"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="15sp"
+                    app:tabSelectedTextColor="?attr/colorOnSurface"
+                    app:tabIndicatorColor="?attr/colorSecondary"
                     app:font_name="Custom6"
                     android:layout_gravity="top"
                     android:layout_marginBottom="5dp" />

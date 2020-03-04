@@ -9,7 +9,9 @@
         android:layout_width="match_parent"
         android:layout_weight="0.295"
         android:layout_height="0dp"
-        android:background="@color/cloudy_blue_two"
+        android:background="@android:color/black"
+        android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
+        android:alpha="?attr/base_alpha"
         android:orientation="horizontal">
 
         <TextView
@@ -108,7 +110,7 @@
             android:paddingRight="14dp"
             android:paddingBottom="9dp">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/bus_timetable_search_result_close_button"
                 android:layout_width="58dp"
                 android:layout_height="36dp"
@@ -118,7 +120,7 @@
                 android:lineSpacingExtra="7sp"
                 android:text="닫기"
                 android:gravity="center"
-                android:textColor="@color/light_navy"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp" />
 
         </LinearLayout>

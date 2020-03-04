@@ -46,6 +46,7 @@
 
     <color name="black__20">#33000000</color>
     <color name="black__80">#cc000000</color>
+    <color name="black_12">#1f252525</color>
 
     <color name="colorPrimary_complementary">#88c72f</color>
     <color name="colorPrimary_triadic_orange">#c76e2f</color>
@@ -109,6 +110,7 @@
     <!-- Dark Mode -->
     <color name="dark_gray">#1d1d1d</color>
 
+    <color name="dark_background">#121212</color>
     <color name="gray3">#222222</color>
     <color name="gray4">#2c2c2c</color>
     <color name="gray5">#e1e1e1</color>
