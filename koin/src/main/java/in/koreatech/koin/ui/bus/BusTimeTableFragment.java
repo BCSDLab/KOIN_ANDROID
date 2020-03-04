@@ -152,10 +152,12 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         fragmentTransaction.commit();
     }
 
+    // TODO -> 코로나 바이러스 끝난 후 변경 필요
     @OnClick(R.id.bus_timetable_bustype_daesung)
     public void onClickBustypeDaesung() {
         FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
-        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
+        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungTemporaryFragment());
+        // fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
         busTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
         busTimetableDaesungSpinner.setVisibility(View.VISIBLE);
         busTimetableChungjuSpinner.setVisibility(View.GONE);
