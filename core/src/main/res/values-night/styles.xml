@@ -19,7 +19,7 @@
 
         <item name="colorTextMainMenu">@color/gray5</item>
         <item name="toolbarBackgroundColor">#222222</item>
-        <item name="colotTextCircleTitle">@color/lighter_navy</item>
+        <item name="colotTextCircleTitle">@color/lighter_navy</item>col
         <item name="colorListSubTitleBackgroundColor">#181818</item>
         <item name="colorListSubTitleTextColor">@color/gray6</item>
         <item name="colorPrimaryDivider">@color/lighter_navy</item>
