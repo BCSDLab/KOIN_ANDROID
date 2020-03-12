@@ -46,8 +46,6 @@
     </declare-styleable>
 
     <!-- For dark mode -->
-    <attr name="base_alpha" format="float" />
-
     <attr name="colorTextMainMenu" format="color" />
     <attr name="toolbarBackgroundColor" format="color" />
     <attr name="colotTextCircleTitle" format="color" />

@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:background="@android:color/black"
         android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
-        android:alpha="?attr/base_alpha"
+        android:alpha="0.2"
         android:orientation="horizontal">
 
         <TextView

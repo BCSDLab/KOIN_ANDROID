@@ -159,7 +159,7 @@
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:alpha="?attr/base_alpha"
+                                android:alpha="0.2"
                                 android:background="@android:color/black"
                                 android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
                                 app:layout_constraintBottom_toBottomOf="parent"

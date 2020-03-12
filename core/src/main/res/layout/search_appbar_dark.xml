@@ -5,7 +5,7 @@
     android:id="@+id/base_appbar_dark"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:background="@color/light_navy">
+    android:background="?attr/toolbarBackgroundColor">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 android:layout_height="15dp"
                 android:layout_gravity="end|center"
                 android:layout_marginEnd="15dp"
-                android:background="@drawable/ic_eraser" />
+                android:background="@drawable/ic_eraser"/>
         </FrameLayout>
 
         <TextView

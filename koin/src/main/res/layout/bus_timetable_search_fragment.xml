@@ -101,7 +101,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
                 android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
-                android:alpha="?attr/base_alpha" />
+                android:alpha="0.2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
                 android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
-                android:alpha="?attr/base_alpha" />
+                android:alpha="0.2" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -237,7 +237,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/black"
             android:backgroundTint="?attr/colorListSubTitleBackgroundColor"
-            android:alpha="?attr/base_alpha"/>
+            android:alpha="0.2"/>
 
         <TextView
             android:id="@+id/bus_timetable_search_fragment_information_textview"
