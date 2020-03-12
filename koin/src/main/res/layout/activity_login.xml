@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
     <androidx.constraintlayout.widget.Guideline
@@ -168,7 +169,7 @@
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textColor="?attr/colorOnSurface"
-            android:textColorHint="@color/cloudy_blue"
+            android:textColorHint="?attr/cloudyBlue"
             android:textSize="15sp"
             app:font_name="Normal" />
 
@@ -189,7 +190,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@color/cloudy_blue"
+        android:background="?attr/cloudyBlue"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.391"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -211,7 +212,7 @@
         android:maxLines="1"
         android:paddingLeft="10dp"
         android:textColor="?attr/colorOnSurface"
-        android:textColorHint="@color/cloudy_blue"
+        android:textColorHint="?attr/cloudyBlue"
         android:textSize="15sp"
         app:font_name="Normal"
         app:layout_constraintBottom_toBottomOf="@+id/login_password_border"
@@ -223,7 +224,7 @@
         android:id="@+id/login_password_border"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/cloudy_blue"
+        android:background="?attr/cloudyBlue"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.469"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -237,7 +238,7 @@
         android:layout_height="0dp"
         android:background="@color/squash"
         android:text="로그인"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorSurface"
         android:textSize="15sp"
         app:font_name="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.584"
@@ -249,9 +250,9 @@
         android:id="@+id/login_button_signup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/light_navy"
+        android:background="?attr/colorPrimary"
         android:text="회원가입"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorSurface"
         android:textSize="15sp"
         app:font_name="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.666"
@@ -281,7 +282,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_password" />
+                android:src="@drawable/ic_password"
+                android:tint="?android:attr/textColorSecondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -289,7 +291,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:text="비밀번호 찾기"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="13sp"
                 app:font_name="Normal" />
         </LinearLayout>
@@ -315,7 +317,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_face" />
+                android:src="@drawable/ic_face"
+                android:tint="?android:attr/textColorSecondary"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -323,7 +326,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:text="둘러보기"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="13sp"
                 app:font_name="Normal" />
         </LinearLayout>

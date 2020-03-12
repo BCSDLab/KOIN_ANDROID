@@ -21,6 +21,7 @@
         <item name="colorListSubTitleTextColor">@color/warm_grey</item>
         <item name="colorPrimaryDivider">@color/light_navy</item>
         <item name="colorDivider">@color/cloudy_blue</item>
+        <item name="cloudyBlue">@color/cloudy_blue</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
