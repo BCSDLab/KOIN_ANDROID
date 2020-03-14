@@ -122,7 +122,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
         if (marketBuyArrayList == null)
             return;
         for (int i = 0; i < marketBuyArrayList.size(); i++) {
-            int id = marketBuyArrayList.get(i).id;
+            int id = marketBuyArrayList.get(i).getId();
             marketUsedPresenter.readDetailMarket(id);
         }
     }
@@ -135,9 +135,9 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     @Override
     public void onMarketDataReceived(Item item) {
         for (int i = 0; i < marketBuyArrayList.size(); i++) {
-            int id = marketBuyArrayList.get(i).id;
-            if (id == item.id)
-                marketBuyArrayList.get(i).comments = item.comments;
+            int id = marketBuyArrayList.get(i).getId();
+            if (id == item.getId())
+                marketBuyArrayList.get(i).setComments(item.getComments());
         }
         updateUserInterface();
     }
@@ -151,7 +151,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), marketBuyRecyclerView, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int index) {
-            marketUsedPresenter.readGrantedDetail(marketBuyArrayList.get(position).id);
+            marketUsedPresenter.readGrantedDetail(marketBuyArrayList.get(position).getId());
             position = index;
         }
 
@@ -221,7 +221,7 @@ public class MarketUsedBuyFragment extends MarketUsedBaseFragment implements Mar
     public void onGrantedDataReceived(boolean granted) {
         this.grantCheck = granted;
         Intent intent = new Intent(getActivity(), MarketUsedBuyDetailActivity.class);
-        intent.putExtra("ITEM_ID", marketBuyArrayList.get(this.position).id);
+        intent.putExtra("ITEM_ID", marketBuyArrayList.get(this.position).getId());
         intent.putExtra("MARKET_ID", BUYMARKETID);
         intent.putExtra("GRANT_CHECK", this.grantCheck);
         startActivity(intent);

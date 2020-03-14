@@ -47,8 +47,8 @@ public class TimetableSemesterRecyclerAdapter extends RecyclerView.Adapter<Timet
     @Override
     public void onBindViewHolder(@NonNull TimetableSemesterRecyclerAdapter.ViewHolder viewHolder, int position) {
         Semester semesterInfo = semesters.get(position);
-        String yearString = semesterInfo.semester.substring(0, 4);
-        String semesterString = semesterInfo.semester.substring(4);
+        String yearString = semesterInfo.getSemester().substring(0, 4);
+        String semesterString = semesterInfo.getSemester().substring(4);
         viewHolder.semesterLinearLayout.setOnClickListener(v -> {
             if (recyclerViewClickListener == null) return;
             recyclerViewClickListener.onClick(viewHolder.semesterLinearLayout, position);
@@ -59,12 +59,12 @@ public class TimetableSemesterRecyclerAdapter extends RecyclerView.Adapter<Timet
             recyclerViewClickListener.onClick(viewHolder.semesterLinearLayout, position);
         });
 
-        if (semesterInfo.isSelected)
+        if (semesterInfo.isSelected())
             viewHolder.semesterRadioButton.setChecked(true);
         else
             viewHolder.semesterRadioButton.setChecked(false);
 
-        if (semesterInfo.semester != null)
+        if (semesterInfo.getSemester() != null)
             viewHolder.semesterTextview.setText(yearString + "년 " + semesterString + "학기");
     }
 

@@ -37,8 +37,8 @@ public class MarketUsedEditPresenter {
         @Override
         public void onSuccess(Object object) {
             Item marketItem = (Item) object;
-            if (marketItem.url != null)
-                marketEditView.showImageUploadSuccess(marketItem.url);
+            if (marketItem.getUrl() != null)
+                marketEditView.showImageUploadSuccess(marketItem.getUrl());
             marketEditView.hideLoading();
         }
 

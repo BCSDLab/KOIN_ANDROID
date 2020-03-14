@@ -31,7 +31,7 @@ public class LandPresenter {
         public void onSuccess(Object object) {
             BokdukRoom lands = (BokdukRoom) object;
             landList.clear();
-            landList.addAll(lands.lands);   //api로 받아온 복덕방리스트를 모두 추가
+            landList.addAll(lands.getLands());   //api로 받아온 복덕방리스트를 모두 추가
             landView.onLandListDataReceived(landList);
         }
 

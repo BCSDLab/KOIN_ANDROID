@@ -8,40 +8,40 @@ public class MarketItem {
 
     @SerializedName("title")
     @Expose
-    public String title;
+    private String title;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("state")
     @Expose
-    public int state;
+    private int state;
 
     @SerializedName("price")
     @Expose
-    public int price;
+    private int price;
 
 
     @SerializedName("phone")
     @Expose
-    public String phone;
+    private String phone;
 
     @SerializedName("is_phone_open")
     @Expose
-    public int isPhoneOpen;
+    private int isPhoneOpen;
 
     @SerializedName("image_urls")
     @Expose
-    public String urls;
+    private String urls;
 
     @SerializedName("thumbnail")
     @Expose
-    public String thumbnail;
+    private String thumbnail;
 
     @SerializedName("type")
     @Expose
-    public int type;
+    private int type;
 
 
     public MarketItem() {
@@ -70,11 +70,77 @@ public class MarketItem {
 
     }
 
-//    public int getImageURLIndex() {
-//        return urls.size();
-//    }
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getIsPhoneOpen() {
+        return isPhoneOpen;
+    }
+
+    public void setIsPhoneOpen(int isPhoneOpen) {
+        this.isPhoneOpen = isPhoneOpen;
+    }
+
+    public String getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String urls) {
+        this.urls = urls;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }
 
 

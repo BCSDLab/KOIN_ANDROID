@@ -104,8 +104,8 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         context = this;
         ButterKnife.bind(this);
         this.article = new Article();
-        this.article.boardUid = getIntent().getIntExtra("BOARD_UID", 0);
-        this.article.articleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
+        this.article.setBoardUid(getIntent().getIntExtra("BOARD_UID", 0));
+        this.article.setArticleUid(getIntent().getIntExtra("ARTICLE_UID", 0));
         init();
     }
 
@@ -114,12 +114,12 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         super.onStart();
         String nickname = getNickname();
         AuthorizeConstant authorizeConstant = getAuthorize();
-        if (this.article.boardUid == ID_FREE || this.article.boardUid == ID_RECRUIT)
-            articleCommentPresenter.getArticle(article.articleUid);
+        if (this.article.getBoardUid() == ID_FREE || this.article.getBoardUid() == ID_RECRUIT)
+            articleCommentPresenter.getArticle(article.getArticleUid());
         else
-            articleCommentPresenter.getAnonymousArticle(article.articleUid);
+            articleCommentPresenter.getAnonymousArticle(article.getArticleUid());
 
-        if (this.article != null && (this.article.boardUid == ID_FREE || this.article.boardUid == ID_RECRUIT) && (nickname.isEmpty() || authorizeConstant == AuthorizeConstant.ANONYMOUS)) {
+        if (this.article != null && (this.article.getBoardUid() == ID_FREE || this.article.getBoardUid() == ID_RECRUIT) && (nickname.isEmpty() || authorizeConstant == AuthorizeConstant.ANONYMOUS)) {
             articleCommentContentEdittext.setFocusable(false);
             articleCommentContentEdittext.setClickable(false);
             mIsEditPossible = false;
@@ -145,7 +145,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         articleCommentContentRecyclerview.setNestedScrollingEnabled(false);
         articleCommentContentRecyclerview.setHasFixedSize(false);
 
-        switch (article.boardUid) {
+        switch (article.getBoardUid()) {
             case ID_FREE:
                 appBarBase.setTitleText("자유게시판");
                 break;
@@ -160,9 +160,9 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
                 break;
         }
 
-        setVisibility(article.boardUid);
+        setVisibility(article.getBoardUid());
 
-        if (article.boardUid != ID_ANONYMOUS) {
+        if (article.getBoardUid() != ID_ANONYMOUS) {
             articleCommentNicknameEdittext.setFocusable(false);
             articleCommentNicknameEdittext.setClickable(false);
         }
@@ -192,18 +192,18 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     }
 
     public void onClickCreateButton() {
-        if (article.boardUid != ID_ANONYMOUS) {
+        if (article.getBoardUid() != ID_ANONYMOUS) {
             AuthorizeConstant authorize = getAuthorize();
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
                 showNickNameRequestDialog();
                 return;
             }
         }
         Intent intent = new Intent(context, ArticleEditActivity.class);
-        intent.putExtra("BOARD_UID", article.boardUid);
+        intent.putExtra("BOARD_UID", article.getBoardUid());
         startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
 
     }
@@ -288,7 +288,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
         commentPassword = articleCommentPasswordEdittext.getText().toString();
         if (!commentPassword.isEmpty())
-            articleCommentPresenter.checkAnonymousCommentDeleteGranted(mSelectedComment.commentUid, commentPassword);
+            articleCommentPresenter.checkAnonymousCommentDeleteGranted(mSelectedComment.getCommentUid(), commentPassword);
         else
             ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
     }
@@ -310,11 +310,11 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
             return;
         }
         if (!mIsEditComment) {
-            articleCommentPresenter.createAnonymousComment(article.articleUid, commentContent, nickname, password);
+            articleCommentPresenter.createAnonymousComment(article.getArticleUid(), commentContent, nickname, password);
         } else {
-            mSelectedComment.content = commentContent;
-            mSelectedComment.password = password;
-            articleCommentPresenter.checkAnonymousCommentAdjustGranted(mSelectedComment.commentUid, password);
+            mSelectedComment.setContent(commentContent);
+            mSelectedComment.setPassword(password);
+            articleCommentPresenter.checkAnonymousCommentAdjustGranted(mSelectedComment.getCommentUid(), password);
         }
     }
 
@@ -325,24 +325,24 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
             return;
         }
         if (!mIsEditComment) {
-            articleCommentPresenter.createComment(article.articleUid, commentContent);
+            articleCommentPresenter.createComment(article.getArticleUid(), commentContent);
         } else {
-            mSelectedComment.content = commentContent;
-            articleCommentPresenter.updateComment(article.articleUid, mSelectedComment);
+            mSelectedComment.setContent(commentContent);
+            articleCommentPresenter.updateComment(article.getArticleUid(), mSelectedComment);
         }
 
     }
 
     @Override
     public void onClickCommentRemoveButton(Comment comment) {
-        if (article.boardUid == ID_ANONYMOUS) {
+        if (article.getBoardUid() == ID_ANONYMOUS) {
 //          deleteCommentDialog(comment);
             return;
         }
 
         SnackbarUtil.makeLongSnackbarActionYes(articleCommentContentRecyclerview, "댓글을 삭제할까요?", () -> {
-            if (comment.grantDelete) {
-                articleCommentPresenter.deleteComment(article.articleUid, comment.commentUid);
+            if (comment.isGrantEdit()) {
+                articleCommentPresenter.deleteComment(article.getArticleUid(), comment.getCommentUid());
             }
         });
     }
@@ -367,7 +367,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showSuccessGrantedDeleteComment() {
         SnackbarUtil.makeLongSnackbarActionYes(articleCommentContentRecyclerview, "삭제하시겠습니까?", () ->
-                articleCommentPresenter.deleteAnonymousComment(article.articleUid, mSelectedComment.commentUid, commentPassword));
+                articleCommentPresenter.deleteAnonymousComment(article.getArticleUid(), mSelectedComment.getCommentUid(), commentPassword));
     }
 
 
@@ -435,8 +435,8 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showSuccessGrantedAdjustComment() {
-        if (mSelectedComment.password != null && !mSelectedComment.password.isEmpty())
-            articleCommentPresenter.updateAnonymousComment(this.article.articleUid, mSelectedComment);
+        if (mSelectedComment.getPassword() != null && !mSelectedComment.getPassword().isEmpty())
+            articleCommentPresenter.updateAnonymousComment(this.article.getArticleUid(), mSelectedComment);
         else
             ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요.");
 
@@ -456,30 +456,30 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void onArticleDataReceived(Article article) {
-        this.article.title = article.title;
-        this.article.authorNickname = article.authorNickname;
-        this.article.authorUid = article.authorUid;
-        this.article.createDate = article.createDate.substring(0, 10) + " " + article.createDate.substring(11, 16);
-        this.article.updateDate = article.updateDate.substring(0, 10) + " " + article.updateDate.substring(11, 16);
-        this.article.hitCount = article.hitCount;
-        this.article.content = article.content;
-        this.article.tag = article.tag;
-        this.articleCommentCount = String.valueOf(this.article.commentCount);
+        this.article.setTitle(article.getTitle());
+        this.article.setAuthorNickname(article.getAuthorNickname());
+        this.article.setArticleUid(article.getArticleUid());
+        this.article.setCreateDate(article.getCreateDate().substring(0, 10) + " " + article.getCreateDate().substring(11, 16));
+        this.article.setUpdateDate(article.getUpdateDate().substring(0, 10) + " " + article.getUpdateDate().substring(11, 16));
+        this.article.setHitCount(article.getHitCount());
+        this.article.setContent(article.getContent());
+        this.article.setTag(article.getTag());
+        this.articleCommentCount = String.valueOf(this.article.getCommentCount());
 
         commentRecyclerAdapter.setArticle(this.article);
 
         commentArrayList.clear();
 
-        if (this.article.commentCount > 0) {
-            if (this.article.boardUid == ID_ANONYMOUS) {
-                for (int i = 0; i < article.commentArrayList.size(); i++) {
-                    this.article.commentArrayList.get(i).grantEdit = true;
-                    this.article.commentArrayList.get(i).grantDelete = false;
+        if (this.article.getCommentCount() > 0) {
+            if (this.article.getBoardUid() == ID_ANONYMOUS) {
+                for (int i = 0; i < article.getCommentArrayList().size(); i++) {
+                    this.article.getCommentArrayList().get(i).setGrantEdit(true);
+                    this.article.getCommentArrayList().get(i).setGrantDelete(false);
                 }
             }
-            commentArrayList.addAll(this.article.commentArrayList);
+            commentArrayList.addAll(this.article.getCommentArrayList());
         }
-        if (this.article.boardUid != ID_ANONYMOUS) {
+        if (this.article.getBoardUid() != ID_ANONYMOUS) {
             articleCommentNicknameEdittext.setText(getNickname());
         }
 
@@ -511,16 +511,16 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public void updateUserInterface() {
         StringBuilder title;
         StringBuilder commentButtonText;
-        title = new StringBuilder("<font color='black'>" + article.title + " " + "</font>");
+        title = new StringBuilder("<font color='black'>" + article.getTitle() + " " + "</font>");
         commentButtonText = new StringBuilder("<font color='black'>댓글</font>");
         if (articleCommentViewCount != null && Integer.parseInt(articleCommentCount) > 0) {
             title.append("<font color='#175c8e'>" + "(").append(articleCommentCount).append(")").append("</font>");
             commentButtonText.append("<font color='#175c8e'>").append(" ").append(articleCommentCount).append("</font>");
         }
         articleCommentTitle.setText(Html.fromHtml(title.toString()), TextView.BufferType.SPANNABLE);
-        articleCommentWriter.setText(this.article.authorNickname);
-        articleCommentCreateDate.setText(Html.fromHtml(this.article.createDate));
-        articleCommentViewCount.setText(String.valueOf(this.article.hitCount));
+        articleCommentWriter.setText(this.article.getAuthorNickname());
+        articleCommentCreateDate.setText(Html.fromHtml(this.article.getCreateDate()));
+        articleCommentViewCount.setText(String.valueOf(this.article.getHitCount()));
         if (commentArrayList.size() == 0)
             articleCommentLinearlayout.setVisibility(View.GONE);
         else
@@ -533,9 +533,9 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public void onClickCommentModifyButton(Comment comment) {
         mIsEditComment = true;
         mSelectedComment = comment;
-        articleCommentContentEdittext.setText(comment.content);
-        if (this.article.boardUid == ID_ANONYMOUS) {
-            articleCommentNicknameEdittext.setText(comment.authorNickname);
+        articleCommentContentEdittext.setText(comment.getContent());
+        if (this.article.getBoardUid() == ID_ANONYMOUS) {
+            articleCommentNicknameEdittext.setText(comment.getAuthorUid());
             articleCommentNicknameEdittext.setFocusable(false);
             articleCommentNicknameEdittext.setClickable(false);
         }
@@ -549,11 +549,11 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public String getNickname() {
         String nickname = "";
         try {
-            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         } catch (NullPointerException e) {
             UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
             if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         }
         if (nickname == null) nickname = "";
         return nickname;

@@ -10,8 +10,8 @@ public class TimeDuplicateCheckUtil {
     public static ArrayList<TimeTableItem> checkDuplicateSchedule(ArrayList<TimeTableItem> timeTable, Lecture selectedLecture) {
         ArrayList<TimeTableItem> duplicateTimeTableItems = new ArrayList<>();
         HashSet<Integer> timeHashSet = new HashSet<>();
-        String selectedClassTitle = selectedLecture.name;
-        ArrayList<Integer> selectedClassTimeList = selectedLecture.classTime;
+        String selectedClassTitle = selectedLecture.getName();
+        ArrayList<Integer> selectedClassTimeList = selectedLecture.getClassTime();
 
         for (TimeTableItem timeTableItem : timeTable) {
             boolean isTimeConatins = false;
@@ -36,8 +36,8 @@ public class TimeDuplicateCheckUtil {
             return "";
         else {
             for (TimeTableItem timeTableItem : duplicateSchedule) {
-                if (timeTableItem.classTitle != null && !timeTableItem.classTitle.isEmpty())
-                    duplicateClassTitle.append(timeTableItem.classTitle).append("\n");
+                if (timeTableItem.getClassTitle() != null && !timeTableItem.getClassTitle().isEmpty())
+                    duplicateClassTitle.append(timeTableItem.getClassTitle()).append("\n");
             }
         }
         return duplicateClassTitle.toString();

@@ -81,7 +81,7 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         this.messageList = messageList;
         this.messageKeyList = messageKeyList;
 
-        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUid();
     }
 
     @NonNull
@@ -110,21 +110,21 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_INCOMING:
                 IncomingViewHolder incomingViewHolder = (IncomingViewHolder) holder;
-                incomingViewHolder.userName.setText(message.userName);
-                incomingViewHolder.messageBody.setText(message.message);
-                incomingViewHolder.createTime.setText(message.createDate);
+                incomingViewHolder.userName.setText(message.getUserName());
+                incomingViewHolder.messageBody.setText(message.getMessage());
+                incomingViewHolder.createTime.setText(message.getCreateDate());
                 break;
 
             case VIEW_TYPE_OUTGOING:
                 OutgoingViewHolder outgoingViewHolder = (OutgoingViewHolder) holder;
-                outgoingViewHolder.userName.setText(message.userName);
-                outgoingViewHolder.messageBody.setText(message.message);
-                outgoingViewHolder.createTime.setText(message.createDate);
+                outgoingViewHolder.userName.setText(message.getUserName());
+                outgoingViewHolder.messageBody.setText(message.getMessage());
+                outgoingViewHolder.createTime.setText(message.getCreateDate());
                 break;
 
             case VIEW_TYPE_NOTICE:
                 NoticeMessageViewHolder noticeMessageViewHolder = (NoticeMessageViewHolder) holder;
-                noticeMessageViewHolder.mRoomNoticeMessage.setText(message.message);
+                noticeMessageViewHolder.mRoomNoticeMessage.setText(message.getMessage());
                 break;
         }
     }
@@ -140,9 +140,9 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private int classifyViewType(int position) {
-        if (messageList.get(position).isNotice != null && messageList.get(position).isNotice) {
+        if (messageList.get(position).getNotice() != null && messageList.get(position).getNotice()) {
             return VIEW_TYPE_NOTICE;
-        } else if (uid.equals(messageList.get(position).uid)) {
+        } else if (uid.equals(messageList.get(position).getUid())) {
             return VIEW_TYPE_OUTGOING;
         } else {
             return VIEW_TYPE_INCOMING;

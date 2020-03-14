@@ -8,31 +8,31 @@ import java.util.ArrayList;
 public class BokdukRoom {
     @SerializedName("lands")
     @Expose
-    public ArrayList<BokdukRoom> lands;
+    private ArrayList<BokdukRoom> lands;
 
 
     @SerializedName("monthly_fee")
     @Expose
-    public String monthlyFee;
+    private String monthlyFee;
 
 
     @SerializedName("latitude")
     @Expose
-    public Double latitude;
+    private Double latitude;
 
     @SerializedName("charter_fee")
     @Expose
-    public String charterFee;
+    private String charterFee;
 
 
     @SerializedName("internal_name")
     @Expose
-    public String internalName;
+    private String internalName;
 
 
     @SerializedName("id")
     @Expose
-    public int id;
+    private int id;
 
     public ArrayList<BokdukRoom> getLands() {
         return lands;

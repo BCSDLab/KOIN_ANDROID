@@ -127,15 +127,15 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     public void onUserDataReceived() {
         this.user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
-        userinfoTextviewId.setText(isNull(this.user.userId) + "@koreatech.ac.kr");
-        userinfoTextviewName.setText(isNull(this.user.userName));
-        userinfoTextviewNickname.setText(isNull(this.user.userNickName));
-        userinfoTextviewAnonymousNickname.setText(isNull(this.user.anonymousNickName));
-        userinfoTextviewPhone.setText(isNull(this.user.phoneNumber));
-        userinfoTextviewGender.setText(this.user.gender == 0 ? "남자" : "여자");
+        userinfoTextviewId.setText(isNull(this.user.getUserId()) + "@koreatech.ac.kr");
+        userinfoTextviewName.setText(isNull(this.user.getUserName()));
+        userinfoTextviewNickname.setText(isNull(this.user.getUserNickName()));
+        userinfoTextviewAnonymousNickname.setText(isNull(this.user.getAnonymousNickName()));
+        userinfoTextviewPhone.setText(isNull(this.user.getPhoneNumber()));
+        userinfoTextviewGender.setText(this.user.getGender() == 0 ? "남자" : "여자");
 
-        userinfoTextviewStudentId.setText(isNull(this.user.studentId));
-        userinfoTextviewMajor.setText(isNull(this.user.major));
+        userinfoTextviewStudentId.setText(isNull(this.user.getStudentId()));
+        userinfoTextviewMajor.setText(isNull(this.user.getMajor()));
 
         checkRequiredInfo();
     }
@@ -152,7 +152,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         switch (this.requiredService) {
             case R.string.navigation_item_free_board:
             case R.string.navigation_item_recruit_board:
-                String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
+                String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
                 if (FormValidatorUtil.validateStringIsEmpty(userName) && userinfoTextviewName.getText().equals("-")) {
                     userinfoTextviewName.setText("이름을 입력해주세요");
 //                    userinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);

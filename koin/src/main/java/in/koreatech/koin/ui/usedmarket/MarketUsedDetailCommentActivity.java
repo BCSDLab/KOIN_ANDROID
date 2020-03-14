@@ -103,13 +103,13 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         super.onStart();
         marketUsedCommentNicknameEdittext.setFocusable(false);
         marketUsedCommentNicknameEdittext.setClickable(false);
-        if (item.id != -1)
-            marketUsedDetatailCommentPresenter.readMarketDetail(item.id);
-        if (getUser() != null && getUser().userNickName != null) {
-            marketUsedCommentNicknameEdittext.setText(getUser().userNickName);
+        if (item.getId() != -1)
+            marketUsedDetatailCommentPresenter.readMarketDetail(item.getId());
+        if (getUser() != null && getUser().getUserNickName() != null) {
+            marketUsedCommentNicknameEdittext.setText(getUser().getUserNickName());
             marketUsedCommentContentEdittext.setFocusableInTouchMode(true);
             isEditPossible = true;
-            marketUsedCommentNicknameEdittext.setText(getUser().userNickName);
+            marketUsedCommentNicknameEdittext.setText(getUser().getUserNickName());
         } else {
             marketUsedCommentContentEdittext.setClickable(false);
             marketUsedCommentContentEdittext.setFocusable(false);
@@ -122,7 +122,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         context = this;
         commentArrayList = new ArrayList<>();
         aritcleCommentPasswordLinearlayout.setVisibility(View.GONE);
-        item.id = getIntent().getIntExtra("ITEM_ID", -1);
+        item.setId(getIntent().getIntExtra("ITEM_ID", -1));
         marketID = getIntent().getIntExtra("MARKET_ID", 0);
         if (marketID == 0)
             appBarBase.setTitleText("팝니다");
@@ -142,15 +142,15 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         String styledText;
         item = item;
         commentArrayList.clear();
-        if (item.comments != null && item.comments.size() > 0) {
-            styledText = item.title + "<font color='#175c8e'>(" + item.comments.size() + ")</font>";
+        if (item.getComments() != null && item.getComments().size() > 0) {
+            styledText = item.getTitle() + "<font color='#175c8e'>(" + item.getComments().size() + ")</font>";
             marketUsedCommentTitle.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE); // Title set
         } else
-            marketUsedCommentTitle.setText(item.title);
-        marketUsedCommentViewCount.setText(item.hit);
-        marketUsedCommentWriter.setText(item.nickname);
-        marketUsedCommentCreateDate.setText(item.createdAt);
-        commentArrayList.addAll(item.comments);
+            marketUsedCommentTitle.setText(item.getTitle());
+        marketUsedCommentViewCount.setText(item.getHit());
+        marketUsedCommentWriter.setText(item.getNickname());
+        marketUsedCommentCreateDate.setText(item.getCreatedAt());
+        commentArrayList.addAll(item.getComments());
         this.marketDetailCommentRecyclerAdapter.notifyDataSetChanged();
 
     }
@@ -186,7 +186,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
             showLoginRequestDialog();
             return;
         }
-        if (getUser().userNickName != null)
+        if (getUser().getUserNickName() != null)
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
@@ -204,8 +204,8 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     public void showMarketCommentUpdate() {
         ToastUtil.getInstance().makeShort("댓글이 등록되었습니다.");
         onClickedCancelButton();
-        if (item.id != -1)
-            marketUsedDetatailCommentPresenter.readMarketDetail(item.id);
+        if (item.getId() != -1)
+            marketUsedDetatailCommentPresenter.readMarketDetail(item.getId());
     }
 
     @Override
@@ -216,8 +216,8 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     @Override
     public void showMarketCommentDelete() {
         ToastUtil.getInstance().makeShort("댓글 삭제에 성공하였습니다.");
-        if (item.id != -1)
-            marketUsedDetatailCommentPresenter.readMarketDetail(item.id);
+        if (item.getId() != -1)
+            marketUsedDetatailCommentPresenter.readMarketDetail(item.getId());
     }
 
     @Override
@@ -229,8 +229,8 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     public void showMarketCommentEdit() {
         ToastUtil.getInstance().makeShort("댓글 수정에 성공하였습니다.");
         onClickedCancelButton();
-        if (item.id != -1)
-            marketUsedDetatailCommentPresenter.readMarketDetail(item.id);
+        if (item.getId() != -1)
+            marketUsedDetatailCommentPresenter.readMarketDetail(item.getId());
     }
 
     @Override
@@ -253,7 +253,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     @Override
     public void onClickCommentModifyButton(Comment comment) {
         this.isEditComment = true;
-        marketUsedCommentContentEdittext.setText(comment.content);
+        marketUsedCommentContentEdittext.setText(comment.getContent());
         this.SelectedComment = comment;
     }
 
@@ -275,7 +275,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
             R.id.market_used_comment_content_edittext, R.id.market_used_comment_content_linearlayout,
             R.id.market_used_comment_cancel_button, R.id.market_used_comment_register_button})
     public void onViewClicked(View view) {
-        String nickname = (getUser() != null) ? getUser().userNickName : null;
+        String nickname = (getUser() != null) ? getUser().getUserNickName() : null;
         AuthorizeConstant authorizeConstant = getAuthority();
         if (!isEditPossible) {
             if (authorizeConstant == AuthorizeConstant.ANONYMOUS) {
@@ -317,10 +317,10 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
             return;
         }
         if (!this.isEditComment) {
-            marketUsedDetatailCommentPresenter.createComment(item.id, commentContent);
+            marketUsedDetatailCommentPresenter.createComment(item.getId(), commentContent);
         } else {
-            this.SelectedComment.content = commentContent;
-            marketUsedDetatailCommentPresenter.editComment(this.SelectedComment, item, this.SelectedComment.content);
+            this.SelectedComment.setContent(commentContent);
+            marketUsedDetatailCommentPresenter.editComment(this.SelectedComment, item, this.SelectedComment.getContent());
         }
 
     }

@@ -100,7 +100,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     public void updateLostDetailData(LostItem lostItem) {
         this.lostItem = lostItem;
         String commentCount = Integer.toString(lostItem.getCommentCount());
-        String titleText = getColorSpannedString(lostItem.title, "#252525") + getColorSpannedString("(" + commentCount + ")", "#175c8e");
+        String titleText = getColorSpannedString(lostItem.getTitle(), "#252525") + getColorSpannedString("(" + commentCount + ")", "#175c8e");
         String commentButtonText = getColorSpannedString("댓글", "#252525") + getColorSpannedString(commentCount, "#175c8e");
         Spanned spanned = Html.fromHtml(lostItem.getContent(), this, null);
         lostfoundDetailTitleTextview.setText(Html.fromHtml(titleText));
@@ -231,7 +231,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
             showNickNameRequestDialog();
             return;
         }

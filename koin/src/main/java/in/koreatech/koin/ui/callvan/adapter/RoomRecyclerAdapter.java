@@ -64,11 +64,11 @@ public class RoomRecyclerAdapter extends RecyclerView.Adapter<RoomRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CallvanRoom room = roomsArrayList.get(position);
-        holder.textViewStartingPlace.setText(room.startingPlace); //출발장소
-        holder.textViewEndingPlace.setText(room.endingPlace); //도착장소
-        holder.textViewPeopleCount.setText(room.currentPeople + "명 / " + room.maximumPeople + "명"); // 현재인원/최대인원
+        holder.textViewStartingPlace.setText(room.getStartingPlace()); //출발장소
+        holder.textViewEndingPlace.setText(room.getEndingPlace()); //도착장소
+        holder.textViewPeopleCount.setText(room.getCurrentPeople() + "명 / " + room.getMaximumPeople() + "명"); // 현재인원/최대인원
 
-        String[] startingDateTime = room.startingDate.split(" ");
+        String[] startingDateTime = room.getStartingDate().split(" ");
 
 //        holder.textViewDate.setText(startingDateTime[0]);//날짜
 //        holder.textViewTime.setText(startingDateTime[1]);//시간

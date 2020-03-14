@@ -62,8 +62,8 @@ public class StoreDetailMenuRecyclerAdapter extends RecyclerView.Adapter<StoreDe
     public void onBindViewHolder(@NonNull StoreDetailMenuRecyclerAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Store storeMenu = this.storeMenuArrayList.get(position);
-        holder.storeDetailMenuNameTextview.setText(storeMenu.name);
-        holder.storeDetailMenuPriceTextview.setText(storeMenu.detail);
+        holder.storeDetailMenuNameTextview.setText(storeMenu.getName());
+        holder.storeDetailMenuPriceTextview.setText(storeMenu.getDetail());
 
 
     }

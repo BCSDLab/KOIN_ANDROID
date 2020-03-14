@@ -134,33 +134,33 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
         this.circle = circle;
         Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoBoderImageview);
         Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoBackgroundImageview);
-        if (circle.logoUrl == null)
+        if (circle.getLogoUrl() == null)
             Glide.with(context).load(new ColorDrawable(getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
         else {
-            Glide.with(context).load(circle.logoUrl).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
-            Glide.with(context).load(circle.logoUrl).into(this.circleDetailMainLogoImageview);
+            Glide.with(context).load(circle.getLogoUrl()).apply(RequestOptions.circleCropTransform()).into(this.circleDetailLogoImageview);
+            Glide.with(context).load(circle.getLogoUrl()).into(this.circleDetailMainLogoImageview);
         }
 
-        this.circleDetailNameTextview.setText((circle.name == null) ? "정보없음" : circle.name);
-        this.circleDetailMajorBusinessTextview.setText((circle.majorBusiness == null) ? "정보없음" : circle.majorBusiness);
-        this.circleDetailLocationTextview.setText((circle.location == null) ? "정보없음" : circle.location);
-        this.circleDetailLineDescriptionTextview.setText((circle.lineDescription == null) ? "정보없음" : circle.lineDescription);
-        this.circleDetailProfessorTextview.setText((circle.professor == null) ? "정보없음" : circle.professor);
-        this.circleDetailIntroduceUrlTextview.setText((circle.introduceUrl == null) ? "정보없음" : circle.introduceUrl);
-        this.circleDetailDescriptionTextview.setText((circle.description == null) ? "정보없음" : circle.description);
-        if (circle.linkUrls != null && !circle.linkUrls.isEmpty()) {
-            for (Circle.CircleUrl urls : circle.linkUrls) {
-                if (urls.type.equals("facebook") && !urls.link.isEmpty()) {
+        this.circleDetailNameTextview.setText((circle.getName() == null) ? "정보없음" : circle.getName());
+        this.circleDetailMajorBusinessTextview.setText((circle.getMajorBusiness() == null) ? "정보없음" : circle.getMajorBusiness());
+        this.circleDetailLocationTextview.setText((circle.getLocation() == null) ? "정보없음" : circle.getLocation());
+        this.circleDetailLineDescriptionTextview.setText((circle.getLineDescription() == null) ? "정보없음" : circle.getLineDescription());
+        this.circleDetailProfessorTextview.setText((circle.getProfessor() == null) ? "정보없음" : circle.getProfessor());
+        this.circleDetailIntroduceUrlTextview.setText((circle.getIntroduceUrl() == null) ? "정보없음" : circle.getIntroduceUrl());
+        this.circleDetailDescriptionTextview.setText((circle.getDescription() == null) ? "정보없음" : circle.getDescription());
+        if (circle.getLinkUrls() != null && !circle.getLinkUrls().isEmpty()) {
+            for (Circle.CircleUrl urls : circle.getLinkUrls()) {
+                if (urls.getType().equals("facebook") && !urls.getLink().isEmpty()) {
                     this.circleDetailFacebookButton.setVisibility(View.VISIBLE);
-                    this.faceBookUrl = urls.link;
+                    this.faceBookUrl = urls.getLink();
                 }
-                if (urls.type.equals("cyworld") && !urls.link.isEmpty()) {
+                if (urls.getType().equals("cyworld") && !urls.getLink().isEmpty()) {
                     this.circleDetailCyworldButton.setVisibility(View.VISIBLE);
-                    this.cyworldUrl = urls.link;
+                    this.cyworldUrl = urls.getLink();
                 }
-                if (urls.type.equals("naver") && !urls.link.isEmpty()) {
+                if (urls.getType().equals("naver") && !urls.getLink().isEmpty()) {
                     this.circleDetailNaverButton.setVisibility(View.VISIBLE);
-                    this.naverUrl = urls.link;
+                    this.naverUrl = urls.getLink();
                 }
             }
         }
