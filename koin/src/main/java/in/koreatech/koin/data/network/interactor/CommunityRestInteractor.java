@@ -50,7 +50,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (!response.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read board list"));
                         }
                     }
 
@@ -88,7 +88,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read board list"));
                         }
                     }
 
@@ -245,7 +245,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail create article"));
                         }
                     }
 
@@ -304,7 +304,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read article"));
                         }
                     }
 
@@ -357,7 +357,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read anonymous article"));
                         }
                     }
 
@@ -415,7 +415,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail update article"));
                         }
                     }
 
@@ -453,7 +453,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete article"));
                         }
                     }
 
@@ -970,7 +970,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete anonymous article"));
                         }
                     }
 

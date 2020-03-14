@@ -39,7 +39,7 @@ public class LectureRestInteractor implements LectureInteractor {
                         if (!response.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to read lecture"));
                         }
                     }
 

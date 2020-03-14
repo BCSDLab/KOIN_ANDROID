@@ -38,7 +38,7 @@ public class DiningRestInteractor implements DiningInteractor {
                         if (!dinings.isEmpty()) {
                             apiCallback.onSuccess(dinings);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read dining list"));
                         }
                     }
 

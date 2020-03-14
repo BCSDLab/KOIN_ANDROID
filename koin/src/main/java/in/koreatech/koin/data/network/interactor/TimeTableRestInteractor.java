@@ -45,7 +45,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(true);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete semester time table"));
                         }
                     }
 
@@ -80,7 +80,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(true);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete timetable"));
                         }
                     }
 
@@ -115,7 +115,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read time table"));
                         }
                     }
 
@@ -149,7 +149,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail create timetable"));
                         }
                     }
 
@@ -182,7 +182,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail edit time table"));
                         }
                     }
 
@@ -214,7 +214,7 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read semester"));
                         }
                     }
 

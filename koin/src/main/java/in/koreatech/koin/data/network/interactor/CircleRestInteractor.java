@@ -35,7 +35,7 @@ public class CircleRestInteractor implements CircleInteractor {
                         if (!circle.circles.isEmpty()) {
                             apiCallback.onSuccess(circle);
                         } else {
-                            apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
+                            apiCallback.onFailure(new Throwable("fail to read circle list"));
                         }
                     }
 
@@ -70,7 +70,7 @@ public class CircleRestInteractor implements CircleInteractor {
                         if (circle != null) {
                             apiCallback.onSuccess(circle);
                         } else {
-                            apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
+                            apiCallback.onFailure(new Throwable("fail to read circle list"));
                         }
                     }
 
