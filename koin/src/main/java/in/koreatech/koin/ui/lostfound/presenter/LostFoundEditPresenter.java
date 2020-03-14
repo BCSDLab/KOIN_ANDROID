@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
@@ -29,7 +30,7 @@ public class LostFoundEditPresenter{
         @Override
         public void onFailure(Throwable throwable) {
             lostFoundEditView.hideLoading();
-            lostFoundEditView.showMessage("네트워크 환경을 확인해주세요");
+            lostFoundEditView.showMessage(R.string.error_network);
         }
     };
 
@@ -46,7 +47,7 @@ public class LostFoundEditPresenter{
         @Override
         public void onFailure(Throwable throwable) {
             lostFoundEditView.hideLoading();
-            lostFoundEditView.showMessage("네트워크 환경을 확인해주세요");
+            lostFoundEditView.showMessage(R.string.error_network);
         }
     };
     public void updateLostItem(int id, LostItem lostItem) {

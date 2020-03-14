@@ -148,6 +148,11 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
             ToastUtil.getInstance().makeShort(message);
     }
 
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
     /**
      * 값이 없는 경우 "-" 문자로 바꿔서 반환한다.
      *

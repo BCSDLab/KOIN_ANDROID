@@ -410,6 +410,11 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     }
 
     @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void setPresenter(LostFoundEditPresenter presenter) {
         this.lostAndFoundPresenter = presenter;
     }
