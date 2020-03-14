@@ -209,6 +209,11 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     }
 
     @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void setPresenter(LostFoundCommentPresenter presenter) {
         this.lostFoundCommentPresenter = presenter;
     }
