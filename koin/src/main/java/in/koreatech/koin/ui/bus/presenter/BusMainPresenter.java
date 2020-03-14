@@ -74,18 +74,18 @@ public class BusMainPresenter {
         String arrivalString;
 
         if (depart == 0)
-            departString = "koreatech";
+            departString = BusType.KOREATECH.getDestination();
         else if (depart == 1)
-            departString = "station";
+            departString = BusType.TERMINAL.getDestination();
         else
-            departString = "terminal";
+            departString = BusType.STATION.getDestination();
 
         if (arrival == 0)
-            arrivalString = "koreatech";
+            arrivalString = BusType.KOREATECH.getDestination();
         else if (arrival == 1)
-            arrivalString = "station";
+            arrivalString = BusType.TERMINAL.getDestination();
         else
-            arrivalString = "terminal";
+            arrivalString = BusType.STATION.getDestination();
 
         busInteractor.readCityBusList(apiCallback, departString, arrivalString);
     }
