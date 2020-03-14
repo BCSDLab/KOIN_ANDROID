@@ -10,6 +10,7 @@ import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
 import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 public class SearchArticlePresenter {
     public static final int MAX_SAVE_SIZE = 20;
@@ -44,7 +45,7 @@ public class SearchArticlePresenter {
 
     public void getArticleSearched(String searchText, int page) {
         searchArticleView.showLoading();
-        if (searchText == null || searchText.replace(" ", "").isEmpty()) {
+        if (FormValidatorUtil.validateStringIsEmpty(searchText)) {
             searchArticleView.showRecentSearch();
             searchArticleView.hideLoading();
             return;
@@ -58,7 +59,7 @@ public class SearchArticlePresenter {
     }
 
     public void saveText(String text) {
-        if (text == null || text.replace(" ", "").isEmpty()) return;
+        if (FormValidatorUtil.validateStringIsEmpty(text)) return;
         if (RecentSearchSharedPreference.getInstance().getRecentSearch().isEmpty()) {
             ArrayList<String> arrayList = new ArrayList<>();
             arrayList.add(text.trim());
