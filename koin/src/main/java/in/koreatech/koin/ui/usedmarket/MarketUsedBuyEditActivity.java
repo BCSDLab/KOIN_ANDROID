@@ -146,7 +146,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         mImageFile = null;
 
         if (this.phoneNumber == null) {
-            this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+            this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber();
         }
 
         init();
@@ -754,27 +754,27 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
 
 
         if (this.isPhoneOpen) {
-            this.marketItem.isPhoneOpen = 1;
-            this.marketItem.phone = this.phoneNumber;
+            this.marketItem.setIsPhoneOpen(1);
+            this.marketItem.setPhone(this.phoneNumber);
         } else {
-            this.marketItem.isPhoneOpen = 0;
-            this.marketItem.phone = null;
+            this.marketItem.setIsPhoneOpen(0);
+            this.marketItem.setPhone(null);
         }
 
-        this.marketItem.title = mMarketBuyEditTitleEditText.getText().toString().trim();
-        this.marketItem.price = Integer.parseInt(this.price);
-        this.marketItem.state = this.itemState;
+        this.marketItem.setTitle(mMarketBuyEditTitleEditText.getText().toString().trim());
+        this.marketItem.setPrice(Integer.parseInt(this.price));
+        this.marketItem.setState(this.itemState);
 
         if (mMarketBuyEditContent.getText().toString().trim().length() != 0) {
-            this.marketItem.content = Html.toHtml(spannableStringBuilder);
-            this.marketItem.content = addImageSpan(this.marketItem.content, this.imageUrl);
+            this.marketItem.setContent(Html.toHtml(spannableStringBuilder));
+            this.marketItem.setContent(addImageSpan(this.marketItem.getContent(), this.imageUrl));
             mIsContentCheck = true;
         } else {
             mIsContentCheck = false;
         }
 
 
-        if (this.isPhoneOpen && (this.marketItem.phone.length() == 13)) {
+        if (this.isPhoneOpen && (this.marketItem.getPhone().length() == 13)) {
             if (this.phoneNumber.charAt(3) == '-' && this.phoneNumber.charAt(8) == '-')
                 mIsPhoneCheck = true;
             else
@@ -784,7 +784,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         else
             mIsPhoneCheck = false;
 
-        if (this.marketItem.title.length() == 0)
+        if (this.marketItem.getTitle().length() == 0)
             mIsTitlecheck = false;
         else {
             mIsTitlecheck = true;
@@ -798,7 +798,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
             ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
         if (!mIsTitlecheck && !mIsContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
-        this.marketItem.type = this.marketId;
+        this.marketItem.setType(this.marketId);
         if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
             mMarketUsedEditPresenter.editMarketContent(this.itemId, this.marketItem);
 
@@ -832,7 +832,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketBuyEditThumbnailImageView);
-        this.marketItem.thumbnail = url;
+        this.marketItem.setThumbnail(url);
     }
 
     @Override

@@ -39,8 +39,8 @@ public class MarketUsedCreatePresenter{
         @Override
         public void onSuccess(Object object) {
             Item marketItem = (Item) object;
-            if (marketItem.url != null)
-                marketCreateContractView.showImageUploadSuccess(marketItem.url);
+            if (marketItem.getUrl() != null)
+                marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
             marketCreateContractView.hideLoading();
         }
 

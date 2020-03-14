@@ -8,7 +8,7 @@ public class Term {
 
     @SerializedName("term")
     @Expose
-    public final int term;
+    private final int term;
 
     public Term(int term) {
         this.term = term;

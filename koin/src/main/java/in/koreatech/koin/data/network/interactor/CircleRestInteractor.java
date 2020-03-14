@@ -32,7 +32,7 @@ public class CircleRestInteractor implements CircleInteractor {
 
                     @Override
                     public void onNext(Circle circle) {
-                        if (!circle.circles.isEmpty()) {
+                        if (!circle.getCircles().isEmpty()) {
                             apiCallback.onSuccess(circle);
                         } else {
                             apiCallback.onFailure(new Throwable("fail to read circle list"));

@@ -12,11 +12,11 @@ public class TimeTable {
 
     @SerializedName("semester")
     @Expose
-    public String semester = "";
+    private String semester = "";
 
     @SerializedName("timetable")
     @Expose
-    public ArrayList<TimeTableItem> timeTableItems;
+    private ArrayList<TimeTableItem> timeTableItems;
 
     public TimeTable() {
         timeTableItems = new ArrayList<>();
@@ -46,54 +46,54 @@ public class TimeTable {
     public static class TimeTableItem implements Serializable {
         @SerializedName("class_time")
         @Expose
-        public ArrayList<Integer> classTime;
+        private ArrayList<Integer> classTime;
 
         @SerializedName("id")
         @Expose
-        public int id;
+        private int id;
 
         @SerializedName("class_title")
         @Expose
-        public String classTitle = "";
+        private String classTitle = "";
 
         @SerializedName("lecture_class")
         @Expose
-        public String lectureClass = "";
+        private String lectureClass = "";
 
         @SerializedName("professor")
         @Expose
-        public String professor = "";
+        private String professor = "";
 
         @SerializedName("grades")
         @Expose
-        public String grades = "";
+        private String grades = "";
 
         //추가
         @SerializedName("class_place")
         @Expose
-        public String classPlace = "";
+        private String classPlace = "";
 
         @SerializedName("department")
         @Expose
-        public String department = "";
+        private String department = "";
 
         @SerializedName("regular_number")
         @Expose
-        public String regularNumber = "";
+        private String regularNumber = "";
 
         @SerializedName("target")
         @Expose
-        public String target = "";
+        private String target = "";
 
 
         @SerializedName("design_score")
         @Expose
-        public String designScore = "";
+        private String designScore = "";
 
 
         @SerializedName("code")
         @Expose
-        public String code = "";
+        private String code = "";
 
 
         public boolean isSavedAtServer;
@@ -157,16 +157,16 @@ public class TimeTable {
 
         public TimeTableItem(Lecture lecture) {
             initArrayList();
-            this.classTitle = lecture.name;
-            this.classTime = lecture.classTime;
-            this.professor = lecture.professor;
-            this.grades = lecture.grades;
-            this.lectureClass = lecture.lectureClass;
-            this.code = lecture.code;
-            this.department = lecture.department;
-            this.regularNumber = lecture.regularNumber;
-            this.target = lecture.target;
-            this.designScore = lecture.designScore;
+            this.classTitle = lecture.getName();
+            this.classTime = lecture.getClassTime();
+            this.professor = lecture.getProfessor();
+            this.grades = lecture.getGrades();
+            this.lectureClass = lecture.getLectureClass();
+            this.code = lecture.getCode();
+            this.department = lecture.getDepartment();
+            this.regularNumber = lecture.getRegularNumber();
+            this.target = lecture.getTarget();
+            this.designScore = lecture.getDesignScore();
         }
 
         public TimeTableItem(String classTitle, ArrayList<Integer> classTime, String professor) {

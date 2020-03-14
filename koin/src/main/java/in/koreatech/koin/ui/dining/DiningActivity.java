@@ -250,13 +250,13 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
                 continue;
             }
 
-            String typeTemp = dining.type;
+            String typeTemp = dining.getType();
             if (diningMap.containsKey(typeTemp)) {
                 diningMap.get(typeTemp).add(dining);
             } else {
                 ArrayList<Dining> dinings = new ArrayList<Dining>();
                 dinings.add(dining);
-                diningMap.put(dining.type, dinings);
+                diningMap.put(dining.getType(), dinings);
             }
         }
 
@@ -283,15 +283,15 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         for (Dining dining : diningArrayList) {
             int priority = 0;
 
-            if (dining.type.equals(TYPE[0])) {
+            if (dining.getType().equals(TYPE[0])) {
                 priority += 0;
-            } else if (dining.type.equals(TYPE[1])) {
+            } else if (dining.getType().equals(TYPE[1])) {
                 priority += 7;
-            } else if (dining.type.equals(TYPE[2])) {
+            } else if (dining.getType().equals(TYPE[2])) {
                 priority += 14;
             }
 
-            switch (dining.place) {
+            switch (dining.getPlace()) {
                 case "한식":
                     priority += 0;
                     break;

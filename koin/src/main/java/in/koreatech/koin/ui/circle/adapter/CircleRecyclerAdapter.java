@@ -81,22 +81,22 @@ public class CircleRecyclerAdapter extends RecyclerView.Adapter<CircleRecyclerAd
         Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.white))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundImageview);
         Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.blue1))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoBackgroundBorderImageview);
 
-        if (circle.name != null)
-            holder.circleItemNameTextview.setText(circle.name);
-        if (circle.lineDescription != null)
-            holder.circleItemDetailTextview.setText(circle.lineDescription);
-        if (circle.logoUrl != null) {
+        if (circle.getName() != null)
+            holder.circleItemNameTextview.setText(circle.getName());
+        if (circle.getLineDescription() != null)
+            holder.circleItemDetailTextview.setText(circle.getLineDescription());
+        if (circle.getLogoUrl() != null) {
             Glide.with(context)
-                    .load(circle.logoUrl)
+                    .load(circle.getLogoUrl())
                     .apply(glideOptions)
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.circleItemLogoImageview);
         } else {
             Glide.with(context).load(new ColorDrawable(context.getResources().getColor(R.color.gray4))).apply(RequestOptions.circleCropTransform()).into(holder.circleItemLogoImageview);
         }
-        if (circle.backgroundImgUrl != null) {
+        if (circle.getBackgroundImgUrl() != null) {
             Glide.with(context)
-                    .load(circle.backgroundImgUrl)
+                    .load(circle.getBackgroundImgUrl())
                     .apply(glideOptions)
                     .into(holder.circleItemBackgroundImageview);
         } else {

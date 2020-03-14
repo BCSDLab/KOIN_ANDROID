@@ -313,12 +313,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             @Override
             public void onClick(View view, int position) {
                 for (int i = 0; i < semesters.size(); i++) {
-                    semesters.get(i).isSelected = false;
+                    semesters.get(i).setSelected(false);
                 }
 
-                semesters.get(position).isSelected = true;
+                semesters.get(position).setSelected(true);
                 timetableSemesterRecyclerAdapter.notifyDataSetChanged();
-                semester = semesters.get(position).semester;
+                semester = semesters.get(position).getSemester();
                 updateTableBySemester(semester);
             }
 
@@ -910,7 +910,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         if (semesters == null) return;
         this.semesters.clear();
         this.semesters.addAll(semesters);
-        this.semesters.get(0).isSelected = true;
+        this.semesters.get(0).setSelected(true);
         timetableSemesterRecyclerAdapter.notifyDataSetChanged();
     }
 

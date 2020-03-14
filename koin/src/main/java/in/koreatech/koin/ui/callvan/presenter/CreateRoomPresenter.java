@@ -19,7 +19,7 @@ public class CreateRoomPresenter {
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(((CallvanRoom) object).uid);
+            UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(((CallvanRoom) object).getUid());
 
             createRoomView.onCreateRoomDataReceived(true);
         }

@@ -132,7 +132,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
             showNickNameRequestDialog();
             return;
         }
@@ -155,7 +155,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     @Override
     public void showSuccessLostItem(LostItem lostItem) {
         String commentCount = Integer.toString(lostItem.getCommentCount());
-        String titleText = getColorSpannedString(lostItem.title, "#252525") + getColorSpannedString("(" + commentCount + ")", "#175c8e");
+        String titleText = getColorSpannedString(lostItem.getTitle(), "#252525") + getColorSpannedString("(" + commentCount + ")", "#175c8e");
         lostfoundCommentContentEdittext.getText().clear();
         lostfoundCommentTitleTextView.setText(Html.fromHtml(titleText));
         lostfoundCommentViewCountTextView.setText(Integer.toString(lostItem.getHit()));
@@ -221,11 +221,11 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     public String getNickname() {
         String nickname = "";
         try {
-            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         } catch (NullPointerException e) {
             UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
             if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         }
         if (nickname == null) nickname = "";
         return nickname;
@@ -286,8 +286,8 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     @Override
     public void onClickCommentRemoveButton(Comment comment) {
         SnackbarUtil.makeLongSnackbarActionYes(lostfoundCommentContentRecyclerview, "댓글을 삭제할까요?", () -> {
-            if (comment.grantDelete) {
-                lostFoundCommentPresenter.deleteComment(id, comment.commentUid);
+            if (comment.isGrantDelete()) {
+                lostFoundCommentPresenter.deleteComment(id, comment.getCommentUid());
             }
         });
     }
@@ -295,7 +295,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     @Override
     public void onClickCommentModifyButton(Comment comment) {
         isEditComment = true;
-        lostfoundCommentContentEdittext.setText(comment.content);
-        editCommentId = comment.commentUid;
+        lostfoundCommentContentEdittext.setText(comment.getContent());
+        editCommentId = comment.getCommentUid();
     }
 }

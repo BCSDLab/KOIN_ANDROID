@@ -455,7 +455,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         if (!isEdit) {
             Intent intent = new Intent(this, ArticleActivity.class);
             intent.putExtra("BOARD_UID", boardUid);
-            intent.putExtra("ARTICLE_UID", article.articleUid);
+            intent.putExtra("ARTICLE_UID", article.getArticleUid());
             intent.putExtra("ARTICLE_GRANT_EDIT", true);
             startActivity(intent);
         }

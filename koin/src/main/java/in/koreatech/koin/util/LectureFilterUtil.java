@@ -55,7 +55,7 @@ public class LectureFilterUtil {
         for (Lecture lecture : filterLectureArrayList) {
             for (TimeTableItem timeTableItem : timeTableItems) {
                 lecture.isAddButtonClicked = false;
-                if (lecture.name.equals(timeTableItem.getClassTitle()) && lecture.professor.equals(timeTableItem.getProfessor()) && lecture.lectureClass.equals(timeTableItem.getLectureClass())) {
+                if (lecture.getName().equals(timeTableItem.getClassTitle()) && lecture.getProfessor().equals(timeTableItem.getProfessor()) && lecture.getLectureClass().equals(timeTableItem.getLectureClass())) {
                     {
                         lecture.isAddButtonClicked = true;
                         break;
@@ -73,7 +73,7 @@ public class LectureFilterUtil {
         for (Lecture lecture : lectures) {
             lecture.isAddButtonClicked = false;
             for (TimeTableItem timeTableItem : timeTableItems) {
-                if (lecture.name.equals(timeTableItem.getClassTitle()) && lecture.professor.equals(timeTableItem.getProfessor()) && lecture.lectureClass.equals(timeTableItem.getLectureClass())) {
+                if (lecture.getName().equals(timeTableItem.getClassTitle()) && lecture.getProfessor().equals(timeTableItem.getProfessor()) && lecture.getLectureClass().equals(timeTableItem.getLectureClass())) {
                     {
                         lecture.isAddButtonClicked = true;
                         break;
@@ -86,7 +86,7 @@ public class LectureFilterUtil {
 
     public static boolean CheckClikckedUtil(Lecture lecture, TimeTableItem timeTableItem) {
 
-        if (lecture.name.equals(timeTableItem.getClassTitle()) && lecture.professor.equals(timeTableItem.getProfessor()) && lecture.lectureClass.equals(timeTableItem.getLectureClass())) {
+        if (lecture.getName().equals(timeTableItem.getClassTitle()) && lecture.getProfessor().equals(timeTableItem.getProfessor()) && lecture.getLectureClass().equals(timeTableItem.getLectureClass())) {
             return true;
         }
         return false;
@@ -98,7 +98,7 @@ public class LectureFilterUtil {
         ArrayList<Lecture> returnLectureArrayList = new ArrayList<>();
 
         for (Lecture lecture : lectures) {
-            if (lecture.department.contains(department))
+            if (lecture.getDepartment().contains(department))
                 returnLectureArrayList.add(lecture);
         }
 
@@ -112,7 +112,7 @@ public class LectureFilterUtil {
             return lectures;
 
         for (Lecture lecture : lectures) {
-            if (lecture.name.toUpperCase().contains(keyword.toUpperCase()))
+            if (lecture.getName().toUpperCase().contains(keyword.toUpperCase()))
                 returnLectureArrayList.add(lecture);
         }
         return returnLectureArrayList;

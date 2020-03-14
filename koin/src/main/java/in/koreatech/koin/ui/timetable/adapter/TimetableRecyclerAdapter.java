@@ -121,15 +121,15 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
             holder.mAddLectureButton.setBackground(this.context.getDrawable(R.drawable.ic_delete_lecture_item_button));
         else
             holder.mAddLectureButton.setBackground(this.context.getDrawable(R.drawable.ic_add_lecture_item_button));
-        holder.mLectureTitle.setText(lecture.name);
+        holder.mLectureTitle.setText(lecture.getName());
 
-        stringBuilder.append(SeparateTime.getSpertateTimeToString(lecture.classTime)).append("/ 정원 ").append(lecture.regularNumber);
+        stringBuilder.append(SeparateTime.getSpertateTimeToString(lecture.getClassTime())).append("/ 정원 ").append(lecture.getRegularNumber());
         holder.mLectureInformationOne.setText(stringBuilder.toString());
 
-        stringBuilderTwo.append(lecture.department).append("/").append(lecture.grades).append("학점").append("/").append(lecture.code).append("/").append(lecture.professor);
-        if (lecture.isElearning.equals("Y"))
+        stringBuilderTwo.append(lecture.getDepartment()).append("/").append(lecture.getGrades()).append("학점").append("/").append(lecture.getCode()).append("/").append(lecture.getProfessor());
+        if (lecture.getIsElearning().equals("Y"))
             stringBuilderTwo.append("/").append("e러닝");
-        if (lecture.isEnglish.equals("Y"))
+        if (lecture.getIsEnglish().equals("Y"))
             stringBuilderTwo.append("/").append("영강");
 
         holder.mLectureInfromationTwo.setText(stringBuilderTwo.toString());

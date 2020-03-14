@@ -91,32 +91,32 @@ public class MarketUsedBuyRecyclerAdapter extends RecyclerView.Adapter<MarketUse
         StringBuilder title = new StringBuilder();
 
         Glide.with(context)
-                .load(item.thumbnail)
+                .load(item.getThumbnail())
                 .apply(glideOptions)
                 .into(holder.imageViewItem);
 
 
-        holder.textViewMoney.setText(changeMoneyFormat(Integer.toString(item.price)) + "원");
+        holder.textViewMoney.setText(changeMoneyFormat(Integer.toString(item.getPrice())) + "원");
 
-        holder.textViewNickname.setText(item.nickname);
-        if (item.state == 0) {
+        holder.textViewNickname.setText(item.getNickname());
+        if (item.getState() == 0) {
 //            title.append("(구매중)");
-        } else if (item.state == 1) {
+        } else if (item.getState() == 1) {
             title.append("(구매중지)");
         } else {
             title.append("(구매완료)");
         }
 
-        title.append(item.title);
+        title.append(item.getTitle());
         holder.textViewTitle.setText(title.toString());
-        if (item.comments != null && item.comments.size() > 0) {
-            if (item.comments.size() < 100)
-                holder.textViewCommentCount.setText("(" + Integer.toString(item.comments.size()) + ")");
+        if (item.getComments() != null && item.getComments().size() > 0) {
+            if (item.getComments().size() < 100)
+                holder.textViewCommentCount.setText("(" + Integer.toString(item.getComments().size()) + ")");
             else
                 holder.textViewCommentCount.setText("99+");
         }
 
-        holder.textViewLookupNumber.setText(item.hit);
+        holder.textViewLookupNumber.setText(item.getHit());
     }
 
     public String changeMoneyFormat(String money) {

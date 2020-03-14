@@ -161,8 +161,8 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     @Override
     public ArrayList<Company> sortCompanyListDescendingByCallCount(ArrayList<Company> companyArrayList) {
         Collections.sort(companyArrayList, (prev, next) -> {
-            long prevCallCount = prev.callCount;
-            long nextCallCount = next.callCount;
+            long prevCallCount = prev.getCallCount();
+            long nextCallCount = next.getCallCount();
 
             //내림차순으로 정렬
             return Long.compare(nextCallCount, prevCallCount);
@@ -195,7 +195,7 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
     public void showContactDialog(final int clickedPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.KAPDialog);
 
-        builder.setMessage(companyArrayList.get(clickedPosition).name + "\n\n" + companyArrayList.get(clickedPosition).phone);
+        builder.setMessage(companyArrayList.get(clickedPosition).getName() + "\n\n" + companyArrayList.get(clickedPosition).getPhone());
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
@@ -210,7 +210,7 @@ public class CompanyFragment extends CallvanBaseFragment implements CompanyContr
 
     @Override
     public void onClickCallButton(int clickedPosition) {
-        String callNumber = companyArrayList.get(clickedPosition).phone; //선택된 Row의 contact의 callvanPhoneNum 값을 가져옴
+        String callNumber = companyArrayList.get(clickedPosition).getPhone(); //선택된 Row의 contact의 callvanPhoneNum 값을 가져옴
         startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:" + callNumber)));
 
     }

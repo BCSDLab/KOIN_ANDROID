@@ -177,7 +177,7 @@ public class DiningWidget extends AppWidgetProvider {
         if (selectedDining == null) { // 조건을 만족하는 식단이 없을 경우
             setNoMenu(remoteViews);
         } else {
-            setDiningMenu(remoteViews, selectedDining.menu);
+            setDiningMenu(remoteViews, selectedDining.getMenu());
         }
         appWidgetManager.updateAppWidget(componentName, remoteViews);
     }
@@ -191,7 +191,7 @@ public class DiningWidget extends AppWidgetProvider {
      */
     public Dining searchDining(ArrayList<Dining> diningArrayList, String place) {
         for (Dining dining : diningArrayList) {
-            if (dining.type.equals(currentType) && dining.place.equals(place)) {
+            if (dining.getType().equals(currentType) && dining.getPlace().equals(place)) {
                 return dining;
             }
         }

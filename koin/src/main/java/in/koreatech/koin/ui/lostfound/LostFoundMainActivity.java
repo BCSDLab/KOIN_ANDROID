@@ -114,7 +114,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         @Override
         public void onClick(View view, final int position) {
             Intent intent = new Intent(context, LostFoundDetailActivity.class);
-            intent.putExtra("ID", lostItemArrayList.get(position).id);
+            intent.putExtra("ID", lostItemArrayList.get(position).getId());
             startActivity(intent);
         }
 
@@ -184,7 +184,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
             return;
-        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+        } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
             showNickNameRequestDialog();
             return;
         }

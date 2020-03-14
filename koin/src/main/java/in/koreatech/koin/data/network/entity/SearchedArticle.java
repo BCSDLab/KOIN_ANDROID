@@ -10,55 +10,55 @@ public class SearchedArticle implements Serializable {
 
     @SerializedName("totalPage")
     @Expose
-    public int totalPage;
+    private int totalPage;
 
     @SerializedName("articles")
     @Expose
-    public ArrayList<SearchedArticle> searchedArticles;
+    private ArrayList<SearchedArticle> searchedArticles;
 
     @SerializedName("id")
     @Expose
-    public int id;
+    private int id;
 
     @SerializedName("table_id")
     @Expose
-    public int tableId;
+    private int tableId;
 
     @SerializedName("service_name")
     @Expose
-    public String serviceName;
+    private String serviceName;
 
     @SerializedName("title")
     @Expose
-    public String title;
+    private String title;
 
     @SerializedName("user_id")
     @Expose
-    public String userId;
+    private String userId;
 
     @SerializedName("nickname")
     @Expose
-    public String nickname;
+    private String nickname;
 
     @SerializedName("hit")
     @Expose
-    public int hit;
+    private int hit;
 
     @SerializedName("comment_count")
     @Expose
-    public int commentCount;
+    private int commentCount;
 
     @SerializedName("permalink")
     @Expose
-    public String permalink;
+    private String permalink;
 
     @SerializedName("created_at")
     @Expose
-    public String createdAt;
+    private String createdAt;
 
     @SerializedName("updated_at")
     @Expose
-    public String updatedAt;
+    private String updatedAt;
 
     public int getTotalPage() {
         return totalPage;

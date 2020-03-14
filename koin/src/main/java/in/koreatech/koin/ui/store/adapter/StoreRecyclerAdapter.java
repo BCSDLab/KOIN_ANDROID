@@ -60,23 +60,23 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Store store = this.storeArrayList.get(position);
-        holder.textViewStoreName.setText(store.name); //콜밴 이름
+        holder.textViewStoreName.setText(store.getName()); //콜밴 이름
 
         //배달, 카드 결제, 계좌이체 사용 가능 유무를 체크하여 다른 이미지를 띄움
         //TODO:text -> image changed
-        if (store.isDeliveryOk) { //카드결제 가능한 경우
+        if (store.isDeliveryOk()) { //카드결제 가능한 경우
             holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
             holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.blue1));
         }
 
-        if (store.isCardOk) { //카드결제 가능한 경우
+        if (store.isCardOk()) { //카드결제 가능한 경우
             holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
             holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.blue1));
         }
 
-        if (store.isBankOk) {
+        if (store.isBankOk()) {
             holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
             holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.blue1));

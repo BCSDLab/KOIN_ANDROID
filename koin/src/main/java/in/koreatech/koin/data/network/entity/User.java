@@ -9,77 +9,77 @@ public class User {
     // Firebase User Id
     @SerializedName("id")
     @Expose
-    public String uid;
+    private String uid;
 
     // 이메일 주소(아이디)
     @SerializedName("portal_account")
     @Expose
-    public String userId;
+    private String userId;
 
     //비밀번호
     @SerializedName("password")
     @Expose
-    public String password;
+    private String password;
 
     // 닉네임
     @SerializedName("nickname")
     @Expose
-    public String userNickName;
+    private String userNickName;
 
     //익명 닉네임
     @SerializedName("anonymous_nickname")
     @Expose
-    public String anonymousNickName;
+    private String anonymousNickName;
 
     // 이름
     @SerializedName("name")
     @Expose
-    public String userName;
+    private String userName;
 
     //학번
     @SerializedName("student_number")
     @Expose
-    public String studentId;
+    private String studentId;
 
     //전공
     @SerializedName("major")
     @Expose
-    public String major;
+    private String major;
 
     //사용자 신분( 학생 : 0, 교수 : 1, 교직원 : 2)
     @SerializedName("identity")
     @Expose
-    public int identity;
+    private int identity;
 
     //졸업 여부
     @SerializedName("is_graduated")
     @Expose
-    public boolean isGraduate;
+    private boolean isGraduate;
 
     //핸드폰 번호
     @SerializedName("phone_number")
     @Expose
-    public String phoneNumber;
+    private String phoneNumber;
 
     //성별 ( 남 :0 여 : 1)
     @SerializedName("gender")
     @Expose
-    public int gender;
+    private int gender;
 
     //프로필 이미지 url
     @SerializedName("profile_image_url")
     @Expose
-    public String profileImageUrl;
+    private String profileImageUrl;
 
     //생성 날짜
     @SerializedName("created_at")
     @Expose
-    public String createDate;
+    private String createDate;
 
     //수정 날짜
     @SerializedName("updated_at")
     @Expose
-    public String updateDate;
+    private String updateDate;
 
 
     public User() {
@@ -166,4 +166,123 @@ public class User {
         return result.toString();
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserNickName() {
+        return userNickName;
+    }
+
+    public void setUserNickName(String userNickName) {
+        this.userNickName = userNickName;
+    }
+
+    public String getAnonymousNickName() {
+        return anonymousNickName;
+    }
+
+    public void setAnonymousNickName(String anonymousNickName) {
+        this.anonymousNickName = anonymousNickName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public int getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(int identity) {
+        this.identity = identity;
+    }
+
+    public boolean isGraduate() {
+        return isGraduate;
+    }
+
+    public void setGraduate(boolean graduate) {
+        isGraduate = graduate;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
 }
