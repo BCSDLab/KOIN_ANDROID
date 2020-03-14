@@ -48,7 +48,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (!response.lostItemArrayList.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get lost and found list"));
                         }
                     }
 
@@ -89,7 +89,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get lost and found detail"));
                         }
                     }
 
@@ -134,7 +134,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get market item granted"));
                         }
                     }
 
@@ -172,7 +172,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to create comment"));
                         }
                     }
 
@@ -208,7 +208,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete comment"));
                         }
                     }
 
@@ -246,7 +246,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail edit comment"));
                         }
                     }
 
@@ -283,7 +283,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail edit lost and found content"));
                         }
                     }
 
@@ -321,7 +321,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail upload image"));
                         }
                     }
 
@@ -358,7 +358,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail create lost and found item"));
                         }
                     }
 
@@ -395,7 +395,7 @@ public class LostAndFoundRestInteractor implements LostAndFoundInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete lost and found item"));
                         }
                     }
 
