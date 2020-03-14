@@ -9,6 +9,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import in.koreatech.koin.constant.BusType;
+
 
 /**
  * @since 2019.09.20
@@ -635,12 +637,12 @@ public class Bus {
         String[] shuttleTimeTable;
         int dayType = (currentTime.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 
-        if (!departEnglish.equals("station")) { // 출발지가 천안역이 아니라면 ?
+        if (!departEnglish.equals(BusType.STATION.getDestination())) { // 출발지가 천안역이 아니라면 ?
             String[][] timeTable = (String[][]) shuttleTimeTables.get(departEnglish); // 출발지로 시간표 가져옴
             shuttleTimeTable = timeTable[dayType];
         } // 천안역이라면 ?
         else
-            shuttleTimeTable = arrivalEnglish.equals("koreatech") ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
+            shuttleTimeTable = arrivalEnglish.equals(BusType.KOREATECH.getDestination()) ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
 
         return shuttleTimeTable;
     }
@@ -655,12 +657,12 @@ public class Bus {
         dayType %= 7;
 
 
-        if (!departEnglish.equals("station")) { // 출발지가 천안역이 아니라면 ?
+        if (!departEnglish.equals(BusType.STATION.getDestination())) { // 출발지가 천안역이 아니라면 ?
             String[][] timeTable = (String[][]) shuttleTimeTables.get(departEnglish); // 출발지로 시간표 가져옴
             shuttleTimeTable = timeTable[dayType];
         } // 천안역이라면 ?
         else
-            shuttleTimeTable = arrivalEnglish.equals("koreatech") ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
+            shuttleTimeTable = arrivalEnglish.equals(BusType.KOREATECH.getDestination()) ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
 
         return shuttleTimeTable;
     }
@@ -672,9 +674,9 @@ public class Bus {
      */
     private static String[] getCurrentDayExpressDayStringArray(String departEnglish, String arrivalEnglish) {
         String[] expressTimeTable;
-        if (departEnglish.equals("koreatech") && arrivalEnglish.equals("terminal")) { // 학교에서 야우리
+        if (departEnglish.equals(BusType.KOREATECH.getDestination()) && arrivalEnglish.equals(BusType.TERMINAL.getDestination())) { // 학교에서 야우리
             expressTimeTable = expressFromKoreatechToTerminal;
-        } else if (departEnglish.equals("terminal") && arrivalEnglish.equals("koreatech")) { // 야우리에서 학교
+        } else if (departEnglish.equals(BusType.TERMINAL.getDestination()) && arrivalEnglish.equals(BusType.KOREATECH.getDestination())) { // 야우리에서 학교
             expressTimeTable = expressFromTerminalToKoreatech;
         } else { // 그 외에는 운행하지 않으므로
             return null;
