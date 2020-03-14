@@ -60,6 +60,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="signup_to_login">이미 계정이 있으신가요? <b> 로그인하기 </b> </string>
     <string name="back_button_pressed">정말 저장하지 않고 나가시겠어요?</string>
+    <string name="erase_button_pressed">정말 전체를 지우겠어요?</string>
 
     <!-- Board -->
     <string name="board_number">글번호</string>
@@ -92,6 +93,38 @@
     <string name="market_used_get_list_fail">리스트를 불러올수 없습니다.</string>
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
+
+    <!--Sign Up-->
+    <string name="email_sending">이메일 전송 중</string>
+    <string name="email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
+
+    <!--Timetable-->
+    <string name="timetable_saved">저장되었습니다.</string>
+    <string name="timetable_saved_fail">저장에 실패했습니다.</string>
+    <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
+    <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
+    <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
+    <string name="timetable_update_message">업데이트</string>
+
+    <!--lost and found-->
+    <string name="lost_and_found_created">생성되었습니다.</string>
+    <string name="lost_and_found_edited">수정되었습니다.</string>
+    <string name="lost_and_found_deleted">삭제되었습니다.</string>
+    <string name="lost_and_found_delete_fail">삭제에 실패했습니다.</string>
+
+    <!--major-->
+    <string name="mechanical_engineering">기계공학부</string>
+    <string name="mechatronics_engineering">메카트로닉스공학부</string>
+    <string name="electrical_electronics_and_communication_engineering">전기전자통신공학부</string>
+    <string name="computer_science_and_engineering">컴퓨터공학부</string>
+    <string name="industrial_design_and_architectural_engineering">디자인건축공학부</string>
+    <string name="energy_meterials_chemical_engineering">에너지신소재화학공학부</string>
+    <string name="industrial_management">산업경영학부</string>
+    <string name="hrd">HRD</string>
+    <string name="department_of_future_technology">융합</string>
+    <string name="liberal_arts">교양학부</string>
+
+
 
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
