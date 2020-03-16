@@ -54,5 +54,6 @@
     <attr name="colorDivider" format="color" />
     <attr name="colorPrimaryDivider" format="color" />
     <attr name="cloudyBlue" format="color" />
+    <attr name="colorTextInfo" format="color" />
 
 </resources>

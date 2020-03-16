@@ -8,6 +8,7 @@
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textColorHint">@color/white_three</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
 
@@ -22,6 +23,7 @@
         <item name="colorPrimaryDivider">@color/light_navy</item>
         <item name="colorDivider">@color/cloudy_blue</item>
         <item name="cloudyBlue">@color/cloudy_blue</item>
+        <item name="colorTextInfo">@color/warm_grey</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">

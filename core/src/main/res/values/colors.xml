@@ -116,7 +116,9 @@
     <color name="gray4">#2c2c2c</color>
     <color name="gray5">#e1e1e1</color>
     <color name="gray6">#6C6F74</color>
+    <color name="gray7">#7a7a7a</color>
     <color name="color_bg_list_subtitle_dark">#333333</color>
     <color name="lighter_navy">#72AAD3</color>
     <color name="cloudy_blue_dark">#767b80</color>
+    <color name="text_color_hint_dark">#464646</color>
 </resources>
