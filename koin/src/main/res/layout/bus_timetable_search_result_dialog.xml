@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_weight="0.295"
         android:layout_height="0dp"
-        android:background="@color/cloudy_blue_two"
+        android:background="@color/blue_alpha51"
         android:orientation="horizontal">
 
         <TextView
@@ -112,13 +112,13 @@
                 android:id="@+id/bus_timetable_search_result_close_button"
                 android:layout_width="58dp"
                 android:layout_height="36dp"
-                android:background="@color/transparent"
+                android:background="@color/red_alpha0"
                 android:letterSpacing="-0.04"
                 android:lineHeight="22sp"
                 android:lineSpacingExtra="7sp"
                 android:text="닫기"
                 android:gravity="center"
-                android:textColor="@color/light_navy"
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp" />
 
         </LinearLayout>

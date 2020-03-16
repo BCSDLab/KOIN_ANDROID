@@ -243,39 +243,6 @@
         <item>50</item>
     </string-array>
 
-    <integer-array name="category_item_id">
-        <item>@+id/navi_item_store</item>
-        <item>@+id/navi_item_dining</item>
-        <item>@+id/navi_item_bus</item>
-        <item>@+id/navi_item_cirlce</item>
-        <item>@+id/navi_item_free_board</item>
-        <item>@+id/navi_item_recruit_board</item>
-        <item>@+id/navi_item_anonymous_board</item>
-        <!--<item>@+id/navi_item_callvansharing</item>-->
-        <item>@+id/navi_item_usedmarket</item>
-        <item>@+id/navi_item_user_info</item>
-        <item>@+id/navi_item_login</item>
-        <item>@+id/navi_item_kakao_talk</item>
-        <item>@+id/navi_item_developer</item>
-
-
-    </integer-array>
-
-    <integer-array name="chart_color">
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-    </integer-array>
-
     <string-array name="dining_time">
         <item>평일</item>
         <item>08:00 ~ 09:00</item>

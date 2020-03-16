@@ -167,9 +167,9 @@
             android:maxLines="1"
             android:paddingLeft="10dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/cloudy_blue"
+            android:textColorHint="@color/blue1"
             android:textSize="15sp"
-            app:font_name="Normal" />
+            app:fontName="Normal" />
 
         <TextView
             android:layout_width="0dp"
@@ -188,7 +188,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@color/cloudy_blue"
+        android:background="@color/blue1"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.391"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -210,9 +210,9 @@
         android:maxLines="1"
         android:paddingLeft="10dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/cloudy_blue"
+        android:textColorHint="@color/blue1"
         android:textSize="15sp"
-        app:font_name="Normal"
+        app:fontName="Normal"
         app:layout_constraintBottom_toBottomOf="@+id/login_password_border"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -222,7 +222,7 @@
         android:id="@+id/login_password_border"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/cloudy_blue"
+        android:background="@color/blue1"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.469"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -234,11 +234,11 @@
         android:id="@+id/login_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/squash"
+        android:background="@color/colorAccent"
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:font_name="Normal"
+        app:fontName="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.584"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -248,11 +248,11 @@
         android:id="@+id/login_button_signup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/light_navy"
+        android:background="@color/colorPrimary"
         android:text="회원가입"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:font_name="Normal"
+        app:fontName="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.666"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
         app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -290,7 +290,7 @@
                 android:text="비밀번호 찾기"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="13sp"
-                app:font_name="Normal" />
+                app:fontName="Normal" />
         </LinearLayout>
 
         <TextView
@@ -302,7 +302,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="7sp"
             android:text="|"
-            android:textColor="@color/warm_grey"
+            android:textColor="@color/gray9"
             android:textSize="15sp" />
 
         <LinearLayout
@@ -324,7 +324,7 @@
                 android:text="둘러보기"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="13sp"
-                app:font_name="Normal" />
+                app:fontName="Normal" />
         </LinearLayout>
 
     </LinearLayout>
@@ -347,7 +347,7 @@
             android:text="Copyright @ "
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom4" />
+            app:fontName="Custom4" />
 
         <TextView
             android:id="@+id/textView7"
@@ -358,7 +358,7 @@
             android:text="BCSD Lab "
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom3" />
+            app:fontName="Custom3" />
 
         <TextView
             android:id="@+id/textView8"
@@ -369,7 +369,7 @@
             android:text="All rights reserved."
             android:textColor="@color/black"
             android:textSize="12sp"
-            app:font_name="Custom4" />
+            app:fontName="Custom4" />
 
     </LinearLayout>
 

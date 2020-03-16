@@ -18,12 +18,12 @@
             android:layout_height="match_parent">
 
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -47,7 +47,7 @@
                             android:id="@+id/market_used_comment_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
@@ -65,12 +65,12 @@
                             android:id="@+id/market_used_comment_view_count_korean"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text="@string/board_view_count"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title" />
@@ -79,11 +79,11 @@
                             android:id="@+id/market_used_comment_view_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_view_count_korean"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -93,12 +93,12 @@
                             android:id="@+id/market_used_comment_dot"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
                             android:text=" · "
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_view_count"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title" />
@@ -107,11 +107,11 @@
                             android:id="@+id/market_used_comment_writer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/market_used_comment_dot"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -121,11 +121,11 @@
                             android:id="@+id/market_used_comment_create_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:font_name="Custom4"
+                            app:fontName="Custom4"
                             android:layout_marginTop="1dp"
                             android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_title"
@@ -177,7 +177,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -188,7 +188,7 @@
                                 android:id="@+id/market_used_comment_password_edittext"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginStart="11dp"
                                 android:layout_marginTop="6dp"
                                 android:layout_marginBottom="5.7dp"
@@ -197,7 +197,7 @@
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"
-                                android:textColorHint="@color/white_three"
+                                android:textColorHint="@color/gray3"
                                 android:textSize="14sp" />
 
 
@@ -210,7 +210,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:orientation="vertical"
                             app:layout_constraintTop_toBottomOf="@+id/market_used_comment_password_linearlayout">
 
@@ -226,13 +226,13 @@
                                     android:id="@+id/market_used_comment_nickname_edittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:font_name="Normal"
+                                    app:fontName="Normal"
                                     android:background="@null"
                                     android:hint="닉네임을 입력해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp" />
 
 
@@ -250,13 +250,13 @@
                                     android:id="@+id/market_used_comment_content_edittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:font_name="Normal"
+                                    app:fontName="Normal"
                                     android:background="@null"
                                     android:hint="댓글을 작성해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
                                     android:textColor="@color/black"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -277,20 +277,20 @@
                                 android:id="@+id/market_used_comment_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginEnd="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
 
                             <Button
                                 android:id="@+id/market_used_comment_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginStart="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>
@@ -312,21 +312,21 @@
                                 android:id="@+id/market_used_comment_anonymous_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
 
                             <Button
                                 android:id="@+id/market_used_comment_anonymous_delete_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginStart="4.3dp"
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="삭제"
                                 android:textColor="@color/red" />
 
@@ -334,10 +334,10 @@
                                 android:id="@+id/market_used_comment_anonymous_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Normal"
+                                app:fontName="Normal"
                                 android:layout_marginStart="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>

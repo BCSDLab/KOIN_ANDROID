@@ -30,14 +30,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true">
 
-                    <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                    <in.koreatech.koin.core.appbar.AppBarBase
                         android:id="@+id/koin_base_app_bar_dark"
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_below="@+id/article_scrollview"
                         android:layout_alignParentTop="true"
-                        app:left_button_background="@drawable/ic_back_arrow"
-                        app:right_button_background="@drawable/ic_create" />
+                        app:leftButtonBackground="@drawable/ic_back_arrow"
+                        app:rightButtonBackground="@drawable/ic_create" />
 
                 </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,9 +66,9 @@
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
-                            app:font_name="Normal" />
+                            app:fontName="Normal" />
 
                         <LinearLayout
                             android:id="@+id/title_nickname_border"
@@ -91,9 +91,9 @@
                             android:background="@android:color/transparent"
                             android:hint="닉네임을 입력해주세요"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/nickname_password_border"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -127,9 +127,9 @@
                             android:hint="비밀번호를 입력해주세요"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
-                            app:font_name="Normal"
+                            app:fontName="Normal"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/password_content_border"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +151,7 @@
                             app:layout_constraintTop_toBottomOf="@id/article_edittext_password" />
 
 
-                        <in.koreatech.koin.service_board.ui.KoinRichEditor
+                        <in.koreatech.koin.ui.board.KoinRichEditor
                             android:id="@+id/article_editor_content"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"

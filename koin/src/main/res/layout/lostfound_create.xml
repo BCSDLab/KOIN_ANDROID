@@ -17,13 +17,13 @@
             android:layout_height="match_parent">
 
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_text="취소"
-                app:right_button_text="등록"
-                app:title_text="분실물게시판" />
+                app:leftButtonText="취소"
+                app:rightButtonText="등록"
+                app:titleText="분실물게시판" />
 
             <RelativeLayout
                 android:id="@+id/relativeLayout"
@@ -53,7 +53,7 @@
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toTopOf="@id/title_lostsort_border"
@@ -94,7 +94,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
-                                android:buttonTint="@color/light_navy"
+                                android:buttonTint="@color/colorPrimary"
                                 android:checked="true"
                                 android:text="분실물 습득"
                                 android:textColor="@color/black"
@@ -106,7 +106,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="30dp"
-                                android:buttonTint="@color/light_navy"
+                                android:buttonTint="@color/colorPrimary"
                                 android:checked="false"
                                 android:text="분실물 찾기"
                                 android:textColor="@color/black"
@@ -219,7 +219,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:layout_marginEnd="8dp"
-                                android:buttonTint="@color/light_navy"
+                                android:buttonTint="@color/colorPrimary"
                                 android:text="공개"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
@@ -231,7 +231,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="17dp"
                                 android:layout_marginTop="12dp"
-                                android:buttonTint="@color/light_navy"
+                                android:buttonTint="@color/colorPrimary"
                                 android:checked="true"
                                 android:text="비공개"
                                 android:textColor="@color/black"
@@ -282,7 +282,7 @@
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="10sp"
                             android:paddingBottom="63dp"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -302,7 +302,7 @@
                             android:hint="습득장소를 입력해주세요."
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="8sp"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="@+id/lostfound_create_placename_textview"
                             app:layout_constraintStart_toEndOf="@+id/lostfound_create_placename_textview"
@@ -321,7 +321,7 @@
                             android:letterSpacing="-0.05"
                             android:lineSpacingExtra="8sp"
                             app:layout_constrainedHeight="true"
-                            android:textColorHint="@color/white_87"
+                            android:textColorHint="@color/white_alpha87"
                             app:layout_constrainedWidth="true"
                             android:textSize="16sp"
                             app:layout_constraintEnd_toEndOf="parent"

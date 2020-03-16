@@ -42,7 +42,7 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:font_name="Bold" />
+                        app:fontName="Bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
                         android:text="에서"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        app:font_name="Custom2" />
+                        app:fontName="Custom2" />
 
                     <Spinner
                         android:id="@+id/bus_main_fragment_bus_arrival_spinner"
@@ -66,7 +66,7 @@
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:textStyle="bold"
-                        app:font_name="Bold" />
+                        app:fontName="Bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                         android:text="갑니다"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        app:font_name="Custom2" />
+                        app:fontName="Custom2" />
 
 
                 </LinearLayout>
@@ -127,7 +127,7 @@
                                     android:textAlignment="center"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_shuttle_departure_textview"
@@ -142,7 +142,7 @@
                                     android:text="한기대"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -167,7 +167,7 @@
                                         android:text="학교셔틀"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -189,7 +189,7 @@
                                     android:text="도착"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_shuttle_arrival_textview"
@@ -204,7 +204,7 @@
                                     android:text="야우리"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                             </LinearLayout>
 
@@ -239,7 +239,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -268,7 +268,7 @@
                                     android:text="다음버스"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -292,7 +292,7 @@
                                         android:text="학교셔틀"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -326,7 +326,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
 
@@ -378,14 +378,14 @@
                                     android:layout_width="43dp"
                                     android:layout_height="21dp"
                                     android:layout_gravity="center"
-                                    android:background="@drawable/bg_rect_gray_radius_40dp"
+                                    android:background="@drawable/bg_rect_gray1_radius_10dp"
                                     android:gravity="center"
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="6sp"
                                     android:text="출발"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_daesung_departure_textview"
@@ -399,7 +399,7 @@
                                     android:text="한기대"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -423,7 +423,7 @@
                                         android:text="대성고속"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -438,14 +438,14 @@
                                     android:layout_width="43dp"
                                     android:layout_height="21dp"
                                     android:layout_gravity="center"
-                                    android:background="@drawable/bg_rect_gray_radius_40dp"
+                                    android:background="@drawable/bg_rect_gray1_radius_10dp"
                                     android:gravity="center"
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="6sp"
                                     android:text="도착"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_daesung_arrival_textview"
@@ -459,7 +459,7 @@
                                     android:text="야우리"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -471,7 +471,7 @@
                                         android:id="@+id/bus_main_fragment_daesung_bus_type_textview"
                                         android:layout_width="80dp"
                                         android:layout_height="22dp"
-                                        android:background="@drawable/bg_rect_black_12_radius_40dp"
+                                        android:background="@drawable/bg_rect_black_alpha12_radius_40dp"
                                         android:gravity="center"
                                         android:includeFontPadding="false"
                                         android:lineSpacingExtra="1sp"
@@ -514,7 +514,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -543,7 +543,7 @@
                                     android:text="다음버스"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -567,7 +567,7 @@
                                         android:text="대성고속"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
                                 </LinearLayout>
                             </LinearLayout>
 
@@ -601,7 +601,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
 
@@ -636,7 +636,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/dark_green"
+                            android:background="@color/green3"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="16dp"
@@ -652,14 +652,14 @@
                                     android:layout_width="43dp"
                                     android:layout_height="21dp"
                                     android:layout_gravity="center"
-                                    android:background="@drawable/bg_rect_green_radius_40dp"
+                                    android:background="@drawable/bg_rect_green3_radius_10dp"
                                     android:gravity="center"
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="6sp"
                                     android:text="출발"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_citybus_departure_textview"
@@ -673,7 +673,7 @@
                                     android:text="한기대"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -698,7 +698,7 @@
                                         android:text="시내버스"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -713,14 +713,14 @@
                                     android:layout_width="43dp"
                                     android:layout_height="21dp"
                                     android:layout_gravity="center"
-                                    android:background="@drawable/bg_rect_green_radius_40dp"
+                                    android:background="@drawable/bg_rect_green3_radius_10dp"
                                     android:gravity="center"
                                     android:includeFontPadding="false"
                                     android:lineSpacingExtra="6sp"
                                     android:text="도착"
                                     android:textColor="@color/white"
                                     android:textSize="11sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_citybus_arrival_textview"
@@ -734,7 +734,7 @@
                                     android:text="야우리"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom2" />
+                                    app:fontName="Custom2" />
 
                                 <TextView
                                     android:id="@+id/bus_main_fragment_city_bus_type_textview"
@@ -744,7 +744,7 @@
                                     android:includeFontPadding="false"
                                     android:text="400번버스"
                                     android:textColor="@color/white"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
 
@@ -778,7 +778,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -787,7 +787,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:background="@color/dark_green"
+                            android:background="@color/green3"
                             android:orientation="vertical"
                             android:paddingLeft="16dp"
                             android:paddingTop="12dp"
@@ -797,7 +797,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="22dp"
-                                android:background="@color/dark_green">
+                                android:background="@color/green3">
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -807,7 +807,7 @@
                                     android:text="다음버스"
                                     android:textColor="@color/white"
                                     android:textSize="15sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -831,7 +831,7 @@
                                         android:text="시내버스"
                                         android:textColor="@color/white"
                                         android:textSize="14sp"
-                                        app:font_name="Custom6" />
+                                        app:fontName="Custom6" />
 
                                     <!--<TextView-->
                                     <!--android:id="@+id/bus_main_fragment_next_city_bus_type_textview"-->
@@ -850,7 +850,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="16dp"
-                                android:background="@color/dark_green"
+                                android:background="@color/green3"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -875,7 +875,7 @@
                                     android:text="(00:00)분 출발"
                                     android:textColor="@color/white"
                                     android:textSize="13sp"
-                                    app:font_name="Custom6" />
+                                    app:fontName="Custom6" />
 
                             </LinearLayout>
 
