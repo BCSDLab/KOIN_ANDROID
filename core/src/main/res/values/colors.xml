@@ -4,12 +4,16 @@
     <color name="colorPrimaryDark">#003360</color>
     <color name="colorPrimaryLight">#5289be</color>
     <color name="colorAccent">#f7941e</color>
+    <color name="colorAccentLight">#f8a036</color>
     <color name="colorBackground">#ffffff</color>
     <color name="colorPrimaryText">#252525</color>
     <color name="colorSecondaryText">#a1a1a1</color>
+    <color name="colorPrimaryTextLight">#e1e1e1</color>
+    <color name="colorSecondaryTextLight">#8a8a8a</color>
     <color name="colorHintText">#e3e3e3</color>
 
     <color name="divider">#ECECEC</color>
+    <color name="divider_light">#383838</color>
 
     <color name="background">#FFFEFF</color>
     <color name="background_dark">#F4F2F4</color>
@@ -22,6 +26,7 @@
     <color name="blue">#0000FF</color>
 
     <!-- Custom Palette -->
+    <color name="black1">#121212</color>
 
     <color name="red1">#ff3030</color>
     <color name="red_alpha0">#00ff0000</color>

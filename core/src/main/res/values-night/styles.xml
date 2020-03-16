@@ -2,17 +2,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorDivider">@color/divider</item>
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccentLight</item>
+        <item name="colorSurface">@color/black1</item>
+        <item name="colorDivider">@color/divider_light</item>
         <item name="colorToolbar">@color/colorPrimary</item>
 
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/black1</item>
 
-        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
-        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryTextLight</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryTextLight</item>
 
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>

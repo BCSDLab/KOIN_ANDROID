@@ -44,4 +44,9 @@
         <attr name="marginBottom" format="dimension"/>
         <attr name="activateTimebar" format="boolean"/>
     </declare-styleable>
+    
+    <attr name="colorSurface" format="color" />
+    <attr name="colorDivider" format="color" />
+    <attr name="colorToolbar" format="color" />
+    
 </resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccentLight</item>
+        <item name="colorSurface">@color/black1</item>
+        <item name="colorDivider">@color/divider_light</item>
+        <item name="colorToolbar">@color/colorPrimary</item>
+
+        <item name="android:textColorPrimary">@color/colorPrimaryTextLight</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryTextLight</item>
+        <item name="android:windowBackground">@color/black1</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#33000000</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

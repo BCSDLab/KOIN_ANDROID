@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/background_dark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorDivider">@color/divider</item>
+        <item name="colorToolbar">@color/colorPrimary</item>
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
