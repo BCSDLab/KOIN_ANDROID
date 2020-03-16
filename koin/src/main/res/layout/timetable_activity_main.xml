@@ -17,13 +17,13 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create"
-                app:title_text="시간표"/>
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create"
+                app:titleText="시간표"/>
 
             <RelativeLayout
                 android:id="@+id/timetable_container_relativelayout"
@@ -34,15 +34,15 @@
               >
 
 
-                <in.koreatech.koin.core.util.timetable.TimetableView
+                <in.koreatech.koin.ui.timetable.TimetableView
                     android:id="@+id/timetable_timetableview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:activate_timebar="false"
-                    app:header_height="20dp"
-                    app:row_count="16">
+                    app:activateTimebar="false"
+                    app:headerHeight="20dp"
+                    app:rowCount="16">
 
-                </in.koreatech.koin.core.util.timetable.TimetableView>
+                </in.koreatech.koin.ui.timetable.TimetableView>
             </RelativeLayout>
         </RelativeLayout>
 

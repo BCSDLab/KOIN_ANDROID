@@ -11,7 +11,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/light_navy"
+        android:background="@color/colorPrimary"
         android:weightSum="6">
 
         <TextView
@@ -28,9 +28,9 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="승차장소"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp"
-            app:font_name="Bold" />
+            app:fontName="Bold" />
 
         <TextView
             android:layout_width="60dp"
@@ -46,9 +46,9 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="시간"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp"
-            app:font_name="Bold" />
+            app:fontName="Bold" />
 
 
     </TableRow>
@@ -58,7 +58,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/light_navy"
+        android:background="@color/colorPrimary"
         android:gravity="center">
 
         <TextView
@@ -102,7 +102,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue"
+        android:background="@color/blue1"
         android:gravity="center">
 
         <TextView
@@ -147,7 +147,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -191,7 +191,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -235,7 +235,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -279,7 +279,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -324,7 +324,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -369,7 +369,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -413,7 +413,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue">
+        android:background="@color/blue1">
 
         <TextView
             android:layout_width="match_parent"
@@ -458,7 +458,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/light_navy">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:layout_width="match_parent"

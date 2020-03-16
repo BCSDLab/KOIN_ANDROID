@@ -17,7 +17,7 @@
             android:layout_marginTop="20dp"
             android:lineSpacingExtra="6sp"
             android:text="최근 검색"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

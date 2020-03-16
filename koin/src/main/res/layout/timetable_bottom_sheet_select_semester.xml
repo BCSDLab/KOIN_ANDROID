@@ -18,7 +18,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_pale_grey_rectangle"
+        android:background="@drawable/bg_blue_rectangle"
         android:includeFontPadding="false"
         android:orientation="horizontal"
         android:weightSum="6">
@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:includeFontPadding="false"
-            app:font_name="Custom6"
+            app:fontName="Custom6"
             android:textColor="@color/black"
             android:textSize="15sp"
             tools:text="저장" />
@@ -40,17 +40,17 @@
             android:layout_height="match_parent"
             android:layout_weight="4"
             android:includeFontPadding="false"
-            app:font_name="Custom5"
+            app:fontName="Custom5"
             android:gravity="center"
             android:text="학기선택"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/timetable_elect_semester_bottom_sheet_right_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:font_name="Custom6"
+            app:fontName="Custom6"
             android:includeFontPadding="false"
             android:layout_weight="1"
             android:gravity="center"
