@@ -28,6 +28,8 @@
     <!-- Custom Palette -->
     <color name="black1">#121212</color>
     <color name="black2">#333333</color>
+    <color name="black3">#2c2c2c</color>
+    <color name="black4">#1d1d1d</color>
 
     <color name="red1">#ff3030</color>
     <color name="red_alpha0">#00ff0000</color>
