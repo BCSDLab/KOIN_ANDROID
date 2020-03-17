@@ -48,5 +48,8 @@
     <attr name="colorSurface" format="color" />
     <attr name="colorDivider" format="color" />
     <attr name="colorToolbar" format="color" />
+    <attr name="colorNavbar" format="color" />
+    <attr name="textColorSubtitle" format="color" />
+    <attr name="colorSubtitleBackground" format="color" />
     
 </resources>

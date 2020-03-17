@@ -15,6 +15,6 @@
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textSize="16sp"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="?android:attr/textColorPrimary"
         tool:text="test text"/>
 </LinearLayout>

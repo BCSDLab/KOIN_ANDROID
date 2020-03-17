@@ -2,13 +2,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/gray4"/>
+            <solid android:color="@color/color_base_navigation_bar_divider"/>
         </shape>
     </item>
     <item
         android:top="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/white"/>
+            <solid android:color="?attr/colorNavbar"/>
         </shape>
     </item>
 </layer-list>

@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/background"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="false"
     android:theme="@style/KAPNavigationHeader">
 
@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="28dp"
                 android:text="님, 안녕하세요!"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="13sp"
                 app:layout_constraintStart_toEndOf="@+id/base_naviagtion_drawer_nickname_textview"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -66,6 +66,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center|start"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_nickname_textview">
@@ -74,7 +75,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_drawer_myinfo" />
+                    android:src="@drawable/ic_drawer_myinfo"
+                    android:tint="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/navi_item_myinfo_textview"
@@ -82,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
                     android:text="내 정보"
-                    android:textColor="#252525"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
             </LinearLayout>
 
@@ -101,7 +103,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
                     android:alpha="0.2"
-                    android:background="@color/blue1" />
+                    android:background="@android:color/black"
+                    android:backgroundTint="?attr/colorSubtitleBackground" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,7 +114,7 @@
                     android:layout_marginBottom="6dp"
                     android:lineSpacingExtra="6sp"
                     android:text="학교정보"
-                    android:textColor="#858585"
+                    android:textColor="?attr/textColorSubtitle"
                     android:textSize="13sp" />
             </FrameLayout>
 
@@ -121,6 +124,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_school_info_linearlayout">
@@ -132,7 +136,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="주변 상점"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -142,6 +146,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_store">
@@ -153,7 +158,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="버스 / 교통"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -163,6 +168,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_bus">
@@ -174,7 +180,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="식단"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -184,6 +190,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_dining">
@@ -195,7 +202,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="동아리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -205,6 +212,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_cirlce">
@@ -216,7 +224,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="시간표"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -226,6 +234,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_timetable">
@@ -237,7 +246,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="복덕방"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -255,7 +264,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.2"
-                    android:background="@color/blue1" />
+                    android:background="@android:color/black"
+                    android:backgroundTint="?attr/colorSubtitleBackground" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -265,7 +275,7 @@
                     android:layout_marginBottom="6dp"
                     android:lineSpacingExtra="6sp"
                     android:text="커뮤니티"
-                    android:textColor="#858585"
+                    android:textColor="?attr/textColorSubtitle"
                     android:textSize="13sp" />
             </FrameLayout>
 
@@ -275,6 +285,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_community_linearlayout">
@@ -286,7 +297,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="익명게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -296,6 +307,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_anonymous_board">
@@ -307,7 +319,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="자유게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -317,6 +329,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_free_board">
@@ -328,7 +341,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="취업게시판"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -359,6 +372,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_recruit_board">
@@ -370,7 +384,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="중고장터"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -380,6 +394,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="12dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/navi_item_usedmarket">
@@ -391,7 +406,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="분실물"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -409,7 +424,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:alpha="0.2"
-                    android:background="@color/blue1" />
+                    android:background="@android:color/black"
+                    android:backgroundTint="?attr/colorSubtitleBackground" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -418,7 +434,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="6sp"
                     android:text="고객 지원"
-                    android:textColor="#858585"
+                    android:textColor="?attr/textColorSubtitle"
                     android:textSize="13sp" />
             </FrameLayout>
 
@@ -428,6 +444,7 @@
                 android:layout_height="22dp"
                 android:layout_marginTop="14dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_help_linearlayout">
@@ -439,7 +456,7 @@
                     android:layout_marginStart="16dp"
                     android:lineSpacingExtra="7sp"
                     android:text="카카오톡 1:1 대화"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -451,6 +468,7 @@
                     android:layout_height="17dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_kakaotalk"
+                    android:tint="?attr/textColorSubtitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -502,6 +520,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="26dp"
                 android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -516,7 +535,7 @@
                     android:layout_marginEnd="8dp"
                     android:lineSpacingExtra="7sp"
                     android:text="만든이"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -530,7 +549,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:text="BCSD Lab"
-                    android:textColor="@color/blue1"
+                    android:textColor="?attr/textColorSubtitle"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

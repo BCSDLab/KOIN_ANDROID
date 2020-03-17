@@ -92,7 +92,7 @@ public class AppBarBase extends AppBarLayout {
         String rightButtonString = typedArray.getString(R.styleable.AppBarBase_rightButtonText);
         int rightButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_rightButtonVisibility, View.VISIBLE);
         /* background */
-        background.setBackgroundColor(backgroundColor);
+        //background.setBackgroundColor(backgroundColor);
         /* title */
         title.setTextColor(titleTextColor);
         title.setText(titleText);

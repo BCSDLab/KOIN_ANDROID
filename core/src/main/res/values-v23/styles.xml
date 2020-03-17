@@ -4,18 +4,22 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorDivider">@color/divider</item>
         <item name="colorToolbar">@color/colorPrimary</item>
+        <item name="colorNavbar">@color/white</item>
+
+        <item name="textColorSubtitle">@color/gray9</item>
+        <item name="colorSubtitleBackground">@color/blue1</item>
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textColorHint">@color/blue1</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">#33000000</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

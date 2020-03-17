@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background_light"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,7 +16,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="Title"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp" />
 
     </LinearLayout>
@@ -25,7 +24,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/background_dark" />
+        android:background="?attr/colorDivider" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bottom_sheet_recyclerview"

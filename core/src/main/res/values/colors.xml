@@ -27,6 +27,7 @@
 
     <!-- Custom Palette -->
     <color name="black1">#121212</color>
+    <color name="black2">#333333</color>
 
     <color name="red1">#ff3030</color>
     <color name="red_alpha0">#00ff0000</color>
@@ -51,6 +52,8 @@
     <color name="gray11">#707070</color>
     <color name="gray12">#555555</color>
     <color name="gray13">#757575</color>
+    <color name="gray14">#6c6f74</color>
+    <color name="gray15">#464646</color>
 
 
     <color name="black_alpha12">#1f252525</color>
