@@ -166,8 +166,7 @@
             android:inputType="text"
             android:maxLines="1"
             android:paddingLeft="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/blue1"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp"
             app:fontName="Normal" />
 
@@ -178,7 +177,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:text="@string/koreatech_email"
-            android:textColor="@color/colorPrimaryText"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp" />
 
     </LinearLayout>
@@ -188,7 +187,8 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@color/blue1"
+        android:background="@android:color/black"
+        android:backgroundTint="?android:attr/textColorHint"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.391"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -209,8 +209,7 @@
         android:maxLength="18"
         android:maxLines="1"
         android:paddingLeft="10dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/blue1"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="15sp"
         app:fontName="Normal"
         app:layout_constraintBottom_toBottomOf="@+id/login_password_border"
@@ -222,7 +221,8 @@
         android:id="@+id/login_password_border"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/blue1"
+        android:background="@android:color/black"
+        android:backgroundTint="?android:attr/textColorHint"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.469"
         app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
@@ -234,9 +234,9 @@
         android:id="@+id/login_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorAccent"
+        android:background="?attr/colorAccent"
         android:text="로그인"
-        android:textColor="@color/white"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="15sp"
         app:fontName="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.584"
@@ -248,9 +248,9 @@
         android:id="@+id/login_button_signup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:text="회원가입"
-        android:textColor="@color/white"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         android:textSize="15sp"
         app:fontName="Normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.666"
@@ -280,7 +280,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_password" />
+                android:src="@drawable/ic_password"
+                android:tint="?android:attr/textColorSecondary"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -288,7 +289,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:text="비밀번호 찾기"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="13sp"
                 app:fontName="Normal" />
         </LinearLayout>
@@ -302,7 +303,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="7sp"
             android:text="|"
-            android:textColor="@color/gray9"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="15sp" />
 
         <LinearLayout
@@ -314,7 +315,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_face" />
+                android:src="@drawable/ic_face"
+                android:tint="?android:attr/textColorSecondary" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -322,7 +324,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="4dp"
                 android:text="둘러보기"
-                android:textColor="@color/colorSecondaryText"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="13sp"
                 app:fontName="Normal" />
         </LinearLayout>
@@ -345,7 +347,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="5sp"
             android:text="Copyright @ "
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             app:fontName="Custom4" />
 
@@ -356,7 +358,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="5sp"
             android:text="BCSD Lab "
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             app:fontName="Custom3" />
 
@@ -367,7 +369,7 @@
             android:gravity="center_horizontal"
             android:lineSpacingExtra="5sp"
             android:text="All rights reserved."
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             app:fontName="Custom4" />
 
