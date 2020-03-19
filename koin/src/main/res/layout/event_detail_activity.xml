@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingPrefix">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+                android:id="@+id/koin_base_app_bar_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:left_button_background="@drawable/ic_back_arrow"
+                app:title_text="홍보게시판" />
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_below="@id/koin_base_app_bar_dark"-->
+            <!--                android:layout_marginBottom="56dp"-->
+            <!--                android:orientation="vertical">-->
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/advertising_detail_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_below="@id/koin_base_app_bar_dark"
+                android:scrollbarAlwaysDrawVerticalTrack="true"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/advertising_detail_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white">
+
+
+                    <LinearLayout
+                        android:id="@+id/edit_delete_buttons_linearlayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="18dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/advertising_detail_back_list_button"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview">
+
+                        <Button
+                            android:id="@+id/advertising_detail_page_edit_button"
+                            android:layout_width="51dp"
+                            android:layout_height="28dp"
+                            android:background="@drawable/button_rect_normal"
+                            android:text="수정"
+                            android:textSize="12sp"
+                            android:visibility="invisible"
+                            tools:visibility="visible" />
+
+                        <Button
+                            android:id="@+id/advertising_detail_page_delete_button"
+                            android:layout_width="51dp"
+                            android:layout_height="28dp"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/button_rect_normal"
+                            android:text="삭제"
+                            android:textColor="#ff3030"
+                            android:textSize="12sp"
+                            android:visibility="invisible"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/advertising_detail_title_textview"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="13dp"
+                        android:lineSpacingExtra="2sp"
+                        android:text="한기대학생 50%할인"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="한기대 학생 50% 할인" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="13dp"
+                        android:lineSpacingExtra="1sp"
+                        android:text="홍보기간 :"
+                        android:textColor="@color/light_navy"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
+
+                    <TextView
+                        android:id="@+id/advertising_detail_period_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="13dp"
+                        android:lineSpacingExtra="1sp"
+                        android:text="2019.09.02 ~ 2019.09.08"
+                        android:textColor="#252525"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@+id/textView13"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
+
+                    <Button
+                        android:id="@+id/advertising_detail_back_list_button"
+                        android:layout_width="69dp"
+                        android:layout_height="28dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="#175c8e"
+                        android:lineSpacingExtra="1sp"
+                        android:text="목록으로"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/edit_delete_buttons_linearlayout"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview" />
+
+                    <TextView
+                        android:id="@+id/advertising_detail_view_count_publisher_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="13dp"
+                        android:layout_marginTop="26dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="end"
+                        android:lineSpacingExtra="2sp"
+                        android:text="조회 60 · 옛통"
+                        android:textColor="#9fa9b3"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/advertising_detail_publish_date_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="end"
+                        android:lineSpacingExtra="2sp"
+                        android:textColor="#9fa9b3"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_publisher_textview"
+                        tools:text="2019.07.31 17:38" />
+
+                    <TextView
+                        android:id="@+id/button2"
+                        android:layout_width="28dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_black_rectangle"
+                        android:gravity="center"
+                        android:lineSpacingExtra="2sp"
+                        android:text="마감"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        android:visibility="invisible"
+                        app:layout_constraintStart_toEndOf="@+id/advertising_detail_title_textview"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="13dp"
+                        android:lineSpacingExtra="2sp"
+                        android:text="댓글  "
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
+
+                    <TextView
+                        android:id="@+id/advertising_detail_reply_count_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="2sp"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="13sp"
+                        tools:text="111"
+                        app:layout_constraintStart_toEndOf="@+id/textView22"
+                        app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@color/divider"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_back_list_button"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="59dp"
+                        android:background="@color/divider"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/advertising_detail_order_button"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout7"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/divider"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_textview">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/advertising_detail_layout_content_linearlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="23dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+
+                        <in.koreatech.koin.service_board.ui.KoinRichEditor
+                            android:id="@+id/advertising_detail_contents"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="start"
+                            android:lineSpacingExtra="10sp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            app:layout_constrainedWidth="true"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:render_type="Renderer" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/advertising_detail_order_button"
+                        android:layout_width="159dp"
+                        android:layout_height="29dp"
+                        android:layout_marginTop="46dp"
+                        android:background="#f7941e"
+                        android:text="주문하러가기"
+                        app:layout_constraintTop_toBottomOf="@id/advertising_detail_layout_content_linearlayout"
+                        app:layout_constraintStart_toStartOf="@id/advertising_detail_layout_content_linearlayout"
+                        app:layout_constraintEnd_toEndOf="@id/advertising_detail_layout_content_linearlayout"
+                        app:layout_constraintBottom_toTopOf="@id/linearLayout6"
+                        android:textColor="#ffffff" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="2sp"
+                        android:text="개 |  조회수 "
+                        android:textColor="@color/warm_grey_two"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@+id/advertising_detail_reply_count_textview"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+
+                    <TextView
+                        android:id="@+id/advertising_detail_view_count_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="15dp"
+                        android:layout_marginTop="12dp"
+                        android:lineSpacingExtra="2sp"
+                        tools:text="350"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@+id/textView24"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
+
+                    <LinearLayout
+                        android:layout_width="400dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginBottom="66dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/advertising_comment_recyclerview"
+                            android:layout_width="327dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp" />
+
+                        <EditText
+                            android:id="@+id/advertising_comment_content_edittext"
+                            android:layout_width="327dp"
+                            android:layout_height="60dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/bg_black_rectangle"
+                            android:hint="로그인 후 이용해주세요."
+                            android:lineSpacingExtra="18sp"
+                            android:textColorHint="#b7bbbf"
+                            android:textSize="14sp"
+                            android:focusable="false"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginRight="16dp"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/advertising_comment_erase_button"
+                                android:layout_width="159dp"
+                                android:layout_height="29dp"
+                                android:background="@drawable/bg_black_rectangle"
+                                android:lineSpacingExtra="1sp"
+                                android:text="취소"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                            <Button
+                                android:id="@+id/advertising_comment_create_button"
+                                android:layout_width="159dp"
+                                android:layout_height="29dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_black_rectangle"
+                                android:lineSpacingExtra="1sp"
+                                android:text="등록"
+                                android:textColor="@color/black"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+
+            <!--            </LinearLayout>-->
+        </RelativeLayout>
+
+        <include layout="@layout/base_navigation_bar_bottom" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <include layout="@layout/base_navigation_drawer_left" />
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

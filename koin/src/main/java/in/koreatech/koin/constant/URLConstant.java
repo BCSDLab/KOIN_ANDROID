@@ -86,6 +86,12 @@ public class URLConstant {
     public static final class TEMP{
         public static final String TEMP = "/temp";
         public static final String TEMP_IMAGE_UPLOAD = TEMP + "/items/image/upload";
+    }
 
+    public static final class EVENT {
+        public static final String EVENT = "events";
+        public static final String GRANTCHECK = EVENT + "/grant/check";
+        public static final String COMMENTS = "comments";
+        public static final String MYSHOP = EVENT + "/my/shops";
     }
 }

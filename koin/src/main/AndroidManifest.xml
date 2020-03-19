@@ -262,6 +262,10 @@
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
+        <activity android:name="in.koreatech.koin.ui.event.EventCreateActivity"
+            android:label="코인 커뮤니티"
+            android:screenOrientation="portrait"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>
