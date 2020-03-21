@@ -39,7 +39,7 @@
                         android:id="@+id/freeboard_recyclerview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/background"
+                        android:background="?attr/colorSurface"
                         android:clipToPadding="false" />
                 </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
 
@@ -47,7 +47,7 @@
                     android:id="@+id/empty_board_list_frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/background"
+                    android:background="?attr/colorSurface"
                     android:visibility="visible">
 
                     <LinearLayout

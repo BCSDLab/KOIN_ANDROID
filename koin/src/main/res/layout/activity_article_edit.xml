@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
@@ -21,8 +20,7 @@
             <RelativeLayout
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+                android:layout_height="match_parent">
 
 
                 <com.google.android.material.appbar.AppBarLayout
@@ -66,7 +64,6 @@
                             android:layout_marginBottom="17.5dp"
                             android:background="@android:color/transparent"
                             android:hint="제목을 입력해주세요"
-                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:fontName="Normal" />
 
@@ -77,7 +74,7 @@
                             android:layout_marginStart="0.5dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="0.5dp"
-                            android:background="@color/divider"
+                            android:background="?attr/colorDivider"
                             android:orientation="horizontal" />
 
                         <EditText
@@ -91,7 +88,6 @@
                             android:background="@android:color/transparent"
                             android:hint="닉네임을 입력해주세요"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:fontName="Normal"
                             app:layout_constrainedWidth="true"
@@ -109,7 +105,7 @@
                             android:layout_marginStart="0.5dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="0.5dp"
-                            android:background="@color/divider"
+                            android:background="?attr/colorDivider"
                             android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +123,6 @@
                             android:hint="비밀번호를 입력해주세요"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:textColorHint="@color/white_alpha87"
                             android:textSize="16sp"
                             app:fontName="Normal"
                             app:layout_constrainedWidth="true"
@@ -144,7 +139,7 @@
                             android:layout_marginStart="0.5dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="0.5dp"
-                            android:background="@color/divider"
+                            android:background="?attr/colorDivider"
                             android:orientation="horizontal"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

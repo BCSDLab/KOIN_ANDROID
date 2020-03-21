@@ -51,7 +51,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="16dp"
-                            android:textColor="@color/black"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:textSize="16sp"
                             app:fontName="Regular"
                             app:layout_constrainedWidth="true"
@@ -72,7 +72,7 @@
                             android:gravity="center"
                             app:fontName="Regular"
                             android:text="@string/board_view_count"
-                            android:textColor="@color/gray9"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title" />
@@ -85,7 +85,7 @@
                             app:fontName="Regular"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/gray9"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_view_count_korean"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -100,7 +100,7 @@
                             app:fontName="Regular"
                             android:gravity="center"
                             android:text=" · "
-                            android:textColor="@color/gray9"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_view_count"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title" />
@@ -113,7 +113,7 @@
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/gray9"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_dot"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -127,7 +127,7 @@
                             android:layout_marginTop="1dp"
                             android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:textColor="@color/gray9"
+                            android:textColor="?android:attr/textColorSecondary"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -139,7 +139,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginTop="14.5dp"
-                            android:background="@color/divider"
+                            android:background="?attr/colorDivider"
                             android:orientation="horizontal"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_writer" />
 
@@ -151,7 +151,7 @@
                             android:layout_marginTop="22.5dp"
                             android:layout_marginEnd="16dp"
                             android:lineSpacingExtra="10sp"
-                            android:textColor="@color/black"
+                            android:textColor="?android:attr/textColorPrimary"
                             android:textSize="14sp"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -165,7 +165,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="22.5dp"
                             android:layout_marginBottom="15dp"
-                            android:background="@color/divider"
+                            android:background="?attr/colorDivider"
                             app:layout_constraintHorizontal_bias="0"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toTopOf="@id/linearLayout"
@@ -197,10 +197,9 @@
                                 android:layout_marginBottom="5.7dp"
                                 android:background="@null"
                                 android:hint="비밀번호를 입력해주세요"
-                                android:textColorHint="@color/gray3"
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="10sp"
-                                android:textColor="@color/black"
+                                android:textColor="?android:attr/textColorPrimary"
                                 android:textSize="14sp" />
 
 
@@ -232,11 +231,10 @@
                                     app:fontName="Regular"
                                     android:layout_height="wrap_content"
                                     android:background="@null"
-                                    android:textColorHint="@color/gray3"
                                     android:hint="닉네임을 입력해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
-                                    android:textColor="@color/black"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:textSize="14sp" />
 
 
@@ -256,11 +254,10 @@
                                     android:layout_height="wrap_content"
                                     app:fontName="Regular"
                                     android:background="@null"
-                                    android:textColorHint="@color/gray3"
                                     android:hint="댓글을 작성해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
-                                    android:textColor="@color/black"
+                                    android:textColor="?android:attr/textColorPrimary"
                                     android:textSize="14sp" />
                             </LinearLayout>
                         </LinearLayout>

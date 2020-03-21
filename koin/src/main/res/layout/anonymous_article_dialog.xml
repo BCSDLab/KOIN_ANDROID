@@ -8,7 +8,7 @@
         android:id="@+id/anonymous_article_dialog_layout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:gravity="center|left">
 
         <TextView
@@ -32,8 +32,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5"
-            android:background="@color/white">
+            android:layout_weight="5">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,7 +55,7 @@
                         android:layout_margin="10dp"
                         android:lines="2"
                         android:text=""
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="?attr/colorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </RelativeLayout>
@@ -80,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:text="닉네임 : "
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="15sp" />
 
                         <EditText
@@ -114,7 +113,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:text="비밀번호: "
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="15sp" />
 
                         <EditText
@@ -134,7 +133,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="2"
-                    android:background="@color/white"
                     android:gravity="end|center">
 
                     <TextView
@@ -146,7 +144,7 @@
                         android:layout_toStartOf="@+id/anonymous_article_dialog_cancel_textview"
                         android:gravity="center"
                         android:text="확인"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="?attr/colorAccent"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -158,7 +156,7 @@
                         android:layout_marginEnd="30dp"
                         android:gravity="center"
                         android:text="취소"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="?attr/colorAccent"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 

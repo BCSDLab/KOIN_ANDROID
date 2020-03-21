@@ -15,7 +15,7 @@
         <item name="colorSubtitleBackground">@color/blue1</item>
 
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
-        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:textColorSecondary">@color/gray9</item>
         <item name="android:textColorHint">@color/blue1</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>

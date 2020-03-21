@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/gray7" />
+            <solid android:color="@color/color_board_comment_rectangle_bg" />
         </shape>
     </item>
     <item
@@ -12,7 +12,7 @@
         android:right="1dp"
         android:top="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/gray1" />
+            <solid android:color="@color/color_board_comment_rectangle_border" />
         </shape>
     </item>
 </layer-list>
