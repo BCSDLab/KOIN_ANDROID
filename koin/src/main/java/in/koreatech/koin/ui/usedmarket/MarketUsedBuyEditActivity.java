@@ -326,8 +326,8 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
                 case R.id.market_used_buy_edit_is_phone_public_radiobutton:
                     setPhoneNumber();
                     marketBuyEditEditTextPhoneNum.setFocusableInTouchMode(true);
-                    marketBuyEditEditTextPhoneNum.requestFocus();
-                    marketBuyEditEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //추가
+                    marketBuyEditEditTextPhoneNum.requestFocus();                                                     //포커스를 부여
+                    marketBuyEditEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //자동으로 '-' 생성
 
                     this.isPhoneOpen = true;
                     break;
@@ -362,7 +362,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
      * 번호 입력 Edittext 수정가능하도록 set
      */
     public void setPhoneNumber() {
-        marketBuyEditEditTextPhoneNum.setEnabled(true);
+        marketBuyEditEditTextPhoneNum.setEnabled(true);                                     //핸드폰번호텍스트 활성화
         marketBuyEditEditTextPhoneNum.setTextIsSelectable(true);
         marketBuyEditEditTextPhoneNum.setClickable(true);
         if (this.phoneNumber == null)
@@ -377,13 +377,16 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     public void unSetPhoneNumber() {
         this.phoneNumber = marketBuyEditEditTextPhoneNum.getText().toString();
         marketBuyEditEditTextPhoneNum.setText(null);
-        marketBuyEditEditTextPhoneNum.setEnabled(false);
+        marketBuyEditEditTextPhoneNum.setEnabled(false);                                //핸드폰번호텍스트 비활성화
         marketBuyEditEditTextPhoneNum.setTextIsSelectable(false);
         marketBuyEditEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
     }
 
-
+    /**
+     * 키보드를 사라지게 하는 함수
+     * @param activity
+     */
     public void hideKeyboard(Activity activity) {
         InputMethodManager im = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(marketBuyEditEditTextPhoneNum.getWindowToken(), 0);
