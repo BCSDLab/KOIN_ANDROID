@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -316,6 +317,9 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             switch (button.getId()) {
                 case R.id.market_used_sell_edit_is_phone_public_radiobutton:
                     setPhoneNumber();
+                    marketSellEditEditTextPhoneNum.setFocusableInTouchMode(true);
+                    marketSellEditEditTextPhoneNum.requestFocus();
+                    marketSellEditEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //추가
                     isPhoneOpen = true;
                     break;
                 case R.id.market_used_sell_edit_is_phone_private_radiobutton:
