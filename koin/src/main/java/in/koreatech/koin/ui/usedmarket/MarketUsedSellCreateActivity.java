@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
 import android.util.Log;
 import android.view.View;
@@ -192,6 +193,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         } else {
             this.isPhoneOpen = false;
             marketSellCreateEditTextPhoneNum.setText(null);
+            marketSellCreateEditTextPhoneNum.setEnabled(false);
             marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
             marketSellCreateEditTextPhoneNum.setClickable(false);
         }
@@ -260,6 +262,9 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
             switch (button.getId()) {
                 case R.id.market_used_sell_create_is_phone_public_radiobutton:
                     setPhoneNumber();
+                    marketSellCreateEditTextPhoneNum.setFocusableInTouchMode(true);
+                    marketSellCreateEditTextPhoneNum.requestFocus();
+                    marketSellCreateEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //추가
                     this.isPhoneOpen = true;
                     break;
                 case R.id.market_used_sell_create_is_phone_private_radiobutton:
@@ -295,6 +300,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void setPhoneNumber() {
         marketSellCreateEditTextPhoneNum.setTextIsSelectable(true);
         marketSellCreateEditTextPhoneNum.setClickable(true);
+        marketSellCreateEditTextPhoneNum.setEnabled(true);
         if (this.phoneNumber == null) {
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
             return;
@@ -309,6 +315,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void unSetPhoneNumber() {
         this.phoneNumber = marketSellCreateEditTextPhoneNum.getText().toString();
         marketSellCreateEditTextPhoneNum.setText(null);
+        marketSellCreateEditTextPhoneNum.setEnabled(false);
         marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
         marketSellCreateEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
@@ -317,7 +324,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
 
     public void hideKeyboard(Activity activity) {
         InputMethodManager im = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        im.hideSoftInputFromWindow(marketSellCreateEditTextPhoneNum.getWindowToken(), 0);
     }
 
     /**
