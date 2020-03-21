@@ -22,6 +22,7 @@ import in.koreatech.koin.core.networks.entity.Comment;
 
 /**
  * Created by hansol on 2020.1.9...
+ * Edited by seongyun on 2020. 03. 02...
  */
 public class AdvertisingCommentAdapter extends RecyclerView.Adapter<AdvertisingCommentAdapter.ViewHolder> {
     private Context context;
@@ -38,7 +39,8 @@ public class AdvertisingCommentAdapter extends RecyclerView.Adapter<AdvertisingC
             nicknameTextview = (TextView)itemView.findViewById(R.id.advertising_comment_item_nickname_textview);
             timeTextview = (TextView) itemView.findViewById(R.id.advertising_comment_item_time_textview);
             contentsTextview = (TextView) itemView.findViewById(R.id.advertising_comment_item_contents_textview);
-            fixButton = (Button)itemView.findViewById(R.id.advertising_comment_item_fix_button);
+//            fixButton = (Button)itemView.findViewById(R.id.advertising_comment_item_fix_button);
+
         }
     }
 
