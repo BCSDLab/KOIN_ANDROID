@@ -193,7 +193,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         } else {
             this.isPhoneOpen = false;
             marketSellCreateEditTextPhoneNum.setText(null);
-            marketSellCreateEditTextPhoneNum.setEnabled(false);
+            marketSellCreateEditTextPhoneNum.setEnabled(false);                             //핸드폰번호 터치 불가능
             marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
             marketSellCreateEditTextPhoneNum.setClickable(false);
         }
@@ -263,8 +263,8 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
                 case R.id.market_used_sell_create_is_phone_public_radiobutton:
                     setPhoneNumber();
                     marketSellCreateEditTextPhoneNum.setFocusableInTouchMode(true);
-                    marketSellCreateEditTextPhoneNum.requestFocus();
-                    marketSellCreateEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //추가
+                    marketSellCreateEditTextPhoneNum.requestFocus();                                                        //포커스 부여
+                    marketSellCreateEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //자동으로 '-' 생성
                     this.isPhoneOpen = true;
                     break;
                 case R.id.market_used_sell_create_is_phone_private_radiobutton:
@@ -300,7 +300,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void setPhoneNumber() {
         marketSellCreateEditTextPhoneNum.setTextIsSelectable(true);
         marketSellCreateEditTextPhoneNum.setClickable(true);
-        marketSellCreateEditTextPhoneNum.setEnabled(true);
+        marketSellCreateEditTextPhoneNum.setEnabled(true);                              //핸드폰번호텍스트 활성화
         if (this.phoneNumber == null) {
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
             return;
@@ -315,7 +315,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void unSetPhoneNumber() {
         this.phoneNumber = marketSellCreateEditTextPhoneNum.getText().toString();
         marketSellCreateEditTextPhoneNum.setText(null);
-        marketSellCreateEditTextPhoneNum.setEnabled(false);
+        marketSellCreateEditTextPhoneNum.setEnabled(false);                             //핸드폰번호텍스트 비활성화
         marketSellCreateEditTextPhoneNum.setTextIsSelectable(false);
         marketSellCreateEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
