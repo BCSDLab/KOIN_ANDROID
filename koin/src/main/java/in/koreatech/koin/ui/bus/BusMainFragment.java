@@ -34,7 +34,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     private BusMainPresenter busMainPresenter;
     /* View Component */
     private View view;
-    private boolean isVacation;
+    private int term;
 
     private BusTimerUtil cityNextBusTimerUtil;
     private BusTimerUtil citySoonBusTimerUtil;
@@ -485,11 +485,8 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
      */
     @Override
     public void updateShuttleBusInfo(int term) {
-        if (term == 10 || term == 20)                                                //학기중
-            isVacation = false;
-        else                                                                        //방학중
-            isVacation = true;
-        this.busMainPresenter.getShuttleBus(this.departureState, this.arrivalState, isVacation);
+        this.term = term;
+        this.busMainPresenter.getShuttleBus(this.departureState, this.arrivalState, term);
     }
 
     @Override

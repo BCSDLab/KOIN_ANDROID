@@ -17,6 +17,8 @@ public interface BusTimeTableSearchContract {
 
         void updateFailShuttleBusDepartInfo();
 
+        void updateTermInfo(int term);
+
         void showBusTimeInfo();
     }
 
