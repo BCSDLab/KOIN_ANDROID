@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.signup.presenter;
 
 import androidx.annotation.NonNull;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.interactor.UserInteractor;
 import in.koreatech.koin.data.network.interactor.UserRestInteractor;
@@ -9,7 +10,7 @@ import retrofit2.HttpException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SignupPresenter{
+public class SignupPresenter {
 
     private final SignupContract.View mSignUpView;
 
@@ -37,9 +38,9 @@ public class SignupPresenter{
         public void onFailure(Throwable throwable) {
             mSignUpView.hideProgress();
             if (throwable instanceof HttpException && ((HttpException) throwable).code() == 409)
-                mSignUpView.showMessage("이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.");
+                mSignUpView.showMessage(R.string.email_already_send_or_email_requested);
             else
-                mSignUpView.showMessage("네트워크 환경을 확인해주세요");
+                mSignUpView.showMessage(R.string.error_network);
         }
     };
 

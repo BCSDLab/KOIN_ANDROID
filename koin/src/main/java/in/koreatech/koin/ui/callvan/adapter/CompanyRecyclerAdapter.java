@@ -53,8 +53,8 @@ public class CompanyRecyclerAdapter extends RecyclerView.Adapter<CompanyRecycler
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Company company = companyArrayList.get(position);
-        holder.textViewCallvanName.setText(company.name); //콜밴 이름
-        holder.textViewCallvanNumber.setText(company.phone); //콜밴 번호
+        holder.textViewCallvanName.setText(company.getName()); //콜밴 이름
+        holder.textViewCallvanNumber.setText(company.getPhone()); //콜밴 번호
 
     }
 

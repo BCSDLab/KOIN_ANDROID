@@ -157,7 +157,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
                 showNickNameRequestDialog();
                 return;
             }
@@ -212,9 +212,9 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
         public void onClick(View view, final int position) {
 
             if ((boardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
-                boardPresenter.getArticleGrant(articleArrayList.get(position).articleUid);
+                boardPresenter.getArticleGrant(articleArrayList.get(position).getArticleUid());
             else
-                goToArticleActivity(articleArrayList.get(position).articleUid, boardUid == ID_ANONYMOUS);
+                goToArticleActivity(articleArrayList.get(position).getArticleUid(), boardUid == ID_ANONYMOUS);
 
         }
 
@@ -225,7 +225,7 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @Override
     public void onArticleGranDataReceived(Article article) {
-        goToArticleActivity(article.articleUid, article.isGrantEdit);
+        goToArticleActivity(article.getArticleUid(), article.isGrantEdit());
     }
 
     @Override

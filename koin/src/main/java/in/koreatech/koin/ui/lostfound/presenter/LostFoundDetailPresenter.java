@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
@@ -33,7 +34,7 @@ public class LostFoundDetailPresenter{
         @Override
         public void onFailure(Throwable throwable) {
             lostFoundDetailView.showGranted(false);
-            lostFoundDetailView.showMessage("네트워크 환경을 확인해주세요");
+            lostFoundDetailView.showMessage(R.string.error_network);
         }
     };
 
@@ -52,7 +53,7 @@ public class LostFoundDetailPresenter{
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundDetailView.showMessage("네트워크 환경을 확인해주세요");
+            lostFoundDetailView.showMessage(R.string.error_network);
             lostFoundDetailView.hideLoading();
         }
     };
@@ -68,13 +69,13 @@ public class LostFoundDetailPresenter{
                     return;
                 }
             }
-            lostFoundDetailView.showMessage("삭제에 실패했습니다.");
+            lostFoundDetailView.showMessage(R.string.lost_and_found_delete_fail);
             lostFoundDetailView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundDetailView.showMessage("삭제에 실패했습니다.");
+            lostFoundDetailView.showMessage(R.string.lost_and_found_delete_fail);
             lostFoundDetailView.hideLoading();
         }
     };

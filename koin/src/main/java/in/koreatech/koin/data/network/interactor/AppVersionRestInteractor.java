@@ -32,7 +32,7 @@ public class AppVersionRestInteractor implements AppVersionInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read app version"));
                         }
                     }
 

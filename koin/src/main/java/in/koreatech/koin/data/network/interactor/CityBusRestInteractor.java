@@ -34,7 +34,7 @@ public class CityBusRestInteractor implements CityBusInteractor {
                         if (busResponse != null) {
                             apiCallback.onSuccess(busResponse);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read city bus list"));
                         }
                     }
 

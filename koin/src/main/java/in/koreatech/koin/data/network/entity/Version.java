@@ -10,19 +10,19 @@ public class Version {
 
     @SerializedName("version")
     @Expose
-    public final String version;
+    private final String version;
 
     @SerializedName("type")
     @Expose
-    public String type;
+    private String type;
 
     @SerializedName("created_at")
     @Expose
-    public String createdAt;
+    private String createdAt;
 
     @SerializedName("updated_at")
     @Expose
-    public String updateAt;
+    private String updateAt;
 
     public String getVersion() {
         return version;

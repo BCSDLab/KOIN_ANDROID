@@ -39,7 +39,7 @@ public class SearchArticleRestInteractor implements SearchArticleInteractor {
 
                     @Override
                     public void onNext(SearchedArticle searchedArticle) {
-                        if (!searchedArticle.searchedArticles.isEmpty()) {
+                        if (!searchedArticle.getSearchedArticles().isEmpty()) {
                             apiCallback.onSuccess(searchedArticle);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));

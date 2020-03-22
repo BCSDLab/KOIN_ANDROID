@@ -8,143 +8,143 @@ import java.util.ArrayList;
 public class Land {
     @SerializedName("opt_electronic_door_lock")
     @Expose
-    public boolean optElectronicDoorLock;
+    private boolean optElectronicDoorLock;
 
     @SerializedName("opt_tv")
     @Expose
-    public boolean optTv;
+    private boolean optTv;
 
     @SerializedName("monthly_fee")
     @Expose
-    public String monthlyFee;
+    private String monthlyFee;
 
     @SerializedName("opt_elevator")
     @Expose
-    public boolean optElevator;
+    private boolean optElevator;
 
     @SerializedName("opt_water_purifier")
     @Expose
-    public boolean optWaterPurifier;
+    private boolean optWaterPurifier;
 
     @SerializedName("opt_washer")
     @Expose
-    public boolean optWasher;
+    private boolean optWasher;
 
     @SerializedName("latitude")
     @Expose
-    public String latitude;
+    private String latitude;
 
     @SerializedName("charter_fee")
     @Expose
-    public String charterFee;
+    private String charterFee;
 
     @SerializedName("opt_veranda")
     @Expose
-    public boolean optVeranda;
+    private boolean optVeranda;
 
     @SerializedName("created_at")
     @Expose
-    public String createdAt;
+    private String createdAt;
 
     @SerializedName("description")
     @Expose
-    public String description;
+    private String description;
 
     @SerializedName("image_urls")
     @Expose
-    public ArrayList<String> imageUrls;
+    private ArrayList<String> imageUrls;
 
     @SerializedName("opt_gas_range")
     @Expose
-    public boolean optGasRange;
+    private boolean optGasRange;
 
     @SerializedName("opt_induction")
     @Expose
-    public boolean optInduction;
+    private boolean optInduction;
 
     @SerializedName("internal_name")
     @Expose
-    public String internalName;
+    private String internalName;
 
     @SerializedName("is_deleted")
     @Expose
-    public String isDeleted;
+    private String isDeleted;
 
     @SerializedName("updated_at")
     @Expose
-    public String updatedAt;
+    private String updatedAt;
 
     @SerializedName("opt_bidet")
     @Expose
-    public boolean optBidet;
+    private boolean optBidet;
 
     @SerializedName("opt_shoe_closet")
     @Expose
-    public boolean optShoeCloset;
+    private boolean optShoeCloset;
 
     @SerializedName("opt_refrigerator")
     @Expose
-    public boolean optRefrigerator;
+    private boolean optRefrigerator;
 
     @SerializedName("id")
     @Expose
-    public int id;
+    private int id;
 
     @SerializedName("floor")
     @Expose
-    public int floor;
+    private int floor;
 
     @SerializedName("management_fee")
     @Expose
-    public String managementFee;
+    private String managementFee;
 
     @SerializedName("opt_desk")
     @Expose
-    public boolean optDesk;
+    private boolean optDesk;
 
     @SerializedName("opt_closet")
     @Expose
-    public boolean optCloset;
+    private boolean optCloset;
 
     @SerializedName("longitude")
     @Expose
-    public String longitude;
+    private String longitude;
 
     @SerializedName("address")
     @Expose
-    public String address;
+    private String address;
 
     @SerializedName("opt_bed")
     @Expose
-    public boolean optBed;
+    private boolean optBed;
 
     @SerializedName("size")
     @Expose
-    public String size;
+    private String size;
 
     @SerializedName("phone")
     @Expose
-    public String phone;
+    private String phone;
 
     @SerializedName("opt_air_conditioner")
     @Expose
-    public boolean optAirConditioner;
+    private boolean optAirConditioner;
 
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
 
     @SerializedName("deposit")
     @Expose
-    public String deposit;
+    private String deposit;
 
     @SerializedName("opt_microwave")
     @Expose
-    public boolean optMicrowave;
+    private boolean optMicrowave;
 
     @SerializedName("room_type")
     @Expose
-    public String roomType;
+    private String roomType;
 
     public boolean getOptElectronicDoorLock() {
         return optElectronicDoorLock;

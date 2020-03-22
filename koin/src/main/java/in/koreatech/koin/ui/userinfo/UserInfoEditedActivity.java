@@ -181,7 +181,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     @OnClick(R.id.userinfoedited_button_nickname_check)
     public void onClickNicknameCheckButton() {
-        String beforeNickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+        String beforeNickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         String currentNickName = this.userinfoeditedEdittextNickname.getText().toString().trim().replace(" ", "");
 
         if (beforeNickName == null && currentNickName.isEmpty()) {
@@ -219,7 +219,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             checkNickName();
 
             //학번을 처음 입력할 경우
-        else if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().studentId)) {
+        else if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().getStudentId())) {
             SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedEdittextStudentId, "학번은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
@@ -238,13 +238,13 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         //닉네임 검사
         if (!this.userinfoeditedEdittextNickname.getText().toString().trim().isEmpty())
             curNickname = this.userinfoeditedEdittextNickname.getText().toString().trim();
-        if (curNickname.isEmpty() && (this.user.userNickName == null))
+        if (curNickname.isEmpty() && (this.user.getUserNickName() == null))
             checkInputUserData();
-        else if ((!curNickname.isEmpty()) && (this.user.userNickName == null) && !isNicknameChecked)
+        else if ((!curNickname.isEmpty()) && (this.user.getUserNickName() == null) && !isNicknameChecked)
             ToastUtil.getInstance().makeShort("닉네임 중복 검사를 해주세요");
-        else if ((!curNickname.isEmpty()) && (this.user.userNickName == null) && isNicknameChecked)
+        else if ((!curNickname.isEmpty()) && (this.user.getUserNickName() == null) && isNicknameChecked)
             checkInputUserData();
-        else if (this.user.userNickName.equals(curNickname)) {
+        else if (this.user.getUserNickName().equals(curNickname)) {
             //기존 닉네임 여부 검사 / 입력 안 한 경우
             checkInputUserData();
         } else if (changedNickname.equals(curNickname) && isNicknameChecked) {
@@ -256,7 +256,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     }
 
     private void checkInputUserData() {
-        if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().userName)) {
+        if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName())) {
             SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedTextviewId, "이름은 변경이 불가능합니다. 저장하시겠어요?", new Runnable() {
                 @Override
                 public void run() {
@@ -272,26 +272,26 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     private void readUser() {
         this.user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
 
-        this.userinfoeditedTextviewId.setText(isNull(this.user.userId) + "@koreatech.ac.kr");
-        this.userinfoeditedTextviewAnonymousNickName.setText(isNull(this.user.anonymousNickName));
+        this.userinfoeditedTextviewId.setText(isNull(this.user.getUserId()) + "@koreatech.ac.kr");
+        this.userinfoeditedTextviewAnonymousNickName.setText(isNull(this.user.getAnonymousNickName()));
 
-        if (!FormValidatorUtil.validateStringIsEmpty(this.user.userName)) {
-            this.userinfoeditedEdittextName.setText(this.user.userName);
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.getUserName())) {
+            this.userinfoeditedEdittextName.setText(this.user.getUserName());
             this.userinfoeditedEdittextName.setEnabled(false);
             this.userinfoeditedEdittextName.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         } else {
-            this.userinfoeditedEdittextName.setText(isNull(this.user.userName));
+            this.userinfoeditedEdittextName.setText(isNull(this.user.getUserName()));
         }
 
-        this.userinfoeditedEdittextNickname.setText(isNull(this.user.userNickName));
-        changedNickname = isNull(this.user.userNickName);
+        this.userinfoeditedEdittextNickname.setText(isNull(this.user.getUserNickName()));
+        changedNickname = isNull(this.user.getUserNickName());
 
-        if (FormValidatorUtil.validateStringIsEmpty(this.user.phoneNumber) || this.user.phoneNumber.equals("")) {
+        if (FormValidatorUtil.validateStringIsEmpty(this.user.getPhoneNumber()) || this.user.getPhoneNumber().equals("")) {
             this.userinfoeditedEdittextPhone1.setText("");
             this.userinfoeditedEdittextPhone2.setText("");
             this.userinfoeditedEdittextPhone3.setText("");
         } else {
-            String[] phone = this.user.phoneNumber.split("-");
+            String[] phone = this.user.getPhoneNumber().split("-");
 
             EditText[] phoneNumberArray = {this.userinfoeditedEdittextPhone1, this.userinfoeditedEdittextPhone2, this.userinfoeditedEdittextPhone3};
             for (int i = 0; i < phone.length; i++) {
@@ -299,7 +299,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             }
         }
 
-        if (this.user.gender == 0) {
+        if (this.user.getGender() == 0) {
             this.userinfoeditedRadiobuttonGenderMan.setChecked(true);
             this.userinfoeditedRadiobuttonGenderWoman.setChecked(false);
         } else {
@@ -307,20 +307,20 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
             this.userinfoeditedRadiobuttonGenderWoman.setChecked(true);
         }
 
-        if (!FormValidatorUtil.validateStringIsEmpty(this.user.studentId)) {
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.getStudentId())) {
             this.userinfoeditedEdittextStudentId.setEnabled(false);
             this.userinfoeditedEdittextStudentId.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         }
 
-        this.userinfoeditedEdittextStudentId.setText(isNull(this.user.studentId));
+        this.userinfoeditedEdittextStudentId.setText(isNull(this.user.getStudentId()));
 
 
         this.userinfoeditedTextviewMajor.setText("");
         this.userinfoeditedTextviewMajor.setHint("학번 입력시 자동 입력");
 
-        if (!FormValidatorUtil.validateStringIsEmpty(this.user.major)) {
+        if (!FormValidatorUtil.validateStringIsEmpty(this.user.getMajor())) {
             for (int i = 0; i < ARRAY_MAJOR.size(); i++) {
-                if (this.user.major.equals(ARRAY_MAJOR.get(i))) {
+                if (this.user.getMajor().equals(ARRAY_MAJOR.get(i))) {
                     this.userinfoeditedTextviewMajor.setText(ARRAY_MAJOR.get(i));
                 }
             }
@@ -334,40 +334,40 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     public void saveUserInfo() {
         User changeUserData = new User();
 
-        changeUserData.userName = this.userinfoeditedEdittextName.getText().toString().replaceAll(" ", "");
+        changeUserData.setUserName(this.userinfoeditedEdittextName.getText().toString().replaceAll(" ", ""));
         String nickname = this.userinfoeditedEdittextNickname.getText().toString().replaceAll(" ", "");
 
-        if ((this.user.userNickName != null) && !this.user.userNickName.equals(nickname))
-            changeUserData.userNickName = nickname;
-        else if ((this.user.userNickName == null) && !nickname.isEmpty())
-            changeUserData.userNickName = nickname;
+        if ((this.user.getUserNickName() != null) && !this.user.getUserNickName().equals(nickname))
+            changeUserData.setUserNickName(nickname);
+        else if ((this.user.getUserNickName() == null) && !nickname.isEmpty())
+            changeUserData.setUserNickName(nickname);
         else
-            changeUserData.userNickName = null;
+            changeUserData.setUserNickName(null);
 
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(this.userinfoeditedEdittextPhone1.getText().toString()).append("-");
         stringBuffer.append(this.userinfoeditedEdittextPhone2.getText().toString()).append("-");
         stringBuffer.append(this.userinfoeditedEdittextPhone3.getText().toString());
-        changeUserData.phoneNumber = (stringBuffer.length() > 4 ? stringBuffer.toString() : "");
+        changeUserData.setPhoneNumber(stringBuffer.length() > 4 ? stringBuffer.toString() : "");
 
         if (this.userinfoeditedRadiobuttonGenderMan.isChecked()) {
-            changeUserData.gender = 0;
+            changeUserData.setGender(0);
         } else {
-            changeUserData.gender = 1;
+            changeUserData.setGender(1);
         }
 
 
         if (!this.userinfoeditedEdittextStudentId.getText().toString().trim().isEmpty())
-            changeUserData.studentId = this.userinfoeditedEdittextStudentId.getText().toString().trim();
+            changeUserData.setStudentId(this.userinfoeditedEdittextStudentId.getText().toString().trim());
 
-        changeUserData.major = this.userinfoeditedTextviewMajor.getText().toString();
+        changeUserData.setMajor(this.userinfoeditedTextviewMajor.getText().toString());
 
-        if (changeUserData.phoneNumber.isEmpty())
-            changeUserData.phoneNumber = null;
-        if (changeUserData.major.isEmpty())
-            changeUserData.major = null;
-        if (changeUserData.userName.isEmpty())
-            changeUserData.userName = null;
+        if (changeUserData.getPhoneNumber().isEmpty())
+            changeUserData.setPhoneNumber(null);
+        if (changeUserData.getMajor().isEmpty())
+            changeUserData.setMajor(null);
+        if (changeUserData.getUserName().isEmpty())
+            changeUserData.setUserName(null);
 
         this.userInfoEditPresenter.updateUserInfo(changeUserData);
     }

@@ -224,7 +224,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             cirlceArrayList.addAll(circleAllArraylist);
         else {
             for (Circle item : circleAllArraylist) {
-                if (item.category.equals(categoryCode))
+                if (item.getCategory().equals(categoryCode))
                     cirlceArrayList.add(item);
             }
         }
@@ -303,7 +303,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             circleItemLogoImageview = viewHolder.itemView.findViewById(R.id.circle_item_logo_imageview);
             circleItemNameTextview = viewHolder.itemView.findViewById(R.id.circle_item_name_textview);
             circleItemDetailTextview = viewHolder.itemView.findViewById(R.id.circle_item_detail_textview);
-            goToCircleDetailActivity(cirlceArrayList.get(position).id, cirlceArrayList.get(position).name);
+            goToCircleDetailActivity(cirlceArrayList.get(position).getId(), cirlceArrayList.get(position).getName());
         }
 
         @Override

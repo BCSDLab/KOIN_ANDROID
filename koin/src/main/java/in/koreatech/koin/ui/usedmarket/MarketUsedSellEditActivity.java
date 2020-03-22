@@ -146,7 +146,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         imageFile = null;
 
         if (phoneNumber == null) {
-            phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+            phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber();
         }
 
         init();
@@ -747,27 +747,27 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
 
         if (isPhoneOpen) {
-            marketItem.isPhoneOpen = 1;
-            marketItem.phone = phoneNumber;
+            marketItem.setIsPhoneOpen(1);
+            marketItem.setPhone(phoneNumber);
         } else {
-            marketItem.isPhoneOpen = 0;
-            marketItem.phone = null;
+            marketItem.setIsPhoneOpen(0);
+            marketItem.setPhone(null);
         }
 
-        marketItem.title = marketSellEditTitleEditText.getText().toString().trim();
-        marketItem.price = Integer.parseInt(price);
-        marketItem.state = itemState;
+        marketItem.setTitle(marketSellEditTitleEditText.getText().toString().trim());
+        marketItem.setPrice(Integer.parseInt(price));
+        marketItem.setState(itemState);
 
         if (marketSellEditContent.getText().toString().trim().length() != 0) {
-            marketItem.content = Html.toHtml(spannableStringBuilder);
-            marketItem.content = addImageSpan(marketItem.content, imageUrl);
+            marketItem.setContent(Html.toHtml(spannableStringBuilder));
+            marketItem.setContent(addImageSpan(marketItem.getContent(), imageUrl));
             isContentCheck = true;
         } else {
             isContentCheck = false;
         }
 
 
-        if (isPhoneOpen && (marketItem.phone.length() == 13)) {
+        if (isPhoneOpen && (marketItem.getPhone().length() == 13)) {
             if (phoneNumber.charAt(3) == '-' && phoneNumber.charAt(8) == '-')
                 isPhoneCheck = true;
             else
@@ -778,7 +778,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         else
             isPhoneCheck = false;
 
-        if (marketItem.title.length() == 0)
+        if (marketItem.getTitle().length() == 0)
             isTitlecheck = false;
         else {
             isTitlecheck = true;
@@ -792,7 +792,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
         if (!isTitlecheck && !isContentCheck)
             ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
-        marketItem.type = marketId;
+        marketItem.setType(marketId);
         if (isPhoneCheck && isTitlecheck && isContentCheck)
             marketUsedEditPresenter.editMarketContent(itemId, marketItem);
 
@@ -826,7 +826,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(marketSellEditThumbnailImageView);
-        marketItem.thumbnail = url;
+        marketItem.setThumbnail(url);
     }
 
     @Override

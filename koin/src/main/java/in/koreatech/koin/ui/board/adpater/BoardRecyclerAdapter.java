@@ -68,18 +68,18 @@ public class BoardRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         BoardViewHolder boardViewHolder = (BoardViewHolder) holder;
 
-        Objects.requireNonNull(boardViewHolder.boardCreateDate).setText(article.createDate.substring(0, 10));
-        Objects.requireNonNull(boardViewHolder.boardViewCount).setText(String.valueOf(article.hitCount));
-        if (article.commentCount > 0) { //when board has comments
-            if (article.commentCount < 1000)
-                Objects.requireNonNull(boardViewHolder.boardCommentCount).setText("(" + article.commentCount + ")");
+        Objects.requireNonNull(boardViewHolder.boardCreateDate).setText(article.getCreateDate().substring(0, 10));
+        Objects.requireNonNull(boardViewHolder.boardViewCount).setText(String.valueOf(article.getHitCount()));
+        if (article.getCommentCount() > 0) { //when board has comments
+            if (article.getCommentCount() < 1000)
+                Objects.requireNonNull(boardViewHolder.boardCommentCount).setText("(" + article.getCommentCount() + ")");
             else
                 Objects.requireNonNull(boardViewHolder.boardCommentCount).setText("(999+)");
         } else {    //no comments in board
             Objects.requireNonNull(boardViewHolder.boardCommentCount).setText("");
         }
-        Objects.requireNonNull(boardViewHolder.boardTitle).setText(article.title);
-        Objects.requireNonNull(boardViewHolder.boardWriter).setText(article.authorNickname);
+        Objects.requireNonNull(boardViewHolder.boardTitle).setText(article.getTitle());
+        Objects.requireNonNull(boardViewHolder.boardWriter).setText(article.getAuthorNickname());
 
     }
 

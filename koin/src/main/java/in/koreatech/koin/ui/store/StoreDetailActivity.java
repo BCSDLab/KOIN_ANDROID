@@ -102,11 +102,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     private void init() {
         this.store = new Store();
-        this.store.uid = getIntent().getIntExtra("STORE_UID", 0);
-        this.store.name = getIntent().getStringExtra("STORE_NAME");
+        this.store.setUid(getIntent().getIntExtra("STORE_UID", 0));
+        this.store.setName(getIntent().getStringExtra("STORE_NAME"));
 
         setPresenter(new StoreDetailPresenter(this, new StoreRestInteractor()));
-        this.storeDetailPresenter.getStore(this.store.uid);
+        this.storeDetailPresenter.getStore(this.store.getUid());
 
         menuLayoutManager = new LinearLayoutManager(this);
         flyerLayoutManger = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -144,25 +144,25 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         this.store = store;
         this.storeMenuArrayList.clear();
         storeFlyerArrayList.clear();
-        if (this.store.imageUrls != null)
-            storeFlyerArrayList.addAll(this.store.imageUrls);
+        if (this.store.getImageUrls() != null)
+            storeFlyerArrayList.addAll(this.store.getImageUrls());
         storeDetailFlyerRecyclerAdapter.notifyDataSetChanged();
-        if (!store.menus.isEmpty()) {
-            for (int a = 0; a < store.menus.size(); a++) {
+        if (!store.getMenus().isEmpty()) {
+            for (int a = 0; a < store.getMenus().size(); a++) {
                 Store storeItemDetail = new Store();
-                storeItemDetail.name = store.menus.get(a).name;
+                storeItemDetail.setName(store.getMenus().get(a).getName());
                 stringBuilder = new StringBuilder();
-                for (int b = 0; b < store.menus.get(a).priceType.size(); b++) {
-                    storeItemDetail.size = store.menus.get(a).priceType.get(b).size;
-                    storeItemDetail.price = store.menus.get(a).priceType.get(b).price;
+                for (int b = 0; b < store.getMenus().get(a).getPriceType().size(); b++) {
+                    storeItemDetail.setSize(store.getMenus().get(a).getPriceType().get(b).getSize());
+                    storeItemDetail.setPrice(store.getMenus().get(a).getPriceType().get(b).getPrice());
                     if (!stringBuilder.toString().equals("")) stringBuilder.append("\n");
-                    if (!storeItemDetail.size.equals("기본")) {
-                        stringBuilder.append(storeItemDetail.size).append(": ").append(changeMoneyFormat(storeItemDetail.price)).append("원");
+                    if (!storeItemDetail.getSize().equals("기본")) {
+                        stringBuilder.append(storeItemDetail.getSize()).append(": ").append(changeMoneyFormat(storeItemDetail.getPrice())).append("원");
                     } else {
-                        stringBuilder.append(changeMoneyFormat(storeItemDetail.price)).append("원");
+                        stringBuilder.append(changeMoneyFormat(storeItemDetail.getPrice())).append("원");
                     }
                 }
-                storeItemDetail.detail = stringBuilder.toString();
+                storeItemDetail.setDetail(stringBuilder.toString());
                 this.storeMenuArrayList.add(storeItemDetail);
             }
             this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(this.storeMenuArrayList);
@@ -186,15 +186,15 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void updateUserInterface() {
         //상점 전화번호,주소,기타정보가 NULL일시에 - 표시를 한다
-        titleTextView.setText(this.store.name);
-        if (this.store.phone == null) {
+        titleTextView.setText(this.store.getName());
+        if (this.store.getPhone() == null) {
             phoneTextView.setText("-");
             storeDetailCallButton.setVisibility(View.INVISIBLE);
         }
-        if (this.store.address == null) {
+        if (this.store.getAddress() == null) {
             addressTextview.setText("-");
         }
-        if (this.store.description == null) {
+        if (this.store.getDescription() == null) {
             etcTextview.setText("-");
         }
         /*
@@ -202,21 +202,21 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         addressTextview.setText(Objects.requireNonNullElse(this.store.address,"-"));
         etcTextview.setText(Objects.requireNonNull(this.store.description,"-"));
          */
-        if (this.store.deliveryPrice >= 0)
-            deliverTextview.setText(this.store.deliveryPrice + "원");
+        if (this.store.getDeliveryPrice() >= 0)
+            deliverTextview.setText(this.store.getDeliveryPrice() + "원");
         else
             deliverTextview.setText("-");
 
-        if (!FormValidatorUtil.validateStringIsEmpty(this.store.openTime)) {
-            timeTextView.setText(this.store.openTime + " ~ " + this.store.closeTime);
+        if (!FormValidatorUtil.validateStringIsEmpty(this.store.getOpenTime())) {
+            timeTextView.setText(this.store.getOpenTime() + " ~ " + this.store.getCloseTime());
         } else {
             timeTextView.setText("-");
         }
-        if (!this.store.isDeliveryOk)
+        if (!this.store.isDeliveryOk())
             isDeliveryTextView.setVisibility(View.GONE);
-        if (!this.store.isCardOk)
+        if (!this.store.isCardOk())
             isCardTextView.setVisibility(View.GONE);
-        if (!this.store.isBankOk)
+        if (!this.store.isBankOk())
             isBankTextView.setVisibility(View.GONE);
 
 //        setTextviewTextWithBackground(isDeliveryTextView, "#배달", this.store.isDeliveryOk);
@@ -245,7 +245,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(new ContextThemeWrapper(this.context, R.style.KAPDialog));
 
-        builder.setMessage(this.store.name + "\n\n" + this.store.phone);
+        builder.setMessage(this.store.getName() + "\n\n" + this.store.getPhone());
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
@@ -259,7 +259,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     }
 
     private void onClickCallButton() {
-        String callNumber = this.store.phone;
+        String callNumber = this.store.getPhone();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
             return;
@@ -328,7 +328,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         public void onClick(View view, final int position) {
             Intent intent = new Intent(context, StoreFlyerViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             intent.putExtra("POSITION", position);
-            intent.putStringArrayListExtra("URLS", store.imageUrls);
+            intent.putStringArrayListExtra("URLS", store.getImageUrls());
             startActivity(intent);
         }
 

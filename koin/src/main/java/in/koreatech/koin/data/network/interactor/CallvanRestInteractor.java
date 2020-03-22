@@ -55,7 +55,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (!response.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get company list"));
                         }
                     }
 
@@ -99,7 +99,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get company list"));
                         }
                     }
 
@@ -142,7 +142,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (!response.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get callvan room list"));
                         }
                     }
 
@@ -185,7 +185,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to create room"));
                         }
                     }
 
@@ -227,7 +227,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get callvan room list"));
                         }
                     }
 
@@ -270,7 +270,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to update room list"));
                         }
                     }
 
@@ -313,7 +313,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(true);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to delete room list"));
                         }
                     }
 
@@ -358,7 +358,7 @@ public class CallvanRestInteractor implements CallvanInteractor {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(roomUid);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to participant callvan room"));
                         }
                     }
 

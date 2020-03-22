@@ -7,47 +7,47 @@ import com.google.gson.annotations.SerializedName;
 public class Comment {
     @SerializedName("id")
     @Expose
-    public int commentUid;
+    private int commentUid;
 
     @SerializedName("article_id")
     @Expose
-    public int articleUid;
+    private int articleUid;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("user_id")
     @Expose
-    public int authorUid;
+    private int authorUid;
 
     @SerializedName("nickname")
     @Expose
-    public String authorNickname;
+    private String authorNickname;
 
     @SerializedName("grantEdit")
     @Expose
-    public boolean grantEdit;
+    private boolean grantEdit;
 
     @SerializedName("grantDelete")
     @Expose
-    public boolean grantDelete;
+    private boolean grantDelete;
 
     @SerializedName("updated_at")
     @Expose
-    public String updateDate;
+    private String updateDate;
 
     @SerializedName("created_at")
     @Expose
-    public String createDate;
+    private String createDate;
 
     @SerializedName("error")
     @Expose
-    public String error;
+    private String error;
 
     @SerializedName("password")
     @Expose
-    public String password;
+    private String password;
 
     public Comment() {
 
@@ -74,5 +74,93 @@ public class Comment {
         this.grantDelete = grantDelete;
         this.updateDate = updateDate;
         this.createDate = createDate;
+    }
+
+    public int getCommentUid() {
+        return commentUid;
+    }
+
+    public void setCommentUid(int commentUid) {
+        this.commentUid = commentUid;
+    }
+
+    public int getArticleUid() {
+        return articleUid;
+    }
+
+    public void setArticleUid(int articleUid) {
+        this.articleUid = articleUid;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getAuthorUid() {
+        return authorUid;
+    }
+
+    public void setAuthorUid(int authorUid) {
+        this.authorUid = authorUid;
+    }
+
+    public String getAuthorNickname() {
+        return authorNickname;
+    }
+
+    public void setAuthorNickname(String authorNickname) {
+        this.authorNickname = authorNickname;
+    }
+
+    public boolean isGrantEdit() {
+        return grantEdit;
+    }
+
+    public void setGrantEdit(boolean grantEdit) {
+        this.grantEdit = grantEdit;
+    }
+
+    public boolean isGrantDelete() {
+        return grantDelete;
+    }
+
+    public void setGrantDelete(boolean grantDelete) {
+        this.grantDelete = grantDelete;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

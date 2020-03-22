@@ -113,7 +113,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
         if (marketSellArrayList == null)
             return;
         for (int i = 0; i < marketSellArrayList.size(); i++) {
-            int id = marketSellArrayList.get(i).id;
+            int id = marketSellArrayList.get(i).getId();
             marketUsedPresenter.readDetailMarket(id);
         }
 
@@ -144,7 +144,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), marketSellRecyclerView, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int index) {
-            marketUsedPresenter.readGrantedDetail(marketSellArrayList.get(index).id);
+            marketUsedPresenter.readGrantedDetail(marketSellArrayList.get(index).getId());
             postion = index;
 
         }
@@ -216,7 +216,7 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     public void onGrantedDataReceived(boolean granted) {
         grantCheck = granted;
         Intent intent = new Intent(getActivity(), MarketUsedSellDetailActivity.class);
-        intent.putExtra("ITEM_ID", marketSellArrayList.get(postion).id);
+        intent.putExtra("ITEM_ID", marketSellArrayList.get(postion).getId());
         intent.putExtra("MARKET_ID", SELLMARKETID);
         intent.putExtra("GRANT_CHECK", grantCheck);
         startActivity(intent);
@@ -225,9 +225,9 @@ public class MarketUsedSellFragment extends MarketUsedBaseFragment implements Ma
     @Override
     public void onMarketDataReceived(Item item) {
         for (int i = 0; i < marketSellArrayList.size(); i++) {
-            int id = marketSellArrayList.get(i).id;
-            if (id == item.id)
-                marketSellArrayList.get(i).comments = item.comments;
+            int id = marketSellArrayList.get(i).getId();
+            if (id == item.getId())
+                marketSellArrayList.get(i).setComments(item.getComments());
         }
         updateUserInterface();
     }

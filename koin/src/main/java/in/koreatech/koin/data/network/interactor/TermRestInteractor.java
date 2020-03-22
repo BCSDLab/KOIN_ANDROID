@@ -31,7 +31,7 @@ public class TermRestInteractor implements TermInteractor {
                         if (term != null) {
                             apiCallback.onSuccess(term);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to read term"));
                         }
                     }
 

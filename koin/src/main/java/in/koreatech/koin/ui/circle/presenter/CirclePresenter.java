@@ -24,12 +24,12 @@ public class CirclePresenter {
         @Override
         public void onSuccess(Object object) {
             Circle circles = (Circle) object;
-            if (circles.totalPage != mCurrentPage) {
-                mCirlceList.addAll(circles.circles);
+            if (circles.getTotalPage() != mCurrentPage) {
+                mCirlceList.addAll(circles.getCircles());
                 getCirlceList(++mCurrentPage);
                 return;
             }
-            mCirlceList.addAll(circles.circles);
+            mCirlceList.addAll(circles.getCircles());
             cirlcleView.onCircleListDataReceived(mCirlceList);
             mCurrentPage = 1;
             cirlcleView.hideLoading();

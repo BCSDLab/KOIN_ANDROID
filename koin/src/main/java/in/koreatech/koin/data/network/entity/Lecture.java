@@ -8,54 +8,165 @@ import java.util.ArrayList;
 public class Lecture {
     @SerializedName("code")
     @Expose
-    public String code;
+    private String code;
 
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
 
     @SerializedName("grades")
     @Expose
-    public String grades;
+    private String grades;
 
     @SerializedName("lecture_class")
     @Expose
-    public String lectureClass;
+    private String lectureClass;
 
     @SerializedName("regular_number")
     @Expose
-    public String regularNumber;
+    private String regularNumber;
 
     @SerializedName("department")
     @Expose
-    public String department;
+    private String department;
 
     @SerializedName("target")
     @Expose
-    public String target;
+    private String target;
 
     @SerializedName("professor")
     @Expose
-    public String professor;
+    private String professor;
 
     @SerializedName("is_english")
     @Expose
-    public String isEnglish;
+    private String isEnglish;
 
     @SerializedName("design_score")
     @Expose
-    public String designScore;
+    private String designScore;
 
     @SerializedName("is_elearning")
     @Expose
-    public String isElearning;
+    private String isElearning;
 
     @SerializedName("class_time")
     @Expose
-    public ArrayList<Integer> classTime;
+    private ArrayList<Integer> classTime;
 
     public boolean isItemClicked = false;
 
     public boolean isAddButtonClicked = false;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGrades() {
+        return grades;
+    }
+
+    public void setGrades(String grades) {
+        this.grades = grades;
+    }
+
+    public String getLectureClass() {
+        return lectureClass;
+    }
+
+    public void setLectureClass(String lectureClass) {
+        this.lectureClass = lectureClass;
+    }
+
+    public String getRegularNumber() {
+        return regularNumber;
+    }
+
+    public void setRegularNumber(String regularNumber) {
+        this.regularNumber = regularNumber;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public String getIsEnglish() {
+        return isEnglish;
+    }
+
+    public void setIsEnglish(String isEnglish) {
+        this.isEnglish = isEnglish;
+    }
+
+    public String getDesignScore() {
+        return designScore;
+    }
+
+    public void setDesignScore(String designScore) {
+        this.designScore = designScore;
+    }
+
+    public String getIsElearning() {
+        return isElearning;
+    }
+
+    public void setIsElearning(String isElearning) {
+        this.isElearning = isElearning;
+    }
+
+    public ArrayList<Integer> getClassTime() {
+        return classTime;
+    }
+
+    public void setClassTime(ArrayList<Integer> classTime) {
+        this.classTime = classTime;
+    }
+
+    public boolean isItemClicked() {
+        return isItemClicked;
+    }
+
+    public void setItemClicked(boolean itemClicked) {
+        isItemClicked = itemClicked;
+    }
+
+    public boolean isAddButtonClicked() {
+        return isAddButtonClicked;
+    }
+
+    public void setAddButtonClicked(boolean addButtonClicked) {
+        isAddButtonClicked = addButtonClicked;
+    }
 }

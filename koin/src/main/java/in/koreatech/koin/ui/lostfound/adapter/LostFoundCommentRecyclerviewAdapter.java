@@ -67,20 +67,20 @@ public class LostFoundCommentRecyclerviewAdapter extends RecyclerView.Adapter<Lo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Comment comment = lostItemCommentArrayList.get(position);
-        if (comment.authorNickname != null)
-            holder.lostFoundCommentWriter.setText(comment.authorNickname);
-        if (comment.createDate != null)
-            holder.lostFoundCommentCreateDate.setText(comment.createDate);
-        if (comment.content != null)
-            holder.lostFoundCommentContent.setText(comment.content);
-        if (comment.grantDelete) {
+        if (comment.getAuthorNickname() != null)
+            holder.lostFoundCommentWriter.setText(comment.getAuthorNickname());
+        if (comment.getCreateDate() != null)
+            holder.lostFoundCommentCreateDate.setText(comment.getCreateDate());
+        if (comment.getContent() != null)
+            holder.lostFoundCommentContent.setText(comment.getContent());
+        if (comment.isGrantDelete()) {
             holder.lostFoundCommentRemoveButton.setVisibility(View.VISIBLE);
             Objects.requireNonNull(holder.lostFoundCommentRemoveButton).setTag(position);
             holder.lostFoundCommentRemoveButton.setOnClickListener(this);
         } else {
             holder.lostFoundCommentRemoveButton.setVisibility(View.INVISIBLE);
         }
-        if (comment.grantEdit) {
+        if (comment.isGrantEdit()) {
             holder.lostFoundCommentEditButton.setVisibility(View.VISIBLE);
             Objects.requireNonNull(holder.lostFoundCommentEditButton).setTag(position);
             holder.lostFoundCommentEditButton.setOnClickListener(this);

@@ -73,7 +73,7 @@ public class StoreRestInteractor implements StoreInteractor {
                         if (store != null) {
                             apiCallback.onSuccess(store);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read store"));
                         }
                     }
 

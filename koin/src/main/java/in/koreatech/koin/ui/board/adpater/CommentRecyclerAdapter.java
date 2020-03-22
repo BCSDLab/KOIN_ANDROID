@@ -52,25 +52,25 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Comment comment = commentArrayList.get(position);
 
-        String createDate = comment.createDate.substring(0, comment.createDate.length() - 5);
-        String updateDate = comment.updateDate.substring(0, comment.updateDate.length() - 5);
+        String createDate = comment.getCreateDate().substring(0, comment.getCreateDate().length() - 5);
+        String updateDate = comment.getCreateDate().substring(0, comment.getCreateDate().length() - 5);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_COMMENT:
                 CommentViewHolderFactory.CommentViewHolder commentViewHolder = (CommentViewHolderFactory.CommentViewHolder) holder;
-                Objects.requireNonNull(commentViewHolder.commentWriter).setText(comment.authorNickname);
+                Objects.requireNonNull(commentViewHolder.commentWriter).setText(comment.getAuthorNickname());
 
                 if (createDate.equals(updateDate)) { //not edited
-                    Objects.requireNonNull(commentViewHolder.commentContent).setText(comment.content);
+                    Objects.requireNonNull(commentViewHolder.commentContent).setText(comment.getContent());
                 } else {    //edited
-                    SpannableStringBuilder spannableTextEdited = new SpannableStringBuilder(comment.content + EDITED);
+                    SpannableStringBuilder spannableTextEdited = new SpannableStringBuilder(comment.getContent() + EDITED);
                     spannableTextEdited.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray4, null)), spannableTextEdited.length() - EDITED.length(), spannableTextEdited.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     Objects.requireNonNull(commentViewHolder.commentContent).setText(spannableTextEdited);
                 }
-                Objects.requireNonNull(commentViewHolder.commentCreateDate).setText(comment.createDate.substring(0, 10) + " " + comment.createDate.substring(11, 16));
+                Objects.requireNonNull(commentViewHolder.commentCreateDate).setText(comment.getCreateDate().substring(0, 10) + " " + comment.getCreateDate().substring(11, 16));
 
-                if (comment.grantEdit) {
+                if (comment.isGrantEdit()) {
                     Objects.requireNonNull(commentViewHolder.commentModify).setTag(position);
                     commentViewHolder.commentModify.setOnClickListener(this);
                     Objects.requireNonNull(commentViewHolder.commentModify).setVisibility(View.VISIBLE);
@@ -78,7 +78,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     Objects.requireNonNull(commentViewHolder.commentModify).setVisibility(View.GONE);
                 }
 
-                if (comment.grantDelete) {
+                if (comment.isGrantDelete()) {
                     Objects.requireNonNull(commentViewHolder.commentRemove).setTag(position);
                     commentViewHolder.commentRemove.setOnClickListener(this);
                     Objects.requireNonNull(commentViewHolder.commentRemove).setVisibility(View.VISIBLE);
@@ -89,22 +89,22 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             case VIEW_TYPE_COMMENT_BOARD_AUTHOR:
                 CommentViewHolderFactory.CommentBoardAuthorViewHolder commentBoardAuthorViewHolder = (CommentViewHolderFactory.CommentBoardAuthorViewHolder) holder;
-                Objects.requireNonNull(commentBoardAuthorViewHolder.commentWriter).setText(comment.authorNickname);
+                Objects.requireNonNull(commentBoardAuthorViewHolder.commentWriter).setText(comment.getAuthorNickname());
 
-                createDate = comment.createDate.substring(0, comment.createDate.length() - 5);
-                updateDate = comment.updateDate.substring(0, comment.updateDate.length() - 5);
+                createDate = comment.getCreateDate().substring(0, comment.getCreateDate().length() - 5);
+                updateDate = comment.getUpdateDate().substring(0, comment.getUpdateDate().length() - 5);
 
                 if (createDate.equals(updateDate)) { //not edited
-                    Objects.requireNonNull(commentBoardAuthorViewHolder.commentContent).setText(comment.content);
+                    Objects.requireNonNull(commentBoardAuthorViewHolder.commentContent).setText(comment.getContent());
                 } else {    //edited
-                    SpannableStringBuilder spannableText = new SpannableStringBuilder(comment.content + EDITED);
-                    spannableText.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray4, null)), comment.content.length(), comment.content.length() + EDITED.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    SpannableStringBuilder spannableText = new SpannableStringBuilder(comment.getContent() + EDITED);
+                    spannableText.setSpan(new ForegroundColorSpan(ResourcesCompat.getColor(context.getResources(), R.color.gray4, null)), comment.getContent().length(), comment.getContent().length() + EDITED.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentContent).setText(spannableText);
                 }
-                Objects.requireNonNull(commentBoardAuthorViewHolder.commentCreateDate).setText(comment.createDate.substring(0, 10) + " " + comment.createDate.substring(11, 16));
+                Objects.requireNonNull(commentBoardAuthorViewHolder.commentCreateDate).setText(comment.getCreateDate().substring(0, 10) + " " + comment.getCreateDate().substring(11, 16));
 
-                if (comment.grantEdit) {
+                if (comment.isGrantEdit()) {
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentModify).setTag(position);
                     commentBoardAuthorViewHolder.commentModify.setOnClickListener(this);
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentModify).setVisibility(View.VISIBLE);
@@ -112,7 +112,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentModify).setVisibility(View.GONE);
                 }
 
-                if (comment.grantDelete) {
+                if (comment.isGrantDelete()) {
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentRemove).setTag(position);
                     commentBoardAuthorViewHolder.commentRemove.setOnClickListener(this);
                     Objects.requireNonNull(commentBoardAuthorViewHolder.commentRemove).setVisibility(View.VISIBLE);

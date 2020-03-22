@@ -181,13 +181,13 @@ public class TimetableAnonymousPresenter {
         TimeTable timeTable = getSavedTimeTable(semester);
         TimeTable saveTable = new TimeTable();
         if (timeTable == null) return;
-        saveTable.setSemester(timeTable.semester);
+        saveTable.setSemester(timeTable.getSemester());
         for (TimeTable.TimeTableItem timeTableItem : timeTable.getTimeTableItems()) {
             if (timeTableItem.getId() != id) {
                 saveTable.addTimeTableItem(timeTableItem);
             }
         }
-        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(saveTable, saveTable.semester));
+        TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(saveTable, saveTable.getSemester()));
         timeTableView.showDeleteSuccessTimeTableItem(deleteId);
         timeTableView.hideLoading();
     }

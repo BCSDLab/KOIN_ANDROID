@@ -70,17 +70,17 @@ public class MarketUsedDetailCommentAdapter extends RecyclerView.Adapter<MarketU
     public void onBindViewHolder(@NonNull MarketUsedDetailCommentAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         Comment comment = marketCommentArrayList.get(position);
-        holder.marketCommentWriterTextView.setText(comment.authorNickname);
-        holder.marketCommentCreateDateTextView.setText(comment.updateDate);
-        holder.marketCommentConetentTextView.setText(comment.content);
-        if (!comment.grantEdit)
+        holder.marketCommentWriterTextView.setText(comment.getAuthorNickname());
+        holder.marketCommentCreateDateTextView.setText(comment.getUpdateDate());
+        holder.marketCommentConetentTextView.setText(comment.getContent());
+        if (!comment.isGrantEdit())
             holder.marketCommentEditTextView.setVisibility(View.INVISIBLE);
         else {
             holder.marketCommentEditTextView.setOnClickListener(this);
             Objects.requireNonNull(holder.marketCommentEditTextView).setTag(position);
         }
 
-        if (!comment.grantDelete)
+        if (!comment.isGrantDelete())
             holder.marketCommentRemoveTextView.setVisibility(View.INVISIBLE);
         else {
             holder.marketCommentRemoveTextView.setOnClickListener(this);

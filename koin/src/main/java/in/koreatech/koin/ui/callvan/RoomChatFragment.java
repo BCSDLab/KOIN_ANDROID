@@ -84,7 +84,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
 
         roouid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
         if (roouid > 0) {
-            uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+            uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUid();
             if (FormValidatorUtil.validateStringIsEmpty(uid)) {
                 ToastUtil.getInstance().makeShort("채팅 정보를 일시적으로 불러올 수 없습니다");
                 messageReference = null;
@@ -121,7 +121,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
     public void onStart() {
         super.onStart();
 
-        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().uid;
+        uid = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUid();
         ValueEventListener messageListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -130,7 +130,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
 
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     Message msg = Message.parseSnapshot(child);
-                    if (msg.isDeleted != null && !msg.isDeleted && msg.uid != null) {
+                    if (msg.getDeleted() != null && !msg.getDeleted() && msg.getUid() != null) {
                         messageListroouid.add(msg);
                         messageKeyList.add(child.getKey());
                     }
@@ -227,7 +227,7 @@ public class RoomChatFragment extends CallvanBaseFragment implements RoomChatCon
         if (!FormValidatorUtil.validateStringIsEmpty(inputEditText.getText().toString())) {
             String meesageBody = inputEditText.getText().toString();
 
-            String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
+            String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
 
             String messageKey = FirebaseDbManager.createRoomChatMessage(String.valueOf(roouid));
 

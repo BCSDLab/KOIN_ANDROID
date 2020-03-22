@@ -50,7 +50,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (!response.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read board list"));
                         }
                     }
 
@@ -88,7 +88,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read board list"));
                         }
                     }
 
@@ -122,17 +122,17 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(ArticlePageResponse response) {
                         if (!response.articleArrayList.isEmpty()) {
                             for (int i = 0; i < response.articleArrayList.size(); i++) {
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).title)) {
-                                    response.articleArrayList.get(i).title = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getTitle())) {
+                                    response.articleArrayList.get(i).setTitle("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).content)) {
-                                    response.articleArrayList.get(i).content = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getContent())) {
+                                    response.articleArrayList.get(i).setContent("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).authorNickname)) {
-                                    response.articleArrayList.get(i).authorNickname = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getAuthorNickname())) {
+                                    response.articleArrayList.get(i).setAuthorNickname("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).authorUid)) {
-                                    response.articleArrayList.get(i).authorUid = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getAuthorUid())) {
+                                    response.articleArrayList.get(i).setAuthorUid("");
                                 }
                             }
                             apiCallback.onSuccess(response);
@@ -172,17 +172,17 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(ArticlePageResponse response) {
                         if (!response.articleArrayList.isEmpty()) {
                             for (int i = 0; i < response.articleArrayList.size(); i++) {
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).title)) {
-                                    response.articleArrayList.get(i).title = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getTitle())) {
+                                    response.articleArrayList.get(i).setTitle("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).content)) {
-                                    response.articleArrayList.get(i).content = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getContent())) {
+                                    response.articleArrayList.get(i).setContent("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).authorNickname)) {
-                                    response.articleArrayList.get(i).authorNickname = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getAuthorNickname())) {
+                                    response.articleArrayList.get(i).setAuthorNickname("");
                                 }
-                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).authorUid)) {
-                                    response.articleArrayList.get(i).authorUid = "";
+                                if (FormValidatorUtil.validateStringIsEmpty(response.articleArrayList.get(i).getAuthorUid())) {
+                                    response.articleArrayList.get(i).setAuthorUid("");
                                 }
                             }
                             apiCallback.onSuccess(response);
@@ -211,9 +211,9 @@ public class CommunityRestInteractor implements CommunityInteractor {
     public void createArticle(Article article, ApiCallback apiCallback) {
         String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("board_id", article.boardUid);
-        jsonObject.addProperty("content", article.content);
-        jsonObject.addProperty("title", article.title);
+        jsonObject.addProperty("board_id", article.getBoardUid());
+        jsonObject.addProperty("content", article.getContent());
+        jsonObject.addProperty("title", article.getTitle());
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).postArticle(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -227,25 +227,25 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(Article response) {
                         if (response != null) {
 
-                            if (FormValidatorUtil.validateStringIsEmpty(response.title)) {
-                                response.title = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getTitle())) {
+                                response.setTitle("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.content)) {
-                                response.content = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getContent())) {
+                                response.setContent("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorNickname)) {
-                                response.authorNickname = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorNickname())) {
+                                response.setAuthorNickname("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorUid)) {
-                                response.authorUid = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorUid())) {
+                                response.setAuthorUid("");
                             }
-                            if (response.commentArrayList == null) {
-                                response.commentArrayList = new ArrayList<>();
+                            if (response.getCommentArrayList() == null) {
+                                response.setCommentArrayList(new ArrayList<>());
                             }
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail create article"));
                         }
                     }
 
@@ -286,25 +286,25 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(Article response) {
                         if (response != null) {
 
-                            if (FormValidatorUtil.validateStringIsEmpty(response.title)) {
-                                response.title = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getTitle())) {
+                                response.setTitle("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.content)) {
-                                response.content = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getContent())) {
+                                response.setContent("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorNickname)) {
-                                response.authorNickname = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorNickname())) {
+                                response.setAuthorNickname("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorUid)) {
-                                response.authorUid = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorUid())) {
+                                response.setAuthorUid("");
                             }
-                            if (response.commentArrayList == null) {
-                                response.commentArrayList = new ArrayList<>();
+                            if (response.getCommentArrayList() == null) {
+                                response.setCommentArrayList(new ArrayList<>());
                             }
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read article"));
                         }
                     }
 
@@ -339,25 +339,25 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(Article response) {
                         if (response != null) {
 
-                            if (FormValidatorUtil.validateStringIsEmpty(response.title)) {
-                                response.title = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getTitle())) {
+                                response.setTitle("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.content)) {
-                                response.content = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getContent())) {
+                                response.setContent("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorNickname)) {
-                                response.authorNickname = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorNickname())) {
+                                response.setAuthorNickname("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorUid)) {
-                                response.authorUid = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorUid())) {
+                                response.setAuthorUid("");
                             }
-                            if (response.commentArrayList == null) {
-                                response.commentArrayList = new ArrayList<>();
+                            if (response.getCommentArrayList() == null) {
+                                response.setCommentArrayList(new ArrayList<>());
                             }
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read anonymous article"));
                         }
                     }
 
@@ -381,10 +381,10 @@ public class CommunityRestInteractor implements CommunityInteractor {
     public void updateArticle(Article article, ApiCallback apiCallback) {
         String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject articleJsonObject = new JsonObject();
-        articleJsonObject.addProperty("board_id", article.boardUid);
-        articleJsonObject.addProperty("content", article.content);
-        articleJsonObject.addProperty("title", article.title);
-        RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).putArticle(String.valueOf(article.articleUid), addAuthorizationBearer(token), articleJsonObject)
+        articleJsonObject.addProperty("board_id", article.getBoardUid());
+        articleJsonObject.addProperty("content", article.getContent());
+        articleJsonObject.addProperty("title", article.getTitle());
+        RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).putArticle(String.valueOf(article.getArticleUid()), addAuthorizationBearer(token), articleJsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Article>() {
@@ -397,25 +397,25 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(Article response) {
                         if (response != null) {
 
-                            if (FormValidatorUtil.validateStringIsEmpty(response.title)) {
-                                response.title = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getTitle())) {
+                                response.setTitle("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.content)) {
-                                response.content = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getContent())) {
+                                response.setContent("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorNickname)) {
-                                response.authorNickname = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorNickname())) {
+                                response.setAuthorNickname("");
                             }
-                            if (FormValidatorUtil.validateStringIsEmpty(response.authorUid)) {
-                                response.authorUid = "";
+                            if (FormValidatorUtil.validateStringIsEmpty(response.getAuthorUid())) {
+                                response.setAuthorUid("");
                             }
-                            if (response.commentArrayList == null) {
-                                response.commentArrayList = new ArrayList<>();
+                            if (response.getCommentArrayList() == null) {
+                                response.setCommentArrayList(new ArrayList<>());
                             }
 
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail update article"));
                         }
                     }
 
@@ -453,7 +453,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete article"));
                         }
                     }
 
@@ -490,11 +490,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(articleUid);
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -530,11 +530,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(articleUid);
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -559,10 +559,10 @@ public class CommunityRestInteractor implements CommunityInteractor {
         String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("content", comment.content);
+        jsonObject.addProperty("content", comment.getContent());
 
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
-                .putComment(String.valueOf(comment.articleUid), String.valueOf(comment.commentUid), addAuthorizationBearer(token), jsonObject)
+                .putComment(String.valueOf(comment.getArticleUid()), String.valueOf(comment.getCommentUid()), addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Comment>() {
@@ -573,11 +573,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = comment.articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(comment.getArticleUid());
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -616,7 +616,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(DefaultResponse response) {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             Comment comment = new Comment();
-                            comment.articleUid = articleUid;
+                            comment.setArticleUid(articleUid);
                             apiCallback.onSuccess(comment);
                         } else {
                             apiCallback.onFailure(new Throwable(response.getError()));
@@ -643,8 +643,8 @@ public class CommunityRestInteractor implements CommunityInteractor {
     public void updateGrantCheck(int articleUid, ApiCallback apiCallback) {
         if (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS) {
             Article article = new Article();
-            article.isGrantEdit = false;
-            article.articleUid = articleUid;
+            article.setGrantEdit(false);
+            article.setArticleUid(articleUid);
             apiCallback.onSuccess(article);
             return;
         }
@@ -662,13 +662,13 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Article response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             Article article = new Article();
-                            article.isGrantEdit = response.isGrantEdit;
-                            article.articleUid = articleUid;
+                            article.setGrantEdit(response.isGrantEdit());
+                            article.setArticleUid(articleUid);
                             apiCallback.onSuccess(article);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -677,8 +677,8 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onError(Throwable throwable) {
                         if (((HttpException) throwable).code() == 403) {
                             Article article = new Article();
-                            article.isGrantEdit = false;
-                            article.articleUid = articleUid;
+                            article.setGrantEdit(false);
+                            article.setArticleUid(articleUid);
                             apiCallback.onSuccess(article);
                         } else {
                             if (throwable instanceof HttpException) {
@@ -713,11 +713,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(articleUid);
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -752,11 +752,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(articleUid);
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -779,11 +779,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
     @Override
     public void updateAnonymousComment(Comment comment, ApiCallback apiCallback) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("content", comment.content);
-        jsonObject.addProperty("password", comment.password);
+        jsonObject.addProperty("content", comment.getContent());
+        jsonObject.addProperty("password", comment.getPassword());
 
         RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
-                .putAnonymousComment(String.valueOf(comment.articleUid), String.valueOf(comment.commentUid), jsonObject)
+                .putAnonymousComment(String.valueOf(comment.getArticleUid()), String.valueOf(comment.getCommentUid()), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Comment>() {
@@ -794,11 +794,11 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
-                            response.articleUid = comment.articleUid;
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                            response.setArticleUid(comment.getArticleUid());
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -834,7 +834,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onNext(DefaultResponse response) {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             Comment comment = new Comment();
-                            comment.articleUid = articleUid;
+                            comment.setArticleUid(articleUid);
                             apiCallback.onSuccess(comment);
                         } else {
                             apiCallback.onFailure(new Throwable(response.getError()));
@@ -874,13 +874,13 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Article response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             Article article = new Article();
-                            article.isGrantEdit = response.isGrantEdit;
-                            article.articleUid = articleUid;
+                            article.setGrantEdit(response.isGrantEdit());
+                            article.setArticleUid(articleUid);
                             apiCallback.onSuccess(article);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -889,8 +889,8 @@ public class CommunityRestInteractor implements CommunityInteractor {
                     public void onError(Throwable throwable) {
                         if (((HttpException) throwable).code() == 403) {
                             Article article = new Article();
-                            article.isGrantEdit = false;
-                            article.articleUid = articleUid;
+                            article.setGrantEdit(false);
+                            article.setArticleUid(articleUid);
                             apiCallback.onSuccess(article);
                         } else {
                             if (throwable instanceof HttpException) {
@@ -925,10 +925,10 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
                     @Override
                     public void onNext(Article response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.error)) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable(response.error));
+                            apiCallback.onFailure(new Throwable(response.getError()));
                         }
                     }
 
@@ -970,7 +970,7 @@ public class CommunityRestInteractor implements CommunityInteractor {
                         if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete anonymous article"));
                         }
                     }
 

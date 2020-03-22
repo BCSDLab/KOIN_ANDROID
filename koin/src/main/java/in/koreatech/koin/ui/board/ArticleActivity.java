@@ -90,9 +90,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         ButterKnife.bind(this);
         this.context = this;
         this.article = new Article();
-        this.article.boardUid = getIntent().getIntExtra("BOARD_UID", 0);
-        this.article.articleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
-        this.article.isGrantEdit = getIntent().getBooleanExtra("ARTICLE_GRANT_EDIT", false);
+        this.article.setBoardUid(getIntent().getIntExtra("BOARD_UID", 0));
+        this.article.setArticleUid(getIntent().getIntExtra("ARTICLE_UID", 0));
+        this.article.setGrantEdit(getIntent().getBooleanExtra("ARTICLE_GRANT_EDIT", false));
 
         init();
     }
@@ -100,12 +100,12 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     @Override
     protected void onStart() {
         super.onStart();
-        if (this.article.boardUid == ID_ANONYMOUS) {
-            articlePresenter.getAnonymousArticle(this.article.articleUid);
+        if (this.article.getBoardUid() == ID_ANONYMOUS) {
+            articlePresenter.getAnonymousArticle(this.article.getArticleUid());
             return;
         }
-        articlePresenter.getArticle(this.article.articleUid);
-        articlePresenter.checkGranted(this.article.articleUid);
+        articlePresenter.getArticle(this.article.getArticleUid());
+        articlePresenter.checkGranted(this.article.getArticleUid());
     }
 
 
@@ -120,7 +120,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     }
 
     private void init() {
-        switch (this.article.boardUid) {
+        switch (this.article.getBoardUid()) {
             case ID_FREE:
                 koinBaseAppbarDark.setTitleText("자유게시판");
                 break;
@@ -220,18 +220,18 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
      */
     @Override
     public void onArticleDataReceived(Article article) {
-        if (this.article.boardUid != ID_ANONYMOUS)
+        if (this.article.getBoardUid() != ID_ANONYMOUS)
             checkRequiredInfo();
 
-        this.article.title = article.title;
-        this.article.authorNickname = article.authorNickname;
-        this.article.authorUid = article.authorUid;
-        this.article.createDate = article.createDate.substring(0, 10) + " " + article.createDate.substring(11, 16);
-        this.article.updateDate = article.updateDate.substring(0, 10) + " " + article.updateDate.substring(11, 16);
-        this.article.hitCount = article.hitCount;
-        this.article.content = article.content;
-        this.article.tag = article.tag;
-        this.articleCommentCount = String.valueOf(article.commentCount);
+        this.article.setTitle(article.getTitle());
+        this.article.setAuthorNickname(article.getAuthorNickname());
+        this.article.setArticleUid(article.getArticleUid());
+        this.article.setCreateDate(article.getCreateDate().substring(0, 10) + " " + article.getCreateDate().substring(11, 16));
+        this.article.setUpdateDate(article.getUpdateDate().substring(0, 10) + " " + article.getUpdateDate().substring(11, 16));
+        this.article.setHitCount(article.getHitCount());
+        this.article.setContent(article.getContent());
+        this.article.setTag(article.getTag());
+        this.articleCommentCount = String.valueOf(article.getCommentCount());
 
 //        mCommentRecyclerAdapter.setArticle(this.article);
 //
@@ -261,7 +261,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         if (authorize == AuthorizeConstant.ANONYMOUS) {
             return;
         } else {
-            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName;
+            nickName = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
         }
         if (FormValidatorUtil.validateStringIsEmpty(nickName)) {
         } else {
@@ -283,7 +283,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public void updateUserInterface() {
         StringBuilder title;
         StringBuilder commentButtonText;
-        title = new StringBuilder("<font color='black'>" + this.article.title + " " + "</font>");
+        title = new StringBuilder("<font color='black'>" + this.article.getTitle() + " " + "</font>");
         commentButtonText = new StringBuilder("<font color='black'>댓글</font>");
         if (this.articleCommentCount != null && Integer.parseInt(this.articleCommentCount) > 0) {
             title.append("<font color='#175c8e'>" + "(").append(this.articleCommentCount).append(")").append("</font>");
@@ -291,9 +291,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         }
         textViewTitle.setText(Html.fromHtml(title.toString()), TextView.BufferType.SPANNABLE);
         buttonCommentWrite.setText(Html.fromHtml(commentButtonText.toString()), TextView.BufferType.SPANNABLE);
-        textViewWriter.setText(this.article.authorNickname);
-        textViewCreateDate.setText(Html.fromHtml(this.article.createDate));
-        textViewViewCount.setText(String.valueOf(this.article.hitCount));
+        textViewWriter.setText(this.article.getAuthorNickname());
+        textViewCreateDate.setText(Html.fromHtml(this.article.getCreateDate()));
+        textViewViewCount.setText(String.valueOf(this.article.getHitCount()));
         editorContent.setDividerLayout(R.layout.tmpl_divider_layout);
         editorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
         editorContent.setListItemLayout(R.layout.tmpl_list_item);
@@ -302,7 +302,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         // 리치 에디터 폰트 설정
         editorContent.setHeadingTypeface(getEditorTypeface());
         editorContent.setContentTypeface(getEditorTypeface());
-        editorContent.render(renderHtmltoString(this.article.content));
+        editorContent.render(renderHtmltoString(this.article.getContent()));
 
         changeEditorChildViewSetting(editorContent, EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
@@ -361,9 +361,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     public void onClickEditButton() {
         String password = articlePasswordEdittext.getText().toString();
-        if (this.article.boardUid == ID_ANONYMOUS) {
+        if (this.article.getBoardUid() == ID_ANONYMOUS) {
             if (!password.isEmpty())
-                articlePresenter.checkAnonymousAdjustGranted(this.article.articleUid, password);
+                articlePresenter.checkAnonymousAdjustGranted(this.article.getArticleUid(), password);
             else
                 ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
             return;
@@ -371,10 +371,10 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
         Intent intent = new Intent(this, ArticleEditActivity.class);
         intent.putExtra("IS_EDIT", true);
-        intent.putExtra("ARTICLE_UID", this.article.articleUid);
-        intent.putExtra("BOARD_UID", this.article.boardUid);
-        intent.putExtra("ARTICLE_TITLE", this.article.title);
-        intent.putExtra("ARTICLE_CONTENT", this.article.content);
+        intent.putExtra("ARTICLE_UID", this.article.getArticleUid());
+        intent.putExtra("BOARD_UID", this.article.getBoardUid());
+        intent.putExtra("ARTICLE_TITLE", this.article.getTitle());
+        intent.putExtra("ARTICLE_CONTENT", this.article.getContent());
         startActivity(intent);
     }
 
@@ -424,12 +424,12 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 //    }
 
     public void onClickRemoveButton() {
-        if (this.article.boardUid != ID_ANONYMOUS)
-            SnackbarUtil.makeLongSnackbarActionYes(nestedScrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> articlePresenter.deleteArticle(this.article.articleUid));
-        else if (this.article.boardUid == ID_ANONYMOUS) {
+        if (this.article.getBoardUid() != ID_ANONYMOUS)
+            SnackbarUtil.makeLongSnackbarActionYes(nestedScrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> articlePresenter.deleteArticle(this.article.getArticleUid()));
+        else if (this.article.getBoardUid() == ID_ANONYMOUS) {
             String password = articlePasswordEdittext.getText().toString();
             if (!password.isEmpty())
-                articlePresenter.checkAnonymousDeleteGranted(this.article.articleUid, password);
+                articlePresenter.checkAnonymousDeleteGranted(this.article.getArticleUid(), password);
             else
                 ToastUtil.getInstance().makeShort("비밀번호를 입력해주세요");
 
@@ -466,14 +466,14 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     @Override
     public void showEditAndDeleteMenu() {
-        this.article.isGrantEdit = true;
-        showEditAndDeleteButton(this.article.isGrantEdit);
+        this.article.setGrantEdit(true);
+        showEditAndDeleteButton(this.article.isGrantEdit());
     }
 
     @Override
     public void hideEditAndDeleteMenu() {
-        this.article.isGrantEdit = false;
-        showEditAndDeleteButton(this.article.isGrantEdit);
+        this.article.setGrantEdit(false);
+        showEditAndDeleteButton(this.article.isGrantEdit());
     }
 
     public void showEditAndDeleteButton(boolean isGrant) {
@@ -566,11 +566,11 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         String password = articlePasswordEdittext.getText().toString();
         Intent intent = new Intent(this, ArticleEditActivity.class);
         intent.putExtra("IS_EDIT", true);
-        intent.putExtra("ARTICLE_UID", this.article.articleUid);
-        intent.putExtra("BOARD_UID", this.article.boardUid);
-        intent.putExtra("ARTICLE_TITLE", this.article.title);
-        intent.putExtra("ARTICLE_CONTENT", this.article.content);
-        intent.putExtra("NICKNAME", this.article.authorNickname);
+        intent.putExtra("ARTICLE_UID", this.article.getArticleUid());
+        intent.putExtra("BOARD_UID", this.article.getBoardUid());
+        intent.putExtra("ARTICLE_TITLE", this.article.getTitle());
+        intent.putExtra("ARTICLE_CONTENT", this.article.getContent());
+        intent.putExtra("NICKNAME", this.article.getAuthorNickname());
         intent.putExtra("PASSWORD", password);
         startActivity(intent);
     }
@@ -588,7 +588,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
                 .setMessage("게시글을 삭제할까요?\n댓글도 모두 사라집니다.")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    articlePresenter.deleteAnoymousArticle(this.article.articleUid, password);
+                    articlePresenter.deleteAnoymousArticle(this.article.getArticleUid(), password);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
         AlertDialog dialog = builder.create();    // 알림창 객체 생성
@@ -647,18 +647,18 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 //    }
 
     public void onClickCreateButton() {
-        if (this.article.boardUid != ID_ANONYMOUS) {
+        if (this.article.getBoardUid() != ID_ANONYMOUS) {
             AuthorizeConstant authorize = getAuthorize();
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().userNickName == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
                 showNickNameRequestDialog();
                 return;
             }
         }
         Intent intent = new Intent(this.context, ArticleEditActivity.class);
-        intent.putExtra("BOARD_UID", this.article.boardUid);
+        intent.putExtra("BOARD_UID", this.article.getBoardUid());
         startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
 
     }
@@ -667,11 +667,11 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public void onClickedCommentWriteButton() {
         Intent intent = new Intent(this, ArticleCommentActivity.class);
         intent.putExtra("IS_EDIT", true);
-        intent.putExtra("ARTICLE_UID", this.article.articleUid);
-        intent.putExtra("BOARD_UID", this.article.boardUid);
-        intent.putExtra("ARTICLE_TITLE", this.article.title);
-        intent.putExtra("ARTICLE_CONTENT", this.article.content);
-        intent.putExtra("NICKNAME", this.article.authorNickname);
+        intent.putExtra("ARTICLE_UID", this.article.getArticleUid());
+        intent.putExtra("BOARD_UID", this.article.getBoardUid());
+        intent.putExtra("ARTICLE_TITLE", this.article.getTitle());
+        intent.putExtra("ARTICLE_CONTENT", this.article.getContent());
+        intent.putExtra("NICKNAME", this.article.getAuthorNickname());
         startActivity(intent);
     }
 
