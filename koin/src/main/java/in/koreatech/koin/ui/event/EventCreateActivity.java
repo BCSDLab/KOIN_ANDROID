@@ -1,6 +1,10 @@
+package in.koreatech.koin.ui.event;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,8 +24,10 @@ import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
 import in.koreatech.koin.ui.board.KoinRichEditor;
+import in.koreatech.koin.ui.event.EventDetailActivity;
 import in.koreatech.koin.ui.event.presenter.EventCreateContract;
 import in.koreatech.koin.ui.event.presenter.EventCreatePresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
@@ -255,22 +261,22 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
         String thumbnail = getThumbnail();
 
         if (isEdit) {
-            eventCreatingPresenter.updateAdDetail(articleId, new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            eventCreatingPresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         } else {
-            eventCreatingPresenter.createAdDetail(new AdDetail(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            eventCreatingPresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         }
     }
 
     @Override
-    public void onAdDetailDataReceived(AdDetail adDetail) {
-        goToEventActivity(adDetail);
+    public void onEventDataReceived(Event event) {
+        goToEventActivity(event);
     }
 
     @Override
-    public void goToEventActivity(AdDetail adDetail) {
+    public void goToEventActivity(Event event) {
         if(!isEdit){
             Intent intent = new Intent(this, EventDetailActivity.class);
-            intent.putExtra("ID", adDetail.id);
+            intent.putExtra("ID", event.getId());
             intent.putExtra("GRANT_EDIT", true);
             startActivity(intent);
         }
@@ -289,7 +295,7 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
     }
 
     @Override
-    public void setPresenter(EventCreatingPresenter presenter) {
+    public void setPresenter(EventCreatePresenter presenter) {
         this.eventCreatingPresenter = presenter;
     }
 
