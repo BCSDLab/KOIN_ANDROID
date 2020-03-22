@@ -28,8 +28,8 @@ public class TokenSessionLocalInteractor implements TokenSessionInteractor {
             apiCallback.onFailure(new Exception(""));
         } else {
             UserInfoSharedPreferencesHelper.getInstance().saveLastLoginDate(TimeUtil.getDeviceCreatedDateOnlyLong());
-            UserInfoSharedPreferencesHelper.getInstance().saveToken(auth.token);
-            UserInfoSharedPreferencesHelper.getInstance().saveUser(auth.user);
+            UserInfoSharedPreferencesHelper.getInstance().saveToken(auth.getToken());
+            UserInfoSharedPreferencesHelper.getInstance().saveUser(auth.getUser());
 
             apiCallback.onSuccess(null);
         }
@@ -38,12 +38,12 @@ public class TokenSessionLocalInteractor implements TokenSessionInteractor {
     @Override
     public void saveSession(Auth auth, String userPw, final ApiCallback apiCallback) {
 
-        if (auth.user == null) {
+        if (auth.getUser() == null) {
             apiCallback.onFailure(new Exception(""));
         } else {
             UserInfoSharedPreferencesHelper.getInstance().saveLastLoginDate(TimeUtil.getDeviceCreatedDateOnlyLong());
-            UserInfoSharedPreferencesHelper.getInstance().saveToken(auth.token);
-            UserInfoSharedPreferencesHelper.getInstance().saveUser(auth.user);
+            UserInfoSharedPreferencesHelper.getInstance().saveToken(auth.getToken());
+            UserInfoSharedPreferencesHelper.getInstance().saveUser(auth.getUser());
             UserInfoSharedPreferencesHelper.getInstance().saveUserPw(userPw);
 
             apiCallback.onSuccess(null);

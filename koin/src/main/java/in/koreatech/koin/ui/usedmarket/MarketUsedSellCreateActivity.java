@@ -120,7 +120,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         this.context = this;
         setContentView(R.layout.market_used_sell_create_activity);
         ButterKnife.bind(this);
-        this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+        this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber();
         init();
 
 
@@ -639,25 +639,25 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         this.phoneNumber = marketSellCreateEditTextPhoneNum.getText().toString().trim();
 
         if (this.isPhoneOpen) {
-            this.marketItem.isPhoneOpen = 1;
-            this.marketItem.phone = this.phoneNumber;
+            this.marketItem.setIsPhoneOpen(1);
+            this.marketItem.setPhone(this.phoneNumber);
         } else {
-            this.marketItem.isPhoneOpen = 0;
-            this.marketItem.phone = null;
+            this.marketItem.setIsPhoneOpen(0);
+            this.marketItem.setPhone(null);
         }
-        this.marketItem.type = SELL_CODE;
-        this.marketItem.title = marketSellCreateTitleEditText.getText().toString().trim();
-        this.marketItem.price = Integer.parseInt(this.price);
+        this.marketItem.setType(SELL_CODE);
+        this.marketItem.setTitle(marketSellCreateTitleEditText.getText().toString().trim());
+        this.marketItem.setPrice(Integer.parseInt(this.price));
 
         if (marketSellCreateContent.getText().toString().trim().length() != 0) {
-            this.marketItem.content = Html.toHtml(spannableStringBuilder).trim();
+            this.marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
             this.isContentCheck = true;
         } else {
             this.isContentCheck = false;
         }
 
-        this.marketItem.state = this.itemState;
-        if (this.isPhoneOpen && (this.marketItem.phone.length() == 13)) {
+        this.marketItem.setState(this.itemState);
+        if (this.isPhoneOpen && (this.marketItem.getPhone().length() == 13)) {
             if (this.phoneNumber.charAt(3) == '-' && this.phoneNumber.charAt(8) == '-')
                 this.isPhoneCheck = true;
             else
@@ -668,7 +668,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         else
             this.isPhoneCheck = false;
 
-        if (this.marketItem.title.length() == 0)
+        if (this.marketItem.getTitle().length() == 0)
             this.isTitlecheck = false;
         else
             this.isTitlecheck = true;
@@ -691,7 +691,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void showMarketCreatedSuccess(Item item) {
         Intent intent = new Intent(this, MarketUsedSellDetailActivity.class);
         intent.putExtra("MARKET_ID", SELL_CODE);
-        intent.putExtra("ITEM_ID", item.id);
+        intent.putExtra("ITEM_ID", item.getId());
         intent.putExtra("GRANT_CHECK", true);
         startActivity(intent);
         finish();
@@ -712,7 +712,7 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
     public void showImageUploadSuccess(String url) {
         marketSellCreateThumbnailImageView.setVisibility(View.VISIBLE);
         Glide.with(context).asBitmap().load(url).into(marketSellCreateThumbnailImageView);
-        this.marketItem.thumbnail = url;
+        this.marketItem.setThumbnail(url);
     }
 
     @Override

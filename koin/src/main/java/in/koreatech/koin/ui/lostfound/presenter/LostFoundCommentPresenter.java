@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
@@ -23,14 +24,14 @@ public class LostFoundCommentPresenter {
     final ApiCallback createCommentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            lostFoundCommentView.showMessage("생성되었습니다.");
+            lostFoundCommentView.showMessage(R.string.lost_and_found_created);
             getLostItem(id);
             lostFoundCommentView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundCommentView.showMessage("네트워크를 확인해주세요");
+            lostFoundCommentView.showMessage(R.string.error_network);
             lostFoundCommentView.hideLoading();
         }
     };
@@ -38,14 +39,14 @@ public class LostFoundCommentPresenter {
     final ApiCallback updateCommentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            lostFoundCommentView.showMessage("수정되었습니다.");
+            lostFoundCommentView.showMessage(R.string.lost_and_found_edited);
             getLostItem(id);
             lostFoundCommentView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundCommentView.showMessage("네트워크를 확인해주세요");
+            lostFoundCommentView.showMessage(R.string.error_network);
             lostFoundCommentView.hideLoading();
         }
     };
@@ -57,16 +58,16 @@ public class LostFoundCommentPresenter {
                 DefaultResponse defaultResponse = (DefaultResponse) object;
                 if (defaultResponse.success) {
                     getLostItem(id);
-                    lostFoundCommentView.showMessage("삭제되었습니다.");
+                    lostFoundCommentView.showMessage(R.string.lost_and_found_deleted);
                 } else
-                    lostFoundCommentView.showMessage("삭제에 실패했습니다.");
+                    lostFoundCommentView.showMessage(R.string.lost_and_found_delete_fail);
             }
             lostFoundCommentView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundCommentView.showMessage("네트워크를 확인해주세요");
+            lostFoundCommentView.showMessage(R.string.error_network);
             lostFoundCommentView.hideLoading();
         }
     };
@@ -78,14 +79,14 @@ public class LostFoundCommentPresenter {
                 LostItem lostItem = (LostItem) object;
                 lostFoundCommentView.showSuccessLostItem(lostItem);
             } else {
-                lostFoundCommentView.showMessage("네트워크를 확인해주세요");
+                lostFoundCommentView.showMessage(R.string.error_network);
             }
             lostFoundCommentView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundCommentView.showMessage("네트워크를 확인해주세요");
+            lostFoundCommentView.showMessage(R.string.error_network);
             lostFoundCommentView.hideLoading();
         }
     };

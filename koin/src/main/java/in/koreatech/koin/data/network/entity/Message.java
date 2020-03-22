@@ -10,12 +10,12 @@ import in.koreatech.koin.util.TimeUtil;
 
 
 public class Message {
-    public String uid;
-    public String userName;
-    public String message;
-    public String createDate;
-    public Boolean isNotice;
-    public Boolean isDeleted;
+    private String uid;
+    private String userName;
+    private String message;
+    private String createDate;
+    private Boolean isNotice;
+    private Boolean isDeleted;
 
     public Message() {
         this.createDate = TimeUtil.getCurrentTimeToMessage();
@@ -56,4 +56,51 @@ public class Message {
         return msg;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public Boolean getNotice() {
+        return isNotice;
+    }
+
+    public void setNotice(Boolean notice) {
+        isNotice = notice;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
 }

@@ -295,7 +295,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
         setInformationTextView(land);
 
         // 원룸 이미지
-        if (land.imageUrls != null && !land.imageUrls.isEmpty()) {
+        if (land.getImageUrls() != null && !land.getImageUrls().isEmpty()) {
             setRoomImageView(land);
         } else {
             landDetailNoImageTextView.setText("이미지 준비 중입니다.");
@@ -305,7 +305,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
         setRoomOption(land);
 
         // 원룸 위치
-        landDetailRoomAddressTextView.setText((land.address == null) ? "원룸 위치에 대한 정보가 없습니다." : land.address);  // 주소
+        landDetailRoomAddressTextView.setText((land.getAddress() == null) ? "원룸 위치에 대한 정보가 없습니다." : land.getAddress());  // 주소
 
     }
 
@@ -316,34 +316,34 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     private void setRoomOption(Land land) {
         PorterDuffColorFilter grayFilter = new PorterDuffColorFilter(getResources().getColor(R.color.gray4), PorterDuff.Mode.SRC_ATOP);
-        if (!land.optAirConditioner)
+        if (!land.getOptAirConditioner())
             setGray(landDetailAirconditionerImageview, landDetailAirconditionerTextview, grayFilter);
-        if (!land.optRefrigerator)
+        if (!land.getOptRefrigerator())
             setGray(landDetailRefrigeratorImageView, landDetailRefrigeratorTextview, grayFilter);
-        if (!land.optCloset)
+        if (!land.getOptCloset())
             setGray(landDetailClosetImageView, landDetailClosetTextview, grayFilter);
-        if (!land.optTv)
+        if (!land.getOptTv())
             setGray(landDetailTvImageview, landDetailTvTextview, grayFilter);
-        if (!land.optElectronicDoorLock)
+        if (!land.getOptElectronicDoorLock())
             setGray(landDetailDoorlockImageView, landDetailDoorlockTextview, grayFilter);
-        if (!land.optMicrowave)
+        if (!land.getOptMicrowave())
             setGray(landDetailMicrowaveImageView, landDetailMicrowaveTextview, grayFilter);
-        if (!land.optGasRange)
+        if (!land.getOptGasRange())
             setGray(landDetailGasrangeImageView, landDetailGasrangeTextview, grayFilter);
-        if (!land.optInduction)
+        if (!land.getOptInduction())
             setGray(landDetailInductionImageView, landDetailInductionTextview, grayFilter);
-        if (!land.optWaterPurifier)
+        if (!land.getOptWaterPurifier())
             setGray(landDetailWaterpurifierImageView, landDetailWaterpurifierTextview, grayFilter);
-        if (!land.optBidet) setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
-        if (!land.optWasher)
+        if (!land.getOptBidet()) setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
+        if (!land.getOptWasher())
             setGray(landDetailWasherImageView, landDetailWasherTextview, grayFilter);
-        if (!land.optBed) setGray(landDetailBedImageView, landDetailBedTextview, grayFilter);
-        if (!land.optDesk) setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
-        if (!land.optShoeCloset)
+        if (!land.getOptBed()) setGray(landDetailBedImageView, landDetailBedTextview, grayFilter);
+        if (!land.getOptDesk()) setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
+        if (!land.getOptShoeCloset())
             setGray(landDetailShoeclosetImageView, landDetailShoeclosetTextview, grayFilter);
-        if (!land.optVeranda)
+        if (!land.getOptVeranda())
             setGray(landDetailVerandaImageView, landDetailVerandaTextview, grayFilter);
-        if (!land.optElevator)
+        if (!land.getOptElevator())
             setGray(landDetailElevatorImageView, landDetailElevatorTextview, grayFilter);
     }
 
@@ -366,12 +366,12 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     private void setRoomImageView(Land land) {
         landDetailNoImageTextView.setVisibility(View.GONE);
-        if (land.imageUrls.size() > 1) landDetailIcRightImageview.setVisibility(View.VISIBLE);
+        if (land.getImageUrls().size() > 1) landDetailIcRightImageview.setVisibility(View.VISIBLE);
 
         initViewPagerListener();
         viewPager.addOnPageChangeListener(viewPagerOnPageChangeListener);
 
-        landDetailPagerAdapter = new LandDetailPagerAdapter(this, land.imageUrls);
+        landDetailPagerAdapter = new LandDetailPagerAdapter(this, land.getImageUrls());
         viewPager.setAdapter(landDetailPagerAdapter);
     }
 
@@ -403,15 +403,15 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      * @param land Land 객체
      */
     private void setInformationTextView(Land land) {
-        landDetailNameTextView.setText(((land.name == null) || (land.name.equals(""))) ? "No Name" : land.name);  // 원름 이름
-        landDetailCharterfeeTextView.setText(((land.charterFee == null) || (land.charterFee.equals(""))) ? "-" : land.charterFee); // 전세
-        landDetailRoomTypeTextView.setText(((land.roomType == null) || (land.roomType.equals(""))) ? "-" : land.roomType); // 방 종류
-        landDetailMonthlyfeeTextView.setText(((land.monthlyFee == null) || (land.monthlyFee.equals(""))) ? "-" : land.monthlyFee); // 월세
-        landDetailDepositTextView.setText(((land.deposit == null) || (land.deposit.equals(""))) ? "-" : land.deposit); // 보증금
-        landDetailFloorTextView.setText((land.floor > 1) ? land.floor + " 층" : "-"); // 층수
-        landDetailManagementfeeTextView.setText(((land.managementFee == null) || (land.managementFee.equals(""))) ? "-" : land.managementFee); // 관리비
-        landDetailRoomSizeTextView.setText(((land.size == null) || (land.size.equals(""))) ? "-" : land.size); // 방 크기
-        landDetailPhoneTextView.setText(((land.phone == null) || (land.phone.equals(""))) ? "-" : land.phone); // 연락처
+        landDetailNameTextView.setText(((land.getName() == null) || (land.getName().equals(""))) ? "No Name" : land.getName());  // 원름 이름
+        landDetailCharterfeeTextView.setText(((land.getCharterFee() == null) || (land.getCharterFee().equals(""))) ? "-" : land.getCharterFee()); // 전세
+        landDetailRoomTypeTextView.setText(((land.getRoomType() == null) || (land.getRoomType().equals(""))) ? "-" : land.getRoomType()); // 방 종류
+        landDetailMonthlyfeeTextView.setText(((land.getMonthlyFee() == null) || (land.getMonthlyFee().equals(""))) ? "-" : land.getMonthlyFee()); // 월세
+        landDetailDepositTextView.setText(((land.getDeposit() == null) || (land.getDeposit().equals(""))) ? "-" : land.getDeposit()); // 보증금
+        landDetailFloorTextView.setText((land.getFloor() > 1) ? land.getFloor() + " 층" : "-"); // 층수
+        landDetailManagementfeeTextView.setText(((land.getManagementFee() == null) || (land.getManagementFee().equals(""))) ? "-" : land.getManagementFee()); // 관리비
+        landDetailRoomSizeTextView.setText(((land.getSize() == null) || (land.getSize().equals(""))) ? "-" : land.getSize()); // 방 크기
+        landDetailPhoneTextView.setText(((land.getPhone() == null) || (land.getPhone().equals(""))) ? "-" : land.getPhone()); // 연락처
     }
 
     @Override

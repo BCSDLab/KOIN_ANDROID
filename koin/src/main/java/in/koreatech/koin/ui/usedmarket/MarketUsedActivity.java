@@ -107,7 +107,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
             showLoginRequestDialog();
             return;
         }
-        if (getUser().userNickName != null)
+        if (getUser().getUserNickName() != null)
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");

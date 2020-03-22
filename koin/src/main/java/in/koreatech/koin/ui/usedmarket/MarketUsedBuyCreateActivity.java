@@ -121,7 +121,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
         this.context = this;
         setContentView(R.layout.market_used_buy_create_activity);
         ButterKnife.bind(this);
-        phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber;
+        phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber();
         init();
     }
 
@@ -636,25 +636,25 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
         phoneNumber = marketBuyCreateEditTextPhoneNum.getText().toString().trim();
 
         if (isPhoneOpen) {
-            marketItem.isPhoneOpen = 1;
-            marketItem.phone = phoneNumber;
+            marketItem.setIsPhoneOpen(1);
+            marketItem.setPhone(phoneNumber);
         } else {
-            marketItem.isPhoneOpen = 0;
-            marketItem.phone = null;
+            marketItem.setIsPhoneOpen(0);
+            marketItem.setPhone(null);
         }
-        marketItem.type = BUY_CODE;
-        marketItem.title = marketBuyCreateTitleEditText.getText().toString().trim();
-        marketItem.price = Integer.parseInt(price);
+        marketItem.setType(BUY_CODE);
+        marketItem.setTitle(marketBuyCreateTitleEditText.getText().toString().trim());
+        marketItem.setPrice(Integer.parseInt(price));
 
         if (marketBuyCreateContent.getText().toString().trim().length() != 0) {
-            marketItem.content = Html.toHtml(spannableStringBuilder).trim();
+            marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
             isContentCheck = true;
         } else {
             isContentCheck = false;
         }
 
-        marketItem.state = itemState;
-        if (isPhoneOpen && (marketItem.phone.trim().length() == 13)) {
+        marketItem.setState(itemState);
+        if (isPhoneOpen && (marketItem.getPhone().trim().length() == 13)) {
             if (phoneNumber.charAt(3) == '-' && phoneNumber.charAt(8) == '-')
                 isPhoneCheck = true;
             else
@@ -665,7 +665,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
         else
             isPhoneCheck = false;
 
-        if (marketItem.title.length() == 0)
+        if (marketItem.getTitle().length() == 0)
             isTitlecheck = false;
         else
             isTitlecheck = true;
@@ -688,7 +688,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     public void showMarketCreatedSuccess(Item item) {
         Intent intent = new Intent(this, MarketUsedBuyDetailActivity.class);
         intent.putExtra("MARKET_ID", BUY_CODE);
-        intent.putExtra("ITEM_ID", item.id);
+        intent.putExtra("ITEM_ID", item.getId());
         intent.putExtra("GRANT_CHECK", true);
         startActivity(intent);
         finish();
@@ -709,7 +709,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     public void showImageUploadSuccess(String url) {
         marketBuyCreateThumbnailImageView.setVisibility(View.VISIBLE);
         Glide.with(context).asBitmap().load(url).into(marketBuyCreateThumbnailImageView);
-        marketItem.thumbnail = url;
+        marketItem.setThumbnail(url);
     }
 
     @Override

@@ -61,25 +61,25 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dining dining = diningArrayList.get(position);
-        holder.textViewTitle.setText(dining.place);        // 식당이름(한식, 양식, 2캠퍼스 등)
+        holder.textViewTitle.setText(dining.getPlace());        // 식당이름(한식, 양식, 2캠퍼스 등)
 
         StringBuilder sb = new StringBuilder();
         dining = checkDiningString(dining);
-        sb.append(dining.kcal).append("kcal");
+        sb.append(dining.getKcal()).append("kcal");
         holder.textViewInfo.setText(sb.toString());        //식단 정보 (칼로리 정보)
 
         sb = new StringBuilder();
         sb.append("캐시비 ")
-                .append(dining.priceCard).append("원 / 현금 ")
-                .append(dining.priceCash).append("원");
+                .append(dining.getPriceCard()).append("원 / 현금 ")
+                .append(dining.getPriceCash()).append("원");
         holder.textViewPrice.setText(sb.toString());       //가격 정보
 
         sb = new StringBuilder();
-        for (String menuItem : dining.menu) {
+        for (String menuItem : dining.getMenu()) {
             sb.append(menuItem).append("\n");
         }
 
-        if (!dining.place.equals("능수관"))
+        if (!dining.getPlace().equals("능수관"))
             holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         else
             holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
@@ -93,12 +93,12 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
     }
 
     public Dining checkDiningString(Dining dining) {
-        if (dining.kcal == null)
-            dining.kcal = 0;
-        if (dining.priceCard == null)
-            dining.priceCard = 0;
-        if (dining.priceCash == null)
-            dining.priceCash = 0;
+        if (dining.getKcal() == null)
+            dining.setKcal(0);
+        if (dining.getPriceCard() == null)
+            dining.setPriceCard(0);
+        if (dining.getPriceCash() == null)
+            dining.setPriceCash(0);
 
         return dining;
     }

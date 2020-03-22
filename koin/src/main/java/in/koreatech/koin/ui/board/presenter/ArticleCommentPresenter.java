@@ -19,7 +19,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             getArticle(articleUid);
         }
 
@@ -32,7 +32,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentCreateApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessCreateComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -48,7 +48,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentEditApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessEditComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -64,7 +64,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentDeleteApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessDeleteComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -80,7 +80,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentAnoymousApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessCreateAnonymousComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -96,7 +96,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentAnoymousUpdateApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessUpdateAnonymousComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -111,7 +111,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback commentAnoymousDeleteApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            int articleUid = ((Comment) object).articleUid;
+            int articleUid = ((Comment) object).getArticleUid();
             articleCommentView.showSuccessAnonymousDeleteComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -128,7 +128,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback grantAnonymousDeleteCommentGrantedApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit;
+            boolean isGrantEdit = ((Article) object).isGrantEdit();
             if (isGrantEdit)
                 articleCommentView.showSuccessGrantedDeleteComment();
             else
@@ -147,7 +147,7 @@ public class ArticleCommentPresenter {
     private final ApiCallback grantAnonymousAdjustCommentGrantedApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit;
+            boolean isGrantEdit = ((Article) object).isGrantEdit();
             if (isGrantEdit)
                 articleCommentView.showSuccessGrantedAdjustComment();
             else
@@ -198,7 +198,7 @@ public class ArticleCommentPresenter {
 
     public void updateComment(int articleUid, Comment comment) {
         articleCommentView.showLoading();
-        comment.articleUid = articleUid;
+        comment.setArticleUid(articleUid);
         communityInteractor.updateComment(comment, commentEditApiCallback);
     }
 
@@ -215,7 +215,7 @@ public class ArticleCommentPresenter {
 
     public void updateAnonymousComment(int articleUid, Comment comment) {
         articleCommentView.showLoading();
-        comment.articleUid = articleUid;
+        comment.setArticleUid(articleUid);
         communityInteractor.updateAnonymousComment(comment, commentAnoymousUpdateApiCallback);
     }
 

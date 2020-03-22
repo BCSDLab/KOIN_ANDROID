@@ -200,6 +200,12 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
         isverified = false;
     }
 
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+        isverified = false;
+    }
+
     /**
      * 학교 이메일 화면으로 이동할지 확인하는 snackbar 표시 메소드
      */
@@ -289,7 +295,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     @Override
     public void showProgress() {
-        showProgressDialog("이메일 전송 중");
+        showProgressDialog(R.string.email_sending);
     }
 
     @Override

@@ -8,15 +8,23 @@ public class Auth {
 
     @SerializedName("token")
     @Expose
-    public final String token;
+    private final String token;
 
     @SerializedName("user")
     @Expose
-    public final User user;
+    private final User user;
 
     public Auth(String token, User user) {
         this.token = token;
         this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
 

@@ -9,79 +9,79 @@ import java.util.ArrayList;
 public class LostItem implements Serializable {
     @SerializedName("comment_count")
     @Expose
-    public int commentCount;
+    private int commentCount;
 
     @SerializedName("date")
     @Expose
-    public String date;
+    private String date;
 
     @SerializedName("is_phone_open")
     @Expose
-    public boolean isPhoneOpen;
+    private boolean isPhoneOpen;
 
     @SerializedName("thumbnail")
     @Expose
-    public String thumbnail;
+    private String thumbnail;
 
     @SerializedName("ip")
     @Expose
-    public String ip;
+    private String ip;
 
     @SerializedName("created_at")
     @Expose
-    public String createdAt;
+    private String createdAt;
 
     @SerializedName("image_urls")
     @Expose
-    public String imageUrls;
+    private String imageUrls;
 
     @SerializedName("title")
     @Expose
-    public String title;
+    private String title;
 
     @SerializedName("type")
     @Expose
-    public int type;
+    private int type;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("hit")
     @Expose
-    public int hit;
+    private int hit;
 
     @SerializedName("is_deleted")
     @Expose
-    public boolean isDeleted;
+    private boolean isDeleted;
 
     @SerializedName("updated_at")
     @Expose
-    public String updatedAt;
+    private String updatedAt;
 
     @SerializedName("phone")
     @Expose
-    public String phone;
+    private String phone;
 
     @SerializedName("user_id")
     @Expose
-    public int userId;
+    private int userId;
 
     @SerializedName("nickname")
     @Expose
-    public String nickname;
+    private String nickname;
 
     @SerializedName("location")
     @Expose
-    public String location;
+    private String location;
 
     @SerializedName("id")
     @Expose
-    public int id;
+    private int id;
 
     @SerializedName("state")
     @Expose
-    public int state;
+    private int state;
 
     public ArrayList<Comment> getComments() {
         return comments;
@@ -169,5 +169,81 @@ public class LostItem implements Serializable {
 
     public int getState() {
         return state;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setPhoneOpen(boolean phoneOpen) {
+        isPhoneOpen = phoneOpen;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setImageUrls(String imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setHit(int hit) {
+        this.hit = hit;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

@@ -54,7 +54,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (!response.marketArrayList.isEmpty()) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to read market list"));
                         }
                     }
 
@@ -96,7 +96,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to read market detail"));
                         }
                     }
 
@@ -135,7 +135,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to get market item granted"));
                         }
                     }
 
@@ -173,7 +173,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail to create comment"));
                         }
                     }
 
@@ -209,7 +209,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete comment"));
                         }
                     }
 
@@ -247,7 +247,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail edit comment"));
                         }
                     }
 
@@ -284,7 +284,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail edit market content"));
                         }
                     }
 
@@ -321,7 +321,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail create market item"));
                         }
                     }
 
@@ -359,7 +359,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail delete market item"));
                         }
                     }
 
@@ -399,7 +399,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail upload thumbnail image"));
                         }
                     }
 
@@ -444,7 +444,7 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail upload image"));
                         }
                     }
 

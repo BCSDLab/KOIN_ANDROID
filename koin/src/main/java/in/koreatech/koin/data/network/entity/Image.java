@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Image {
     @SerializedName("url")
     @Expose
-    ArrayList<String> urls;
+    private ArrayList<String> urls;
 
     public ArrayList<String> getUrls() {
         return urls;

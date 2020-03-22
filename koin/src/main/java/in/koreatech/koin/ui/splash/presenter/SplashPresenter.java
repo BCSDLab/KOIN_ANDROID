@@ -86,7 +86,7 @@ public class SplashPresenter{
      * 토큰을 업데이트 하는 메소드
      */
     public void updateToken() {
-        authInteractor.readToken(UserInfoSharedPreferencesHelper.getInstance().loadUser().userId,
+        authInteractor.readToken(UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserId(),
                 UserInfoSharedPreferencesHelper.getInstance().loadUserPw(),
                 true, authApiCallback);
     }

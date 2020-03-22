@@ -8,65 +8,65 @@ import java.util.ArrayList;
 public class Article {
     @SerializedName("id")
     @Expose
-    public int articleUid;
+    private int articleUid;
 
     @SerializedName("board_id")
     @Expose
-    public int boardUid;
+    private int boardUid;
 
     @SerializedName("title")
     @Expose
-    public String title;
+    private String title;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("user_id")
     @Expose
-    public String authorUid;
+    private String authorUid;
 
     @SerializedName("nickname")
     @Expose
-    public String authorNickname;
+    private String authorNickname;
 
     @SerializedName("hit")
     @Expose
-    public int hitCount;
+    private int hitCount;
 
     @SerializedName("comment_count")
     @Expose
-    public int commentCount;
+    private int commentCount;
 
     @SerializedName("is_solved")
     @Expose
-    public Boolean isSolved;
+    private Boolean isSolved;
 
     @SerializedName("updated_at")
     @Expose
-    public String updateDate;
+    private String updateDate;
 
     @SerializedName("created_at")
     @Expose
-    public String createDate;
+    private String createDate;
 
 
     @SerializedName("comments")
     @Expose
-    public ArrayList<Comment> commentArrayList = new ArrayList<>();
+    private ArrayList<Comment> commentArrayList = new ArrayList<>();
 
 
     @SerializedName("tag")
     @Expose
-    public String tag;
+    private String tag;
 
     @SerializedName("grantEdit")
     @Expose
-    public boolean isGrantEdit;
+    private boolean isGrantEdit;
 
     @SerializedName("erorr")
     @Expose
-    public String error;
+    private String error;
 
     public Article() {
     }
@@ -113,6 +113,126 @@ public class Article {
         this.createDate = createDate;
         this.commentArrayList = new ArrayList<>();
         this.commentArrayList.addAll(commentArrayList);
+        this.tag = tag;
+    }
+
+    public int getArticleUid() {
+        return articleUid;
+    }
+
+    public void setArticleUid(int articleUid) {
+        this.articleUid = articleUid;
+    }
+
+    public int getBoardUid() {
+        return boardUid;
+    }
+
+    public void setBoardUid(int boardUid) {
+        this.boardUid = boardUid;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getAuthorUid() {
+        return authorUid;
+    }
+
+    public void setAuthorUid(String authorUid) {
+        this.authorUid = authorUid;
+    }
+
+    public String getAuthorNickname() {
+        return authorNickname;
+    }
+
+    public void setAuthorNickname(String authorNickname) {
+        this.authorNickname = authorNickname;
+    }
+
+    public int getHitCount() {
+        return hitCount;
+    }
+
+    public void setHitCount(int hitCount) {
+        this.hitCount = hitCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public Boolean getSolved() {
+        return isSolved;
+    }
+
+    public void setSolved(Boolean solved) {
+        isSolved = solved;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public ArrayList<Comment> getCommentArrayList() {
+        return commentArrayList;
+    }
+
+    public void setCommentArrayList(ArrayList<Comment> commentArrayList) {
+        this.commentArrayList = commentArrayList;
+    }
+
+    public boolean isGrantEdit() {
+        return isGrantEdit;
+    }
+
+    public void setGrantEdit(boolean grantEdit) {
+        isGrantEdit = grantEdit;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
         this.tag = tag;
     }
 }

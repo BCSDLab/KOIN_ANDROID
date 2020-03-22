@@ -93,11 +93,11 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     public void init() {
         new LostFoundEditPresenter(this);
         lostItem = new LostItem();
-        lostItem.type = 0;
-        lostItem.isPhoneOpen = false;
-        lostItem.content = "";
-        lostItem.phone = "";
-        setPhoneNumber(lostItem.isPhoneOpen);
+        lostItem.setType(0);
+        lostItem.setPhoneOpen(false);
+        lostItem.setContent("");
+        lostItem.setPhone("");
+        setPhoneNumber(lostItem.isPhoneOpen());
         imageURL = new ArrayList<>();
         lostDateYear = calendar.get(Calendar.YEAR);
         lostDateMonth = calendar.get(Calendar.MONTH) + 1;
@@ -111,7 +111,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         lostFoundCreateFoundRadioButton.setOnCheckedChangeListener(this);
         lostFoundCreatePhonePublicRadioButton.setOnCheckedChangeListener(this);
         lostFoundCreatePhonePraivateRadioButton.setOnCheckedChangeListener(this);
-        setKoreanTextViewByType(lostItem.type);
+        setKoreanTextViewByType(lostItem.getType());
         contentEditTextChangedListener();
     }
 
@@ -144,18 +144,18 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
                 lostFoundCreatePhonePublicRadioButton.setChecked(false);
                 lostFoundCreatePhonePraivateRadioButton.setChecked(true);
             }
-            if (lostItem.title != null)
-                lostFoundCreateTitleEditText.setText(lostItem.title);
-            if (lostItem.location != null)
-                lostFoundCreatePlaceNameEditText.setText(lostItem.location);
+            if (lostItem.getTitle() != null)
+                lostFoundCreateTitleEditText.setText(lostItem.getTitle());
+            if (lostItem.getLocation() != null)
+                lostFoundCreatePlaceNameEditText.setText(lostItem.getLocation());
         }
         if (lostItem.getLocation() != null)
             lostFoundCreatePlaceNameEditText.setText(lostItem.getLocation());
-        if (lostItem.content != null) {
+        if (lostItem.getContent() != null) {
             Spanned spanned = Html.fromHtml(lostItem.getContent(), this, null);
             lostFoundCreateContentEditText.setText(spanned);
         }
-        setPhoneNumber(lostItem.isPhoneOpen);
+        setPhoneNumber(lostItem.isPhoneOpen());
         setKoreanTextViewByType(lostItem.getType());
     }
 
@@ -198,21 +198,21 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
             lostFoundCreateFoundRadioButton.setChecked(true);
             lostFoundCreateGetRadioButton.setChecked(false);
         }
-        lostItem.type = type;
+        lostItem.setType(type);
     }
 
     public void setPhoneNumber(boolean isPublic) {
-        lostItem.isPhoneOpen = isPublic;
+        lostItem.setPhoneOpen(isPublic);
         if (isPublic) {
             lostFoundCreatePhoneNumEditText.setFocusableInTouchMode(true);
-            if (lostItem.phone != null) {
-                lostFoundCreatePhoneNumEditText.setText(lostItem.phone);
-            } else if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null && UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber != null) {
-                lostFoundCreatePhoneNumEditText.setText(UserInfoSharedPreferencesHelper.getInstance().loadUser().phoneNumber);
+            if (lostItem.getPhone() != null) {
+                lostFoundCreatePhoneNumEditText.setText(lostItem.getPhone());
+            } else if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null && UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber() != null) {
+                lostFoundCreatePhoneNumEditText.setText(UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber());
             }
         } else {
             lostFoundCreatePhoneNumEditText.setFocusable(false);
-            lostItem.phone = lostFoundCreatePhoneNumEditText.getText().toString().trim();
+            lostItem.setPhone(lostFoundCreatePhoneNumEditText.getText().toString().trim());
             lostFoundCreatePhoneNumEditText.getText().clear();
         }
     }
@@ -247,7 +247,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         String lostPlace = lostFoundCreatePlaceNameEditText.getText().toString().trim();
         String lostDate = lostfoundCreateLostdateTextview.getText().toString();
         String phoneNumber = lostFoundCreatePhoneNumEditText.getText().toString().trim();
-        boolean isPhoneValid = lostItem.isPhoneOpen;
+        boolean isPhoneValid = lostItem.isPhoneOpen();
         int type = lostItem.getType();
 
         if (title.isEmpty()) {
@@ -265,19 +265,19 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
         content = Html.toHtml(spannableStringBuilder).trim();
         content = addImageSpan(content, imageURL);
-        submitLostItem.type = type;
-        submitLostItem.content = content;
-        submitLostItem.title = title;
-        submitLostItem.location = lostPlace;
-        submitLostItem.date = lostDate;
-        submitLostItem.isPhoneOpen = isPhoneValid;
+        submitLostItem.setType(type);
+        submitLostItem.setContent(content);
+        submitLostItem.setTitle(title);
+        submitLostItem.setLocation(lostPlace);
+        submitLostItem.setDate(lostDate);
+        submitLostItem.setPhoneOpen(isPhoneValid);
         if (isPhoneValid)
-            submitLostItem.phone = phoneNumber;
+            submitLostItem.setPhone(phoneNumber);
 
         if (mode == CREATE_MODE) {
             lostAndFoundPresenter.createLostItem(submitLostItem);
         } else if (mode == EDIT_MODE) {
-            lostAndFoundPresenter.updateLostItem(lostItem.id, submitLostItem);
+            lostAndFoundPresenter.updateLostItem(lostItem.getId(), submitLostItem);
         }
 
     }
@@ -336,11 +336,11 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (!s.toString().equals(lostItem.content)) {
-                    lostItem.content = s.toString();
-                    int number = getCharNumber(lostItem.content, (char) 65532);
+                if (!s.toString().equals(lostItem.getContent())) {
+                    lostItem.setContent(s.toString());
+                    int number = getCharNumber(lostItem.getContent(), (char) 65532);
                     if (number < imageURL.size())
-                        deleteImageUrlAtArrayList(lostItem.content, start);
+                        deleteImageUrlAtArrayList(lostItem.getContent(), start);
 
                 }
             }
@@ -398,7 +398,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     @Override
     public void showSuccessCreate(LostItem lostItem) {
         Intent intent = new Intent(this, LostFoundDetailActivity.class);
-        intent.putExtra("ID", lostItem.id);
+        intent.putExtra("ID", lostItem.getId());
         startActivity(intent);
         finish();
         ToastUtil.getInstance().makeShort("생성되었습니다.");
@@ -406,6 +406,11 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
     }
 

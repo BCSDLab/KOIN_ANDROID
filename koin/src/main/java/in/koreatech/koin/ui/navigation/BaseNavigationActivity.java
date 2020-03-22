@@ -472,10 +472,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private String getName() {
         String name;
         try {
-            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
+            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
         } catch (NullPointerException e) {
             UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().userName;
+            name = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
         }
         return (name != null) ? name : "";
     }
@@ -491,7 +491,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         //TODO:홈 만들 경우 유저 이름 체크 홈으로 이동
 
         if (service == R.string.home || service == R.string.navigation_item_free_board) {
-            if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
+            if (FormValidatorUtil.validateStringIsEmpty(user.getUserNickName()) || FormValidatorUtil.validateStringIsEmpty(user.getUserName())) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 currentId = beforeId;
@@ -500,7 +500,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             }
 
         } else if (service == R.string.navigation_item_recruit_board) {
-            if (FormValidatorUtil.validateStringIsEmpty(user.userNickName) || FormValidatorUtil.validateStringIsEmpty(user.userName)) {
+            if (FormValidatorUtil.validateStringIsEmpty(user.getUserNickName()) || FormValidatorUtil.validateStringIsEmpty(user.getUserName())) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
                 currentId = beforeId;

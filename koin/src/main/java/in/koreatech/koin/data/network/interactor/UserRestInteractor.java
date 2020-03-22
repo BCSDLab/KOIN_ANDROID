@@ -181,7 +181,7 @@ public class UserRestInteractor implements UserInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail read user info"));
                         }
                     }
 
@@ -219,7 +219,7 @@ public class UserRestInteractor implements UserInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail update user"));
                         }
                     }
 
@@ -288,7 +288,7 @@ public class UserRestInteractor implements UserInteractor {
                         if (response != null) {
                             apiCallback.onSuccess(response);
                         } else {
-                            apiCallback.onFailure(new Throwable("fail"));
+                            apiCallback.onFailure(new Throwable("fail check user nickname"));
                         }
 
                     }

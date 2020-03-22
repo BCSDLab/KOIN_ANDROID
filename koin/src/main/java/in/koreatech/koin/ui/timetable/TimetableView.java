@@ -187,7 +187,7 @@ public class TimetableView extends LinearLayout {
     public ArrayList<TimeTableItem> getSameTitleTimeTableItems(TimeTableItem timeTableItem) {
         ArrayList<TimeTableItem> timeTableItems = new ArrayList<>();
         for (TimeTableItem searchTimeTableItem : timeTable.getTimeTableItems()) {
-            if (searchTimeTableItem.classTitle.equals(timeTableItem.getClassTitle()))
+            if (searchTimeTableItem.getClassTitle().equals(timeTableItem.getClassTitle()))
                 timeTableItems.add(searchTimeTableItem);
         }
         return timeTableItems;

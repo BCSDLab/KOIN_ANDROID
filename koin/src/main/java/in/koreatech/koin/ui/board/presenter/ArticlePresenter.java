@@ -72,7 +72,7 @@ public class ArticlePresenter {
     private final ApiCallback grantUpdateApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit;
+            boolean isGrantEdit = ((Article) object).isGrantEdit();
             if (isGrantEdit)
                 articleView.showEditAndDeleteMenu();
             else
@@ -90,7 +90,7 @@ public class ArticlePresenter {
     private final ApiCallback grantAnonymousAdjustApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit;
+            boolean isGrantEdit = ((Article) object).isGrantEdit();
             if (isGrantEdit)
                 articleView.showSuccessAdjustGrantedContent();
             else
@@ -108,7 +108,7 @@ public class ArticlePresenter {
     private final ApiCallback grantAnonymousDeleteApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit;
+            boolean isGrantEdit = ((Article) object).isGrantEdit();
             if (isGrantEdit)
                 articleView.showSuccessGrantedDeleteContent();
             else

@@ -6,63 +6,63 @@ import com.google.gson.annotations.SerializedName;
 public class LostAndFound {
     @SerializedName("commtent_count")
     @Expose
-    public int commentCount;
+    private int commentCount;
 
     @SerializedName("content")
     @Expose
-    public String content;
+    private String content;
 
     @SerializedName("date")
     @Expose
-    public String date;
+    private String date;
 
     @SerializedName("hit")
     @Expose
-    public int hit;
+    private int hit;
 
     @SerializedName("id")
     @Expose
-    public int id;
+    private int id;
 
     @SerializedName("image_urls")
     @Expose
-    public String imageUrls;
+    private String imageUrls;
 
     @SerializedName("is_phone_open")
     @Expose
-    public boolean isPhoneOpen;
+    private boolean isPhoneOpen;
 
     @SerializedName("location")
     @Expose
-    public String location;
+    private String location;
 
     @SerializedName("nickname")
     @Expose
-    public String nickname;
+    private String nickname;
 
     @SerializedName("phone")
     @Expose
-    public String phone;
+    private String phone;
 
     @SerializedName("state")
     @Expose
-    public int state;
+    private int state;
 
     @SerializedName("thumbnail")
     @Expose
-    public String thumbnail;
+    private String thumbnail;
 
     @SerializedName("title")
     @Expose
-    public String title;
+    private String title;
 
     @SerializedName("type")
     @Expose
-    public int type;
+    private int type;
 
     @SerializedName("user_id")
     @Expose
-    public int userId;
+    private int userId;
 
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;

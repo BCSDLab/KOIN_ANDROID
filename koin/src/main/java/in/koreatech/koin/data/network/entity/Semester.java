@@ -4,10 +4,34 @@ import com.google.gson.annotations.SerializedName;
 
 public class Semester {
     @SerializedName("id")
-    public int id;
+    private int id;
 
     @SerializedName("semester")
-    public String semester;
+    private String semester;
 
-    public boolean isSelected;
+    private boolean isSelected;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }

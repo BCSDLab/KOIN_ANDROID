@@ -86,12 +86,12 @@ public class MarketUsedDetailCommentPresenter{
 
     public void deleteComment(Comment comment, Item item) {
         mMarketCreateCommentContracView.showLoading();
-        marketUsedInteractor.deleteCommentDetail(item.id, comment.commentUid, commentDeleteApiCallback);
+        marketUsedInteractor.deleteCommentDetail(item.getId(), comment.getCommentUid(), commentDeleteApiCallback);
     }
 
     public void editComment(Comment comment, Item item, String content) {
         mMarketCreateCommentContracView.showLoading();
-        marketUsedInteractor.editCommentDetail(item.id, comment.commentUid, content, commentEditApiCallback);
+        marketUsedInteractor.editCommentDetail(item.getId(), comment.getCommentUid(), content, commentEditApiCallback);
     }
 
 }

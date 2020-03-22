@@ -33,7 +33,7 @@ public class BokdukRestInteractor implements BokdukInteractor {
 
                     @Override
                     public void onNext(BokdukRoom land) {
-                        if (!land.lands.isEmpty()) {
+                        if (!land.getLands().isEmpty()) {
                             apiCallback.onSuccess(land);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));

@@ -96,7 +96,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         this.context = this;
         this.item = new Item();
         mMarketID = 0;
-        this.item.id = getIntent().getIntExtra("ITEM_ID", 1);
+        this.item.setId(getIntent().getIntExtra("ITEM_ID", 1));
         init();
     }
 
@@ -104,8 +104,8 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     protected void onStart() {
         super.onStart();
 //        checkRequiredInfo();
-        this.marketDetailPresenter.checkGranted(this.item.id);
-        this.marketDetailPresenter.readMarketDetail(this.item.id);
+        this.marketDetailPresenter.checkGranted(this.item.getId());
+        this.marketDetailPresenter.readMarketDetail(this.item.getId());
 
 
     }
@@ -151,46 +151,46 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         String styledText;
         this.item = item;
         this.commentArrayList.clear();
-        this.commentArrayList.addAll(item.comments);
+        this.commentArrayList.addAll(item.getComments());
 
 
-        mMarketMoneyTextView.setText(changeMoneyFormat(Integer.toString(this.item.price)) + "원");
-        mMarketTimeTextView.setText(item.createdAt);
-        mMarketNickNameTextView.setText(item.nickname);
-        if (!item.isPhoneOpen || item.phone == null) {
+        mMarketMoneyTextView.setText(changeMoneyFormat(Integer.toString(this.item.getPrice())) + "원");
+        mMarketTimeTextView.setText(item.getCreatedAt());
+        mMarketNickNameTextView.setText(item.getNickname());
+        if (!item.isPhoneOpen() || item.getPhone() == null) {
             mMarketPhoneTextView.setText("비공개");
         } else
-            mMarketPhoneTextView.setText(item.phone);
+            mMarketPhoneTextView.setText(item.getPhone());
 
 
-        Glide.with(this.context).load(item.thumbnail).apply(new RequestOptions()
+        Glide.with(this.context).load(item.getThumbnail()).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
                 .error(R.drawable.img_noimage_big)        //Error상황에서 보여진다.
         ).into(mMarketThumbnailImageview);
 
-        if (item.state == 0) {
+        if (item.getState() == 0) {
 
-        } else if (item.state == 1) {
+        } else if (item.getState() == 1) {
             title.append("(판매중지)");
         } else {
             title.append("(판매완료)");
         }
 
-        title.append(item.title);
-        if (item.comments != null && item.comments.size() > 0) {
-            styledText = title.toString() + "<font color='#175c8e'>(" + item.comments.size() + ")</font>";
+        title.append(item.getTitle());
+        if (item.getComments() != null && item.getComments().size() > 0) {
+            styledText = title.toString() + "<font color='#175c8e'>(" + item.getComments().size() + ")</font>";
             mMarketTitleTextview.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE); // Title set
         } else
             mMarketTitleTextview.setText(title.toString());
-        mMarkethitCountTextView.setText(item.hit);
-        if (item.comments != null && item.comments.size() > 0) {
-            styledText = "댓글 <font color='#175c8e'>" + item.comments.size() + "</font>";
+        mMarkethitCountTextView.setText(item.getHit());
+        if (item.getComments() != null && item.getComments().size() > 0) {
+            styledText = "댓글 <font color='#175c8e'>" + item.getComments().size() + "</font>";
             mMarketCommentButton.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);
         }
 //        mMarketCommentCountTextView.setText(Integer.toString(item.comments.size()));
 
-        if (item.content != null) {
-            Spanned spannedValue = Html.fromHtml(item.content, getImageHTML(), null);
+        if (item.getContent() != null) {
+            Spanned spannedValue = Html.fromHtml(item.getContent(), getImageHTML(), null);
             mMarketConetentTextView.setText(spannedValue);
         }
 
@@ -223,7 +223,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     void init() {
         setPresenter(new MarketUsedDetailPresenter(this, new MarketUsedRestInteractor()));
         this.commentArrayList = new ArrayList<>();
-        this.marketDetailPresenter.readMarketDetail(this.item.id);
+        this.marketDetailPresenter.readMarketDetail(this.item.getId());
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -241,7 +241,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
             showLoginRequestDialog();
             return;
         }
-        if (getUser().userNickName != null)
+        if (getUser().getUserId() != null)
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
@@ -259,17 +259,17 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     public void onClickedCommentButton() {
         Intent intent = new Intent(this, MarketUsedDetailCommentActivity.class);
         intent.putExtra("MARKET_ID", mMarketID);
-        intent.putExtra("ITEM_ID", this.item.id);
-        intent.putExtra("ITEM_STATE", this.item.state);
-        intent.putExtra("ITEM_TITLE", this.item.title);
-        intent.putExtra("ITEM_NICKNAME", this.item.nickname);
-        intent.putExtra("ITEM_CREATE", this.item.createdAt);
-        intent.putExtra("ITEM_HIT", this.item.hit);
-        intent.putExtra("ITEM_CONTENT", this.item.content);
-        intent.putExtra("ITEM_PRICE", this.item.price);
-        intent.putExtra("ITEM_PHONE", this.item.phone);
-        intent.putExtra("ITEM_PHONE_STATUS", this.item.isPhoneOpen);
-        intent.putExtra("ITEM_THUMBNAIL_URL", this.item.thumbnail);
+        intent.putExtra("ITEM_ID", this.item.getId());
+        intent.putExtra("ITEM_STATE", this.item.getState());
+        intent.putExtra("ITEM_TITLE", this.item.getTitle());
+        intent.putExtra("ITEM_NICKNAME", this.item.getNickname());
+        intent.putExtra("ITEM_CREATE", this.item.getCreatedAt());
+        intent.putExtra("ITEM_HIT", this.item.getHit());
+        intent.putExtra("ITEM_CONTENT", this.item.getContent());
+        intent.putExtra("ITEM_PRICE", this.item.getPrice());
+        intent.putExtra("ITEM_PHONE", this.item.getPhone());
+        intent.putExtra("ITEM_PHONE_STATUS", this.item.isPhoneOpen());
+        intent.putExtra("ITEM_THUMBNAIL_URL", this.item.getThumbnail());
         startActivity(intent);
     }
 
@@ -281,22 +281,22 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
     @OnClick(R.id.market_used_sell_edit_button)
     public void onEditButton() {
         Intent intent = new Intent(this, MarketUsedSellEditActivity.class);
-        intent.putExtra("MARKET_ID", this.item.type);
-        intent.putExtra("ITEM_ID", this.item.id);
-        intent.putExtra("MARKET_STATE", this.item.state);
-        intent.putExtra("MARKET_TITLE", this.item.title);
-        intent.putExtra("MARKET_CONTENT", this.item.content);
-        intent.putExtra("MARKET_PRICE", this.item.price);
-        intent.putExtra("MARKET_PHONE", this.item.phone);
-        intent.putExtra("MARKET_PHONE_STATUS", this.item.isPhoneOpen);
-        intent.putExtra("MARKET_THUMBNAIL_URL", this.item.thumbnail);
+        intent.putExtra("MARKET_ID", this.item.getType());
+        intent.putExtra("ITEM_ID", this.item.getId());
+        intent.putExtra("MARKET_STATE", this.item.getState());
+        intent.putExtra("MARKET_TITLE", this.item.getTitle());
+        intent.putExtra("MARKET_CONTENT", this.item.getContent());
+        intent.putExtra("MARKET_PRICE", this.item.getPrice());
+        intent.putExtra("MARKET_PHONE", this.item.getPhone());
+        intent.putExtra("MARKET_PHONE_STATUS", this.item.isPhoneOpen());
+        intent.putExtra("MARKET_THUMBNAIL_URL", this.item.getThumbnail());
         startActivity(intent);
     }
 
 
     public void onClickMarketUsedItemRemoveButton() {
         SnackbarUtil.makeLongSnackbarActionYes(mMarketUsedSellNestedscrollview, "삭제하시겠습니까??", () -> {
-            this.marketDetailPresenter.deleteItem(this.item.id);
+            this.marketDetailPresenter.deleteItem(this.item.getId());
         });
     }
 
@@ -336,17 +336,17 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_edit, null, false);
 
         final EditText editTextContent = dialogView.findViewById(R.id.dialog_edittext_comment_modify);
-        editTextContent.setText(comment.content);
-        editTextContent.setSelection(comment.content.length());
+        editTextContent.setText(comment.getContent());
+        editTextContent.setSelection(comment.getContent().length());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.KAPDialog);
         builder.setView(dialogView);
         builder.setPositiveButton("수정",
                 (dialog, which) -> {
                     if (!FormValidatorUtil.validateStringIsEmpty(editTextContent.getText().toString())) {
-                        comment.content = editTextContent.getText().toString().trim();
-                        if (this.prevCommentContent.compareTo(comment.content) != 0) {
-                            this.marketDetailPresenter.editComment(comment, this.item, comment.content);
+                        comment.setContent(editTextContent.getText().toString().trim());
+                        if (this.prevCommentContent.compareTo(comment.getContent()) != 0) {
+                            this.marketDetailPresenter.editComment(comment, this.item, comment.getContent());
                         }
                     }
                 });

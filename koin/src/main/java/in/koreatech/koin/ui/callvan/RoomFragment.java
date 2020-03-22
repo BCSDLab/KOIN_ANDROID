@@ -216,7 +216,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
 
     @Override
     public ArrayList<CallvanRoom> sortRoomArrayList(ArrayList<CallvanRoom> sortArrayList) {
-        Collections.sort(sortArrayList, (room1, room2) -> room1.startingDate.compareTo(room2.startingDate));
+        Collections.sort(sortArrayList, (room1, room2) -> room1.getStartingDate().compareTo(room2.getStartingDate()));
 
         return sortArrayList;
     }
@@ -246,17 +246,17 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         roomInfoLayout.setVisibility(View.VISIBLE);
 
         joinedRoom = room;
-        infoStartingPlaceTextView.setText(room.startingPlace);
-        infoStartingTimeTextView.setText(room.startingDate);
-        infoEndingPlaceTextView.setText(room.endingPlace);
-        infoPeopleCountTextView.setText(room.currentPeople + "명/" + room.maximumPeople + "명");
+        infoStartingPlaceTextView.setText(room.getStartingPlace());
+        infoStartingTimeTextView.setText(room.getStartingDate());
+        infoEndingPlaceTextView.setText(room.getEndingPlace());
+        infoPeopleCountTextView.setText(room.getCurrentPeople() + "명/" + room.getMaximumPeople() + "명");
 
-        UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(room.uid);
+        UserInfoSharedPreferencesHelper.getInstance().saveCallvanRoomUid(room.getUid());
     }
 
     @Override
     public void onClickJoinButton(CallvanRoom room) {
-        roomPresenter.updateIncreaseCurrentPeopleCount(room.uid);
+        roomPresenter.updateIncreaseCurrentPeopleCount(room.getUid());
     }
 
     @Override
@@ -360,7 +360,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         // 2) 출발지만 설정된 경우
         else if (startFilterText.compareTo("출발지") != 0 && endFilterText.compareTo("목적지") == 0) {
             for (CallvanRoom r : roomArrayList) {
-                if (r.startingPlace.compareTo(startFilterText) == 0) {
+                if (r.getStartingPlace().compareTo(startFilterText) == 0) {
                     filteredRoomArrayList.add(r);
                 }
             }
@@ -369,7 +369,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         // 3) 목적지만 설정된 경우
         else if (startFilterText.compareTo("출발지") == 0 && endFilterText.compareTo("목적지") != 0) {
             for (CallvanRoom r : roomArrayList) {
-                if (r.endingPlace.compareTo(endFilterText) == 0) {
+                if (r.getEndingPlace().compareTo(endFilterText) == 0) {
                     filteredRoomArrayList.add(r);
                 }
             }
@@ -378,7 +378,7 @@ public class RoomFragment extends CallvanBaseFragment implements CallvanRoomCont
         // 4) 둘다 설정된 경우
         else if (startFilterText.compareTo("출발지") != 0 && endFilterText.compareTo("목적지") != 0) {
             for (CallvanRoom r : roomArrayList) {
-                if (r.startingPlace.compareTo(startFilterText) == 0 && r.endingPlace.compareTo(
+                if (r.getStartingPlace().compareTo(startFilterText) == 0 && r.getEndingPlace().compareTo(
                         endFilterText) == 0) {
                     filteredRoomArrayList.add(r);
                 }
