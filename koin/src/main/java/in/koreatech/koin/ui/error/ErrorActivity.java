@@ -40,10 +40,6 @@ public class ErrorActivity extends ActivityBase {
             errorTitleMessage.setText(getIntent().getExtras().getString(EXTRA_ERROR_TEXT));
             errorTitleMessage.setTextColor(getResources().getColor(R.color.gray7));
             errorTitleMessage.setGravity(Gravity.START);
-            //LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            //params.gravity = Gravity.LEFT;
-
-            //errorTitleMessage.setLayoutParams(params);
             errorInfoMessage.setVisibility(View.GONE);
             errorGuideMessage.setVisibility(View.GONE);
         } else {                                  //production일 경우 오류 안내 메시지를 화면에 보여준다
