@@ -30,7 +30,7 @@ public class EventRestInteractor implements EventInteractor {
     }
 
     @Override
-    public void readAdList(ApiCallback apiCallback) {
+    public void readEventList(ApiCallback apiCallback) {
         RetrofitManager.getInstance().getRetrofit().create(EventService.class).getAdList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -41,9 +41,9 @@ public class EventRestInteractor implements EventInteractor {
                     }
 
                     @Override
-                    public void onNext(Event ad) {
-                        if (!ad.getAds().isEmpty()) {
-                            apiCallback.onSuccess(ad);
+                    public void onNext(Event event) {
+                        if (!event.getEventArrayList().isEmpty()) {
+                            apiCallback.onSuccess(event);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
                         }
@@ -119,7 +119,7 @@ public class EventRestInteractor implements EventInteractor {
     }
 
     @Override
-    public void readEventList(int id, ApiCallback apiCallback) {
+    public void readEventDetail(int id, ApiCallback apiCallback) {
         RetrofitManager.getInstance().getRetrofit().create(EventService.class).getEventList(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -130,9 +130,9 @@ public class EventRestInteractor implements EventInteractor {
                     }
 
                     @Override
-                    public void onNext(Event ad) {
-                        if (ad != null) {
-                            apiCallback.onSuccess(ad);
+                    public void onNext(Event event) {
+                        if (event != null) {
+                            apiCallback.onSuccess(event);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
                         }

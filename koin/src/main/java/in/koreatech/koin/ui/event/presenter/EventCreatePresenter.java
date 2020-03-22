@@ -1,29 +1,38 @@
 package in.koreatech.koin.ui.event.presenter;
 
+import java.io.File;
+
+import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.entity.Image;
+import in.koreatech.koin.data.network.interactor.EventInteractor;
+import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
+import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
+
 public class EventCreatePresenter {
-    private AdvertisingCreatingContract.View adCreatingView;
-    private AdDetailInterator adDetailInterator;
+    private EventCreateContract.View eventCreateView;
+    private EventInteractor eventInteractor;
     private MarketUsedInteractor marketUsedInteractor;
 
     private String uploadImageId;
 
-    public AdvertisingCreatingPresenter(AdvertisingCreatingContract.View adCreatingView, AdDetailInterator adDetailInterator) {
-        this.adCreatingView = adCreatingView;
-        this.adDetailInterator = adDetailInterator;
+    public EventCreatePresenter(EventCreateContract.View eventCreateView, EventInteractor eventInterator) {
+        this.eventCreateView = eventCreateView;
+        this.eventInteractor = eventInterator;
         this.marketUsedInteractor = new MarketUsedRestInteractor();
     }
 
-    private final ApiCallback advertisingApiCallback = new ApiCallback() {
+    private final ApiCallback eventApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            adCreatingView.onAdDetailDataReceived((AdDetail) object);
-            adCreatingView.hideLoading();
+            eventCreateView.onEventDataReceived((Event) object);
+            eventCreateView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            adCreatingView.showMessage(throwable.getMessage());
-            adCreatingView.hideLoading();
+            eventCreateView.showMessage(throwable.getMessage());
+            eventCreateView.hideLoading();
         }
     };
 
@@ -33,35 +42,35 @@ public class EventCreatePresenter {
             Image img = (Image) object;
 
             if (img != null) {
-                adCreatingView.showUploadImage(img.getUrls().get(0), uploadImageId);
+                eventCreateView.showUploadImage(img.getUrls().get(0), uploadImageId);
             } else {
-                adCreatingView.showFailUploadImage(uploadImageId);
+                eventCreateView.showFailUploadImage(uploadImageId);
             }
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            adCreatingView.showFailUploadImage(uploadImageId);
+            eventCreateView.showFailUploadImage(uploadImageId);
         }
     };
 
-    public void createAdDetail(AdDetail adDetail) {
-        adCreatingView.showLoading();
-        adDetailInterator.createAdDetail(adDetail, advertisingApiCallback);
+    public void createEvent(Event adDetail) {
+        eventCreateView.showLoading();
+        eventInteractor.createEvent(adDetail, eventApiCallback);
     }
 
     public void uploadImage(File file, String uid) {
         uploadImageId = uid;
         if(file == null) {
-            adCreatingView.showFailUploadImage(uid);
+            eventCreateView.showFailUploadImage(uid);
             return;
         }
 
         marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
     }
 
-    public void updateAdDetail(int articleId, AdDetail adDetail) {
-        adCreatingView.showLoading();
-        adDetailInterator.updateAdDetail(articleId, adDetail, advertisingApiCallback);
+    public void updateEvent(int articleId, Event event) {
+        eventCreateView.showLoading();
+        eventInteractor.updateEvent(articleId, event, eventApiCallback);
     }
 }

@@ -31,7 +31,7 @@
             <!--                android:orientation="vertical">-->
 
             <androidx.core.widget.NestedScrollView
-                android:id="@+id/advertising_detail_scrollview"
+                android:id="@+id/event_detail_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -44,7 +44,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/advertising_detail_layout"
+                    android:id="@+id/event_detail_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/white">
@@ -58,11 +58,11 @@
                         android:layout_marginTop="18dp"
                         android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="@id/advertising_detail_back_list_button"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview">
+                        app:layout_constraintBottom_toBottomOf="@id/event_detail_back_list_button"
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_period_textview">
 
                         <Button
-                            android:id="@+id/advertising_detail_page_edit_button"
+                            android:id="@+id/event_detail_page_edit_button"
                             android:layout_width="51dp"
                             android:layout_height="28dp"
                             android:background="@drawable/button_rect_normal"
@@ -72,7 +72,7 @@
                             tools:visibility="visible" />
 
                         <Button
-                            android:id="@+id/advertising_detail_page_delete_button"
+                            android:id="@+id/event_detail_page_delete_button"
                             android:layout_width="51dp"
                             android:layout_height="28dp"
                             android:layout_marginStart="10dp"
@@ -85,7 +85,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/advertising_detail_title_textview"
+                        android:id="@+id/event_detail_title_textview"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -109,10 +109,10 @@
                         android:textColor="@color/light_navy"
                         android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_title_textview" />
 
                     <TextView
-                        android:id="@+id/advertising_detail_period_textview"
+                        android:id="@+id/event_detail_period_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -122,10 +122,10 @@
                         android:textColor="#252525"
                         android:textSize="13sp"
                         app:layout_constraintStart_toEndOf="@+id/textView13"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_title_textview" />
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_title_textview" />
 
                     <Button
-                        android:id="@+id/advertising_detail_back_list_button"
+                        android:id="@+id/event_detail_back_list_button"
                         android:layout_width="69dp"
                         android:layout_height="28dp"
                         android:layout_marginTop="8dp"
@@ -137,10 +137,10 @@
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="@id/edit_delete_buttons_linearlayout"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_period_textview" />
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_period_textview" />
 
                     <TextView
-                        android:id="@+id/advertising_detail_view_count_publisher_textview"
+                        android:id="@+id/event_detail_view_count_publisher_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="13dp"
                         android:layout_marginTop="26dp"
@@ -154,7 +154,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/advertising_detail_publish_date_textview"
+                        android:id="@+id/event_detail_publish_date_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -164,7 +164,7 @@
                         android:textColor="#9fa9b3"
                         android:textSize="10sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_publisher_textview"
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_view_count_publisher_textview"
                         tools:text="2019.07.31 17:38" />
 
                     <TextView
@@ -180,7 +180,7 @@
                         android:textColor="@color/black"
                         android:textSize="10sp"
                         android:visibility="invisible"
-                        app:layout_constraintStart_toEndOf="@+id/advertising_detail_title_textview"
+                        app:layout_constraintStart_toEndOf="@+id/event_detail_title_textview"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -197,7 +197,7 @@
                         app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
 
                     <TextView
-                        android:id="@+id/advertising_detail_reply_count_textview"
+                        android:id="@+id/event_detail_reply_count_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -216,7 +216,7 @@
                         android:background="@color/divider"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_back_list_button"></LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_back_list_button"></LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout6"
@@ -226,7 +226,7 @@
                         android:background="@color/divider"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/advertising_detail_order_button"></LinearLayout>
+                        app:layout_constraintTop_toBottomOf="@id/event_detail_order_button"></LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout7"
@@ -236,12 +236,12 @@
                         android:background="@color/divider"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/advertising_detail_view_count_textview">
+                        app:layout_constraintTop_toBottomOf="@+id/event_detail_view_count_textview">
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/advertising_detail_layout_content_linearlayout"
+                        android:id="@+id/event_detail_layout_content_linearlayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
@@ -254,8 +254,8 @@
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
 
-                        <in.koreatech.koin.service_board.ui.KoinRichEditor
-                            android:id="@+id/advertising_detail_contents"
+                        <in.koreatech.koin.ui.board.KoinRichEditor
+                            android:id="@+id/event_detail_content"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="start"
@@ -269,15 +269,15 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/advertising_detail_order_button"
+                        android:id="@+id/event_detail_order_button"
                         android:layout_width="159dp"
                         android:layout_height="29dp"
                         android:layout_marginTop="46dp"
                         android:background="#f7941e"
                         android:text="주문하러가기"
-                        app:layout_constraintTop_toBottomOf="@id/advertising_detail_layout_content_linearlayout"
-                        app:layout_constraintStart_toStartOf="@id/advertising_detail_layout_content_linearlayout"
-                        app:layout_constraintEnd_toEndOf="@id/advertising_detail_layout_content_linearlayout"
+                        app:layout_constraintTop_toBottomOf="@id/event_detail_layout_content_linearlayout"
+                        app:layout_constraintStart_toStartOf="@id/event_detail_layout_content_linearlayout"
+                        app:layout_constraintEnd_toEndOf="@id/event_detail_layout_content_linearlayout"
                         app:layout_constraintBottom_toTopOf="@id/linearLayout6"
                         android:textColor="#ffffff" />
 
@@ -290,11 +290,11 @@
                         android:text="개 |  조회수 "
                         android:textColor="@color/warm_grey_two"
                         android:textSize="13sp"
-                        app:layout_constraintStart_toEndOf="@+id/advertising_detail_reply_count_textview"
+                        app:layout_constraintStart_toEndOf="@+id/event_detail_reply_count_textview"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
                     <TextView
-                        android:id="@+id/advertising_detail_view_count_textview"
+                        android:id="@+id/event_detail_view_count_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="15dp"
                         android:layout_marginTop="12dp"
@@ -318,14 +318,14 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/advertising_comment_recyclerview"
+                            android:id="@+id/event_comment_recyclerview"
                             android:layout_width="327dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp" />
 
                         <EditText
-                            android:id="@+id/advertising_comment_content_edittext"
+                            android:id="@+id/event_comment_content_edittext"
                             android:layout_width="327dp"
                             android:layout_height="60dp"
                             android:layout_marginLeft="16dp"
@@ -346,7 +346,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/advertising_comment_erase_button"
+                                android:id="@+id/event_comment_erase_button"
                                 android:layout_width="159dp"
                                 android:layout_height="29dp"
                                 android:background="@drawable/bg_black_rectangle"
@@ -356,7 +356,7 @@
                                 android:textSize="11sp" />
 
                             <Button
-                                android:id="@+id/advertising_comment_create_button"
+                                android:id="@+id/event_comment_create_button"
                                 android:layout_width="159dp"
                                 android:layout_height="29dp"
                                 android:layout_marginLeft="10dp"

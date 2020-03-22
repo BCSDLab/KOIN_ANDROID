@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Event {
     @SerializedName("event_articles")
     @Expose
-    private ArrayList<Event> ads;
+    private ArrayList<Event> eventArrayList;
 
     @SerializedName("grantEdit")
     @Expose
@@ -64,7 +64,7 @@ public class Event {
 
     @SerializedName("comment_count")
     @Expose
-    private int comentCount;
+    private int commentCount;
 
     @SerializedName("is_deleted")
     @Expose
@@ -72,7 +72,7 @@ public class Event {
 
     @SerializedName("created_at")
     @Expose
-    private String PublishedDate;
+    private String createdAt;
 
     @SerializedName("updated_at")
     @Expose
@@ -80,7 +80,7 @@ public class Event {
 
     @SerializedName("totalPage")
     @Expose
-    private int totalPadge;
+    private int totalPage;
 
     @SerializedName("totalItemCount")
     @Expose
@@ -107,7 +107,7 @@ public class Event {
         this.endDate = endDate;
     }
 
-    // Create Wit Thumbnail
+    // Create With Thumbnail
     public Event(String title, String eventTitle, String content, int shopId, String startDate, String endDate, String thumbnail) {
         this.title = title;
         this.eventTitle = eventTitle;
@@ -127,101 +127,20 @@ public class Event {
         this.endDate = endDate;
     }
 
+    public ArrayList<Event> getEventArrayList() {
+        return eventArrayList;
+    }
+
+    public void setEventArrayList(ArrayList<Event> eventArrayList) {
+        this.eventArrayList = eventArrayList;
+    }
+
     public boolean isGrantEdit() {
         return grantEdit;
     }
 
     public void setGrantEdit(boolean grantEdit) {
         this.grantEdit = grantEdit;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public String getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(ArrayList<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public ArrayList<Event> getAds() {
-        return ads;
-    }
-
-    public void setAds(ArrayList<Event> ads) {
-        this.ads = ads;
-    }
-
-    public int getComentCount() {
-        return comentCount;
-    }
-
-    public void setComentCount(int comentCount) {
-        this.comentCount = comentCount;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getEventTitle() {
-        return eventTitle;
-    }
-
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
-    }
-
-    public int getHit() {
-        return hit;
-    }
-
-    public void setHit(int hit) {
-        this.hit = hit;
     }
 
     public int getId() {
@@ -232,36 +151,12 @@ public class Event {
         this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public int getShopId() {
         return shopId;
     }
 
     public void setShopId(int shopId) {
         this.shopId = shopId;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
     public String getTitle() {
@@ -272,6 +167,22 @@ public class Event {
         this.title = title;
     }
 
+    public String getEventTitle() {
+        return eventTitle;
+    }
+
+    public void setEventTitle(String eventTitle) {
+        this.eventTitle = eventTitle;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -280,12 +191,92 @@ public class Event {
         this.userId = userId;
     }
 
-    public int getTotalPadge() {
-        return totalPadge;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setTotalPadge(int totalPadge) {
-        this.totalPadge = totalPadge;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public int getHit() {
+        return hit;
+    }
+
+    public void setHit(int hit) {
+        this.hit = hit;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public String getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(String isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
     }
 
     public int getTotalCount() {
@@ -296,11 +287,19 @@ public class Event {
         this.totalCount = totalCount;
     }
 
-    public String getPublishedDate() {
-        return PublishedDate;
+    public ArrayList<Comment> getComments() {
+        return comments;
     }
 
-    public void setPublishedDate(String publishedDate) {
-        PublishedDate = publishedDate;
+    public void setComments(ArrayList<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 }

@@ -44,13 +44,13 @@
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/advertising_layout"
+                        android:id="@+id/event_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/advertising_recyclerview"
+                            android:id="@+id/event_recyclerview"
                             android:layout_width="316dp"
                             android:layout_height="0dp"
                             android:layout_marginStart="4dp"
@@ -58,10 +58,10 @@
                             android:layout_marginEnd="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/activity_advertising_processing_checkbox" />
+                            app:layout_constraintTop_toBottomOf="@+id/activity_event_processing_checkbox" />
 
                         <CheckBox
-                            android:id="@+id/activity_advertising_processing_checkbox2"
+                            android:id="@+id/activity_event_processing_checkbox2"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
@@ -75,11 +75,11 @@
                             android:textColor="@color/light_navy"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/activity_advertising_processing_checkbox"
+                            app:layout_constraintStart_toEndOf="@+id/activity_event_processing_checkbox"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <CheckBox
-                            android:id="@+id/activity_advertising_processing_checkbox"
+                            android:id="@+id/activity_event_processing_checkbox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="150dp"

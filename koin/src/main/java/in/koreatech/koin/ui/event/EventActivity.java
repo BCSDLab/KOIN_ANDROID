@@ -1,26 +1,53 @@
 package in.koreatech.koin.ui.event;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
+
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import in.koreatech.koin.R;
+import in.koreatech.koin.constant.AuthorizeConstant;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.interactor.EventRestInteractor;
+import in.koreatech.koin.ui.event.adapter.EventRecyclerAdapter;
+import in.koreatech.koin.ui.event.presenter.EventContract;
+import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-public class EventActivity extends KoinNavigationDrawerActivity implements AdvertisingContract.View {
+public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
-    private ArrayList<Advertising> adArrayList;
-    private AdvertisingPresenter adPresenter;
-    private GridLayoutManager adGridLayoutManager;
-    private AdvertisingRecyclerAdapter adRecyclerAdapter;
-    private GenerateProgressTask generateProgressTask;
+    private ArrayList<Event> eventArrayList;
+    private EventPresenter eventPresenter;
+    private GridLayoutManager eventGridLayoutManager;
+    private EventRecyclerAdapter eventRecyclerAdapter;
 
-    @BindView(R.id.advertising_recyclerview)
-    RecyclerView adRecyclerView;
-    @BindView(R.id.activity_advertising_processing_checkbox2)
-    CheckBox adProcessingCheckBox1;
-    @BindView(R.id.activity_advertising_processing_checkbox)
-    CheckBox adProcessingCheckBox2;
+    @BindView(R.id.event_recyclerview)
+    RecyclerView eventRecyclerView;
+    @BindView(R.id.activity_event_processing_checkbox2)
+    CheckBox eventProcessingCheckBox1;
+    @BindView(R.id.activity_event_processing_checkbox)
+    CheckBox eventProcessingCheckBox2;
+    @BindView(R.id.koin_base_app_bar_dark)
+    AppBarBase koinBaseAppbarDark;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.advertising_list_activity);
+        setContentView(R.layout.event_list_activity);
         ButterKnife.bind(this);
 
         init();
@@ -28,21 +55,21 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Adver
 
     void init() {
         context = this;
-        adArrayList = new ArrayList<>();
-        adGridLayoutManager = new GridLayoutManager(this, 2);
-        adRecyclerView.setLayoutManager(adGridLayoutManager);
-        adRecyclerAdapter = new AdvertisingRecyclerAdapter(adArrayList, this);
-        adRecyclerView.setAdapter(adRecyclerAdapter);
-        adRecyclerView.addOnItemTouchListener(recyclerClickListener);
-        setPresenter(new AdvertisingPresenter(this, new AdvertisingRestInteractor()));
+        eventArrayList = new ArrayList<>();
+        eventGridLayoutManager = new GridLayoutManager(this, 2);
+        eventRecyclerView.setLayoutManager(eventGridLayoutManager);
+        eventRecyclerAdapter = new EventRecyclerAdapter(eventArrayList, this);
+        eventRecyclerView.setAdapter(eventRecyclerAdapter);
+        eventRecyclerView.addOnItemTouchListener(recyclerClickListener);
+        setPresenter(new EventPresenter(this, new EventRestInteractor()));
     }
 
-    @OnClick(R.id.activity_advertising_processing_checkbox2)
+    @OnClick(R.id.activity_event_processing_checkbox2)
     public void onClick1Checked() {
         checkBoxDataDisplay();
     }
 
-    @OnClick(R.id.activity_advertising_processing_checkbox)
+    @OnClick(R.id.activity_event_processing_checkbox)
     public void onClick2Checked() {
         checkBoxDataDisplay();
     }
@@ -50,19 +77,19 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Adver
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
-        if (id == KoinBaseAppbarDark.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
-        } else if (id == KoinBaseAppbarDark.getRightButtonId()) {
+        } else if (id == AppBarBase.getRightButtonId()) {
             // TODO: 점주계정 확인 -> my/shops
-            Intent intent = new Intent(context, AdvertisingCreateActivity.class);
+            Intent intent = new Intent(context, EventCreateActivity.class);
             if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
                 showLoginRequestDialog();
                 return;
             }
-            if (getUser().userNickName != null)
+            if (getUser().getUserNickName() != null)
                 startActivity(intent);
             else {
-                ToastUtil.makeLongToast(this, "닉네임이 필요합니다.");
+                ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
                 intent = new Intent(this, UserInfoEditedActivity.class);
                 startActivity(intent);
             }
@@ -72,22 +99,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Adver
     @Override
     protected void onStart() {
         super.onStart();
-        adPresenter.getAdList();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+        eventPresenter.getEventList();
     }
 
     @Override
@@ -97,22 +109,21 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Adver
     }
 
     @Override
-    public void setPresenter(AdvertisingPresenter presenter) {
-        this.adPresenter = presenter;
+    public void setPresenter(EventPresenter presenter) {
+        this.eventPresenter = presenter;
+    }
+
+    public void onEventListDataReceived(ArrayList<Event> eventList) {
+        eventArrayList.clear();
+        eventArrayList.addAll(eventList);
+        eventRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onAdvertisingDataReceived(ArrayList<Advertising> adList) {
-        adArrayList.clear();
-        adArrayList.addAll(adList);
-        adRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onGrantCheckReceived(AdDetail adDetail) {
-        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
-        intent.putExtra("ID", adDetail.id);
-        intent.putExtra("GRANT_EDIT", adDetail.grantEdit);
+    public void onGrantCheckReceived(Event event) {
+        Intent intent = new Intent(this, EventDetailActivity.class);
+        intent.putExtra("ID", event.getId());
+        intent.putExtra("GRANT_EDIT", event.isGrantEdit());
         startActivity(intent);
     }
 
@@ -121,37 +132,31 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Adver
      */
     public void checkBoxDataDisplay() {
         // 프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
-        ArrayList<Advertising> applyAdDataList = adPresenter.displayProcessingEvent(adProcessingCheckBox1.isChecked(), adProcessingCheckBox2.isChecked());
-        adRecyclerAdapter.setAdArrayList(applyAdDataList);
-        adRecyclerAdapter.notifyDataSetChanged();
+        ArrayList<Event> applyAdDataList = eventPresenter.displayProcessingEvent(eventProcessingCheckBox1.isChecked(), eventProcessingCheckBox2.isChecked());
+        eventRecyclerAdapter.setAdArrayList(applyAdDataList);
+        eventRecyclerAdapter.notifyDataSetChanged();
     }
 
 
     @Override
     public void showMessage(String message) {
-        ToastUtil.makeShortToast(this, message);
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
     public void showLoading() {
-        if (generateProgressTask == null) {
-            generateProgressTask = new GenerateProgressTask(this, "로딩 중");
-            generateProgressTask.execute();
-        }
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        if (generateProgressTask != null) {
-            generateProgressTask.cancel(true);
-            generateProgressTask = null;
-        }
+        hideProgressDialog();
     }
 
     public final RecyclerClickListener recyclerClickListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, int position) {
-            adPresenter.getAdGrantCheck(adArrayList.get(position).id);
+            eventPresenter.getEventGrantCheck(eventArrayList.get(position).getId());
         }
 
         @Override

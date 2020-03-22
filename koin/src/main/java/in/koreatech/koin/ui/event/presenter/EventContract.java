@@ -1,19 +1,22 @@
 package in.koreatech.koin.ui.event.presenter;
 
-public interface EventContract {
-    interface View extends BaseView<AdvertisingPresenter> {
-        void onAdvertisingDataReceived(ArrayList<Advertising> adArrayList);
+import java.util.ArrayList;
 
-        void onGrantCheckReceived(AdDetail adDetail);
+import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Event;
+
+public interface EventContract {
+    interface View extends BaseView<EventPresenter> {
+        void onEventListDataReceived(ArrayList<Event> eventArrayList);
+
+        void onGrantCheckReceived(Event event);
 
         void showMessage(String message);
 
         void showLoading();
 
         void hideLoading();
+
+        ArrayList<Event> displayProcessingEvent(boolean isChecked1, boolean isChecked2);
     }
-
-    void getAdList();
-
-    ArrayList<Advertising> displayProcessingEvent(boolean isChecked1, boolean isChecked2);
 }

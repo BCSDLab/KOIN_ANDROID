@@ -1,16 +1,19 @@
 package in.koreatech.koin.ui.event.presenter;
 
+import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Event;
+
 public interface EventCreateContract  {
-    interface View extends BaseView<AdvertisingCreatingPresenter> {
+    interface View extends BaseView<EventCreatePresenter> {
         void showLoading();
 
         void hideLoading();
 
         void onClickEditButton();//create, edited button
 
-        void onAdDetailDataReceived(AdDetail adDetail);
+        void onEventDataReceived(Event event);
 
-        void goToAdvertisingActivity(AdDetail adDetail);
+        void goToEventActivity(Event event);
 
         void showUploadImage(String url, String uploadImageId);
 

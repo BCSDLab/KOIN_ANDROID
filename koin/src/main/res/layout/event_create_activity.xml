@@ -42,7 +42,7 @@
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/advertising_create_layout"
+                        android:id="@+id/event_create_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/white">
@@ -72,7 +72,7 @@
                                     app:srcCompat="@drawable/ic_ad_store" />
 
                                 <TextView
-                                    android:id="@+id/advertising_create_activity_store_button"
+                                    android:id="@+id/event_create_activity_store_button"
                                     android:layout_width="120dp"
                                     android:layout_height="26dp"
                                     android:layout_gravity="center"
@@ -93,7 +93,7 @@
 
 
                             <EditText
-                                android:id="@+id/advertising_detail_title_edittext"
+                                android:id="@+id/event_detail_title_edittext"
                                 android:layout_width="300dp"
                                 android:layout_height="20dp"
                                 android:layout_marginLeft="16dp"
@@ -121,7 +121,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/advertising_detail_event_title_edittext"
+                                    android:id="@+id/event_detail_event_title_edittext"
                                     android:layout_width="300dp"
                                     android:layout_height="20dp"
                                     android:layout_marginLeft="16dp"
@@ -134,7 +134,7 @@
                                     android:textSize="16sp" />
 
                                 <ImageView
-                                    android:id="@+id/advertising_create_question_mark_imageview"
+                                    android:id="@+id/event_create_question_mark_imageview"
                                     android:layout_width="22dp"
                                     android:layout_height="22dp"
                                     android:layout_marginTop="1dp"
@@ -144,7 +144,7 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/advertising_border"
+                                android:id="@+id/event_border"
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/divider"
@@ -153,13 +153,13 @@
                             </LinearLayout>
 
                             <LinearLayout
-                                android:id="@+id/advertising_create_choose_date_layout"
+                                android:id="@+id/event_create_choose_date_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="59dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
-                                    android:id="@+id/advertising_calender_reck_layout"
+                                    android:id="@+id/event_calender_reck_layout"
                                     android:layout_width="149dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="16dp"
@@ -168,7 +168,7 @@
                                     android:orientation="horizontal">
 
                                     <ImageView
-                                        android:id="@+id/advertising_calender_imageview"
+                                        android:id="@+id/event_calender_imageview"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="1dp"
@@ -176,7 +176,7 @@
                                         app:srcCompat="@drawable/ic_ad_calender" />
 
                                     <TextView
-                                        android:id="@+id/advertising_create_calender_startdate_textview"
+                                        android:id="@+id/event_create_calender_startdate_textview"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="7dp"
@@ -199,7 +199,7 @@
                                     tools:text="~" />
 
                                 <LinearLayout
-                                    android:id="@+id/advertising_calender2_reck_layout"
+                                    android:id="@+id/event_calender2_reck_layout"
                                     android:layout_width="149dp"
                                     android:layout_height="30dp"
                                     android:layout_marginLeft="10dp"
@@ -216,7 +216,7 @@
                                         app:srcCompat="@drawable/ic_ad_calender" />
 
                                     <TextView
-                                        android:id="@+id/advertising_create_calender_enddate_textview"
+                                        android:id="@+id/event_create_calender_enddate_textview"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="7dp"
@@ -237,7 +237,7 @@
                             </LinearLayout>
 
                             <in.koreatech.koin.service_board.ui.KoinRichEditor
-                                android:id="@+id/advertising_create_content"
+                                android:id="@+id/event_create_content"
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
@@ -250,7 +250,7 @@
                         </LinearLayout>
 
                         <FrameLayout
-                            android:id="@+id/advertising_create_question_info_frame_layout"
+                            android:id="@+id/event_create_question_info_frame_layout"
                             android:layout_width="match_parent"
                             android:layout_height="300dp"
                             android:layout_marginTop="145dp"
@@ -276,7 +276,7 @@
             </LinearLayout>
 
             <HorizontalScrollView
-                android:id="@+id/advertising_editor_tools"
+                android:id="@+id/event_editor_tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#e6e6e6"

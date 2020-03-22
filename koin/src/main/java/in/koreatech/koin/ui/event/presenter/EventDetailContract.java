@@ -1,21 +1,25 @@
 package in.koreatech.koin.ui.event.presenter;
 
+import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Comment;
+import in.koreatech.koin.data.network.entity.Event;
+
 public interface EventDetailContract {
-    interface View extends BaseView<AdDetailPresenter> {
+    interface View extends BaseView<EventDetailPresenter> {
         void showLoading();
 
         void hideLoading();
 
-        void onAdDetailDataReceived(AdDetail adDetail);
+        void onEventDataReceived(Event event);
 
-        void onAdDetailDeleteCompleted(boolean inSuccess);
+        void onEventDeleteCompleted(boolean inSuccess);
 
         void showMessage(String msg);
 
-        void onAdDetailCommentReceived(Comment comment);
+        void onEventCommentReceived(Comment comment);
 
-        void onAdDetailCommentDeleted(boolean isSuccess);
+        void onEventCommentDeleted(boolean isSuccess);
 
-        void getAdDetailInfo(int shopId);
+        void getEventDetail(int shopId);
     }
 }

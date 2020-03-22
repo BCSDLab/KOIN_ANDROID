@@ -24,7 +24,7 @@
             android:textSize="11sp" />
 
         <TextView
-            android:id="@+id/advertising_comment_item_nickname_textview"
+            android:id="@+id/event_comment_item_nickname_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -34,7 +34,7 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/advertising_comment_item_time_textview"
+            android:id="@+id/event_comment_item_time_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -45,7 +45,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/advertising_comment_item_contents_textview"
+        android:id="@+id/event_comment_item_contents_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -55,7 +55,7 @@
         android:textSize="13sp" />
 
     <Button
-        android:id="@+id/advertising_comment_item_fix_button"
+        android:id="@+id/event_comment_item_fix_button"
         android:layout_width="46dp"
         android:layout_height="26dp"
         android:background="@drawable/bg_cloudy_blue_rectangle"

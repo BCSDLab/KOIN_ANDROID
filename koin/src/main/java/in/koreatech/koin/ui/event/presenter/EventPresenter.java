@@ -1,42 +1,49 @@
 package in.koreatech.koin.ui.event.presenter;
 
-public class EventPresenter {
-    private final AdvertisingContract.View adView;
-    private final AdvertisingInteractor advertisingInteractor;
-    private ArrayList<Advertising> adArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
-    public AdvertisingPresenter(AdvertisingContract.View adView, AdvertisingInteractor advertisingInteractor) {
-        this.adView = adView;
-        this.advertisingInteractor = advertisingInteractor;
-        adArrayList = new ArrayList<>();
+import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.interactor.EventInteractor;
+
+public class EventPresenter {
+    private final EventContract.View eventView;
+    private final EventInteractor eventInteractor;
+    private ArrayList<Event> eventArrayList;
+
+    public EventPresenter(EventContract.View eventView, EventInteractor eventInteractor) {
+        this.eventView = eventView;
+        this.eventInteractor = eventInteractor;
+        eventArrayList = new ArrayList<>();
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Advertising ads = (Advertising) object;
-            adArrayList.clear();
-            adArrayList.addAll(ads.ads);
-            adView.onAdvertisingDataReceived(adArrayList);
+            Event event = (Event) object;
+            eventArrayList.clear();
+            eventArrayList.addAll(event.getEventArrayList());
+            eventView.onEventListDataReceived(eventArrayList);
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            adView.showMessage("홍보 게시물을 받아오지 못했습니다");
+            eventView.showMessage("홍보 게시물을 받아오지 못했습니다");
         }
     };
-
-    @Override
-    public void getAdList() {
-        adArrayList.clear();
-        advertisingInteractor.readAdList(apiCallback);
+    
+    public void getEventList() {
+        eventArrayList.clear();
+        eventInteractor.readEventList(apiCallback);
     }
 
-    @Override
-    public ArrayList<Advertising> displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
-        ArrayList<Advertising> subAdDate = new ArrayList<>();
+    public ArrayList<Event> displayProcessingEvent(boolean isChecked1, boolean isChecked2) {
+        ArrayList<Event> subAdDate = new ArrayList<>();
         if (isChecked1 && isChecked2) { //전체
-            subAdDate.addAll(adArrayList);
+            subAdDate.addAll(eventArrayList);
         }
         if (!isChecked1 && !isChecked2) { //아무것도 없음
             return subAdDate;
@@ -46,25 +53,25 @@ public class EventPresenter {
         SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 
         if (isChecked1 && !isChecked2) {
-            for (int i = 0; i < adArrayList.size(); i++) {
+            for (int i = 0; i < eventArrayList.size(); i++) {
                 try {
-                    if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate)) == 1)) {
-                        subAdDate.add(adArrayList.get(i));
+                    if ((date.compareTo(formatDate.parse(eventArrayList.get(i).getEndDate())) == 1)) {
+                        subAdDate.add(eventArrayList.get(i));
                     }
                 } catch (ParseException e) {
-                    adView.showMessage("에러");
+                    eventView.showMessage("에러");
                 }
             }
         }
         if (!isChecked1 && isChecked2) {
-            for (int i = 0; i < adArrayList.size(); i++) {
+            for (int i = 0; i < eventArrayList.size(); i++) {
                 try {
-                    if ((date.compareTo(formatDate.parse(adArrayList.get(i).endDate)) == -1)
-                            && (date.compareTo(formatDate.parse(adArrayList.get(i).startDate)) == 1)) {
-                        subAdDate.add(adArrayList.get(i));
+                    if ((date.compareTo(formatDate.parse(eventArrayList.get(i).getEndDate())) == -1)
+                            && (date.compareTo(formatDate.parse(eventArrayList.get(i).getStartDate())) == 1)) {
+                        subAdDate.add(eventArrayList.get(i));
                     }
                 } catch (ParseException e) {
-                    adView.showMessage("에러");
+                    eventView.showMessage("에러");
                 }
             }
         }
@@ -75,20 +82,19 @@ public class EventPresenter {
     private final ApiCallback grantCheckApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            adView.onGrantCheckReceived((AdDetail) object);
-            adView.hideLoading();
+            eventView.onGrantCheckReceived((Event) object);
+            eventView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            adView.showMessage(throwable.getMessage());
-            adView.hideLoading();
+            eventView.showMessage(throwable.getMessage());
+            eventView.hideLoading();
         }
     };
 
-    public void getAdGrantCheck(int articleUid) {
-        adView.showLoading();
-        advertisingInteractor.updateGrantCheck(articleUid, grantCheckApiCallback);
-        Log.d("AdverstisingActivity", "clicked");
+    public void getEventGrantCheck(int articleUid) {
+        eventView.showLoading();
+        eventInteractor.updateGrantCheck(articleUid, grantCheckApiCallback);
     }
 }

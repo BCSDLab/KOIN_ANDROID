@@ -5,11 +5,11 @@ import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Event;
 
 public interface EventInteractor {
-    void readAdList(final ApiCallback apiCallback);
+    void readEventList(final ApiCallback apiCallback);
 
     void updateGrantCheck(int articleId, final ApiCallback apiCallback);
 
-    void readEventList(int id, final ApiCallback apiCallback);
+    void readEventDetail(int id, final ApiCallback apiCallback);
 
     void createEvent(Event ad, final ApiCallback apiCallback);
 

@@ -1,102 +1,119 @@
 package in.koreatech.koin.ui.event;
 
-public class EventDetailActivityextends extends KoinEditorActivity implements AdDetailContract.View {
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-    private AdDetailPresenter adDetailPresenter;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import in.koreatech.koin.R;
+import in.koreatech.koin.constant.AuthorizeConstant;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.Comment;
+import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.interactor.EventRestInteractor;
+import in.koreatech.koin.ui.board.KoinRichEditor;
+import in.koreatech.koin.ui.event.adapter.EventCommentAdapter;
+import in.koreatech.koin.ui.event.presenter.EventDetailContract;
+import in.koreatech.koin.ui.event.presenter.EventDetailPresenter;
+import in.koreatech.koin.ui.event.presenter.EventPresenter;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.util.SnackbarUtil;
+
+public class EventDetailActivity extends KoinNavigationDrawerActivity implements EventDetailContract.View {
+
+    private EventDetailPresenter eventDetailPresenter;
     private Context context;
     private RecyclerView.LayoutManager layoutManager;
-    private AdvertisingCommentAdapter commentRecyclerAdapter;
-    private GenerateProgressTask adDetailGenerateProgress;
-    private AdDetail adDetailInfo;
+    private EventCommentAdapter commentRecyclerAdapter;
+    private Event eventDetail;
     private InputMethodManager commentInputManager;
 
-    @BindView(R.id.advertising_detail_scrollview)
+    @BindView(R.id.event_detail_scrollview)
     NestedScrollView scrollView;
-    @BindView(R.id.advertising_detail_title_textview)
+    @BindView(R.id.event_detail_title_textview)
     TextView titleTextview;
-    @BindView(R.id.advertising_detail_period_textview)
+    @BindView(R.id.event_detail_period_textview)
     TextView periodTextview;
-    @BindView(R.id.advertising_detail_view_count_publisher_textview)
+    @BindView(R.id.event_detail_view_count_publisher_textview)
     TextView viewPublisherTextview;
-    @BindView(R.id.advertising_detail_publish_date_textview)
-    TextView publishDateTextview;
-    @BindView(R.id.advertising_detail_reply_count_textview)
+    @BindView(R.id.event_detail_publish_date_textview)
+    TextView createdAtTextview;
+    @BindView(R.id.event_detail_content)
+    KoinRichEditor contentEditor;
+    @BindView(R.id.event_detail_reply_count_textview)
     TextView replyCountTextview;
-    @BindView(R.id.advertising_detail_view_count_textview)
+    @BindView(R.id.event_detail_view_count_textview)
     TextView viewCountTextview;
-    @BindView(R.id.advertising_detail_page_edit_button)
+    @BindView(R.id.event_detail_page_edit_button)
     Button editButton;
-    @BindView(R.id.advertising_detail_page_delete_button)
+    @BindView(R.id.event_detail_page_delete_button)
     Button deleteButton;
 
     // Comment View Binding
-    @BindView(R.id.advertising_comment_recyclerview)
+    @BindView(R.id.event_comment_recyclerview)
     RecyclerView detailRecyclerview;
-    @BindView(R.id.advertising_comment_content_edittext)
+    @BindView(R.id.event_comment_content_edittext)
     EditText commentEditText;
-    @BindView(R.id.advertising_comment_create_button)
+    @BindView(R.id.event_comment_create_button)
     Button commentCreateButton;
-    @BindView(R.id.advertising_comment_erase_button)
+    @BindView(R.id.event_comment_erase_button)
     Button commentDeleteButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.advertising_detail_page_activity);
+        setContentView(R.layout.event_detail_activity);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-        adDetailInfo = new AdDetail();
-        adDetailInfo.id = getIntent().getIntExtra("ID", -1);
-        adDetailInfo.grantEdit = getIntent().getBooleanExtra("GRANT_EDIT", false);
+        eventDetail = new Event();
+        eventDetail.setId(getIntent().getIntExtra("ID", -1););
+        eventDetail.setGrantEdit(getIntent().getBooleanExtra("GRANT_EDIT", false));
 
-        if (adDetailInfo.id == -1) {
-            ToastUtil.makeShortToast(context, "이벤트 정보를 불러오지 못했습니다.");
+        if (eventDetail.getId() == -1) {
+            ToastUtil.getInstance().makeShort("이벤트 정보를 불러오지 못했습니다.");
             finish();
         }
 
         init();
     }
 
-    @Override
-    protected int getRichEditorId() {
-        return R.id.advertising_detail_contents;
-    }
-
-    @Override
-    protected boolean isEditable() {
-        return false;
-    }
-
-    @Override
-    protected void successImageProcessing(File imageFile, String uuid) {
-
-    }
-
     private void init() {
         context = this;
-        setPresenter(new AdDetailPresenter(this, new AdDetailRestInterator()));
+        setPresenter(new EventPresenter(this, new EventRestInteractor()));
         layoutManager = new LinearLayoutManager(this);
-        if (adDetailPresenter != null) {
-            adDetailPresenter.getAdDetailInfo(adDetailInfo.id);
+        if (eventDetailPresenter != null) {
+            eventDetailPresenter.getEventDetail(eventDetail.getId());
         }
         commentInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
     public void initView() {
-        commentRecyclerAdapter = new AdvertisingCommentAdapter(context, adDetailInfo.comments);
+        commentRecyclerAdapter = new EventCommentAdapter(context, eventDetail.getComments());
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
         detailRecyclerview.setNestedScrollingEnabled(false);
-        titleTextview.setText(adDetailInfo.eventTitle);
-        periodTextview.setText(adDetailInfo.startDate + " ~ " + adDetailInfo.endDate);
-        viewPublisherTextview.setText("조회 " + adDetailInfo.getHit() + " · " + adDetailInfo.getNickname());
-        renderEditor(renderHtmltoString(adDetailInfo.content));
-        replyCountTextview.setText(adDetailInfo.comentCount + "");
-        viewCountTextview.setText(adDetailInfo.hit + "");
-        publishDateTextview.setText(adDetailInfo.createdAt);
+        titleTextview.setText(eventDetail.getEventTitle());
+        periodTextview.setText(eventDetail.getStartDate() + " ~ " + eventDetail.getEndDate());
+        viewPublisherTextview.setText("조회 " + eventDetail.getHit() + " · " + eventDetail.getNickname());
+        replyCountTextview.setText(eventDetail.getCommentCount() + "");
+        viewCountTextview.setText(eventDetail.getHit() + "");
+        createdAtTextview.setText(eventDetail.getCreatedAt());
 
-        if (adDetailInfo.grantEdit) {
+        if (eventDetail.isGrantEdit()) {
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
@@ -121,47 +138,46 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
 
     @Override
     public void showLoading() {
-        adDetailGenerateProgress = new GenerateProgressTask(this, "로딩 중...");
-        adDetailGenerateProgress.execute();
+        showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        adDetailGenerateProgress.cancel(true);
+        hideProgressDialog();
     }
 
     @Override
-    public void onAdDetailDataReceived(AdDetail adDetail) {
-        adDetailInfo.title = adDetail.title;
-        adDetailInfo.eventTitle = adDetail.eventTitle;
-        adDetailInfo.startDate = adDetail.startDate;
-        adDetailInfo.endDate = adDetail.endDate;
-        adDetailInfo.content = adDetail.content;
-        adDetailInfo.comentCount = adDetail.comentCount;
-        adDetailInfo.hit = adDetail.hit;
-        adDetailInfo.comments = adDetail.comments; //댓글 ArrayList
-        adDetailInfo.thumbnail = adDetail.thumbnail;
-        adDetailInfo.shopId = adDetail.shopId;
-        adDetailInfo.userId = adDetail.userId;
-        adDetailInfo.nickname = adDetail.nickname;
-        adDetailInfo.createdAt = adDetail.createdAt;
+    public void onEventDataReceived(Event event) {
+        eventDetail.setTitle(event.getTitle());
+        eventDetail.setEventTitle(event.getEventTitle());
+        eventDetail.setStartDate(event.getStartDate());
+        eventDetail.setEndDate(event.getEndDate());
+        eventDetail.setContent(event.getContent());
+        eventDetail.setCommentCount(event.getCommentCount());
+        eventDetail.setHit(event.getHit());
+        eventDetail.setComments(event.getComments());  // 댓글 ArrayList
+        eventDetail.setThumbnail(event.getThumbnail());
+        eventDetail.setShopId(event.getShopId());
+        eventDetail.setUserId(event.getUserId());
+        eventDetail.setNickname(event.getNickname());
+        eventDetail.setCreatedAt(event.getCreatedAt());
 
         initView();
     }
 
     @Override
-    public void onAdDetailDeleteCompleted(boolean inSuccess) {
+    public void onEventDeleteCompleted(boolean inSuccess) {
         finish();
     }
 
     @Override
-    public void setPresenter(AdDetailPresenter presenter) {
-        this.adDetailPresenter = presenter;
+    public void setPresenter(EventDetailPresenter presenter) {
+        this.eventDetailPresenter = presenter;
     }
 
     @Override
     public void showMessage(String msg) {
-        ToastUtil.makeShortToast(context, msg);
+        ToastUtil.getInstance().makeShort(msg);
     }
 
     /**
@@ -171,20 +187,20 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
      * @param comment 새로 추가한 댓글
      */
     @Override
-    public void onAdDetailCommentReceived(Comment comment) {
-        adDetailInfo.comments.add(comment);
+    public void onEventCommentReceived(Comment comment) {
+        eventDetail.getComments().add(comment);
         commentRecyclerAdapter.notifyDataSetChanged();
-        replyCountTextview.setText(Integer.toString(adDetailInfo.comments.size()));
+        replyCountTextview.setText(Integer.toString(eventDetail.getComments().size()));
         commentEditText.clearFocus();
         commentEditText.setText("");
         commentInputManager.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
     }
 
     @Override
-    public void onAdDetailCommentDeleted(boolean isSuccess) {
-        Intent intent = new Intent(this, AdvertisingDetailActivity.class);
-        intent.putExtra("ID", adDetailInfo.id);
-        intent.putExtra("GRANT_EDIT", adDetailInfo.grantEdit);
+    public void onEventCommentDeleted(boolean isSuccess) {
+        Intent intent = new Intent(this, EventDetailActivity.class);
+        intent.putExtra("ID", eventDetail.getId());
+        intent.putExtra("GRANT_EDIT", eventDetail.isGrantEdit());
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
@@ -192,13 +208,13 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
     @OnClick(R.id.koin_base_app_bar_dark)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == KoinBaseAppbarDark.getLeftButtonId()) {
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         }
     }
 
     // [목록으로] 버튼 클릭 메소드
-    @OnClick(R.id.advertising_detail_back_list_button)
+    @OnClick(R.id.event_detail_back_list_button)
     public void goBackListClicked(View view) {
         onBackPressed();
     }
@@ -208,31 +224,31 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
         finish();
     }
 
-    @OnClick({R.id.advertising_detail_page_edit_button, R.id.advertising_detail_page_delete_button})
+    @OnClick({R.id.event_detail_page_edit_button, R.id.event_detail_page_delete_button})
     public void onClickButton(View view) {
         switch (view.getId()) {
-            case R.id.advertising_detail_page_edit_button:
+            case R.id.event_detail_page_edit_button:
                 onClickEditButton();
                 break;
-            case R.id.advertising_detail_page_delete_button:
+            case R.id.event_detail_page_delete_button:
                 onClickDeleteButton();
                 break;
         }
     }
 
-    @OnClick({R.id.advertising_comment_content_edittext, R.id.advertising_comment_create_button, R.id.advertising_comment_erase_button})
+    @OnClick({R.id.event_comment_content_edittext, R.id.event_comment_create_button, R.id.event_comment_erase_button})
     public void onClickCommentView(View view) {
         if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
         } else {
             switch (view.getId()) {
-                case R.id.advertising_comment_content_edittext:
+                case R.id.event_comment_content_edittext:
                     scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
                     break;
-                case R.id.advertising_comment_create_button:
+                case R.id.event_comment_create_button:
                     onClickCommentCreate();
                     break;
-                case R.id.advertising_comment_erase_button:
+                case R.id.event_comment_erase_button:
                     onClickCommentErase();
                     break;
             }
@@ -241,11 +257,11 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
 
     public void onClickCommentCreate() {
         if (commentEditText.getText().toString().isEmpty()) {
-            ToastUtil.makeShortToast(this, "댓글을 입력해주세요.");
+            ToastUtil.getInstance().makeShort("댓글을 입력해주세요.");
         } else {
             Comment comment = new Comment();
-            comment.content = commentEditText.getText().toString();
-            adDetailPresenter.createComment(adDetailInfo.id, comment);
+            comment.setContent(commentEditText.getText().toString());
+            eventDetailPresenter.createComment(eventDetail.getId(), comment);
         }
     }
 
@@ -257,20 +273,20 @@ public class EventDetailActivityextends extends KoinEditorActivity implements Ad
 
     // [삭제] 버튼 클릭 시 해당 글을 삭제 시켜주는 메소드
     private void onClickDeleteButton() {
-        SnackbarUtil.makeLongSnackbarActionYes(scrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> adDetailPresenter.deleteAdDetail(adDetailInfo.id));
+        SnackbarUtil.makeLongSnackbarActionYes(scrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> eventDetailPresenter.deleteEvent(eventDetail.getId()));
     }
 
-    // [수정] 버튼 클릭 시 AdvertisingCreateActivity 로 이동하여 글 수정
+    // [수정] 버튼 클릭 시 EventCreateActivity 로 이동하여 글 수정
     private void onClickEditButton() {
-        Intent intent = new Intent(this, AdvertisingCreateActivity.class);
-        intent.putExtra("ID", adDetailInfo.id);
-        intent.putExtra("IS_EDIT", adDetailInfo.grantEdit);
-        intent.putExtra("TITLE", adDetailInfo.title);
-        intent.putExtra("EVENT_TITLE", adDetailInfo.eventTitle);
-        intent.putExtra("START_DATE", adDetailInfo.startDate);
-        intent.putExtra("END_DATE", adDetailInfo.endDate);
-        intent.putExtra("CONTENT", adDetailInfo.content);
-        intent.putExtra("SHOP_ID", adDetailInfo.shopId);
+        Intent intent = new Intent(this, EventCreateActivity.class);
+        intent.putExtra("ID", eventDetail.getId());
+        intent.putExtra("IS_EDIT", eventDetail.isGrantEdit());
+        intent.putExtra("TITLE", eventDetail.getTitle());
+        intent.putExtra("EVENT_TITLE", eventDetail.getEventTitle());
+        intent.putExtra("START_DATE", eventDetail.getStartDate());
+        intent.putExtra("END_DATE", eventDetail.getEndDate());
+        intent.putExtra("CONTENT", eventDetail.getContent());
+        intent.putExtra("SHOP_ID", eventDetail.getShopId());
         startActivity(intent);
 
         finish();
