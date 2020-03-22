@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class Store {
+public class Store implements Comparable<Store> {
     //Unique ID
     @SerializedName("id")
     @Expose
@@ -321,5 +321,16 @@ public class Store {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    @Override
+    public int compareTo(Store store) {
+        int compareResult = this.name.compareTo(store.name);
+        if (compareResult < 0) {
+            return -1;
+        } else if (compareResult > 0) {
+            return 1;
+        }
+        return 0;
     }
 }
