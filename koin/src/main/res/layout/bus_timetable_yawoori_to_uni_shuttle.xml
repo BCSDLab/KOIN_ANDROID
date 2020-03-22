@@ -8,7 +8,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/colorPrimary">
+        android:background="?attr/colorPrimary">
 
         <TextView
             android:layout_width="0dp"
@@ -16,14 +16,14 @@
             android:layout_column="0"
             android:layout_marginTop="2dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="출발시간"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -34,14 +34,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="2dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="도착시간"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -52,7 +52,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         android:gravity="center">
 
         <TextView
@@ -62,14 +62,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="07:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -79,12 +79,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -94,7 +94,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -104,14 +104,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="07:30"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -121,12 +121,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="07:50"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -136,7 +136,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -146,14 +146,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="09:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -163,12 +163,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="09:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -178,7 +178,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -188,14 +188,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="10:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -205,12 +205,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="10:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -220,7 +220,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -230,14 +230,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="11:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -247,12 +247,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="11:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -262,7 +262,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -272,14 +272,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="12:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -289,12 +289,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="12:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -304,7 +304,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -314,14 +314,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="13:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -331,12 +331,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="13:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -346,7 +346,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -356,14 +356,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="14:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -373,12 +373,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="14:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -388,7 +388,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -398,14 +398,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="14:30"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -415,12 +415,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="14:50"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -430,7 +430,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -440,14 +440,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="15:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -457,12 +457,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="15:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -472,7 +472,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -482,14 +482,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="16:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -499,12 +499,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="16:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -514,7 +514,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -524,14 +524,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="17:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -541,12 +541,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="17:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -556,7 +556,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -566,14 +566,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="17:50"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -583,12 +583,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="18:10"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -598,7 +598,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -608,14 +608,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="19:30"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -625,12 +625,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="19:50"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -640,7 +640,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -650,14 +650,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="20:30"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -667,12 +667,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="20:50"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -682,7 +682,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/blue1"
+        android:background="?attr/colorDivider"
         android:gravity="center">
 
         <TextView
@@ -692,14 +692,14 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="21:00"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -709,12 +709,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="21:20"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>
@@ -725,7 +725,7 @@
         android:layout_gravity="center"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary">
+        android:background="?attr/colorPrimary">
 
         <TextView
             android:layout_width="match_parent"
@@ -734,7 +734,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="5"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
@@ -742,7 +742,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text=" "
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
         <TextView
@@ -752,12 +752,12 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
+            android:background="?attr/colorSurface"
             android:gravity="center"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="6sp"
             android:text="  "
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="13sp" />
 
     </TableRow>

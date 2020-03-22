@@ -7,7 +7,7 @@
             >
             <shape>
                 <solid
-                    android:color="@color/white">
+                    android:color="@color/color_surface">
                 </solid>
 
                 <padding
@@ -16,7 +16,7 @@
                     android:top="10dp" />
                 <stroke
                     android:width="1dp"
-                    android:color="@color/blue1"/>
+                    android:color="@color/color_divider"/>
             </shape>
         </item>
 
@@ -33,7 +33,7 @@
             >
             <shape>
                 <solid
-                    android:color="@color/white">
+                    android:color="@color/color_surface">
                 </solid>
 
                 <padding
@@ -42,7 +42,7 @@
                     android:top="10dp" />
                 <stroke
                     android:width="1dp"
-                    android:color="@color/colorPrimary"/>
+                    android:color="@color/color_primary"/>
             </shape>
         </item>
 

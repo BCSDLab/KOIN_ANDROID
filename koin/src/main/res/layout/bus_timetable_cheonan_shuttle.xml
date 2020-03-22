@@ -22,14 +22,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorPrimary">
 
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:layout_margin="0dp"
                     android:layout_weight="1"
-                    android:background="@color/colorPrimary">
+                    android:background="?attr/colorPrimary">
 
 
                 </TableRow>
@@ -38,7 +38,7 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimary"
                 android:weightSum="6">
 
                 <TextView
@@ -47,7 +47,7 @@
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
                     android:layout_weight="5"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
@@ -55,7 +55,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="승차장소"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -64,11 +64,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="1"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="1회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -76,11 +76,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="2"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="2회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -88,11 +88,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="3"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="3회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -100,11 +100,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="4"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="금요일추가"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -112,11 +112,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="5"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="4회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -124,11 +124,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="6"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="5회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -136,11 +136,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="7"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="6회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -148,11 +148,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="8"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="7회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -160,11 +160,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="9"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="8회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -172,11 +172,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="10"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="9회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -184,11 +184,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="11"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="10회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -196,11 +196,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="12"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="11회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -208,11 +208,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="13"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="12회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -220,11 +220,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="14"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="토요일 오후"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -232,11 +232,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="15"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="토요일 오후"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -244,11 +244,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="16"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="일요일 오후"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -256,11 +256,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="16"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="일요일 야간"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
 
@@ -272,7 +272,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorPrimary">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -280,7 +280,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -288,7 +288,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="한기대"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -297,14 +297,14 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="09:10"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -313,14 +313,14 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="11:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -329,14 +329,14 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="14:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -345,14 +345,14 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="14:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -361,14 +361,14 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="15:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -377,14 +377,14 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="16:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -393,14 +393,14 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="16:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -409,14 +409,14 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="17:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -425,13 +425,13 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -440,14 +440,14 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="19:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -456,14 +456,14 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="21:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -472,13 +472,13 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -487,14 +487,14 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="22:40"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -503,14 +503,14 @@
                     android:layout_column="14"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="14:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -519,13 +519,13 @@
                     android:layout_column="15"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -534,13 +534,13 @@
                     android:layout_column="16"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp"
                     android:text="17:00"/>
 
@@ -550,13 +550,13 @@
                     android:layout_column="17"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
 
@@ -568,14 +568,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_horizontal"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -583,7 +583,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="천안역(태극당 건너 정거장)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -592,12 +592,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="09:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -606,7 +606,7 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -616,7 +616,7 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -626,7 +626,7 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -636,12 +636,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:20"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -650,7 +650,7 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -660,7 +660,7 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -670,7 +670,7 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -680,7 +680,7 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -690,7 +690,7 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -700,7 +700,7 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -711,7 +711,7 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -721,7 +721,7 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -732,7 +732,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -743,7 +743,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -754,7 +754,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -765,7 +765,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
             </TableRow>
@@ -776,14 +776,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -791,7 +791,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="터미널(신세계)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -800,12 +800,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="09:40"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -814,7 +814,7 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -824,7 +824,7 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -834,7 +834,7 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -844,12 +844,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -858,7 +858,7 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -868,7 +868,7 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -878,7 +878,7 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -888,7 +888,7 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -898,7 +898,7 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -908,7 +908,7 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -918,7 +918,7 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -928,7 +928,7 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -939,7 +939,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -950,7 +950,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -961,7 +961,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -972,7 +972,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
             </TableRow>
@@ -983,14 +983,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -998,7 +998,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text=" 두정캠퍼스"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1007,12 +1007,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="09:55"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1021,12 +1021,12 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text=""
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1035,7 +1035,7 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1045,7 +1045,7 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1055,12 +1055,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:45"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1069,7 +1069,7 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1079,7 +1079,7 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1089,7 +1089,7 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1099,7 +1099,7 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1109,7 +1109,7 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1119,11 +1119,11 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:text="21:50"
                     android:textSize="13sp" />
 
@@ -1133,7 +1133,7 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     />
 
@@ -1143,7 +1143,7 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1154,7 +1154,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1165,7 +1165,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1176,7 +1176,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1187,7 +1187,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="" />
 
@@ -1198,7 +1198,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1206,7 +1206,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1214,7 +1214,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="터미널(신세계)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1223,12 +1223,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="10:10"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1237,12 +1237,12 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="11:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1251,12 +1251,12 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="14:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1265,12 +1265,12 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="14:55"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1279,12 +1279,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:05"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1293,12 +1293,12 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1307,12 +1307,12 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:55"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1321,12 +1321,12 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1335,12 +1335,12 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:45"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1349,12 +1349,12 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="19:55"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1363,12 +1363,12 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="하차"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1377,12 +1377,12 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="22:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1391,12 +1391,12 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="23:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1405,12 +1405,12 @@
                     android:layout_column="14"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="14:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1420,12 +1420,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:45"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1435,12 +1435,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1450,12 +1450,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="21:15/21:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
             </TableRow>
@@ -1465,14 +1465,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1480,7 +1480,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text=" 천안역"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1489,12 +1489,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="10:15"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1503,12 +1503,12 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="11:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1517,12 +1517,12 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="14:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1531,12 +1531,12 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1545,12 +1545,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:10"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1559,12 +1559,12 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1573,12 +1573,12 @@
                     android:layout_column="7"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1587,12 +1587,12 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1601,12 +1601,12 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:50"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1615,12 +1615,12 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="20:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1629,12 +1629,12 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="종점"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1643,12 +1643,12 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="22:05"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1657,12 +1657,12 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="23:05"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1671,12 +1671,12 @@
                     android:layout_column="14"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="14:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1686,12 +1686,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:50"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1701,12 +1701,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1716,12 +1716,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="21:20/21:35"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
             </TableRow>
@@ -1731,14 +1731,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1746,7 +1746,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="한기대"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1755,12 +1755,12 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="11:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1769,12 +1769,12 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="12:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1783,12 +1783,12 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1797,12 +1797,12 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1811,12 +1811,12 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="16:40"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1825,12 +1825,12 @@
                     android:layout_column="6"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1840,12 +1840,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="17:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1854,12 +1854,12 @@
                     android:layout_column="8"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1868,12 +1868,12 @@
                     android:layout_column="9"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="19:20"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1882,12 +1882,12 @@
                     android:layout_column="10"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="20:40"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1896,11 +1896,11 @@
                     android:layout_column="11"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1909,12 +1909,12 @@
                     android:layout_column="12"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="22:25"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1923,11 +1923,11 @@
                     android:layout_column="13"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1937,12 +1937,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="15:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1952,12 +1952,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="19:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1967,12 +1967,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="18:10"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1982,12 +1982,12 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
                     android:layout_marginEnd="0dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
                     android:text="21:50/22:00"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
             </TableRow>
 
@@ -1996,14 +1996,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorPrimary">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2011,7 +2011,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
 
@@ -2020,7 +2020,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2028,7 +2028,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2036,7 +2036,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2044,7 +2044,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2052,7 +2052,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2060,7 +2060,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2068,7 +2068,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2076,7 +2076,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2084,7 +2084,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2092,7 +2092,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2100,7 +2100,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2108,7 +2108,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2116,7 +2116,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2124,7 +2124,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2132,7 +2132,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2140,7 +2140,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2148,7 +2148,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2156,7 +2156,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2164,7 +2164,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2172,7 +2172,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2180,7 +2180,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2188,7 +2188,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2196,7 +2196,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2204,7 +2204,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2212,7 +2212,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2220,7 +2220,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2228,7 +2228,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2236,7 +2236,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2244,7 +2244,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2252,7 +2252,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2260,7 +2260,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2268,7 +2268,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2276,7 +2276,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2284,7 +2284,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
             </TableRow>

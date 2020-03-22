@@ -7,7 +7,7 @@
             >
             <shape>
                 <solid
-                    android:color="@color/white">
+                    android:color="@color/color_surface">
                 </solid>
 
                 <padding
@@ -30,7 +30,7 @@
             >
             <shape>
                 <solid
-                    android:color="@color/white">
+                    android:color="@color/color_surface">
                 </solid>
 
                 <padding

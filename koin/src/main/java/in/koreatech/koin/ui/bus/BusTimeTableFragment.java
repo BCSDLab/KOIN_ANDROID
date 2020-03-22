@@ -147,6 +147,10 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         busTimetableCheonanStartEndSpinner.setSelection(0);
         busTimetableShuttleBusSpinner.setSelection(0);
 
+        busTimetableTypeShuttle.setSelected(true);
+        busTimetableTypeDaesung.setSelected(false);
+        busTimetableTypeCity.setSelected(false);
+
         fragmentTransaction.commit();
     }
 
@@ -160,6 +164,10 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         busTimetableShuttleBusSpinner.setVisibility(View.GONE);
         busTimetableDaesungSpinner.setSelection(0);
 
+        busTimetableTypeShuttle.setSelected(false);
+        busTimetableTypeDaesung.setSelected(true);
+        busTimetableTypeCity.setSelected(false);
+
         fragmentTransaction.commit();
     }
 
@@ -171,6 +179,10 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         busTimetableDaesungSpinner.setVisibility(View.GONE);
         busTimetableChungjuSpinner.setVisibility(View.GONE);
         busTimetableShuttleBusSpinner.setVisibility(View.GONE);
+
+        busTimetableTypeShuttle.setSelected(false);
+        busTimetableTypeDaesung.setSelected(false);
+        busTimetableTypeCity.setSelected(true);
 
         fragmentTransaction.commit();
 
@@ -398,6 +410,10 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         busTimetableCheonanStartEndSpinner.setVisibility(View.VISIBLE);
         fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableCheonanShuttleStartEndTrainStationFragment());
         fragmentTransaction.commit();
+
+        busTimetableTypeShuttle.setSelected(true);
+        busTimetableTypeDaesung.setSelected(false);
+        busTimetableTypeCity.setSelected(false);
     }
 
     /**

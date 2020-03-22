@@ -4,12 +4,12 @@
     <corners
             android:radius="10dp" />
     <gradient
-        android:endColor="@color/gray"
-        android:startColor="@color/gray"
+        android:endColor="@color/color_daesung_bg"
+        android:startColor="@color/color_daesung_bg"
         />
 
     <solid
         android:width="2dp"
-        android:color="@color/gray" />
-    <stroke android:width="1dp" android:color="@color/white"/>
+        android:color="@color/color_daesung_bg" />
+    <stroke android:width="1dp" android:color="@color/color_daesung_text"/>
 </shape>

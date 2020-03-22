@@ -12,14 +12,14 @@
         <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
             android:stretchColumns="*">
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimary"
                 android:weightSum="6">
 
                 <TextView
@@ -28,7 +28,7 @@
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
                     android:layout_weight="5"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
@@ -36,7 +36,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="승차장소"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -45,11 +45,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="1"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="1회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -57,11 +57,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="2"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="2회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -69,11 +69,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="3"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="3회 "
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -81,11 +81,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="4"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="4회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
                 <TextView
@@ -93,11 +93,11 @@
                     android:layout_height="match_parent"
                     android:layout_column="5"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:text="5회"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="?attr/colorPrimary"
                     android:textStyle="bold" />
 
             </TableRow>
@@ -108,7 +108,7 @@
                 android:layout_margin="0dp"
                 android:layout_marginTop="2dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorPrimary">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -124,7 +124,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="한기대"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -134,9 +134,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -145,10 +145,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="14:00"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,10 +157,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="16:00"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,10 +169,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="20:00"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,10 +181,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="22:00"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -194,14 +194,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -209,7 +209,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="옥산(가락3리)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -219,9 +219,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -230,10 +230,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -242,9 +242,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -253,10 +253,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -265,9 +265,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -277,7 +277,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -285,7 +285,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -293,7 +293,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="청주역"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -302,9 +302,9 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -312,10 +312,10 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -323,9 +323,9 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -333,10 +333,10 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -344,9 +344,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -356,7 +356,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -364,7 +364,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -372,7 +372,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="G-WELL CITY"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -382,9 +382,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -393,10 +393,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -405,9 +405,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -416,10 +416,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -428,9 +428,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -440,7 +440,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -448,7 +448,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -456,7 +456,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="솔밭공원"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -466,9 +466,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -477,10 +477,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -489,9 +489,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -500,10 +500,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -512,9 +512,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -524,7 +524,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -532,7 +532,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -540,7 +540,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="봉명우체국"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -550,9 +550,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -561,10 +561,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -573,9 +573,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -584,10 +584,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -596,9 +596,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -608,7 +608,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -616,7 +616,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -624,7 +624,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="오창과학단지"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -634,9 +634,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -645,9 +645,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -656,10 +656,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -668,9 +668,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -679,10 +679,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -692,7 +692,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -700,7 +700,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -708,7 +708,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="성모병원"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -718,9 +718,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -729,9 +729,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -740,10 +740,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -752,9 +752,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -763,10 +763,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -776,7 +776,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -784,7 +784,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -792,7 +792,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="신봉사거리(LPG충전소)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -802,9 +802,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -813,9 +813,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -824,10 +824,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -836,9 +836,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -847,10 +847,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -860,7 +860,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -868,7 +868,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -876,7 +876,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="봉명사거리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -886,9 +886,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -897,9 +897,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -908,10 +908,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -920,9 +920,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -931,10 +931,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -944,7 +944,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -952,7 +952,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -960,7 +960,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="사창사거리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -970,9 +970,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -981,10 +981,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -993,10 +993,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1005,10 +1005,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1017,10 +1017,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1030,7 +1030,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1038,7 +1038,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1046,7 +1046,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="체육관"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1056,9 +1056,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1067,10 +1067,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1079,10 +1079,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1091,10 +1091,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1103,10 +1103,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="종점"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1116,7 +1116,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1124,7 +1124,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1132,7 +1132,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="상당공원"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1142,9 +1142,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1153,10 +1153,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1165,10 +1165,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1177,10 +1177,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1189,9 +1189,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1201,7 +1201,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1209,7 +1209,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1217,7 +1217,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="육거리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1227,9 +1227,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1238,10 +1238,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1250,10 +1250,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1262,10 +1262,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1274,9 +1274,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1286,7 +1286,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1294,7 +1294,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1302,7 +1302,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="삼양가스"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1312,9 +1312,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1323,10 +1323,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1335,10 +1335,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1347,10 +1347,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="하차"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1359,9 +1359,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1371,7 +1371,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1379,7 +1379,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1387,7 +1387,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="용암동(현대APT)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1397,10 +1397,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="11:50"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1409,10 +1409,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="종점"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1421,10 +1421,10 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
 
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="종점"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1433,10 +1433,10 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="종점"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1445,9 +1445,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1457,7 +1457,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1465,7 +1465,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1473,7 +1473,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="GS대청주요소(용암동)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1483,10 +1483,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="11:51"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1495,9 +1495,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1506,9 +1506,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1517,9 +1517,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1528,9 +1528,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1540,7 +1540,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1548,7 +1548,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1556,7 +1556,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="석교동육거리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1566,10 +1566,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="11:54"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1578,9 +1578,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1589,9 +1589,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1600,9 +1600,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1611,9 +1611,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1623,7 +1623,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1631,7 +1631,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1639,7 +1639,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="상당공원(지하상가)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1649,10 +1649,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="11:56"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1661,9 +1661,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1672,9 +1672,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1683,9 +1683,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1694,9 +1694,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1706,7 +1706,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1714,7 +1714,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1722,7 +1722,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text=" 체육관(NEFA)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1732,10 +1732,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="11:58"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1744,9 +1744,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1755,9 +1755,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1766,9 +1766,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1777,9 +1777,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1789,7 +1789,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1797,7 +1797,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1805,7 +1805,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="사창사거리"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1815,10 +1815,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:00"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1827,9 +1827,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1838,9 +1838,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1849,9 +1849,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1860,9 +1860,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1872,7 +1872,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1880,7 +1880,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1888,7 +1888,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="갤러리호텔"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1898,10 +1898,10 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:02"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1910,9 +1910,9 @@
 
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1921,9 +1921,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1932,9 +1932,9 @@
                     android:layout_marginStart="0dp"
 
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1942,9 +1942,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -1954,7 +1954,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -1962,7 +1962,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -1970,7 +1970,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="솔밭공원앞"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -1979,10 +1979,10 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:05"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1990,9 +1990,9 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2000,9 +2000,9 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2010,9 +2010,9 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2020,9 +2020,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -2032,7 +2032,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2040,7 +2040,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2048,7 +2048,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="청주역(서촌동버스정류장)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2057,10 +2057,10 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:10"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2068,9 +2068,9 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2078,9 +2078,9 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2088,9 +2088,9 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2098,9 +2098,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -2110,7 +2110,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2118,7 +2118,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2126,7 +2126,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="옥산(가락3리버스정류장)"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2135,10 +2135,10 @@
                     android:layout_column="1"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:12"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2146,9 +2146,9 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2156,9 +2156,9 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2166,9 +2166,9 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2176,9 +2176,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -2187,7 +2187,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@color/blue1">
+                android:background="?attr/colorDivider">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -2195,7 +2195,7 @@
                     android:layout_column="0"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2203,7 +2203,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text=" 한기대"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2211,10 +2211,10 @@
                     android:layout_height="match_parent"
                     android:layout_column="1"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
                     android:text="12:50"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2222,9 +2222,9 @@
                     android:layout_column="2"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2232,9 +2232,9 @@
                     android:layout_column="3"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2242,9 +2242,9 @@
                     android:layout_column="4"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -2252,9 +2252,9 @@
                     android:layout_column="5"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="1dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center"
-                    android:textColor="@color/black" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
 
             </TableRow>
@@ -2264,14 +2264,14 @@
                 android:layout_height="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="1"
-                android:background="@color/colorPrimary">
+                android:background="?attr/colorPrimary">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2279,7 +2279,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
 
@@ -2288,7 +2288,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2296,7 +2296,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2304,7 +2304,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2312,7 +2312,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2320,7 +2320,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2328,7 +2328,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2336,7 +2336,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2344,7 +2344,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
                 <TextView
@@ -2352,7 +2352,7 @@
                     android:layout_height="match_parent"
                     android:layout_column="0"
                     android:layout_marginTop="2dp"
-                    android:background="@color/white"
+                    android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:letterSpacing="-0.02"
                     android:lineSpacingExtra="6sp"
@@ -2360,7 +2360,7 @@
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
                     android:text="  "
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
 
             </TableRow>

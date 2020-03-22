@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_vertical_0.044"
@@ -108,7 +109,7 @@
         android:visibility="gone"
         android:lineSpacingExtra="6sp"
         android:overlapAnchor="false"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_vertical_0.044"
         app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
@@ -123,7 +124,7 @@
         android:visibility="gone"
         android:lineSpacingExtra="6sp"
         android:overlapAnchor="false"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="13sp"
         app:layout_constraintLeft_toLeftOf="@id/guideline_vertical_0.044"
         app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
@@ -138,7 +139,7 @@
         android:visibility="gone"
         android:lineSpacingExtra="6sp"
         android:overlapAnchor="false"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="13sp"
         app:layout_constraintRight_toRightOf="@id/guideline_vertical_0.956"
         app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
@@ -153,7 +154,7 @@
         android:visibility="gone"
         android:lineSpacingExtra="6sp"
         android:overlapAnchor="false"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="13sp"
         app:layout_constraintRight_toRightOf="@id/guideline_vertical_0.956"
         app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
