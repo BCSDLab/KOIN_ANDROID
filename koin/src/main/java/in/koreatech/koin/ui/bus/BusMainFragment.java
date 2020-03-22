@@ -481,7 +481,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     /**
      * 받아온 학기 정보로 셔틀버스의 시간을 계산하여 update하는 함수
      *
-     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름방학, 20 - 2학기, 21 - 2학기 겨울방학
+     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름계절학기, 12 - 1학기 방학,  20 - 2학기, 21 - 2학기 겨울방학 , 22 - 2학기 방학
      */
     @Override
     public void updateShuttleBusInfo(int term) {
