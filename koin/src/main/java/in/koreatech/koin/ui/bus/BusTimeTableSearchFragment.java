@@ -49,6 +49,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     private BusTimeTableSearchPresenter presenter;
     private String resultDate;
     private Calendar calendar;
+    private int term;
 
     @BindView(R.id.bus_search_bus_departure_spinner)
     Spinner busTimetableSearchDepartureSpinner;
@@ -154,7 +155,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     public void init() {
         departureState = 0;
         arrivalState = 1;
-
+        term = 0;
         this.calendar = Calendar.getInstance();
         this.calendar.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
@@ -173,6 +174,8 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
             this.min = minute;
             showUserSelectDateTime();
         });
+
+        presenter.getTermInfo();
 
     }
 
@@ -253,7 +256,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     @OnClick(R.id.bus_timetable_search_fragment_search_button)
     public void onTimetableSearchButtonClick() {
         this.presenter.getDaesungBus(departureState, arrivalState, this.totalDate, this.totalTime);
-        this.presenter.getShuttleBus(departureState, arrivalState, this.totalDate, this.totalTime);
+        this.presenter.getShuttleBus(departureState, arrivalState, this.totalDate, this.totalTime, this.term);
     }
 
     @Override
@@ -304,6 +307,11 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
     public void showLoading() {
         ((BusActivity) getActivity()).showProgressDialog(R.string.loading);
 
+    }
+
+    @Override
+    public void updateTermInfo(int term) {
+        this.term = term;
     }
 
     @Override
