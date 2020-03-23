@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                         android:layout_marginTop="13dp"
                         android:lineSpacingExtra="1sp"
                         android:text="홍보기간 :"
-                        android:textColor="@color/light_navy"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/event_detail_title_textview" />
@@ -173,7 +173,7 @@
                         android:layout_height="16dp"
                         android:layout_marginStart="6dp"
                         android:layout_marginTop="14dp"
-                        android:background="@drawable/bg_black_rectangle"
+                        android:background="@drawable/bg_rect_black"
                         android:gravity="center"
                         android:lineSpacingExtra="2sp"
                         android:text="마감"
@@ -191,7 +191,7 @@
                         android:layout_marginTop="13dp"
                         android:lineSpacingExtra="2sp"
                         android:text="댓글  "
-                        android:textColor="@color/warm_grey_two"
+                        android:textColor="@color/gray7"
                         android:textSize="13sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/linearLayout6" />
@@ -288,7 +288,7 @@
                         android:layout_marginTop="12dp"
                         android:lineSpacingExtra="2sp"
                         android:text="개 |  조회수 "
-                        android:textColor="@color/warm_grey_two"
+                        android:textColor="@color/gray7"
                         android:textSize="13sp"
                         app:layout_constraintStart_toEndOf="@+id/event_detail_reply_count_textview"
                         app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
@@ -330,7 +330,7 @@
                             android:layout_height="60dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:background="@drawable/bg_black_rectangle"
+                            android:background="@drawable/bg_rect_black"
                             android:hint="로그인 후 이용해주세요."
                             android:lineSpacingExtra="18sp"
                             android:textColorHint="#b7bbbf"
@@ -349,7 +349,7 @@
                                 android:id="@+id/event_comment_erase_button"
                                 android:layout_width="159dp"
                                 android:layout_height="29dp"
-                                android:background="@drawable/bg_black_rectangle"
+                                android:background="@drawable/bg_rect_black"
                                 android:lineSpacingExtra="1sp"
                                 android:text="취소"
                                 android:textColor="@color/black"
@@ -360,7 +360,7 @@
                                 android:layout_width="159dp"
                                 android:layout_height="29dp"
                                 android:layout_marginLeft="10dp"
-                                android:background="@drawable/bg_black_rectangle"
+                                android:background="@drawable/bg_rect_black"
                                 android:lineSpacingExtra="1sp"
                                 android:text="등록"
                                 android:textColor="@color/black"

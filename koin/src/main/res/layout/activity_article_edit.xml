@@ -162,18 +162,11 @@
                             app:auto_focus="false"
                             app:placeholder="내용을 입력해주세요.."
                             app:render_type="Editor" />
-
-
                     </LinearLayout>
-
 
                 </androidx.core.widget.NestedScrollView>
 
-
-
-
             </RelativeLayout>
-
 
             <HorizontalScrollView
                 android:id="@+id/tools"
@@ -183,12 +176,9 @@
                 android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@+id/include">
 
-
                 <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
 
-
             </HorizontalScrollView>
-
 
             <include
                 android:id="@+id/include"
@@ -196,8 +186,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent" />
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <include layout="@layout/base_navigation_drawer_left" />

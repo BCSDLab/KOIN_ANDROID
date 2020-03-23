@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:orientation="vertical"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:layout_marginLeft="12dp"
             android:lineSpacingExtra="18sp"
             android:text="2019.11.25 [13:11]"
-            android:textColor="@color/warm_grey_three"
+            android:textColor="@color/gray11"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -58,13 +58,13 @@
         android:id="@+id/event_comment_item_fix_button"
         android:layout_width="46dp"
         android:layout_height="26dp"
-        android:background="@drawable/bg_cloudy_blue_rectangle"
+        android:background="@drawable/bg_rect_cloudy_blue"
         android:lineSpacingExtra="1sp"
         android:text="수정"
         android:visibility="invisible"
-        android:textColor="@color/warm_grey_two"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="11sp"
         android:layout_marginTop="10dp"
-        />
+        tools:visibility="visible" />
 
 </LinearLayout>

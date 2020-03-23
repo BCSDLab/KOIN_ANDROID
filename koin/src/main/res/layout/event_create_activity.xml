@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,14 +69,14 @@
                                     android:layout_width="28dp"
                                     android:layout_height="28dp"
                                     android:layout_marginLeft="8dp"
-                                    app:srcCompat="@drawable/ic_ad_store" />
+                                    app:srcCompat="@drawable/ic_event_store" />
 
                                 <TextView
                                     android:id="@+id/event_create_activity_store_button"
                                     android:layout_width="120dp"
                                     android:layout_height="26dp"
                                     android:layout_gravity="center"
-                                    android:background="#ffffff"
+                                    android:background="@color/white"
                                     android:gravity="center"
                                     android:lineSpacingExtra="2sp"
                                     android:text="노랑통닭"
@@ -173,7 +173,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="1dp"
                                         android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_ad_calender" />
+                                        app:srcCompat="@drawable/ic_event_calender" />
 
                                     <TextView
                                         android:id="@+id/event_create_calender_startdate_textview"
@@ -194,9 +194,8 @@
                                     android:layout_marginBottom="18dp"
                                     android:lineSpacingExtra="4sp"
                                     android:text="~"
-                                    android:textColor="@color/light_navy"
-                                    android:textSize="13sp"
-                                    tools:text="~" />
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="13sp" />
 
                                 <LinearLayout
                                     android:id="@+id/event_calender2_reck_layout"
@@ -213,7 +212,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="1dp"
                                         android:layout_weight="1"
-                                        app:srcCompat="@drawable/ic_ad_calender" />
+                                        app:srcCompat="@drawable/ic_event_calender" />
 
                                     <TextView
                                         android:id="@+id/event_create_calender_enddate_textview"
@@ -226,7 +225,6 @@
 
 
                             </LinearLayout>
-
 
                             <LinearLayout
                                 android:layout_width="match_parent"

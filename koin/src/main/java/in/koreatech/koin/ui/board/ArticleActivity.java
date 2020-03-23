@@ -19,6 +19,7 @@ import androidx.core.widget.NestedScrollView;
 
 import com.github.irshulx.Editor;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
-public class ArticleActivity extends KoinNavigationDrawerActivity implements ArticleContract.View {
+public class ArticleActivity extends KoinEditorActivity implements ArticleContract.View {
     private final String TAG = "ArticleActivity";
     private final int REQ_CODE_ARTICLE_EDIT = 1;
     private final int REQ_CODE_ARTICLE = 2;
@@ -59,8 +60,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     AppBarBase koinBaseAppbarDark;
     @BindView(R.id.article_view_count)
     TextView textViewViewCount;
-    @BindView(R.id.article_content)
-    Editor editorContent;
 
     @BindView(R.id.article_writer)
     TextView textViewWriter;
@@ -95,6 +94,21 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         this.article.setGrantEdit(getIntent().getBooleanExtra("ARTICLE_GRANT_EDIT", false));
 
         init();
+    }
+
+    @Override
+    protected int getRichEditorId() {
+        return R.id.article_content;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return false;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+
     }
 
     @Override
@@ -251,9 +265,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     }
 
-    /**
-     *
-     */
     @Override
     public void checkRequiredInfo() {
         String nickName;
@@ -294,53 +305,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         textViewWriter.setText(this.article.getAuthorNickname());
         textViewCreateDate.setText(Html.fromHtml(this.article.getCreateDate()));
         textViewViewCount.setText(String.valueOf(this.article.getHitCount()));
-        editorContent.setDividerLayout(R.layout.tmpl_divider_layout);
-        editorContent.setEditorImageLayout(R.layout.rich_editor_image_layout);
-        editorContent.setListItemLayout(R.layout.tmpl_list_item);
-        editorContent.clearAllContents();
+        renderEditor(renderHtmltoString(this.article.getContent()));
 
-        // 리치 에디터 폰트 설정
-        editorContent.setHeadingTypeface(getEditorTypeface());
-        editorContent.setContentTypeface(getEditorTypeface());
-        editorContent.render(renderHtmltoString(this.article.getContent()));
-
-        changeEditorChildViewSetting(editorContent, EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
 //        mCommentRecyclerAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Editor 영역의 Padding 값을 설정하여 LineSpacing 값을 수정하는 메소드
-     *
-     * @param view   Editor extends LinearLayout
-     * @param left   EditText(한 줄)의 왼쪽 Padding
-     * @param top    EditText(한 줄)의 위쪽 Padding
-     * @param right  EditText(한 줄)의 오른쪽 Padding
-     * @param bottom EditText(한 줄)의 아래쪽 Padding
-     */
-    public void changeEditorChildViewSetting(View view, int left, int top, int right, int bottom) {
-        // TODO: TextView일때 Copy가 가능하도록 구현(한줄씩만 Copy가 됨)
-        if (view == null)
-            return;
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                changeEditorChildViewSetting(((ViewGroup) view).getChildAt((i)), left, top, right, bottom);
-            }
-        } else {
-            view.setPadding(left, top, right, bottom);
-            if (view instanceof TextView) {
-                ((TextView) view).setTextIsSelectable(true);
-            }
-        }
-    }
-
-    public Map<Integer, String> getEditorTypeface() {
-        Map<Integer, String> typefaceMap = new HashMap<>();
-        typefaceMap.put(Typeface.NORMAL, "fonts/notosans_regular.ttf");
-        typefaceMap.put(Typeface.BOLD, "fonts/notosanscjkkr_bold.otf");
-        typefaceMap.put(Typeface.ITALIC, "fonts/notosans_medium.ttf");
-        typefaceMap.put(Typeface.BOLD_ITALIC, "fonts/notosans_light.ttf");
-
-        return typefaceMap;
     }
 
     @Override
@@ -348,15 +315,6 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         setResult(RES_CODE_ARTICLE_DELETED);
         finish();
 
-    }
-
-
-    public String renderHtmltoString(String url) {
-        if (url == null) return "";
-        String str = url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">");
-        Log.d("render : ", str);
-        return str;
     }
 
     public void onClickEditButton() {

@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +27,7 @@ import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
+import in.koreatech.koin.ui.board.KoinEditorActivity;
 import in.koreatech.koin.ui.board.KoinRichEditor;
 import in.koreatech.koin.ui.event.EventDetailActivity;
 import in.koreatech.koin.ui.event.presenter.EventCreateContract;
@@ -35,7 +37,7 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
-public class EventCreateActivity extends KoinNavigationDrawerActivity implements EventCreateContract.View, TextWatcher {
+public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher {
     private Context context;
     private final static String TAG = "EventCreateActivity";
     private Calendar SelectStartDate;
@@ -43,7 +45,7 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
     private DatePickerDialog.OnDateSetListener dataPicker;
     private DatePickerDialog.OnDateSetListener dataPicker2;
     private boolean isClickedQuestion = false;
-    private EventCreatePresenter eventCreatingPresenter;
+    private EventCreatePresenter eventCreatePresenter;
     private InputMethodManager inputMethodManager;
 
     @BindView(R.id.koin_base_app_bar_dark)
@@ -92,6 +94,21 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.bind(this).unbind();
+    }
+
+    @Override
+    protected int getRichEditorId() {
+        return R.id.event_create_content;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return true;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+        eventCreatePresenter.uploadImage(imageFile, uuid);
     }
 
     void init() {
@@ -195,7 +212,6 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickKoinBaseAppbar(View v) {
         int viewId = v.getId();
-
         if (viewId == AppBarBase.getLeftButtonId())
             onBackPressed();
         else if (viewId == AppBarBase.getRightButtonId())
@@ -243,7 +259,7 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
             ToastUtil.getInstance().makeShort("홍보 문구를 입력하세요");
             return;
         }
-        if (FormValidatorUtil.validateStringIsEmpty(eventRichEditor.getContent())) {
+        if (FormValidatorUtil.validateStringIsEmpty(getContent())) {
             ToastUtil.getInstance().makeShort("내용을 입력하세요");
             return;
         }
@@ -261,9 +277,9 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
         String thumbnail = getThumbnail();
 
         if (isEdit) {
-            eventCreatingPresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         } else {
-            eventCreatingPresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         }
     }
 
@@ -296,7 +312,7 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void setPresenter(EventCreatePresenter presenter) {
-        this.eventCreatingPresenter = presenter;
+        this.eventCreatePresenter = presenter;
     }
 
     @Override
@@ -312,11 +328,5 @@ public class EventCreateActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void afterTextChanged(Editable editable) {
 
-    }
-
-    public String renderHtmltoString(String url) {
-        if (url == null) return "";
-        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">");
     }
 }

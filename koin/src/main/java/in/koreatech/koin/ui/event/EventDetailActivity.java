@@ -13,6 +13,8 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,6 +25,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
+import in.koreatech.koin.ui.board.KoinEditorActivity;
 import in.koreatech.koin.ui.board.KoinRichEditor;
 import in.koreatech.koin.ui.event.adapter.EventCommentAdapter;
 import in.koreatech.koin.ui.event.presenter.EventDetailContract;
@@ -31,7 +34,7 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.util.SnackbarUtil;
 
-public class EventDetailActivity extends KoinNavigationDrawerActivity implements EventDetailContract.View {
+public class EventDetailActivity extends KoinEditorActivity implements EventDetailContract.View {
 
     private EventDetailPresenter eventDetailPresenter;
     private Context context;
@@ -79,7 +82,7 @@ public class EventDetailActivity extends KoinNavigationDrawerActivity implements
         ButterKnife.bind(this);
 
         eventDetail = new Event();
-        eventDetail.setId(getIntent().getIntExtra("ID", -1););
+        eventDetail.setId(getIntent().getIntExtra("ID", -1));
         eventDetail.setGrantEdit(getIntent().getBooleanExtra("GRANT_EDIT", false));
 
         if (eventDetail.getId() == -1) {
@@ -90,9 +93,24 @@ public class EventDetailActivity extends KoinNavigationDrawerActivity implements
         init();
     }
 
+    @Override
+    protected int getRichEditorId() {
+        return R.id.event_detail_content;
+    }
+
+    @Override
+    protected boolean isEditable() {
+        return false;
+    }
+
+    @Override
+    protected void successImageProcessing(File imageFile, String uuid) {
+
+    }
+
     private void init() {
         context = this;
-        setPresenter(new EventPresenter(this, new EventRestInteractor()));
+        setPresenter(new EventDetailPresenter(this, new EventRestInteractor()));
         layoutManager = new LinearLayoutManager(this);
         if (eventDetailPresenter != null) {
             eventDetailPresenter.getEventDetail(eventDetail.getId());

@@ -73,7 +73,7 @@ public class EventDetailPresenter {
 
     public void getEventDetail(int id) {
         eventDetailView.showLoading();
-        eventInteractor.readEventList(id, apiCallback);
+        eventInteractor.readEventDetail(id, apiCallback);
     }
 
     public void deleteEvent(int articleId) {

@@ -19,7 +19,5 @@ public interface EventDetailContract {
         void onEventCommentReceived(Comment comment);
 
         void onEventCommentDeleted(boolean isSuccess);
-
-        void getEventDetail(int shopId);
     }
 }

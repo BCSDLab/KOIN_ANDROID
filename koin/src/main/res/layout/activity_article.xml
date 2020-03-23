@@ -199,7 +199,7 @@
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_write_button" />
 
 
-                        <com.github.irshulx.Editor
+                        <in.koreatech.koin.ui.board.KoinRichEditor
                             android:id="@+id/article_content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

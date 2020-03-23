@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                             android:clickable="true"
                             android:lineSpacingExtra="2sp"
                             android:text="종료된 이벤트"
-                            android:textColor="@color/light_navy"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/activity_event_processing_checkbox"
@@ -88,7 +88,7 @@
                             android:checked="true"
                             android:lineSpacingExtra="2sp"
                             android:text="진행중이벤트"
-                            android:textColor="@color/light_navy"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

@@ -16,7 +16,5 @@ public interface EventContract {
         void showLoading();
 
         void hideLoading();
-
-        ArrayList<Event> displayProcessingEvent(boolean isChecked1, boolean isChecked2);
     }
 }
