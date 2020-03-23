@@ -12,13 +12,13 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/adviertising_recyclerview_margam_imageview"
+            android:id="@+id/event_recyclerview_margam_imageview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
             android:scaleType="fitXY"
             android:visibility="invisible"
-            app:srcCompat="@drawable/" />
+            app:srcCompat="@drawable/bg_margam" />
 
         <LinearLayout
             android:layout_width="158dp"
@@ -31,7 +31,7 @@
                 android:layout_width="158dp"
                 android:layout_height="106dp"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/event_default_image" />
+                android:background="@color/gray11"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:gravity="center_horizontal"
                     android:lineSpacingExtra="2sp"
                     android:text="옛날통닭"
-                    android:textColor="@color/light_navy"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 
                 <TextView
@@ -73,7 +73,7 @@
                         android:layout_height="11dp"
                         android:layout_marginLeft="17dp"
                         android:layout_marginRight="2dp"
-                        android:background="@drawable/ic_event_big_3_x"
+                        android:background="@drawable/ic_event_mark"
                         android:gravity="center_vertical" />
 
                     <TextView

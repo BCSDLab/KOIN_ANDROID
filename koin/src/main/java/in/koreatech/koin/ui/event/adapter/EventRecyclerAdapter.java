@@ -27,12 +27,12 @@ import in.koreatech.koin.data.network.entity.Event;
 
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.ViewHolder> {
 
-    private ArrayList<Event> adArrayList;
+    private ArrayList<Event> eventArrayList;
     private Context context;
     private final RequestOptions glideOptions;
 
-    public EventRecyclerAdapter(ArrayList<Event> adArrayList, Context context) {
-        this.adArrayList = adArrayList;
+    public EventRecyclerAdapter(ArrayList<Event> eventArrayList, Context context) {
+        this.eventArrayList = eventArrayList;
         this.context = context;
 
         glideOptions = new RequestOptions()
@@ -46,19 +46,19 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         public final View view; //onBindViewHolder 함수에서 아이템의 클릭리스너를 달기위한 view
         private Context context;
         @BindView(R.id.event_recyclerview_item_food_imageview)
-        ImageView adFoodImageview;
+        ImageView eventFoodImageview;
         @BindView(R.id.event_recyclerview_item_store_title_textview)
-        TextView adTitleTextview;
+        TextView eventTitleTextview;
         @BindView(R.id.event_recyclerview_item_event_contents_textview)
-        TextView adContentsTextview;
+        TextView eventContentsTextview;
         @BindView(R.id.event_recyclerview_item_period_textview)
-        TextView adPeriodTextview;
+        TextView eventPeriodTextview;
         @BindView(R.id.event_recyclerview_item_publish_date_textview)
-        TextView adPublishedDateTextview;
-        @BindView(R.id.adviertising_recyclerview_margam_imageview)
-        ImageView adMargamImageview;
+        TextView eventPublishedDateTextview;
+        @BindView(R.id.event_recyclerview_margam_imageview)
+        ImageView eventMargamImageview;
         @BindView(R.id.event_recyclerview_item_margam_textview)
-        TextView adMargamTextview;
+        TextView eventMargamTextview;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -66,38 +66,38 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             ButterKnife.bind(this, itemView);
         }
 
-        void onBind(Event ad) {
+        void onBind(Event event) {
 
-            if (ad.getEventTitle() == null)
-                adTitleTextview.setText("-");
+            if (event.getEventTitle() == null)
+                eventTitleTextview.setText("-");
             else
-                adTitleTextview.setText(ad.getTitle());
+                eventTitleTextview.setText(event.getTitle());
 
-            if (ad.getContent() == null)
-                adContentsTextview.setText("-");
+            if (event.getContent() == null)
+                eventContentsTextview.setText("-");
             else
-                adContentsTextview.setText(ad.getEventTitle());
+                eventContentsTextview.setText(event.getEventTitle());
 
-            if (ad.getStartDate() == null && ad.getEndDate() == null)
-                adPeriodTextview.setText("-");
+            if (event.getStartDate() == null && event.getEndDate() == null)
+                eventPeriodTextview.setText("-");
             else
-                adPeriodTextview.setText(ad.getStartDate() + "~" + ad.getEndDate());
+                eventPeriodTextview.setText(event.getStartDate() + "~" + event.getEndDate());
 
-            String[] publishedDate = ad.getPublishedDate().split(" ");
+            String[] publishedDate = event.getCreatedAt().split(" ");
 
-            if (ad.getPublishedDate() == null)
-                adPublishedDateTextview.setText("-");
+            if (event.getCreatedAt() == null)
+                eventPublishedDateTextview.setText("-");
             else
-                adPublishedDateTextview.setText(publishedDate[0]);
+                eventPublishedDateTextview.setText(publishedDate[0]);
 
             Date date = new Date();
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
             try {
-                if ((date.compareTo(formatDate.parse(ad.getEndDate()))  == 1)){
-                    adMargamImageview.setVisibility(View.VISIBLE);
-                    adMargamTextview.setVisibility(View.VISIBLE);
-                    adMargamImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
-                    adFoodImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
+                if ((date.compareTo(formatDate.parse(event.getEndDate()))  == 1)){
+                    eventMargamImageview.setVisibility(View.VISIBLE);
+                    eventMargamTextview.setVisibility(View.VISIBLE);
+                    eventMargamImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
+                    eventFoodImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -115,22 +115,22 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     @Override
     public void onBindViewHolder(@NonNull EventRecyclerAdapter.ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
-        holder.onBind(adArrayList.get(position));
-        Event ad = adArrayList.get(position);
+        holder.onBind(eventArrayList.get(position));
+        Event event = eventArrayList.get(position);
 
         Glide.with(context)
-                .load(ad.getThumbnail())
+                .load(event.getThumbnail())
                 .apply(glideOptions)
-                .into(holder.adFoodImageview);
+                .into(holder.eventFoodImageview);
     }
 
     @Override
     public int getItemCount() {
-        return adArrayList.size();
+        return eventArrayList.size();
     }
 
 
-    public void setAdArrayList(ArrayList<Event> adArrayList) {
-        this.adArrayList = adArrayList;
+    public void setAdArrayList(ArrayList<Event> eventArrayList) {
+        this.eventArrayList = eventArrayList;
     }
 }

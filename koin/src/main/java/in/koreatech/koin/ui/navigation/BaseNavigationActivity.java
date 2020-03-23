@@ -340,6 +340,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickNavigationUserInfo();
         } else if (itemId == R.id.navi_item_search) {
             goToSearchActivity();
+        } else if (itemId == R.id.navi_item_event_board) {
+            goToEventActivity();
         } else {
             ToastUtil.getInstance().makeShort("서비스예정입니다");
             currentId = beforeId;
@@ -562,6 +564,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected abstract void goToLostFoundActivity();
 
     protected abstract void goToSearchActivity();
+
+    protected abstract void goToEventActivity();
 
 
     /*

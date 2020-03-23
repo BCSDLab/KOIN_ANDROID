@@ -37,8 +37,8 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
+// TODO: 권한 있는 상점 목록 출력
 public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher {
-    private Context context;
     private final static String TAG = "EventCreateActivity";
     private Calendar SelectStartDate;
     private Calendar SelectEndDate;
@@ -50,7 +50,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbar;
-    @BindView(R.id.event_create_question_mark_imageview)
+    @BindView(R.id.event_create_question_mark_textview)
     ImageView questionMark;
     @BindView(R.id.event_detail_title_edittext)
     EditText createTitleEditText;
@@ -80,7 +80,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         setContentView(R.layout.event_create_activity);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        context = this;
         setPresenter(new EventCreatePresenter(this, new EventRestInteractor()));
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -112,6 +111,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     }
 
     void init() {
+        koinBaseAppbar.setTitleText("홍보게시판");
         if (isEdit) {
             createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
             eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
@@ -154,7 +154,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
             SelectStartDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             String startDate = "" + year
-                    + (((month+1) < 10) ? ("-0" + (month+1)) : ("-" + (month+1)))
+                    + (((month + 1) < 10) ? ("-0" + (month + 1)) : ("-" + (month + 1)))
                     + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
 
             startDateTextview.setText(startDate);
@@ -167,7 +167,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
             SelectEndDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
             String endDate = "" + year
-                    + (((month+1) < 10) ? ("-0" + (month+1)) : ("-" + (month+1)))
+                    + (((month + 1) < 10) ? ("-0" + (month + 1)) : ("-" + (month + 1)))
                     + ((dayOfMonth < 10) ? ("-0" + dayOfMonth) : ("-" + dayOfMonth));
 
             endDateTextview.setText(endDate);
@@ -193,16 +193,16 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     }
 
     // 도움말 버튼 클릭 이벤트
-    @OnClick(R.id.event_create_question_mark_imageview)
+    @OnClick(R.id.event_create_question_mark_textview)
     public void questionMarkOnClicked() {
         if (!isClickedQuestion) {
-            questionMark.setImageResource(R.drawable.ic_question_mark2);
+            questionMark.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
             questionInfoFrameLayout.setVisibility(View.VISIBLE);
             questionInfoFrameLayout.bringToFront();
             isClickedQuestion = true;
         } else {
-            questionMark.setImageResource(R.drawable.ic_question_mark);
+            questionMark.setBackgroundColor(getResources().getColor(R.color.white));
             inputMethodManager.showSoftInput(createTitleEditText, 0);
             questionInfoFrameLayout.setVisibility(View.INVISIBLE);
             isClickedQuestion = false;
@@ -290,7 +290,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     @Override
     public void goToEventActivity(Event event) {
-        if(!isEdit){
+        if (!isEdit) {
             Intent intent = new Intent(this, EventDetailActivity.class);
             intent.putExtra("ID", event.getId());
             intent.putExtra("GRANT_EDIT", true);

@@ -34,6 +34,8 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.util.SnackbarUtil;
 
+// TODO : 댓글 기능 완성
+// TODO : 마감 마크 표시
 public class EventDetailActivity extends KoinEditorActivity implements EventDetailContract.View {
 
     private EventDetailPresenter eventDetailPresenter;
@@ -43,6 +45,8 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     private Event eventDetail;
     private InputMethodManager commentInputManager;
 
+    @BindView(R.id.koin_base_app_bar_dark)
+    AppBarBase koinBaseBar;
     @BindView(R.id.event_detail_scrollview)
     NestedScrollView scrollView;
     @BindView(R.id.event_detail_title_textview)
@@ -110,6 +114,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
 
     private void init() {
         context = this;
+        koinBaseBar.setTitleText("홍보게시판");
         setPresenter(new EventDetailPresenter(this, new EventRestInteractor()));
         layoutManager = new LinearLayoutManager(this);
         if (eventDetailPresenter != null) {
@@ -130,6 +135,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         replyCountTextview.setText(eventDetail.getCommentCount() + "");
         viewCountTextview.setText(eventDetail.getHit() + "");
         createdAtTextview.setText(eventDetail.getCreatedAt());
+        renderEditor(renderHtmltoString(eventDetail.getContent()));
 
         if (eventDetail.isGrantEdit()) {
             editButton.setVisibility(View.VISIBLE);

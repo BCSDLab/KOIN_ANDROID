@@ -84,8 +84,8 @@ public class ArticleActivity extends KoinEditorActivity implements ArticleContra
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
+        super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         this.context = this;
         this.article = new Article();

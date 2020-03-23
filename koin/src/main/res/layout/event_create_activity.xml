@@ -19,8 +19,7 @@
             <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title_text="홍보게시판" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -133,13 +132,18 @@
                                     android:textColorHint="#e7e7e7"
                                     android:textSize="16sp" />
 
-                                <ImageView
-                                    android:id="@+id/event_create_question_mark_imageview"
+                                <TextView
+                                    android:id="@+id/event_create_question_mark_textview"
                                     android:layout_width="22dp"
                                     android:layout_height="22dp"
                                     android:layout_marginTop="1dp"
                                     android:layout_marginRight="18dp"
-                                    android:src="@drawable/ic_question_mark" />
+                                    android:text="\?"
+                                    android:textColor="@color/colorAccent"
+                                    android:textStyle="bold"
+                                    android:textSize="15sp"
+                                    android:textAlignment="center"
+                                    android:background="@drawable/bg_ring_squash"/>
 
                             </LinearLayout>
 

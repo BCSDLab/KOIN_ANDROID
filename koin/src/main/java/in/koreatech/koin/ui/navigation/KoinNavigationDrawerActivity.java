@@ -18,6 +18,7 @@ import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.callvan.CallvanActivity;
 import in.koreatech.koin.ui.circle.CircleActivity;
 import in.koreatech.koin.ui.dining.DiningActivity;
+import in.koreatech.koin.ui.event.EventActivity;
 import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
 import in.koreatech.koin.ui.land.LandActivity;
 import in.koreatech.koin.ui.search.SearchActivity;
@@ -43,9 +44,9 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_store, R.id.navi_item_bus,
             R.id.navi_item_dining, R.id.navi_item_cirlce,
             R.id.navi_item_timetable, R.id.navi_item_anonymous_board,
-            R.id.navi_item_free_board, R.id.navi_item_recruit_board,
-            R.id.navi_item_land, R.id.navi_item_lostfound
-            , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
+            R.id.navi_item_free_board, R.id.navi_item_recruit_board, R.id.navi_item_event_board,
+            R.id.navi_item_land, R.id.navi_item_lostfound,
+            R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
             R.id.navi_item_version_info, R.id.navi_item_developer}; //닉네임 레이아웃 추가
 
     private final int[] mMenuTextviewId = {
@@ -53,9 +54,9 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_store_textview, R.id.navi_item_bus_textview,
             R.id.navi_item_dining_textview, R.id.navi_item_cirlce_textview,
             R.id.navi_item_timetable_textview, R.id.navi_item_anonymous_board_textview,
-            R.id.navi_item_free_board_textview, R.id.navi_item_recruit_board_textview,
-            R.id.navi_item_land_textview, R.id.navi_item_lostfound_textview
-            , R.id.navi_item_usedmarket_textview, R.id.navi_item_kakao_talk_textview,
+            R.id.navi_item_free_board_textview, R.id.navi_item_recruit_board_textview, R.id.navi_item_event_textview,
+            R.id.navi_item_land_textview, R.id.navi_item_lostfound_textview,
+            R.id.navi_item_usedmarket_textview, R.id.navi_item_kakao_talk_textview,
             R.id.navi_item_version_info_textview, R.id.navi_item_developer_textview
     };
 
@@ -204,6 +205,11 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void goToCircleActivity() {
         goToActivityFinish(new Intent(this, CircleActivity.class));
+    }
+
+    @Override
+    protected void goToEventActivity() {
+        goToActivityFinish(new Intent(this, EventActivity.class));
     }
 
     /**

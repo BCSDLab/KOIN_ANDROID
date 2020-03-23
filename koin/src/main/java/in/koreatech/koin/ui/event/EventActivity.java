@@ -28,6 +28,9 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
+// TODO: 진행중인 이벤트와 종료된 이벤트를 서버에서 불러오는 방식으로 변경
+// TODO: 작성 권한 없을 경우 팅기는 버그 해결
+// TODO: GridLayout 의 아이템간 간격 조절
 public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
     private ArrayList<Event> eventArrayList;
@@ -55,6 +58,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
 
     void init() {
         context = this;
+        koinBaseAppbarDark.setTitleText("홍보게시판");
         eventArrayList = new ArrayList<>();
         eventGridLayoutManager = new GridLayoutManager(this, 2);
         eventRecyclerView.setLayoutManager(eventGridLayoutManager);

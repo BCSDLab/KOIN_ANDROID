@@ -237,9 +237,10 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
     public String renderHtmltoString(String url) {
         if (url == null) return "";
 
-        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">");
-//        return url.replace("<div>", " ").replace("<div/>", " ").replace("<p><img", "<img"); // 이전 코드
+        return url.replace("<div>", " ").replace("<div/>", " ").replace("<p><img", "<img");
+
+//        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
+//                .replace(".png\\\"></p>", ".png\\\">");
     }
 
     public void renderEditor(String content) {
