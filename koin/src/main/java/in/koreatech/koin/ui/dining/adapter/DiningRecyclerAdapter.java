@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.dining.adapter;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -80,9 +81,13 @@ public class DiningRecyclerAdapter extends RecyclerView.Adapter<DiningRecyclerAd
         }
 
         if (!dining.getPlace().equals("능수관"))
-            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.diningDivider.setBackgroundColor(
+                    ContextCompat.getColor(context, R.color.color_primary)
+            );
         else
-            holder.diningDivider.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+            holder.diningDivider.setBackgroundColor(
+                    ContextCompat.getColor(context, R.color.color_accent)
+            );
 
         holder.textViewMenu.setText(sb.toString());        //메뉴리스트
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,6 +60,8 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     private Map<String, ArrayList<Dining>> diningMap;
     private int typeIndex; //0 아침 / 1 점심 / 2 저녁
     private int changeDate;
+
+    private String diningButtonTextHexColor;
 
 
     /* View Component */
@@ -150,6 +153,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
             }
         });
 
+        diningButtonTextHexColor = "#" + Integer.toHexString(ContextCompat.getColor(this, R.color.color_accent) & 0x00ffffff);
 
         setPresenter(new DiningPresenter(this, new DiningRestInteractor()));
         diningPresenter.getDiningList(today);
@@ -369,7 +373,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @OnClick(R.id.dining_breakfast_button)
     public void onClickBreakfastButton() {
         typeIndex = 0;
-        breakfastButton.setText(Html.fromHtml(colorText("#f7941e", "아침")), TextView.BufferType.SPANNABLE);
+        breakfastButton.setText(Html.fromHtml(colorText(diningButtonTextHexColor, "아침")), TextView.BufferType.SPANNABLE);
         lunchButton.setText("점심");
         dinnerButton.setText("저녁");
         updateUserInterface();
@@ -379,7 +383,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public void onClickLunchButton() {
         typeIndex = 1;
         breakfastButton.setText("아침");
-        lunchButton.setText(Html.fromHtml(colorText("#f7941e", "점심")), TextView.BufferType.SPANNABLE);
+        lunchButton.setText(Html.fromHtml(colorText(diningButtonTextHexColor, "점심")), TextView.BufferType.SPANNABLE);
         dinnerButton.setText("저녁");
 
         updateUserInterface();
@@ -391,7 +395,7 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
         breakfastButton.setText("아침");
         lunchButton.setText("점심");
-        dinnerButton.setText(Html.fromHtml(colorText("#f7941e", "저녁")), TextView.BufferType.SPANNABLE);
+        dinnerButton.setText(Html.fromHtml(colorText(diningButtonTextHexColor, "저녁")), TextView.BufferType.SPANNABLE);
         updateUserInterface();
     }
 
