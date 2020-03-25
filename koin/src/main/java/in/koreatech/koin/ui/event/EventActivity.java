@@ -21,6 +21,7 @@ import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
 import in.koreatech.koin.ui.event.adapter.EventRecyclerAdapter;
 import in.koreatech.koin.ui.event.presenter.EventContract;
@@ -28,13 +29,13 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-// TODO: 작성 권한 없을 경우 팅기는 버그 해결
-// TODO: GridLayout 의 아이템간 간격 조절
 // TODO: Refresh 기능과 pageNum 증가
+// TODO: GridLayout 의 아이템간 간격 조절
 
 public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
     private ArrayList<Event> eventArrayList;
+    private ArrayList<Store> myShopArrayList;
     private EventPresenter eventPresenter;
     private GridLayoutManager eventGridLayoutManager;
     private EventRecyclerAdapter eventRecyclerAdapter;
@@ -90,19 +91,18 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         } else if (id == AppBarBase.getRightButtonId()) {
-            // TODO: 점주계정 확인 -> my/shops
             Intent intent = new Intent(context, EventCreateActivity.class);
-            if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
-                return;
-            }
-            if (getUser().getUserNickName() != null)
-                startActivity(intent);
-            else {
-                ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
-                intent = new Intent(this, UserInfoEditedActivity.class);
-                startActivity(intent);
-            }
+            startActivity(intent);
+//            // 익명 계정일 경우 로그인 요청 다이얼로그 출력
+//            if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
+//                showLoginRequestDialog();
+//                return;
+//            }
+//            // 닉네임이 없을 경우, 닉네임 설정 요청
+//            if (getUser().getUserNickName() == null) {
+//                ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
+//                Intent intent = new Intent(this, UserInfoEditedActivity.class);
+//            }
         }
     }
 
@@ -111,6 +111,9 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         super.onStart();
         pageNum = 1;
         eventPresenter.getEventList(pageNum);
+
+        // 사용자가 보유한 상점이 있는지 확인
+        eventPresenter.getMyShops();
     }
 
     @Override
@@ -138,16 +141,15 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         startActivity(intent);
     }
 
-//    /**
-//     * 체크박스에 맞는 데이터로 재설정해주기
-//     */
-//    public void checkBoxDataDisplay() {
-//        // 프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
-//        ArrayList<Event> applyAdDataList = eventPresenter.displayProcessingEvent(eventProcessingCheckBox1.isChecked(), eventProcessingCheckBox2.isChecked());
-//        eventRecyclerAdapter.setAdArrayList(applyAdDataList);
-//        eventRecyclerAdapter.notifyDataSetChanged();
-//    }
-
+    @Override
+    public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
+        myShopArrayList = shopArrayList;
+        if(myShopArrayList.isEmpty()) {
+            koinBaseAppbarDark.setRightButtonVisibility(View.INVISIBLE);
+        } else {
+            koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void showMessage(String message) {

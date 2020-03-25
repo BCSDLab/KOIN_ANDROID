@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
@@ -121,24 +123,32 @@ public class EventRestInteractor implements EventInteractor {
     }
 
     @Override
-    public void readShopList(ApiCallback apiCallback) {
+    public void readMyShopList(ApiCallback apiCallback) {
         String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         RetrofitManager.getInstance().getRetrofit().create(EventService.class).getMyShopList(addAuthorizationBearer(token))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Store>() {
+                .subscribe(new Observer<Event>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(Store store) {
+                    public void onNext(Event event) {
+                        if(FormValidatorUtil.validateStringIsEmpty(event.getError())) {
+                            apiCallback.onSuccess(event);
+                        } else {
+                            apiCallback.onFailure(new Throwable("보유 상점 목록을 받아오지 못했습니다."));
+                        }
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
                     }
 
                     @Override

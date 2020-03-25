@@ -139,6 +139,14 @@ public class Event {
         this.eventArrayList = eventArrayList;
     }
 
+    public ArrayList<Store> getMyShopList() {
+        return myShopList;
+    }
+
+    public void setMyShopList(ArrayList<Store> myShopList) {
+        this.myShopList = myShopList;
+    }
+
     public boolean isGrantEdit() {
         return grantEdit;
     }

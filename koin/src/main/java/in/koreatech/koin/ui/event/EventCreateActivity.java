@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -28,16 +27,14 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
 import in.koreatech.koin.ui.board.KoinEditorActivity;
-import in.koreatech.koin.ui.board.KoinRichEditor;
-import in.koreatech.koin.ui.event.EventDetailActivity;
 import in.koreatech.koin.ui.event.presenter.EventCreateContract;
 import in.koreatech.koin.ui.event.presenter.EventCreatePresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
 // TODO: 권한 있는 상점 목록 출력
+// TODO: 도움말을 AlertDialog로 출력
 public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher {
     private final static String TAG = "EventCreateActivity";
     private Calendar SelectStartDate;
@@ -51,7 +48,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbar;
     @BindView(R.id.event_create_question_mark_textview)
-    ImageView questionMark;
+    TextView questionMark;
     @BindView(R.id.event_detail_title_edittext)
     EditText createTitleEditText;
     @BindView(R.id.event_detail_event_title_edittext)
@@ -60,11 +57,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     TextView startDateTextview;
     @BindView(R.id.event_create_calender_enddate_textview)
     TextView endDateTextview;
-    @BindView(R.id.event_create_question_info_frame_layout)
-    FrameLayout questionInfoFrameLayout;
-
-    @BindView(R.id.event_create_content)
-    KoinRichEditor eventRichEditor;
+//    @BindView(R.id.event_create_question_info_frame_layout)
+//    FrameLayout questionInfoFrameLayout;
 
     private boolean isEdit;
     private int articleId;
@@ -83,7 +77,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         setPresenter(new EventCreatePresenter(this, new EventRestInteractor()));
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        articleId = getIntent().getIntExtra("ID", -1);
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
 
         init();
@@ -113,11 +106,12 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     void init() {
         koinBaseAppbar.setTitleText("홍보게시판");
         if (isEdit) {
+            articleId = getIntent().getIntExtra("ID", 0);
             createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
             eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
             startDateTextview.setText(getIntent().getStringExtra("START_DATE"));
             endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
-            eventRichEditor.render(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
+            renderEditor(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
         } else {
             startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
             endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
@@ -196,15 +190,17 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     @OnClick(R.id.event_create_question_mark_textview)
     public void questionMarkOnClicked() {
         if (!isClickedQuestion) {
-            questionMark.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            questionMark.setBackground(getResources().getDrawable(R.drawable.bg_ring_squash));
+            questionMark.setTextColor(getResources().getColor(R.color.colorAccent));
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            questionInfoFrameLayout.setVisibility(View.VISIBLE);
-            questionInfoFrameLayout.bringToFront();
+//            questionInfoFrameLayout.setVisibility(View.VISIBLE);
+//            questionInfoFrameLayout.bringToFront();
             isClickedQuestion = true;
         } else {
-            questionMark.setBackgroundColor(getResources().getColor(R.color.white));
+            questionMark.setBackground(getResources().getDrawable(R.drawable.bg_circle_squash));
+            questionMark.setTextColor(getResources().getColor(R.color.white));
             inputMethodManager.showSoftInput(createTitleEditText, 0);
-            questionInfoFrameLayout.setVisibility(View.INVISIBLE);
+//            questionInfoFrameLayout.setVisibility(View.INVISIBLE);
             isClickedQuestion = false;
         }
     }

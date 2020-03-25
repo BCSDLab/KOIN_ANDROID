@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.event.presenter;
 import java.util.ArrayList;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.EventInteractor;
 
 public class EventPresenter {
@@ -24,6 +25,20 @@ public class EventPresenter {
             eventArrayList.addAll(event.getEventArrayList());
             eventView.onEventListDataReceived(eventArrayList);
             eventView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            eventView.showMessage(throwable.getMessage());
+            eventView.hideLoading();
+        }
+    };
+
+    private final ApiCallback myShopApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            Event event = (Event) object;
+            eventView.onMyShopListReceived(event.getMyShopList());
         }
 
         @Override
@@ -58,7 +73,8 @@ public class EventPresenter {
     }
 
     public void getMyShops() {
-        eventArrayList.clear();
+        eventView.showLoading();
+        eventInteractor.readMyShopList(myShopApiCallback);
     }
 
     public void getPendingEventList(int pageNum) {

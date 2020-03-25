@@ -43,7 +43,7 @@ public interface EventService {
     Observable<DefaultResponse> deleteEvent(@Path("id") int articleId, @Header("Authorization") String authHeader);
 
     @GET(MYSHOP)
-    Observable<Store> getMyShopList(@Path("Authorization") String authHeader);
+    Observable<Event> getMyShopList(@Header("Authorization") String authHeader);
 
     @GET(EVENT + "/closed")
     Observable<Event> getClosedEventList(@Query("page") int page);

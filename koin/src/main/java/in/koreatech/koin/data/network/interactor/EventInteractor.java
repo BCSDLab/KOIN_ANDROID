@@ -18,7 +18,7 @@ public interface EventInteractor {
     void updateGrantCheck(int articleId, final ApiCallback apiCallback);
 
     // 점주의 가게 조회
-    void readShopList(final ApiCallback apiCallback);
+    void readMyShopList(final ApiCallback apiCallback);
 
     // 진행 중인 전체 홍보글 조회
     void readPendingEventList(int page, final ApiCallback apiCallback);
