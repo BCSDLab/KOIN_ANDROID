@@ -93,5 +93,6 @@ public class URLConstant {
         public static final String GRANTCHECK = EVENT + "/grant/check";
         public static final String COMMENTS = "comments";
         public static final String MYSHOP = EVENT + "/my/shops";
+        public static final String PENDING = EVENT + "/pending";
     }
 }

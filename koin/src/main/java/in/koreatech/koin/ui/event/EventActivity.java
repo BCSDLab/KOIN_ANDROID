@@ -28,22 +28,24 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-// TODO: 진행중인 이벤트와 종료된 이벤트를 서버에서 불러오는 방식으로 변경
 // TODO: 작성 권한 없을 경우 팅기는 버그 해결
 // TODO: GridLayout 의 아이템간 간격 조절
+// TODO: Refresh 기능과 pageNum 증가
+
 public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
     private ArrayList<Event> eventArrayList;
     private EventPresenter eventPresenter;
     private GridLayoutManager eventGridLayoutManager;
     private EventRecyclerAdapter eventRecyclerAdapter;
+    private int pageNum;
 
     @BindView(R.id.event_recyclerview)
     RecyclerView eventRecyclerView;
-    @BindView(R.id.activity_event_processing_checkbox2)
-    CheckBox eventProcessingCheckBox1;
-    @BindView(R.id.activity_event_processing_checkbox)
-    CheckBox eventProcessingCheckBox2;
+    @BindView(R.id.event_closed_checkbox)
+    CheckBox eventClosedCheckBox;
+    @BindView(R.id.event_pending_checkbox)
+    CheckBox eventPendingCheckBox;
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbarDark;
 
@@ -68,14 +70,18 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         setPresenter(new EventPresenter(this, new EventRestInteractor()));
     }
 
-    @OnClick(R.id.activity_event_processing_checkbox2)
-    public void onClick1Checked() {
-        checkBoxDataDisplay();
-    }
-
-    @OnClick(R.id.activity_event_processing_checkbox)
-    public void onClick2Checked() {
-        checkBoxDataDisplay();
+    @OnClick({R.id.event_pending_checkbox, R.id.event_closed_checkbox})
+    public void onCheckboxClicked() {
+        if(eventPendingCheckBox.isChecked() && eventClosedCheckBox.isChecked()) { // 전체 홍보글 조회
+            eventPresenter.getEventList(pageNum);
+        } else if (eventPendingCheckBox.isChecked()) {    // 진행 중인 홍보글 조회
+            eventPresenter.getPendingEventList(pageNum);
+        } else if (eventClosedCheckBox.isChecked()) {     // 종료된 홍보글 조회
+            eventPresenter.getClosedEventList(pageNum);
+        } else { // 체크박스 둘 다 체크가 안된 경우 -> 빈 게시물
+            eventArrayList.clear();
+            eventRecyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -103,7 +109,8 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     @Override
     protected void onStart() {
         super.onStart();
-        eventPresenter.getEventList();
+        pageNum = 1;
+        eventPresenter.getEventList(pageNum);
     }
 
     @Override
@@ -131,15 +138,15 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         startActivity(intent);
     }
 
-    /**
-     * 체크박스에 맞는 데이터로 재설정해주기
-     */
-    public void checkBoxDataDisplay() {
-        // 프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
-        ArrayList<Event> applyAdDataList = eventPresenter.displayProcessingEvent(eventProcessingCheckBox1.isChecked(), eventProcessingCheckBox2.isChecked());
-        eventRecyclerAdapter.setAdArrayList(applyAdDataList);
-        eventRecyclerAdapter.notifyDataSetChanged();
-    }
+//    /**
+//     * 체크박스에 맞는 데이터로 재설정해주기
+//     */
+//    public void checkBoxDataDisplay() {
+//        // 프레젠터로 넘겨서 연산하고 가져와서 화면 갱신해!!
+//        ArrayList<Event> applyAdDataList = eventPresenter.displayProcessingEvent(eventProcessingCheckBox1.isChecked(), eventProcessingCheckBox2.isChecked());
+//        eventRecyclerAdapter.setAdArrayList(applyAdDataList);
+//        eventRecyclerAdapter.notifyDataSetChanged();
+//    }
 
 
     @Override

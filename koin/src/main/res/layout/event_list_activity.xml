@@ -56,10 +56,10 @@
                             android:layout_marginEnd="16dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/activity_event_processing_checkbox" />
+                            app:layout_constraintTop_toBottomOf="@+id/event_pending_checkbox" />
 
                         <CheckBox
-                            android:id="@+id/activity_event_processing_checkbox2"
+                            android:id="@+id/event_closed_checkbox"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="10dp"
@@ -73,11 +73,11 @@
                             android:textColor="@color/colorPrimary"
                             android:textSize="12sp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/activity_event_processing_checkbox"
+                            app:layout_constraintStart_toEndOf="@+id/event_pending_checkbox"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <CheckBox
-                            android:id="@+id/activity_event_processing_checkbox"
+                            android:id="@+id/event_pending_checkbox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="150dp"

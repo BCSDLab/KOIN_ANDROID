@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.response.DefaultResponse;
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -13,20 +14,22 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import static in.koreatech.koin.constant.URLConstant.EVENT.COMMENTS;
 import static in.koreatech.koin.constant.URLConstant.EVENT.EVENT;
 import static in.koreatech.koin.constant.URLConstant.EVENT.GRANTCHECK;
+import static in.koreatech.koin.constant.URLConstant.EVENT.MYSHOP;
+import static in.koreatech.koin.constant.URLConstant.EVENT.PENDING;
 
 public interface EventService {
     // Event
     @GET(EVENT)
-    Observable<Event> getAdList();
+    Observable<Event> getEventList(@Query("page") int page);
 
     @GET(EVENT + "/{id}")
-    Observable<Event> getEventList(@Path("id") int id);
-    
-    // Event
+    Observable<Event> getEventDetail(@Path("id") int id);
+
     @POST(EVENT)
     Observable<Event> postEvent(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
 
@@ -39,7 +42,22 @@ public interface EventService {
     @DELETE(EVENT + "/{id}")
     Observable<DefaultResponse> deleteEvent(@Path("id") int articleId, @Header("Authorization") String authHeader);
 
-    // Event Comment
+    @GET(MYSHOP)
+    Observable<Store> getMyShopList(@Path("Authorization") String authHeader);
+
+    @GET(EVENT + "/closed")
+    Observable<Event> getClosedEventList(@Query("page") int page);
+
+    @GET(PENDING)
+    Observable<Event> getPendingEventList(@Query("page") int page);
+
+    @GET(PENDING + "/my")
+    Observable<Event> getMyPendingEventList(@Path("Authorization") String authHeader, @Query("page") int page);
+
+    @GET(PENDING + "/random")
+    Observable<Event> getRandomEventList();
+
+    // Comment
     @POST(EVENT + "/{articleId}/" + COMMENTS)
     Observable<Comment> postEventComment(@Path("articleId") int articleId, @Header("Authorization") String authHeader, @Body JsonObject content);
 

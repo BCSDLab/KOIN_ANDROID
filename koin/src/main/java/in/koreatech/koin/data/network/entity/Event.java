@@ -10,6 +10,10 @@ public class Event {
     @Expose
     private ArrayList<Event> eventArrayList;
 
+    @SerializedName("shops")
+    @Expose
+    private ArrayList<Store> myShopList;
+
     @SerializedName("grantEdit")
     @Expose
     private boolean grantEdit;
