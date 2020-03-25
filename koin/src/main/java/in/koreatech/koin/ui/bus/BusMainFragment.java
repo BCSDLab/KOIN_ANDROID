@@ -34,7 +34,7 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     private BusMainPresenter busMainPresenter;
     /* View Component */
     private View view;
-    private boolean isVacation;
+    private int term;
 
     private BusTimerUtil cityNextBusTimerUtil;
     private BusTimerUtil citySoonBusTimerUtil;
@@ -481,15 +481,12 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
     /**
      * 받아온 학기 정보로 셔틀버스의 시간을 계산하여 update하는 함수
      *
-     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름방학, 20 - 2학기, 21 - 2학기 겨울방학
+     * @param term 학기정보 10 - 1학기, 11 - 1학기 여름계절학기, 12 - 1학기 방학,  20 - 2학기, 21 - 2학기 겨울방학 , 22 - 2학기 방학
      */
     @Override
     public void updateShuttleBusInfo(int term) {
-        if (term == 10 || term == 20)                                                //학기중
-            isVacation = false;
-        else                                                                        //방학중
-            isVacation = true;
-        this.busMainPresenter.getShuttleBus(this.departureState, this.arrivalState, isVacation);
+        this.term = term;
+        this.busMainPresenter.getShuttleBus(this.departureState, this.arrivalState, term);
     }
 
     @Override

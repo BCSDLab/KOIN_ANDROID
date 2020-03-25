@@ -14,6 +14,13 @@ import android.widget.RemoteViews;
 import java.text.ParseException;
 
 import in.koreatech.koin.R;
+import in.koreatech.koin.constant.BusType;
+import in.koreatech.koin.data.network.entity.RegularSemesterBus;
+import in.koreatech.koin.data.network.entity.SeasonalSemesterBus;
+import in.koreatech.koin.data.network.entity.Term;
+import in.koreatech.koin.data.network.entity.VacationBus;
+import in.koreatech.koin.data.network.interactor.TermInteractor;
+import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.data.sharedpreference.BusWidgetSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
@@ -28,6 +35,8 @@ import in.koreatech.koin.constant.BusDestinationEnum;
 public class BusWidget extends AppWidgetProvider {
     public static final String TAG = "BusWidget";
     private CityBusInteractor busInteractor;
+    private TermInteractor termInteractor;
+    private Pair<String, String> currentBusPair;
     private Context context;
     private static final String SYNC_CLICKED = "buttonTimeTextRefreshClicked";
     private static final String CITYBUS_CLICKED = "buttonKoreatechClicked";
@@ -129,6 +138,7 @@ public class BusWidget extends AppWidgetProvider {
     public void initBusWidgetSharedPreferenece(Context context) {
         BusWidgetSharedPreferencesHelper.getInstance().init(context.getApplicationContext());
         busInteractor = new CityBusRestInteractor();
+        termInteractor = new TermRestInteractor();
     }
 
     /**
@@ -140,19 +150,20 @@ public class BusWidget extends AppWidgetProvider {
      */
     public void updateBusTime(int busType, int destinationType, boolean isReversed) {
         Pair<String, String> busPair;
-        int arrivalTIme = 0;
+        int arrivalTime = 0;
         busPair = BusDestinationEnum.getValueOf(destinationType, isReversed);
         updateWidgetDepartureAndDestination(busPair.first, busPair.second);
         updateButtonColor(busType);
+        this.currentBusPair =  busPair;
+
         try {
             switch (busType) {
                 case 0:
-                    arrivalTIme = (int) Bus.getRemainShuttleTimeToLong(busPair.first, busPair.second, true);
-                    updateWidgetTimeWIthTime(arrivalTIme);
+                    termInteractor.readTerm(termApiCallback);
                     break;
                 case 1:
-                    arrivalTIme = (int) Bus.getRemainExpressTimeToLong(busPair.first, busPair.second, true);
-                    updateWidgetTimeWIthTime(arrivalTIme);
+                    arrivalTime = (int) Bus.getRemainExpressTimeToLong(busPair.first, busPair.second, true);
+                    updateWidgetTimeWIthTime(arrivalTime);
                     break;
                 case 2:
                     busInteractor.readCityBusList(updateCityBusApiCallback, busPair.first, busPair.second);
@@ -183,6 +194,38 @@ public class BusWidget extends AppWidgetProvider {
         }
     };
 
+    /**
+     * 학기 정보 api callback
+     */
+    private final ApiCallback termApiCallback = new ApiCallback() {             //방학인지 학기중인지 정보를 받아오는 api callback
+        @Override
+        public void onSuccess(Object object) {
+            Term termInfo = (Term) object;
+            Bus currentSemesterBus;
+            int arrivalTime;
+            switch (termInfo.getTerm() % 10) {
+                case 0:
+                    currentSemesterBus = new RegularSemesterBus();
+                case 1:
+                    currentSemesterBus = new SeasonalSemesterBus();
+                default:
+                    currentSemesterBus = new VacationBus();
+            }
+            try {
+                arrivalTime = (int) currentSemesterBus.getRemainShuttleTimeToLong(currentBusPair.first, currentBusPair.second, true);
+                updateWidgetTimeWIthTime(arrivalTime);
+            }
+            catch (Exception e){
+                updateWidgetTimeWIthTime(-1);
+            }
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            Log.d(TAG, throwable.getMessage());
+
+        }
+    };
     /**
      * 버스 위젯 시간 update
      *

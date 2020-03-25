@@ -1,8 +1,15 @@
 package in.koreatech.koin.data.network.entity;
 
-import in.koreatech.koin.data.network.entity.Bus;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 
-public class VacationBus extends Bus {
+public class SeasonalSemesterBus extends Bus {
 
     private static final String[][] shuttleFromKoreatechToTerminal = {
             { // 월요일
@@ -79,24 +86,19 @@ public class VacationBus extends Bus {
 
     private static final String[][] shuttleFromTerminalToStation = {
             { // 월요일
-                    "08:00",
-                    "14:25"
+                    "14:25",
             },
             { // 화요일
-                    "08:00",
-                    "14:25"
+                    "14:25",
             },
             { // 수요일
-                    "08:00",
-                    "14:25"
+                    "14:25",
             },
             { // 목요일
-                    "08:00",
-                    "14:25"
+                    "14:25",
             },
             { // 금요일
-                    "08:00",
-                    "14:25"
+                    "14:25",
             },
             { // 토요일
 
@@ -163,7 +165,7 @@ public class VacationBus extends Bus {
 
     @Override
     public String[][] getShuttleFromKoreatechToStation() {
-        return  shuttleFromKoreatechToStation;
+        return shuttleFromKoreatechToStation;
     }
 
     @Override
