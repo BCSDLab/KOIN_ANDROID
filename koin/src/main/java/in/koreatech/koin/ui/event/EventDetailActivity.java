@@ -130,7 +130,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     }
 
     public void initView() {
-        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getNickname());
+        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getNickname(), getUser().getUserNickName());
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);

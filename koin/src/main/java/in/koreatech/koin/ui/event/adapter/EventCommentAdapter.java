@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ import in.koreatech.koin.data.network.entity.Comment;
 
 public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapter.ViewHolder> {
     private ArrayList<Comment> eventDetailComment;
-    private String nickName; // 홍보글의 점주 닉네임과 댓글 닉네임을 비교하여 점주 마크를 표시
+    private String shopperNickName; // 홍보글의 점주 닉네임과 댓글 닉네임을 비교하여 점주 마크를 표시
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -25,6 +26,7 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
         TextView timeTextview;
         TextView contentsTextview;
         Button fixButton;
+        LinearLayout commentEditDeleteLinearlayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -33,12 +35,13 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
             timeTextview = (TextView) itemView.findViewById(R.id.event_comment_item_time_textview);
             contentsTextview = (TextView) itemView.findViewById(R.id.event_comment_item_contents_textview);
             fixButton = (Button)itemView.findViewById(R.id.event_comment_item_fix_button);
+            commentEditDeleteLinearlayout = (LinearLayout)itemView.findViewById(R.id.);
         }
     }
 
-    public EventCommentAdapter(ArrayList<Comment> adComment, String nickName) {
+    public EventCommentAdapter(ArrayList<Comment> adComment, String shopperNickName, String userNickName) {
         this.eventDetailComment = adComment;
-        this.nickName = nickName;
+        this.shopperNickName = shopperNickName;
     }
 
     @NonNull
@@ -51,7 +54,7 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String commentNickName = eventDetailComment.get(position).getAuthorNickname();
-        if(nickName.equals(commentNickName)){
+        if(shopperNickName.equals(commentNickName)){
             holder.shopperTextView.setVisibility(View.VISIBLE);
         }
         holder.nicknameTextview.setText(commentNickName);

@@ -323,7 +323,7 @@
                             android:background="@drawable/bg_rect_black"
                             android:paddingHorizontal="5dp"
                             android:hint="로그인 후 이용해주세요."
-                            android:lineSpacingExtra="18sp"
+                            android:lineSpacingExtra="5sp"
                             android:textColorHint="#b7bbbf"
                             android:textSize="14sp"
                             android:textColor="@color/black"

@@ -341,11 +341,11 @@ public class EventRestInteractor implements EventInteractor {
                     }
 
                     @Override
-                    public void onNext(Event adDetail) {
-                        if (FormValidatorUtil.validateStringIsEmpty(adDetail.getError()))
-                            apiCallback.onSuccess(adDetail);
+                    public void onNext(Event event) {
+                        if (FormValidatorUtil.validateStringIsEmpty(event.getError()))
+                            apiCallback.onSuccess(event);
                         else
-                            apiCallback.onFailure(new Throwable(adDetail.getError()));
+                            apiCallback.onFailure(new Throwable(event.getError()));
                     }
 
                     @Override
