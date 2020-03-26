@@ -79,11 +79,6 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     RecyclerView detailRecyclerview;
     @BindView(R.id.event_comment_content_edittext)
     EditText commentEditText;
-    @BindView(R.id.event_comment_create_button)
-    Button commentCreateButton;
-    @BindView(R.id.event_comment_erase_button)
-    Button commentDeleteButton;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +125,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     }
 
     public void initView() {
-        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getNickname(), getUser().getUserNickName());
+        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getUserId());
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
@@ -229,7 +224,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
 
     /**
      * Comment를 추가했을 때 Comment 수와 Comment 리사이클러 뷰를 새로고침하고,
-     * 키보드를 내리면서 댓글 입력창의 포커스를 없애는 메소드
+     * 키보드를 내리고, 댓글 입력창의 포커스를 없애는 메소드
      *
      * @param comment 새로 추가한 댓글
      */
@@ -260,7 +255,9 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         }
     }
 
-    // [목록으로] 버튼 클릭 메소드
+    /**
+     * [목록으로] 버튼 클릭 메소드
+     */
     @OnClick(R.id.event_detail_back_list_button)
     public void goBackListClicked(View view) {
         onBackPressed();
@@ -271,6 +268,10 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         finish();
     }
 
+    /**
+     * 해당 글의 [수정], [삭제] 버튼 클릭 리스너
+     * @param view
+     */
     @OnClick({R.id.event_detail_page_edit_button, R.id.event_detail_page_delete_button})
     public void onClickButton(View view) {
         switch (view.getId()) {
@@ -283,47 +284,16 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         }
     }
 
-    @OnClick({R.id.event_comment_content_edittext, R.id.event_comment_create_button, R.id.event_comment_erase_button})
-    public void onClickCommentView(View view) {
-        if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
-        } else {
-            switch (view.getId()) {
-                case R.id.event_comment_content_edittext:
-                    scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
-                    break;
-                case R.id.event_comment_create_button:
-                    onClickCommentCreate();
-                    break;
-                case R.id.event_comment_erase_button:
-                    onClickCommentErase();
-                    break;
-            }
-        }
-    }
-
-    public void onClickCommentCreate() {
-        if (commentEditText.getText().toString().isEmpty()) {
-            ToastUtil.getInstance().makeShort("댓글을 입력해주세요.");
-        } else {
-            Comment comment = new Comment();
-            comment.setContent(commentEditText.getText().toString());
-            eventDetailPresenter.createComment(eventDetail.getId(), comment);
-        }
-    }
-
-    public void onClickCommentErase() {
-        if (!commentEditText.getText().toString().isEmpty()) {
-            SnackbarUtil.makeLongSnackbarActionYes(scrollView, "입력한 댓글을 지우시겠습니까?", () -> commentEditText.setText(""));
-        }
-    }
-
-    // [삭제] 버튼 클릭 시 해당 글을 삭제 시켜주는 메소드
+    /**
+     * [삭제] 버튼 클릭 시 해당 글을 삭제 시켜주는 메소드
+     */
     private void onClickDeleteButton() {
         SnackbarUtil.makeLongSnackbarActionYes(scrollView, "게시글을 삭제할까요?\n댓글도 모두 사라집니다.", () -> eventDetailPresenter.deleteEvent(eventDetail.getId()));
     }
 
-    // [수정] 버튼 클릭 시 EventCreateActivity 로 이동하여 글 수정
+    /**
+     * [수정] 버튼 클릭 시 EventCreateActivity 로 이동하여 글 수정
+     */
     private void onClickEditButton() {
         Intent intent = new Intent(this, EventCreateActivity.class);
         intent.putExtra("ID", eventDetail.getId());
@@ -337,5 +307,47 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         startActivity(intent);
 
         finish();
+    }
+
+    /**
+     * 댓글 입력란, [등록] 버튼, [취소] 버튼 클릭 리스너
+     * @param view 지정한 View
+     */
+    @OnClick({R.id.event_comment_content_edittext, R.id.event_comment_create_button, R.id.event_comment_erase_button})
+    public void onClickCommentView(View view) {
+        if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
+            showLoginRequestDialog();
+        } else {
+            switch (view.getId()) {
+                case R.id.event_comment_create_button:
+                    onClickCommentCreate();
+                    break;
+                case R.id.event_comment_erase_button:
+                    onClickCommentErase();
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 댓글의 [등록] 버튼 클릭했을 때 실행되는 메소드
+     */
+    public void onClickCommentCreate() {
+        if (commentEditText.getText().toString().isEmpty()) {
+            ToastUtil.getInstance().makeShort("댓글을 입력해주세요.");
+        } else {
+            Comment comment = new Comment();
+            comment.setContent(commentEditText.getText().toString());
+            eventDetailPresenter.createComment(eventDetail.getId(), comment);
+        }
+    }
+
+    /**
+     * 댓글의 [취소] 버튼 클릭했을 때 실행되는 메소드
+     */
+    public void onClickCommentErase() {
+        if (!commentEditText.getText().toString().isEmpty()) {
+            SnackbarUtil.makeLongSnackbarActionYes(scrollView, "입력하신 댓글을 지우시겠습니까?", () -> commentEditText.setText(""));
+        }
     }
 }

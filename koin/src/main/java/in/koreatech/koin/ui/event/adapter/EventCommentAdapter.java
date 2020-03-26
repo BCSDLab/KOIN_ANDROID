@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.event.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +17,17 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Comment;
 
 public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapter.ViewHolder> {
-    private ArrayList<Comment> eventDetailComment;
-    private String shopperNickName; // 홍보글의 점주 닉네임과 댓글 닉네임을 비교하여 점주 마크를 표시
+    private ArrayList<Comment> eventCommentList;
+    private int userId; // 홍보글의 점주 닉네임과 댓글 닉네임을 비교하여 점주 마크를 표시
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView shopperTextView; // [점주] 마크
         TextView nicknameTextview;
         TextView timeTextview;
         TextView contentsTextview;
         Button fixButton;
-        LinearLayout commentEditDeleteLinearlayout;
+        Button deleteButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -35,13 +36,13 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
             timeTextview = (TextView) itemView.findViewById(R.id.event_comment_item_time_textview);
             contentsTextview = (TextView) itemView.findViewById(R.id.event_comment_item_contents_textview);
             fixButton = (Button)itemView.findViewById(R.id.event_comment_item_fix_button);
-            commentEditDeleteLinearlayout = (LinearLayout)itemView.findViewById(R.id.);
+            deleteButton = (Button)itemView.findViewById(R.id.event_comment_item_delete_button);
         }
     }
 
-    public EventCommentAdapter(ArrayList<Comment> adComment, String shopperNickName, String userNickName) {
-        this.eventDetailComment = adComment;
-        this.shopperNickName = shopperNickName;
+    public EventCommentAdapter(ArrayList<Comment> eventComments, int userId) {
+        this.eventCommentList = eventComments;
+        this.userId = userId;
     }
 
     @NonNull
@@ -53,20 +54,26 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String commentNickName = eventDetailComment.get(position).getAuthorNickname();
-        if(shopperNickName.equals(commentNickName)){
+        Comment comment = eventCommentList.get(position);
+        // [점주] 마크 Visibility 설정
+        if(userId == comment.getAuthorUid()){
             holder.shopperTextView.setVisibility(View.VISIBLE);
         }
-        holder.nicknameTextview.setText(commentNickName);
-        holder.timeTextview.setText(eventDetailComment.get(position).getCreateDate());
-        holder.contentsTextview.setText(eventDetailComment.get(position).getContent());
-//       holder.fitButton.setOnClickListener(i->{
-//           // 수정버튼 반영하기
-//       });
+        // [수정] 버튼 Visibility 설정
+        if(comment.isGrantEdit()) {
+            holder.fixButton.setVisibility(View.VISIBLE);
+        }
+        // [삭제] 버튼 Visibility 설정
+        if(comment.isGrantDelete())
+            holder.deleteButton.setVisibility(View.VISIBLE);
+
+        holder.nicknameTextview.setText(comment.getAuthorNickname());
+        holder.timeTextview.setText(comment.getUpdateDate());
+        holder.contentsTextview.setText(comment.getContent());
     }
 
     @Override
     public int getItemCount() {
-        return eventDetailComment.size();
+        return eventCommentList.size();
     }
 }

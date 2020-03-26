@@ -145,10 +145,15 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        if(((HttpException) throwable).code() == 403) {
+                            Event event = new Event();
+                            apiCallback.onSuccess(event);
+                        } else {
+                            if (throwable instanceof HttpException) {
+                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                            }
+                            apiCallback.onFailure(throwable);
                         }
-                        apiCallback.onFailure(throwable);
                     }
 
                     @Override
@@ -240,7 +245,10 @@ public class EventRestInteractor implements EventInteractor {
 
     @Override
     public void readEventDetail(int id, ApiCallback apiCallback) {
-        RetrofitManager.getInstance().getRetrofit().create(EventService.class).getEventDetail(id)
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
+        if(token == null)
+            token = "";
+        RetrofitManager.getInstance().getRetrofit().create(EventService.class).getEventDetail(addAuthorizationBearer(token), id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Event>() {

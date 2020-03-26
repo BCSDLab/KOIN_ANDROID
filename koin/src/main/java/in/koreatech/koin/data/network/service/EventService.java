@@ -28,7 +28,7 @@ public interface EventService {
     Observable<Event> getEventList(@Query("page") int page);
 
     @GET(EVENT + "/{id}")
-    Observable<Event> getEventDetail(@Path("id") int id);
+    Observable<Event> getEventDetail(@Header("Authorization") String authHeader, @Path("id") int id);
 
     @POST(EVENT)
     Observable<Event> postEvent(@Header("Authorization") String authHeader, @Body JsonObject adDetail);

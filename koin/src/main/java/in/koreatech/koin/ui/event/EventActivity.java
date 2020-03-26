@@ -133,6 +133,8 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
 
     @Override
     public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
+        if(shopArrayList == null)
+            return;
         myShopArrayList = shopArrayList;
         if(myShopArrayList.isEmpty()) {
             koinBaseAppbarDark.setRightButtonVisibility(View.INVISIBLE);

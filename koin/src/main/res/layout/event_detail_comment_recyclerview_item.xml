@@ -7,10 +7,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/event_comment_shopper_textview"
@@ -51,10 +50,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
         android:lineSpacingExtra="5sp"
         android:textColor="#565656"
         android:textSize="13sp"
+        android:visibility="visible"
         tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
 
     <EditText
@@ -63,19 +62,17 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_rect_black"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
         android:lineSpacingExtra="5sp"
         android:textColor="#565656"
         android:textSize="13sp"
+        android:visibility="gone"
         tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:visibility="invisible"
-        tools:visibility="visible">
+        android:orientation="horizontal">
         <Button
             android:id="@+id/event_comment_item_fix_button"
             android:layout_width="46dp"
@@ -83,7 +80,9 @@
             android:background="@drawable/bg_rect_cloudy_blue"
             android:text="수정"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
         <Button
             android:id="@+id/event_comment_item_delete_button"
             android:layout_width="46dp"
@@ -91,6 +90,8 @@
             android:background="@drawable/bg_rect_cloudy_blue"
             android:text="삭제"
             android:textColor="@color/red1"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="invisible"
+            tools:visibility="visible"/>
     </LinearLayout>
 </LinearLayout>

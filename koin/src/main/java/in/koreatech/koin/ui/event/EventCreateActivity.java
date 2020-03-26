@@ -302,15 +302,18 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     // 홍보글을 처음 작성할 때 점주가 보유한 상점 목록을 이름과 shopId를 맵핑
     @Override
     public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
+        if(shopArrayList == null) {
+            // Test
+            shopIdNameHashMap.put("가장 맛있는 족발", 2);
+            shopIdNameHashMap.put("노걸대 감자탕&가마삼겹 목천점", 17);
+//            finish();
+            return;
+        }
         if (!shopArrayList.isEmpty()) {
             for (Store store : shopArrayList) {
                 shopIdNameHashMap.put(store.getName(), store.getUid());
             }
         }
-
-        // Test
-        shopIdNameHashMap.put("가장 맛있는 족발", 2);
-        shopIdNameHashMap.put("노걸대 감자탕&가마삼겹 목천점", 17);
     }
 
     // 홍보글을 수정할 때 shopId로 가게 이름을 확인
