@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.event.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,12 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Comment;
 
 public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<Comment> adDetailComment;
+    private ArrayList<Comment> eventDetailComment;
+    private String nickName; // 홍보글의 점주 닉네임과 댓글 닉네임을 비교하여 점주 마크를 표시
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView shopperTextView; // [점주] 마크
         TextView nicknameTextview;
         TextView timeTextview;
         TextView contentsTextview;
@@ -27,6 +28,7 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            shopperTextView = (TextView)itemView.findViewById(R.id.event_comment_shopper_textview);
             nicknameTextview = (TextView)itemView.findViewById(R.id.event_comment_item_nickname_textview);
             timeTextview = (TextView) itemView.findViewById(R.id.event_comment_item_time_textview);
             contentsTextview = (TextView) itemView.findViewById(R.id.event_comment_item_contents_textview);
@@ -34,9 +36,9 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
         }
     }
 
-    public EventCommentAdapter(Context context, ArrayList<Comment> adComment) {
-        this.context = context;
-        this.adDetailComment = adComment;
+    public EventCommentAdapter(ArrayList<Comment> adComment, String nickName) {
+        this.eventDetailComment = adComment;
+        this.nickName = nickName;
     }
 
     @NonNull
@@ -48,17 +50,20 @@ public class EventCommentAdapter extends RecyclerView.Adapter<EventCommentAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.nicknameTextview.setText(adDetailComment.get(position).getAuthorNickname());
-        holder.timeTextview.setText(adDetailComment.get(position).getCreateDate());
-        holder.contentsTextview.setText(adDetailComment.get(position).getContent());
+        String commentNickName = eventDetailComment.get(position).getAuthorNickname();
+        if(nickName.equals(commentNickName)){
+            holder.shopperTextView.setVisibility(View.VISIBLE);
+        }
+        holder.nicknameTextview.setText(commentNickName);
+        holder.timeTextview.setText(eventDetailComment.get(position).getCreateDate());
+        holder.contentsTextview.setText(eventDetailComment.get(position).getContent());
 //       holder.fitButton.setOnClickListener(i->{
 //           // 수정버튼 반영하기
 //       });
-
     }
 
     @Override
     public int getItemCount() {
-        return adDetailComment.size();
+        return eventDetailComment.size();
     }
 }

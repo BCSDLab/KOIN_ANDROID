@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/spinner_selected_shop_textview"
+    android:singleLine="true"
+    style="?attr/spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/dropdownListPreferredItemHeight"
+    android:textSize="13sp"
+    android:gravity="center"
+    android:paddingHorizontal="38dp"
+    android:background="@drawable/ic_arrow"
+    tools:text="노랑통닭" />

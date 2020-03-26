@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +36,10 @@ import in.koreatech.koin.ui.event.presenter.EventDetailPresenter;
 import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.util.SnackbarUtil;
+import in.koreatech.koin.util.TimeUtil;
 
 // TODO : 댓글 기능 완성
-// TODO : 마감 마크 표시
+// TODO : 제목, 홍보문구, 댓글 닉네임 길이 제한
 public class EventDetailActivity extends KoinEditorActivity implements EventDetailContract.View {
 
     private EventDetailPresenter eventDetailPresenter;
@@ -67,6 +71,8 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     Button editButton;
     @BindView(R.id.event_detail_page_delete_button)
     Button deleteButton;
+    @BindView(R.id.event_detail_closedmark_textview)
+    TextView closedMark;
 
     // Comment View Binding
     @BindView(R.id.event_comment_recyclerview)
@@ -124,7 +130,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     }
 
     public void initView() {
-        commentRecyclerAdapter = new EventCommentAdapter(context, eventDetail.getComments());
+        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getNickname());
         detailRecyclerview.setHasFixedSize(true);
         detailRecyclerview.setLayoutManager(layoutManager);
         detailRecyclerview.setAdapter(commentRecyclerAdapter);
@@ -137,15 +143,32 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         createdAtTextview.setText(eventDetail.getCreatedAt());
         renderEditor(renderHtmltoString(eventDetail.getContent()));
 
+        // 수정,삭제 권한이 있을 경우 [수정],[삭제] 버튼 시각화
         if (eventDetail.isGrantEdit()) {
             editButton.setVisibility(View.VISIBLE);
             deleteButton.setVisibility(View.VISIBLE);
         }
 
+        // 익명이 아닐 경우 댓글 입력 활성화
         if (getAuthority() != AuthorizeConstant.ANONYMOUS) {
             commentEditText.setFocusable(true);
             commentEditText.setFocusableInTouchMode(true);
             commentEditText.setHint("댓글을 작성해주세요.");
+        }
+
+        checkEventClosed();
+    }
+
+    private void checkEventClosed() {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date endDate = formatter.parse(eventDetail.getEndDate());
+            Date currentDate = formatter.parse(TimeUtil.getDeviceCreatedDateOnlyString());
+
+            if(endDate.getTime() - currentDate.getTime() <= 0)
+                closedMark.setVisibility(View.VISIBLE);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 

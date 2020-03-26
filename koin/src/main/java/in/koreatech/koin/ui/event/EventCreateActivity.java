@@ -8,14 +8,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -25,6 +30,7 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
+import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
 import in.koreatech.koin.ui.board.KoinEditorActivity;
 import in.koreatech.koin.ui.event.presenter.EventCreateContract;
@@ -33,9 +39,9 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
-// TODO: 권한 있는 상점 목록 출력
 // TODO: 도움말을 AlertDialog로 출력
-public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher {
+
+public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher, AdapterView.OnItemSelectedListener {
     private final static String TAG = "EventCreateActivity";
     private Calendar SelectStartDate;
     private Calendar SelectEndDate;
@@ -47,6 +53,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbar;
+//    @BindView(R.id.event_create_shops_spinner)
+    Spinner shopListSpinner;
     @BindView(R.id.event_create_question_mark_textview)
     TextView questionMark;
     @BindView(R.id.event_detail_title_edittext)
@@ -62,12 +70,9 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     private boolean isEdit;
     private int articleId;
-    private String title;
-    private String eventTitle;
-    private String startDate;
-    private String endDate;
-    private String content;
     private int shopId;
+    private HashMap<String, Integer> shopIdNameHashMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         ButterKnife.bind(this);
         setPresenter(new EventCreatePresenter(this, new EventRestInteractor()));
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        shopIdNameHashMap = new HashMap<>();
+        shopListSpinner = findViewById(R.id.event_create_shops_spinner);
 
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
 
@@ -106,24 +113,37 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     void init() {
         koinBaseAppbar.setTitleText("홍보게시판");
         if (isEdit) {
-            articleId = getIntent().getIntExtra("ID", 0);
-            createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
-            eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
-            startDateTextview.setText(getIntent().getStringExtra("START_DATE"));
-            endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
-            renderEditor(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
+            loadEventDetail();
         } else {
             startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
             endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
+            eventCreatePresenter.getMyShopList();
         }
         calenderCheck();
         koinBaseAppbar.setLeftButtonText("취소");
         koinBaseAppbar.setRightButtonText("등록");
 
+        // 상점 Spinner Adapter
+        ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.event_create_spinner_custom, new ArrayList<>(shopIdNameHashMap.keySet()));
+        spinnerAdapter.setDropDownViewResource(R.layout.event_create_spinner_item );
+        shopListSpinner.setAdapter(spinnerAdapter);
+        shopListSpinner.setOnItemSelectedListener(this);
+
         // 자동으로 제목에 포커스를 주면서 키보드 올리기
         createTitleEditText.setFocusableInTouchMode(true);
         createTitleEditText.requestFocus();
         inputMethodManager.showSoftInput(createTitleEditText, 0);
+    }
+
+    private void loadEventDetail() {
+        articleId = getIntent().getIntExtra("ID", 0);
+        createTitleEditText.setText(getIntent().getStringExtra("TITLE"));
+        eventTitleEditText.setText(getIntent().getStringExtra("EVENT_TITLE"));
+        startDateTextview.setText(getIntent().getStringExtra("START_DATE"));
+        endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
+        renderEditor(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
+        shopId = getIntent().getIntExtra("SHOP_ID", 0);
+        eventCreatePresenter.getShopName(shopId);
     }
 
     void calenderCheck() {
@@ -260,16 +280,11 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
             return;
         }
 
-        title = createTitleEditText.getText().toString().trim();
-        eventTitle = this.eventTitleEditText.getText().toString().trim();
-        content = getContentAsHTML();
-
-        // TODO : shopId를 어떻게 받아와야하는가 -> 412 에러(이미 진행중인 이벤트가 있습니다) 해결책
-        shopId = 12;
-
-        startDate = startDateTextview.getText().toString();
-        endDate = endDateTextview.getText().toString();
-
+        String title = createTitleEditText.getText().toString().trim();
+        String eventTitle = this.eventTitleEditText.getText().toString().trim();
+        String content = getContentAsHTML();
+        String startDate = startDateTextview.getText().toString();
+        String endDate = endDateTextview.getText().toString();
         String thumbnail = getThumbnail();
 
         if (isEdit) {
@@ -282,6 +297,26 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     @Override
     public void onEventDataReceived(Event event) {
         goToEventActivity(event);
+    }
+
+    // 홍보글을 처음 작성할 때 점주가 보유한 상점 목록을 이름과 shopId를 맵핑
+    @Override
+    public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
+        if (!shopArrayList.isEmpty()) {
+            for (Store store : shopArrayList) {
+                shopIdNameHashMap.put(store.getName(), store.getUid());
+            }
+        }
+
+        // Test
+        shopIdNameHashMap.put("가장 맛있는 족발", 2);
+        shopIdNameHashMap.put("노걸대 감자탕&가마삼겹 목천점", 17);
+    }
+
+    // 홍보글을 수정할 때 shopId로 가게 이름을 확인
+    @Override
+    public void onShopNameReceived(String shopName) {
+        shopIdNameHashMap.put(shopName, shopId);
     }
 
     @Override
@@ -323,6 +358,21 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     @Override
     public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//        String shopName = (String) shopListSpinner.getItemAtPosition(position);
+//        if(shopIdNameHashMap != null && shopIdNameHashMap.containsKey(shopName)) {
+//            shopId = shopIdNameHashMap.get(shopName);
+//        }
+        String selectedItem = shopListSpinner.getItemAtPosition(position).toString();
+        Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

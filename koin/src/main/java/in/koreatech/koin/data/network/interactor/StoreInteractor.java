@@ -6,5 +6,4 @@ public interface StoreInteractor {
     void readStoreList(ApiCallback apiCallback);
 
     void readStore(int id, ApiCallback apiCallback);
-
 }

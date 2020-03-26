@@ -298,8 +298,6 @@ public class EventRestInteractor implements EventInteractor {
                     @Override
                     public void onNext(Event response) {
                         if (response != null) {
-//                            if(FormValidatorUtil.validateStringIsEmpty(response.eventTitle))
-//                                response.eve
                             apiCallback.onSuccess(response);
                         } else {
                             apiCallback.onFailure(new Throwable("fail"));

@@ -95,11 +95,11 @@
 
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="14dp"
-                        android:layout_height="12dp"
-                        android:layout_marginLeft="44dp"
-                        android:layout_marginRight="4dp"
-                        app:srcCompat="@drawable/ic_event_bottom_icon" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_event_bottom_icon" />
 
                     <TextView
                         android:id="@+id/event_recyclerview_item_publish_date_textview"

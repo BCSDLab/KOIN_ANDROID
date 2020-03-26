@@ -42,41 +42,47 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="16dp"-->
+<!--                        android:layout_marginTop="15dp"-->
+<!--                        android:background="@drawable/bg_rect_blue"-->
+<!--                        android:orientation="horizontal">-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/imageView3"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginStart="8dp"-->
+<!--                            android:src="@drawable/ic_event_store" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/event_create_activity_store_button"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:paddingHorizontal="35dp"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:gravity="center"-->
+<!--                            android:lineSpacingExtra="2sp"-->
+<!--                            android:textColor="#69717a"-->
+<!--                            android:textSize="13sp"-->
+<!--                            android:text="노걸대 감자탕&amp;가마삼겹 목천점"/>-->
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/event_create_store_arrow_imageview"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginEnd="5dp"-->
+<!--                            android:src="@drawable/ic_arrow" />-->
+<!--                    </LinearLayout>-->
+
+                    <Spinner
+                        android:id="@+id/event_create_shops_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rect_blue"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/imageView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="8dp"
-                            android:src="@drawable/ic_event_store" />
-
-                        <TextView
-                            android:id="@+id/event_create_activity_store_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:paddingHorizontal="35dp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:lineSpacingExtra="2sp"
-                            android:textColor="#69717a"
-                            android:textSize="13sp"
-                            tools:text="노랑통닭"/>
-
-                        <ImageView
-                            android:id="@+id/imageView4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:src="@drawable/ic_arrow" />
-                    </LinearLayout>
-
+                        android:layout_marginTop="15dp" />
 
                     <EditText
                         android:id="@+id/event_detail_title_edittext"
@@ -86,7 +92,7 @@
                         android:layout_marginTop="19dp"
                         android:layout_marginBottom="19dp"
                         android:background="@drawable/bg_white"
-                        android:hint="제목을 입력해주세요(최대 20자)"
+                        android:hint="제목을 입력해주세요(최대 15자)"
                         android:letterSpacing="-0.05"
                         android:lineSpacingExtra="2sp"
                         android:textColorHint="#e7e7e7"

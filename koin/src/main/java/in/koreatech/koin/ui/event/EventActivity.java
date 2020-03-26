@@ -93,16 +93,6 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         } else if (id == AppBarBase.getRightButtonId()) {
             Intent intent = new Intent(context, EventCreateActivity.class);
             startActivity(intent);
-//            // 익명 계정일 경우 로그인 요청 다이얼로그 출력
-//            if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
-//                showLoginRequestDialog();
-//                return;
-//            }
-//            // 닉네임이 없을 경우, 닉네임 설정 요청
-//            if (getUser().getUserNickName() == null) {
-//                ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
-//                Intent intent = new Intent(this, UserInfoEditedActivity.class);
-//            }
         }
     }
 
@@ -149,6 +139,10 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         } else {
             koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
         }
+
+        // Test
+        if(getAuthority() == AuthorizeConstant.MEMBER)
+            koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
     }
 
     @Override

@@ -293,7 +293,6 @@ public class TimeUtil {
     }
 
     public static String getDateDay(String dateSting, String dateType) throws Exception {
-
         String day = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateType);
         Date date = dateFormat.parse(dateSting);
