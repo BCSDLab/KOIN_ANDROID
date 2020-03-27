@@ -19,13 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_no_search"/>
+            android:background="@drawable/ic_no_search"
+            android:backgroundTint="@color/color_search_no_result"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/blue8"
+            android:textColor="@color/color_search_no_result"
             android:text="일치하는 검색 결과가 없습니다."
             android:layout_marginTop="15dp"/>
 
