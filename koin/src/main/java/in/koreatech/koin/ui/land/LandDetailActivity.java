@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.land;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -199,6 +202,10 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+        naverMap.setMapType(NaverMap.MapType.Navi);
+        naverMap.setNightModeEnabled(
+                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES);
         Marker marker = new Marker();
 
         if (landLatitude == null || landLongitude == null) {
@@ -315,7 +322,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      * @param land Land 객체
      */
     private void setRoomOption(Land land) {
-        PorterDuffColorFilter grayFilter = new PorterDuffColorFilter(getResources().getColor(R.color.gray4), PorterDuff.Mode.SRC_ATOP);
+        PorterDuffColorFilter grayFilter = new PorterDuffColorFilter(ContextCompat.getColor(this, R.color.land_icon_unselected_color), PorterDuff.Mode.SRC_ATOP);
         if (!land.getOptAirConditioner())
             setGray(landDetailAirconditionerImageview, landDetailAirconditionerTextview, grayFilter);
         if (!land.getOptRefrigerator())
@@ -356,7 +363,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     private void setGray(ImageView landDetailImageview, TextView landDetailTextview, PorterDuffColorFilter grayFilter) {
         landDetailImageview.setColorFilter(grayFilter);
-        landDetailTextview.setTextColor(getResources().getColor(R.color.gray4));
+        landDetailTextview.setTextColor(ContextCompat.getColor(this, R.color.land_icon_unselected_color));
     }
 
     /**
