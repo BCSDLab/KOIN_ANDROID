@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="170dp"
-    android:layout_height="140dp"
-    android:background="@color/white">
+    android:layout_height="140dp">
 
 
     <LinearLayout
@@ -27,7 +26,8 @@
             android:layout_height="61dp"
             android:layout_marginLeft="1dp"
             android:layout_marginTop="1dp"
-            android:background="@color/white"
+            android:background="@android:color/black"
+            android:backgroundTint="@color/color_card_view_background"
             android:orientation="horizontal">
 
             <TextView
@@ -38,7 +38,7 @@
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="6sp"
                 android:text=""
-                android:textColor="@color/black"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="15sp"
                 tools:text="IH (국제학사)" />
         </LinearLayout>
@@ -48,7 +48,8 @@
             android:layout_width="158dp"
             android:layout_height="64dp"
             android:layout_marginLeft="1dp"
-            android:background="@color/gray3"
+            android:background="@android:color/black"
+            android:backgroundTint="@color/color_surface"
             android:orientation="vertical">
 
             <LinearLayout
@@ -67,7 +68,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="12sp"
                     android:text="월세"
-                    android:textColor="#f3f3f3"
+                    android:textColor="@color/color_citybus_text"
                     android:textSize="12sp" />
 
                 <TextView
@@ -84,7 +85,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/gray7"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
                     tools:text="880만원 (1학기)" />
             </LinearLayout>
@@ -105,7 +106,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="12sp"
                     android:text="전세"
-                    android:textColor="#f3f3f3"
+                    android:textColor="@color/color_shuttle_text"
                     android:textSize="12sp" />
 
                 <TextView
@@ -123,7 +124,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/gray7"
+                    android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
                     tools:text="X" />
             </LinearLayout>

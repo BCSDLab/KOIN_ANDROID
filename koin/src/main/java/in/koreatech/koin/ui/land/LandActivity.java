@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.land;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
@@ -198,6 +199,10 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     public void onMapReady(@NonNull NaverMap naverMap) {
 
         this.naverMap = naverMap;
+        naverMap.setMapType(NaverMap.MapType.Navi);
+        naverMap.setNightModeEnabled(
+                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+                        == Configuration.UI_MODE_NIGHT_YES);
         landPresenter.getLandList();
 
     }

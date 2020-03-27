@@ -11,8 +11,8 @@
             android:shape="rectangle">
             <stroke
                 android:width="2dp"
-                android:color="@color/colorPrimary"/>
-            <solid android:color="@color/blue4"/>
+                android:color="@color/color_primary"/>
+            <solid android:color="@color/color_divider"/>
         </shape>
     </item>
 </layer-list>
