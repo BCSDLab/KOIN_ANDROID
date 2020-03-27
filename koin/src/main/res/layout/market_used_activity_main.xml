@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -31,17 +30,16 @@
                 android:id="@+id/market_used_main_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
-                android:background="@android:color/white">
+                android:layout_marginTop="56dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/market_used_main_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="47dp"
                     android:layout_gravity="top"
-                    app:tabSelectedTextColor="@color/black"
-                    app:tabTextColor="@color/gray9"
-                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabSelectedTextColor="?android:attr/textColorPrimary"
+                    app:tabTextColor="?android:attr/textColorSecondary"
+                    app:tabIndicatorColor="?attr/colorAccent"
                     />
 
             </androidx.viewpager.widget.ViewPager>

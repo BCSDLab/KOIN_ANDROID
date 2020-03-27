@@ -19,7 +19,6 @@
                 android:id="@+id/market_used_buy_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/background"
                 android:scrollbars="vertical"/>
 
 
