@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
@@ -33,14 +34,11 @@ import in.koreatech.koin.ui.board.KoinRichEditor;
 import in.koreatech.koin.ui.event.adapter.EventCommentAdapter;
 import in.koreatech.koin.ui.event.presenter.EventDetailContract;
 import in.koreatech.koin.ui.event.presenter.EventDetailPresenter;
-import in.koreatech.koin.ui.event.presenter.EventPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.store.StoreDetailActivity;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
-// TODO : 댓글 기능 완성
-// TODO : 제목, 홍보문구, 댓글 닉네임 길이 제한
-public class EventDetailActivity extends KoinEditorActivity implements EventDetailContract.View {
+public class EventDetailActivity extends KoinEditorActivity implements EventDetailContract.View, EventCommentAdapter.OnCommentEditDeleteButtonClickListener {
 
     private EventDetailPresenter eventDetailPresenter;
     private Context context;
@@ -48,6 +46,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     private EventCommentAdapter commentRecyclerAdapter;
     private Event eventDetail;
     private InputMethodManager commentInputManager;
+    private boolean grantEdit;
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseBar;
@@ -76,7 +75,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
 
     // Comment View Binding
     @BindView(R.id.event_comment_recyclerview)
-    RecyclerView detailRecyclerview;
+    RecyclerView commentRecyclerview;
     @BindView(R.id.event_comment_content_edittext)
     EditText commentEditText;
 
@@ -88,7 +87,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
 
         eventDetail = new Event();
         eventDetail.setId(getIntent().getIntExtra("ID", -1));
-        eventDetail.setGrantEdit(getIntent().getBooleanExtra("GRANT_EDIT", false));
+        grantEdit = getIntent().getBooleanExtra("GRANT_EDIT", false);
 
         if (eventDetail.getId() == -1) {
             ToastUtil.getInstance().makeShort("이벤트 정보를 불러오지 못했습니다.");
@@ -124,18 +123,15 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         commentInputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 
-    public void initView() {
-        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getUserId());
-        detailRecyclerview.setHasFixedSize(true);
-        detailRecyclerview.setLayoutManager(layoutManager);
-        detailRecyclerview.setAdapter(commentRecyclerAdapter);
-        detailRecyclerview.setNestedScrollingEnabled(false);
+    public void updateView() {
+        initRecyclerView();
         titleTextview.setText(eventDetail.getEventTitle());
         periodTextview.setText(eventDetail.getStartDate() + " ~ " + eventDetail.getEndDate());
         viewPublisherTextview.setText("조회 " + eventDetail.getHit() + " · " + eventDetail.getNickname());
         replyCountTextview.setText(eventDetail.getCommentCount() + "");
         viewCountTextview.setText(eventDetail.getHit() + "");
         createdAtTextview.setText(eventDetail.getCreatedAt());
+        eraseEditorText();
         renderEditor(renderHtmltoString(eventDetail.getContent()));
 
         // 수정,삭제 권한이 있을 경우 [수정],[삭제] 버튼 시각화
@@ -152,6 +148,15 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         }
 
         checkEventClosed();
+    }
+
+    private void initRecyclerView() {
+        commentRecyclerAdapter = new EventCommentAdapter(eventDetail.getComments(), eventDetail.getUserId());
+        commentRecyclerAdapter.setButtonClickListener(this);
+        commentRecyclerview.setHasFixedSize(true);
+        commentRecyclerview.setLayoutManager(layoutManager);
+        commentRecyclerview.setAdapter(commentRecyclerAdapter);
+        commentRecyclerview.setNestedScrollingEnabled(false);
     }
 
     private void checkEventClosed() {
@@ -192,6 +197,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
     public void onEventDataReceived(Event event) {
         eventDetail.setTitle(event.getTitle());
         eventDetail.setEventTitle(event.getEventTitle());
+        eventDetail.setGrantEdit(grantEdit);
         eventDetail.setStartDate(event.getStartDate());
         eventDetail.setEndDate(event.getEndDate());
         eventDetail.setContent(event.getContent());
@@ -204,7 +210,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         eventDetail.setNickname(event.getNickname());
         eventDetail.setCreatedAt(event.getCreatedAt());
 
-        initView();
+        updateView();
     }
 
     @Override
@@ -230,21 +236,16 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
      */
     @Override
     public void onEventCommentReceived(Comment comment) {
-        eventDetail.getComments().add(comment);
-        commentRecyclerAdapter.notifyDataSetChanged();
-        replyCountTextview.setText(Integer.toString(eventDetail.getComments().size()));
+        eventDetailPresenter.getEventDetail(eventDetail.getId());
         commentEditText.clearFocus();
         commentEditText.setText("");
-        commentInputManager.hideSoftInputFromWindow(commentEditText.getWindowToken(), 0);
+        commentInputManager.hideSoftInputFromWindow(scrollView.getWindowToken(), 0);
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
     @Override
     public void onEventCommentDeleted(boolean isSuccess) {
-        Intent intent = new Intent(this, EventDetailActivity.class);
-        intent.putExtra("ID", eventDetail.getId());
-        intent.putExtra("GRANT_EDIT", eventDetail.isGrantEdit());
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        eventDetailPresenter.getEventDetail(eventDetail.getId());
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -337,7 +338,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
             ToastUtil.getInstance().makeShort("댓글을 입력해주세요.");
         } else {
             Comment comment = new Comment();
-            comment.setContent(commentEditText.getText().toString());
+            comment.setContent(commentEditText.getText().toString().trim());
             eventDetailPresenter.createComment(eventDetail.getId(), comment);
         }
     }
@@ -349,5 +350,27 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         if (!commentEditText.getText().toString().isEmpty()) {
             SnackbarUtil.makeLongSnackbarActionYes(scrollView, "입력하신 댓글을 지우시겠습니까?", () -> commentEditText.setText(""));
         }
+    }
+
+    @Override
+    public void onClickEditButton(Comment comment, String content) {
+        if(content.isEmpty()) {
+            ToastUtil.getInstance().makeShort("댓글을 입력해주세요.");
+        } else {
+            comment.setContent(content);
+            eventDetailPresenter.updateComment(comment);
+        }
+    }
+
+    @Override
+    public void onClickDeleteButton(Comment comment) {
+        SnackbarUtil.makeLongSnackbarActionYes(scrollView, "댓글을 삭제하시겠습니까?", () -> eventDetailPresenter.deleteComment(comment));
+    }
+
+    @OnClick(R.id.event_detail_order_button)
+    public void onClickOrderButton(View view) {
+        Intent intent = new Intent(context, StoreDetailActivity.class);
+        intent.putExtra("STORE_UID", eventDetail.getShopId());
+        startActivity(intent);
     }
 }

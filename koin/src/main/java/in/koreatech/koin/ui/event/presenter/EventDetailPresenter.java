@@ -93,6 +93,6 @@ public class EventDetailPresenter {
 
     public void deleteComment(Comment comment) {
         eventDetailView.showLoading();
-        eventInteractor.deleteEventComment(comment.getArticleUid(), comment.getCommentUid(), deleteApiCallback);
+        eventInteractor.deleteEventComment(comment.getArticleUid(), comment.getCommentUid(), deleteCommentApiCallback);
     }
 }

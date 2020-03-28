@@ -13,9 +13,11 @@
 
         <TextView
             android:id="@+id/event_comment_shopper_textview"
-            android:layout_width="41dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="1dp"
             android:background="@drawable/bg_rect_squash_radius_18dp"
             android:lineSpacingExtra="4sp"
             android:text="점주"
@@ -28,7 +30,7 @@
         <TextView
             android:id="@+id/event_comment_item_nickname_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:lineSpacingExtra="18sp"
             android:text="한솥"
             android:textColor="@color/black"
@@ -37,7 +39,7 @@
         <TextView
             android:id="@+id/event_comment_item_time_textview"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:lineSpacingExtra="18sp"
             android:text="2019.11.25 [13:11]"
@@ -45,53 +47,97 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/event_comment_item_contents_textview"
+    <LinearLayout
+        android:id="@+id/event_comment_item_content_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:lineSpacingExtra="5sp"
-        android:textColor="#565656"
-        android:textSize="13sp"
-        android:visibility="visible"
-        tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/event_comment_item_contents_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5sp"
+            android:textColor="#565656"
+            android:textSize="13sp"
+            tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
 
-    <EditText
-        android:id="@+id/event_comment_item_contents_edittext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_rect_black"
-        android:layout_marginTop="10dp"
-        android:lineSpacingExtra="5sp"
-        android:textColor="#565656"
-        android:textSize="13sp"
-        android:visibility="gone"
-        tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/event_comment_item_edit_button"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:background="@drawable/bg_rect_cloudy_blue"
+                android:text="수정"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                tools:visibility="visible"/>
+            <Button
+                android:id="@+id/event_comment_item_delete_button"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:background="@drawable/bg_rect_cloudy_blue"
+                android:text="삭제"
+                android:textColor="@color/red1"
+                android:textSize="12sp"
+                android:visibility="invisible"
+                tools:visibility="visible"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/event_comment_item_edit_linearlayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/event_comment_item_fix_button"
-            android:layout_width="46dp"
-            android:layout_height="26dp"
-            android:background="@drawable/bg_rect_cloudy_blue"
-            android:text="수정"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
-        <Button
-            android:id="@+id/event_comment_item_delete_button"
-            android:layout_width="46dp"
-            android:layout_height="26dp"
-            android:background="@drawable/bg_rect_cloudy_blue"
-            android:text="삭제"
-            android:textColor="@color/red1"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/event_comment_item_contents_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:background="@drawable/bg_rect_black"
+            android:lineSpacingExtra="5sp"
+            android:textColor="#565656"
+            android:textSize="13sp"
+            tools:text="감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!감사합니다~ 가성비 최고는 역시 한솥!!" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/event_comment_item_erase_button"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_rect_black"
+                android:lineSpacingExtra="1sp"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+
+            <Button
+                android:id="@+id/event_comment_item_create_button"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_rect_black"
+                android:lineSpacingExtra="1sp"
+                android:text="등록"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

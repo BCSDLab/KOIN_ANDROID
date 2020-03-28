@@ -50,7 +50,6 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         this.context = this;
 
         richEditor = findViewById(getRichEditorId());
