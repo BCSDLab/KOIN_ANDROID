@@ -31,13 +31,13 @@ public interface EventService {
     Observable<Event> getEventDetail(@Header("Authorization") String authHeader, @Path("id") int id);
 
     @POST(EVENT)
-    Observable<Event> postEvent(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
+    Observable<Event> postEvent(@Header("Authorization") String authHeader, @Body JsonObject event);
 
     @POST(GRANTCHECK)
-    Observable<Event> postGrantCheck(@Header("Authorization") String authHeader, @Body JsonObject adDetail);
+    Observable<Event> postGrantCheck(@Header("Authorization") String authHeader, @Body JsonObject event);
 
     @PUT(EVENT + "/{id}")
-    Observable<Event> updateEvent(@Path("id") int articleId, @Header("Authorization") String authHeader, @Body JsonObject adDetail);
+    Observable<Event> updateEvent(@Path("id") int articleId, @Header("Authorization") String authHeader, @Body JsonObject event);
 
     @DELETE(EVENT + "/{id}")
     Observable<DefaultResponse> deleteEvent(@Path("id") int articleId, @Header("Authorization") String authHeader);

@@ -282,17 +282,17 @@ public class EventRestInteractor implements EventInteractor {
     }
 
     @Override
-    public void createEvent(Event ad, ApiCallback apiCallback) {
+    public void createEvent(Event event, ApiCallback apiCallback) {
         String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("title", ad.getTitle());
-        jsonObject.addProperty("event_title", ad.getEventTitle());
-        jsonObject.addProperty("content", ad.getContent());
-        jsonObject.addProperty("shop_id", ad.getShopId());
-        jsonObject.addProperty("start_date", ad.getStartDate());
-        jsonObject.addProperty("end_date", ad.getEndDate());
-        if (ad.getThumbnail() != null)
-            jsonObject.addProperty("thumbnail", ad.getThumbnail());
+        jsonObject.addProperty("title", event.getTitle());
+        jsonObject.addProperty("event_title", event.getEventTitle());
+        jsonObject.addProperty("content", event.getContent());
+        jsonObject.addProperty("shop_id", event.getShopId());
+        jsonObject.addProperty("start_date", event.getStartDate());
+        jsonObject.addProperty("end_date", event.getEndDate());
+        if (event.getThumbnail() != null)
+            jsonObject.addProperty("thumbnail", event.getThumbnail());
 
         RetrofitManager.getInstance().getRetrofit().create(EventService.class).postEvent(addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -300,7 +300,6 @@ public class EventRestInteractor implements EventInteractor {
                 .subscribe(new Observer<Event>() {
                     @Override
                     public void onSubscribe(Disposable disposable) {
-                        compositeDisposable.add(disposable);
                     }
 
                     @Override
@@ -314,10 +313,14 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        if(((HttpException)throwable).code() == 412) {
+                            apiCallback.onFailure(new Throwable("이미 진행 중인 이벤트가 있습니다."));
+                        } else {
+                            if (throwable instanceof HttpException) {
+                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                            }
+                            apiCallback.onFailure(throwable);
                         }
-                        apiCallback.onFailure(throwable);
                     }
 
                     @Override

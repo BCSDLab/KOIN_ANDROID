@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/white"
             android:layout_marginBottom="56dp">
 
@@ -40,7 +40,6 @@
                     android:id="@+id/event_detail_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-
 
                     <LinearLayout
                         android:id="@+id/edit_delete_buttons_linearlayout"

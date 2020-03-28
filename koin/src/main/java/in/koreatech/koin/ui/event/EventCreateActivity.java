@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -13,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.text.ParseException;
@@ -30,9 +30,9 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
-import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.EventRestInteractor;
 import in.koreatech.koin.ui.board.KoinEditorActivity;
+import in.koreatech.koin.ui.event.adapter.EventShopSpinnerAdapter;
 import in.koreatech.koin.ui.event.presenter.EventCreateContract;
 import in.koreatech.koin.ui.event.presenter.EventCreatePresenter;
 import in.koreatech.koin.util.FormValidatorUtil;
@@ -53,7 +53,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbar;
-//    @BindView(R.id.event_create_shops_spinner)
+    @BindView(R.id.event_create_shops_spinner)
     Spinner shopListSpinner;
     @BindView(R.id.event_create_question_mark_textview)
     TextView questionMark;
@@ -71,8 +71,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     private boolean isEdit;
     private int articleId;
     private int shopId;
-    private HashMap<String, Integer> shopIdNameHashMap;
-
+    private HashMap<String, Integer> shopNameIdHashMap;
+    private ArrayList<String> shopNameArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +81,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         ButterKnife.bind(this);
         setPresenter(new EventCreatePresenter(this, new EventRestInteractor()));
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        shopIdNameHashMap = new HashMap<>();
-        shopListSpinner = findViewById(R.id.event_create_shops_spinner);
+        shopNameIdHashMap = new HashMap<>();
+        shopNameArrayList = new ArrayList<>();
 
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
 
@@ -117,17 +117,12 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         } else {
             startDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
             endDateTextview.setText(TimeUtil.getDeviceCreatedDateOnlyString());
-            eventCreatePresenter.getMyShopList();
         }
+        eventCreatePresenter.getMyShopList();
+
         calenderCheck();
         koinBaseAppbar.setLeftButtonText("취소");
         koinBaseAppbar.setRightButtonText("등록");
-
-        // 상점 Spinner Adapter
-        ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.event_create_spinner_custom, new ArrayList<>(shopIdNameHashMap.keySet()));
-        spinnerAdapter.setDropDownViewResource(R.layout.event_create_spinner_item );
-        shopListSpinner.setAdapter(spinnerAdapter);
-        shopListSpinner.setOnItemSelectedListener(this);
 
         // 자동으로 제목에 포커스를 주면서 키보드 올리기
         createTitleEditText.setFocusableInTouchMode(true);
@@ -143,7 +138,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         endDateTextview.setText(getIntent().getStringExtra("END_DATE"));
         renderEditor(renderHtmltoString(getIntent().getStringExtra("CONTENT")));
         shopId = getIntent().getIntExtra("SHOP_ID", 0);
-        eventCreatePresenter.getShopName(shopId);
     }
 
     void calenderCheck() {
@@ -159,7 +153,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
                 e.printStackTrace();
             }
         }
-
 
         // 시작 일자 캘린더 클릭 이벤트
         dataPicker = (view, year, month, dayOfMonth) -> {
@@ -286,11 +279,18 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         String startDate = startDateTextview.getText().toString();
         String endDate = endDateTextview.getText().toString();
         String thumbnail = getThumbnail();
+        Log.d("ShopId", String.valueOf(shopId));
 
         if (isEdit) {
-            eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            if (thumbnail != null)
+                eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            else
+                eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate));
         } else {
-            eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            if (thumbnail != null)
+                eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
+            else
+                eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate));
         }
     }
 
@@ -299,27 +299,35 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         goToEventActivity(event);
     }
 
-    // 홍보글을 처음 작성할 때 점주가 보유한 상점 목록을 이름과 shopId를 맵핑
+    // 점주의 보유 상점 목록 데이터 수신
     @Override
-    public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
-        if(shopArrayList == null) {
-            // Test
-            shopIdNameHashMap.put("가장 맛있는 족발", 2);
-            shopIdNameHashMap.put("노걸대 감자탕&가마삼겹 목천점", 17);
-//            finish();
-            return;
-        }
-        if (!shopArrayList.isEmpty()) {
-            for (Store store : shopArrayList) {
-                shopIdNameHashMap.put(store.getName(), store.getUid());
+    public void onMyShopListReceived(ArrayList<Event> shopArrayList) {
+        if (shopArrayList.isEmpty()) {
+            ToastUtil.getInstance().makeShort("보유한 가게 목록을 불러오지 못했습니다.");
+            finish();
+        } else {
+            // 수정일 때는 현재 글의 shopId에 대응되는 가게 이름만 저장
+            if (isEdit) {
+                for (Event event : shopArrayList) {
+                    if (event.getShopId() == shopId) {
+                        String shopName = event.getShopName();
+                        shopNameIdHashMap.put(shopName, shopId);
+                    }
+                }
+            } else { // 수정 중이 아닐 때는 점주가 보유한 모든 가게의 이름과 shopId를 저장
+                for (Event event : shopArrayList) {
+                    shopNameIdHashMap.put(event.getShopName(), event.getShopId());
+                }
             }
+            setShopListSpinner();
         }
     }
 
-    // 홍보글을 수정할 때 shopId로 가게 이름을 확인
-    @Override
-    public void onShopNameReceived(String shopName) {
-        shopIdNameHashMap.put(shopName, shopId);
+    public void setShopListSpinner() {
+        shopNameArrayList = new ArrayList<>(shopNameIdHashMap.keySet());
+        EventShopSpinnerAdapter spinnerAdapter = new EventShopSpinnerAdapter(getApplicationContext(), shopNameArrayList);
+        shopListSpinner.setAdapter(spinnerAdapter);
+        shopListSpinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -365,13 +373,9 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-//        String shopName = (String) shopListSpinner.getItemAtPosition(position);
-//        if(shopIdNameHashMap != null && shopIdNameHashMap.containsKey(shopName)) {
-//            shopId = shopIdNameHashMap.get(shopName);
-//        }
-        String selectedItem = shopListSpinner.getItemAtPosition(position).toString();
-        Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_LONG).show();
+    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+        String shopName = (String) adapterView.getItemAtPosition(position);
+        shopId = shopNameIdHashMap.get(shopName);
     }
 
     @Override

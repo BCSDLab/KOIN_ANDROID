@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Event;
-import in.koreatech.koin.data.network.entity.Store;
 
 public interface EventCreateContract  {
     interface View extends BaseView<EventCreatePresenter> {
@@ -16,9 +15,7 @@ public interface EventCreateContract  {
 
         void onEventDataReceived(Event event);
 
-        void onMyShopListReceived(ArrayList<Store> shopArrayList);
-
-        void onShopNameReceived(String shopName);
+        void onMyShopListReceived(ArrayList<Event> shopArrayList);
 
         void goToEventActivity(Event event);
 

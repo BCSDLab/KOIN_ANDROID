@@ -74,24 +74,9 @@ public class EventCreatePresenter {
         }
     };
 
-    private final ApiCallback shopNameApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            Store store = (Store) object;
-            eventCreateView.onShopNameReceived(store.getName());
-            eventCreateView.hideLoading();
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            eventCreateView.showMessage(throwable.getMessage());
-            eventCreateView.hideLoading();
-        }
-    };
-
-    public void createEvent(Event adDetail) {
+    public void createEvent(Event event) {
         eventCreateView.showLoading();
-        eventInteractor.createEvent(adDetail, eventApiCallback);
+        eventInteractor.createEvent(event, eventApiCallback);
     }
 
     public void uploadImage(File file, String uid) {
@@ -112,11 +97,5 @@ public class EventCreatePresenter {
     public void getMyShopList() {
         eventCreateView.showLoading();
         eventInteractor.readMyShopList(myShopApiCallback);
-    }
-
-    public void getShopName(int shopId) {
-        eventCreateView.showLoading();
-        StoreInteractor storeInteractor = new StoreRestInteractor();
-        storeInteractor.readStore(shopId, shopNameApiCallback);
     }
 }

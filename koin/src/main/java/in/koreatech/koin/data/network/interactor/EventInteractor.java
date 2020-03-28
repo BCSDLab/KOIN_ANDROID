@@ -9,7 +9,7 @@ public interface EventInteractor {
     void readEventList(int page, final ApiCallback apiCallback);
 
     // 홍보글 작성
-    void createEvent(Event ad, final ApiCallback apiCallback);
+    void createEvent(Event event, final ApiCallback apiCallback);
 
     // 마감된 전체 홍보글 조회
     void readClosedEventList(int page, final ApiCallback apiCallback);

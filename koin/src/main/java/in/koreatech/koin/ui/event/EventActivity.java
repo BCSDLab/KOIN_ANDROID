@@ -35,7 +35,6 @@ import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
     private ArrayList<Event> eventArrayList;
-    private ArrayList<Store> myShopArrayList;
     private EventPresenter eventPresenter;
     private GridLayoutManager eventGridLayoutManager;
     private EventRecyclerAdapter eventRecyclerAdapter;
@@ -132,19 +131,14 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     }
 
     @Override
-    public void onMyShopListReceived(ArrayList<Store> shopArrayList) {
+    public void onMyShopListReceived(ArrayList<Event> shopArrayList) {
         if(shopArrayList == null)
             return;
-        myShopArrayList = shopArrayList;
-        if(myShopArrayList.isEmpty()) {
+        if(shopArrayList.isEmpty()) {
             koinBaseAppbarDark.setRightButtonVisibility(View.INVISIBLE);
         } else {
             koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
         }
-
-        // Test
-        if(getAuthority() == AuthorizeConstant.MEMBER)
-            koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
     }
 
     @Override

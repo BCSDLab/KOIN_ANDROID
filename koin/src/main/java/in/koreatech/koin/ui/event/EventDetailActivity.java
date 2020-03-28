@@ -87,6 +87,7 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
 
         eventDetail = new Event();
         eventDetail.setId(getIntent().getIntExtra("ID", -1));
+        // 댓글을 수정 및 변경 했을 때 액티비티의 데이터를 새로 불러오면서 grandEdit 값이 바뀌는 것을 방지
         grantEdit = getIntent().getBooleanExtra("GRANT_EDIT", false);
 
         if (eventDetail.getId() == -1) {
@@ -243,6 +244,10 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
     }
 
+    /**
+     * 댓글이 성공적으로 삭제되면 홍보 상세 액티비티의 데이터를 다시 받아오는 메소드
+     * @param isSuccess
+     */
     @Override
     public void onEventCommentDeleted(boolean isSuccess) {
         eventDetailPresenter.getEventDetail(eventDetail.getId());
@@ -320,6 +325,9 @@ public class EventDetailActivity extends KoinEditorActivity implements EventDeta
             showLoginRequestDialog();
         } else {
             switch (view.getId()) {
+                case R.id.event_comment_content_edittext:
+                    scrollView.fullScroll(NestedScrollView.FOCUS_DOWN);
+                    break;
                 case R.id.event_comment_create_button:
                     onClickCommentCreate();
                     break;

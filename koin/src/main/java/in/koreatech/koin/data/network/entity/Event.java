@@ -12,7 +12,7 @@ public class Event {
 
     @SerializedName("shops")
     @Expose
-    private ArrayList<Store> myShopList;
+    private ArrayList<Event> myShopList;
 
     @SerializedName("grantEdit")
     @Expose
@@ -98,6 +98,10 @@ public class Event {
     @Expose
     private String error;
 
+    @SerializedName("name")
+    @Expose
+    private String shopName;
+
     // Create
     public Event() {
     }
@@ -139,11 +143,11 @@ public class Event {
         this.eventArrayList = eventArrayList;
     }
 
-    public ArrayList<Store> getMyShopList() {
+    public ArrayList<Event> getMyShopList() {
         return myShopList;
     }
 
-    public void setMyShopList(ArrayList<Store> myShopList) {
+    public void setMyShopList(ArrayList<Event> myShopList) {
         this.myShopList = myShopList;
     }
 
@@ -314,4 +318,13 @@ public class Event {
     public void setError(String error) {
         this.error = error;
     }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
 }
