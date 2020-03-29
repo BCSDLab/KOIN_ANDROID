@@ -46,7 +46,8 @@
                         android:id="@+id/event_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white">
+                        android:background="@color/white"
+                        android:layout_gravity="center_horizontal">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/event_recyclerview"
