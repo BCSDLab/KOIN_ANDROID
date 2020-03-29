@@ -109,7 +109,7 @@ public class MarketUsedBuyDetailActivity extends KoinNavigationDrawerActivity im
     protected void onStart() {
         super.onStart();
         marketDetailPresenter.readMarketDetail(item.getId());
-
+        this.marketDetailPresenter.checkGranted(this.item.getId());
 
     }
 
