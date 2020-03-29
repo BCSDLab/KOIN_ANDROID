@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -55,7 +56,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     AppBarBase koinBaseAppbar;
     @BindView(R.id.event_create_shops_spinner)
     Spinner shopListSpinner;
-    @BindView(R.id.event_create_question_mark_textview)
+    @BindView(R.id.event_create_question_mark_button)
     TextView questionMark;
     @BindView(R.id.event_detail_title_edittext)
     EditText createTitleEditText;
@@ -65,7 +66,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     TextView startDateTextview;
     @BindView(R.id.event_create_calender_enddate_textview)
     TextView endDateTextview;
-//    @BindView(R.id.event_create_question_info_frame_layout)
+//    @BindView(R.id.event_create_question_info_framelayout)
 //    FrameLayout questionInfoFrameLayout;
 
     private boolean isEdit;
@@ -200,7 +201,7 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     }
 
     // 도움말 버튼 클릭 이벤트
-    @OnClick(R.id.event_create_question_mark_textview)
+    @OnClick(R.id.event_create_question_mark_button)
     public void questionMarkOnClicked() {
         if (!isClickedQuestion) {
             questionMark.setBackground(getResources().getDrawable(R.drawable.bg_ring_squash));
