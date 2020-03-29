@@ -125,7 +125,6 @@
     <string name="liberal_arts">교양학부</string>
 
 
-
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
 
@@ -148,6 +147,14 @@
     <string name="settings_message">Go to Permissions to Grant Storage</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <!--Error-->
+    <string name="error_title">오류</string>
+    <string name="error_guide_home">홈으로</string>
+    <string name="error_contact">문의하기</string>
+    <string name="error_guide_title">오류가 발생하였습니다.</string>
+    <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
+    <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
