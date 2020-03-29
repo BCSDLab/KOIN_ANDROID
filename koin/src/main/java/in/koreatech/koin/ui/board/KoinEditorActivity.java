@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -91,9 +92,8 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
 
                 richEditor.setOnCancelListener(view -> {
                     String imageTag = ((EditorControl) ((RelativeLayout) view.getParent()).getTag()).path;  // "url" 값 반환
-                    if(uploadedImageUrlList.contains(imageTag)) {
-                        uploadedImageUrlList.remove(imageTag);
-                    }
+                    Log.d("Editor", imageTag);
+                    uploadedImageUrlList.remove(imageTag);
                     uploadImageHashMap.put(imageTag, false);
                     richEditor.onImageUploadFailed(imageTag);
                     isUploadImageCompeleteHashMap.remove(imageTag);
@@ -243,7 +243,32 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
     }
 
     public void renderEditor(String content) {
+        getUploadedImageUrls(content);
         richEditor.render(content);
+    }
+
+    /**
+     * RichEditor에 이미 업로드된 이미지들을 다시 꺼내는 메소드
+     * 글을 수정할 때 썸네일 이미지를 바꾸기 위함 (.jpg와 .png만 가능)
+     * @param content RichEditor에 올라간 본문 내용
+     */
+    public void getUploadedImageUrls(String content) {
+        String tempContent = content;
+        while(tempContent.contains("<img src=")) {
+            int start = 10 + tempContent.indexOf("<img src=");
+            int end;
+            if(tempContent.contains(".png")) {
+                end = tempContent.indexOf(".png") + 4;
+            } else if(tempContent.contains(".jpg")) {
+                end = 4 + tempContent.indexOf(".jpg");
+            } else {
+                // img 태그는 있으나, .jpg와 .png 외의 확장자이거나 없을 경우 함수 종료
+                return;
+            }
+            String imageUrl = tempContent.substring(start, end);
+            tempContent = tempContent.substring(end);
+            uploadedImageUrlList.add(imageUrl);
+        }
     }
 
     public void renderEditor() {

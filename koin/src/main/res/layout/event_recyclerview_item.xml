@@ -2,10 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="158dp"
-    android:layout_height="250dp"
-    android:layout_marginBottom="3dp"
-    android:background="@drawable/bg_rect_light_grayish_blue">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -16,18 +14,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
+            android:layout_margin="14dp"
             android:visibility="invisible"
             app:srcCompat="@drawable/bg_margam" />
 
         <LinearLayout
-            android:layout_width="158dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_margin="14dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_rect_light_grayish_blue">
 
             <ImageView
                 android:id="@+id/event_recyclerview_item_food_imageview"
-                android:layout_width="158dp"
-                android:layout_height="106dp"
+                android:layout_width="match_parent"
+                android:layout_height="158dp"
                 android:scaleType="fitXY"
                 android:background="@color/gray11"/>
 
@@ -119,6 +120,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:text="마감"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="14dp"
             android:paddingHorizontal="13dp"
             android:paddingVertical="3dp"
             android:gravity="center_horizontal"

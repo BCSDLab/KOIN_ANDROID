@@ -41,6 +41,7 @@ import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
 // TODO: 도움말을 AlertDialog로 출력
+// TODO: 글 수정할 때 contents에서 이미지 url을 추출하여 thumbnail도 수정되도록 구현
 
 public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher, AdapterView.OnItemSelectedListener {
     private final static String TAG = "EventCreateActivity";

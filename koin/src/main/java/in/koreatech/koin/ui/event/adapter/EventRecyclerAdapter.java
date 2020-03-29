@@ -25,6 +25,8 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Event;
 
+// TODO: 마감한 게시글의 아이템을 반투명 막으로 덮기
+
 public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdapter.ViewHolder> {
 
     private ArrayList<Event> eventArrayList;
@@ -37,7 +39,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
         glideOptions = new RequestOptions()
                 .fitCenter()
-                .override(158, 106)
+                .override(158, 158)
                 .error(R.drawable.img_noimage)
                 .placeholder(R.color.white);
     }
