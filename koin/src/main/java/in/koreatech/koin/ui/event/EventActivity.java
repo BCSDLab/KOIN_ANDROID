@@ -29,9 +29,7 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-// TODO: Refresh 기능과 pageNum 증가
-// TODO: GridLayout 의 아이템간 간격 조절
-
+// TODO: Refresh 기능 구현 / 게시글이 10개가 되면 Swipe 가능하도록 구현함
 public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
     Context context;
     private ArrayList<Event> eventArrayList;

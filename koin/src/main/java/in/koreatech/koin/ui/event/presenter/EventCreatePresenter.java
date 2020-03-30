@@ -1,18 +1,13 @@
 package in.koreatech.koin.ui.event.presenter;
 
-import android.util.Log;
-
 import java.io.File;
 
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.entity.Image;
-import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.EventInteractor;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
-import in.koreatech.koin.data.network.interactor.StoreInteractor;
-import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
 
 public class EventCreatePresenter {
     private EventCreateContract.View eventCreateView;

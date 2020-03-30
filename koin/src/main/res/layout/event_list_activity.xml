@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -31,71 +30,61 @@
                 android:layout_marginTop="56dp"
                 android:orientation="vertical">
 
-                <androidx.core.widget.NestedScrollView
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/event_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    app:layout_constrainedHeight="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/white">
 
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/event_layout"
+                    <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:layout_gravity="center_horizontal">
-
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/event_pending_checkbox">
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/event_recyclerview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="15dp"
-                            android:layout_marginTop="17dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/event_pending_checkbox" />
-
-                        <CheckBox
-                            android:id="@+id/event_closed_checkbox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="28dp"
-                            android:layout_marginEnd="16dp"
-                            android:buttonTint="#175c8e"
-                            android:checked="true"
-                            android:clickable="true"
-                            android:lineSpacingExtra="2sp"
-                            android:text="종료된 이벤트"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/event_pending_checkbox"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <CheckBox
-                            android:id="@+id/event_pending_checkbox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="150dp"
-                            android:layout_marginTop="28dp"
-                            android:buttonTint="#175c8e"
-                            android:checked="true"
-                            android:lineSpacingExtra="2sp"
-                            android:text="진행중이벤트"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="12sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.core.widget.NestedScrollView>
+                            android:layout_marginTop="17dp" />
+                    </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
 
 
+                    <CheckBox
+                        android:id="@+id/event_closed_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="28dp"
+                        android:layout_marginEnd="16dp"
+                        android:buttonTint="#175c8e"
+                        android:checked="true"
+                        android:lineSpacingExtra="2sp"
+                        android:text="종료된 이벤트"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/event_pending_checkbox"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/event_pending_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="150dp"
+                        android:layout_marginTop="28dp"
+                        android:buttonTint="#175c8e"
+                        android:checked="true"
+                        android:lineSpacingExtra="2sp"
+                        android:text="진행중 이벤트"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <!--app:layout_constraintHorizontal_bias="0.5"-->
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>
         </RelativeLayout>

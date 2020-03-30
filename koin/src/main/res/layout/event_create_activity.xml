@@ -26,21 +26,12 @@
                 android:layout_height="match_parent"
                 android:background="@color/white"
                 android:layout_marginVertical="56dp"
-                android:scrollbarAlwaysDrawVerticalTrack="true"
-                app:layout_constrainedHeight="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0">
+                android:scrollbarAlwaysDrawVerticalTrack="true">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <Spinner
                         android:id="@+id/event_create_shops_spinner"
@@ -52,12 +43,12 @@
 
                     <EditText
                         android:id="@+id/event_detail_title_edittext"
-                        android:layout_width="300dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="19dp"
-                        android:layout_marginBottom="19dp"
-                        android:background="@drawable/bg_white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="19dp"
+                        android:maxLength="15"
+                        android:background="@color/white"
                         android:hint="제목을 입력해주세요(최대 15자)"
                         android:letterSpacing="-0.05"
                         android:lineSpacingExtra="2sp"
@@ -70,10 +61,9 @@
                         android:background="@color/divider"
                         android:orientation="horizontal"></LinearLayout>
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="19dp"
                         android:layout_marginBottom="19dp"
                         android:orientation="horizontal">
@@ -81,24 +71,25 @@
                         <EditText
                             android:id="@+id/event_detail_event_title_edittext"
                             android:layout_width="0dp"
-                            android:layout_height="22dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="16dp"
-                            android:layout_marginBottom="19dp"
-                            android:background="@drawable/bg_white"
+                            android:background="@color/white"
+                            android:maxLength="50"
                             android:hint="홍보 문구를 입력해주세요.(최대 50자)"
-                            android:letterSpacing="-0.05"
                             android:lineSpacingExtra="2sp"
                             android:textColorHint="#e7e7e7"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다"/>
 
                         <Button
                             android:id="@+id/event_create_question_mark_button"
                             android:layout_width="22dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:layout_marginEnd="20dp"
                             android:text="\?"
                             android:gravity="center"
+                            android:layout_gravity="center_vertical"
                             android:textColor="@color/colorAccent"
                             android:textStyle="bold"
                             android:textSize="15sp"

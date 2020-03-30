@@ -41,7 +41,7 @@ import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
 // TODO: 도움말을 AlertDialog로 출력
-// TODO: 글 수정할 때 contents에서 이미지 url을 추출하여 thumbnail도 수정되도록 구현
+// TODO: 글자 수에 따라 입력 제한(제목 20자, 홍보문구 50자)
 
 public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher, AdapterView.OnItemSelectedListener {
     private final static String TAG = "EventCreateActivity";
@@ -268,10 +268,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         }
         if (FormValidatorUtil.validateStringIsEmpty(eventTitleEditText.getText().toString())) {
             ToastUtil.getInstance().makeShort("홍보 문구를 입력하세요");
-            return;
-        }
-        if (FormValidatorUtil.validateStringIsEmpty(getContent())) {
-            ToastUtil.getInstance().makeShort("내용을 입력하세요");
             return;
         }
 
