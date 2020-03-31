@@ -6,7 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="3dp"
-        android:includeFontPadding="false"
-        android:background="?attr/colorSurface">
+        android:includeFontPadding="false">
     </TableLayout>
 </merge>
