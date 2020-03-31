@@ -2,7 +2,6 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
-    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -30,17 +29,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
-                android:paddingBottom="56dp"
-                android:background="@android:color/white">
+                android:paddingBottom="56dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/callvan_main_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="47dp"
                     android:layout_gravity="top"
-                    app:tabSelectedTextColor="@color/black"
-                    app:tabTextColor="@color/gray9"
-                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabSelectedTextColor="?android:attr/textColorPrimary"
+                    app:tabTextColor="?android:attr/textColorSecondary"
+                    app:tabIndicatorColor="?attr/colorAccent"
                     />
 
             </androidx.viewpager.widget.ViewPager>

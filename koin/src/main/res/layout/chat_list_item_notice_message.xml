@@ -15,7 +15,7 @@
         android:id="@+id/message_body_notice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="13sp"

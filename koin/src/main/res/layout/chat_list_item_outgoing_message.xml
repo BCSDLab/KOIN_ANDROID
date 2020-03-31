@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="user name"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="body"
-                android:textColor="@color/colorPrimaryText"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="15sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -61,6 +61,6 @@
         android:layout_marginEnd="15dp"
         android:layout_marginTop="5dp"
         android:gravity="end"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="10sp" />
 </LinearLayout>

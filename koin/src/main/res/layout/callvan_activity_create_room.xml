@@ -41,7 +41,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/blue1" />
+                        android:background="@android:color/black"
+                        android:backgroundTint="?attr/colorSubtitleBackground"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -49,7 +50,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="출발지 선택"
-                        android:textColor="@color/gray7" />
+                        android:textColor="?attr/textColorSubtitle" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -69,7 +70,7 @@
                         android:gravity="end"
                         android:lineSpacingExtra="9sp"
                         android:text="출발지"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -84,7 +85,7 @@
                         android:layout_gravity="center"
                         android:lineSpacingExtra="9sp"
                         android:text="에서 "
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -100,7 +101,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/blue1" />
+                        android:background="@android:color/black"
+                        android:backgroundTint="?attr/colorSubtitleBackground" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -108,7 +110,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="목적지 선택"
-                        android:textColor="@color/gray7" />
+                        android:textColor="?attr/textColorSubtitle" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -128,7 +130,7 @@
                         android:gravity="end"
                         android:lineSpacingExtra="9sp"
                         android:text="목적지"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -143,7 +145,7 @@
                         android:layout_gravity="center"
                         android:lineSpacingExtra="9sp"
                         android:text="갑니다"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -159,7 +161,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/blue1" />
+                        android:background="@android:color/black"
+                        android:backgroundTint="?attr/colorSubtitleBackground" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,7 +170,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="날짜 선택"
-                        android:textColor="@color/gray7" />
+                        android:textColor="?attr/textColorSubtitle" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -188,7 +191,7 @@
                         android:lineSpacingExtra="9sp"
                         android:gravity="center"
                         android:text="오늘 - 3월 24 (일)"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="20sp" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -210,7 +213,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/blue1" />
+                        android:background="@android:color/black"
+                        android:backgroundTint="?attr/colorSubtitleBackground" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -218,15 +222,15 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="시간 선택"
-                        android:textColor="@color/gray7" />
+                        android:textColor="?attr/textColorSubtitle" />
                 </FrameLayout>
 
 
                 <TimePicker
                     android:layout_width="match_parent"
                     android:layout_height="164dp"
-                    android:amPmTextColor="@color/black"
-                    android:numbersTextColor="@color/black"
+                    android:amPmTextColor="?android:attr/textColorPrimary"
+                    android:numbersTextColor="?android:attr/textColorPrimary"
                     android:timePickerMode="spinner"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/create_room_time_framelayout"></TimePicker>
@@ -244,7 +248,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/blue1" />
+                android:background="@android:color/black"
+                android:backgroundTint="?attr/colorSubtitleBackground" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -268,7 +273,7 @@
                         android:layout_marginRight="13dp"
                         android:lineSpacingExtra="7sp"
                         android:text="2019 / 3 / 24"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="?attr/colorAccent"
                         android:textStyle="bold"
                         android:lineHeight="22sp"
                         android:textSize="15sp" />
@@ -278,7 +283,7 @@
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="7sp"
                         android:text="오후 00시 00분"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="?attr/colorAccent"
                         android:textStyle="bold"
                         android:lineHeight="22sp"
                         android:textSize="15sp" />
@@ -292,11 +297,11 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:background="@color/colorAccent"
+                    android:background="?attr/colorAccent"
                     android:gravity="center"
                     android:lineSpacingExtra="7sp"
                     android:text="만들기"
-                    android:textColor="@color/white"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
 
                     android:textSize="15sp" />
 

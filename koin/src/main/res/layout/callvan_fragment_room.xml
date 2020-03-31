@@ -52,7 +52,7 @@ android:layout_height="match_parent">
                     android:maxLines="1"
                     android:text="출발지"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -91,7 +91,7 @@ android:layout_height="match_parent">
                     android:maxLines="1"
                     android:text="목적지"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -125,7 +125,8 @@ android:layout_height="match_parent">
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/blue1" />
+                android:background="@android:color/black"
+                android:backgroundTint="?attr/colorSubtitleBackground"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,14 +134,13 @@ android:layout_height="match_parent">
                 android:layout_gravity="start|center"
                 android:layout_marginStart="16dp"
                 android:text="실시간 쉐어링"
-                android:textColor="@color/gray9" />
+                android:textColor="?attr/textColorSubtitle" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rooms_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/background"
             android:clipToPadding="false"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
@@ -153,7 +153,6 @@ android:layout_height="match_parent">
         android:id="@+id/room_chat_frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:visibility="visible">
 
         <LinearLayout
@@ -182,7 +181,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="7sp"
                     android:text="출발지"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
 
                 <ImageView
@@ -199,7 +198,7 @@ android:layout_height="match_parent">
                     android:layout_marginLeft="8dp"
                     android:lineSpacingExtra="7sp"
                     android:text="도착지"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -225,7 +224,7 @@ android:layout_height="match_parent">
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="7sp"
                     android:text="03월 02일"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
 
                 <TextView
@@ -235,7 +234,7 @@ android:layout_height="match_parent">
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="7sp"
                     android:text="오후 10:30"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="15sp" />
 
                 <ImageView
@@ -253,7 +252,7 @@ android:layout_height="match_parent">
                     android:layout_weight="1"
                     android:lineSpacingExtra="6sp"
                     android:text="1명 / 6명"
-                    android:textColor="@color/black"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
@@ -296,7 +295,7 @@ android:layout_height="match_parent">
                     android:layout_marginRight="10dp"
                     android:layout_weight="20"
                     android:background="@drawable/button_rect_normal_radius_25dp"
-                    android:backgroundTint="@color/colorPrimary"
+                    android:backgroundTint="?attr/colorPrimary"
                     android:text="전송"
                     android:textColor="@color/white" />
 
