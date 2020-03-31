@@ -24,8 +24,9 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_above="@id/event_editor_tools"
+                android:layout_below="@id/koin_base_app_bar_dark"
                 android:background="@color/white"
-                android:layout_marginVertical="56dp"
                 android:scrollbarAlwaysDrawVerticalTrack="true">
 
                 <LinearLayout
@@ -35,11 +36,13 @@
 
                     <Spinner
                         android:id="@+id/event_create_shops_spinner"
-                        android:layout_width="200dp"
-                        android:layout_height="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/bg_rect_blue"/>
+                        android:background="@drawable/bg_rect_blue"
+                        tools:layout_height="30dp"
+                        tools:layout_width="200dp" />
 
                     <EditText
                         android:id="@+id/event_detail_title_edittext"
@@ -47,11 +50,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginVertical="19dp"
-                        android:maxLength="15"
                         android:background="@color/white"
                         android:hint="제목을 입력해주세요(최대 15자)"
                         android:letterSpacing="-0.05"
                         android:lineSpacingExtra="2sp"
+                        android:maxLength="15"
                         android:textColorHint="#e7e7e7"
                         android:textSize="16sp" />
 
@@ -72,28 +75,28 @@
                             android:id="@+id/event_detail_event_title_edittext"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="16dp"
+                            android:layout_weight="1"
                             android:background="@color/white"
-                            android:maxLength="50"
                             android:hint="홍보 문구를 입력해주세요.(최대 50자)"
                             android:lineSpacingExtra="2sp"
+                            android:maxLength="50"
                             android:textColorHint="#e7e7e7"
                             android:textSize="16sp"
-                            tools:text="50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다"/>
+                            tools:text="50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다50글자다" />
 
                         <Button
                             android:id="@+id/event_create_question_mark_button"
                             android:layout_width="22dp"
                             android:layout_height="22dp"
-                            android:layout_marginEnd="20dp"
-                            android:text="\?"
-                            android:gravity="center"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/bg_ring_squash"
+                            android:gravity="center"
+                            android:text="\?"
                             android:textColor="@color/colorAccent"
-                            android:textStyle="bold"
                             android:textSize="15sp"
-                            android:background="@drawable/bg_ring_squash"/>
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -131,10 +134,10 @@
                                 android:id="@+id/event_create_calender_startdate_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:gravity="center"
                                 android:paddingStart="27dp"
                                 android:paddingEnd="27dp"
-                                android:gravity="center"
-                                tools:text="2020-03-26"/>
+                                tools:text="2020-03-26" />
 
                         </LinearLayout>
 
@@ -144,19 +147,19 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="11dp"
                             android:layout_marginTop="18dp"
-                            android:layout_marginBottom="18dp"
                             android:layout_marginEnd="10dp"
+                            android:layout_marginBottom="18dp"
                             android:lineSpacingExtra="4sp"
                             android:text="~"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="13sp"/>
+                            android:textSize="13sp" />
 
                         <LinearLayout
                             android:id="@+id/event_calender2_reck_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
-                            android:layout_marginEnd="16dp"
                             android:layout_marginTop="14dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/bg_rect_blue"
                             android:orientation="horizontal">
 
@@ -171,18 +174,18 @@
                                 android:id="@+id/event_create_calender_enddate_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:gravity="center"
                                 android:paddingStart="27dp"
                                 android:paddingEnd="27dp"
-                                android:gravity="center"
-                                tools:text="2020.03.25"/>
+                                tools:text="2020.03.25" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/divider"
-                        android:orientation="horizontal">
-                    </LinearLayout>
+                        android:orientation="horizontal"></LinearLayout>
 
                     <in.koreatech.koin.ui.board.KoinRichEditor
                         android:id="@+id/event_create_content"
@@ -198,18 +201,19 @@
                 </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
+
             <HorizontalScrollView
                 android:id="@+id/event_editor_tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#e6e6e6"
                 android:scrollbars="none"
-                android:layout_above="@id/adverting_navigation_bar_bottom">
+                android:layout_above="@id/event_navigation_bar_bottom">
                 <include layout="@layout/editor_toolbar_linearlayout_horizontal"/>
             </HorizontalScrollView>
 
             <include
-                android:id="@+id/adverting_navigation_bar_bottom"
+                android:id="@+id/event_navigation_bar_bottom"
                 layout="@layout/base_navigation_bar_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

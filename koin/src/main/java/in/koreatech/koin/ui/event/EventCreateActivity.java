@@ -41,7 +41,6 @@ import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
 
 // TODO: 도움말을 AlertDialog로 출력
-// TODO: 글자 수에 따라 입력 제한(제목 20자, 홍보문구 50자)
 
 public class EventCreateActivity extends KoinEditorActivity implements EventCreateContract.View, TextWatcher, AdapterView.OnItemSelectedListener {
     private final static String TAG = "EventCreateActivity";
