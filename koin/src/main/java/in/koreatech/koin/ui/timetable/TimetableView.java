@@ -27,6 +27,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
 import in.koreatech.koin.util.CustomTypefaceSpan;
 import in.koreatech.koin.util.SaveManager;
 import in.koreatech.koin.util.SeparateTime;
+import in.koreatech.koin.util.ThemeUtil;
 import in.koreatech.koin.util.Time;
 
 import static in.koreatech.koin.util.LectureFilterUtil.CheckClikckedUtil;
@@ -137,8 +139,6 @@ public class TimetableView extends LinearLayout {
         tableBox = view.findViewById(R.id.table_box);
         scrollView = view.findViewById(R.id.timetable_scrollview);
         createTable();
-
-
     }
 
     public void setScrollView(int x, int y) {
@@ -213,7 +213,7 @@ public class TimetableView extends LinearLayout {
             spannable.setSpan(new CustomTypefaceSpan(CLASS_LECTURE_fontName, Typeface.DEFAULT, 9, context), firstWord.length(), firstWord.length() + secondWord.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             tv.setText(spannable);
-            tv.setTextColor(Color.parseColor("#000000"));
+            //tv.setTextColor(Color.parseColor("#000000"));
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_STICKER_FONT_SIZE_DP);
             tv.setTypeface(null, Typeface.BOLD);
             tv.setOnClickListener(v -> {
@@ -330,12 +330,20 @@ public class TimetableView extends LinearLayout {
         int size = timeTable.getTimeTableItems().size();
         int colorSize = stickerColors.length;
         int strokeWidth = dp2Px(1);
-        int strokeColor = getResources().getColor(R.color.white2);
+        int strokeColor = ContextCompat.getColor(context, R.color.color_table_item);
 
         for (int i = 0; i < size; i++) {
             for (TextView v : timeTable.getTimeTableItems().get(i).getStickerTextview()) {
                 gradientDrawable = new GradientDrawable();
-                int fillColor = Color.parseColor(stickerColors[i % (colorSize)]);
+                int fillColor, textColor;
+                if(ThemeUtil.isDarkMode(context)) {
+                    fillColor = ContextCompat.getColor(context, R.color.black);
+                    textColor = Color.parseColor(stickerColors[i % (colorSize)]);
+                } else {
+                    fillColor = Color.parseColor(stickerColors[i % (colorSize)]);
+                    textColor = ContextCompat.getColor(context, R.color.black);
+                }
+                v.setTextColor(textColor);
                 gradientDrawable.setColor(fillColor);
                 gradientDrawable.setShape(GradientDrawable.RECTANGLE);
                 gradientDrawable.setStroke(strokeWidth, strokeColor);
@@ -384,22 +392,22 @@ public class TimetableView extends LinearLayout {
                     String timeBottomCode = format("%02dB", i + 1);
                     String time = format("%02d:%02d", Integer.parseInt(getHeaderTime(i)), 0);
                     String timeHalf = format("%02d:%02d", Integer.parseInt(getHeaderTime(i)), 30);
-                    setBlockLinearLayoutTextView(topTimeCodeTextview, timeCode, R.color.colorHeaderText, DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
+                    setBlockLinearLayoutTextView(topTimeCodeTextview, timeCode, ContextCompat.getColor(context, R.color.color_header_text), DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
                     block2.addView(topTimeCodeTextview);
-                    setBlockLinearLayoutTextView(topTimeTextview, time, R.color.colorHeaderText, DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
+                    setBlockLinearLayoutTextView(topTimeTextview, time, ContextCompat.getColor(context, R.color.color_header_text), DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
                     block2.addView(topTimeTextview);
-                    setBlockLinearLayoutTextView(bottomTimeCodeTextview, timeBottomCode, R.color.colorHeaderText, DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
+                    setBlockLinearLayoutTextView(bottomTimeCodeTextview, timeBottomCode, ContextCompat.getColor(context, R.color.color_header_text), DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
                     block3.addView(bottomTimeCodeTextview);
-                    setBlockLinearLayoutTextView(bottomTimeTextview, timeHalf, R.color.colorHeaderText, DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
+                    setBlockLinearLayoutTextView(bottomTimeTextview, timeHalf, ContextCompat.getColor(context, R.color.color_header_text), DEFAULT_SIDE_HEADER_FONT_SIZE_DP, Color.TRANSPARENT);
                     block3.addView(bottomTimeTextview);
                     block.addView(block2);
                     block.addView(block3);
-                    block.setBackground(getResources().getDrawable(R.drawable.bg_white_timetable_block));
+                    block.setBackground(ContextCompat.getDrawable(context, R.drawable.bg_white_timetable_block));
                     tableRow.addView(block);
                 } else {
                     tv.setText("");
                     tv.setGravity(Gravity.RIGHT);
-                    tv.setBackground(getResources().getDrawable(R.drawable.timetable_item_rect));
+                    tv.setBackground(ContextCompat.getDrawable(context, R.drawable.timetable_item_rect));
                     tableRow.addView(tv);
                 }
 
@@ -440,8 +448,8 @@ public class TimetableView extends LinearLayout {
             } else {
                 tv.setLayoutParams(createTableRowParam(headerHeight));
             }
-            tv.setTextColor(getResources().getColor(R.color.gray12));
-            tv.setBackgroundColor(getResources().getColor(R.color.white3));
+            tv.setTextColor(ContextCompat.getColor(context, R.color.color_text_timetable_header));
+            tv.setBackgroundColor(ContextCompat.getColor(context, R.color.color_bg_timetable_header));
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_HEADER_FONT_SIZE_DP);
             tv.setText(headerTitle[i]);
             tv.setIncludeFontPadding(false);
@@ -526,10 +534,10 @@ public class TimetableView extends LinearLayout {
         linearLayout.setOrientation(orientation);
     }
 
-    private void setBlockLinearLayoutTextView(TextView textView, String text, int textColorId, int textSize, int color) {
+    private void setBlockLinearLayoutTextView(TextView textView, String text, int textColor, int textSize, int color) {
         textView.setText(text);
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/notosans_regular.ttf"));
-        textView.setTextColor(getResources().getColor(textColorId));
+        textView.setTextColor(textColor);
         textView.setIncludeFontPadding(false);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
         textView.setBackgroundColor(getResources().getColor(R.color.white));

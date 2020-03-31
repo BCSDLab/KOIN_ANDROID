@@ -100,6 +100,11 @@
     <color name="colorTableItem">#dadada</color>
     <color name="colorTableCenterItem">#f6f6f6</color>
 
+    <color name="colorHeaderDark">#eaf3fc</color>
+    <color name="colorHeaderTextDark">#e1e1e1</color>
+    <color name="colorTableItemDark">#383838</color>
+    <color name="colorTableCenterItemDark">#252525</color>
+
     <string-array name="default_sticker_color">
         <item>#fdbcf5</item>
         <item>#fedb8f</item>

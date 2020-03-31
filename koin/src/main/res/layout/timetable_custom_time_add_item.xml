@@ -22,7 +22,7 @@
             android:entries="@array/days_one_letter"
             android:gravity="center"
             android:lineSpacingExtra="7sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp"
             />
 
@@ -42,7 +42,7 @@
             android:background="@drawable/bg_gray_underline"
             android:gravity="center"
             android:lineSpacingExtra="7sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp"
             tools:text="09:00" />
 
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:lineSpacingExtra="7sp"
             android:text="~"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp" />
 
     </LinearLayout>
@@ -80,7 +80,7 @@
             android:background="@drawable/bg_gray_underline"
             android:gravity="center"
             android:lineSpacingExtra="7sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp"
             tools:text="10:00" />
 
@@ -97,9 +97,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/ic_add_timetable_time"
+            android:backgroundTint="?attr/colorAccent"
             android:gravity="center"
             android:lineSpacingExtra="7sp"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp" />
 
     </LinearLayout>

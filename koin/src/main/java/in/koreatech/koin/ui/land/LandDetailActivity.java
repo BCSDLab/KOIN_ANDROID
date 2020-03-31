@@ -36,6 +36,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.land.presenter.LandDetailContract;
 import in.koreatech.koin.ui.land.presenter.LandDetailPresenter;
 import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
+import in.koreatech.koin.util.ThemeUtil;
 
 /**
  * 복덕방 상세페이지 Activity
@@ -203,9 +204,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
         naverMap.setMapType(NaverMap.MapType.Navi);
-        naverMap.setNightModeEnabled(
-                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                        == Configuration.UI_MODE_NIGHT_YES);
+        naverMap.setNightModeEnabled(ThemeUtil.isDarkMode(LandDetailActivity.this));
         Marker marker = new Marker();
 
         if (landLatitude == null || landLongitude == null) {

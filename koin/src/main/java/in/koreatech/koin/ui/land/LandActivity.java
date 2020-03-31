@@ -32,6 +32,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandContract;
 import in.koreatech.koin.ui.land.presenter.LandPresenter;
+import in.koreatech.koin.util.ThemeUtil;
 
 import androidx.annotation.NonNull;
 
@@ -200,9 +201,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
 
         this.naverMap = naverMap;
         naverMap.setMapType(NaverMap.MapType.Navi);
-        naverMap.setNightModeEnabled(
-                (this.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                        == Configuration.UI_MODE_NIGHT_YES);
+        naverMap.setNightModeEnabled(ThemeUtil.isDarkMode(LandActivity.this));
         landPresenter.getLandList();
 
     }

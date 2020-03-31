@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="?attr/colorSurface"
     android:includeFontPadding="false"
     android:orientation="vertical">
 
@@ -14,7 +14,8 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                         android:lineSpacingExtra="10sp"
                         android:layout_marginStart="10dp"
                         android:layout_gravity="center"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="14sp"
                         tools:text="2020년 1학기" />
 
@@ -52,6 +53,7 @@
                         android:layout_height="7dp"
                         android:layout_gravity="center"
                         android:background="@drawable/ic_inverted_recetangle"
+                        android:backgroundTint="@color/color_dining_list_item_border"
                         />
 
 
@@ -67,7 +69,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="9dp"
                     android:layout_weight="1"
-                    android:background="@color/colorPrimary">
+                    android:background="?attr/colorToolbar">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -85,7 +87,7 @@
                         android:layout_gravity="center"
                         android:gravity="end"
                         android:textSize="12sp"
-                        android:textColor="@color/white2"
+                        android:textColor="@color/white"
                         android:lineSpacingExtra="12sp"
                         android:layout_marginEnd="10dp"
                         android:text="이미지 저장하기" />
@@ -103,7 +105,6 @@
             android:id="@+id/timetable_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:includeFontPadding="false"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -112,7 +113,6 @@
                 android:id="@+id/sticker_box"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:includeFontPadding="false">
 
                 <include

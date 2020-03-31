@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -113,9 +114,9 @@ public class TimetableRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         StringBuilder stringBuilderTwo = new StringBuilder();
         Lecture lecture = this.lectureArrayList.get(position);
         if (lecture.isItemClicked)
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(this.context.getResources().getColor(R.color.white4));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(ContextCompat.getColor(this.context, R.color.color_bg_timetable_recycler_view_item_selected));
         else
-            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(this.context.getResources().getColor(R.color.white));
+            holder.mTmetableRecyclerviewItemRelativelayout.setBackgroundColor(ContextCompat.getColor(this.context, R.color.color_surface));
 
         if (lecture.isAddButtonClicked)
             holder.mAddLectureButton.setBackground(this.context.getDrawable(R.drawable.ic_delete_lecture_item_button));

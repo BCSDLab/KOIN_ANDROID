@@ -20,7 +20,7 @@
         android:id="@+id/timetable_semester_textview"
         android:layout_marginStart="20dp"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
