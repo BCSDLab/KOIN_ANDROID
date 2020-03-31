@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.github.irshulx.Editor;
@@ -283,12 +284,16 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public void updateUserInterface() {
         StringBuilder title;
         StringBuilder commentButtonText;
-        title = new StringBuilder("<font color='black'>" + this.article.getTitle() + " " + "</font>");
-        commentButtonText = new StringBuilder("<font color='black'>댓글</font>");
+        String textColor = String.format("#%06X", ContextCompat.getColor(this, R.color.text_color_primary) & 0xFFFFFF);
+
+        title = new StringBuilder("<font color='" + textColor + "'>" + this.article.getTitle() + " " + "</font>");
+        commentButtonText = new StringBuilder("<font color='" + textColor + "'>댓글</font>");
         if (this.articleCommentCount != null && Integer.parseInt(this.articleCommentCount) > 0) {
-            title.append("<font color='#175c8e'>" + "(").append(this.articleCommentCount).append(")").append("</font>");
-            commentButtonText.append("<font color='#175c8e'>").append(" ").append(this.articleCommentCount).append("</font>");
+            String commentTextColor = String.format("#%06X", ContextCompat.getColor(this, R.color.color_primary) & 0xFFFFFF);
+            title.append("<font color='" + commentTextColor + "'>" + "(").append(this.articleCommentCount).append(")").append("</font>");
+            commentButtonText.append("<font color='" + commentTextColor + "'>").append(" ").append(this.articleCommentCount).append("</font>");
         }
+
         textViewTitle.setText(Html.fromHtml(title.toString()), TextView.BufferType.SPANNABLE);
         buttonCommentWrite.setText(Html.fromHtml(commentButtonText.toString()), TextView.BufferType.SPANNABLE);
         textViewWriter.setText(this.article.getAuthorNickname());
