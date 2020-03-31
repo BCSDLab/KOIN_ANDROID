@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     tools:ignore="MissingPrefix"
-    app:cardBackgroundColor="@color/white">
+    app:cardBackgroundColor="@color/color_card_view_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
             android:layout_weight="50"
             android:gravity="center_vertical"
             android:text="menu name"
-            android:textColor="@color/black"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -46,7 +46,7 @@
                 android:layout_weight="5"
                 android:gravity="end"
                 android:text="0원"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -62,5 +62,5 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#ECECEC" />
+        android:background="?attr/colorDivider" />
 </LinearLayout>

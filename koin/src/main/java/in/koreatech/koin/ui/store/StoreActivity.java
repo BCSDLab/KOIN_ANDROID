@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,7 +95,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     public void initCateGoryTextColor() {
         for (int id : CATEGORY_TEXT_ID) {
             TextView textView = findViewById(id);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            textView.setTextColor(ContextCompat.getColor(this, R.color.text_color_primary));
         }
     }
 
@@ -102,7 +103,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         for (int i = 0; i < CATEGORY_ID.length; i++) {
             if (CATEGORY_ID[i] == view.getId() || CATEGORY_TEXT_ID[i] == view.getId()) {
                 TextView textview = findViewById(CATEGORY_TEXT_ID[i]);
-                textview.setTextColor(getResources().getColor(R.color.colorAccent));
+                textview.setTextColor(ContextCompat.getColor(this, R.color.color_accent));
                 return i + 1;
             }
         }

@@ -37,13 +37,11 @@
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:fillViewport="true">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:layout_height="match_parent">
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline_vertical_0.044"
@@ -133,7 +131,7 @@
                         android:letterSpacing="-0.04"
                         android:lineSpacingExtra="7sp"
                         android:text="CATEGORY"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="15sp"
                         app:fontName="Custom5"
                         app:layout_constraintStart_toEndOf="@id/guideline_vertical_0.044"
@@ -203,7 +201,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="치킨"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@id/store_category_chicken"
@@ -220,7 +218,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="피자"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_pizza"
@@ -237,7 +235,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="탕수육"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_pork"
@@ -254,7 +252,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="도시락"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_dosirak"
@@ -271,7 +269,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="족발"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_pork_feet"
@@ -331,7 +329,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="중국집"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_chinese"
@@ -349,7 +347,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="일반음식점"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_normal"
@@ -367,7 +365,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="미용실"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_hair"
@@ -385,7 +383,7 @@
                         android:letterSpacing="-0.02"
                         android:lineSpacingExtra="6sp"
                         android:text="기타"
-                        android:textColor="@color/black"
+                        android:textColor="?android:attr/textColorPrimary"
                         android:textSize="13sp"
                         app:fontName="Custom6"
                         app:layout_constraintEnd_toEndOf="@+id/store_category_etc"
@@ -406,7 +404,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:alpha="0.2"
-                            android:background="@color/blue1" />
+                            android:background="@android:color/black"
+                            android:backgroundTint="?attr/colorSubtitleBackground"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -416,7 +415,7 @@
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="6sp"
                             android:text="상점 목록"
-                            android:textColor="@color/gray9"
+                            android:textColor="?attr/textColorSubtitle"
                             android:textSize="13sp"
                             app:fontName="Custom6" />
                     </FrameLayout>
@@ -428,7 +427,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="12dp"
-                        android:background="@color/background"
                         android:clipToPadding="false"
                         android:paddingBottom="12dp"
                         app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />

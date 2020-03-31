@@ -65,21 +65,21 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         //배달, 카드 결제, 계좌이체 사용 가능 유무를 체크하여 다른 이미지를 띄움
         //TODO:text -> image changed
         if (store.isDeliveryOk()) { //카드결제 가능한 경우
-            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.color_accent));
         } else {
-            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.blue1));
+            holder.textViewDelivery.setTextColor(ContextCompat.getColor(context, R.color.text_color_hint));
         }
 
         if (store.isCardOk()) { //카드결제 가능한 경우
-            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.color_accent));
         } else {
-            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.blue1));
+            holder.textViewCard.setTextColor(ContextCompat.getColor(context, R.color.text_color_hint));
         }
 
         if (store.isBankOk()) {
-            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.color_accent));
         } else {
-            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.blue1));
+            holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.text_color_hint));
         }
     }
 
