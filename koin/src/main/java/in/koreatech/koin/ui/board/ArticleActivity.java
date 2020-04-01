@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.board;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.widget.NestedScrollView;
 
 import com.github.irshulx.Editor;
@@ -40,6 +42,7 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
+import in.koreatech.koin.util.ThemeUtil;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
@@ -358,10 +361,15 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
 
     public String renderHtmltoString(String url) {
         if (url == null) return "";
-        String str = url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">");
-        Log.d("render : ", str);
-        return str;
+        StringBuilder stringBuilder = new StringBuilder(url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
+                .replace(".png\\\"></p>", ".png\\\">").replace("<p>", "<p style=\"color:#000000;\">"));
+
+        if (ThemeUtil.isDarkMode(this)) {
+            ThemeUtil.reverseHtmlColor(stringBuilder);
+        }
+
+        Log.d("render : ", stringBuilder.toString());
+        return stringBuilder.toString();
     }
 
     public void onClickEditButton() {

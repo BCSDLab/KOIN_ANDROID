@@ -23,6 +23,7 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorControl;
