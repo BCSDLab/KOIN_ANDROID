@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import butterknife.BindView;
@@ -100,8 +101,10 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     public void updateLostDetailData(LostItem lostItem) {
         this.lostItem = lostItem;
         String commentCount = Integer.toString(lostItem.getCommentCount());
-        String titleText = getColorSpannedString(lostItem.getTitle(), "#252525") + getColorSpannedString("(" + commentCount + ")", "#175c8e");
-        String commentButtonText = getColorSpannedString("댓글", "#252525") + getColorSpannedString(commentCount, "#175c8e");
+        String textColor = String.format("#%06X", ContextCompat.getColor(this, R.color.text_color_primary) & 0xFFFFFF);
+        String primaryColor = String.format("#%06X", ContextCompat.getColor(this, R.color.color_primary) & 0xFFFFFF);
+        String titleText = getColorSpannedString(lostItem.getTitle(), textColor) + getColorSpannedString("(" + commentCount + ")", primaryColor);
+        String commentButtonText = getColorSpannedString("댓글", textColor) + getColorSpannedString(commentCount, primaryColor);
         Spanned spanned = Html.fromHtml(lostItem.getContent(), this, null);
         lostfoundDetailTitleTextview.setText(Html.fromHtml(titleText));
         lostfoundDetailCommentButton.setText(Html.fromHtml(commentButtonText));

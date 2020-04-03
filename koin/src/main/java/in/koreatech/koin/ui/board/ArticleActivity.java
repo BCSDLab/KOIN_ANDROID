@@ -292,9 +292,9 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         title = new StringBuilder("<font color='" + textColor + "'>" + this.article.getTitle() + " " + "</font>");
         commentButtonText = new StringBuilder("<font color='" + textColor + "'>댓글</font>");
         if (this.articleCommentCount != null && Integer.parseInt(this.articleCommentCount) > 0) {
-            String commentTextColor = String.format("#%06X", ContextCompat.getColor(this, R.color.color_primary) & 0xFFFFFF);
-            title.append("<font color='" + commentTextColor + "'>" + "(").append(this.articleCommentCount).append(")").append("</font>");
-            commentButtonText.append("<font color='" + commentTextColor + "'>").append(" ").append(this.articleCommentCount).append("</font>");
+            String primaryColor = String.format("#%06X", ContextCompat.getColor(this, R.color.color_primary) & 0xFFFFFF);
+            title.append("<font color='" + primaryColor + "'>" + "(").append(this.articleCommentCount).append(")").append("</font>");
+            commentButtonText.append("<font color='" + primaryColor + "'>").append(" ").append(this.articleCommentCount).append("</font>");
         }
 
         textViewTitle.setText(Html.fromHtml(title.toString()), TextView.BufferType.SPANNABLE);
@@ -310,6 +310,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
         // 리치 에디터 폰트 설정
         editorContent.setHeadingTypeface(getEditorTypeface());
         editorContent.setContentTypeface(getEditorTypeface());
+        editorContent.setEditorTextColor(String.format("#%06X", ContextCompat.getColor(this, R.color.text_color_primary) & 0xFFFFFF));
         editorContent.render(renderHtmltoString(this.article.getContent()));
 
         changeEditorChildViewSetting(editorContent, EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
@@ -362,7 +363,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
     public String renderHtmltoString(String url) {
         if (url == null) return "";
         StringBuilder stringBuilder = new StringBuilder(url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">").replace("<p>", "<p style=\"color:#000000;\">"));
+                .replace(".png\\\"></p>", ".png\\\">"));//.replace("<p>", "<p style=\"color:#000000;\">"));
 
         if (ThemeUtil.isDarkMode(this)) {
             ThemeUtil.reverseHtmlColor(stringBuilder);

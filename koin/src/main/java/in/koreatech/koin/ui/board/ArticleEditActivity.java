@@ -51,6 +51,7 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.ImageUtil;
 import in.koreatech.koin.util.SnackbarUtil;
+import in.koreatech.koin.util.ThemeUtil;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import top.defaults.colorpicker.ColorPickerPopup;
@@ -136,8 +137,14 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     public String renderHtmltoString(String url) {
         if (url == null) return "";
-        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-                .replace(".png\\\"></p>", ".png\\\">");
+        StringBuilder stringBuilder = new StringBuilder(url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
+                .replace(".png\\\"></p>", ".png\\\">"));
+
+        if (ThemeUtil.isDarkMode(this)) {
+            ThemeUtil.reverseHtmlColor(stringBuilder);
+        }
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -177,10 +184,13 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
         // 리치 에디터 폰트 설정
         articleEditor.setHeadingTypeface(getEditorTypeface());
         articleEditor.setContentTypeface(getEditorTypeface());
+        if (ThemeUtil.isDarkMode(this))
+            articleEditor.setEditorTextColor("#FFFFFF");
 
         articleEditor.setEditorListener(new EditorListener() {
             @Override
             public void onTextChanged(EditText editText, Editable text) {
+
                 editText.setPadding(EDITOR_LEFT_PADDING, EDITOR_TOP_PADDING, EDITOR_RIGHT_PADDING, EDITOR_BOTTOM_PADDING);
             }
 
@@ -349,7 +359,8 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onClickEditButton() {
-        String spannableStringBuilder = articleEditor.getContentAsHTML();
+        StringBuilder spannableStringBuilder = new StringBuilder(articleEditor.getContentAsHTML());
+        if (ThemeUtil.isDarkMode(this)) ThemeUtil.reverseHtmlColor(spannableStringBuilder);
         boolean imageUploadCheck = true;
         //blocking multi click
         if (isCreateBtnClicked) {
@@ -391,16 +402,16 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             case ID_FREE: //자유게시판
             case ID_RECRUIT: //채용게시판
                 if (isEdit) {
-                    articleEditPresenter.updateArticle(new Article(boardUid, articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder));
+                    articleEditPresenter.updateArticle(new Article(boardUid, articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder.toString()));
                 } else {
-                    articleEditPresenter.createArticle(new Article(boardUid, editTextTitle.getText().toString().trim(), spannableStringBuilder));
+                    articleEditPresenter.createArticle(new Article(boardUid, editTextTitle.getText().toString().trim(), spannableStringBuilder.toString()));
                 }
                 break;
             case ID_ANONYMOUS: //익명게시판
                 if (isEdit) {
-                    articleEditPresenter.updateAnonymousArticle(articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder, password);
+                    articleEditPresenter.updateAnonymousArticle(articleUid, editTextTitle.getText().toString().trim(), spannableStringBuilder.toString(), password);
                 } else {
-                    articleEditPresenter.createAnonymousArticle(editTextTitle.getText().toString().trim(), spannableStringBuilder, articleEdittextNickname.getText().toString().replace(" ", ""), articleEdittextPassword.getText().toString());
+                    articleEditPresenter.createAnonymousArticle(editTextTitle.getText().toString().trim(), spannableStringBuilder.toString(), articleEdittextNickname.getText().toString().replace(" ", ""), articleEdittextPassword.getText().toString());
                 }
                 break;
             default:

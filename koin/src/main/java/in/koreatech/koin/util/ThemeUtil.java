@@ -7,6 +7,9 @@ import android.util.Log;
 
 import androidx.core.graphics.ColorUtils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ThemeUtil {
     public static boolean isDarkMode(Context context) {
         return (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
@@ -15,42 +18,24 @@ public class ThemeUtil {
 
 
     public static void reverseHtmlColor(StringBuilder stringBuilder) {
-        int pos = -1;
-        while (pos + 1 < stringBuilder.length() && (pos = stringBuilder.indexOf("<", pos + 1)) != -1) {
-            if(pos + 1 >= stringBuilder.length() || stringBuilder.charAt(pos + 1) == '/') continue;
-            int closingBracePos = stringBuilder.indexOf(">", pos);
-            int stylePos = stringBuilder.indexOf("style=", pos);
+        Pattern pattern = Pattern.compile("<[^/!]\\s*[^/]*(?:color:\\s*(#[0-9A-F]{6})|rgb\\s*\\(\\s*([0-9]{1,3}\\s*,\\s*[0-9]{1,3}\\s*,\\s*[0-9]{1,3})\\s*\\)\\s*;)+\\s*[^>]*>");
+        Matcher matcher = pattern.matcher(stringBuilder);
 
-            if (closingBracePos < stylePos) continue;
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            float[] outHsl = new float[3];
+            if(match == null) {
+                match = matcher.group(2);
+                if(match == null) continue;
 
-            int colorPos = stringBuilder.indexOf("color:", pos);
-
-            if (stylePos < colorPos && colorPos < closingBracePos) {
-                int endPos;
-                float[] outHsl = new float[3];
-                if (stringBuilder.charAt(colorPos + 6) == '#') {
-                    Log.d("Substring Color", stringBuilder.substring(colorPos + 6, colorPos + 13));
-                    ColorUtils.colorToHSL(Color.parseColor(stringBuilder.substring(colorPos + 6, colorPos + 13)), outHsl);
-                    endPos = colorPos + 13;
-                } else {
-                    endPos = stringBuilder.indexOf(")", pos) + 1;
-                    Log.d("Substring Color", stringBuilder.substring(
-                            stringBuilder.indexOf("rgb(", pos) + 4,
-                            stringBuilder.indexOf(")", pos)
-                    ));
-                    String[] rgbString = stringBuilder.substring(
-                            stringBuilder.indexOf("rgb(", pos) + 4,
-                            stringBuilder.indexOf(")", pos)
-                    ).split(", ");
-                    ColorUtils.colorToHSL(
-                            Color.rgb(Integer.parseInt(rgbString[0]), Integer.parseInt(rgbString[1]), Integer.parseInt(rgbString[2])),
-                            outHsl);
-                }
-
-                outHsl[2] = 1 - outHsl[2];
-                String replaced = String.format("#%06X", ColorUtils.HSLToColor(outHsl) & 0xFFFFFF);
-                stringBuilder.replace(colorPos + 6, endPos, replaced);
+                String[] rgbString = match.split(", ");
+                ColorUtils.colorToHSL(Color.rgb(Integer.parseInt(rgbString[0]), Integer.parseInt(rgbString[1]), Integer.parseInt(rgbString[2])), outHsl);
+            } else {
+                ColorUtils.colorToHSL(Color.parseColor(match), outHsl);
             }
+
+            outHsl[2] = 1 - outHsl[2];
+            stringBuilder.replace(matcher.start(), matcher.end(), matcher.group().replace(match, String.format("#%06X", ColorUtils.HSLToColor(outHsl) & 0xFFFFFF)));
         }
     }
 }
