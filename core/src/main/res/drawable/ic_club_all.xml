@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="32dp"
+    android:height="32dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+  <path
+      android:pathData="M7,4.75L12,4.75A2.25,2.25 0,0 1,14.25 7L14.25,12A2.25,2.25 0,0 1,12 14.25L7,14.25A2.25,2.25 0,0 1,4.75 12L4.75,7A2.25,2.25 0,0 1,7 4.75z"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/color_circle_category_icon_tint"/>
+  <path
+      android:pathData="M21,4.75L26,4.75A2.25,2.25 0,0 1,28.25 7L28.25,12A2.25,2.25 0,0 1,26 14.25L21,14.25A2.25,2.25 0,0 1,18.75 12L18.75,7A2.25,2.25 0,0 1,21 4.75z"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/color_circle_category_icon_tint"/>
+  <path
+      android:pathData="M21,18.75L26,18.75A2.25,2.25 0,0 1,28.25 21L28.25,26A2.25,2.25 0,0 1,26 28.25L21,28.25A2.25,2.25 0,0 1,18.75 26L18.75,21A2.25,2.25 0,0 1,21 18.75z"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/color_circle_category_icon_tint"/>
+  <path
+      android:pathData="M7,18.75L12,18.75A2.25,2.25 0,0 1,14.25 21L14.25,26A2.25,2.25 0,0 1,12 28.25L7,28.25A2.25,2.25 0,0 1,4.75 26L4.75,21A2.25,2.25 0,0 1,7 18.75z"
+      android:strokeWidth="1.5"
+      android:fillColor="#00000000"
+      android:strokeColor="@color/color_circle_category_icon_tint"/>
+</vector>

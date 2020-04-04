@@ -86,7 +86,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             R.id.circle_service_textview,
             R.id.circle_etc_textview,
     };
-    private final int[][] mCircleCategoryIconListId = {
+    /*private final int[][] mCircleCategoryIconListId = {
             {R.drawable.ic_club_all, R.drawable.ic_club_all_on},
             {R.drawable.ic_club_art, R.drawable.ic_club_art_on},
             {R.drawable.ic_club_show, R.drawable.ic_club_show_on},
@@ -95,7 +95,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             {R.drawable.ic_club_religion, R.drawable.ic_club_religion_on},
             {R.drawable.ic_club_service, R.drawable.ic_club_service_on},
             {R.drawable.ic_club_etc, R.drawable.ic_club_etc_on},
-    };
+    };*/
 
     private final int UN_CLICKED = 0;
     private final int CLIICKED = 1;
@@ -243,8 +243,15 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
         ImageView icon = findViewById(mCircleCategoryListId[index]);
         TextView text = findViewById(mCircleCategoryTextviewListId[index]);
-        text.setTextColor(getResources().getColor((type == UN_CLICKED) ? R.color.black : R.color.colorAccent));
-        icon.setImageDrawable(getResources().getDrawable(mCircleCategoryIconListId[index][type]));
+        if(type == UN_CLICKED) {
+            icon.setSelected(false);
+            text.setSelected(false);
+        } else {
+            icon.setSelected(true);
+            text.setSelected(true);
+        }
+        /*text.setTextColor(getResources().getColor((type == UN_CLICKED) ? R.color.black : R.color.colorAccent));
+        icon.setImageDrawable(getResources().getDrawable(mCircleCategoryIconListId[index][type]));*/
     }
 
     @Override
