@@ -46,7 +46,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private ArrayList<Store> storeAllArraylist; //All store list
     private int storeCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
     private Resources resources;
-    private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
+    private String[] categoryCode; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
     private final int[] CATEGORY_ID = {R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
             R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc};
     private final int[] CATEGORY_TEXT_ID
@@ -61,6 +61,8 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.store_recyclerview)
     RecyclerView storeListRecyclerView;
+
+    /* Event Banner */
     @BindView(R.id.store_event_banner_linearlayout)
     LinearLayout eventBanner;
     @BindView(R.id.store_event_banner_title_textview)
@@ -69,6 +71,10 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     TextView eventBannerEventTitleTextView;
     @BindView(R.id.store_event_banner_period_textview)
     TextView eventBannerPeriodTextView;
+
+    private int eventShopId;
+    private String eventShopName;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -168,7 +174,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         this.layoutManager = new LinearLayoutManager(this);
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();
-        this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<Store>());
+        this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<>());
         storeListRecyclerView.setNestedScrollingEnabled(false);
         storeListRecyclerView.setHasFixedSize(false);
         storeListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
@@ -224,6 +230,9 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     @Override
     public void onRandomEventDataReceived(Event event) {
         if(event != null) {
+            eventShopId = event.getShopId();
+            eventShopName = event.getShopName();
+
             eventBanner.setVisibility(View.VISIBLE);
             eventBannerTitleTextView.setText(event.getTitle());
             eventBannerEventTitleTextView.setText(event.getEventTitle());
@@ -232,6 +241,11 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             String period = start + " ~ " + end;
             eventBannerPeriodTextView.setText(period);
         }
+    }
+
+    @OnClick(R.id.store_event_banner_linearlayout)
+    public void onClickBanner(View view) {
+        goToStoreDetailActivity(eventShopId, eventShopName);
     }
 
     @Override

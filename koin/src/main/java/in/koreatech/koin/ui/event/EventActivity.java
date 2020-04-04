@@ -75,7 +75,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
 
     @OnClick({R.id.event_pending_checkbox, R.id.event_closed_checkbox})
     public void onCheckboxClicked() {
-        pageNum = 1; // 첫 페이지로 초기화
+        pageNum = 1;
         eventArrayList.clear(); // List 초기화
         getCheckedEventList(pageNum);
     }
@@ -107,6 +107,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     @Override
     protected void onStart() {
         super.onStart();
+        pageNum = 1; // 첫 페이지로 초기화
         eventPresenter.getEventList(pageNum);
 
         // 사용자가 보유한 상점이 있는지 확인
@@ -133,7 +134,11 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     }
 
     private void updateUserInterface(ArrayList<Event> eventList) {
+        if(pageNum==1)
+            eventArrayList.clear();
+
         pageNum++;
+
         eventArrayList.addAll(eventList);
         eventRecyclerAdapter.notifyDataSetChanged();
     }
