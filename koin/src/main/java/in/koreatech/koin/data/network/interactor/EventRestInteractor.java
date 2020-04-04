@@ -228,7 +228,7 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onComplete() {
-
+                        compositeDisposable.dispose();
                     }
                 });
     }
@@ -240,7 +240,37 @@ public class EventRestInteractor implements EventInteractor {
 
     @Override
     public void readPendingRandomEvent(ApiCallback apiCallback) {
+        RetrofitManager.getInstance().getRetrofit().create(EventService.class).getRandomEventList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Event>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        if(FormValidatorUtil.validateStringIsEmpty(event.getError())) {
+                            apiCallback.onSuccess(event);
+                        } else {
+                            apiCallback.onFailure(new Throwable("진행 중인 이벤트를 받아오지 못했습니다."));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
     }
 
     @Override
@@ -259,7 +289,7 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onNext(Event event) {
-                        if (event != null) {
+                        if (FormValidatorUtil.validateStringIsEmpty(event.getError())) {
                             apiCallback.onSuccess(event);
                         } else {
                             apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
@@ -304,7 +334,7 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onNext(Event response) {
-                        if (response != null) {
+                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
                             apiCallback.onSuccess(response);
                         } else {
                             apiCallback.onFailure(new Throwable("fail"));

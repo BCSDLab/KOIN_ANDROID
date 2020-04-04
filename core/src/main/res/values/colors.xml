@@ -26,6 +26,8 @@
     <color name="red1">#ff3030</color>
     <color name="red_alpha0">#00ff0000</color>
 
+    <color name="yellow_pale">#fbff9f</color>
+
     <color name="white1">#f8f8f8</color>
     <color name="white2">#dadada</color>
     <color name="white3">#f1f1f1</color>
@@ -72,7 +74,7 @@
     <color name="blue8">#9fa9b3</color>
     <color name="blue_alpha30">#4d7c9fae</color>
     <color name="blue_alpha51">#33d2dae2</color>
-    <color name="light_grayish_blue">#d5e1ee</color>
+    <color name="blue_light_grayish">#d5e1ee</color>
 
     <!-- BusWidget -->
     <color name="deep_light_navy">@color/blue5</color>

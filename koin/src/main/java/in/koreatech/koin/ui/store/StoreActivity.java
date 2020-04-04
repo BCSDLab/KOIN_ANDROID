@@ -14,11 +14,13 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -59,7 +61,14 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.store_recyclerview)
     RecyclerView storeListRecyclerView;
-
+    @BindView(R.id.store_event_banner_linearlayout)
+    LinearLayout eventBanner;
+    @BindView(R.id.store_event_banner_title_textview)
+    TextView eventBannerTitleTextView;
+    @BindView(R.id.store_event_banner_eventtitle_textview)
+    TextView eventBannerEventTitleTextView;
+    @BindView(R.id.store_event_banner_period_textview)
+    TextView eventBannerPeriodTextView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +84,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     public void onStart() {
         super.onStart();
         this.storePresenter.getStoreList();
+        this.storePresenter.getRandomEvent();
     }
 
     @OnClick({R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
@@ -208,6 +218,19 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onRandomEventDataReceived(Event event) {
+        if(event != null) {
+            eventBanner.setVisibility(View.VISIBLE);
+            eventBannerTitleTextView.setText(event.getTitle());
+            eventBannerEventTitleTextView.setText(event.getEventTitle());
+            String start = event.getStartDate();
+            String end = event.getEndDate();
+            String period = start + " ~ " + end;
+            eventBannerPeriodTextView.setText(period);
         }
     }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -34,6 +35,8 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         TextView textViewCard; //카드 결제 여부
         @BindView(R.id.store_account_textview)
         TextView textViewAccountTransfer;  //계좌이체 결제 여부
+        @BindView(R.id.store_event_mark_imageview)
+        ImageView imageViewEventMark;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -61,6 +64,13 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         holder.setIsRecyclable(false);
         Store store = this.storeArrayList.get(position);
         holder.textViewStoreName.setText(store.getName()); //콜밴 이름
+
+        // 이벤트 유무에 따라 마크 보여줌
+        if(store.getEvents() != null && !store.getEvents().isEmpty()) {
+            holder.imageViewEventMark.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageViewEventMark.setVisibility(View.INVISIBLE);
+        }
 
         //배달, 카드 결제, 계좌이체 사용 가능 유무를 체크하여 다른 이미지를 띄움
         //TODO:text -> image changed

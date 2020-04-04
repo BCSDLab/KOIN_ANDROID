@@ -127,7 +127,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     public void onEventListDataReceived(ArrayList<Event> eventList) {
         hideRefreshing();
 
-        if(eventList != null && !eventList.isEmpty()) {
+        if(eventList != null) {
             updateUserInterface(eventList);
         }
     }

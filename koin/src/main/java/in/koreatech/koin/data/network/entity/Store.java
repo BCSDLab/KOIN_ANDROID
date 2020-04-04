@@ -95,6 +95,10 @@ public class Store {
     @Expose
     private ArrayList<StoreMenu> menus;
 
+    @SerializedName("event_articles")
+    @Expose
+    private ArrayList<Event> events;
+
     private int shopId;
 
     private String size;
@@ -321,5 +325,13 @@ public class Store {
 
     public void setDetail(String detail) {
         this.detail = detail;
+    }
+
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
     }
 }

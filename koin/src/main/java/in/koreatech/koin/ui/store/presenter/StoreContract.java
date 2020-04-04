@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.store.presenter;
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
 
@@ -15,6 +16,8 @@ public interface StoreContract {
         void showMessage(String message);
 
         void onStoreListDataReceived(ArrayList<Store> storeArrayList);
+
+        void onRandomEventDataReceived(Event event);
 
         void updateUserInterface();
 

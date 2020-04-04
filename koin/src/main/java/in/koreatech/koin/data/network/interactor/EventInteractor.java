@@ -26,7 +26,6 @@ public interface EventInteractor {
     // TODO: 점주의 진행 중인 홍보 조회
     void readMyPendingEventList();
 
-    // 진행 중인 이벤트 랜덤 조회
     void readPendingRandomEvent(final ApiCallback apiCallback);
 
     // 특정 홍보글 조회
