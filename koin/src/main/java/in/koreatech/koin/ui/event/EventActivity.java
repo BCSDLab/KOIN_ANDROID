@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.event;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -19,6 +20,7 @@ import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.data.network.entity.Store;
@@ -29,8 +31,7 @@ import in.koreatech.koin.ui.event.presenter.EventPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
-// TODO: Refresh 기능 구현 / 게시글이 10개가 되면 Swipe 가능하도록 구현함
-public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View {
+public class EventActivity extends KoinNavigationDrawerActivity implements EventContract.View, SwipeRefreshLayoutBottom.OnRefreshListener {
     Context context;
     private ArrayList<Event> eventArrayList;
     private EventPresenter eventPresenter;
@@ -46,6 +47,8 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     CheckBox eventPendingCheckBox;
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase koinBaseAppbarDark;
+    @BindView(R.id.event_swipe_refresh_bottom)
+    SwipeRefreshLayoutBottom eventRefreshBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +68,19 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         eventRecyclerAdapter = new EventRecyclerAdapter(eventArrayList, this);
         eventRecyclerView.setAdapter(eventRecyclerAdapter);
         eventRecyclerView.addOnItemTouchListener(recyclerClickListener);
+        eventRefreshBottom.setOnRefreshListener(this);
         setPresenter(new EventPresenter(this, new EventRestInteractor()));
+        pageNum = 1;
     }
 
     @OnClick({R.id.event_pending_checkbox, R.id.event_closed_checkbox})
     public void onCheckboxClicked() {
+        pageNum = 1; // 첫 페이지로 초기화
+        eventArrayList.clear(); // List 초기화
+        getCheckedEventList(pageNum);
+    }
+
+    private void getCheckedEventList(int pageNum) {
         if(eventPendingCheckBox.isChecked() && eventClosedCheckBox.isChecked()) { // 전체 홍보글 조회
             eventPresenter.getEventList(pageNum);
         } else if (eventPendingCheckBox.isChecked()) {    // 진행 중인 홍보글 조회
@@ -77,8 +88,8 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         } else if (eventClosedCheckBox.isChecked()) {     // 종료된 홍보글 조회
             eventPresenter.getClosedEventList(pageNum);
         } else { // 체크박스 둘 다 체크가 안된 경우 -> 빈 게시물
-            eventArrayList.clear();
             eventRecyclerAdapter.notifyDataSetChanged();
+            hideRefreshing();
         }
     }
 
@@ -96,7 +107,6 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     @Override
     protected void onStart() {
         super.onStart();
-        pageNum = 1;
         eventPresenter.getEventList(pageNum);
 
         // 사용자가 보유한 상점이 있는지 확인
@@ -115,7 +125,15 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
     }
 
     public void onEventListDataReceived(ArrayList<Event> eventList) {
-        eventArrayList.clear();
+        hideRefreshing();
+
+        if(eventList != null && !eventList.isEmpty()) {
+            updateUserInterface(eventList);
+        }
+    }
+
+    private void updateUserInterface(ArrayList<Event> eventList) {
+        pageNum++;
         eventArrayList.addAll(eventList);
         eventRecyclerAdapter.notifyDataSetChanged();
     }
@@ -152,6 +170,12 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         hideProgressDialog();
     }
 
+    private void hideRefreshing() {
+        if(eventRefreshBottom.isRefreshing()) {
+            eventRefreshBottom.setRefreshing(false);
+        }
+    }
+
     public final RecyclerClickListener recyclerClickListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, int position) {
@@ -163,4 +187,9 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
 
         }
     });
+
+    @Override
+    public void onRefresh() {
+        getCheckedEventList(pageNum);
+    }
 }

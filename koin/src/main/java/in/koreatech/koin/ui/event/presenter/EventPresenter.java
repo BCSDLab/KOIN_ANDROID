@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.event.presenter;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Event;
@@ -9,26 +11,24 @@ import in.koreatech.koin.data.network.interactor.EventInteractor;
 public class EventPresenter {
     private final EventContract.View eventView;
     private final EventInteractor eventInteractor;
-    private ArrayList<Event> eventArrayList;
 
     public EventPresenter(EventContract.View eventView, EventInteractor eventInteractor) {
         this.eventView = eventView;
         this.eventInteractor = eventInteractor;
-        eventArrayList = new ArrayList<>();
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             Event event = (Event) object;
-            eventArrayList.clear();
-            eventArrayList.addAll(event.getEventArrayList());
+            ArrayList<Event> eventArrayList = new ArrayList<>(event.getEventArrayList());
             eventView.onEventListDataReceived(eventArrayList);
             eventView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
+            Log.d("TAG", throwable.getMessage());
             eventView.showMessage(throwable.getMessage());
             eventView.hideLoading();
         }

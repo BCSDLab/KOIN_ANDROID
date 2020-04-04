@@ -28,62 +28,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <LinearLayout
+                    android:id="@+id/event_button_linearlayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="28dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_alignParentEnd="true">
+                    <CheckBox
+                        android:id="@+id/event_pending_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:checked="true"
+                        android:text="진행중 이벤트"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:paddingHorizontal="2dp"/>
+                    <CheckBox
+                        android:id="@+id/event_closed_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
+                        android:checked="true"
+                        android:text="종료된 이벤트"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:paddingHorizontal="2dp"
+                        android:layout_marginStart="10dp"/>
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/event_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:background="@color/white">
+                    android:layout_below="@id/event_button_linearlayout">
 
                     <in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom
+                        android:id="@+id/event_swipe_refresh_bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/event_pending_checkbox">
+                        app:layout_constraintEnd_toEndOf="parent">
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/event_recyclerview"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="15dp"
-                            android:layout_marginTop="17dp" />
+                            android:layout_height="wrap_content" />
                     </in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom>
-
-
-                    <CheckBox
-                        android:id="@+id/event_closed_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="28dp"
-                        android:layout_marginEnd="16dp"
-                        android:buttonTint="#175c8e"
-                        android:checked="true"
-                        android:lineSpacingExtra="2sp"
-                        android:text="종료된 이벤트"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/event_pending_checkbox"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <CheckBox
-                        android:id="@+id/event_pending_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="150dp"
-                        android:layout_marginTop="28dp"
-                        android:buttonTint="#175c8e"
-                        android:checked="true"
-                        android:lineSpacingExtra="2sp"
-                        android:text="진행중 이벤트"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                    <!--app:layout_constraintHorizontal_bias="0.5"-->
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>

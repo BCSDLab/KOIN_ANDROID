@@ -46,7 +46,7 @@ public class EventRestInteractor implements EventInteractor {
 
                     @Override
                     public void onNext(Event event) {
-                        if (!event.getEventArrayList().isEmpty()) {
+                        if (FormValidatorUtil.validateStringIsEmpty(event.getError())) {
                             apiCallback.onSuccess(event);
                         } else {
                             apiCallback.onFailure(new Throwable("홍보 게시물을 받아오지 못했습니다."));
