@@ -234,8 +234,39 @@ public class EventRestInteractor implements EventInteractor {
     }
 
     @Override
-    public void readMyPendingEventList() {
+    public void readMyPendingEvent(ApiCallback apiCallback) {
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
+        RetrofitManager.getInstance().getRetrofit().create(EventService.class).getMyPendingEvent(addAuthorizationBearer(token))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Event>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
+
+                    @Override
+                    public void onNext(Event event) {
+                        if(FormValidatorUtil.validateStringIsEmpty(event.getError())) {
+                            apiCallback.onSuccess(event);
+                        } else {
+                            apiCallback.onFailure(new Throwable("진행 중인 이벤트가 없습니다."));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if(throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(throwable);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        compositeDisposable.dispose();
+                    }
+                });
     }
 
     @Override

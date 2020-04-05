@@ -28,7 +28,23 @@ public class EventPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            Log.d("TAG", throwable.getMessage());
+            eventView.showMessage(throwable.getMessage());
+            eventView.hideLoading();
+        }
+    };
+
+    // 점주 당 홍보 게시물은 1개이므로 1개의 홍보 게시물을 추출하여 전달
+    private final ApiCallback myPendingApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            Event event = (Event) object;
+            ArrayList<Event> eventArrayList = new ArrayList<>(event.getEventArrayList());
+            eventView.onMyPendingEventReceived(eventArrayList.get(0));
+            eventView.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
             eventView.showMessage(throwable.getMessage());
             eventView.hideLoading();
         }
@@ -85,5 +101,10 @@ public class EventPresenter {
     public void getClosedEventList(int pageNum) {
         eventView.showLoading();
         eventInteractor.readClosedEventList(pageNum, apiCallback);
+    }
+
+    public void getMyPendingEvent() {
+        eventView.showLoading();
+        eventInteractor.readMyPendingEvent(myPendingApiCallback);
     }
 }

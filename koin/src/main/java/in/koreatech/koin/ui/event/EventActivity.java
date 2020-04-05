@@ -1,6 +1,8 @@
 package in.koreatech.koin.ui.event;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -99,8 +101,7 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
         } else if (id == AppBarBase.getRightButtonId()) {
-            Intent intent = new Intent(context, EventCreateActivity.class);
-            startActivity(intent);
+            eventPresenter.getMyPendingEvent();
         }
     }
 
@@ -158,6 +159,43 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
         } else {
             koinBaseAppbarDark.setRightButtonVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * 현재 진행중인 이벤트가 있을경우 수정하도록 유도하고, 없을 경우엔 새 글을 작성하도록 유도하는 메소드
+     * @param event 현재 계정이 진행중인 이벤트
+     */
+    @Override
+    public void onMyPendingEventReceived(Event event) {
+        if(eventArrayList == null || eventArrayList.isEmpty()) {
+            Intent intent = new Intent(this, EventCreateActivity.class);
+            startActivity(intent);
+        } else {
+            showAlertDialog(event);
+        }
+    }
+
+    private void showAlertDialog(Event event) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("이미 진행중인 이벤트가 있습니다.\n수정하시겠습니까?");
+        builder.setPositiveButton("확인", (dialogInterface, i) -> {
+            Intent intent = new Intent(this, EventCreateActivity.class);
+            intent.putExtra("ID", event.getId());
+            intent.putExtra("IS_EDIT", true);
+            intent.putExtra("TITLE", event.getTitle());
+            intent.putExtra("EVENT_TITLE", event.getEventTitle());
+            intent.putExtra("START_DATE", event.getStartDate());
+            intent.putExtra("END_DATE", event.getEndDate());
+            intent.putExtra("CONTENT", event.getContent());
+            intent.putExtra("SHOP_ID", event.getShopId());
+
+            startActivity(intent);
+        });
+
+        builder.setNegativeButton("취소", ((dialogInterface, i) -> dialogInterface.cancel()));
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override

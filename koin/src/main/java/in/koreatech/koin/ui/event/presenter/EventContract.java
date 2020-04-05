@@ -12,7 +12,9 @@ public interface EventContract {
 
         void onGrantCheckReceived(Event event);
 
-        void onMyShopListReceived(ArrayList<Event> shopArrayList);
+        void onMyShopListReceived(ArrayList<Event> eventArrayList);
+
+        void onMyPendingEventReceived(Event event);
 
         void showMessage(String message);
 

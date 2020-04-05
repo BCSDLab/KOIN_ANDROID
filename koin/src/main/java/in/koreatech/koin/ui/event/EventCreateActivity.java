@@ -1,7 +1,9 @@
 package in.koreatech.koin.ui.event;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,8 +68,6 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     TextView startDateTextview;
     @BindView(R.id.event_create_calender_enddate_textview)
     TextView endDateTextview;
-//    @BindView(R.id.event_create_question_info_framelayout)
-//    FrameLayout questionInfoFrameLayout;
 
     private boolean isEdit;
     private int articleId;
@@ -204,19 +204,26 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
     @OnClick(R.id.event_create_question_mark_button)
     public void questionMarkOnClicked() {
         if (!isClickedQuestion) {
-            questionMark.setBackground(getResources().getDrawable(R.drawable.bg_ring_squash));
-            questionMark.setTextColor(getResources().getColor(R.color.colorAccent));
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-//            questionInfoFrameLayout.setVisibility(View.VISIBLE);
-//            questionInfoFrameLayout.bringToFront();
-            isClickedQuestion = true;
-        } else {
             questionMark.setBackground(getResources().getDrawable(R.drawable.bg_circle_squash));
             questionMark.setTextColor(getResources().getColor(R.color.white));
-            inputMethodManager.showSoftInput(createTitleEditText, 0);
-//            questionInfoFrameLayout.setVisibility(View.INVISIBLE);
-            isClickedQuestion = false;
+            showQuestionInfoDialog();
+            isClickedQuestion = true;
         }
+    }
+
+    private void showQuestionInfoDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(R.layout.event_question_info_dialog);
+        builder.setPositiveButton("확인", (dialogInterface, i) -> {
+            dialogInterface.cancel();
+            questionMark.setBackground(getResources().getDrawable(R.drawable.bg_ring_squash));
+            questionMark.setTextColor(getResources().getColor(R.color.colorAccent));
+            isClickedQuestion = false;
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)

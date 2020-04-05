@@ -52,7 +52,7 @@ public interface EventService {
     Observable<Event> getPendingEventList(@Query("page") int page);
 
     @GET(PENDING + "/my")
-    Observable<Event> getMyPendingEventList(@Path("Authorization") String authHeader, @Query("page") int page);
+    Observable<Event> getMyPendingEvent(@Header("Authorization") String authHeader);
 
     @GET(PENDING + "/random")
     Observable<Event> getRandomEventList();
