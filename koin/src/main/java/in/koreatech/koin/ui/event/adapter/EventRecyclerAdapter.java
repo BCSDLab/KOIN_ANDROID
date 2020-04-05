@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,10 +58,8 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
         TextView eventPeriodTextview;
         @BindView(R.id.event_recyclerview_item_publish_date_textview)
         TextView eventPublishedDateTextview;
-        @BindView(R.id.event_recyclerview_margam_imageview)
-        ImageView eventMargamImageview;
-        @BindView(R.id.event_recyclerview_item_margam_textview)
-        TextView eventMargamTextview;
+        @BindView(R.id.event_recyclerview_item_cover_framelayout)
+        FrameLayout eventCoverFramelayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,7 +79,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             else
                 eventContentsTextview.setText(event.getEventTitle());
 
-            if (event.getStartDate() == null && event.getEndDate() == null)
+            if (event.getStartDate() == null || event.getEndDate() == null)
                 eventPeriodTextview.setText("-");
             else
                 eventPeriodTextview.setText(event.getStartDate() + "~" + event.getEndDate());
@@ -95,11 +94,9 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
             Date date = new Date();
             SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
             try {
-                if ((date.compareTo(formatDate.parse(event.getEndDate()))  == 1)){
-                    eventMargamImageview.setVisibility(View.VISIBLE);
-                    eventMargamTextview.setVisibility(View.VISIBLE);
-                    eventMargamImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
-                    eventFoodImageview.setColorFilter(Color.parseColor("#8C8C8C"), PorterDuff.Mode.LIGHTEN);
+                if ((date.compareTo(formatDate.parse(event.getEndDate())) >= 0)){
+                    eventCoverFramelayout.setVisibility(View.VISIBLE);
+                    eventCoverFramelayout.bringToFront();
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -129,10 +126,5 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     @Override
     public int getItemCount() {
         return eventArrayList.size();
-    }
-
-
-    public void setAdArrayList(ArrayList<Event> eventArrayList) {
-        this.eventArrayList = eventArrayList;
     }
 }

@@ -9,15 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/event_recyclerview_margam_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:layout_margin="14dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/bg_margam" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -114,22 +105,32 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/event_recyclerview_item_margam_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:text="마감"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="14dp"
-            android:paddingHorizontal="13dp"
-            android:paddingVertical="3dp"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="1sp"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="invisible"
-            tools:visibility="visible"/>
+        <FrameLayout
+            android:id="@+id/event_recyclerview_item_cover_framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_margin="14dp"
+                android:background="@color/black_alpha20" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:text="마감"
+                android:layout_marginTop="14dp"
+                android:layout_marginStart="14dp"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="3dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="1sp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                tools:visibility="visible"/>
+        </FrameLayout>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

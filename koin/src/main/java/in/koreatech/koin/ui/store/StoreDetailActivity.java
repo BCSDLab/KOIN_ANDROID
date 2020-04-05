@@ -23,12 +23,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.entity.Event;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -42,6 +46,7 @@ import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
+import in.koreatech.koin.util.TimeUtil;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
@@ -81,6 +86,18 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     RecyclerView menuListRecyclerView;
     @BindView(R.id.store_detail_flyer_recyclerview)
     RecyclerView flyerListRecyclerView;
+
+    // 상점 이벤트 배너
+    @BindView(R.id.store_detail_event_deadline_textview)
+    TextView eventDdayTextView;
+    @BindView(R.id.store_detail_event_banner_linearlayout)
+    LinearLayout eventBannerLinearlayout;
+    @BindView(R.id.store_detail_event_banner_title_textview)
+    TextView eventBannerTitleTextView;
+    @BindView(R.id.store_detail_event_banner_eventtitle_textview)
+    TextView eventBannerEventTitleTextView;
+    @BindView(R.id.store_detail_event_banner_period_textview)
+    TextView eventBannerPeriodTextView;
 
     private RecyclerView.LayoutManager menuLayoutManager; // Menu RecyclerView LayoutManager
     private RecyclerView.LayoutManager flyerLayoutManger; // Flyer RecycerView LayoutManger
@@ -223,6 +240,41 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 //        setTextviewTextWithBackground(isCardTextView, "#카드", this.store.isCardOk);
 //        setTextviewTextWithBackground(isBankTextView, "#계좌이체", this.store.isBankOk);
 
+        if(!store.getEvents().isEmpty()) {
+            updateEventView();
+        }
+
+    }
+
+    /**
+     * 상점 상세 페이지 안에서 이벤트와 관련된 View들을 업데이트 하는 메소드
+     */
+    private void updateEventView() {
+        Event event = store.getEvents().get(0);
+        // 상점명 옆의 D-day 표시
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            long eventEndDate = format.parse(event.getEndDate()).getTime();
+            long currentDate = format.parse(TimeUtil.getDeviceCreatedDateOnlyString()).getTime();
+            long dateDiff = (eventEndDate - currentDate) / (24*60*60*1000);
+
+            if(dateDiff > 0) {
+                eventDdayTextView.setVisibility(View.VISIBLE);
+                String deadlineMark = "이벤트 마감 D-" + dateDiff;
+                eventDdayTextView.setText(deadlineMark);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // 이벤트 배너 뷰
+        eventBannerLinearlayout.setVisibility(View.VISIBLE);
+        eventBannerTitleTextView.setText(event.getTitle());
+        eventBannerEventTitleTextView.setText(event.getEventTitle());
+        String start = event.getStartDate();
+        String end = event.getEndDate();
+        String period = start + " ~ " + end;
+        eventBannerPeriodTextView.setText(period);
     }
 
 //    private void setTextviewTextWithBackground(TextView textView, String firstText, boolean isOk) {
