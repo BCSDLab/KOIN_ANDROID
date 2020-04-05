@@ -52,12 +52,12 @@ android {
 }
 
 dependencies {
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs'
     })
 
-    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
 
     /* Dependency - AndroidX Jetpack */
     api project.androidxAppCompat
@@ -105,8 +105,6 @@ dependencies {
         transitive = true;
     }
 
-
-    testImplementation 'junit:junit:4.12'
     api 'org.jetbrains:annotations:15.0'
 
 
