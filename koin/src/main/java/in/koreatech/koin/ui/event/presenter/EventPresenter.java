@@ -39,7 +39,7 @@ public class EventPresenter {
         public void onSuccess(Object object) {
             Event event = (Event) object;
             ArrayList<Event> eventArrayList = new ArrayList<>(event.getEventArrayList());
-            eventView.onMyPendingEventReceived(eventArrayList.get(0));
+            eventView.onMyPendingEventReceived(eventArrayList);
             eventView.hideLoading();
         }
 

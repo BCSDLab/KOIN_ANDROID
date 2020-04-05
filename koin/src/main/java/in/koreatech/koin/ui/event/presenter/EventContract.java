@@ -14,7 +14,7 @@ public interface EventContract {
 
         void onMyShopListReceived(ArrayList<Event> eventArrayList);
 
-        void onMyPendingEventReceived(Event event);
+        void onMyPendingEventReceived(ArrayList<Event> eventArrayList);
 
         void showMessage(String message);
 

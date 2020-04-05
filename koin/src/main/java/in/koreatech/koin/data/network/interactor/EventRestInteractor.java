@@ -124,43 +124,48 @@ public class EventRestInteractor implements EventInteractor {
 
     @Override
     public void readMyShopList(ApiCallback apiCallback) {
-        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
-        RetrofitManager.getInstance().getRetrofit().create(EventService.class).getMyShopList(addAuthorizationBearer(token))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Event>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        if(UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS) {
+            Event event = new Event();
+            apiCallback.onSuccess(event);
+        } else {
+            String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
+            RetrofitManager.getInstance().getRetrofit().create(EventService.class).getMyShopList(addAuthorizationBearer(token))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Event>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onNext(Event event) {
-                        if(FormValidatorUtil.validateStringIsEmpty(event.getError())) {
-                            apiCallback.onSuccess(event);
-                        } else {
-                            apiCallback.onFailure(new Throwable("보유 상점 목록을 받아오지 못했습니다."));
                         }
-                    }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if(((HttpException) throwable).code() == 403) {
-                            Event event = new Event();
-                            apiCallback.onSuccess(event);
-                        } else {
-                            if (throwable instanceof HttpException) {
-                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        @Override
+                        public void onNext(Event event) {
+                            if(FormValidatorUtil.validateStringIsEmpty(event.getError())) {
+                                apiCallback.onSuccess(event);
+                            } else {
+                                apiCallback.onFailure(new Throwable("보유 상점 목록을 받아오지 못했습니다."));
                             }
-                            apiCallback.onFailure(throwable);
                         }
-                    }
 
-                    @Override
-                    public void onComplete() {
-                        compositeDisposable.dispose();
-                    }
-                });
+                        @Override
+                        public void onError(Throwable throwable) {
+                            if(((HttpException) throwable).code() == 403) {
+                                Event event = new Event();
+                                apiCallback.onSuccess(event);
+                            } else {
+                                if (throwable instanceof HttpException) {
+                                    Log.d(TAG, ((HttpException) throwable).code() + " ");
+                                }
+                                apiCallback.onFailure(throwable);
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            compositeDisposable.dispose();
+                        }
+                    });
+        }
     }
 
     @Override

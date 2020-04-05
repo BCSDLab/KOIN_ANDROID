@@ -163,15 +163,16 @@ public class EventActivity extends KoinNavigationDrawerActivity implements Event
 
     /**
      * 현재 진행중인 이벤트가 있을경우 수정하도록 유도하고, 없을 경우엔 새 글을 작성하도록 유도하는 메소드
-     * @param event 현재 계정이 진행중인 이벤트
+     * @param eventArrayList 현재 계정이 진행중인 이벤트 목록
      */
     @Override
-    public void onMyPendingEventReceived(Event event) {
+    public void onMyPendingEventReceived(ArrayList<Event> eventArrayList) {
         if(eventArrayList == null || eventArrayList.isEmpty()) {
             Intent intent = new Intent(this, EventCreateActivity.class);
             startActivity(intent);
         } else {
-            showAlertDialog(event);
+            // 현재 점주당 이벤트 1개가 제한이므로 0번째 event를 참조
+            showAlertDialog(eventArrayList.get(0));
         }
     }
 
