@@ -268,6 +268,13 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
             e.printStackTrace();
         }
         // 이벤트 배너 뷰
+        int colorRandom = (int)(Math.random()*2);
+        if(colorRandom == 0){
+            eventBannerLinearlayout.setBackground(getDrawable(R.color.colorAccent));
+        } else {
+            eventBannerLinearlayout.setBackground(getDrawable(R.color.green3));
+
+        }
         eventBannerLinearlayout.setVisibility(View.VISIBLE);
         eventBannerTitleTextView.setText(event.getTitle());
         eventBannerEventTitleTextView.setText(event.getEventTitle());

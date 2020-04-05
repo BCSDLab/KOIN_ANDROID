@@ -233,6 +233,13 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             eventShopId = event.getShopId();
             eventShopName = event.getShopName();
 
+            int colorRandom = (int)(Math.random()*2);
+            if(colorRandom == 0){
+                eventBanner.setBackground(getDrawable(R.color.colorAccent));
+            } else {
+                eventBanner.setBackground(getDrawable(R.color.green3));
+
+            }
             eventBanner.setVisibility(View.VISIBLE);
             eventBannerTitleTextView.setText(event.getTitle());
             eventBannerEventTitleTextView.setText(event.getEventTitle());
