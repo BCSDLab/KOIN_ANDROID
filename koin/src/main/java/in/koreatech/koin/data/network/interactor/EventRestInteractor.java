@@ -406,8 +406,7 @@ public class EventRestInteractor implements EventInteractor {
         jsonObject.addProperty("start_date", adDetail.getStartDate());
         jsonObject.addProperty("end_date", adDetail.getEndDate());
         jsonObject.addProperty("shop_id", adDetail.getShopId());
-        if(adDetail.getThumbnail() != null)
-            jsonObject.addProperty("thumbnail", adDetail.getThumbnail());
+        jsonObject.addProperty("thumbnail", (adDetail.getThumbnail() == null) ? "" : adDetail.getThumbnail());
         RetrofitManager.getInstance().getRetrofit().create(EventService.class).updateEvent(articleId, addAuthorizationBearer(token), jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

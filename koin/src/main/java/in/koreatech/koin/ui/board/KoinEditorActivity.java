@@ -23,6 +23,11 @@ import com.github.irshulx.EditorListener;
 import com.github.irshulx.models.EditorControl;
 import com.github.irshulx.models.EditorTextStyle;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -237,38 +242,10 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
         if (url == null) return "";
 
         return url.replace("<div>", " ").replace("<div/>", " ").replace("<p><img", "<img");
-
-//        return url.replace("<div>", "").replace("<div/>", "").replace("<img", "</p><img").replace("<p></p><img", "<img").replace(".jpg\\\"></p>", ".jpg\\\">")
-//                .replace(".png\\\"></p>", ".png\\\">");
     }
 
     public void renderEditor(String content) {
-        getUploadedImageUrls(content);
         richEditor.render(content);
-    }
-
-    /**
-     * RichEditor에 이미 업로드된 이미지들을 다시 꺼내는 메소드
-     * 글을 수정할 때 썸네일 이미지를 바꾸기 위함 (.jpg와 .png만 가능)
-     * @param content RichEditor에 올라간 본문 내용
-     */
-    public void getUploadedImageUrls(String content) {
-        String tempContent = content;
-        while(tempContent.contains("<img src=")) {
-            int start = 10 + tempContent.indexOf("<img src=");
-            int end;
-            if(tempContent.contains(".png")) {
-                end = tempContent.indexOf(".png") + 4;
-            } else if(tempContent.contains(".jpg")) {
-                end = 4 + tempContent.indexOf(".jpg");
-            } else {
-                // img 태그는 있으나, .jpg와 .png 외의 확장자이거나 없을 경우 함수 종료
-                return;
-            }
-            String imageUrl = tempContent.substring(start, end);
-            tempContent = tempContent.substring(end);
-            uploadedImageUrlList.add(imageUrl);
-        }
     }
 
     public void renderEditor() {
@@ -293,9 +270,14 @@ public abstract class KoinEditorActivity extends KoinNavigationDrawerActivity {
      * @return 업로드된 이미지 리스트 중 첫번째 이미지
      */
     public String getThumbnail() {
-        if(uploadedImageUrlList.size() > 0) {
-            return uploadedImageUrlList.get(0);
+        String html = richEditor.getContentAsHTML();
+        Document doc = Jsoup.parseBodyFragment(html);
+        Elements img = doc.getElementsByTag("img");
+        String thumbnail = null;
+        if(img.size() > 0) {
+            thumbnail = img.get(0).attr("src");
         }
-        return null;
+
+        return thumbnail;
     }
 }

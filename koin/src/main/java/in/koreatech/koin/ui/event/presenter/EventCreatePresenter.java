@@ -87,6 +87,7 @@ public class EventCreatePresenter {
     public void updateEvent(int articleId, Event event) {
         eventCreateView.showLoading();
         eventInteractor.updateEvent(articleId, event, eventApiCallback);
+
     }
 
     public void getMyShopList() {

@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.store.presenter;
 
 import android.util.Log;
 
+import java.io.EOFException;
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.network.ApiCallback;
@@ -47,7 +48,9 @@ public class StorePresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            storeView.showMessage(throwable.getMessage());
+            if(!(throwable instanceof EOFException)){
+                storeView.showMessage(throwable.getMessage());
+            }
             storeView.hideLoading();
         }
     };

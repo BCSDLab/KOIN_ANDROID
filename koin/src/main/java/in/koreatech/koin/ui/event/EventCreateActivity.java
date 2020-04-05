@@ -277,8 +277,8 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
             return;
         }
 
-        String title = createTitleEditText.getText().toString().trim();
-        String eventTitle = this.eventTitleEditText.getText().toString().trim();
+        String title = createTitleEditText.getText().toString().trim().replace("\n", "");
+        String eventTitle = this.eventTitleEditText.getText().toString().trim().replace("\n", "");;
         String content = getContentAsHTML();
         String startDate = startDateTextview.getText().toString();
         String endDate = endDateTextview.getText().toString();
@@ -286,15 +286,9 @@ public class EventCreateActivity extends KoinEditorActivity implements EventCrea
         Log.d("ShopId", String.valueOf(shopId));
 
         if (isEdit) {
-            if (thumbnail != null)
-                eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
-            else
-                eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate));
+            eventCreatePresenter.updateEvent(articleId, new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         } else {
-            if (thumbnail != null)
-                eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
-            else
-                eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate));
+            eventCreatePresenter.createEvent(new Event(title, eventTitle, content, shopId, startDate, endDate, thumbnail));
         }
     }
 

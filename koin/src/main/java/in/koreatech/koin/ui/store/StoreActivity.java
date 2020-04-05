@@ -238,7 +238,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
                 eventBanner.setBackground(getDrawable(R.color.colorAccent));
             } else {
                 eventBanner.setBackground(getDrawable(R.color.green3));
-
             }
             eventBanner.setVisibility(View.VISIBLE);
             eventBannerTitleTextView.setText(event.getTitle());

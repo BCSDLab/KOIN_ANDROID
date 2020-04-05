@@ -484,8 +484,25 @@
                             android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Custom6" />
-                    </FrameLayout>
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginEnd="16dp"
+                            android:gravity="center"
+                            android:layout_gravity="end">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_event_mark"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="13sp"
+                                android:text=" : 이벤트 진행중"/>
+                        </LinearLayout>
+                    </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/store_recyclerview"
