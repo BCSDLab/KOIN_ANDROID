@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 
 import in.koreatech.koin.ui.main.MainActivity;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -28,6 +30,6 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
         // Context of the app under test.
-
+        assertEquals(BuildConfig.APPLICATION_ID, "in.koreatech.koin");
     }
 }
