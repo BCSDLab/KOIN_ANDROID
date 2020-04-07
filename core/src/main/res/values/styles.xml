@@ -82,7 +82,7 @@
         <item name="colorControlNormal">@color/red_alpha0</item>
     </style>
 
-    <style name="KAPDatePicker" parent="Theme.AppCompat.Light.Dialog">
+    <style name="KAPDatePicker" parent="Theme.AppCompat.DayNight.Dialog">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:headerYearTextAppearance">@color/black</item>
         <item name="android:textColorSecondary">@color/black</item>

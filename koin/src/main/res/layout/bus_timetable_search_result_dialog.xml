@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:alpha="0.51"
             android:background="@android:color/black"
-            android:backgroundTint="@color/blue1" />
+            android:backgroundTint="?attr/colorDivider" />
 
         <TextView
             android:layout_width="match_parent"
