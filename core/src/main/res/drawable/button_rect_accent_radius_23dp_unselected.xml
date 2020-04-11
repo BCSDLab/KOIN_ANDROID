@@ -11,5 +11,5 @@
     <solid
         android:alpha="0.3"
         android:width="1dp"
-        android:color="@color/colorAccent" />
+        android:color="@color/colorAccent_alpha30" />
 </shape>
