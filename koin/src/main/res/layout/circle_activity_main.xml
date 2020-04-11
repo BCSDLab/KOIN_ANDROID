@@ -88,6 +88,7 @@
                                 android:padding="9dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_all"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -120,6 +121,7 @@
                                 android:layout_marginBottom="8dp"
                                 android:padding="9dp"
                                 android:src="@drawable/ic_club_art"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -154,6 +156,7 @@
                                 android:gravity="start"
                                 android:padding="9dp"
                                 android:src="@drawable/ic_club_show"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
@@ -188,6 +191,7 @@
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_sport"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:padding="9dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -218,6 +222,7 @@
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_study"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:padding="9dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -252,6 +257,7 @@
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_religion"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:padding="9dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -286,6 +292,7 @@
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_service"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:padding="9dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -321,6 +328,7 @@
                                 android:layout_height="50dp"
                                 android:layout_marginBottom="8dp"
                                 android:src="@drawable/ic_club_etc"
+                                android:tint="@color/color_circle_category_icon_tint"
                                 android:padding="9dp"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
