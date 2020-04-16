@@ -1,9 +1,11 @@
 package in.koreatech.koin.ui.board.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
+import retrofit2.HttpException;
 
 public class ArticleCommentPresenter {
     private final ArticleCommentContract.View articleCommentView;
@@ -33,6 +35,7 @@ public class ArticleCommentPresenter {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_created);
             articleCommentView.showSuccessCreateComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -40,7 +43,7 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorCreateComment();
+            articleCommentView.showMessage(R.string.comment_create_fail);
             articleCommentView.hideLoading();
         }
     };
@@ -49,6 +52,7 @@ public class ArticleCommentPresenter {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_edited);
             articleCommentView.showSuccessEditComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -56,7 +60,10 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorEditComment();
+            if (throwable instanceof HttpException)
+                articleCommentView.showMessage(R.string.comment_edit_fail);
+            else
+                articleCommentView.showMessage(throwable.getMessage());
             articleCommentView.hideLoading();
         }
     };
@@ -65,6 +72,7 @@ public class ArticleCommentPresenter {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_deleted);
             articleCommentView.showSuccessDeleteComment();
             getArticle(articleUid);
             articleCommentView.hideLoading();
@@ -72,7 +80,7 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorDeleteComment();
+            articleCommentView.showMessage(R.string.comment_delete_fail);
             articleCommentView.hideLoading();
         }
     };
@@ -81,6 +89,7 @@ public class ArticleCommentPresenter {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_created);
             articleCommentView.showSuccessCreateAnonymousComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -88,7 +97,10 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorCreateAnonymousComment();
+            if (throwable instanceof HttpException)
+                articleCommentView.showMessage(R.string.comment_edit_fail);
+            else
+                articleCommentView.showMessage(throwable.getMessage());
             articleCommentView.hideLoading();
         }
     };
@@ -97,6 +109,7 @@ public class ArticleCommentPresenter {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_edited);
             articleCommentView.showSuccessUpdateAnonymousComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -104,14 +117,19 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorUpdateAnonymousComment();
+            if (throwable instanceof HttpException)
+                articleCommentView.showMessage(R.string.comment_edit_fail);
+            else
+                articleCommentView.showMessage(throwable.getMessage());
             articleCommentView.hideLoading();
         }
     };
+
     private final ApiCallback commentAnoymousDeleteApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             int articleUid = ((Comment) object).getArticleUid();
+            articleCommentView.showMessage(R.string.comment_deleted);
             articleCommentView.showSuccessAnonymousDeleteComment();
             getAnonymousArticle(articleUid);
             articleCommentView.hideLoading();
@@ -119,48 +137,14 @@ public class ArticleCommentPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorDeleteAnonymousComment();
-            articleCommentView.hideLoading();
-        }
-    };
-
-
-    private final ApiCallback grantAnonymousDeleteCommentGrantedApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit();
-            if (isGrantEdit)
-                articleCommentView.showSuccessGrantedDeleteComment();
+            if (throwable instanceof HttpException)
+                articleCommentView.showMessage(R.string.comment_delete_fail);
             else
-                articleCommentView.showErrorGrantedDeleteComment();
-            articleCommentView.hideLoading();
-
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorGrantedDeleteComment();
+                articleCommentView.showMessage(throwable.getMessage());
             articleCommentView.hideLoading();
         }
     };
 
-    private final ApiCallback grantAnonymousAdjustCommentGrantedApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            boolean isGrantEdit = ((Article) object).isGrantEdit();
-            if (isGrantEdit)
-                articleCommentView.showSuccessGrantedAdjustComment();
-            else
-                articleCommentView.showErrorGrantedAdjustComment();
-            articleCommentView.hideLoading();
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            articleCommentView.showErrorGrantedAdjustComment();
-            articleCommentView.hideLoading();
-        }
-    };
     private final ApiCallback articleApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
@@ -191,11 +175,6 @@ public class ArticleCommentPresenter {
         communityInteractor.createComment(articleUid, content, commentCreateApiCallback);
     }
 
-    public void readComment(int articleUid, int commentUid) {
-        articleCommentView.showLoading();
-        communityInteractor.readComment(articleUid, commentUid, commentApiCallback);
-    }
-
     public void updateComment(int articleUid, Comment comment) {
         articleCommentView.showLoading();
         comment.setArticleUid(articleUid);
@@ -223,16 +202,4 @@ public class ArticleCommentPresenter {
         articleCommentView.showLoading();
         communityInteractor.deleteAnonymousComment(articleUid, commentUid, password, commentAnoymousDeleteApiCallback);
     }
-
-
-    public void checkAnonymousCommentDeleteGranted(int commentUid, String password) {
-        articleCommentView.showLoading();
-        communityInteractor.updateAnonymousCommentGrantCheck(commentUid, password, grantAnonymousDeleteCommentGrantedApiCallback);
-    }
-
-    public void checkAnonymousCommentAdjustGranted(int commentUid, String password) {
-        articleCommentView.showLoading();
-        communityInteractor.updateAnonymousCommentGrantCheck(commentUid, password, grantAnonymousAdjustCommentGrantedApiCallback);
-    }
-
 }

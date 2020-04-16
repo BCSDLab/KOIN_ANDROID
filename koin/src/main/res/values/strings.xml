@@ -74,6 +74,17 @@
     <string name="comment_edit">수정</string>
     <string name="comment_remove">삭제</string>
     <string name="comment_reply">댓글</string>
+    <string name="comment_edit_not_granted">수정권한이 없습니다.</string>
+    <string name="comment_deleted">댓글이 삭제되었습니다.</string>
+    <string name="comment_edited">댓글이 수정되었습니다.</string>
+    <string name="comment_delete_fail">댓글 삭제에 실패하였습니다.</string>
+    <string name="comment_edit_fail">댓글 수정에 실패하였습니다.</string>
+    <string name="comment_create_fail">댓글이 등록되지 않았습니다.</string>
+    <string name="comment_created">댓글이 등록되었습니다.</string>
+    <string name="comment_input_password">비밀번호를 입력해주세요.</string>
+    <string name="comment_input_content">내용을 입력해주세요.</string>
+    <string name="comment_input_nickname">닉네임을 입력해주세요.</string>
+
 
     <!--Bus-->
     <string name="bus_search_button">조회</string>
