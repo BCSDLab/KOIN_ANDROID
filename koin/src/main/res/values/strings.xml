@@ -69,6 +69,11 @@
     <string name="board_author">작성자</string>
     <string name="board_create">작성</string>
     <string name="board_edit">수정</string>
+    <string name="board_update_fail">게시글 정보를 가져오지 못했습니다.</string>
+    <string name="board_title_check">제목을 입력해주세요</string>
+    <string name="board_content_check">내용을 입력해주세요</string>
+    <string name="board_password_check">비밀번호를 입력해주세요</string>
+    <string name="board_nickname_check">닉네임을 입력해주세요</string>
 
     <!-- Comment -->
     <string name="comment_edit">수정</string>
