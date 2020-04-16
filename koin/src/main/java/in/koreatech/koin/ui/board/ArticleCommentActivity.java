@@ -300,18 +300,6 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         String commentContent = articleCommentContentEdittext.getText().toString();
         String password = articleCommentPasswordEdittext.getText().toString();
         String nickname = articleCommentNicknameEdittext.getText().toString();
-        if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_content);
-            return;
-        }
-        if (password.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_password);
-            return;
-        }
-        if (nickname.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_nickname);
-            return;
-        }
         if (!isEditComment) {
             articleCommentPresenter.createAnonymousComment(articleUid, commentContent, nickname, password);
         } else {
@@ -323,10 +311,6 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     public void onClickedCommentRegisterButton() {
         String commentContent = articleCommentContentEdittext.getText().toString();
-        if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_password);
-            return;
-        }
         if (!isEditComment) {
             articleCommentPresenter.createComment(articleUid, commentContent);
         } else {

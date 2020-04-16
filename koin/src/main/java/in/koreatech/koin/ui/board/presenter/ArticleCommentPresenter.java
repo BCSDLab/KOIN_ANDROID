@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.board.presenter;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
@@ -171,11 +172,19 @@ public class ArticleCommentPresenter {
     }
 
     public void createComment(int articleUid, String content) {
+        if (content.isEmpty()) {
+            articleCommentView.showMessage(R.string.comment_input_content);
+            return;
+        }
         articleCommentView.showLoading();
         communityInteractor.createComment(articleUid, content, commentCreateApiCallback);
     }
 
     public void updateComment(int articleUid, Comment comment) {
+        if (comment.getContent().isEmpty()) {
+            articleCommentView.showMessage(R.string.comment_input_content);
+            return;
+        }
         articleCommentView.showLoading();
         comment.setArticleUid(articleUid);
         communityInteractor.updateComment(comment, commentEditApiCallback);
@@ -188,14 +197,30 @@ public class ArticleCommentPresenter {
 
 
     public void createAnonymousComment(int articleUid, String content, String nickname, String password) {
-        articleCommentView.showLoading();
-        communityInteractor.createAnonymousComment(articleUid, content, nickname, password, commentAnoymousApiCallback);
+        if (content.isEmpty()) {
+            articleCommentView.showMessage(R.string.comment_input_content);
+        } else if (password.isEmpty()) {
+            articleCommentView.showMessage(R.string.comment_input_password);
+        } else if (nickname.isEmpty()) {
+            articleCommentView.showMessage(R.string.comment_input_nickname);
+        } else {
+            articleCommentView.showLoading();
+            communityInteractor.createAnonymousComment(articleUid, content, nickname, password, commentAnoymousApiCallback);
+        }
     }
 
     public void updateAnonymousComment(int articleUid, Comment comment) {
-        articleCommentView.showLoading();
-        comment.setArticleUid(articleUid);
-        communityInteractor.updateAnonymousComment(comment, commentAnoymousUpdateApiCallback);
+        if (comment.getContent().isEmpty()) {
+            ToastUtil.getInstance().makeShort(R.string.comment_input_content);
+        } else if (comment.getPassword().isEmpty()) {
+            ToastUtil.getInstance().makeShort(R.string.comment_input_password);
+        } else if (comment.getAuthorNickname().isEmpty()) {
+            ToastUtil.getInstance().makeShort(R.string.comment_input_nickname);
+        } else {
+            articleCommentView.showLoading();
+            comment.setArticleUid(articleUid);
+            communityInteractor.updateAnonymousComment(comment, commentAnoymousUpdateApiCallback);
+        }
     }
 
     public void deleteAnonymousComment(int articleUid, int commentUid, String password) {
