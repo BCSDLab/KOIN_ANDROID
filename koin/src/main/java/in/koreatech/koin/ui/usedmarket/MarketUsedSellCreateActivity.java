@@ -655,43 +655,20 @@ public class MarketUsedSellCreateActivity extends ActivityBase implements Market
         this.marketItem.setType(SELL_CODE);
         this.marketItem.setTitle(marketSellCreateTitleEditText.getText().toString().trim());
         this.marketItem.setPrice(Integer.parseInt(this.price));
-
-        if (marketSellCreateContent.getText().toString().trim().length() != 0) {
-            this.marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
-            this.isContentCheck = true;
-        } else {
-            this.isContentCheck = false;
-        }
-
+        this.marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
         this.marketItem.setState(this.itemState);
-        if (this.isPhoneOpen && (this.marketItem.getPhone().length() == 13)) {
-            if (this.phoneNumber.charAt(3) == '-' && this.phoneNumber.charAt(8) == '-')
-                this.isPhoneCheck = true;
-            else
-                this.isPhoneCheck = false;
 
-        } else if (!this.isPhoneOpen)
-            this.isPhoneCheck = true;
-        else
-            this.isPhoneCheck = false;
+        this.marketUsedCreatePresenter.createMarketItem(this.marketItem);
+    }
 
-        if (this.marketItem.getTitle().length() == 0)
-            this.isTitlecheck = false;
-        else
-            this.isTitlecheck = true;
+    @Override
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
 
-
-        if (this.isContentCheck && this.isTitlecheck && !this.isPhoneCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-        if (!this.isTitlecheck && this.isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-        if (!this.isContentCheck && this.isTitlecheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-        if (!this.isTitlecheck && !this.isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
-
-        if (this.isPhoneCheck && this.isTitlecheck && this.isContentCheck)
-            this.marketUsedCreatePresenter.createMarketItem(this.marketItem);
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
