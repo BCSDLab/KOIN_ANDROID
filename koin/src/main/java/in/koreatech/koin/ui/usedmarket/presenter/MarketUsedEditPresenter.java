@@ -2,10 +2,13 @@ package in.koreatech.koin.ui.usedmarket.presenter;
 
 import com.google.firebase.perf.metrics.AddTrace;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
+import in.koreatech.koin.util.FilterUtil;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 import java.io.File;
 
@@ -26,7 +29,7 @@ public class MarketUsedEditPresenter {
             marketEditView.hideLoading();
         }
 
-        @Override
+
         public void onFailure(Throwable throwable) {
             marketEditView.showUpdateFail();
             marketEditView.hideLoading();
@@ -50,6 +53,18 @@ public class MarketUsedEditPresenter {
     };
 
     public void editMarketContent(int id, MarketItem marketItem) {
+        if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
+            marketEditView.showMessage(R.string.market_used_phone_check);
+            return;
+        }
+        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+            marketEditView.showMessage(R.string.market_used_title_check);
+            return;
+        }
+        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+            marketEditView.showMessage(R.string.market_used_content_check);
+            return;
+        }
         marketEditView.showLoading();
         marketUsedInteractor.editCotentEdit(id, marketItem, contentEditApiCallback);
     }
