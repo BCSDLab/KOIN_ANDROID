@@ -1,12 +1,15 @@
 package in.koreatech.koin.ui.usedmarket.presenter;
 
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
+import in.koreatech.koin.util.FormValidatorUtil;
 
-public class MarketUsedDetailCommentPresenter{
+public class MarketUsedDetailCommentPresenter {
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedCommentContract.View mMarketCreateCommentContracView;
@@ -80,6 +83,10 @@ public class MarketUsedDetailCommentPresenter{
     }
 
     public void createComment(int id, String content) {
+        if (FormValidatorUtil.validateStringIsEmpty(content)) {
+            mMarketCreateCommentContracView.showMessage(R.string.market_used_content_check);
+            return;
+        }
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.createCommentDetail(id, content, commentApiCallback);
     }
@@ -90,6 +97,10 @@ public class MarketUsedDetailCommentPresenter{
     }
 
     public void editComment(Comment comment, Item item, String content) {
+        if (FormValidatorUtil.validateStringIsEmpty(comment.getContent())) {
+            mMarketCreateCommentContracView.showMessage(R.string.market_used_content_check);
+            return;
+        }
         mMarketCreateCommentContracView.showLoading();
         marketUsedInteractor.editCommentDetail(item.getId(), comment.getCommentUid(), content, commentEditApiCallback);
     }

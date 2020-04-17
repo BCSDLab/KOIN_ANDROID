@@ -310,12 +310,19 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         this.isEditComment = false;
     }
 
+    @Override
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
     public void onClickedCommentRegisterButton() {
         String commentContent = marketUsedCommentContentEdittext.getText().toString();
-        if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
-            return;
-        }
+
         if (!this.isEditComment) {
             marketUsedDetatailCommentPresenter.createComment(item.getId(), commentContent);
         } else {
