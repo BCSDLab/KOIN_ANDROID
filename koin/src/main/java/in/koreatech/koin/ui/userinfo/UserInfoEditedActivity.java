@@ -373,6 +373,16 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     }
 
     @Override
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void showCheckNickNameSuccess() {
         // 닉네임 사용가능시 사용가능 Toast message onNicknameCheckSuccesst 실행
         ToastUtil.getInstance().makeShort("사용가능한 닉네임입니다.");

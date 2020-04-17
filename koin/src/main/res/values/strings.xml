@@ -127,6 +127,9 @@
     <string name="email_sending">이메일 전송 중</string>
     <string name="email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
 
+    <!--UserInfoEdit-->
+    <string name="user_info_check_nickname_warning">닉네임은 1자리 이상 10자리 이하로 가능합니다.</string>
+
     <!--Timetable-->
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
