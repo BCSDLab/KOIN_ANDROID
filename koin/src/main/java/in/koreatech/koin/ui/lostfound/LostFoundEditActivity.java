@@ -242,27 +242,13 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     public void submitContent() {
         LostItem submitLostItem = new LostItem();
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(lostFoundCreateContentEditText.getText().toString().trim());
-        String content = lostFoundCreateContentEditText.getText().toString().trim();
+        String content;
         String title = lostFoundCreateTitleEditText.getText().toString().trim();
         String lostPlace = lostFoundCreatePlaceNameEditText.getText().toString().trim();
         String lostDate = lostfoundCreateLostdateTextview.getText().toString();
         String phoneNumber = lostFoundCreatePhoneNumEditText.getText().toString().trim();
         boolean isPhoneValid = lostItem.isPhoneOpen();
         int type = lostItem.getType();
-
-        if (title.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-            return;
-        }
-        if (isPhoneValid && !Pattern.matches("^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$", phoneNumber)) {
-            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-            return;
-        }
-        if (content.isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-            return;
-        }
-
         content = Html.toHtml(spannableStringBuilder).trim();
         content = addImageSpan(content, imageURL);
         submitLostItem.setType(type);
