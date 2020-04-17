@@ -147,6 +147,11 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
     }
 
     @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }

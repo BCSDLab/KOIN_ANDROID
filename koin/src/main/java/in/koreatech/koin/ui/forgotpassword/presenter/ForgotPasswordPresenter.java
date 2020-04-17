@@ -29,7 +29,7 @@ public class ForgotPasswordPresenter{
      * @param id 포탈 계정 id
      */
     public void findPassword(String id) {
-        if(!FormValidatorUtil.validateStringIsEmpty(id)){
+        if(FormValidatorUtil.validateStringIsEmpty(id)){
             forgotPasswordView.showMessage(R.string.email_empty_string_warning);
             return;
         }

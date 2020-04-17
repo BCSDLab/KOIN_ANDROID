@@ -58,6 +58,9 @@
     <!-- ForgotPassword-->
     <string name="email_empty_string_warning">이메일을 입력해주세요</string>
 
+    <!--Login-->
+    <string name="login_email_password_empty_string_warning">아이디와 비밀번호를 입력해주세요"</string>
+
     <!-- Required value in actionbardrawertoggle -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
