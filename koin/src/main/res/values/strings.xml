@@ -133,6 +133,7 @@
     <string name="lost_and_found_edited">수정되었습니다.</string>
     <string name="lost_and_found_deleted">삭제되었습니다.</string>
     <string name="lost_and_found_delete_fail">삭제에 실패했습니다.</string>
+    <string name="lost_and_found_content_check">내용을 입력해주세요</string>
 
     <!--major-->
     <string name="mechanical_engineering">기계공학부</string>
