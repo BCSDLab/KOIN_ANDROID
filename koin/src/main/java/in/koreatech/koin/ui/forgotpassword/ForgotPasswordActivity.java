@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import android.view.KeyEvent;
 import android.view.View;
@@ -97,6 +98,11 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
 
     @Override
     public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(@StringRes int message) {
         ToastUtil.getInstance().makeShort(message);
     }
 

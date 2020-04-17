@@ -2,9 +2,11 @@ package in.koreatech.koin.ui.forgotpassword.presenter;
 
 import androidx.annotation.NonNull;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.interactor.UserInteractor;
 import in.koreatech.koin.data.network.interactor.UserRestInteractor;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -27,6 +29,10 @@ public class ForgotPasswordPresenter{
      * @param id 포탈 계정 id
      */
     public void findPassword(String id) {
+        if(!FormValidatorUtil.validateStringIsEmpty(id)){
+            forgotPasswordView.showMessage(R.string.email_empty_string_warning);
+            return;
+        }
         this.forgotPasswordView.showProgress();
         mUserInteractor.createFindPassword(id, findPasswordApiCallback);
     }
