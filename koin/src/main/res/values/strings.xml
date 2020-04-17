@@ -54,6 +54,13 @@
     <!--Sign Up-->
     <string name="signup_term_check_message_ask">&quot;동의&quot; 체크 박스에 체크를 한 후 이메일 인증하기 버튼을 클릭하면 본 약관에 동의하는 것으로 간주합니다.</string>
     <string name="signup_term_check_message_checked">모든 약관에 동의하셨습니다.</string>
+    <string name="signup_password_not_same">비밀번호가 다릅니다.</string>
+    <string name="signup_password_format_warning">비밀번호 형식이 다릅니다.</string>
+    <string name="signup_email_format_warning">이메일 형식이 다릅니다.</string>
+    <string name="signup_password_input_warning">비밀번호를 입력해주세요</string>
+    <string name="signup_wait_for_sending_email">확인 메일 전송중입니다 잠시만 기다려 주세요</string>
+    <string name="signup_agree_term_warning">이용약관에 동의해 주세요</string>
+    <string name="signup_id_input_warning">이메일을 입력해주세요</string>
 
     <!-- ForgotPassword-->
     <string name="email_empty_string_warning">이메일을 입력해주세요</string>

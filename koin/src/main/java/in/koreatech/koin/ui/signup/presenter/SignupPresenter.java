@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.interactor.UserInteractor;
 import in.koreatech.koin.data.network.interactor.UserRestInteractor;
+import in.koreatech.koin.util.FilterUtil;
+import in.koreatech.koin.util.FormValidatorUtil;
 import retrofit2.HttpException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,6 +35,7 @@ public class SignupPresenter {
         public void onSuccess(Object object) {
             mSignUpView.gotoEmail();
             mSignUpView.hideProgress();
+            mSignUpView.buttonClickBlock(false);
         }
 
         @Override
@@ -41,6 +45,7 @@ public class SignupPresenter {
                 mSignUpView.showMessage(R.string.email_already_send_or_email_requested);
             else
                 mSignUpView.showMessage(R.string.error_network);
+            mSignUpView.buttonClickBlock(false);
         }
     };
 
@@ -51,6 +56,24 @@ public class SignupPresenter {
      * @param password koin 계정 비밀번호
      */
     public void signUp(String id, String password) {
+        if(FormValidatorUtil.validateStringIsEmpty(id)){
+            mSignUpView.showMessage(R.string.signup_id_input_warning);
+            return;
+        }
+        else if(FormValidatorUtil.validateStringIsEmpty(password)){
+            mSignUpView.showMessage(R.string.signup_password_input_warning);
+            return;
+        }
+        else if (!FilterUtil.isEmailValidate(id)) {
+            mSignUpView.showMessage(R.string.signup_email_format_warning);
+            return;
+        }
+        else if(!FilterUtil.isPasswordValidate(password)){
+            mSignUpView.showMessage(R.string.signup_password_format_warning);
+            return;
+        }
+
+        mSignUpView.buttonClickBlock(true);
         mSignUpView.showProgress();
         mUserInteractor.createToken(id, password, signUpApiCallback);
     }

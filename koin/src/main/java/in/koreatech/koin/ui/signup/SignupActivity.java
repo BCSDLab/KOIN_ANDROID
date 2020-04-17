@@ -3,11 +3,6 @@ package in.koreatech.koin.ui.signup;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
@@ -16,6 +11,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,13 +27,11 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.signup.presenter.SignupContract;
-import in.koreatech.koin.util.FilterUtil;
+import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
 
 public class SignupActivity extends ActivityBase implements SignupContract.View {
     final static String TAG = "SignupActivity";
@@ -158,7 +155,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     @OnClick(R.id.signup_send_verification_button)
     public void onClickSendVerificationButton() {
         if (isverified) {
-            ToastUtil.getInstance().makeShort("확인 메일 전송중입니다 잠시만 기다려 주세요");
+            ToastUtil.getInstance().makeShort(R.string.signup_wait_for_sending_email);
             return;
         }
         View view = this.getCurrentFocus();
@@ -167,25 +164,24 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
             Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        if (!FilterUtil.isEmailValidate(mEditTextID.getText().toString().trim())) {
-            ToastUtil.getInstance().makeShort("이메일을 확인해 주세요");
-            return;
-        }
 
-        if (!isPasswordSame() |
-                !FilterUtil.isPasswordValidate(mEditTextPW.getText().toString())) {
-            ToastUtil.getInstance().makeShort("입력한 정보를 다시 확인해 주세요");
+        if (!isPasswordSame()) {
+            ToastUtil.getInstance().makeShort(R.string.signup_password_not_same);
             return;
         }
 
         if (!mCheckBoxPersonalInfoTerms.isChecked() || !mCheckBoxSignupTerms.isChecked()) {
-            ToastUtil.getInstance().makeShort("이용약관에 동의해 주세요");
+            ToastUtil.getInstance().makeShort(R.string.signup_agree_term_warning);
             return;
         }
 
         this.firebasePerformanceUtil.incrementMetric("signup_button_click", ++this.signUpButtonClickCount);
-        this.signupPresenter.signUp(mEditTextID.getText().toString(), mEditTextPW.getText().toString());
-        isverified = true;
+        this.signupPresenter.signUp(mEditTextID.getText().toString().trim(), mEditTextPW.getText().toString().trim());
+    }
+
+    @Override
+    public void buttonClickBlock(boolean isBlock) {
+        isverified = isBlock;
     }
 
     /**
@@ -197,13 +193,11 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     public void showMessage(String message) {
         Log.d(TAG, message);
         ToastUtil.getInstance().makeShort(message);
-        isverified = false;
     }
 
     @Override
     public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
-        isverified = false;
     }
 
     /**
@@ -213,7 +207,6 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
     public void gotoEmail() {
         SnackbarUtil.makeSnackbarActionWebView(this, R.id.signup_box, "10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?",
                 "KOREATECH E-mail 인증", this.context.getResources().getString(R.string.koreatech_url), 5000);
-        isverified = false;
     }
 
     /**
