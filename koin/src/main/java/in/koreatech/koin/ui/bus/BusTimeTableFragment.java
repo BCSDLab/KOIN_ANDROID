@@ -35,7 +35,9 @@ import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableCityBusFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableDaejeonShuttleFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableSeoulShuttleFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableUnitoYawooriDaesungFragment;
+import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableUnitoYawooriDaesungTemporaryFragment;
 import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungFragment;
+import in.koreatech.koin.ui.bus.bustimetable.BusTimeTableYawooritoUniDaesungTemporaryFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleGymEveningFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleGymMorningFragment;
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableSeasonChungjuShuttleYongamEveningFragment;
@@ -150,10 +152,13 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
         fragmentTransaction.commit();
     }
 
+
     @OnClick(R.id.bus_timetable_bustype_daesung)
     public void onClickBustypeDaesung() {
         FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
-        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
+        // TODO -> 코로나 바이러스 끝난 후 변경 필요
+        fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungTemporaryFragment());
+        // fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
         busTimetableCheonanStartEndSpinner.setVisibility(View.GONE);
         busTimetableDaesungSpinner.setVisibility(View.VISIBLE);
         busTimetableChungjuSpinner.setVisibility(View.GONE);
@@ -365,15 +370,18 @@ public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTabl
 
     }
 
+    // TODO -> 코로나 바이러스 끝난 후 교체 필요
     @OnItemSelected(R.id.bus_timetable_fragment_daesung_spinner)
     public void onBusArrivalDaesungSpinnerSelect(Spinner spinner, int position) {
         FragmentTransaction fragmentTransaction = this.fragmentManger.beginTransaction();
         switch (position) {
             case 0:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungTemporaryFragment());
+                //fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableUnitoYawooriDaesungFragment());
                 break;
             case 1:
-                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungFragment());
+                fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungTemporaryFragment());
+                //fragmentTransaction.replace(R.id.bus_timetable_fragment, new BusTimeTableYawooritoUniDaesungFragment());
                 break;
 
         }

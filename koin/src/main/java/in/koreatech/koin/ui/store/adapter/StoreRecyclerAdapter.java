@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +49,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.storeArrayList = new ArrayList<>();
+        Collections.sort(storeArrayList);
         this.storeArrayList.addAll(storeArrayList);
     }
 
