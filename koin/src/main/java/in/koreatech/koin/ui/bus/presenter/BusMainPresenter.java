@@ -15,18 +15,17 @@ import in.koreatech.koin.data.network.response.BusResponse;
 
 import java.text.ParseException;
 
-
 public class BusMainPresenter {
     private String TAG = "BusMainPresenter";
     private final BusMainContract.View busMainView;
     private final CityBusInteractor busInteractor;
     private final TermInteractor termInteractor;
 
-
     public BusMainPresenter(BusMainContract.View busMainView, CityBusInteractor busInteractor, TermInteractor termInteractor) {
         this.busMainView = busMainView;
         this.busInteractor = busInteractor;
         this.termInteractor = termInteractor;
+        this.busMainView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {                     //시내버스의 시간을 받아오는 api callback
@@ -41,7 +40,6 @@ public class BusMainPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            Log.d(TAG, throwable.getMessage());
             busMainView.updateFailCityBusDepartInfo();
             busMainView.hideLoading();
         }
@@ -56,7 +54,6 @@ public class BusMainPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            Log.d(TAG, throwable.getMessage());
             busMainView.updateFailCityBusDepartInfo();
             busMainView.hideLoading();
         }
@@ -130,16 +127,16 @@ public class BusMainPresenter {
             default:
                 currentSemesterBus = new VacationBus();
         }
-            try {
-                int soonArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-                int laterArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
-                String soonDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-                String laterDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
-                busMainView.updateShuttleBusTime(soonArrival, laterArrival);
-                busMainView.updateShuttleBusDepartInfo(soonDeparture, laterDeparture);
-            } catch (ParseException e) {
-                busMainView.updateFailCityBusDepartInfo();
-            }
+        try {
+            int soonArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            int laterArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
+            String soonDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            String laterDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
+            busMainView.updateShuttleBusTime(soonArrival, laterArrival);
+            busMainView.updateShuttleBusDepartInfo(soonDeparture, laterDeparture);
+        } catch (ParseException e) {
+            busMainView.updateFailCityBusDepartInfo();
+        }
 
         busMainView.hideLoading();
     }

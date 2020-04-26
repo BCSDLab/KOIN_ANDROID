@@ -12,6 +12,7 @@ public class BusTimeTablePresenter {
     public BusTimeTablePresenter(BusTimeTableContract.View busTimeTableView, TermInteractor termInteractor) {
         this.busTimeTableView = busTimeTableView;
         this.termInteractor = termInteractor;
+        this.busTimeTableView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {                 //방학인지 학기중인지 정보를 받아오는 api callback
