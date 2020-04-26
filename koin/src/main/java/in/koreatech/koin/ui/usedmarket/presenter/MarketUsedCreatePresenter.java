@@ -2,14 +2,18 @@ package in.koreatech.koin.ui.usedmarket.presenter;
 
 import com.google.firebase.perf.metrics.AddTrace;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
+import in.koreatech.koin.util.FilterUtil;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 import java.io.File;
 
-public class MarketUsedCreatePresenter{
+public class MarketUsedCreatePresenter {
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedCreateContract.View marketCreateContractView;
@@ -58,6 +62,19 @@ public class MarketUsedCreatePresenter{
     }
 
     public void createMarketItem(MarketItem marketItem) {
+        if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
+            marketCreateContractView.showMessage(R.string.market_used_phone_check);
+            return;
+        }
+        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+            marketCreateContractView.showMessage(R.string.market_used_title_check);
+            return;
+        }
+        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+            marketCreateContractView.showMessage(R.string.market_used_content_check);
+            return;
+        }
+
         marketCreateContractView.showLoading();
         marketUsedInteractor.createMarketItem(marketItem, createMarketApiCallback);
     }

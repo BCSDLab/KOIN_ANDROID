@@ -250,6 +250,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == articleEditor.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
@@ -366,25 +367,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
             ToastUtil.getInstance().makeShort("이미지 업로드 중입니다.");
             return;
         }
-        if (FormValidatorUtil.validateStringIsEmpty(editTextTitle.getText().toString())) {
-            ToastUtil.getInstance().makeShort("제목을 입력하세요");
-            return;
-        }
-        if (FormValidatorUtil.validateStringIsEmpty(articleEditor.getContent().toString().trim())) {
-            ToastUtil.getInstance().makeShort("내용을 입력하세요");
-            return;
-        }
-
-        if (boardUid == ID_ANONYMOUS) {
-            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextNickname.getText().toString())) {
-                ToastUtil.getInstance().makeShort("제목을 입력하세요");
-                return;
-            }
-            if (FormValidatorUtil.validateStringIsEmpty(articleEdittextPassword.getText().toString())) {
-                ToastUtil.getInstance().makeShort("내용을 입력하세요");
-                return;
-            }
-        }
 
         switch (boardUid) {
             case ID_FREE: //자유게시판
@@ -407,8 +389,11 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 break;
 
         }
+    }
 
-        isCreateBtnClicked = true;
+    @Override
+    public void blockButtonClick(boolean isBlock) {
+        isCreateBtnClicked = isBlock;
     }
 
     @Override
@@ -440,8 +425,13 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     }
 
     @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void showMessage(String message) {
-        isCreateBtnClicked = false;
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

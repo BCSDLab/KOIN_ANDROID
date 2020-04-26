@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.board.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
@@ -13,45 +15,19 @@ public interface ArticleCommentContract {
 
         void showMessage(String message);
 
+        void showMessage(@StringRes int message);
+
         void updateUserInterface();
-
-        void onClickCommentModifyButton(Comment comment);
-
-        void onClickCommentRemoveButton(final Comment comment);
-
-        void showErrorDeleteComment();
-
-        void showSuccessDeleteComment();
-
-        void showErrorDeleteAnonymousComment();
-
-        void showSuccessAnonymousDeleteComment();
-
-        void showErrorUpdateAnonymousComment();
-
-        void showSuccessUpdateAnonymousComment();
 
         void showSuccessCreateComment();
 
-        void showErrorCreateComment();
+        void showSuccessDeleteComment();
+
+        void showSuccessUpdateAnonymousComment();
 
         void showSuccessCreateAnonymousComment();
 
-        void showErrorCreateAnonymousComment();
-
-        void showErrorGrantedDeleteComment();
-
-        void showSuccessGrantedDeleteComment();
-
-        void showErrorGrantedDeleteContent();
-
-        void showSuccessGrantedDeleteContent();
-
-        void showErrorGrantedAdjustComment();
-
-        void showSuccessGrantedAdjustComment();
-
-        void showErrorEditComment();
+        void showSuccessAnonymousDeleteComment();
 
         void showSuccessEditComment();
 

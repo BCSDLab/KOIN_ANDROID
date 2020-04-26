@@ -54,6 +54,19 @@
     <!--Sign Up-->
     <string name="signup_term_check_message_ask">&quot;동의&quot; 체크 박스에 체크를 한 후 이메일 인증하기 버튼을 클릭하면 본 약관에 동의하는 것으로 간주합니다.</string>
     <string name="signup_term_check_message_checked">모든 약관에 동의하셨습니다.</string>
+    <string name="signup_password_not_same">비밀번호가 다릅니다.</string>
+    <string name="signup_password_format_warning">비밀번호 형식이 다릅니다.</string>
+    <string name="signup_email_format_warning">이메일 형식이 다릅니다.</string>
+    <string name="signup_password_input_warning">비밀번호를 입력해주세요</string>
+    <string name="signup_wait_for_sending_email">확인 메일 전송중입니다 잠시만 기다려 주세요</string>
+    <string name="signup_agree_term_warning">이용약관에 동의해 주세요</string>
+    <string name="signup_id_input_warning">이메일을 입력해주세요</string>
+
+    <!-- ForgotPassword-->
+    <string name="email_empty_string_warning">이메일을 입력해주세요</string>
+
+    <!--Login-->
+    <string name="login_email_password_empty_string_warning">아이디와 비밀번호를 입력해주세요"</string>
 
     <!-- Required value in actionbardrawertoggle -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -69,11 +82,27 @@
     <string name="board_author">작성자</string>
     <string name="board_create">작성</string>
     <string name="board_edit">수정</string>
+    <string name="board_update_fail">게시글 정보를 가져오지 못했습니다.</string>
+    <string name="board_title_check">제목을 입력해주세요</string>
+    <string name="board_content_check">내용을 입력해주세요</string>
+    <string name="board_password_check">비밀번호를 입력해주세요</string>
+    <string name="board_nickname_check">닉네임을 입력해주세요</string>
 
     <!-- Comment -->
     <string name="comment_edit">수정</string>
     <string name="comment_remove">삭제</string>
     <string name="comment_reply">댓글</string>
+    <string name="comment_edit_not_granted">수정권한이 없습니다.</string>
+    <string name="comment_deleted">댓글이 삭제되었습니다.</string>
+    <string name="comment_edited">댓글이 수정되었습니다.</string>
+    <string name="comment_delete_fail">댓글 삭제에 실패하였습니다.</string>
+    <string name="comment_edit_fail">댓글 수정에 실패하였습니다.</string>
+    <string name="comment_create_fail">댓글이 등록되지 않았습니다.</string>
+    <string name="comment_created">댓글이 등록되었습니다.</string>
+    <string name="comment_input_password">비밀번호를 입력해주세요.</string>
+    <string name="comment_input_content">내용을 입력해주세요.</string>
+    <string name="comment_input_nickname">닉네임을 입력해주세요.</string>
+
 
     <!--Bus-->
     <string name="bus_search_button">조회</string>
@@ -98,6 +127,9 @@
     <string name="email_sending">이메일 전송 중</string>
     <string name="email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
 
+    <!--UserInfoEdit-->
+    <string name="user_info_check_nickname_warning">닉네임은 1자리 이상 10자리 이하로 가능합니다.</string>
+
     <!--Timetable-->
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
@@ -111,6 +143,9 @@
     <string name="lost_and_found_edited">수정되었습니다.</string>
     <string name="lost_and_found_deleted">삭제되었습니다.</string>
     <string name="lost_and_found_delete_fail">삭제에 실패했습니다.</string>
+    <string name="lost_and_found_content_check">내용을 입력해주세요</string>
+    <string name="lost_and_found_phone_check">잘못된 휴대폰 번호입니다.\n 010-1234-1234 양식을 지켜주세요.</string>
+    <string name="lost_and_found_title_check">제목을 입력해주세요</string>
 
     <!--major-->
     <string name="mechanical_engineering">기계공학부</string>

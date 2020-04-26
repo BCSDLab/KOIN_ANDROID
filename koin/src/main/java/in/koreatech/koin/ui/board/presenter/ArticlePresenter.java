@@ -43,32 +43,6 @@ public class ArticlePresenter {
         }
     };
 
-//    private final ApiCallback commentApiCallback = new ApiCallback() {
-//        @Override
-//        public void onSuccess(Object object) {
-//            int articleUid = ((Comment) object).articleUid;
-//            getArticle(articleUid);
-//        }
-//
-//        @Override
-//        public void onFailure(Throwable throwable) {
-//
-//        }
-//    };
-//
-//    private final ApiCallback commentAnoymousApiCallback = new ApiCallback() {
-//        @Override
-//        public void onSuccess(Object object) {
-//            int articleUid = ((Comment) object).articleUid;
-//            getAnonymousArticle(articleUid);
-//        }
-//
-//        @Override
-//        public void onFailure(Throwable throwable) {
-//
-//        }
-//    };
-
     private final ApiCallback grantUpdateApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
@@ -122,41 +96,7 @@ public class ArticlePresenter {
             articleView.hideLoading();
         }
     };
-
-//    private final ApiCallback grantAnonymousDeleteCommentGrantedApiCallback = new ApiCallback() {
-//        @Override
-//        public void onSuccess(Object object) {
-//            boolean isGrantEdit = ((Article) object).isGrantEdit;
-//            if (isGrantEdit)
-//                articleView.showSuccessGrantedDeleteComment();
-//            else
-//                articleView.showErrorGrantedDeleteComment();
-//
-//        }
-//
-//        @Override
-//        public void onFailure(Throwable throwable) {
-//            articleView.showErrorGrantedDeleteComment();
-//        }
-//    };
-
-    //    private final ApiCallback grantAnonymousAdjustCommentGrantedApiCallback = new ApiCallback() {
-//        @Override
-//        public void onSuccess(Object object) {
-//            boolean isGrantEdit = ((Article) object).isGrantEdit;
-//            if (isGrantEdit)
-//                articleView.showSuccessGrantedAdjustComment();
-//            else
-//                articleView.showErrorGrantedAdjustComment();
-//        }
-//
-//        @Override
-//        public void onFailure(Throwable throwable) {
-//            articleView.showErrorGrantedAdjustComment();
-//        }
-//    };
-//
-    private final ApiCallback deleteAnoymousArticleApiCallback = new ApiCallback() {
+    private final ApiCallback deleteAnonymousArticleApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             articleView.showSuccessDeleteContent();
@@ -180,32 +120,10 @@ public class ArticlePresenter {
         communityInteractor.readAnonymousArticle(articleUid, articleApiCallback);
     }
 
-    public void updateArticle(Article article) {
-        articleView.showLoading();
-        communityInteractor.updateArticle(article, articleApiCallback);
-    }
-
     public void deleteArticle(int articleUid) {
         articleView.showLoading();
         communityInteractor.deleteArticle(articleUid, deleteArticleApiCallback);
     }
-
-//    public void createComment(int articleUid, String content) {
-//        communityInteractor.createComment(articleUid, content, commentAnoymousApiCallback);
-//    }
-
-    public void readComment(int articleUid, int commentUid) {
-//        communityInteractor.readComment(articleUid, commentUid, commentApiCallback);
-    }
-
-//    public void updateComment(int articleUid, Comment comment) {
-//        comment.articleUid = articleUid;
-//        communityInteractor.updateComment(comment, commentAnoymousApiCallback);
-//    }
-//
-//    public void deleteComment(int articleUid, int commentUid) {
-//        communityInteractor.deleteComment(articleUid, commentUid, commentAnoymousApiCallback);
-//    }
 
     public void checkGranted(int articleUid) {
         articleView.showLoading();
@@ -214,21 +132,8 @@ public class ArticlePresenter {
 
     public void deleteAnoymousArticle(int articleUid, String password) {
         articleView.showLoading();
-        communityInteractor.deleteAnonymousArticle(articleUid, password, deleteAnoymousArticleApiCallback);
+        communityInteractor.deleteAnonymousArticle(articleUid, password, deleteAnonymousArticleApiCallback);
     }
-//
-//    public void createAnonymousComment(int articleUid, String content, String nickname, String password) {
-//        communityInteractor.createAnonymousComment(articleUid, content, nickname, password, commentAnoymousApiCallback);
-//    }
-//
-//    public void updateAnonymousComment(int articleUid, Comment comment) {
-//        comment.articleUid = articleUid;
-//        communityInteractor.updateAnonymousComment(comment, commentAnoymousApiCallback);
-//    }
-//
-//    public void deleteAnonymousComment(int articleUid, int commentUid, String password) {
-//        communityInteractor.deleteAnonymousComment(articleUid, commentUid, password, commentAnoymousApiCallback);
-//    }
 
     public void checkAnonymousAdjustGranted(int articleUid, String password) {
         articleView.showLoading();
@@ -240,12 +145,5 @@ public class ArticlePresenter {
         communityInteractor.updateAnonymousGrantCheck(articleUid, password, grantAnonymousDeleteApiCallback);
     }
 
-//    public void checkAnonymousCommentDeleteGranted(int commentUid, String password) {
-//        communityInteractor.updateAnonymousCommentGrantCheck(commentUid, password, grantAnonymousDeleteCommentGrantedApiCallback);
-//    }
-//
-//    public void checkAnonymousCommentAdjustGranted(int commentUid, String password) {
-//        communityInteractor.updateAnonymousCommentGrantCheck(commentUid, password, grantAnonymousAdjustCommentGrantedApiCallback);
-//    }
 
 }

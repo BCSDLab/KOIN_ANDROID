@@ -18,5 +18,7 @@ public interface SignupContract {
 
         void hideProgress();
 
+        void buttonClickBlock(boolean isBlock);
+
     }
 }

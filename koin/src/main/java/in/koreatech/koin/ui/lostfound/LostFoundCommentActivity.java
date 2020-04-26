@@ -270,10 +270,6 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     public void onClickedCommentRegisterButton() {
         String commentContent = lostfoundCommentContentEdittext.getText().toString();
-        if (commentContent.isEmpty()) {
-            ToastUtil.getInstance().makeShort("내용을 입력해주세요.");
-            return;
-        }
         if (!isEditComment) {
             lostFoundCommentPresenter.createComment(id, commentContent);
         } else {

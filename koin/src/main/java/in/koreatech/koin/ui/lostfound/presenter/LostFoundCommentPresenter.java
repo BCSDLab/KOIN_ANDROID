@@ -2,10 +2,12 @@ package in.koreatech.koin.ui.lostfound.presenter;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
 import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.data.network.response.DefaultResponse;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 /**
  * 댓글 Presenter
@@ -92,12 +94,20 @@ public class LostFoundCommentPresenter {
     };
 
     public void createComment(int id, String comment) {
+        if (FormValidatorUtil.validateStringIsEmpty(comment)) {
+            lostFoundCommentView.showMessage(R.string.lost_and_found_content_check);
+            return;
+        }
         lostFoundCommentView.showLoading();
         this.id = id;
         lostAndFoundInteractor.createCommentDetail(id, comment, createCommentApiCallback);
     }
 
     public void updateComment(int id, int commentId, String comment) {
+        if (FormValidatorUtil.validateStringIsEmpty(comment)) {
+            lostFoundCommentView.showMessage(R.string.lost_and_found_content_check);
+            return;
+        }
         lostFoundCommentView.showLoading();
         this.id = id;
         lostAndFoundInteractor.editCommentDetail(id, commentId, comment, updateCommentApiCallback);
