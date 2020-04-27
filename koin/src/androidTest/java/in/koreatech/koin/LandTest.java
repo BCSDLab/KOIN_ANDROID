@@ -20,10 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import in.koreatech.koin.ui.land.LandActivity;
-import in.koreatech.koin.ui.land.LandDetailActivity;
-import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
-import in.koreatech.koin.ui.main.MainActivity;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -48,7 +44,6 @@ public class LandTest {
     public void testcaseForAppBarTitle(){
         onView(withId(R.id.koin_base_app_bar_dark)).check(matches(hasDescendant(withText(R.string.navigation_item_land))));
     }
-
 
     @Test
     public void testCaseForRecyclerScroll(){
@@ -79,5 +74,6 @@ public class LandTest {
                 toPackage("in.koreatech.koin"),
                 hasComponent("in.koreatech.koin.ui.land.LandDetailActivity")));
     }
+
 
 }

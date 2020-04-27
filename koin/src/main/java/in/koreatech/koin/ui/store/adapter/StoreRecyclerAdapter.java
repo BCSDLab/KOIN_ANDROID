@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Store;
+import in.koreatech.koin.ui.store.StoreDetailActivity;
 
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.ViewHolder> {
     private final String TAG = StoreRecyclerAdapter.class.getSimpleName();
@@ -27,6 +30,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     private ArrayList<Store> storeArrayList; //학교 앞 상점 List
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public final View view;
         @BindView(R.id.store_name_textview)
         TextView textViewStoreName;  //업체의 이름을 표시할 TextView
         @BindView(R.id.store_delivery_textview)
@@ -38,6 +42,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
 
         public ViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             ButterKnife.bind(this, itemView);
         }
     }
@@ -83,6 +88,20 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         } else {
             holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.blue1));
         }
+        holder.view.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, StoreDetailActivity.class);
+                if(position != RecyclerView.NO_POSITION){
+                    intent.putExtra("STORE_UID", store.getUid());
+                    intent.putExtra("STORE_NAME", store.getName());
+                    context.startActivity(intent);
+                }else{
+                    Toast.makeText(context, "상점을 찾을수 없습니다", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
 
     @Override
