@@ -33,7 +33,6 @@
                 android:orientation="vertical">
 
                 <androidx.core.widget.NestedScrollView
-                    android:id="@+id/circle_root_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"

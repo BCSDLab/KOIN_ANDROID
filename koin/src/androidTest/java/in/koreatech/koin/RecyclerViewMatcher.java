@@ -9,8 +9,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import javax.annotation.Resource;
-
 import static org.hamcrest.Matchers.is;
 
 public class RecyclerViewMatcher {
@@ -33,7 +31,7 @@ public class RecyclerViewMatcher {
                     try {
                         idDescription = this.resources.getResourceName(recyclerViewId);
                     } catch (Resources.NotFoundException exception) {
-                        idDescription = String.format("%s (resource name not found)", recyclerViewId);
+                        idDescription = String.format("resource name %s not found", recyclerViewId);
                     }
                 }
 
@@ -46,8 +44,7 @@ public class RecyclerViewMatcher {
                 this.resources = item.getResources();
 
                 if (childView == null) {
-                    RecyclerView recyclerView =
-                            (RecyclerView) item.getRootView().findViewById(recyclerViewId);
+                    RecyclerView recyclerView = item.getRootView().findViewById(recyclerViewId);
                     if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
                         childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
                     }
