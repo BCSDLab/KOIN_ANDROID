@@ -18,6 +18,6 @@ public interface StoreContract {
 
         void updateUserInterface();
 
-        void goToStoreDetailActivity(int storeUid, String storeName);
+        //void goToStoreDetailActivity(int storeUid, String storeName);
     }
 }

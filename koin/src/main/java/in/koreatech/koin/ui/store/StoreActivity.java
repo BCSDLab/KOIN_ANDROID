@@ -161,7 +161,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<Store>());
         storeListRecyclerView.setNestedScrollingEnabled(false);
         storeListRecyclerView.setHasFixedSize(false);
-        storeListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
+        //storeListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
         storeListRecyclerView.setLayoutManager(this.layoutManager);
         storeListRecyclerView.setAdapter(this.storeRecyclerAdapter);
 
@@ -218,17 +218,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     }
 
-    private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, final int position) {
-            goToStoreDetailActivity(storeArrayList.get(position).getUid(), storeArrayList.get(position).getName());
-
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-        }
-    });
 
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
@@ -237,13 +226,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             onBackPressed();
     }
 
-    @Override
-    public void goToStoreDetailActivity(int storeUid, String storeName) {
-        Intent intent = new Intent(this, StoreDetailActivity.class);
-        intent.putExtra("STORE_UID", storeUid);
-        intent.putExtra("STORE_NAME", storeName);
-        startActivity(intent);
-    }
 
     @Override
     public void onRefresh() {
