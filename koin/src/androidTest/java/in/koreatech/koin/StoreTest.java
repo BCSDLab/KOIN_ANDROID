@@ -241,6 +241,11 @@ public class StoreTest {
 
     }
 
+    /**
+     * TextView 색상 확인하는 함수
+     * @param matcherColor
+     * @return
+     */
     public static Matcher<View> textViewTextColorMatcher(final int matcherColor) {
         return new BoundedMatcher<View, TextView>(TextView.class) {
             @Override
