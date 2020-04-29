@@ -319,8 +319,6 @@ public class ArticleCommentPresenterTest {
         verify(articleCommentView,times(2)).hideLoading();
     }
 
-    //TODO
-
     @Test
     public void errorUpdateAnonymousComment_EmptyContent_ShowsToastMessage() {
         comment.setContent("");
