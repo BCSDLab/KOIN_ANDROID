@@ -19,6 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -38,6 +39,7 @@ import in.koreatech.koin.ui.dining.presenter.DiningPresenter;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -62,13 +64,10 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
 
 
     /* View Component */
+    @BindViews({R.id.dining_breakfast_button, R.id.dining_lunch_button, R.id.dining_dinner_button})
+    List<TextView> diningButton;
 
-    @BindView(R.id.dining_breakfast_button)
-    TextView breakfastButton;
-    @BindView(R.id.dining_lunch_button)
-    TextView lunchButton;
-    @BindView(R.id.dining_dinner_button)
-    TextView dinnerButton;
+
 
 
     @BindView(R.id.dining_swiperefreshlayout)
@@ -369,35 +368,37 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     @OnClick(R.id.dining_breakfast_button)
     public void onClickBreakfastButton() {
         typeIndex = 0;
-        breakfastButton.setText(Html.fromHtml(colorText("#f7941e", "아침")), TextView.BufferType.SPANNABLE);
-        lunchButton.setText("점심");
-        dinnerButton.setText("저녁");
+        colorText(R.id.dining_breakfast_button);
         updateUserInterface();
     }
 
     @OnClick(R.id.dining_lunch_button)
     public void onClickLunchButton() {
         typeIndex = 1;
-        breakfastButton.setText("아침");
-        lunchButton.setText(Html.fromHtml(colorText("#f7941e", "점심")), TextView.BufferType.SPANNABLE);
-        dinnerButton.setText("저녁");
-
+        colorText(R.id.dining_lunch_button);
         updateUserInterface();
     }
 
     @OnClick(R.id.dining_dinner_button)
     public void onClickDinnerButton() {
         typeIndex = 2;
-
-        breakfastButton.setText("아침");
-        lunchButton.setText("점심");
-        dinnerButton.setText(Html.fromHtml(colorText("#f7941e", "저녁")), TextView.BufferType.SPANNABLE);
+        colorText(R.id.dining_dinner_button);
         updateUserInterface();
     }
 
-    public String colorText(String color, String text) {
-        String styledText = "<u><font color='" + color + "'>" + text + "</font></u>";
-        return styledText;
+    public void colorText(int selectId) {
+        int [] id = {R.id.dining_breakfast_button, R.id.dining_lunch_button, R.id.dining_dinner_button};
+        String [] diningText = {"아침", "점심", "저녁"};
+        for(int i=0;i<3;i++){
+            if(selectId == id[i]) {
+                diningButton.get(i).setTextColor(getResources().getColor(R.color.colorAccent));
+                diningButton.get(i).setText(Html.fromHtml("<u>"+diningText[i]+"</u>"), TextView.BufferType.SPANNABLE);
+            }
+            else {
+                diningButton.get(i).setTextColor(getResources().getColor(R.color.black));
+                diningButton.get(i).setText(diningText[i]);
+            }
+        }
     }
 
     @OnClick(R.id.dining_before_date_button)
