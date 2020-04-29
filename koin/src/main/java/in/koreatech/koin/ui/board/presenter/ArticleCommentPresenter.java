@@ -6,6 +6,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityInteractor;
+import in.koreatech.koin.util.FormValidatorUtil;
 import retrofit2.HttpException;
 
 public class ArticleCommentPresenter {
@@ -16,6 +17,7 @@ public class ArticleCommentPresenter {
     public ArticleCommentPresenter(ArticleCommentContract.View articleCommentView, CommunityInteractor communityInteractor) {
         this.articleCommentView = articleCommentView;
         this.communityInteractor = communityInteractor;
+        articleCommentView.setPresenter(this);
     }
 
 
@@ -172,7 +174,7 @@ public class ArticleCommentPresenter {
     }
 
     public void createComment(int articleUid, String content) {
-        if (content.isEmpty()) {
+        if (FormValidatorUtil.validateStringIsEmpty(content)) {
             articleCommentView.showMessage(R.string.comment_input_content);
             return;
         }
@@ -181,7 +183,7 @@ public class ArticleCommentPresenter {
     }
 
     public void updateComment(int articleUid, Comment comment) {
-        if (comment.getContent().isEmpty()) {
+        if (FormValidatorUtil.validateStringIsEmpty(comment.getContent())) {
             articleCommentView.showMessage(R.string.comment_input_content);
             return;
         }
@@ -197,11 +199,11 @@ public class ArticleCommentPresenter {
 
 
     public void createAnonymousComment(int articleUid, String content, String nickname, String password) {
-        if (content.isEmpty()) {
+        if (FormValidatorUtil.validateStringIsEmpty(content)) {
             articleCommentView.showMessage(R.string.comment_input_content);
-        } else if (password.isEmpty()) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(password)) {
             articleCommentView.showMessage(R.string.comment_input_password);
-        } else if (nickname.isEmpty()) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(nickname)) {
             articleCommentView.showMessage(R.string.comment_input_nickname);
         } else {
             articleCommentView.showLoading();
@@ -210,12 +212,12 @@ public class ArticleCommentPresenter {
     }
 
     public void updateAnonymousComment(int articleUid, Comment comment) {
-        if (comment.getContent().isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_content);
-        } else if (comment.getPassword().isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_password);
-        } else if (comment.getAuthorNickname().isEmpty()) {
-            ToastUtil.getInstance().makeShort(R.string.comment_input_nickname);
+        if (FormValidatorUtil.validateStringIsEmpty(comment.getContent())) {
+            articleCommentView.showMessage(R.string.comment_input_content);
+        } else if (FormValidatorUtil.validateStringIsEmpty(comment.getPassword())) {
+            articleCommentView.showMessage(R.string.comment_input_password);
+        } else if (FormValidatorUtil.validateStringIsEmpty(comment.getAuthorNickname())) {
+            articleCommentView.showMessage(R.string.comment_input_nickname);
         } else {
             articleCommentView.showLoading();
             comment.setArticleUid(articleUid);

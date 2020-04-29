@@ -12,6 +12,7 @@ import in.koreatech.koin.ui.board.presenter.ArticleContract;
 import in.koreatech.koin.ui.board.presenter.ArticlePresenter;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
@@ -42,10 +43,10 @@ public class ArticlePresenterTest {
     public void errorLoadAllArticleFromServer_ShowsErrorToastMessage() {
         Exception httpException = new Exception();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onFailure(httpException);
             return null;
-        }).when(communityInteractor).readArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).readArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.getArticle(0);
         verify(articleView).showLoading();
         verify(articleView).showMessage(httpException.getMessage());
@@ -56,10 +57,10 @@ public class ArticlePresenterTest {
     public void loadAllArticleFromServerAndLoadIntoView() {
         Article article = new Article();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).readArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).readArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.getArticle(0);
         verify(articleView).showLoading();
         verify(articleView).onArticleDataReceived(article);
@@ -70,10 +71,10 @@ public class ArticlePresenterTest {
     public void errorLoadAnonymousArticle_ShowsErrorToastMessage() {
         Exception httpException = new Exception();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onFailure(httpException);
             return null;
-        }).when(communityInteractor).readAnonymousArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).readAnonymousArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.getAnonymousArticle(0);
         verify(articleView).showLoading();
         verify(articleView).showMessage(httpException.getMessage());
@@ -84,10 +85,10 @@ public class ArticlePresenterTest {
     public void loadAllAnonymousArticleFromServerAndLoadIntoView() {
         Article article = new Article();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).readAnonymousArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).readAnonymousArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.getAnonymousArticle(0);
         verify(articleView).showLoading();
         verify(articleView).onArticleDataReceived(article);
@@ -99,10 +100,10 @@ public class ArticlePresenterTest {
     public void errorDeleteArticleFromServer_ShowsErrorToastMessage() {
         Exception httpException = new Exception();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onFailure(httpException);
             return null;
-        }).when(communityInteractor).deleteArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).deleteArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.deleteArticle(0);
         verify(articleView).showLoading();
         verify(articleView).showMessage(httpException.getMessage());
@@ -114,10 +115,10 @@ public class ArticlePresenterTest {
     public void deleteArticleFromServerAndLoadIntoView() {
         Article article = new Article();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).readAnonymousArticle(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).readAnonymousArticle(anyInt(), any(ApiCallback.class));
         articlePresenter.getAnonymousArticle(0);
         verify(articleView).showLoading();
         verify(articleView).onArticleDataReceived(article);
@@ -128,10 +129,10 @@ public class ArticlePresenterTest {
     public void errorCheckArticleCheckGranted_ShowsHideEditAndDeleteMenu() {
         Exception httpException = new Exception();
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onFailure(httpException);
             return null;
-        }).when(communityInteractor).updateGrantCheck(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).updateGrantCheck(anyInt(), any(ApiCallback.class));
         articlePresenter.checkGranted(0);
         verify(articleView).showLoading();
         verify(articleView).hideEditAndDeleteMenu();
@@ -143,10 +144,10 @@ public class ArticlePresenterTest {
         Article article = new Article();
         article.setGrantEdit(true);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateGrantCheck(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).updateGrantCheck(anyInt(), any(ApiCallback.class));
         articlePresenter.checkGranted(0);
         verify(articleView).showLoading();
         verify(articleView).showEditAndDeleteMenu();
@@ -158,10 +159,10 @@ public class ArticlePresenterTest {
         Article article = new Article();
         article.setGrantEdit(false);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[1];
+            apiCallback =  invocation.getArgument(1);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateGrantCheck(eq(0), any(ApiCallback.class));
+        }).when(communityInteractor).updateGrantCheck(anyInt(), any(ApiCallback.class));
         articlePresenter.checkGranted(0);
         verify(articleView).showLoading();
         verify(articleView).hideEditAndDeleteMenu();
@@ -173,10 +174,10 @@ public class ArticlePresenterTest {
         Exception httpException = new Exception();
         String wrongPassword = "12345";
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onFailure(httpException);
             return null;
-        }).when(communityInteractor).deleteAnonymousArticle(eq(0), eq(wrongPassword), any(ApiCallback.class));
+        }).when(communityInteractor).deleteAnonymousArticle(anyInt(), eq(wrongPassword), any(ApiCallback.class));
         articlePresenter.deleteAnonymousArticle(0, wrongPassword);
         verify(articleView).showLoading();
         verify(articleView).showErrorDeleteContent();
@@ -188,10 +189,10 @@ public class ArticlePresenterTest {
     public void DeleteAnonymousArticleFromServer_MatchedPassword_ShowsSuccessDeleteContent() {
         String matchedPassword = "12345";
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onSuccess(true);
             return null;
-        }).when(communityInteractor).deleteAnonymousArticle(eq(0), eq(matchedPassword), any(ApiCallback.class));
+        }).when(communityInteractor).deleteAnonymousArticle(anyInt(), eq(matchedPassword), any(ApiCallback.class));
         articlePresenter.deleteAnonymousArticle(0, matchedPassword);
         verify(articleView).showLoading();
         verify(articleView).showSuccessDeleteContent();
@@ -204,10 +205,10 @@ public class ArticlePresenterTest {
         String wrongPassword = "12345";
         article.setGrantEdit(true);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateAnonymousGrantCheck(eq(0), eq(wrongPassword), any(ApiCallback.class));
+        }).when(communityInteractor).updateAnonymousGrantCheck(anyInt(), eq(wrongPassword), any(ApiCallback.class));
         articlePresenter.checkAnonymousAdjustGranted(0, wrongPassword);
         verify(articleView).showLoading();
         verify(articleView).showSuccessAdjustGrantedContent();
@@ -220,10 +221,10 @@ public class ArticlePresenterTest {
         String wrongPassword = "12345";
         article.setGrantEdit(false);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateAnonymousGrantCheck(eq(0), eq(wrongPassword), any(ApiCallback.class));
+        }).when(communityInteractor).updateAnonymousGrantCheck(anyInt(), eq(wrongPassword), any(ApiCallback.class));
         articlePresenter.checkAnonymousAdjustGranted(0, wrongPassword);
         verify(articleView).showLoading();
         verify(articleView).showErrorAdjustGrantedContent();
@@ -236,10 +237,10 @@ public class ArticlePresenterTest {
         String wrongPassword = "12345";
         article.setGrantEdit(true);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateAnonymousGrantCheck(eq(0), eq(wrongPassword), any(ApiCallback.class));
+        }).when(communityInteractor).updateAnonymousGrantCheck(anyInt(), eq(wrongPassword), any(ApiCallback.class));
         articlePresenter.checkAnonymousAdjustGranted(0, wrongPassword);
         verify(articleView).showLoading();
         verify(articleView).showSuccessAdjustGrantedContent();
@@ -252,10 +253,10 @@ public class ArticlePresenterTest {
         String wrongPassword = "12345";
         article.setGrantEdit(false);
         doAnswer(invocation -> {
-            apiCallback = (ApiCallback) invocation.getArguments()[2];
+            apiCallback =  invocation.getArgument(2);
             apiCallback.onSuccess(article);
             return null;
-        }).when(communityInteractor).updateAnonymousGrantCheck(eq(0), eq(wrongPassword), any(ApiCallback.class));
+        }).when(communityInteractor).updateAnonymousGrantCheck(anyInt(), eq(wrongPassword), any(ApiCallback.class));
         articlePresenter.checkAnonymousAdjustGranted(0, wrongPassword);
         verify(articleView).showLoading();
         verify(articleView).showErrorAdjustGrantedContent();
