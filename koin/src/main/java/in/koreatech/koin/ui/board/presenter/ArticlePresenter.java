@@ -12,8 +12,10 @@ public class ArticlePresenter {
     public ArticlePresenter(ArticleContract.View articleView, CommunityInteractor communityInteractor) {
         this.articleView = articleView;
         this.communityInteractor = communityInteractor;
+        articleView.setPresenter(this);
     }
 
+    // TODO -> error message 변경하기
     private final ApiCallback articleApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
@@ -130,7 +132,7 @@ public class ArticlePresenter {
         communityInteractor.updateGrantCheck(articleUid, grantUpdateApiCallback);
     }
 
-    public void deleteAnoymousArticle(int articleUid, String password) {
+    public void deleteAnonymousArticle(int articleUid, String password) {
         articleView.showLoading();
         communityInteractor.deleteAnonymousArticle(articleUid, password, deleteAnonymousArticleApiCallback);
     }
