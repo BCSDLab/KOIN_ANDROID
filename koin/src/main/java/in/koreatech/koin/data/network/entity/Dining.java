@@ -62,6 +62,8 @@ public class Dining {
     @Expose
     private String error;
 
+    public Dining() {}
+
     public Integer getUid() {
         return uid;
     }

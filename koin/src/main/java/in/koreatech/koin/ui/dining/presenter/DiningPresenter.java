@@ -22,7 +22,7 @@ public class DiningPresenter {
     public DiningPresenter(DiningContract.View diningView, DiningInteractor diningInteractor) {
         this.diningView = diningView;
         this.diningInteractor = diningInteractor;
-
+        this.diningView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
@@ -36,7 +36,6 @@ public class DiningPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-           // diningView.showMessage(throwable.getMessage());
             diningListApiCallCheck = false;
             if(!(throwable instanceof UnknownHostException))
                 diningView.showUserInterface();
