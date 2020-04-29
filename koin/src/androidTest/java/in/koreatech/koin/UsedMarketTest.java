@@ -171,7 +171,7 @@ public class UsedMarketTest {
                 .check(matches(isDisplayed()));
     }
 
-    @Test
+    /*@Test
     public void testCaseForSellUpload() { //팝니다 정상동작 확인
         onView(withId(R.id.market_used_main_tabs))
                 .perform(selectTabAtPosition(0))
@@ -193,7 +193,7 @@ public class UsedMarketTest {
 
         onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_sell_title_textview))
                 .check(matches(withText("UITest 팝니다")));
-    }
+    }*/
 
     @Test
     public void testCaseForBuyImage() { //삽니다 대표이미지
@@ -262,7 +262,7 @@ public class UsedMarketTest {
                 .check(matches(isDisplayed()));
     }
 
-    @Test
+    /*@Test
     public void testCaseForBuyUpload() { //삽니다 정상동작 확인
         onView(withId(R.id.market_used_main_tabs))
                 .perform(selectTabAtPosition(1))
@@ -284,6 +284,67 @@ public class UsedMarketTest {
 
         onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_buy_title_textview))
                 .check(matches(withText("UITest 삽니다")));
+    }*/
+
+    @Test
+    public void testCaseForSellUploadAndDelete() {
+        onView(withId(R.id.market_used_main_tabs))
+                .perform(selectTabAtPosition(0))
+                .check(matches(checkTabSelectedAndText(R.id.market_used_main_tabs, 0, "팝니다", true)));
+
+        onView(withId(R.id.base_appbar_dark_right_button)).check(matches(isDisplayed())).perform(click());
+
+        onView(withId(R.id.market_used_sell_create_title_textview)).perform(replaceText("UITest 팝니다"));
+        onView(withId(R.id.market_used_sell_create_content)).perform(replaceText("UITest"));
+
+        onView(withId(R.id.base_appbar_dark_right_button)).check(matches(isDisplayed())).perform(click());
+
+        testcaseForBackButton();
+
+        RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(R.id.market_used_sell_recyclerview);
+
+        onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_sell_title_textview))
+                .check(matches(withText("UITest 팝니다")));
+
+        onView(withId(R.id.market_used_sell_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.market_used_sell_delete_button)).check(matches(isDisplayed()))
+                .perform(click());
+        onView(withText("YES")).perform(click());
+
+        onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_sell_title_textview))
+                .check(matches(not(withText("UITest 팝니다"))));
+    }
+
+    @Test
+    public void testCaseForBuyUploadAndDelete() {
+        onView(withId(R.id.market_used_main_tabs))
+                .perform(selectTabAtPosition(1))
+                .check(matches(checkTabSelectedAndText(R.id.market_used_main_tabs, 1, "삽니다", true)));
+
+        onView(withId(R.id.base_appbar_dark_right_button)).check(matches(isDisplayed())).perform(click());
+
+        onView(withId(R.id.market_used_buy_create_title_textview)).perform(replaceText("UITest 삽니다"));
+        onView(withId(R.id.market_used_buy_create_content)).perform(replaceText("UITest"));
+
+        onView(withId(R.id.base_appbar_dark_right_button)).check(matches(isDisplayed())).perform(click());
+
+        testcaseForBackButton();
+
+        RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(R.id.market_used_buy_recyclerview);
+
+        onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_buy_title_textview))
+                .check(matches(withText("UITest 삽니다")));
+
+        onView(withId(R.id.market_used_buy_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+
+        onView(withId(R.id.market_used_buy_delete_button)).check(matches(isDisplayed()))
+                .perform(click());
+
+        onView(withText("YES")).perform(click());
+
+        onView(recyclerViewMatcher.atPositionOnView(0, R.id.market_used_buy_title_textview))
+                .check(matches(not(withText("UITest 삽니다"))));
     }
 
 
