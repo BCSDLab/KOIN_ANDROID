@@ -83,7 +83,6 @@ public class BusTimeTableSearchPresenterTest {
 
     @Test
     public void loadShuttleBusAndLoadIntoView() {
-        // TODO: 현재 시간 연동
         busTimeTableSearchPresenter.getShuttleBus(0, 1, "2020-04-26", "17:25", 10);
         verify(busTimeTableSearchView).showLoading();
         Bus bus = new RegularSemesterBus();
@@ -95,6 +94,15 @@ public class BusTimeTableSearchPresenterTest {
         }
 
         verify(busTimeTableSearchView).updateShuttleBusTime(busTime);
+        verify(busTimeTableSearchView).hideLoading();
+    }
+
+    @Test
+    public void errorShuttleBus_WrongTimeFormat_ShowsUpdateFailDepartInfo() {
+        busTimeTableSearchPresenter.getShuttleBus(0, 1, "20.04.29", "18:10", 10);
+
+        verify(busTimeTableSearchView).showLoading();
+        verify(busTimeTableSearchView).updateFailDaesungBusDepartInfo();
         verify(busTimeTableSearchView).hideLoading();
     }
 }

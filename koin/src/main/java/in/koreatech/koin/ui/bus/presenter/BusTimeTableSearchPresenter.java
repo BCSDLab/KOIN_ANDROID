@@ -79,7 +79,7 @@ public class BusTimeTableSearchPresenter {
             try {
                 busTime = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), Integer.parseInt(dates[0]), Integer.parseInt(dates[1]), Integer.parseInt(dates[2]), Integer.parseInt(times[0]), Integer.parseInt(times[1]));
                 busTimeTableSearchView.updateShuttleBusTime(busTime);
-            } catch (ParseException e) {
+            } catch (ParseException | NumberFormatException e) {
                 busTimeTableSearchView.updateFailDaesungBusDepartInfo();
             }
             busTimeTableSearchView.showBusTimeInfo();
