@@ -386,16 +386,20 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
         updateUserInterface();
     }
 
+    /**
+     * 선택된 버튼만 주황색, 나머지 버튼은 검은색으로 바꿔주는 함수
+     * @param selectId 선택된 id값
+     */
     public void colorText(int selectId) {
         int [] id = {R.id.dining_breakfast_button, R.id.dining_lunch_button, R.id.dining_dinner_button};
         String [] diningText = {"아침", "점심", "저녁"};
         for(int i=0;i<3;i++){
-            if(selectId == id[i]) {
-                diningButton.get(i).setTextColor(getResources().getColor(R.color.colorAccent));
+            if(selectId == id[i]) {                                                             //선택된 id이면
+                diningButton.get(i).setTextColor(getResources().getColor(R.color.colorAccent)); //주황색으로 설정
                 diningButton.get(i).setText(Html.fromHtml("<u>"+diningText[i]+"</u>"), TextView.BufferType.SPANNABLE);
             }
-            else {
-                diningButton.get(i).setTextColor(getResources().getColor(R.color.black));
+            else {                                                                              //선택된 id가 아니라면
+                diningButton.get(i).setTextColor(getResources().getColor(R.color.black));       //검은색으로 설정
                 diningButton.get(i).setText(diningText[i]);
             }
         }
