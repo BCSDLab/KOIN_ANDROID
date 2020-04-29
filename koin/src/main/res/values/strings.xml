@@ -112,6 +112,8 @@
     <string name="bus_no_information">운행정보없음</string>
     <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
 
+    <!--Circle-->
+    <string name="circle_get_list_fail">동아리 리스트를 받아오지 못했습니다.</string>
 
     <!--Market-->
     <string name="market_used_phone_check">잘못된 휴대폰 번호입니다.\n 010-1234-1234 양식을 지켜주세요.</string>
