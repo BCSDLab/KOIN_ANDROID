@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 
@@ -120,7 +121,12 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements AppB
 
     @Override
     public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
 
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
@@ -141,7 +147,7 @@ public class SearchActivity extends KoinNavigationDrawerActivity implements AppB
     public void searchCurrentText() {
         if (articleSearchPresenter != null && currentText != null) {
             articleSearchPresenter.getArticleSearched(currentText, 1);
-            articleSearchPresenter.saveText(currentText);
+            articleSearchPresenter.saveSearchedText(currentText);
             hideSoftwareKeyBoard();
         }
     }

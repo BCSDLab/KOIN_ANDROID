@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
@@ -13,14 +14,13 @@ import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public class SearchArticlePresenter {
-    public static final int MAX_SAVE_SIZE = 20;
     private SearchArticleContract.View searchArticleView;
     private SearchArticleInteractor searchArticleInteractor;
 
     public SearchArticlePresenter(SearchArticleContract.View searchArticleView, SearchArticleInteractor searchArticleInteractor) {
         this.searchArticleView = searchArticleView;
-        searchArticleView.setPresenter(this);
         this.searchArticleInteractor = searchArticleInteractor;
+        searchArticleView.setPresenter(this);
     }
 
     private final ApiCallback searchArticleApiCallback = new ApiCallback() {
@@ -37,9 +37,19 @@ public class SearchArticlePresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            Log.e(SearchResultPresenter.class.getName(), "onSuccess: " + throwable.getMessage());
             searchArticleView.showEmptyItem();
             searchArticleView.hideLoading();
+        }
+    };
+
+    private final ApiCallback saveTextApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            searchArticleView.showMessage(R.string.search_save_recent_fail);
         }
     };
 
@@ -54,23 +64,13 @@ public class SearchArticlePresenter {
             String urlEncodedText = URLEncoder.encode(searchText.trim(), "UTF-8");
             searchArticleInteractor.readSearchArticleList(page, 1, urlEncodedText, searchArticleApiCallback);
         } catch (UnsupportedEncodingException e) {
-            searchArticleView.showMessage("검색결과 없습니다.");
+            searchArticleView.showMessage(R.string.search_fail);
         }
     }
 
-    public void saveText(String text) {
+    public void saveSearchedText(String text) {
         if (FormValidatorUtil.validateStringIsEmpty(text)) return;
-        if (RecentSearchSharedPreference.getInstance().getRecentSearch().isEmpty()) {
-            ArrayList<String> arrayList = new ArrayList<>();
-            arrayList.add(text.trim());
-            RecentSearchSharedPreference.getInstance().saveRecentSearch(arrayList);
-        } else {
-            ArrayList<String> arrayList = RecentSearchSharedPreference.getInstance().getRecentSearch();
-            if (arrayList.size() >= MAX_SAVE_SIZE) arrayList.remove(arrayList.size() - 1);
-            arrayList.remove(text);// 공통된 문자가 있으면 지워준다.
-            arrayList.add(0, text.trim());
-            RecentSearchSharedPreference.getInstance().saveRecentSearch(arrayList);
-        }
+        searchArticleInteractor.saveSearchText(text, saveTextApiCallback);
     }
 
 }
