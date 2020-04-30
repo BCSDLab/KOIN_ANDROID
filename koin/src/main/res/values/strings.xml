@@ -162,6 +162,8 @@
     <!--Search-->
     <string name="search_fail">검색에 실패했습니다.</string>
     <string name="search_save_recent_fail">최신 검색 저장에 실패했습니다.</string>
+    <string name="search_last_result">마지막 검색 결과입니다.</string>
+    <string name="search_result_fail">검색결과를 가져올 수 없습니다.</string>
 
 
     <string name="file_path_base">/Pictures/koin/</string>
