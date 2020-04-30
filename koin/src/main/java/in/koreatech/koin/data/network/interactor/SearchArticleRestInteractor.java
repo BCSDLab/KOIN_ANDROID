@@ -85,4 +85,13 @@ public class SearchArticleRestInteractor implements SearchArticleInteractor {
             apiCallback.onFailure(exception);
         }
     }
+
+    @Override
+    public void loadSavedSearchText(ApiCallback apiCallback) {
+        try {
+            apiCallback.onSuccess(RecentSearchSharedPreference.getInstance().getRecentSearch());
+        } catch (Exception e) {
+            apiCallback.onFailure(e);
+        }
+    }
 }

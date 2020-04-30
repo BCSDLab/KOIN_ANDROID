@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.ui.search.adapter.SearchRecentAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchRecentContract;
 import in.koreatech.koin.ui.search.presenter.SearchRecentPresenter;
@@ -45,7 +46,7 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
 
     public void init() {
         recentSearchData = new ArrayList<>();
-        new SearchRecentPresenter(this);
+        new SearchRecentPresenter(this, new SearchArticleRestInteractor());
         linearLayoutManager = new LinearLayoutManager(getActivity());
         searchRecentAdapter = new SearchRecentAdapter(recentSearchData);
         searchRecentRecyclerview.setLayoutManager(linearLayoutManager);

@@ -1,16 +1,12 @@
 package in.koreatech.koin.ui.search.presenter;
 
-import android.util.Log;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
-import in.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public class SearchArticlePresenter {
