@@ -17,10 +17,10 @@ public class SignupPresenter {
 
     private final SignupContract.View mSignUpView;
 
-    private final UserInteractor mUserInteractor;
+    private final UserInteractor userInteractor;
 
-    public SignupPresenter(@NonNull SignupContract.View signupView) {
-        mUserInteractor = new UserRestInteractor();
+    public SignupPresenter(@NonNull SignupContract.View signupView, UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
         mSignUpView = checkNotNull(signupView, "signUpView cannnot be null");
         mSignUpView.setPresenter(this);
     }
@@ -75,7 +75,7 @@ public class SignupPresenter {
 
         mSignUpView.buttonClickBlock(true);
         mSignUpView.showProgress();
-        mUserInteractor.createToken(id, password, signUpApiCallback);
+        userInteractor.createToken(id, password, signUpApiCallback);
     }
 
 }

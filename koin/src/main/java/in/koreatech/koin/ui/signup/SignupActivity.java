@@ -28,6 +28,7 @@ import butterknife.OnTextChanged;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.ui.signup.presenter.SignupContract;
 import in.koreatech.koin.ui.signup.presenter.SignupPresenter;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
@@ -114,7 +115,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
         }
 
         //create presenter
-        new SignupPresenter(this);
+        new SignupPresenter(this, new UserRestInteractor());
     }
 
     @Override
