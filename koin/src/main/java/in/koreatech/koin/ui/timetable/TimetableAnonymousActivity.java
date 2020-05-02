@@ -52,6 +52,9 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
+import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
+import in.koreatech.koin.data.network.interactor.LectureRestInteractor;
+import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
@@ -158,7 +161,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetableAnonymousPresenter(this));
+        new TimetableAnonymousPresenter(this, new TimeTableRestInteractor(), new LectureRestInteractor(), new AppVersionRestInteractor());
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
@@ -249,13 +252,13 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
                     sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
                 } else {
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
         }
     }
 
@@ -566,7 +569,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             for (int i = 0; i < MAX_ITEM_LOAD; i++)
                 selectedLectureSeperateArrayList.add(selectedLectureArrayList.get(i));
         }
-        updateSearchRectclerview();
+        updateSearchRecyclerview();
     }
 
 
@@ -584,7 +587,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             for (int i = 0; i < MAX_ITEM_LOAD; i++)
                 selectedLectureSeperateArrayList.add(selectedLectureArrayList.get(i));
         }
-        updateSearchRectclerview();
+        updateSearchRecyclerview();
     }
 
     public void clearFilterData() {
@@ -619,10 +622,10 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         builder.setMessage(duplicateClassTitile.toString());
         builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
-                    this.timetablePresenter.addTimeTableItem(new TimeTable.TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                     for (TimeTable.TimeTableItem timeTableItem : duplicateTimeTableItems) {
                         this.timetablePresenter.deleteItem(semester, timeTableItem.getId());
                     }
+                    this.timetablePresenter.addTimeTableItem(new TimeTable.TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                 });
         builder.setNegativeButton(R.string.neutral,
                 (dialog, which) -> {
@@ -693,7 +696,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeLong( message);
+        ToastUtil.getInstance().makeLong(message);
     }
 
     @Override
@@ -705,17 +708,18 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void showSuccessAddTimeTableItem(TimeTable timeTable) {
         if (selectedLectureSeperateClickIndex != -1) {
             selectedLectureSeperateArrayList.get(selectedLectureSeperateClickIndex).isAddButtonClicked = true;
-            this.timetableView.removeAll();
-            for (TimeTable.TimeTableItem timeTableItem : timeTable.getTimeTableItems())
-                this.timetableView.add(timeTableItem);
-            updateSearchRectclerview();
         }
         selectedLectureSeperateClickIndex = -1;
+        this.timetableView.removeAll();
+        for (TimeTable.TimeTableItem timeTableItem : timeTable.getTimeTableItems())
+            this.timetableView.add(timeTableItem);
+        updateSearchRecyclerview();
+
     }
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -730,24 +734,23 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
     public void showDeleteSuccessTimeTableItem(int id) {
-        this.timetablePresenter.getSavedTimeTableItem(semester);
         this.bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         isBottomDetailSheetOpen = false;
     }
 
-    public void updateSearchRectclerview() {
+    public void updateSearchRecyclerview() {
         getClikckedUtil(selectedLectureSeperateArrayList, this.timetableView.getAllTimeTableItems());
         this.timetableRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -767,7 +770,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             timeTableItem.isSavedAtServer = true;
             this.timetableView.add(timeTableItem);
         }
-        updateSearchRectclerview();
+        updateSearchRecyclerview();
     }
 
     @Override
