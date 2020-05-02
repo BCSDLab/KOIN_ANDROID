@@ -13,7 +13,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 public class SpinnerViewAction {
-    private static ViewAction selectSpinnerPosition(int position) {
+    public static ViewAction selectSpinnerPosition(int position) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {

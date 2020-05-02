@@ -15,7 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.is;
 
 public class TabLayoutMatcher {
-    private static BoundedMatcher<View, TabLayout> checkTabSelectedAndText(@IdRes int tabLayoutId, int position, String tabText, boolean isSelected) {
+    public static BoundedMatcher<View, TabLayout> checkTabSelectedAndText(@IdRes int tabLayoutId, int position, String tabText, boolean isSelected) {
         return new BoundedMatcher<View, TabLayout>(TabLayout.class) {
             @Override
             protected boolean matchesSafely(TabLayout item) {
