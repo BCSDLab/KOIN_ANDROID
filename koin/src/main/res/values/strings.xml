@@ -24,6 +24,7 @@
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
+    <string name="navigation_item_lostfound">분실물게시판</string>
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
