@@ -22,6 +22,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import in.koreatech.koin.matcher.TextColorMatcher;
 import in.koreatech.koin.ui.circle.CircleActivity;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -37,10 +38,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static in.koreatech.koin.matcher.ImageViewSrcMatcher.withDrawable;
+import static in.koreatech.koin.matcher.RecyclerViewMatcher.atPositionOnView;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class CircleTest {
+public class CircleInstrumentedTest {
     @Rule
     public IntentsTestRule<CircleActivity> activityRule =
             new IntentsTestRule<>(CircleActivity.class);
@@ -84,12 +87,12 @@ public class CircleTest {
         checkImageStatus(R.id.circle_all_imageview);
 
         checkCircleList(
-                "BCSDLab","K-오케스트라","으라차차 유도부","한소리","SHUTTER","세드뚜아",
-                "극예술연구회","해비타트","LPB","스플릿","그라피토","ZEST","비상","소울메이트",
-                "피아노사랑","빠샤","COF","로봇사랑","자연인","비전선교단","IVF","DFC",
-                "YES KOREATECH","손짓나눔","CUT","SAM","SMASH","슛","아우나래","일월검당",
-                "펜타곤","COK","Cube Club","FRONTIER RECORDS","COURSE","YM&ESF","스페셜리스트",
-                "Cepheus","밥버러지"
+                "BCSDLab", "K-오케스트라", "으라차차 유도부", "한소리", "SHUTTER", "세드뚜아",
+                "극예술연구회", "해비타트", "LPB", "스플릿", "그라피토", "ZEST", "비상", "소울메이트",
+                "피아노사랑", "빠샤", "COF", "로봇사랑", "자연인", "비전선교단", "IVF", "DFC",
+                "YES KOREATECH", "손짓나눔", "CUT", "SAM", "SMASH", "슛", "아우나래", "일월검당",
+                "펜타곤", "COK", "Cube Club", "FRONTIER RECORDS", "COURSE", "YM&ESF", "스페셜리스트",
+                "Cepheus", "밥버러지"
         );
     }
 
@@ -189,12 +192,11 @@ public class CircleTest {
         checkCircleList();
     }
 
-
     @Test
     public void testcaseForMoveDetail() {   //동아리 상세화면 이동 테스트
         onView(withId(R.id.circle_layout)).perform(ViewActions.swipeDown());
 
-        onView(RecyclerViewMatcher.atPositionOnView(R.id.circle_recyclerview, 0, R.id.circle_item_name_textview))
+        onView(atPositionOnView(R.id.circle_recyclerview, 0, R.id.circle_item_name_textview))
                 .perform(click());
 
         onView(withId(R.id.circle_layout)).check(matches(isDisplayed()));
@@ -213,10 +215,11 @@ public class CircleTest {
                 R.id.circle_etc_textview
         };
 
-        for (int i = 0; i < ids.length; i++) {
-            onView(withId(ids[i])).check(matches(TextColorMatcher.withTextColor(
-                    ids[i] == selectedCategoryTextViewId ? R.color.colorAccent : R.color.black,
-                    activityRule.getActivity().getResources()
+        for (int id : ids) {
+            onView(withId(id)).check(matches(TextColorMatcher.textViewTextColorMatcher(
+                    activityRule.getActivity().getResources().getColor(
+                            id == selectedCategoryTextViewId ? R.color.colorAccent : R.color.black
+                    )
             )));
         }
     }
@@ -244,7 +247,7 @@ public class CircleTest {
         };
 
         for (int i = 0; i < ids.length; i++) {
-            onView(withId(ids[i])).check(matches(ImageViewSrcMatcher.withDrawable(
+            onView(withId(ids[i])).check(matches(withDrawable(
                     activityRule.getActivity().getResources().getDrawable(
                             mCircleCategoryIconListId[i][ids[i] == selectedCategoryImageViewId ? 1 : 0]
                     ))));
@@ -255,19 +258,8 @@ public class CircleTest {
 
         for (int i = 0; i < circleNames.length; i++) {
             onView(withId(R.id.circle_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(i, scrollTo()));
-            onView(RecyclerViewMatcher.atPositionOnView(R.id.circle_recyclerview, i, R.id.circle_item_name_textview)).check(matches(withText(circleNames[i])));
+            onView(atPositionOnView(R.id.circle_recyclerview, i, R.id.circle_item_name_textview)).check(matches(withText(circleNames[i])));
         }
-    }
-
-
-    @Test
-    public void testcaseForButtonClick() {
-        onView(withId(R.id.circle_art_textview)).check(matches(withText("예술분야")));
-        //onView(withId(R.id.circle_all_textview)).check(matches(textViewTextColorMatcher(500104)));
-        onView(withId(R.id.circle_art_linear_layout)).perform(click());
-        waitFor(10000);
-        //onView(withId(R.id.circle_art_textview)).perform(click());
-        //Log.e("dfdfdfdf","dfdfdfdfdfdf");
     }
 
     public static ViewAction waitFor(final long millis) {
@@ -288,59 +280,6 @@ public class CircleTest {
             }
         };
     }
-
-
-    public static Matcher<View> textViewTextColorMatcher(final int matcherColor) {
-        return new BoundedMatcher<View, TextView>(TextView.class) {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with text color: " + matcherColor);
-            }
-
-            @Override
-            protected boolean matchesSafely(TextView textView) {
-                return matcherColor == textView.getCurrentTextColor();
-            }
-        };
-    }
-/*
-    @Test
-    public void testCaseForRecyclerScroll(){
-        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.circle_recyclerview);
-        int itemCount = recyclerView.getAdapter().getItemCount();
-
-        onView(withId(R.id.circle_recyclerview)).inRoot(RootMatchers.withDecorView(
-                Matchers.is(activityRule.getActivity().getWindow().getDecorView()))).perform(RecyclerViewActions.scrollToPosition(itemCount-1));
-    }
-
- */
- /*
-    @Test
-    public void testCaseForRecyclerClick(){
-
-        onView(withId(R.id.circle_recyclerview)).inRoot(RootMatchers.withDecorView(
-                Matchers.is(activityRule.getActivity().getWindow().getDecorView())))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
-
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        String key = "Land_ID";
-
-        //RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.land_recyclerlayout);
-        //int itemCount = recyclerView.getAdapter().geTgetItemCount();
-
-        intended(hasExtra(key, 11));
-        intended(toPackage("in.koreatech.koin"));
-        intended(hasComponent("in.koreatech.koin.ui.land.LandDetailActivity"));
-
-        intended(allOf(
-                hasExtra("Land_ID", 11),
-                toPackage("in.koreatech.koin"),
-                hasComponent("in.koreatech.koin.ui.land.LandDetailActivity")));
-
-
-    }
-
-  */
 }
 
 
