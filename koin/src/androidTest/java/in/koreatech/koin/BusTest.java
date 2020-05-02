@@ -2,6 +2,7 @@ package in.koreatech.koin;
 
 import android.view.View;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 
 import androidx.annotation.IdRes;
 import androidx.test.espresso.PerformException;
@@ -21,15 +22,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import in.koreatech.koin.matcher.TabLayoutMatcher;
 import in.koreatech.koin.ui.bus.BusActivity;
+import in.koreatech.koin.viewaction.TabLayoutViewAction;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static in.koreatech.koin.matcher.TabLayoutMatcher.checkTabSelectedAndText;
+import static in.koreatech.koin.viewaction.SpinnerViewAction.selectSpinnerPosition;
+import static in.koreatech.koin.viewaction.TabLayoutViewAction.selectTabAtPosition;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 
@@ -45,6 +52,7 @@ public class BusTest {
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(0))
                 .check(matches(checkTabSelectedAndText(R.id.bus_main_tabs, 0, "운행정보", true)));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_main_fragment_shuttle)).check(matches(isDisplayed()));
     }
@@ -54,6 +62,7 @@ public class BusTest {
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(1))
                 .check(matches(checkTabSelectedAndText(R.id.bus_main_tabs, 1, "운행 정보 검색", true)));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_search_timePicker)).check(matches(isDisplayed()));
     }
@@ -63,6 +72,7 @@ public class BusTest {
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(2))
                 .check(matches(checkTabSelectedAndText(R.id.bus_main_tabs, 2, "시간표", true)));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_timetable_bustype_shuttle)).check(matches(isDisplayed()));
     }
@@ -71,6 +81,7 @@ public class BusTest {
     public void testCaseForCalendarDialog() { //날짜 아이콘 클릭 시 달력 팝업 표시
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(1));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_timetable_search_date_imageButton)).perform(click());
 
@@ -81,6 +92,7 @@ public class BusTest {
     public void testCaseForSearchDialog() { //날짜 아이콘 클릭 시 달력 팝업 표시
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(1));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_timetable_search_fragment_search_button)).perform(click());
 
@@ -88,28 +100,10 @@ public class BusTest {
     }
 
     @Test
-    public void testCaseForBusSpinnerClick() {  //Spinner 클릭 후 버스 정보와 일치하는지 확인
-        String[] busPositionStrings = {"한기대", "야우리", "천안역"};
-        onView(withId(R.id.bus_main_tabs))
-                .perform(selectTabAtPosition(0));
-
-        for(int i = 0; i < 3; i++) {
-            for(int j = 0; j < 3; j++) {
-                if(i != j) {
-                    onView(withId(R.id.bus_main_fragment_bus_departure_spinner)).perform(selectSpinnerPosition(i));
-                    onView(withId(R.id.bus_main_fragment_bus_arrival_spinner)).perform(selectSpinnerPosition(j));
-
-                    onView(withId(R.id.bus_main_fragment_shuttle_departure_textview)).check(matches(withText(busPositionStrings[i])));
-                    onView(withId(R.id.bus_main_fragment_shuttle_arrival_textview)).check(matches(withText(busPositionStrings[j])));
-                }
-            }
-        }
-    }
-
-    @Test
-    public void testCaseForTimetableSubTabClick() { //학교셔틀, 대성, 시내버스 탭 클릭 테스트
+    public void testCaseForTimetableSubTabClick() throws InterruptedException { //학교셔틀, 대성, 시내버스 탭 클릭 테스트
         onView(withId(R.id.bus_main_tabs))
                 .perform(selectTabAtPosition(2));
+        onView(isRoot()).perform(waitFor(1000));
 
         onView(withId(R.id.bus_timetable_bustype_shuttle)).perform(click());
 
@@ -128,68 +122,23 @@ public class BusTest {
         onView(withId(R.id.bus_timetable_fragment_cheonan_start_endspinner)).check(matches(not(isDisplayed())));
         onView(withId(R.id.bus_timetable_fragment_daesung_spinner)).check(matches(not(isDisplayed())));
         onView(withId(R.id.bus_timetable_fragment_cheonan_start_endspinner)).check(matches(not(isDisplayed())));
-
     }
 
-    private ViewAction selectTabAtPosition(int position) {
+    private static ViewAction waitFor(final long millis) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
-                return Matchers.allOf(isDisplayed(), isAssignableFrom(TabLayout.class));
+                return isRoot();
             }
 
             @Override
             public String getDescription() {
-                return "with tab at index" + position;
+                return "Wait for " + millis + " milliseconds.";
             }
 
             @Override
-            public void perform(UiController uiController, View view) {
-                TabLayout tabLayout = (TabLayout) view;
-                TabLayout.Tab tab = tabLayout.getTabAt(position);
-                if(tab == null) throw new PerformException.Builder()
-                        .withCause(new Throwable("No tab at index $tabIndex"))
-                        .build();
-                else tab.select();
-            }
-        };
-    }
-
-    private BoundedMatcher<View, TabLayout> checkTabSelectedAndText(@IdRes int tabLayoutId, int position, String tabText, boolean isSelected) {
-        return new BoundedMatcher<View, TabLayout>(TabLayout.class) {
-            @Override
-            protected boolean matchesSafely(TabLayout item) {
-                TabLayout.Tab tab = item.getTabAt(position);
-                if(tab == null) throw new PerformException.Builder()
-                        .withCause(new Throwable("No tab at index $tabIndex"))
-                        .build();
-                else return tab.isSelected() == isSelected && tab.getText().equals(tabText);
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with selected tab check");
-                is(onView(withId(tabLayoutId))).describeTo(description);
-            }
-        };
-    }
-
-    private ViewAction selectSpinnerPosition(int position) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return Matchers.allOf(isDisplayed(), isAssignableFrom(Spinner.class));
-            }
-
-            @Override
-            public String getDescription() {
-                return "with spinner at index" + position;
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                Spinner spinner = (Spinner) view;
-                spinner.setSelection(position);
+            public void perform(UiController uiController, final View view) {
+                uiController.loopMainThreadForAtLeast(millis);
             }
         };
     }
