@@ -32,7 +32,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SignupTest {
+public class SignupInstrumentedTest {
     @Rule
     public IntentsTestRule<SignupActivity> activityRule =
             new IntentsTestRule<>(SignupActivity.class);
