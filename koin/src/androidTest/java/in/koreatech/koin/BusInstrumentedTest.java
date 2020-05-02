@@ -42,7 +42,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class BusTest {
+public class BusInstrumentedTest {
     @Rule
     public IntentsTestRule<BusActivity> activityRule =
             new IntentsTestRule<>(BusActivity.class);
