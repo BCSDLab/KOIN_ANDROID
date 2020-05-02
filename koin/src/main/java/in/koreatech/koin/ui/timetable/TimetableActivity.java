@@ -190,7 +190,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     protected void onStart() {
         super.onStart();
         TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
-        this.timetablePresenter.getTimetTableVersion();
+        this.timetablePresenter.getTimeTableVersion();
         this.timetablePresenter.readSemesters();
     }
 
@@ -241,13 +241,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
                     sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
                 } else {
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
         }
     }
 
@@ -282,7 +282,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }, 2000);
 
         } else {
-            ToastUtil.getInstance().makeShort( R.string.need_permission);
+            ToastUtil.getInstance().makeShort(R.string.need_permission);
             askSaveToImagePermission();
         }
     }
@@ -684,8 +684,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     @Override
-    public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeLong( message);
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeLong(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeLong(message);
     }
 
     @Override
@@ -707,7 +712,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -722,7 +727,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -739,7 +744,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override

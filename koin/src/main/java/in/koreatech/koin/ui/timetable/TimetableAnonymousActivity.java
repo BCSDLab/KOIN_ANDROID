@@ -695,7 +695,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    public void showFailMessage(String message) {
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeLong(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
         ToastUtil.getInstance().makeLong(message);
     }
 
