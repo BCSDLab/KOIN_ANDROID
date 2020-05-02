@@ -2,6 +2,7 @@ package in.koreatech.koin;
 
 import android.Manifest;
 import android.view.View;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -31,17 +32,19 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TimetableTest {
+public class TimetableAnonymousTest {
     @Rule
     public IntentsTestRule<TimetableAnonymousActivity> activityRule =
             new IntentsTestRule<>(TimetableAnonymousActivity.class);
@@ -52,27 +55,28 @@ public class TimetableTest {
     @Test
     public void testCaseForSaveToImage() { //이미지 저장 버튼 클릭
         onView(withId(R.id.timetable_save_timetable_image_linearlayout)).perform(click());
+        onView(isRoot()).perform(waitFor(10000));
         onView(withText("저장되었습니다.")).inRoot(withDecorView(not(is(activityRule.getActivity().getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
     }
 
     @Test
     public void testCaseForLecture() { //수업 추가 버튼 클릭
-        onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
+        viewAddLecture();
         onView(withId(R.id.timetable_save_timetable_image_linearlayout)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testCaseForMajor() { //전공 선택 클릭
-        onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withId(R.id.timetable_add_category_imageview)).perform(click());
+        viewAddLecture();
+        viewSelectMajor();
         onView(withText("전공선택")).check(matches(isDisplayed()));
     }
 
     @Test
     public void testCaseForSelectMajor() { //전공 클릭
-        onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withId(R.id.timetable_add_category_imageview)).perform(click());
+        viewAddLecture();
+        viewSelectMajor();
         onView(withId(R.id.select_major_computer_engineering)).perform(click());
         onView(withId(R.id.select_major_computer_engineering)).check(matches(TextColorMatcher.withTextColor(
                 R.color.white, activityRule.getActivity().getResources()
@@ -85,28 +89,12 @@ public class TimetableTest {
         onView(withId(R.id.timetable_select_semester_bottom_sheet_center_textview)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testCaseForAddLectureAndDelete() { //수업 추가 -> 추가된 강의 클릭 -> 강의 삭제
-        //수업 추가
+    private void viewAddLecture() {
         onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withId(R.id.timetable_add_schedule_search_edittext)).perform(replaceText("a"));
-        onView(withId(R.id.timetable_add_schedule_search_imageview)).perform(click());
-        RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(R.id.timetable_search_recyclerview);
-        onView(recyclerViewMatcher.atPositionOnView(0, R.id.add_lecture_button))
-                .perform(click());
-        String lectureName = getText(recyclerViewMatcher.atPositionOnView(0, R.id.lecture_infromation2)).split("/")[3];
-        onView(withId(R.id.timetable_add_schedule_bottom_sheet_right_textview)).perform(click());
+    }
 
-        //시간표에서 수업 클릭
-        onView(isRoot()).perform(waitFor(500));
-        onView(withText(lectureName)).perform(click());
-        onView(withId(R.id.timetable_detail_schedule_bottom_sheet_center_textview)).check(matches(isDisplayed()));
-
-        //수업 삭제
-        onView(withId(R.id.timetable_detail_schedule_bottom_sheet_left_textview)).perform(click());
-        onView(withId(android.R.id.button1)).perform(click());
-
-        onView(withText(lectureName)).check(matches(not(isDisplayed())));
+    private void viewSelectMajor() {
+        onView(withId(R.id.timetable_add_category_imageview)).perform(click());
     }
 
     public static ViewAction waitFor(final long millis) {
