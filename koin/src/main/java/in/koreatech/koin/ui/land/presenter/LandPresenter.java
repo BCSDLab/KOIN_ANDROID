@@ -20,6 +20,7 @@ public class LandPresenter {
         this.landView = landView;
         this.bokdukInteractor = bokdukInteractor;
         landList = new ArrayList<>();
+        this.landView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
@@ -44,7 +45,6 @@ public class LandPresenter {
     public void getLandList() {
         landList.clear();
         bokdukInteractor.readBokdukList(apiCallback);
-
     }
 
 }

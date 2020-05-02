@@ -14,6 +14,7 @@ public class LandDetailPresenter {
     public LandDetailPresenter(LandDetailContract.View landDetailView, LandInteractor landInteractor) {
         this.landInteractor = landInteractor;
         this.landDetailView = landDetailView;
+        this.landDetailView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
