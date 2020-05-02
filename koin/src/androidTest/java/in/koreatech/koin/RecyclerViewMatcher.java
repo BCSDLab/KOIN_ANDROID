@@ -12,13 +12,8 @@ import org.hamcrest.TypeSafeMatcher;
 import static org.hamcrest.Matchers.is;
 
 public class RecyclerViewMatcher {
-    private final int recyclerViewId;
 
-    public RecyclerViewMatcher(int recyclerViewId) {
-        this.recyclerViewId = recyclerViewId;
-    }
-
-    public Matcher<View> atPositionOnView(final int position, final int viewId) {
+    public static Matcher<View> atPositionOnView(int recyclerViewId, final int position, final int viewId) {
         return new TypeSafeMatcher<View>() {
             Resources resources = null;
             View childView;

@@ -194,44 +194,10 @@ public class CircleTest {
     public void testcaseForMoveDetail() {   //동아리 상세화면 이동 테스트
         onView(withId(R.id.circle_layout)).perform(ViewActions.swipeDown());
 
-        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.circle_recyclerview);
-        RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(R.id.circle_recyclerview);
-        int itemCount = recyclerView.getAdapter().getItemCount();
+        onView(RecyclerViewMatcher.atPositionOnView(R.id.circle_recyclerview, 0, R.id.circle_item_name_textview))
+                .perform(click());
 
-        for (int i = 0; i < itemCount; i++) {
-            onView(withId(R.id.circle_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(i, scrollTo()));
-
-            final String[] name = new String[1];
-            onView(recyclerViewMatcher.atPositionOnView(i, R.id.circle_item_name_textview)).perform(new ViewAction() {
-                @Override
-                public Matcher<View> getConstraints() {
-                    return isAssignableFrom(TextView.class);
-                }
-
-                @Override
-                public String getDescription() {
-                    return "getting text from a TextView";
-                }
-
-                @Override
-                public void perform(UiController uiController, View view) {
-                    TextView textView = (TextView)view; //Save, because of check in getConstraints()
-                    name[0] = textView.getText().toString();
-                }
-            });
-
-            onView(withId(R.id.circle_recyclerview)).inRoot(RootMatchers.withDecorView(
-                    Matchers.is(activityRule.getActivity().getWindow().getDecorView())))
-                    .perform(RecyclerViewActions.actionOnItemAtPosition(i, click()));
-
-            onView(withId(R.id.circle_detail_name_textview)).check(matches(isDisplayed()));
-            onView(withId(R.id.circle_detail_name_textview)).check(matches(withText(name[0])));
-
-            if(i % 2 == 0) onView(isRoot()).perform(pressBack());
-            else onView(withId(R.id.base_appbar_dark_left_button)).perform(click());
-
-            onView(withId(R.id.circle_recyclerview)).check(matches(isDisplayed()));
-        }
+        onView(withId(R.id.circle_layout)).check(matches(isDisplayed()));
     }
 
 
@@ -286,11 +252,10 @@ public class CircleTest {
     }
 
     void checkCircleList(String... circleNames) {
-        RecyclerViewMatcher recyclerViewMatcher = new RecyclerViewMatcher(R.id.circle_recyclerview);
 
         for (int i = 0; i < circleNames.length; i++) {
             onView(withId(R.id.circle_recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(i, scrollTo()));
-            onView(recyclerViewMatcher.atPositionOnView(i, R.id.circle_item_name_textview)).check(matches(withText(circleNames[i])));
+            onView(RecyclerViewMatcher.atPositionOnView(R.id.circle_recyclerview, i, R.id.circle_item_name_textview)).check(matches(withText(circleNames[i])));
         }
     }
 
