@@ -46,7 +46,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SearchTest {
+public class SearchInstrumentedTest {
     @Rule
     public IntentsTestRule<SearchActivity> activityRule =
             new IntentsTestRule<>(SearchActivity.class);
