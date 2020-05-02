@@ -15,7 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 public class TabLayoutViewAction {
-    private static ViewAction selectTabAtPosition(int position) {
+    public static ViewAction selectTabAtPosition(int position) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -30,7 +30,7 @@ public class TabLayoutViewAction {
                 TabLayout tabLayout = (TabLayout) view;
                 TabLayout.Tab tab = tabLayout.getTabAt(position);
                 if(tab == null) throw new PerformException.Builder()
-                        .withCause(new Throwable("No tab at index $tabIndex"))
+                        .withCause(new Throwable("No tab at index" + position))
                         .build();
                 else tab.select();
             }
