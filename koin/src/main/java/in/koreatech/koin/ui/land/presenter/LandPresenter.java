@@ -21,6 +21,7 @@ public class LandPresenter {
         this.landView = landView;
         this.landInteractor = landInteractor;
         landList = new ArrayList<>();
+        this.landView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
@@ -34,18 +35,19 @@ public class LandPresenter {
             landList.clear();
             landList.addAll(lands.getLands());   //api로 받아온 복덕방리스트를 모두 추가
             landView.onLandListDataReceived(landList);
+            landView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
             landView.showMessage("원룸 리스트를 받아오지 못했습니다");
+            landView.hideLoading();
         }
     };
 
     public void getLandList() {
-        landList.clear();
+        landView.showLoading();
         landInteractor.readLandList(apiCallback);
-
     }
 
 }

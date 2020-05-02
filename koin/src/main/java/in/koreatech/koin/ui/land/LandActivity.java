@@ -107,6 +107,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         this.landPresenter = presenter;
     }
 
+
     /**
      * presenter로부터 받은 복덕방 리스트를 액티비티에 저장
      * 복덕방 데이터를 받아와서 naverMap Marker 추가
@@ -185,6 +186,16 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @Override
     public void showMessage(String message) {
         ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showLoading() {
+        showProgressDialog(R.string.loading);
+    }
+
+    @Override
+    public void hideLoading() {
+        hideProgressDialog();
     }
 
     /**
