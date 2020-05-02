@@ -51,6 +51,9 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
+import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
+import in.koreatech.koin.data.network.interactor.LectureRestInteractor;
+import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
@@ -157,7 +160,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetablePresenter(this));
+        setPresenter(new TimetablePresenter(this, new TimeTableRestInteractor(), new LectureRestInteractor(), new AppVersionRestInteractor()));
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();

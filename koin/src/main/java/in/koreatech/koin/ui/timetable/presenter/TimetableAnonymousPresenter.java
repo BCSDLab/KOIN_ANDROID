@@ -31,7 +31,6 @@ public class TimetableAnonymousPresenter {
     private TimeTableInteractor timeTableInteractor;
     private LectureInteractor lectureInteractor;
     private TimetableAnonymousContract.View timeTableView;
-    private int deleteId;
 
     public TimetableAnonymousPresenter(TimetableAnonymousContract.View timeTableView, TimeTableInteractor timeTableInteractor, LectureInteractor lectureInteractor, AppVersionInteractor appVersionInteractor) {
         this.timeTableView = timeTableView;
@@ -94,6 +93,7 @@ public class TimetableAnonymousPresenter {
         public void onSuccess(Object object) {
             ArrayList<Semester> semesters = (ArrayList<Semester>) object;
             timeTableView.getSemester(semesters);
+            timeTableView.hideLoading();
 
         }
 
@@ -139,6 +139,7 @@ public class TimetableAnonymousPresenter {
         @Override
         public void onFailure(Throwable throwable) {
             timeTableView.showFailSavedTimeTable();
+            timeTableView.hideLoading();
         }
     };
 
@@ -147,6 +148,7 @@ public class TimetableAnonymousPresenter {
         public void onSuccess(Object object) {
             if (object instanceof TimeTable) {
                 timeTableView.showSuccessAddTimeTableItem((TimeTable) object);
+                timeTableView.showDeleteSuccessTimeTableItem();
                 timeTableView.updateWidget();
             } else {
                 timeTableView.showFailSavedTimeTable();
@@ -157,14 +159,14 @@ public class TimetableAnonymousPresenter {
         @Override
         public void onFailure(Throwable throwable) {
             timeTableView.showFailSavedTimeTable();
+            timeTableView.hideLoading();
         }
     };
 
     private String getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.KOREA);
-        cal.setTimeInMillis(time * 1000);
-        String date = DateFormat.format("yyyy-MM-dd HH:mm:ss", cal).toString();
-        return date;
+        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        java.util.Date result = new  java.util.Date(time * 1000);
+        return simple.format(result);
     }
 
     public void getLecture(String semester) {
@@ -185,8 +187,6 @@ public class TimetableAnonymousPresenter {
     public void deleteItem(String semester, int id) {
         timeTableView.showLoading();
         timeTableInteractor.deleteTimeTableItemAtLocal(semester, id, deleteTimeTableFromLocalApiCallback);
-        timeTableView.showDeleteSuccessTimeTableItem(deleteId);
-        timeTableView.hideLoading();
     }
 
 

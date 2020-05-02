@@ -743,7 +743,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    public void showDeleteSuccessTimeTableItem(int id) {
+    public void showDeleteSuccessTimeTableItem() {
         this.bottomSheetDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         isBottomDetailSheetOpen = false;
     }

@@ -35,12 +35,12 @@ public class TimetablePresenter {
     private TimetableContract.View timeTableView;
     private int deleteId;
 
-    public TimetablePresenter(TimetableContract.View timeTableView) {
+    public TimetablePresenter(TimetableContract.View timeTableView, TimeTableInteractor timeTableInteractor, LectureInteractor lectureInteractor, AppVersionInteractor appVersionInteractor) {
         this.timeTableView = timeTableView;
-        this.appVersionInteractor = new AppVersionRestInteractor();
-        this.timeTableInteractor = new TimeTableRestInteractor();
-        this.lectureInteractor = new LectureRestInteractor();
-        //
+        this.appVersionInteractor = appVersionInteractor;
+        this.timeTableInteractor = timeTableInteractor;
+        this.lectureInteractor = lectureInteractor;
+        timeTableView.setPresenter(this);
     }
 
     final ApiCallback lectureApiCallback = new ApiCallback() {
@@ -101,6 +101,7 @@ public class TimetablePresenter {
         public void onSuccess(Object object) {
             timeTableView.showDeleteSuccessTimeTableItem(deleteId);
             timeTableView.hideLoading();
+
         }
 
         @Override
@@ -109,6 +110,7 @@ public class TimetablePresenter {
             timeTableView.hideLoading();
         }
     };
+
     final ApiCallback readTableVersionApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
@@ -145,6 +147,7 @@ public class TimetablePresenter {
         public void onSuccess(Object object) {
             ArrayList<Semester> semesters = (ArrayList<Semester>) object;
             timeTableView.getSemester(semesters);
+            timeTableView.hideLoading();
 
         }
 
@@ -156,10 +159,9 @@ public class TimetablePresenter {
     };
 
     private String getDate(long time) {
-        Calendar cal = Calendar.getInstance(Locale.KOREA);
-        cal.setTimeInMillis(time * 1000);
-        String date = DateFormat.format("yyyy-MM-dd HH:mm:ss", cal).toString();
-        return date;
+        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        java.util.Date result = new  java.util.Date(time * 1000);
+        return simple.format(result);
     }
 
     public void getLecture(String semester) {

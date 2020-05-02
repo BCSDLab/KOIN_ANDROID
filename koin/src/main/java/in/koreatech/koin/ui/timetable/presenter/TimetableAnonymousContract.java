@@ -33,7 +33,7 @@ public interface TimetableAnonymousContract{
 
         void showFailEditTimeTable();
 
-        void showDeleteSuccessTimeTableItem(int id);
+        void showDeleteSuccessTimeTableItem();
 
         void showFailDeleteTimeTableItem();
 
