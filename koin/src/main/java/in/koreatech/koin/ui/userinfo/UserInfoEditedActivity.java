@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -130,7 +131,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
 
     private void init() {
 
-        new UserInfoEditPresenter(this);
+        new UserInfoEditPresenter(this, new UserRestInteractor());
 
 
         this.userinfoeditedEdittextName.setFilters(new InputFilter[]{new FilterUtil(FilterUtil.FILTER_E_H), new InputFilter.LengthFilter(20)});

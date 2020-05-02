@@ -19,8 +19,8 @@ public class UserInfoEditPresenter{
 
     private UserInteractor userInteractor;
 
-    public UserInfoEditPresenter(@NonNull UserInfoEditContract.View userInfoEditView) {
-        this.userInteractor = new UserRestInteractor();
+    public UserInfoEditPresenter(@NonNull UserInfoEditContract.View userInfoEditView, UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
         this.userInfoEditView = checkNotNull(userInfoEditView, "userInfoEditView cannnot be null");
         this.userInfoEditView.setPresenter(this);
     }
@@ -28,8 +28,6 @@ public class UserInfoEditPresenter{
     private final ApiCallback updateUserApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            User user = (User) object;
-            UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
             userInfoEditView.showConfirm();
         }
 

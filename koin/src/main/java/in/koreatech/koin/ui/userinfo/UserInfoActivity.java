@@ -15,6 +15,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.interactor.CallvanRestInteractor;
+import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -115,7 +117,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     }
 
     private void init() {
-        new UserInfoPresenter(this);
+        new UserInfoPresenter(this, new UserRestInteractor(), new CallvanRestInteractor());
     }
 
     @Override
@@ -187,12 +189,12 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @OnClick(R.id.userinfo_button_delete_user)
     public void onClickDeleteUserButton() {
-        final int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
+        // final int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
         SnackbarUtil.makeLongSnackbarActionYes(userinfoScrollview, "정말 탈퇴하시려구요? 한번 더 생각해보세요 :)", new Runnable() {
             @Override
             public void run() {
-                userInfoPresenter.deleteUser(roomUid);
+                userInfoPresenter.deleteUser();
             }
         });
     }
