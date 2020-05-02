@@ -3,8 +3,9 @@ package in.koreatech.koin.ui.land.presenter;
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.network.ApiCallback;
-import in.koreatech.koin.data.network.entity.BokdukRoom;
+import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.BokdukInteractor;
+import in.koreatech.koin.data.network.interactor.LandInteractor;
 
 /**
  * 복덕방 presenter
@@ -12,13 +13,13 @@ import in.koreatech.koin.data.network.interactor.BokdukInteractor;
 public class LandPresenter {
 
     private final LandContract.View landView;
-    private final BokdukInteractor bokdukInteractor;
-    private ArrayList<BokdukRoom> landList;
+    private final LandInteractor landInteractor;
+    private ArrayList<Land> landList;
 
 
-    public LandPresenter(LandContract.View landView, BokdukInteractor bokdukInteractor) {
+    public LandPresenter(LandContract.View landView, LandInteractor landInteractor) {
         this.landView = landView;
-        this.bokdukInteractor = bokdukInteractor;
+        this.landInteractor = landInteractor;
         landList = new ArrayList<>();
     }
 
@@ -29,7 +30,7 @@ public class LandPresenter {
          */
         @Override
         public void onSuccess(Object object) {
-            BokdukRoom lands = (BokdukRoom) object;
+            Land lands = (Land) object;
             landList.clear();
             landList.addAll(lands.getLands());   //api로 받아온 복덕방리스트를 모두 추가
             landView.onLandListDataReceived(landList);
@@ -43,7 +44,7 @@ public class LandPresenter {
 
     public void getLandList() {
         landList.clear();
-        bokdukInteractor.readBokdukList(apiCallback);
+        landInteractor.readLandList(apiCallback);
 
     }
 

@@ -6,6 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Land {
+    @SerializedName("lands")
+    @Expose
+    private ArrayList<Land> lands;
+
     @SerializedName("opt_electronic_door_lock")
     @Expose
     private boolean optElectronicDoorLock;
@@ -32,7 +36,7 @@ public class Land {
 
     @SerializedName("latitude")
     @Expose
-    private String latitude;
+    private Double latitude;
 
     @SerializedName("charter_fee")
     @Expose
@@ -108,7 +112,7 @@ public class Land {
 
     @SerializedName("longitude")
     @Expose
-    private String longitude;
+    private Double longitude;
 
     @SerializedName("address")
     @Expose
@@ -146,6 +150,10 @@ public class Land {
     @Expose
     private String roomType;
 
+    public ArrayList<Land> getLands() {
+        return lands;
+    }
+
     public boolean getOptElectronicDoorLock() {
         return optElectronicDoorLock;
     }
@@ -170,7 +178,7 @@ public class Land {
         return optWasher;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -246,7 +254,7 @@ public class Land {
         return optCloset;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
@@ -286,6 +294,10 @@ public class Land {
         return roomType;
     }
 
+    public void setLands(ArrayList<Land> lands) {
+        this.lands = lands;
+    }
+
     public void setOptElectronicDoorLock(boolean optElectronicDoorLock) {
         this.optElectronicDoorLock = optElectronicDoorLock;
     }
@@ -310,7 +322,7 @@ public class Land {
         this.optWasher = optWasher;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
@@ -386,7 +398,7 @@ public class Land {
         this.optCloset = optCloset;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
