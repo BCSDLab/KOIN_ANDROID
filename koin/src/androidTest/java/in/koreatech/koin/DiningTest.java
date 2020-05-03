@@ -34,6 +34,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static in.koreatech.koin.matcher.TextColorMatcher.textViewTextColorMatcher;
+import static in.koreatech.koin.matcher.ToastMatcher.withMessage;
 
 public class DiningTest {
     @Rule
@@ -77,7 +79,7 @@ public class DiningTest {
         for(int i = 0;i<8;i++) {
             onView(withId(R.id.dining_before_date_button)).perform(click());
             if(i == 7){
-                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(new ToastMatcher("더 이상 데이터를 불러올 수 없습니다."))
+                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다."))
                         .check(matches(isDisplayed()));
                 break;
             }
@@ -101,7 +103,7 @@ public class DiningTest {
         for(int i = 0;i<8;i++) {
             onView(withId(R.id.dining_next_date_button)).perform(click());
             if(i == 7){
-                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(new ToastMatcher("더 이상 데이터를 불러올 수 없습니다."))
+                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다."))
                         .check(matches(isDisplayed()));
                 break;
             }
@@ -153,56 +155,6 @@ public class DiningTest {
                 onView(withId(ids[i])).check(matches(textViewTextColorMatcher(context.getResources().getColor(R.color.black))));
         }
     }
-
-    /**
-     * TextView 색상 확인하는 함수
-     * @param matcherColor
-     * @return
-     */
-    public static Matcher<View> textViewTextColorMatcher(final int matcherColor) {
-        return new BoundedMatcher<View, TextView>(TextView.class) {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with text color: " + matcherColor);
-            }
-            @Override
-            protected boolean matchesSafely(TextView textView) {
-                return matcherColor == textView.getCurrentTextColor();
-            }
-        };
-    }
-
-    /**
-     * 토스트메시지 확인하는 클래스
-     */
-    public class ToastMatcher extends TypeSafeMatcher<Root> {
-        private String message;
-
-        public ToastMatcher(String message) {
-            this.message = message;
-        }
-
-        @Override
-        protected boolean matchesSafely(Root root) {
-            int type = root.getWindowLayoutParams().get().type;
-            if (type == WindowManager.LayoutParams.TYPE_TOAST) {
-                IBinder windowToken = root.getDecorView().getWindowToken();
-                IBinder appToken = root.getDecorView().getApplicationWindowToken();
-                if (windowToken == appToken) {
-                    // means this window isn't contained by any other windows.
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText(message);
-        }
-    }
-
-
 
 }
 
