@@ -14,6 +14,7 @@ public class StoreDetailPresenter {
     public StoreDetailPresenter(StoreDetailContract.View storeView, StoreInteractor storeInteractor) {
         this.storeView = storeView;
         this.storeInteractor = storeInteractor;
+        this.storeView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
