@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
 import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
@@ -29,14 +30,14 @@ public class LostFoundMainPresenter{
                 lostFoundMainView.showLostAndFoundPageResponse(lostAndFoundPageResponse);
                 lostFoundMainView.hideLoading();
             } else {
-                lostFoundMainView.showMessage("리스트를 받아오지 못했습니다.");
+                lostFoundMainView.showMessage(R.string.lost_and_found_list_fail);
                 lostFoundMainView.hideLoading();
             }
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundMainView.showMessage("리스트를 받아오지 못했습니다.");
+            lostFoundMainView.showMessage(R.string.lost_and_found_list_fail);
             lostFoundMainView.hideLoading();
         }
     };

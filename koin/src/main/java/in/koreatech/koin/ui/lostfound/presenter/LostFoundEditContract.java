@@ -15,8 +15,6 @@ public interface LostFoundEditContract {
 
         void showSuccessCreate(LostItem lostItem);
 
-        void showMessage(String message);
-
         void showMessage(@StringRes int message);
     }
 }

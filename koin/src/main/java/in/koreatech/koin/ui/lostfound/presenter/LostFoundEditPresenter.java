@@ -15,10 +15,10 @@ public class LostFoundEditPresenter {
     private LostFoundEditContract.View lostFoundEditView;
     private LostAndFoundInteractor lostAndFoundInteractor;
 
-    public LostFoundEditPresenter(LostFoundEditContract.View lostFoundEditView) {
+    public LostFoundEditPresenter(LostFoundEditContract.View lostFoundEditView, LostAndFoundInteractor lostAndFoundInteractor) {
         this.lostFoundEditView = lostFoundEditView;
+        this.lostAndFoundInteractor = lostAndFoundInteractor;
         this.lostFoundEditView.setPresenter(this);
-        lostAndFoundInteractor = new LostAndFoundRestInteractor();
     }
 
     private final ApiCallback createLostFoundItemApiCallback = new ApiCallback() {
@@ -27,14 +27,16 @@ public class LostFoundEditPresenter {
             if (object instanceof LostItem) {
                 LostItem lostItem = (LostItem) object;
                 lostFoundEditView.showSuccessCreate(lostItem);
+            } else {
+                lostFoundEditView.showMessage(R.string.error_network);
             }
             lostFoundEditView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundEditView.hideLoading();
             lostFoundEditView.showMessage(R.string.error_network);
+            lostFoundEditView.hideLoading();
         }
     };
 
@@ -44,14 +46,16 @@ public class LostFoundEditPresenter {
             if (object instanceof LostItem) {
                 LostItem lostItem = (LostItem) object;
                 lostFoundEditView.showSuccessUpdate(lostItem);
+            } else {
+                lostFoundEditView.showMessage(R.string.error_network);
             }
             lostFoundEditView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundEditView.hideLoading();
             lostFoundEditView.showMessage(R.string.error_network);
+            lostFoundEditView.hideLoading();
         }
     };
 

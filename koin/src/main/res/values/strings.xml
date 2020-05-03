@@ -146,6 +146,7 @@
     <string name="lost_and_found_content_check">내용을 입력해주세요</string>
     <string name="lost_and_found_phone_check">잘못된 휴대폰 번호입니다.\n 010-1234-1234 양식을 지켜주세요.</string>
     <string name="lost_and_found_title_check">제목을 입력해주세요</string>
+    <string name="lost_and_found_list_fail">리스트를 받아오지 못했습니다.</string>
 
     <!--major-->
     <string name="mechanical_engineering">기계공학부</string>

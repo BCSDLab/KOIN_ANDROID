@@ -44,7 +44,7 @@ public class LostFoundMainPresenterTest {
     }
 
     @Test
-    public void createPresenter_setsThePresenterIntoView() {
+    public void createPresenter_setsThePresenterToView() {
         lostFoundMainPresenter = new LostFoundMainPresenter(lostFoundMainView, lostAndFoundInteractor);
         verify(lostFoundMainView).setPresenter(lostFoundMainPresenter);
     }
@@ -76,7 +76,7 @@ public class LostFoundMainPresenterTest {
         lostFoundMainPresenter.getLostItem(testPage, testLimit);
 
         verify(lostFoundMainView).showLoading();
-        verify(lostFoundMainView).showMessage("리스트를 받아오지 못했습니다.");
+        verify(lostFoundMainView).showMessage(R.string.lost_and_found_list_fail);
         verify(lostFoundMainView).hideLoading();
     }
 
@@ -92,7 +92,7 @@ public class LostFoundMainPresenterTest {
         lostFoundMainPresenter.getLostItem(testPage, testLimit);
 
         verify(lostFoundMainView).showLoading();
-        verify(lostFoundMainView).showMessage("리스트를 받아오지 못했습니다.");
+        verify(lostFoundMainView).showMessage(R.string.lost_and_found_list_fail);
         verify(lostFoundMainView).hideLoading();
     }
 }
