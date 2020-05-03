@@ -18,11 +18,12 @@ public class ArticleEditPresenter {
     private final MarketUsedInteractor marketUsedInteractor;
     private String uploadImageId;
 
-    public ArticleEditPresenter(ArticleEditContract.View articleEditView, CommunityInteractor communityInteractor) {
+    public ArticleEditPresenter(ArticleEditContract.View articleEditView, CommunityInteractor communityInteractor, MarketUsedInteractor marketUsedInteractor) {
         this.articleEditView = articleEditView;
         this.communityInteractor = communityInteractor;
         // TODO -> API 변경시 바꾸기
-        this.marketUsedInteractor = new MarketUsedRestInteractor();
+        this.marketUsedInteractor = marketUsedInteractor;
+        articleEditView.setPresenter(this);
     }
 
     private final ApiCallback articleApiCallback = new ApiCallback() {

@@ -588,7 +588,7 @@ public class ArticleActivity extends KoinNavigationDrawerActivity implements Art
                 .setMessage("게시글을 삭제할까요?\n댓글도 모두 사라집니다.")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    articlePresenter.deleteAnoymousArticle(this.article.getArticleUid(), password);
+                    articlePresenter.deleteAnonymousArticle(this.article.getArticleUid(), password);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
         AlertDialog dialog = builder.create();    // 알림창 객체 생성

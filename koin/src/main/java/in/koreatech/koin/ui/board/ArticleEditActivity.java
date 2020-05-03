@@ -44,6 +44,7 @@ import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.interactor.CommunityRestInteractor;
+import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
 import in.koreatech.koin.ui.board.presenter.ArticleEditContract;
 import in.koreatech.koin.ui.board.presenter.ArticleEditPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
@@ -288,7 +289,7 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                 break;
         }
         setVisiblityInput(boardUid);
-        setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor()));
+        setPresenter(new ArticleEditPresenter(this, new CommunityRestInteractor(), new MarketUsedRestInteractor()));
 
         editTextTitle.addTextChangedListener(this);
 
