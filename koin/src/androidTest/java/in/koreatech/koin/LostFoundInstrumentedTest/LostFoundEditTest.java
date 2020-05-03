@@ -1,4 +1,4 @@
-package in.koreatech.koin;
+package in.koreatech.koin.LostFoundInstrumentedTest;
 
 import android.os.IBinder;
 import android.view.WindowManager;
@@ -6,6 +6,7 @@ import android.view.WindowManager;
 import androidx.test.espresso.Root;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -16,6 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.ui.lostfound.LostFoundEditActivity;
 import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
 
@@ -31,6 +33,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static in.koreatech.koin.matcher.ToastMatcher.withMessage;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
@@ -44,7 +47,7 @@ public class LostFoundEditTest {
      */
     @Test
     public void testcaseForAppBarTitle() {
-        onView(withId(R.id.koin_base_app_bar_dark)).check(matches(hasDescendant(withText(R.string.navigation_item_lostfound))));
+        onView(ViewMatchers.withId(R.id.koin_base_app_bar_dark)).check(matches(hasDescendant(withText(R.string.navigation_item_lostfound))));
     }
 
     /**
@@ -58,18 +61,18 @@ public class LostFoundEditTest {
 
 
         onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withText("제목을 입력해주세요")).inRoot(new ToastMatcher("제목을 입력해주세요"))       //토스트메시지 도출
+        onView(withText("제목을 입력해주세요")).inRoot(withMessage("제목을 입력해주세요"))       //토스트메시지 도출
                 .check(matches(isDisplayed()));
 
         onView(withId((R.id.lostfound_create_title_edittext))).perform(typeText("I lost phone"), closeSoftKeyboard());
         onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withText("내용을 입력해주세요")).inRoot(new ToastMatcher("내용을 입력해주세요"))       //토스트메시지 도출
+        onView(withText("내용을 입력해주세요")).inRoot(withMessage("내용을 입력해주세요"))       //토스트메시지 도출
                 .check(matches(isDisplayed()));
 
         onView(withId((R.id.lostfound_create_title_edittext))).perform(clearText());
         onView(withId(R.id.lostfound_create_content_ediitext)).perform(typeText("call me"), closeSoftKeyboard());
         onView(withId(R.id.base_appbar_dark_right_button)).perform(click());
-        onView(withText("제목을 입력해주세요")).inRoot(new ToastMatcher("제목을 입력해주세요"))       //토스트메시지 도출
+        onView(withText("제목을 입력해주세요")).inRoot(withMessage("제목을 입력해주세요"))       //토스트메시지 도출
                 .check(matches(isDisplayed()));
     }
 
@@ -114,35 +117,7 @@ public class LostFoundEditTest {
     @Test
     public void testcaseForContactButtonClick(){
         onView(withId(R.id.lostfound_create_phone_public_radiobutton)).perform(click());
-        onView(withId(R.id.lostfound_create_phone_num_ediitext)).perform(typeText("010-1234-1234"));
-        onView(withId(R.id.lostfound_create_phone_num_ediitext)).check(matches(withText("010-1234-1234")));
+        onView(withId(R.id.lostfound_create_phone_num_ediitext)).perform(typeText("010-1234-1234"));    //핸드폰 번호 입력
+        onView(withId(R.id.lostfound_create_phone_num_ediitext)).check(matches(withText("010-1234-1234")));            //핸드폰 번호 입력 가능한지 확인
     }
-
-    public class ToastMatcher extends TypeSafeMatcher<Root> {
-        private String message;
-
-        public ToastMatcher(String message) {
-            this.message = message;
-        }
-
-        @Override
-        protected boolean matchesSafely(Root root) {
-            int type = root.getWindowLayoutParams().get().type;
-            if (type == WindowManager.LayoutParams.TYPE_TOAST) {
-                IBinder windowToken = root.getDecorView().getWindowToken();
-                IBinder appToken = root.getDecorView().getApplicationWindowToken();
-                if (windowToken == appToken) {
-                    // means this window isn't contained by any other windows.
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText(message);
-        }
-    }
-
 }

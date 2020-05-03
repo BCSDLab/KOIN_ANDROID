@@ -1,12 +1,14 @@
-package in.koreatech.koin;
+package in.koreatech.koin.LostFoundInstrumentedTest;
 
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 import org.junit.Test;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.ui.lostfound.LostFoundCommentActivity;
 import in.koreatech.koin.ui.lostfound.LostFoundEditActivity;
 import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
@@ -35,7 +37,7 @@ public class LostFoundCommentTest {
      */
     @Test
     public void testcaseForAppBarTitle() {
-        onView(withId(R.id.koin_base_app_bar_dark)).check(matches(hasDescendant(withText(R.string.navigation_item_lostfound))));
+        onView(ViewMatchers.withId(R.id.koin_base_app_bar_dark)).check(matches(hasDescendant(withText(R.string.navigation_item_lostfound))));
     }
 
     /**
