@@ -63,7 +63,7 @@ public class UsedMarketInstrumentedTest {
     }
 
     @Test
-    public void testCaseForBusSearchInfo() { //운행 정보 검색 클릭 테스트
+    public void testCaseForBuy() { //삽니다 클릭 테스트
         onView(withId(R.id.market_used_main_tabs))
                 .perform(selectTabAtPosition(1))
                 .check(matches(checkTabSelectedAndText(R.id.market_used_main_tabs, 1, "삽니다", true)));
@@ -270,7 +270,7 @@ public class UsedMarketInstrumentedTest {
     }*/
 
     @Test
-    public void testCaseForSellUploadAndDelete() {
+    public void testCaseForSellUploadAndDelete() { //팝니다 업로드 및 삭제 시 리스트 테스트
         onView(withId(R.id.market_used_main_tabs))
                 .perform(selectTabAtPosition(0))
                 .check(matches(checkTabSelectedAndText(R.id.market_used_main_tabs, 0, "팝니다", true)));
@@ -298,7 +298,7 @@ public class UsedMarketInstrumentedTest {
     }
 
     @Test
-    public void testCaseForBuyUploadAndDelete() {
+    public void testCaseForBuyUploadAndDelete() { //삽니다 업로드 및 삭제 시 리스트 테스트
         onView(withId(R.id.market_used_main_tabs))
                 .perform(selectTabAtPosition(1))
                 .check(matches(checkTabSelectedAndText(R.id.market_used_main_tabs, 1, "삽니다", true)));
