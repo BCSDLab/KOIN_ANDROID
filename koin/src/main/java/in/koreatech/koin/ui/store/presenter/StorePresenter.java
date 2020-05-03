@@ -17,6 +17,7 @@ public class StorePresenter {
     public StorePresenter(StoreContract.View storeView, StoreInteractor storeInteractor) {
         this.storeView = storeView;
         this.storeInteractor = storeInteractor;
+        this.storeView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
