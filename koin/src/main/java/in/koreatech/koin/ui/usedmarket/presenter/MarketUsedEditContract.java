@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.usedmarket.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 
 public interface MarketUsedEditContract {
@@ -7,6 +9,10 @@ public interface MarketUsedEditContract {
         void showLoading();
 
         void hideLoading();
+
+        void showMessage(String message);
+
+        void showMessage(@StringRes int message);
 
         void showUpdateSuccess();
 

@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.login.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.interactor.TokenSessionInteractor;
 import in.koreatech.koin.data.network.interactor.TokenSessionLocalInteractor;
 import in.koreatech.koin.core.network.ApiCallback;
@@ -9,6 +10,7 @@ import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.util.HashGeneratorUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
 public class LoginPresenter{
     private final LoginContract.View loginView;
@@ -33,6 +35,10 @@ public class LoginPresenter{
      * @param isPasswordHash 비밀번호 hash 여부
      */
     public void login(String id, String password, Boolean isPasswordHash) {
+        if (validateStringIsEmpty(id) || validateStringIsEmpty(password)) {
+                loginView.showMessage(R.string.login_email_password_empty_string_warning);
+                return;
+        }
         this.loginView.showProgress();
         this.userPw = HashGeneratorUtil.generateSHA256(password);
         this.userInteractor.readToken(id, password, isPasswordHash, loginApiCallback);

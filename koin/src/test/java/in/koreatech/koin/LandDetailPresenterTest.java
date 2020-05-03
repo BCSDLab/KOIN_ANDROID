@@ -21,20 +21,22 @@ public class LandDetailPresenterTest {
     LandInteractor landInteractor;
     @Mock
     LandDetailContract.View landDetailView;
-    @Mock
-    Land land;
 
     private LandDetailPresenter landDetailPresenter;
     private ApiCallback apiCallback;
+    private Land land;
+    private int landId;
 
     @Before
     public void setupLandDetailPresenter() {
         MockitoAnnotations.initMocks(this);
         landDetailPresenter = new LandDetailPresenter(landDetailView, landInteractor);
+        land = new Land();
+        landId = 1234;
     }
 
     @Test
-    public void createPresenter_SetsThePresenterToView() {
+    public void createLandDetailPresenter_setsThePresenterIntoView() {
         landDetailPresenter = new LandDetailPresenter(landDetailView, landInteractor);
         verify(landDetailView).setPresenter(landDetailPresenter);
     }
@@ -47,7 +49,7 @@ public class LandDetailPresenterTest {
             return null;
         }).when(landInteractor).readLandDetail(anyInt(), any(ApiCallback.class));
 
-        landDetailPresenter.getLandDetailInfo(111);
+        landDetailPresenter.getLandDetailInfo(landId);
 
         verify(landDetailView).showLoading();
         verify(landDetailView).onLandDetailDataReceived(land);
@@ -55,7 +57,7 @@ public class LandDetailPresenterTest {
     }
 
     @Test
-    public void errorLandDetailInfo_ShowsToastMessage() {
+    public void errorLandDetailInfoFromServer_ShowsErrorToastMessage() {
         Exception exception = new Exception();
         doAnswer(invocation -> {
             apiCallback = invocation.getArgument(1);
@@ -63,7 +65,7 @@ public class LandDetailPresenterTest {
             return null;
         }).when(landInteractor).readLandDetail(anyInt(), any(ApiCallback.class));
 
-        landDetailPresenter.getLandDetailInfo(222);
+        landDetailPresenter.getLandDetailInfo(landId);
 
         verify(landDetailView).showLoading();
         verify(landDetailView).showMessage("원룸 정보를 받아오지 못했습니다.");

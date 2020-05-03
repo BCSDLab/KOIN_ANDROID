@@ -18,10 +18,13 @@ import in.koreatech.koin.data.network.response.DefaultResponse;
 import in.koreatech.koin.data.network.service.CommunityService;
 import in.koreatech.koin.util.FormValidatorUtil;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
@@ -778,83 +781,90 @@ public class CommunityRestInteractor implements CommunityInteractor {
 
     @Override
     public void updateAnonymousComment(Comment comment, ApiCallback apiCallback) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("content", comment.getContent());
-        jsonObject.addProperty("password", comment.getPassword());
+        JsonObject commentUpdateJsonObject = new JsonObject();
+        commentUpdateJsonObject.addProperty("content", comment.getContent());
+        commentUpdateJsonObject.addProperty("password", comment.getPassword());
 
-        RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
-                .putAnonymousComment(String.valueOf(comment.getArticleUid()), String.valueOf(comment.getCommentUid()), jsonObject)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Comment>() {
-                    @Override
-                    public void onSubscribe(Disposable disposable) {
-                        compositeDisposable.add(disposable);
-                    }
+        JsonObject commentGrantCheckJsonObject = new JsonObject();
+        commentGrantCheckJsonObject.addProperty("comment_id", comment.getCommentUid());
+        commentGrantCheckJsonObject.addProperty("password", comment.getPassword());
 
-                    @Override
-                    public void onNext(Comment response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
-                            response.setArticleUid(comment.getArticleUid());
-                            apiCallback.onSuccess(response);
-                        } else {
-                            apiCallback.onFailure(new Throwable(response.getError()));
-                        }
-                    }
+        Observable<Article> grantCheckObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).postAnonymousCommentGrantCheck(commentGrantCheckJsonObject);
+        Observable<Comment> commentUpdateObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
+                .putAnonymousComment(String.valueOf(comment.getArticleUid()), String.valueOf(comment.getCommentUid()), commentUpdateJsonObject);
 
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
+        Disposable disposable = grantCheckObservable.subscribeOn(Schedulers.io()).
+                flatMap((Function<Article, ObservableSource<Comment>>) grantResponse -> {
+                    if (!grantResponse.isGrantEdit()) throw new Exception("수정 권한이 없습니다.");
+                    return commentUpdateObservable;
+                }).map(commentEditResponse -> commentEditResponse).
+                observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<Comment>() {
+            @Override
+            public void onNext(Comment comment) {
+                if (FormValidatorUtil.validateStringIsEmpty(comment.getError())) {
+                    comment.setArticleUid(comment.getArticleUid());
+                    apiCallback.onSuccess(comment);
+                } else {
+                    apiCallback.onFailure(new Throwable(comment.getError()));
+                }
+            }
 
-                    @Override
-                    public void onComplete() {
-//                        compositeDisposable.dispose();
-                    }
-                });
+            @Override
+            public void onError(Throwable throwable) {
+                if (throwable instanceof HttpException) {
+                    Log.d(TAG, ((HttpException) throwable).code() + " ");
+                }
+                apiCallback.onFailure(throwable);
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
     public void deleteAnonymousComment(int articleUid, int commentUid, String password, ApiCallback apiCallback) {
-        RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
-                .deleteAnonymousComment(String.valueOf(articleUid), String.valueOf(commentUid), password)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<DefaultResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable disposable) {
-                        compositeDisposable.add(disposable);
-                    }
 
-                    @Override
-                    public void onNext(DefaultResponse response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
-                            Comment comment = new Comment();
-                            comment.setArticleUid(articleUid);
-                            apiCallback.onSuccess(comment);
-                        } else {
-                            apiCallback.onFailure(new Throwable(response.getError()));
-                        }
-                    }
+        JsonObject commentGrantCheckJsonObject = new JsonObject();
+        commentGrantCheckJsonObject.addProperty("comment_id", commentUid);
+        commentGrantCheckJsonObject.addProperty("password", password);
+        Observable<Article> grantCheckObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).postAnonymousCommentGrantCheck(commentGrantCheckJsonObject);
+        Observable<DefaultResponse> deleteUpdateObservable = RetrofitManager.getInstance().getRetrofit().create(CommunityService.class)
+                .deleteAnonymousComment(String.valueOf(articleUid), String.valueOf(commentUid), password);
 
+        Disposable disposable = grantCheckObservable.subscribeOn(Schedulers.io()).
+                flatMap((Function<Article, ObservableSource<DefaultResponse>>) grantResponse -> {
+                    if (!grantResponse.isGrantEdit()) throw new Exception("삭제 권한이 없습니다.");
+                    return deleteUpdateObservable;
+                }).map(commentEditResponse -> commentEditResponse).
+                observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<DefaultResponse>() {
+            @Override
+            public void onNext(DefaultResponse response) {
+                if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
+                    Comment comment = new Comment();
+                    comment.setArticleUid(articleUid);
+                    apiCallback.onSuccess(comment);
+                } else {
+                    apiCallback.onFailure(new Throwable(response.getError()));
+                }
+            }
 
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
+            @Override
+            public void onError(Throwable throwable) {
+                if (throwable instanceof HttpException) {
+                    Log.d(TAG, ((HttpException) throwable).code() + " ");
+                }
+                apiCallback.onFailure(throwable);
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onComplete() {
 
-                    }
-                });
+            }
+        });
     }
 
     @Override
@@ -891,52 +901,6 @@ public class CommunityRestInteractor implements CommunityInteractor {
                             Article article = new Article();
                             article.setGrantEdit(false);
                             article.setArticleUid(articleUid);
-                            apiCallback.onSuccess(article);
-                        } else {
-                            if (throwable instanceof HttpException) {
-                                Log.d(TAG, ((HttpException) throwable).code() + " ");
-                            }
-                            apiCallback.onFailure(throwable);
-                        }
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    @Override
-    public void updateAnonymousCommentGrantCheck(int commentUid, String password, ApiCallback apiCallback) {
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("comment_id", commentUid);
-        jsonObject.addProperty("password", password);
-        RetrofitManager.getInstance().getRetrofit().create(CommunityService.class).postAnonymousCommentGrantCheck(jsonObject)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Article>() {
-                    @Override
-                    public void onSubscribe(Disposable disposable) {
-                        compositeDisposable.add(disposable);
-                    }
-
-                    @Override
-                    public void onNext(Article response) {
-                        if (FormValidatorUtil.validateStringIsEmpty(response.getError())) {
-                            apiCallback.onSuccess(response);
-                        } else {
-                            apiCallback.onFailure(new Throwable(response.getError()));
-                        }
-                    }
-
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (((HttpException) throwable).code() == 403) {
-                            Article article = new Article();
                             apiCallback.onSuccess(article);
                         } else {
                             if (throwable instanceof HttpException) {

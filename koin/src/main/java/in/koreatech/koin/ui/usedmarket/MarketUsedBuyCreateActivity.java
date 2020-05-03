@@ -79,11 +79,6 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     private Uri currentPhotoPath;
     private File imageFile;
 
-    private boolean isTitlecheck;
-    private boolean isPhoneCheck;
-    private boolean isContentCheck;
-
-
     @BindView(R.id.market_used_buy_create_thumbnail_imageview)
     ImageView marketBuyCreateThumbnailImageView;
     @BindView(R.id.market_used_buy_create_thumbnail_change_button)
@@ -166,11 +161,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
      * @see UserInfoSharedPreferencesHelper
      */
     void init() {
-
-        isTitlecheck = false;
-        isPhoneCheck = false;
         isPhoneOpen = false;
-        isContentCheck = false;
         itemState = 0;
         price = "0";
 
@@ -319,6 +310,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
 
     /**
      * 키보드를 사라지게 하는 함수
+     *
      * @param activity
      */
     public void hideKeyboard(Activity activity) {
@@ -399,6 +391,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -630,6 +623,16 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             return true;
     }
 
+    @Override
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
 
     /**
      * Edit 메뉴를 클릭시 title, content, phone 형식을 검사
@@ -641,7 +644,6 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
      * state를 확인해서 item create
      */
     public void onClickEditButton() {
-
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(marketBuyCreateContent.getText().toString().trim());
         phoneNumber = marketBuyCreateEditTextPhoneNum.getText().toString().trim();
 
@@ -655,43 +657,10 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
         marketItem.setType(BUY_CODE);
         marketItem.setTitle(marketBuyCreateTitleEditText.getText().toString().trim());
         marketItem.setPrice(Integer.parseInt(price));
-
-        if (marketBuyCreateContent.getText().toString().trim().length() != 0) {
-            marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
-            isContentCheck = true;
-        } else {
-            isContentCheck = false;
-        }
-
+        marketItem.setContent(Html.toHtml(spannableStringBuilder).trim());
         marketItem.setState(itemState);
-        if (isPhoneOpen && (marketItem.getPhone().trim().length() == 13)) {
-            if (phoneNumber.charAt(3) == '-' && phoneNumber.charAt(8) == '-')
-                isPhoneCheck = true;
-            else
-                isPhoneCheck = false;
 
-        } else if (!isPhoneOpen)
-            isPhoneCheck = true;
-        else
-            isPhoneCheck = false;
-
-        if (marketItem.getTitle().length() == 0)
-            isTitlecheck = false;
-        else
-            isTitlecheck = true;
-
-
-        if (isContentCheck && isTitlecheck && !isPhoneCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-        if (!isTitlecheck && isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-        if (!isContentCheck && isTitlecheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-        if (!isTitlecheck && !isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
-
-        if (isPhoneCheck && isTitlecheck && isContentCheck)
-            marketUsedCreatePresenter.createMarketItem(marketItem);
+        marketUsedCreatePresenter.createMarketItem(marketItem);
     }
 
     @Override

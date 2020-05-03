@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.login.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 
 public interface LoginContract {
@@ -9,6 +11,8 @@ public interface LoginContract {
         void hideProgress();
 
         void showMessage(String message);
+
+        void showMessage(@StringRes int message);
 
         void gotoMain();
     }

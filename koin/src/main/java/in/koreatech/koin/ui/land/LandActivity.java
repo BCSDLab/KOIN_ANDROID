@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,17 +23,15 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.data.network.entity.BokdukRoom;
-import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.Land;
+import in.koreatech.koin.data.network.interactor.LandRestInteractor;
 import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandContract;
 import in.koreatech.koin.ui.land.presenter.LandPresenter;
-
-import androidx.annotation.NonNull;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 
 /**
  * 복덕방 목록을 보여주는 Activity
@@ -41,7 +40,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     private static final String TAG = "LandActivity";
     private Context context;
     private LandPresenter landPresenter;
-    private ArrayList<BokdukRoom> landArrayList;
+    private ArrayList<Land> landArrayList;
     private RecyclerView landRecyclerView;
     private GridLayoutManager landGridLayoutManager;
     private LandRecyclerAdapter landRecyclerAdapter;
@@ -64,7 +63,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         landRecyclerView.setLayoutManager(landGridLayoutManager);
         landRecyclerView.setNestedScrollingEnabled(false);
         landRecyclerView.setHasFixedSize(false);
-        setPresenter(new LandPresenter(this, new BokdukRestInteractor()));
+        setPresenter(new LandPresenter(this, new LandRestInteractor()));
         naverMapSetting();
     }
 
@@ -108,6 +107,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         this.landPresenter = presenter;
     }
 
+
     /**
      * presenter로부터 받은 복덕방 리스트를 액티비티에 저장
      * 복덕방 데이터를 받아와서 naverMap Marker 추가
@@ -115,7 +115,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
      * @param landList 복덕방배열
      */
     @Override
-    public void onLandListDataReceived(ArrayList<BokdukRoom> landList) {
+    public void onLandListDataReceived(ArrayList<Land> landList) {
         landArrayList.clear();
         landArrayList.addAll(landList);
         updateUserInterface();
@@ -128,7 +128,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
      *
      * @param landList 복덕방의 위도, 경도값을 가진 데이터
      */
-    public void makeNavermapMarker(ArrayList<BokdukRoom> landList) {
+    public void makeNavermapMarker(ArrayList<Land> landList) {
         Marker[] marker = new Marker[landList.size()];
         for (int i = 0; i < landList.size(); i++) {
             marker[i] = new Marker();
@@ -161,11 +161,11 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     public void goToLandDetailByIndex(int index) {
         if (landArrayList.size() <= index)
             return;
-        BokdukRoom bokdukRoom = landArrayList.get(index);
+        Land land = landArrayList.get(index);
         Intent intent = new Intent(this, LandDetailActivity.class);
-        intent.putExtra("Land_ID", bokdukRoom.getId());
-        intent.putExtra("Land_latitude", bokdukRoom.getLatitude());
-        intent.putExtra("Land_longitude", bokdukRoom.getLongitude());
+        intent.putExtra("Land_ID", land.getId());
+        intent.putExtra("Land_latitude", land.getLatitude());
+        intent.putExtra("Land_longitude", land.getLongitude());
         startActivity(intent);
     }
 
@@ -186,6 +186,16 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @Override
     public void showMessage(String message) {
         ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showLoading() {
+        showProgressDialog(R.string.loading);
+    }
+
+    @Override
+    public void hideLoading() {
+        hideProgressDialog();
     }
 
     /**

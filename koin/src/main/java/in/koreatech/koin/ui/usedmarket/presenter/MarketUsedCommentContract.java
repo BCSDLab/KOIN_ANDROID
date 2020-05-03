@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.usedmarket.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
@@ -10,6 +12,10 @@ public interface MarketUsedCommentContract {
         void showLoading();
 
         void hideLoading();
+
+        void showMessage(String message);
+
+        void showMessage(@StringRes int message);
 
         void onMarketDataReceived(Item item);
 

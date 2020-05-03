@@ -11,6 +11,10 @@ public interface ArticleEditContract {
 
         void showMessage(String message);
 
+        void showMessage(int message);
+
+        void blockButtonClick(boolean isBlock);
+
         void onClickEditButton();//create, edited button
 
         void onArticleDataReceived(Article article);

@@ -53,6 +53,4 @@ public interface CommunityInteractor {
     void updateGrantCheck(int articleUid, final ApiCallback apiCallback);
 
     void updateAnonymousGrantCheck(int articleUid, String password, final ApiCallback apiCallback);
-
-    void updateAnonymousCommentGrantCheck(int commentUid, String password, final ApiCallback apiCallback);
 }

@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
+import in.koreatech.koin.data.network.entity.Land;
 
 public interface LandContract {
     interface View extends BaseView<LandPresenter> {
+        void showLoading();
 
-        void onLandListDataReceived(ArrayList<BokdukRoom> landArrayList);
+        void onLandListDataReceived(ArrayList<Land> landArrayList);
 
         void updateUserInterface();
 
         void showMessage(String message);
+
+        void hideLoading();
     }
 }

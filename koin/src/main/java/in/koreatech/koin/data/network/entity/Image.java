@@ -10,6 +10,8 @@ public class Image {
     @Expose
     private ArrayList<String> urls;
 
+    public void setUrls(ArrayList<String> urls){this.urls = urls;}
+
     public ArrayList<String> getUrls() {
         return urls;
     }

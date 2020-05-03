@@ -91,10 +91,6 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
     private Uri currentPhotoPath;
     private File imageFile;
 
-    private boolean isTitlecheck;
-    private boolean isPhoneCheck;
-    private boolean isContentCheck;
-
     @BindView(R.id.market_used_sell_edit_thumbnail_imageview)
     ImageView marketSellEditThumbnailImageView;
     @BindView(R.id.market_used_sell_edit_thumbnail_change_button)
@@ -191,9 +187,6 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         marketItem = new MarketItem();
         setPresenter(new MarketUsedEditPresenter(this, new MarketUsedRestInteractor()));
 
-        isTitlecheck = false;
-        isPhoneCheck = false;
-        isContentCheck = false;
         marketSellEditThumbnailImageView.setVisibility(View.VISIBLE);
         Glide.with(context).load(thumbNail).apply(new RequestOptions()
                 .placeholder(R.drawable.img_noimage_big)
@@ -507,7 +500,7 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             return;
         }
@@ -751,7 +744,6 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(marketSellEditContent.getText().toString().trim());
         phoneNumber = marketSellEditEditTextPhoneNum.getText().toString().trim();
 
-
         if (isPhoneOpen) {
             marketItem.setIsPhoneOpen(1);
             marketItem.setPhone(phoneNumber);
@@ -763,44 +755,11 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
         marketItem.setTitle(marketSellEditTitleEditText.getText().toString().trim());
         marketItem.setPrice(Integer.parseInt(price));
         marketItem.setState(itemState);
-
-        if (marketSellEditContent.getText().toString().trim().length() != 0) {
-            marketItem.setContent(Html.toHtml(spannableStringBuilder));
-            marketItem.setContent(addImageSpan(marketItem.getContent(), imageUrl));
-            isContentCheck = true;
-        } else {
-            isContentCheck = false;
-        }
-
-
-        if (isPhoneOpen && (marketItem.getPhone().length() == 13)) {
-            if (phoneNumber.charAt(3) == '-' && phoneNumber.charAt(8) == '-')
-                isPhoneCheck = true;
-            else
-                isPhoneCheck = false;
-
-        } else if (!isPhoneOpen)
-            isPhoneCheck = true;
-        else
-            isPhoneCheck = false;
-
-        if (marketItem.getTitle().length() == 0)
-            isTitlecheck = false;
-        else {
-            isTitlecheck = true;
-        }
-
-        if (isContentCheck && isTitlecheck && !isPhoneCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_phone_check);
-        if (!isTitlecheck && isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_check);
-        if (!isContentCheck && isTitlecheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_content_check);
-        if (!isTitlecheck && !isContentCheck)
-            ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
+        marketItem.setContent(Html.toHtml(spannableStringBuilder));
+        marketItem.setContent(addImageSpan(marketItem.getContent(), imageUrl));
         marketItem.setType(marketId);
-        if (isPhoneCheck && isTitlecheck && isContentCheck)
-            marketUsedEditPresenter.editMarketContent(itemId, marketItem);
+
+        marketUsedEditPresenter.editMarketContent(itemId, marketItem);
 
     }
 
@@ -813,6 +772,16 @@ public class MarketUsedSellEditActivity extends KoinNavigationDrawerActivity imp
             return content;
         }
         return content;
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

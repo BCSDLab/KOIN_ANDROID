@@ -13,5 +13,5 @@ public interface LandService {
     Observable<Land> getLandDetail(@Path("id") int landId);
 
     @GET(LAND)
-    Observable<BokdukRoom> getLandList();
+    Observable<Land> getLandList();
 }
