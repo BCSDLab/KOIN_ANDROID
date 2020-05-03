@@ -18,8 +18,6 @@ public interface LostFoundCommentContract {
 
         void showSuccessUpdateComment(Comment comment);
 
-        void showMessage(String message);
-
         void showMessage(@StringRes int message);
     }
 }

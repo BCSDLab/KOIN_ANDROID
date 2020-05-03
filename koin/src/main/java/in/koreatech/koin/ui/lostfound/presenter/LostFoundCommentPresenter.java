@@ -17,9 +17,9 @@ public class LostFoundCommentPresenter {
     private LostAndFoundInteractor lostAndFoundInteractor;
     private int id;
 
-    public LostFoundCommentPresenter(LostFoundCommentContract.View lostFoundCommentView) {
+    public LostFoundCommentPresenter(LostFoundCommentContract.View lostFoundCommentView, LostAndFoundInteractor lostAndFoundInteractor) {
         this.lostFoundCommentView = lostFoundCommentView;
-        this.lostAndFoundInteractor = new LostAndFoundRestInteractor();
+        this.lostAndFoundInteractor = lostAndFoundInteractor;
         this.lostFoundCommentView.setPresenter(this);
     }
 
@@ -61,8 +61,9 @@ public class LostFoundCommentPresenter {
                 if (defaultResponse.success) {
                     getLostItem(id);
                     lostFoundCommentView.showMessage(R.string.lost_and_found_deleted);
-                } else
+                } else {
                     lostFoundCommentView.showMessage(R.string.lost_and_found_delete_fail);
+                }
             }
             lostFoundCommentView.hideLoading();
         }
