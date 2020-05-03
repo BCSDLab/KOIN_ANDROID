@@ -16,13 +16,18 @@ public class MarketUsedPresenter{
     public MarketUsedPresenter(MarketUsedContract.View marketView, MarketUsedInteractor marketUsedInteractor) {
         this.marketUsedInteractor = marketUsedInteractor;
         this.marketView = marketView;
+        this.marketView.setPresenter(this);
     }
 
     private final ApiCallback listApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            MarketPageResponse marketArrayList = (MarketPageResponse) object;
-            marketView.onMarketDataReceived(marketArrayList);
+            if(object instanceof MarketPageResponse) {
+                MarketPageResponse marketPageResponse = (MarketPageResponse) object;
+                marketView.onMarketDataReceived(marketPageResponse);
+            } else {
+                marketView.showMarketDataReceivedFail();
+            }
             marketView.hideLoading();
         }
 
@@ -55,8 +60,12 @@ public class MarketUsedPresenter{
     private final ApiCallback detailApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item item = (Item) object;
-            marketView.onMarketDataReceived(item);
+            if(object instanceof Item) {
+                Item item = (Item) object;
+                marketView.onMarketDataReceived(item);
+            } else {
+                marketView.showMarketDataReceivedFail();
+            }
             marketView.hideLoading();
         }
 
