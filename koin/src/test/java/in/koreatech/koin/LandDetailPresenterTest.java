@@ -68,7 +68,7 @@ public class LandDetailPresenterTest {
         landDetailPresenter.getLandDetailInfo(landId);
 
         verify(landDetailView).showLoading();
-        verify(landDetailView).showMessage("원룸 정보를 받아오지 못했습니다.");
+        verify(landDetailView).showMessage(R.string.error_network);
         verify(landDetailView).hideLoading();
     }
 }

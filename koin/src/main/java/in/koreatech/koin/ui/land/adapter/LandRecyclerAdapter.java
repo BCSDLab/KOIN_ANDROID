@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
-import in.koreatech.koin.data.network.entity.BokdukRoom;
+import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.ui.land.LandDetailActivity;
 
 /**
@@ -25,7 +25,7 @@ import in.koreatech.koin.ui.land.LandDetailActivity;
  */
 public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapter.ViewHolder> {
 
-    private ArrayList<BokdukRoom> landArrayList; //학교 앞 원룸 List
+    private ArrayList<Land> landArrayList; //학교 앞 원룸 List
     private Context context;
 
     /**
@@ -62,7 +62,7 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
          *
          * @param land 복덕방
          */
-        void onBind(BokdukRoom land) {
+        void onBind(Land land) {
             if (land.getName() == null)
                 textViewLandName.setText("-");
             else
@@ -104,7 +104,7 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
         holder.onBind(landArrayList.get(position));
-        BokdukRoom land = landArrayList.get(position);
+        Land land = landArrayList.get(position);
         holder.view.setOnClickListener(new View.OnClickListener() {
             /**
              * 아이템을 클릭했을때 복덕방 상세페이지로 이동하는 함수

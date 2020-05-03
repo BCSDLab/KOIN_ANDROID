@@ -184,7 +184,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
      * @param message "원룸 리스트를 받아오지 못했습니다"
      */
     @Override
-    public void showMessage(String message) {
+    public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
     }
 

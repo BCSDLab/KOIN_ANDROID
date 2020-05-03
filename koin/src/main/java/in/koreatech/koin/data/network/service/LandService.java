@@ -1,6 +1,5 @@
 package in.koreatech.koin.data.network.service;
 
-import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.entity.Land;
 import io.reactivex.Observable;
 import retrofit2.http.GET;

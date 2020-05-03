@@ -1,9 +1,10 @@
 package in.koreatech.koin.ui.land.presenter;
 
+import androidx.annotation.StringRes;
+
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
-import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.entity.Land;
 
 public interface LandContract {
@@ -14,7 +15,7 @@ public interface LandContract {
 
         void updateUserInterface();
 
-        void showMessage(String message);
+        void showMessage(@StringRes int message);
 
         void hideLoading();
     }

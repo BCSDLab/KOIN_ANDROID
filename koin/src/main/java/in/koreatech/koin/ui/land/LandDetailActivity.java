@@ -279,7 +279,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      * @param message 사용자에게 전달할 메시지
      */
     @Override
-    public void showMessage(String message) {
+    public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
     }
 

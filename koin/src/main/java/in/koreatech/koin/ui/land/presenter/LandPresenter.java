@@ -2,9 +2,9 @@ package in.koreatech.koin.ui.land.presenter;
 
 import java.util.ArrayList;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Land;
-import in.koreatech.koin.data.network.interactor.BokdukInteractor;
 import in.koreatech.koin.data.network.interactor.LandInteractor;
 
 /**
@@ -40,7 +40,7 @@ public class LandPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            landView.showMessage("원룸 리스트를 받아오지 못했습니다");
+            landView.showMessage(R.string.error_network);
             landView.hideLoading();
         }
     };
