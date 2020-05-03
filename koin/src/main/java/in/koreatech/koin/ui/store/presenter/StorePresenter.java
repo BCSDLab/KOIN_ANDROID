@@ -2,6 +2,7 @@ package in.koreatech.koin.ui.store.presenter;
 
 import java.util.ArrayList;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
@@ -28,7 +29,7 @@ public class StorePresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            storeView.showMessage(throwable.getMessage());
+            storeView.showMessage(R.string.store_get_data_fail);
             storeView.hideLoading();
         }
     };

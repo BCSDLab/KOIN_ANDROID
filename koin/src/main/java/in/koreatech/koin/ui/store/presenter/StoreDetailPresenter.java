@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.store.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreInteractor;
@@ -25,7 +26,7 @@ public class StoreDetailPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            storeView.showMessage("상점 정보를 불러오지 못했습니다.");
+            storeView.showMessage(R.string.store_get_data_fail);
             storeView.hideLoading();
         }
     };

@@ -185,7 +185,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(int message) {
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
