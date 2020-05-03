@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -83,7 +84,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         totalPage = 1;
         currentPage = 0;
         context = this;
-        new LostFoundMainPresenter(this);
+        new LostFoundMainPresenter(this, new LostAndFoundRestInteractor());
         lostItemArrayList = new ArrayList<>();
         lostfoundMainSwipeRefreshLayout.setOnRefreshListener(this);
         lostFoundMainActivityRecyclerviewAdapter = new LostFoundMainActivityRecyclerviewAdapter(this, lostItemArrayList);

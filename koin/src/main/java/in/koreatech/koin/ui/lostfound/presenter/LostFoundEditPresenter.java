@@ -19,10 +19,9 @@ public class LostFoundEditPresenter {
         this.lostFoundEditView = lostFoundEditView;
         this.lostFoundEditView.setPresenter(this);
         lostAndFoundInteractor = new LostAndFoundRestInteractor();
-
     }
 
-    final ApiCallback createLostFoundItemApiCallback = new ApiCallback() {
+    private final ApiCallback createLostFoundItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {
@@ -39,7 +38,7 @@ public class LostFoundEditPresenter {
         }
     };
 
-    final ApiCallback updateLostFoundItemApiCallback = new ApiCallback() {
+    private final ApiCallback updateLostFoundItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {

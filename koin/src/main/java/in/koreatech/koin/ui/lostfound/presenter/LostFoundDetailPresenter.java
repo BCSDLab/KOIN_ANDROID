@@ -21,7 +21,7 @@ public class LostFoundDetailPresenter{
     /**
      * 응답 성공시 권한이 있는 경우 수정 및 삭제 가능하게 버튼을 홝성화 시킨다.
      */
-    final ApiCallback grantCheckApiCallback = new ApiCallback() {
+    private final ApiCallback grantCheckApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             GrantCheckResponse grantCheckResponse;
@@ -41,7 +41,7 @@ public class LostFoundDetailPresenter{
     /**
      * 응답 성공시 받아온 정보를 넘겨준다
      */
-    final ApiCallback readLostAndFoundApiCallback = new ApiCallback() {
+    private final ApiCallback readLostAndFoundApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {
@@ -58,7 +58,7 @@ public class LostFoundDetailPresenter{
         }
     };
 
-    final ApiCallback deleteLostFoundItemApiCallback = new ApiCallback() {
+    private final ApiCallback deleteLostFoundItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof DefaultResponse) {
