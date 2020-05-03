@@ -20,6 +20,8 @@ import org.junit.runner.RunWith;
 
 import java.util.Random;
 
+import in.koreatech.koin.matcher.TextColorMatcher;
+import in.koreatech.koin.matcher.ToastMatcher;
 import in.koreatech.koin.ui.signup.SignupActivity;
 import in.koreatech.koin.ui.timetable.TimetableActivity;
 import in.koreatech.koin.ui.timetable.TimetableAnonymousActivity;
@@ -44,19 +46,19 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TimetableAnonymousTest {
+public class TimetableAnonymousInstrumentedTest {
     @Rule
     public IntentsTestRule<TimetableAnonymousActivity> activityRule =
             new IntentsTestRule<>(TimetableAnonymousActivity.class);
 
-    @Rule public GrantPermissionRule permissionRule =
+    @Rule
+    public GrantPermissionRule permissionRule =
             GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     @Test
     public void testCaseForSaveToImage() { //이미지 저장 버튼 클릭
         onView(withId(R.id.timetable_save_timetable_image_linearlayout)).perform(click());
-        onView(isRoot()).perform(waitFor(10000));
-        onView(withText("저장되었습니다.")).inRoot(withDecorView(not(is(activityRule.getActivity().getWindow().getDecorView()))))
+        onView(withText("저장되었습니다.")).inRoot(ToastMatcher.withMessage("저장되었습니다."))
                 .check(matches(isDisplayed()));
     }
 
@@ -78,8 +80,8 @@ public class TimetableAnonymousTest {
         viewAddLecture();
         viewSelectMajor();
         onView(withId(R.id.select_major_computer_engineering)).perform(click());
-        onView(withId(R.id.select_major_computer_engineering)).check(matches(TextColorMatcher.withTextColor(
-                R.color.white, activityRule.getActivity().getResources()
+        onView(withId(R.id.select_major_computer_engineering)).check(matches(TextColorMatcher.textViewTextColorMatcher(
+                activityRule.getActivity().getResources().getColor(R.color.white)
         )));
     }
 
@@ -95,46 +97,5 @@ public class TimetableAnonymousTest {
 
     private void viewSelectMajor() {
         onView(withId(R.id.timetable_add_category_imageview)).perform(click());
-    }
-
-    public static ViewAction waitFor(final long millis) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
-
-            @Override
-            public String getDescription() {
-                return "Wait for " + millis + " milliseconds.";
-            }
-
-            @Override
-            public void perform(UiController uiController, final View view) {
-                uiController.loopMainThreadForAtLeast(millis);
-            }
-        };
-    }
-
-    String getText(final Matcher<View> matcher) {
-        final String[] stringHolder = { null };
-        onView(matcher).perform(new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextView.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "getting text from a TextView";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                TextView tv = (TextView)view; //Save, because of check in getConstraints()
-                stringHolder[0] = tv.getText().toString();
-            }
-        });
-        return stringHolder[0];
     }
 }
