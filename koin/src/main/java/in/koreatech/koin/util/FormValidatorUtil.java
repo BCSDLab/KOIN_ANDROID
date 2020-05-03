@@ -1,10 +1,8 @@
 package in.koreatech.koin.util;
 
-import android.text.Html;
-
 public class FormValidatorUtil {
     public static boolean validateStringIsEmpty(String str) {
-        return str == null || str.trim().replace(" ","").length() < 1;
+        return str == null || str.trim().replace(" ", "").length() < 1;
     }
 
     public static boolean validateStartPlaceIsEmpty(String str) {
@@ -16,7 +14,8 @@ public class FormValidatorUtil {
     }
 
     public static boolean validateHTMLStringIsEmpty(String str) {
-        str = Html.fromHtml(str).toString();
-        return str.trim().replace(" ","").length() < 1;
+        if (validateStringIsEmpty(str)) return true;
+        str = str.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+        return str.trim().replace(" ", "").length() < 1;
     }
 }

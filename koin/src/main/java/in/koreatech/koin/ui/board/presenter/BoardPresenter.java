@@ -16,6 +16,7 @@ public class BoardPresenter {
     public BoardPresenter(BoardContract.View boardView, CommunityInteractor communityInteractor) {
         this.boardView = boardView;
         this.communityInteractor = communityInteractor;
+        boardView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
