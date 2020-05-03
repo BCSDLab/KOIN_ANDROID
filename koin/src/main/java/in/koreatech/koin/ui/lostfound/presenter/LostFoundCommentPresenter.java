@@ -23,7 +23,7 @@ public class LostFoundCommentPresenter {
         this.lostFoundCommentView.setPresenter(this);
     }
 
-    final ApiCallback createCommentApiCallback = new ApiCallback() {
+    private final ApiCallback createCommentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             lostFoundCommentView.showMessage(R.string.lost_and_found_created);
@@ -38,7 +38,7 @@ public class LostFoundCommentPresenter {
         }
     };
 
-    final ApiCallback updateCommentApiCallback = new ApiCallback() {
+    private final ApiCallback updateCommentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             lostFoundCommentView.showMessage(R.string.lost_and_found_edited);
@@ -53,7 +53,7 @@ public class LostFoundCommentPresenter {
         }
     };
 
-    final ApiCallback deleteCommentApiCallback = new ApiCallback() {
+    private final ApiCallback deleteCommentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof DefaultResponse) {
@@ -74,7 +74,7 @@ public class LostFoundCommentPresenter {
         }
     };
 
-    final ApiCallback getLostItemApiCallback = new ApiCallback() {
+    private final ApiCallback getLostItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {

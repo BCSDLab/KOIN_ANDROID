@@ -16,6 +16,7 @@ import androidx.core.widget.NestedScrollView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -76,7 +77,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     }
 
     public void init() {
-        new LostFoundDetailPresenter(this);
+        new LostFoundDetailPresenter(this, new LostAndFoundRestInteractor());
     }
 
     @Override
@@ -140,12 +141,6 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
             lostfoundDetailLostDateTextview.setText("분실일");
             lostfoundDetailLostPlaceTextview.setText("분실장소");
         }
-    }
-
-    @Override
-    public void showMessage(String message) {
-        if (message != null)
-            ToastUtil.getInstance().makeShort(message);
     }
 
     @Override
