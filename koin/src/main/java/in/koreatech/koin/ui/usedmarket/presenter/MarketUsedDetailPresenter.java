@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.usedmarket.presenter;
 
-import in.koreatech.koin.data.network.response.DefaultResponse;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
@@ -14,20 +13,24 @@ public class MarketUsedDetailPresenter{
     public MarketUsedDetailPresenter(MarketUsedDetailContract.View marketDetailView, MarketUsedInteractor marketUsedInteractor) {
         this.marketUsedInteractor = marketUsedInteractor;
         this.marketDetailView = marketDetailView;
+        this.marketDetailView.setPresenter(this);
     }
 
     private final ApiCallback detailApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
+            if(object instanceof Item) {
+                Item item = (Item) object;
+                marketDetailView.onMarketDataReceived(item);
+            }
+            marketDetailView.showMarketDataReceivedFail();
             marketDetailView.hideLoading();
-            Item item = (Item) object;
-            marketDetailView.onMarketDataReceived(item);
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            marketDetailView.hideLoading();
             marketDetailView.showMarketDataReceivedFail();
+            marketDetailView.hideLoading();
         }
     };
 

@@ -12,10 +12,11 @@ import in.koreatech.koin.util.FormValidatorUtil;
 public class MarketUsedDetailCommentPresenter {
 
     private final MarketUsedInteractor marketUsedInteractor;
-    private final MarketUsedCommentContract.View mMarketCreateCommentContracView;
+    private final MarketUsedCommentContract.View marketCreateCommentContracView;
+
 
     public MarketUsedDetailCommentPresenter(MarketUsedCommentContract.View mMarketCreateCommentContracView, MarketUsedInteractor marketUsedInteractor) {
-        this.mMarketCreateCommentContracView = mMarketCreateCommentContracView;
+        this.marketCreateCommentContracView = mMarketCreateCommentContracView;
         this.marketUsedInteractor = marketUsedInteractor;
     }
 
@@ -23,85 +24,85 @@ public class MarketUsedDetailCommentPresenter {
     private final ApiCallback detailApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.hideLoading();
             Item item = (Item) object;
-            mMarketCreateCommentContracView.onMarketDataReceived(item);
+            marketCreateCommentContracView.onMarketDataReceived(item);
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mMarketCreateCommentContracView.hideLoading();
-            mMarketCreateCommentContracView.showMarketDataReceivedFail();
+            marketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketDataReceivedFail();
         }
     };
 
     private final ApiCallback commentApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mMarketCreateCommentContracView.showMarketCommentUpdate();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentUpdate();
+            marketCreateCommentContracView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mMarketCreateCommentContracView.showMarketCommentUpdateFail();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentUpdateFail();
+            marketCreateCommentContracView.hideLoading();
         }
     };
 
     private final ApiCallback commentDeleteApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mMarketCreateCommentContracView.showMarketCommentDelete();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentDelete();
+            marketCreateCommentContracView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mMarketCreateCommentContracView.showMarketCommentDeleteFail();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentDeleteFail();
+            marketCreateCommentContracView.hideLoading();
         }
     };
 
     private final ApiCallback commentEditApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mMarketCreateCommentContracView.showMarketCommentEdit();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentEdit();
+            marketCreateCommentContracView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mMarketCreateCommentContracView.showMarketCommentEditFail();
-            mMarketCreateCommentContracView.hideLoading();
+            marketCreateCommentContracView.showMarketCommentEditFail();
+            marketCreateCommentContracView.hideLoading();
         }
     };
 
     public void readMarketDetail(int id) {
-        mMarketCreateCommentContracView.showLoading();
+        marketCreateCommentContracView.showLoading();
         marketUsedInteractor.readMarketDetail(id, detailApiCallback);
     }
 
     public void createComment(int id, String content) {
         if (FormValidatorUtil.validateStringIsEmpty(content)) {
-            mMarketCreateCommentContracView.showMessage(R.string.market_used_content_check);
+            marketCreateCommentContracView.showMessage(R.string.market_used_content_check);
             return;
         }
-        mMarketCreateCommentContracView.showLoading();
+        marketCreateCommentContracView.showLoading();
         marketUsedInteractor.createCommentDetail(id, content, commentApiCallback);
     }
 
     public void deleteComment(Comment comment, Item item) {
-        mMarketCreateCommentContracView.showLoading();
+        marketCreateCommentContracView.showLoading();
         marketUsedInteractor.deleteCommentDetail(item.getId(), comment.getCommentUid(), commentDeleteApiCallback);
     }
 
     public void editComment(Comment comment, Item item, String content) {
         if (FormValidatorUtil.validateStringIsEmpty(comment.getContent())) {
-            mMarketCreateCommentContracView.showMessage(R.string.market_used_content_check);
+            marketCreateCommentContracView.showMessage(R.string.market_used_content_check);
             return;
         }
-        mMarketCreateCommentContracView.showLoading();
+        marketCreateCommentContracView.showLoading();
         marketUsedInteractor.editCommentDetail(item.getId(), comment.getCommentUid(), content, commentEditApiCallback);
     }
 
