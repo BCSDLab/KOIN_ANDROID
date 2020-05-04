@@ -22,7 +22,7 @@ public interface MarketUsedCreateContract {
 
         void showMarketCreatedSuccess(Item item);
 
-        void showMarketCreatefFail();
+        void showMarketCreateFail();
 
         void showImageUploadSuccess(String url);
 

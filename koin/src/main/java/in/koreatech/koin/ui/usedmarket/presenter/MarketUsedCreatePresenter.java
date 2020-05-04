@@ -4,7 +4,6 @@ import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
@@ -28,14 +27,18 @@ public class MarketUsedCreatePresenter {
     private final ApiCallback createMarketApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item marketItem = (Item) object;
-            marketCreateContractView.showMarketCreatedSuccess(marketItem);
+            if(object instanceof Item) {
+                Item marketItem = (Item) object;
+                marketCreateContractView.showMarketCreatedSuccess(marketItem);
+            } else {
+                marketCreateContractView.showMarketCreateFail();
+            }
             marketCreateContractView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            marketCreateContractView.showMarketCreatefFail();
+            marketCreateContractView.showMarketCreateFail();
             marketCreateContractView.hideLoading();
         }
     };
@@ -43,9 +46,13 @@ public class MarketUsedCreatePresenter {
     private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item marketItem = (Item) object;
-            if (marketItem.getUrl() != null)
-                marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
+            if(object instanceof Item) {
+                Item marketItem = (Item) object;
+                if (marketItem.getUrl() != null)
+                    marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
+            } else {
+                marketCreateContractView.showImageUploadFail();
+            }
             marketCreateContractView.hideLoading();
         }
 
