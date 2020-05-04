@@ -20,6 +20,7 @@ public class MarketUsedEditPresenter {
     public MarketUsedEditPresenter(MarketUsedEditContract.View marketEditView, MarketUsedInteractor marketUsedInteractor) {
         this.marketEditView = marketEditView;
         this.marketUsedInteractor = marketUsedInteractor;
+        this.marketEditView.setPresenter(this);
     }
 
     private final ApiCallback contentEditApiCallback = new ApiCallback() {
@@ -29,12 +30,12 @@ public class MarketUsedEditPresenter {
             marketEditView.hideLoading();
         }
 
-
         public void onFailure(Throwable throwable) {
             marketEditView.showUpdateFail();
             marketEditView.hideLoading();
         }
     };
+
     @AddTrace(name = "MarketUsedDetailPresenter_uploadThumbnailImage")
     private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
