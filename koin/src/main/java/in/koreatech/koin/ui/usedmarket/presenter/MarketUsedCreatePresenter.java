@@ -22,6 +22,7 @@ public class MarketUsedCreatePresenter {
     public MarketUsedCreatePresenter(MarketUsedCreateContract.View marketCreateContractView, MarketUsedInteractor marketUsedInteractor) {
         this.marketUsedInteractor = marketUsedInteractor;
         this.marketCreateContractView = marketCreateContractView;
+        this.marketCreateContractView.setPresenter(this);
     }
 
     private final ApiCallback createMarketApiCallback = new ApiCallback() {

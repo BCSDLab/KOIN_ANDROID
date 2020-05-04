@@ -22,8 +22,9 @@ public class MarketUsedDetailPresenter{
             if(object instanceof Item) {
                 Item item = (Item) object;
                 marketDetailView.onMarketDataReceived(item);
+            } else {
+                marketDetailView.showMarketDataReceivedFail();
             }
-            marketDetailView.showMarketDataReceivedFail();
             marketDetailView.hideLoading();
         }
 
