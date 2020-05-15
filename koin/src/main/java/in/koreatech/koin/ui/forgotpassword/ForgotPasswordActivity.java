@@ -21,6 +21,7 @@ import butterknife.OnEditorAction;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.ui.forgotpassword.presenter.ForgotPasswordContract;
 import in.koreatech.koin.ui.forgotpassword.presenter.ForgotPasswordPresenter;
 import in.koreatech.koin.util.SnackbarUtil;
@@ -46,7 +47,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
         context = this;
 
         //create presenter
-        new ForgotPasswordPresenter(this);
+        new ForgotPasswordPresenter(this, new UserRestInteractor());
 
     }
 
