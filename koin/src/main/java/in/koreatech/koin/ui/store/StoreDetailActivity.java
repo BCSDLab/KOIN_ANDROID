@@ -269,7 +269,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     }
 
     @Override
-    public void showMessage(String message) {
+    public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
     }
 

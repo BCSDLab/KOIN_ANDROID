@@ -177,7 +177,6 @@
     <string name="font_kr_medium">fonts/notosanscjkkr_medium.otf</string>
     <string name="font_kr_regular">fonts/notosanscjkkr_regular.otf"</string>
 
-
     <string name="take_screen_shot_activity">Activity Screenshot</string>
     <string name="take_screen_shot_view">Layout Screenshot</string>
     <string name="take_save_screen_shot">Save Screenshot</string>
@@ -195,6 +194,9 @@
     <string name="error_guide_title">오류가 발생하였습니다.</string>
     <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
+
+    <!-- Store -->
+    <string name="store_get_data_fail">상점 정보를 불러오지 못했습니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
