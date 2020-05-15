@@ -179,6 +179,7 @@ public class UserRestInteractor implements UserInteractor {
                     @Override
                     public void onNext(User response) {
                         if (response != null) {
+                            UserInfoSharedPreferencesHelper.getInstance().saveUser(response);
                             apiCallback.onSuccess(response);
                         } else {
                             apiCallback.onFailure(new Throwable("fail read user info"));
@@ -217,6 +218,7 @@ public class UserRestInteractor implements UserInteractor {
                     @Override
                     public void onNext(User response) {
                         if (response != null) {
+                            UserInfoSharedPreferencesHelper.getInstance().saveUser(response);
                             apiCallback.onSuccess(response);
                         } else {
                             apiCallback.onFailure(new Throwable("fail update user"));
@@ -253,6 +255,7 @@ public class UserRestInteractor implements UserInteractor {
 
                     @Override
                     public void onNext(DefaultResponse response) {
+                        UserInfoSharedPreferencesHelper.getInstance().clear();
                         apiCallback.onSuccess(response);
                     }
 
