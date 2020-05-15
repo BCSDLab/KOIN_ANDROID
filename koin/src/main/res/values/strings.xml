@@ -67,6 +67,7 @@
 
     <!--Login-->
     <string name="login_email_password_empty_string_warning">아이디와 비밀번호를 입력해주세요"</string>
+    <string name="login_failed">로그인에 실패하였습니다</string>
 
     <!-- Required value in actionbardrawertoggle -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
