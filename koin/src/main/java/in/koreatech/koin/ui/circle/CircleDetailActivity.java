@@ -97,7 +97,7 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
             finish();
         }
         if (cirlceDetailPresenter != null)
-            cirlceDetailPresenter.getCirlceInfo(this.circleId);
+            cirlceDetailPresenter.getCircleInfo(this.circleId);
     }
 
 
@@ -226,6 +226,10 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
         ToastUtil.getInstance().makeShort(message);
     }
 
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
 
     @Override
     public void updateUserInterface() {
