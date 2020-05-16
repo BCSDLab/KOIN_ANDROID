@@ -32,7 +32,7 @@ public class StoreTest {
 
     private int[] categoryTextViewId = {R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_sweet_pork_textview, R.id.store_category_dosirak_textview,
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview, R.id.store_category_hair_textview, R.id.store_category_etc_textview};
-    private String[] categoryText = {"치킨", "피자", "탕수육", "도시락", "족발", " 중국집", "일반음식점", " 미용실", "기타"};
+    private String[] categoryText = {"치킨", "피자", "탕수육", "도시락", "족발", "중국집", "일반음식점", "미용실", "기타"};
 
     /**
      * 앱바 타이틀 검사
