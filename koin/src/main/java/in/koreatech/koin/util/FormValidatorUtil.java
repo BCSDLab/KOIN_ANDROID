@@ -15,7 +15,7 @@ public class FormValidatorUtil {
 
     public static boolean validateHTMLStringIsEmpty(String str) {
         if (validateStringIsEmpty(str)) return true;
-        str = str.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+        str = str.replaceAll("<(/|!--)?([a-zA-Z0-9 \\-()\"=\"\\\\#:;]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/|--)?>", "");
         return str.trim().replace(" ", "").length() < 1;
     }
 }

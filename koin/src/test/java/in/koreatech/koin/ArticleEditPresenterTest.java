@@ -82,7 +82,11 @@ public class ArticleEditPresenterTest {
                 "<p> </p>",
                 "<l> </l>",
                 "<u></u>\n<l> </l>",
-                "<u></u>\n\n\n\n<l> </l><b></b>"
+                "<u></u>\n\n\n\n<l> </l><b></b>",
+                "<p data-tag=\"input\" style=\"color:#000000;\"></p>",
+                "<!-- Not Allowed Attribute Filtered ( data-tag=\"input\") --><p style=\"color:#000000;\"></p>",
+                "<!-- Not Allowed Attribute Filtered ( data-tag=\"input\") --><p style=\"color:#000000;\"></p><u></u><br>",
+                "<!-- -->"
         };
 
         for (String content : emptyHtmlContent) {
@@ -221,7 +225,8 @@ public class ArticleEditPresenterTest {
                 "<p> </p>",
                 "<l> </l>",
                 "<u></u>\n<l> </l>",
-                "<u></u>\n\n\n\n<l> </l><b></b>"
+                "<u></u>\n\n\n\n<l> </l><b></b>",
+                "<!-- Not Allowed Attribute Filtered ( data-tag=\"input\") --><p style=\"color:#000000;\"> </p><u></u> <br>",
         };
 
         for (String content : emptyHtmlContent) {
@@ -330,7 +335,11 @@ public class ArticleEditPresenterTest {
                 "<p> </p>",
                 "<l> </l>",
                 "<u></u>\n<l> </l>",
-                "<u></u>\n\n\n\n<l> </l><b></b>"
+                "<u></u>\n\n\n\n<l> </l><b></b>",
+                "<p data-tag=\"input\" style=\"color:#000000;\"></p>",
+                "<!-- Not Allowed Attribute Filtered ( data-tag=\"input\") --><p style=\"color:#000000;\"></p>",
+                "<!-- Not Allowed Attribute Filtered ( data-tag=\"input\") --><p style=\"color:#000000;\"></p><u></u><br>",
+                "<!-- -->"
         };
 
         for (String content : emptyHtmlContent) {
