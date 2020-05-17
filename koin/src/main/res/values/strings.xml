@@ -87,6 +87,7 @@
     <string name="board_content_check">내용을 입력해주세요</string>
     <string name="board_password_check">비밀번호를 입력해주세요</string>
     <string name="board_nickname_check">닉네임을 입력해주세요</string>
+    <string name="board_remove_question">게시글을 삭제할까요?\n댓글도 모두 사라집니다.</string>
 
     <!-- Comment -->
     <string name="comment_edit">수정</string>
@@ -102,6 +103,8 @@
     <string name="comment_input_password">비밀번호를 입력해주세요.</string>
     <string name="comment_input_content">내용을 입력해주세요.</string>
     <string name="comment_input_nickname">닉네임을 입력해주세요.</string>
+    <string name="coment_typing_content">내용을 입력해주세요.</string>
+    <string name="comment_remove_question">댓글을 삭제할까요?</string>
 
 
     <!--Bus-->

@@ -20,11 +20,12 @@ public class TabLayoutMatcher {
             @Override
             protected boolean matchesSafely(TabLayout item) {
                 TabLayout.Tab tab = item.getTabAt(position);
-                if(tab == null) throw new PerformException.Builder()
+                if (tab == null) throw new PerformException.Builder()
                         .withCause(new Throwable("No tab at index" + position))
                         .build();
                 else return tab.isSelected() == isSelected && tab.getText().equals(tabText);
             }
+
             @Override
             public void describeTo(Description description) {
                 description.appendText("with selected tab check");
