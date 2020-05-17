@@ -140,6 +140,8 @@
     <string name="timetable_version_load_error_message">버전 정보를 받아오지 못했습니다.</string>
     <string name="timetable_lecture_load_error_message">리스트를 받아오지 못했습니다.</string>
     <string name="timetable_semester_load_error_message">학기정보를 불러오지 못했습니다.</string>
+    <string name="timetable_semester_version_updated">강의가 업데이트 되었습니다.</string>
+
     <!--lost and found-->
     <string name="lost_and_found_created">생성되었습니다.</string>
     <string name="lost_and_found_edited">수정되었습니다.</string>

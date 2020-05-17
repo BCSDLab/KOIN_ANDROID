@@ -70,11 +70,7 @@ public class TimetableAnonymousPresenter {
             }
 
             if (!versionCode.equals(serverVersionCode)) {
-                String[] timeStamp = serverVersionCode.split("_");
-                StringBuilder timeStringBuilder = new StringBuilder();
-                timeStringBuilder.append("강의가 업데이트 되었습니다.\n");
-                timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
-                timeTableView.showUpdateAlertDialog(timeStringBuilder.toString());
+                timeTableView.showUpdateAlertDialog(serverVersionCode);
             }
 
             timeTableView.updateSemesterCode(serverVersionCode.split("_")[0]);
@@ -162,12 +158,6 @@ public class TimetableAnonymousPresenter {
             timeTableView.hideLoading();
         }
     };
-
-    private String getDate(long time) {
-        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
-        java.util.Date result = new  java.util.Date(time * 1000);
-        return simple.format(result);
-    }
 
     public void getLecture(String semester) {
         timeTableView.showLoading();

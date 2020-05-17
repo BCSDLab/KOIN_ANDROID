@@ -45,7 +45,7 @@ public interface TimetableAnonymousContract{
 
         void showFailSavedTimeTable();
 
-        void showUpdateAlertDialog(String message);
+        void showUpdateAlertDialog(String serverVersionCode);
 
         void updateSemesterCode(String semester);
 

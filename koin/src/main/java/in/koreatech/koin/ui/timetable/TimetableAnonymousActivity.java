@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -889,16 +890,29 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    public void showUpdateAlertDialog(String message) {
+    public void showUpdateAlertDialog(String serverVersionCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.timetable_update_message);
-        builder.setMessage(message);
+        builder.setMessage(getMessageFromTimeStamp(serverVersionCode));
         builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
                 });
         builder.show();
     }
 
+    public String getMessageFromTimeStamp(String versionCode){
+        String[] timeStamp = versionCode.split("_");
+        StringBuilder timeStringBuilder = new StringBuilder();
+        timeStringBuilder.append(getResources().getString(R.string.timetable_semester_version_updated)).append("\n");
+        timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
+        return timeStringBuilder.toString();
+    }
+
+    private String getDate(long time) {
+        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        java.util.Date result = new  java.util.Date(time * 1000);
+        return simple.format(result);
+    }
     @Override
     public void updateSemesterCode(String semester) {
         this.semester = semester;

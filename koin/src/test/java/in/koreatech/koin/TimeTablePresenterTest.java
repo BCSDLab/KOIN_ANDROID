@@ -182,7 +182,7 @@ public class TimeTablePresenterTest {
         ).when(appVersionInteractor).readAppVersion(anyString(), any(ApiCallback.class));
         timetablePresenter.getTimeTableVersion();
         verify(timetableView).showLoading();
-        verify(timetableView).showUpdateAlertDialog(getVersionDialogString(version.getVersion()));
+        verify(timetableView).showUpdateAlertDialog(version.getVersion());
         verify(timetableView).updateSemesterCode(version.getVersion().split("_")[0]);
         verify(timetableView).hideLoading();
     }
@@ -199,7 +199,7 @@ public class TimeTablePresenterTest {
         ).when(appVersionInteractor).readAppVersion(anyString(), any(ApiCallback.class));
         timetablePresenter.getTimeTableVersion();
         verify(timetableView).showLoading();
-        verify(timetableView, never()).showUpdateAlertDialog(getVersionDialogString(version.getVersion()));
+        verify(timetableView, never()).showUpdateAlertDialog(version.getVersion());
         verify(timetableView).updateSemesterCode(version.getVersion().split("_")[0]);
         verify(timetableView).hideLoading();
     }
@@ -232,20 +232,4 @@ public class TimeTablePresenterTest {
         verify(timetableView).getSemester(semesters);
         verify(timetableView).hideLoading();
     }
-
-
-    private String getVersionDialogString(String serverVersionCode) {
-        String[] timeStamp = serverVersionCode.split("_");
-        StringBuilder timeStringBuilder = new StringBuilder();
-        timeStringBuilder.append("강의가 업데이트 되었습니다.\n");
-        timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
-        return timeStringBuilder.toString();
-    }
-
-    private String getDate(long time) {
-        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date result = new java.util.Date(time * 1000);
-        return simple.format(result);
-    }
-
 }

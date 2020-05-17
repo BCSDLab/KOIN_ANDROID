@@ -179,7 +179,7 @@ public class TimeTableAnonymousPresenterTest {
         ).when(appVersionInteractor).readAppVersion(anyString(), any(ApiCallback.class));
         timetableAnonymousPresenter.getTimeTableVersion();
         verify(timetableAnonymousView).showLoading();
-        verify(timetableAnonymousView).showUpdateAlertDialog(getVersionDialogString(version.getVersion()));
+        verify(timetableAnonymousView).showUpdateAlertDialog(version.getVersion());
         verify(timetableAnonymousView).updateSemesterCode(version.getVersion().split("_")[0]);
         verify(timetableAnonymousView).hideLoading();
     }
@@ -196,7 +196,7 @@ public class TimeTableAnonymousPresenterTest {
         ).when(appVersionInteractor).readAppVersion(anyString(), any(ApiCallback.class));
         timetableAnonymousPresenter.getTimeTableVersion();
         verify(timetableAnonymousView).showLoading();
-        verify(timetableAnonymousView, never()).showUpdateAlertDialog(getVersionDialogString(version.getVersion()));
+        verify(timetableAnonymousView, never()).showUpdateAlertDialog(version.getVersion());
         verify(timetableAnonymousView).updateSemesterCode(version.getVersion().split("_")[0]);
         verify(timetableAnonymousView).hideLoading();
     }
@@ -229,21 +229,4 @@ public class TimeTableAnonymousPresenterTest {
         verify(timetableAnonymousView).getSemester(semesters);
         verify(timetableAnonymousView).hideLoading();
     }
-
-
-
-    private String getVersionDialogString(String serverVersionCode){
-        String[] timeStamp = serverVersionCode.split("_");
-        StringBuilder timeStringBuilder = new StringBuilder();
-        timeStringBuilder.append("강의가 업데이트 되었습니다.\n");
-        timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
-        return timeStringBuilder.toString();
-    }
-
-    private String getDate(long time) {
-        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        java.util.Date result = new  java.util.Date(time * 1000);
-        return simple.format(result);
-    }
-
 }
