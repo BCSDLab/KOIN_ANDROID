@@ -3,6 +3,7 @@ package in.koreatech.koin.data.network.interactor;
 import com.google.gson.JsonObject;
 
 import in.koreatech.koin.core.network.ApiCallback;
+import in.koreatech.koin.data.network.entity.TimeTable;
 
 public interface TimeTableInteractor {
 
@@ -18,4 +19,9 @@ public interface TimeTableInteractor {
 
     void readSemesters(final ApiCallback apiCallback);
 
+    void readTimeTableFromLocal(String semester, final ApiCallback apiCallback);
+
+    void editTimeTableItemAtLocal(TimeTable.TimeTableItem timeTableItem, String semester, final ApiCallback apiCallback);
+
+    void deleteTimeTableItemAtLocal(String semester, int id, final ApiCallback apiCallback);
 }
