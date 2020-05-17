@@ -190,6 +190,7 @@
     <string name="error_guide_title">오류가 발생하였습니다.</string>
     <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
+    <string name="error_unload_data">더 이상 데이터를 불러올 수 없습니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

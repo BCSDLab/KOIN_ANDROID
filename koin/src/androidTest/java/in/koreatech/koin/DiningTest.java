@@ -39,8 +39,8 @@ import static in.koreatech.koin.matcher.ToastMatcher.withMessage;
 
 public class DiningTest {
     @Rule
-    public IntentsTestRule<DiningActivity> activityRule =
-            new IntentsTestRule<>(DiningActivity.class);
+    public IntentsTestRule<DiningActivity> activityRule = new IntentsTestRule<>(DiningActivity.class);
+
     /**
      * 앱바 타이틀 검사
      */
@@ -58,7 +58,7 @@ public class DiningTest {
      * 오늘 날짜와 식단화면 날짜가 일치하는지 검사
      */
     @Test
-    public void testcaseForDate(){
+    public void testcaseForDate() {
         onView(withId(R.id.dining_swiperefreshlayout)).perform(ViewActions.swipeDown());
 
         String today = TimeUtil.getDeviceCreatedDateOnlyString();
@@ -67,20 +67,19 @@ public class DiningTest {
 
     /**
      * 왼쪽화살표 버튼 클릭 시 오늘 날짜 기준으로 하루씩 감소하고 8번 클릭 시 토스트 메시지 표시 테스트
-    */
+     */
     @Test
-    public void testcaseForBeforeDateButton(){
+    public void testcaseForBeforeDateButton() {
         int changeDate = 0;
         onView(withId(R.id.dining_swiperefreshlayout)).perform(ViewActions.swipeDown());
 
         String today = TimeUtil.getDeviceCreatedDateOnlyString();
         onView(withId(R.id.dining_date_textView)).check(matches(withText(today)));  //오늘 날짜와 일치하는지 확인
 
-        for(int i = 0;i<8;i++) {
+        for (int i = 0; i < 8; i++) {
             onView(withId(R.id.dining_before_date_button)).perform(click());
-            if(i == 7){
-                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다."))
-                        .check(matches(isDisplayed()));
+            if (i == 7) {
+                onView(withText(R.string.error_unload_data)).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다.")).check(matches(isDisplayed()));
                 break;
             }
             changeDate -= 1;
@@ -89,22 +88,22 @@ public class DiningTest {
         }
 
     }
+
     /**
      * 오른쪽 화살표 버튼 클릭 시 오늘 날짜 기준으로 하루씩 증가하고 8번 클릭 시 토스트 메시지 표시 테스트
      */
     @Test
-    public void testcaseForNextDateButton(){
+    public void testcaseForNextDateButton() {
         int changeDate = 0;
         onView(withId(R.id.dining_swiperefreshlayout)).perform(ViewActions.swipeDown());
 
         String today = TimeUtil.getDeviceCreatedDateOnlyString();
         onView(withId(R.id.dining_date_textView)).check(matches(withText(today)));  //오늘 날짜와 일치하는지 확인
 
-        for(int i = 0;i<8;i++) {
+        for (int i = 0; i < 8; i++) {
             onView(withId(R.id.dining_next_date_button)).perform(click());
-            if(i == 7){
-                onView(withText("더 이상 데이터를 불러올 수 없습니다.")).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다."))
-                        .check(matches(isDisplayed()));
+            if (i == 7) {
+                onView(withText(R.string.error_unload_data)).inRoot(withMessage("더 이상 데이터를 불러올 수 없습니다.")).check(matches(isDisplayed()));
                 break;
             }
             changeDate += 1;
@@ -118,7 +117,7 @@ public class DiningTest {
      * 아침, 점심, 저녁 버튼 클릭 시 클릭한 버튼은 주황색, 나머지 버튼은 검은색인지 확인하는 테스트
      */
     @Test
-    public void testcaseForDiningButtonClick(){
+    public void testcaseForDiningButtonClick() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         onView(withId(R.id.dining_swiperefreshlayout)).perform(ViewActions.swipeDown());
 
@@ -133,23 +132,19 @@ public class DiningTest {
         checkTextStatus(R.id.dining_dinner_button);
 
 
-
     }
 
     /**
      * 클릭한 버튼만 주황색, 나머지 버튼은 검은색인지 확인하는 함수
+     *
      * @param selectedCategoryTextViewId
      */
     void checkTextStatus(@IdRes int selectedCategoryTextViewId) {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        @IdRes int[] ids = {
-                R.id.dining_breakfast_button,
-                R.id.dining_lunch_button,
-                R.id.dining_dinner_button
-        };
+        @IdRes int[] ids = { R.id.dining_breakfast_button, R.id.dining_lunch_button, R.id.dining_dinner_button };
 
         for (int i = 0; i < ids.length; i++) {
-            if(selectedCategoryTextViewId == ids[i])
+            if (selectedCategoryTextViewId == ids[i])
                 onView(withId(ids[i])).check(matches(textViewTextColorMatcher(context.getResources().getColor(R.color.colorAccent))));
             else
                 onView(withId(ids[i])).check(matches(textViewTextColorMatcher(context.getResources().getColor(R.color.black))));
