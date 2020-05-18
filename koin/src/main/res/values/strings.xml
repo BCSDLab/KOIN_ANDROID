@@ -102,7 +102,7 @@
     <string name="comment_input_password">비밀번호를 입력해주세요.</string>
     <string name="comment_input_content">내용을 입력해주세요.</string>
     <string name="comment_input_nickname">닉네임을 입력해주세요.</string>
-
+    <string name="comment_delete_check_question">삭제하시겠습니까?</string>
 
     <!--Bus-->
     <string name="bus_search_button">조회</string>
