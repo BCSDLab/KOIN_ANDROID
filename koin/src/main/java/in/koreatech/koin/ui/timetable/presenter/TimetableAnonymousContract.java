@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.timetable.presenter;
 
+import androidx.annotation.StringRes;
+
 import java.util.ArrayList;
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.Lecture;
@@ -15,7 +17,9 @@ public interface TimetableAnonymousContract{
 
         void showLecture(ArrayList<Lecture> lecture);
 
-        void showFailMessage(String message);
+        void showMessage(String message);
+
+        void showMessage(@StringRes int message);
 
         void showSuccessCreateTimeTable();
 
@@ -29,7 +33,7 @@ public interface TimetableAnonymousContract{
 
         void showFailEditTimeTable();
 
-        void showDeleteSuccessTimeTableItem(int id);
+        void showDeleteSuccessTimeTableItem();
 
         void showFailDeleteTimeTableItem();
 
@@ -41,7 +45,7 @@ public interface TimetableAnonymousContract{
 
         void showFailSavedTimeTable();
 
-        void showUpdateAlertDialog(String message);
+        void showUpdateAlertDialog(String serverVersionCode);
 
         void updateSemesterCode(String semester);
 

@@ -15,14 +15,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SignupPresenter {
 
-    private final SignupContract.View mSignUpView;
+    private final SignupContract.View signUpView;
 
-    private final UserInteractor mUserInteractor;
+    private final UserInteractor userInteractor;
 
-    public SignupPresenter(@NonNull SignupContract.View signupView) {
-        mUserInteractor = new UserRestInteractor();
-        mSignUpView = checkNotNull(signupView, "signUpView cannnot be null");
-        mSignUpView.setPresenter(this);
+    public SignupPresenter(@NonNull SignupContract.View signUpView, UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
+        this.signUpView = checkNotNull(signUpView, "signUpView cannnot be null");
+        this.signUpView.setPresenter(this);
     }
 
     /**
@@ -33,19 +33,19 @@ public class SignupPresenter {
     private final ApiCallback signUpApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            mSignUpView.gotoEmail();
-            mSignUpView.hideProgress();
-            mSignUpView.buttonClickBlock(false);
+            signUpView.gotoEmail();
+            signUpView.hideProgress();
+            signUpView.buttonClickBlock(false);
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            mSignUpView.hideProgress();
+            signUpView.hideProgress();
             if (throwable instanceof HttpException && ((HttpException) throwable).code() == 409)
-                mSignUpView.showMessage(R.string.email_already_send_or_email_requested);
+                signUpView.showMessage(R.string.email_already_send_or_email_requested);
             else
-                mSignUpView.showMessage(R.string.error_network);
-            mSignUpView.buttonClickBlock(false);
+                signUpView.showMessage(R.string.error_network);
+            signUpView.buttonClickBlock(false);
         }
     };
 
@@ -57,25 +57,25 @@ public class SignupPresenter {
      */
     public void signUp(String id, String password) {
         if(FormValidatorUtil.validateStringIsEmpty(id)){
-            mSignUpView.showMessage(R.string.signup_id_input_warning);
+            signUpView.showMessage(R.string.signup_id_input_warning);
             return;
         }
         else if(FormValidatorUtil.validateStringIsEmpty(password)){
-            mSignUpView.showMessage(R.string.signup_password_input_warning);
+            signUpView.showMessage(R.string.signup_password_input_warning);
             return;
         }
         else if (!FilterUtil.isEmailValidate(id)) {
-            mSignUpView.showMessage(R.string.signup_email_format_warning);
+            signUpView.showMessage(R.string.signup_email_format_warning);
             return;
         }
         else if(!FilterUtil.isPasswordValidate(password)){
-            mSignUpView.showMessage(R.string.signup_password_format_warning);
+            signUpView.showMessage(R.string.signup_password_format_warning);
             return;
         }
 
-        mSignUpView.buttonClickBlock(true);
-        mSignUpView.showProgress();
-        mUserInteractor.createToken(id, password, signUpApiCallback);
+        signUpView.buttonClickBlock(true);
+        signUpView.showProgress();
+        userInteractor.createToken(id, password, signUpApiCallback);
     }
 
 }

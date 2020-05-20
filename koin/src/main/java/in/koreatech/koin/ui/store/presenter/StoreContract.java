@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.store.presenter;
 
+import androidx.annotation.StringRes;
+
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
@@ -12,7 +14,7 @@ public interface StoreContract {
 
         void hideLoading();
 
-        void showMessage(String message);
+        void showMessage(@StringRes int message);
 
         void onStoreListDataReceived(ArrayList<Store> storeArrayList);
 

@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.service.TimeTableService;
+import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
 
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.response.DefaultResponse;
+import in.koreatech.koin.util.SaveManager;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -228,5 +231,117 @@ public class TimeTableRestInteractor implements TimeTableInteractor {
 
                     }
                 });
+    }
+
+    @Override
+    public void readTimeTableFromLocal(String semester, ApiCallback apiCallback) {
+        Observable.just(SaveManager.loadTimeTable(TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester)))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TimeTable>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        compositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(TimeTable timeTable) {
+                        apiCallback.onSuccess(timeTable);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        apiCallback.onFailure(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    @Override
+    public void editTimeTableItemAtLocal(TimeTable.TimeTableItem timeTableItem, String semester, ApiCallback apiCallback) {
+        Observable.just(SaveManager.loadTimeTable(TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester)))
+                .map(savedTimeTable ->
+                        {
+                            if (savedTimeTable.getTimeTableItems() != null) {
+                                int id = TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTableBlockID();
+                                if (id == Integer.MAX_VALUE) id = -1;
+                                timeTableItem.setId(++id);
+                                TimeTableSharedPreferencesHelper.getInstance().saveTimeTableBlockID(id);
+                                savedTimeTable.addTimeTableItem(timeTableItem);
+                                TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(savedTimeTable, semester));
+                                return savedTimeTable;
+                            } else
+                                return null;
+                        }
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TimeTable>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        compositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(TimeTable timeTable) {
+                        apiCallback.onSuccess(timeTable);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        apiCallback.onFailure(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
+    }
+
+    @Override
+    public void deleteTimeTableItemAtLocal(String semester, int id, ApiCallback apiCallback) {
+        Observable.just(SaveManager.loadTimeTable(TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester)))
+                .map(savedTimeTable ->
+                        {   TimeTable saveTable = new TimeTable();
+                            if (savedTimeTable.getTimeTableItems() != null) {
+                                saveTable.setSemester(savedTimeTable.getSemester());
+                                for (TimeTable.TimeTableItem timeTableItem : savedTimeTable.getTimeTableItems()) {
+                                    if (timeTableItem.getId() != id) {
+                                        saveTable.addTimeTableItem(timeTableItem);
+                                    }
+                                }
+                                TimeTableSharedPreferencesHelper.getInstance().saveTimeTable(semester, SaveManager.saveTimeTable(saveTable, saveTable.getSemester()));
+                                return SaveManager.loadTimeTable(TimeTableSharedPreferencesHelper.getInstance().loadSaveTimeTable(semester));
+                            } else
+                                return null;
+                        }
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<TimeTable>() {
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        compositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(TimeTable timeTable) {
+                        apiCallback.onSuccess(timeTable);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        apiCallback.onFailure(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
     }
 }

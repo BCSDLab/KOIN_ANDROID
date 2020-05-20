@@ -39,6 +39,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,9 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
+import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
+import in.koreatech.koin.data.network.interactor.LectureRestInteractor;
+import in.koreatech.koin.data.network.interactor.TimeTableRestInteractor;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
@@ -157,7 +161,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetablePresenter(this));
+        setPresenter(new TimetablePresenter(this, new TimeTableRestInteractor(), new LectureRestInteractor(), new AppVersionRestInteractor()));
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
@@ -190,7 +194,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     protected void onStart() {
         super.onStart();
         TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
-        this.timetablePresenter.getTimetTableVersion();
+        this.timetablePresenter.getTimeTableVersion();
         this.timetablePresenter.readSemesters();
     }
 
@@ -241,13 +245,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
                     sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
                 } else {
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
         }
     }
 
@@ -282,7 +286,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }, 2000);
 
         } else {
-            ToastUtil.getInstance().makeShort( R.string.need_permission);
+            ToastUtil.getInstance().makeShort(R.string.need_permission);
             askSaveToImagePermission();
         }
     }
@@ -684,8 +688,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     @Override
-    public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeLong( message);
+    public void showMessage(String message) {
+        ToastUtil.getInstance().makeLong(message);
+    }
+
+    @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeLong(message);
     }
 
     @Override
@@ -707,7 +716,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -722,7 +731,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -739,7 +748,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -873,14 +882,28 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     @Override
-    public void showUpdateAlertDialog(String message) {
+    public void showUpdateAlertDialog(String serverVersionCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.timetable_update_message);
-        builder.setMessage(message);
+        builder.setMessage(getMessageFromTimeStamp(serverVersionCode));
         builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
                 });
         builder.show();
+    }
+
+    public String getMessageFromTimeStamp(String versionCode){
+        String[] timeStamp = versionCode.split("_");
+        StringBuilder timeStringBuilder = new StringBuilder();
+        timeStringBuilder.append(getResources().getString(R.string.timetable_semester_version_updated)).append("\n");
+        timeStringBuilder.append(getDate(Long.parseLong(timeStamp[1])));
+       return timeStringBuilder.toString();
+    }
+
+    private String getDate(long time) {
+        java.text.SimpleDateFormat simple = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        java.util.Date result = new  java.util.Date(time * 1000);
+        return simple.format(result);
     }
 
     @Override

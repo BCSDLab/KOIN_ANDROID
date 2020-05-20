@@ -18,6 +18,8 @@ import butterknife.OnEditorAction;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.data.network.interactor.TokenSessionLocalInteractor;
+import in.koreatech.koin.data.network.interactor.UserRestInteractor;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.signup.SignupActivity;
 import in.koreatech.koin.ui.login.presenter.LoginContract;
@@ -50,7 +52,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
 
     private void init() {
         context = this;
-        new LoginPresenter(this);
+        new LoginPresenter(this, new UserRestInteractor(), new TokenSessionLocalInteractor());
     }
 
     @Override

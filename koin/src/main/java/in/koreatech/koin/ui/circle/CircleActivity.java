@@ -113,7 +113,7 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
     @Override
     public void onStart() {
         super.onStart();
-        this.cirlcePresenter.getCirlceList(1);
+        this.cirlcePresenter.getCircleList(1);
     }
 
 
@@ -258,6 +258,11 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
     }
 
     @Override
+    public void showMessage(int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
+    @Override
     public void onCircleListDataReceived(ArrayList<Circle> circleArrayList) {
         cirlceArrayList.clear();
         circleAllArraylist.clear();
@@ -313,6 +318,6 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
     @Override
     public void onRefresh() {
-        this.cirlcePresenter.getCirlceList(1);
+        this.cirlcePresenter.getCircleList(1);
     }
 }

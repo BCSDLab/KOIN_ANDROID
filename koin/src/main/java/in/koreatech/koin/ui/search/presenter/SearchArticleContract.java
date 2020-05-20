@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.search.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 
@@ -17,5 +19,7 @@ public interface SearchArticleContract {
         void showRecentSearch();
 
         void showMessage(String message);
+
+        void showMessage(@StringRes int message);
     }
 }

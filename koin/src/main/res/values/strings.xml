@@ -24,6 +24,7 @@
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
+    <string name="navigation_item_lostfound">분실물게시판</string>
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
@@ -67,6 +68,7 @@
 
     <!--Login-->
     <string name="login_email_password_empty_string_warning">아이디와 비밀번호를 입력해주세요"</string>
+    <string name="login_failed">로그인에 실패하였습니다</string>
 
     <!-- Required value in actionbardrawertoggle -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -87,6 +89,7 @@
     <string name="board_content_check">내용을 입력해주세요</string>
     <string name="board_password_check">비밀번호를 입력해주세요</string>
     <string name="board_nickname_check">닉네임을 입력해주세요</string>
+    <string name="board_remove_question">게시글을 삭제할까요?\n댓글도 모두 사라집니다.</string>
 
     <!-- Comment -->
     <string name="comment_edit">수정</string>
@@ -103,6 +106,8 @@
     <string name="comment_input_content">내용을 입력해주세요.</string>
     <string name="comment_input_nickname">닉네임을 입력해주세요.</string>
     <string name="comment_delete_check_question">삭제하시겠습니까?</string>
+    <string name="coment_typing_content">내용을 입력해주세요.</string>
+    <string name="comment_remove_question">댓글을 삭제할까요?</string>
 
     <!--Bus-->
     <string name="bus_search_button">조회</string>
@@ -111,6 +116,10 @@
     <string name="daesung_depature_place_yawoori_to_university">야우리출발버스</string>
     <string name="bus_no_information">운행정보없음</string>
     <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
+
+    <!--Circle-->
+    <string name="circle_get_list_fail">동아리 리스트를 받아오지 못했습니다.</string>
+    <string name="circle_get_fail">동아리 정보를 받아오지 못했습니다.</string>
 
 
     <!--Market-->
@@ -137,6 +146,10 @@
     <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
     <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
     <string name="timetable_update_message">업데이트</string>
+    <string name="timetable_version_load_error_message">버전 정보를 받아오지 못했습니다.</string>
+    <string name="timetable_lecture_load_error_message">리스트를 받아오지 못했습니다.</string>
+    <string name="timetable_semester_load_error_message">학기정보를 불러오지 못했습니다.</string>
+    <string name="timetable_semester_version_updated">강의가 업데이트 되었습니다.</string>
 
     <!--lost and found-->
     <string name="lost_and_found_created">생성되었습니다.</string>
@@ -146,6 +159,8 @@
     <string name="lost_and_found_content_check">내용을 입력해주세요</string>
     <string name="lost_and_found_phone_check">잘못된 휴대폰 번호입니다.\n 010-1234-1234 양식을 지켜주세요.</string>
     <string name="lost_and_found_title_check">제목을 입력해주세요</string>
+    <string name="lost_and_found_cancel_question">취소하시겠습니까?</string>
+    <string name="lost_and_found_remove_question">글을 삭제할까요?</string>
 
     <!--major-->
     <string name="mechanical_engineering">기계공학부</string>
@@ -159,6 +174,12 @@
     <string name="department_of_future_technology">융합</string>
     <string name="liberal_arts">교양학부</string>
 
+    <!--Search-->
+    <string name="search_fail">검색에 실패했습니다.</string>
+    <string name="search_save_recent_fail">최신 검색 저장에 실패했습니다.</string>
+    <string name="search_last_result">마지막 검색 결과입니다.</string>
+    <string name="search_result_fail">검색결과를 가져올 수 없습니다.</string>
+
 
     <string name="file_path_base">/Pictures/koin/</string>
     <string name="file_path_timetable">/Pictures/koin/timetable</string>
@@ -171,7 +192,6 @@
     <string name="font_light">fonts/notosans_light.ttf</string>
     <string name="font_kr_medium">fonts/notosanscjkkr_medium.otf</string>
     <string name="font_kr_regular">fonts/notosanscjkkr_regular.otf"</string>
-
 
     <string name="take_screen_shot_activity">Activity Screenshot</string>
     <string name="take_screen_shot_view">Layout Screenshot</string>
@@ -190,6 +210,10 @@
     <string name="error_guide_title">오류가 발생하였습니다.</string>
     <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
+    <string name="error_unload_data">더 이상 데이터를 불러올 수 없습니다.</string>
+
+    <!-- Store -->
+    <string name="store_get_data_fail">상점 정보를 불러오지 못했습니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

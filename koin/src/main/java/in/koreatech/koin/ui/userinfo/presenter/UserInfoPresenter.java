@@ -20,19 +20,16 @@ public class UserInfoPresenter{
     private final UserInteractor userInteractor;
     private final CallvanInteractor callvanInteractor;
 
-    public UserInfoPresenter(@NonNull UserInfoContract.View userInfoView) {
+    public UserInfoPresenter(@NonNull UserInfoContract.View userInfoView, UserInteractor userInteractor, CallvanInteractor callvanInteractor) {
         this.userInfoView = checkNotNull(userInfoView, "userInfoView cannnot be null");
+        this.userInteractor = userInteractor;
+        this.callvanInteractor = callvanInteractor;
         this.userInfoView.setPresenter(this);
-        this.userInteractor = new UserRestInteractor();
-        this.callvanInteractor = new CallvanRestInteractor();
     }
 
     private final ApiCallback readUserApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            User user = (User) object;
-            UserInfoSharedPreferencesHelper.getInstance().saveUser(user);
-
             userInfoView.onUserDataReceived();
         }
 
@@ -45,7 +42,6 @@ public class UserInfoPresenter{
     private final ApiCallback deleteUserApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            UserInfoSharedPreferencesHelper.getInstance().clear();
             userInfoView.onDeleteUserReceived();
         }
 
@@ -78,6 +74,10 @@ public class UserInfoPresenter{
         } else {
             this.userInteractor.deleteUser(deleteUserApiCallback);
         }
+    }
+
+    public void deleteUser(){
+        this.userInteractor.deleteUser(deleteUserApiCallback);
     }
 
     public void updateDecreaseCurrentPeopleCount(int roomUid) {

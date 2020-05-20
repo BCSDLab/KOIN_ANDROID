@@ -2,50 +2,52 @@ package in.koreatech.koin.ui.circle.presenter;
 
 import java.util.ArrayList;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleInteractor;
 
 public class CirclePresenter {
 
-    private ArrayList<Circle> mCirlceList;
-    private final CircleContract.View cirlcleView;
-    private int mCurrentPage = 1;
+    private ArrayList<Circle> circleList;
+    private final CircleContract.View circleView;
+    private int currentPage = 1;
 
     private final CircleInteractor circleInteractor;
 
-    public CirclePresenter(CircleContract.View cirlcleView, CircleInteractor circleInteractor) {
-        this.cirlcleView = cirlcleView;
+    public CirclePresenter(CircleContract.View circleView, CircleInteractor circleInteractor) {
+        this.circleView = circleView;
         this.circleInteractor = circleInteractor;
-        mCirlceList = new ArrayList<>();
+        circleList = new ArrayList<>();
+        circleView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             Circle circles = (Circle) object;
-            if (circles.getTotalPage() != mCurrentPage) {
-                mCirlceList.addAll(circles.getCircles());
-                getCirlceList(++mCurrentPage);
+            if (circles.getTotalPage() != currentPage) {
+                circleList.addAll(circles.getCircles());
+                getCircleList(++currentPage);
                 return;
             }
-            mCirlceList.addAll(circles.getCircles());
-            cirlcleView.onCircleListDataReceived(mCirlceList);
-            mCurrentPage = 1;
-            cirlcleView.hideLoading();
+            circleList.addAll(circles.getCircles());
+            circleView.onCircleListDataReceived(circleList);
+            currentPage = 1;
+            circleView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            cirlcleView.showMessage("동아리 리스트를 받아오지 못했습니다.");
-            cirlcleView.hideLoading();
+            circleView.showMessage(R.string.circle_get_list_fail);
+            circleView.hideLoading();
         }
     };
 
-    public void getCirlceList(int page) {
+    public void getCircleList(int page) {
         if (page == 1) {
-            cirlcleView.showLoading();
-            mCirlceList.clear();
+            circleView.showLoading();
+            circleList.clear();
         }
         circleInteractor.readCircleList(page, apiCallback);
     }

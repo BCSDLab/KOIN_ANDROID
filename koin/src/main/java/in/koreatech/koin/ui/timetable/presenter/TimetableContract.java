@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.timetable.presenter;
 
+import androidx.annotation.StringRes;
+
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
@@ -15,7 +17,9 @@ public interface TimetableContract {
 
         void showLecture(ArrayList<Lecture> lecture);
 
-        void showFailMessage(String message);
+        void showMessage(String message);
+
+        void showMessage(@StringRes int  message);
 
         void showSuccessCreateTimeTable();
 
