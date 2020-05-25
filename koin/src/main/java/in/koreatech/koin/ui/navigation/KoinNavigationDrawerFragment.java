@@ -37,9 +37,7 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
         nameTextView = view.findViewById(R.id.navi_name_textview);
         bcsdImageView = view.findViewById(R.id.navi_item_developer);
         closeImageView = view.findViewById(R.id.navi_close_imageview);
-        closeImageView.setOnClickListener(v -> {
-            closeNavigationDrawer();
-        });
+        closeImageView.setOnClickListener(v -> closeNavigationDrawer());
         bcsdImageView.setOnClickListener(this);
         for (Integer menuLayoutId : NavigationManager.getInstance().getMenuIdArray()) {
             LinearLayout menuLayout = view.findViewById(menuLayoutId);
