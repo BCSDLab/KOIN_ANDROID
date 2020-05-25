@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:background="@color/white"
+    android:id="@+id/freeboard_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix"
-    android:fitsSystemWindows="true">
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    tools:ignore="MissingPrefix">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/freeboard_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <in.koreatech.koin.core.appbar.AppBarBase
+            android:id="@+id/koin_base_app_bar_dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonBackground="@drawable/ic_back_arrow" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/dining_swiperefreshlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_app_bar_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftButtonBackground="@drawable/ic_back_arrow"
-              />
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/dining_swiperefreshlayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -140,9 +134,9 @@
                             android:textColor="#000000"
                             android:textSize="15sp"
                             app:fontName="Custom5"
-                            app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintBottom_toBottomOf="@+id/dining_before_date_button"
                             app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                            app:layout_constraintHorizontal_bias="0.5"
                             app:layout_constraintStart_toStartOf="@+id/guideline2"
                             app:layout_constraintTop_toTopOf="@+id/dining_before_date_button"
                             tools:text="2019년 3월 24일" />
@@ -164,7 +158,6 @@
                             android:id="@+id/dining_lunch_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:fontName="Custom6"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="19dp"
                             android:background="@color/red_alpha0"
@@ -172,6 +165,7 @@
                             android:text="점심"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="15sp"
+                            app:fontName="Custom6"
                             app:layout_constraintEnd_toStartOf="@+id/guideline9"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/guideline6"
@@ -181,25 +175,23 @@
                             android:id="@+id/dining_breakfast_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:fontName="Custom6"
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="26dp"
                             android:background="@color/red_alpha0"
                             android:text="아침"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="15sp"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
                             app:layout_constraintEnd_toStartOf="@+id/guideline8"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="@+id/guideline5"
-                            app:layout_constraintTop_toBottomOf="@+id/dining_date_textView"
-                            />
+                            app:layout_constraintTop_toBottomOf="@+id/dining_date_textView" />
 
                         <TextView
                             android:id="@+id/dining_dinner_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:fontName="Custom6"
                             android:layout_marginTop="19dp"
                             android:layout_marginBottom="26dp"
                             android:background="@color/red_alpha0"
@@ -207,6 +199,7 @@
                             android:text="저녁"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="15sp"
+                            app:fontName="Custom6"
                             app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
                             app:layout_constraintEnd_toStartOf="@+id/guideline10"
                             app:layout_constraintHorizontal_bias="0.0"
@@ -241,10 +234,9 @@
                     android:id="@+id/empty_dining_list_frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:visibility="gone"
                     android:layout_marginTop="164dp"
-                  >
+                    android:background="@color/white"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -270,13 +262,8 @@
             </RelativeLayout>
 
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        </RelativeLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <include layout="@layout/base_navigation_drawer_left" />
-
-
-</androidx.drawerlayout.widget.DrawerLayout>
+    <include layout="@layout/base_navigation_bar_bottom" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
