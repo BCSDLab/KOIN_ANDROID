@@ -8,14 +8,16 @@
     <string name="navigation_user_welcome">님, 안녕하세요!</string>
     <string name="my_info">내정보</string>
     <string name="school_info">학교정보</string>
+    <string name="customer_support">고객지원</string>
     <!--학교 정보-->
-    <string name="navigation_item_store">상점</string>
+    <string name="navigation_item_store">주변 상점</string>
     <string name="navigation_item_bus">버스/교통</string>
     <string name="navigation_item_dining">식단</string>
     <string name="navigation_item_circle">동아리</string>
     <!--<string name="navigation_item_faq">FAQ</string>-->
 
     <!--커뮤니티-->
+    <string name="community">커뮤니티</string>
     <string name="navigation_item_free_board">자유게시판</string>
     <string name="navigation_item_anonymous_board">익명게시판</string>
     <string name="navigation_item_recruit_board">취업게시판</string>
@@ -32,7 +34,7 @@
     <!--<string name="navigation_item_setting">설정</string>-->
     <string name="navigation_item_koin_page">코인 사이트</string>
     <!--<string name="navigation_item_user_request">문의 사항</string>-->
-    <string name="navigation_item_kakao_talk">카카오톡 대화</string>
+    <string name="navigation_item_kakao_talk">카카오톡 1:1 대화</string>
     <string name="navigation_item_version_info">버전 정보</string>
     <string name="navigation_item_developer">만든 이</string>
     <string name="navigation_item_open_source">오픈소스</string>

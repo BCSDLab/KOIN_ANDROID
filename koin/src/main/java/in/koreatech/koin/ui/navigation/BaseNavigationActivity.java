@@ -205,17 +205,18 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Vie
 
     @Override
     public void onClick(View v) {
-        int i = v.getId();
-        if (i == getBottomNavigationCategoryID()) {
+        int servicedId = v.getId();
+        if (servicedId == getBottomNavigationCategoryID()) {
             openNavigationDrawer();
             return;
         }
-        if (i == getBottomNavigationHomeID())
-            i = R.id.navi_item_home;
-        else if (i == getBottomNavigationSearchID())
-            i = R.id.navi_item_search;
+        if (servicedId == getBottomNavigationHomeID())
+            servicedId = R.id.navi_item_home;
+        else if (servicedId == getBottomNavigationSearchID())
+            servicedId = R.id.navi_item_search;
 
-        toggleIcon(i);
+        callDrawerItem(servicedId);
+        toggleIcon(servicedId);
     }
 
     public void openNavigationDrawer() {
