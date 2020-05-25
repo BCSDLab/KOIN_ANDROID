@@ -52,7 +52,7 @@ public class KoinNavigationDrawer extends ActivityBase implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.base_navigation_bar_bottom_category_linearlayout:
-                navigationControl();
+                closeNavigationDrawer();
                 break;
             case R.id.base_navigation_bar_bottom_home_linearlayout:
                 closeNavigationDrawer();

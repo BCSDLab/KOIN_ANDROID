@@ -269,7 +269,6 @@
             android:theme="@style/KAPTheme.NoActionBar" />
 
         <activity android:name=".ui.navigation.KoinNavigationDrawer"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Translucent"
             />
     </application>

@@ -34,6 +34,7 @@ import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
 import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
 
 public abstract class BaseNavigationActivity extends ActivityBase implements View.OnClickListener {
@@ -43,6 +44,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Vie
     private final String TAG = "BaseNavigationActivity";
     private Context context;
     private long pressTime = 0;
+    private boolean isDrawerOpen;
     private LinearLayout openLeftNavigationDrawerOpenLinearLayout;
     private LinearLayout openHomeLinearLayout;
     private LinearLayout openSearchLinearLayout;
@@ -210,7 +212,12 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Vie
     }
 
     public void openNavigationDrawer() {
-        startActivityForResult(new Intent(this, KoinNavigationDrawer.class), NAVIGATION_OPEN_REQUEST);
+        if(isDrawerOpen)
+            return;
+        isDrawerOpen = true;
+        Intent intent = new Intent(this, KoinNavigationDrawer.class);
+        intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent, NAVIGATION_OPEN_REQUEST);
         overridePendingTransition(0, 0);
     }
 
@@ -218,6 +225,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Vie
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == NAVIGATION_OPEN_REQUEST) {
+            isDrawerOpen = false;
             if (resultCode == RESULT_OK && data != null) {
                 boolean isNavigationClicked = data.getBooleanExtra(IS_NAVIGATION_CLICKED, false);
                 if (isNavigationClicked) {
