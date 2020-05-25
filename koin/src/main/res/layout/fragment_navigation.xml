@@ -10,9 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingTop="17dp"
-        android:paddingBottom="17dp"
-        android:orientation="vertical">
+        android:paddingBottom="17dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="17dp"
-                    android:paddingTop="7dp"
+                    android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_bus"
                     android:textColor="@color/black"
@@ -197,12 +197,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="17dp"
-                    android:paddingTop="7dp"
+                    android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_circle"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:id="@+id/navi_item_timetable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/navi_item_timetable_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="17dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/navigation_item_timetable"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
         <FrameLayout
@@ -350,7 +380,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -404,7 +434,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
 
         <ImageView
