@@ -57,12 +57,10 @@ public class MarketUsedEditPresenter {
         if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
             marketEditView.showMessage(R.string.market_used_phone_check);
             return;
-        }
-        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
             marketEditView.showMessage(R.string.market_used_title_check);
             return;
-        }
-        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+        } else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
             marketEditView.showMessage(R.string.market_used_content_check);
             return;
         }

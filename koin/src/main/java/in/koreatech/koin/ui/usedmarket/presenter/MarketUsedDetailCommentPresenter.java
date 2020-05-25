@@ -24,7 +24,7 @@ public class MarketUsedDetailCommentPresenter {
     private final ApiCallback detailApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            if(object instanceof Item) {
+            if (object instanceof Item) {
                 Item item = (Item) object;
                 marketCreateCommentContractView.onMarketDataReceived(item);
             } else {

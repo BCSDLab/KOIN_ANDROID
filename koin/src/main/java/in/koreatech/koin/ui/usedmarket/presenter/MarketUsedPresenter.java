@@ -7,7 +7,7 @@ import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
 import in.koreatech.koin.data.network.response.MarketPageResponse;
 
 
-public class MarketUsedPresenter{
+public class MarketUsedPresenter {
 
     private final MarketUsedInteractor marketUsedInteractor;
     private final MarketUsedContract.View marketView;
@@ -22,7 +22,7 @@ public class MarketUsedPresenter{
     private final ApiCallback listApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            if(object instanceof MarketPageResponse) {
+            if (object instanceof MarketPageResponse) {
                 MarketPageResponse marketPageResponse = (MarketPageResponse) object;
                 marketView.onMarketDataReceived(marketPageResponse);
             } else {
@@ -60,7 +60,7 @@ public class MarketUsedPresenter{
     private final ApiCallback detailApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            if(object instanceof Item) {
+            if (object instanceof Item) {
                 Item item = (Item) object;
                 marketView.onMarketDataReceived(item);
             } else {

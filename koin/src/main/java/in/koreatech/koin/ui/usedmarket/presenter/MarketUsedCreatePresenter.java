@@ -27,7 +27,7 @@ public class MarketUsedCreatePresenter {
     private final ApiCallback createMarketApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            if(object instanceof Item) {
+            if (object instanceof Item) {
                 Item marketItem = (Item) object;
                 marketCreateContractView.showMarketCreatedSuccess(marketItem);
             } else {
@@ -46,7 +46,7 @@ public class MarketUsedCreatePresenter {
     private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            if(object instanceof Item) {
+            if (object instanceof Item) {
                 Item marketItem = (Item) object;
                 if (marketItem.getUrl() != null)
                     marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
@@ -73,12 +73,10 @@ public class MarketUsedCreatePresenter {
         if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
             marketCreateContractView.showMessage(R.string.market_used_phone_check);
             return;
-        }
-        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
             marketCreateContractView.showMessage(R.string.market_used_title_check);
             return;
-        }
-        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+        } else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
             marketCreateContractView.showMessage(R.string.market_used_content_check);
             return;
         }
