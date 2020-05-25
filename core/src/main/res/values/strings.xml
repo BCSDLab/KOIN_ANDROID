@@ -13,10 +13,12 @@
 
     <!--left drawer menu -->
     <string name="home">홈</string>
+    <string name="main_mobile_app_release">\'코인\' 모바일앱 출시</string>
+    <string name="main_made_with_student">코리아텍 학생들이\n함께 만들어가는 커뮤니티</string>
 
     <!--학교 정보-->
     <string name="navigation_item_store">상점</string>
-    <string name="navigation_item_bus">버스/교통</string>
+    <string name="navigation_item_bus">버스 / 교통</string>
     <string name="navigation_item_dining">식단</string>
     <string name="navigation_item_circle">동아리</string>
     <!--<string name="navigation_item_faq">FAQ</string>-->

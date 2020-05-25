@@ -16,14 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-
 import in.koreatech.koin.R;
-import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public class KoinNavigationDrawerFragment extends Fragment implements View.OnClickListener {
     private boolean isMenuSelected = false;
+    private View fragmentView;
     private TextView nameTextView;
     private ImageView bcsdImageView;
     private ImageView closeImageView;
@@ -32,21 +30,21 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_navigation, container, false);
-        setSelectedTextViewColor(NavigationManager.getInstance().getCurrentService(), view);
-        nameTextView = view.findViewById(R.id.navi_name_textview);
-        bcsdImageView = view.findViewById(R.id.navi_item_developer);
-        closeImageView = view.findViewById(R.id.navi_close_imageview);
+        fragmentView = inflater.inflate(R.layout.fragment_navigation, container, false);
+        setSelectedTextViewColor(NavigationManager.getInstance().getCurrentService());
+        nameTextView = fragmentView.findViewById(R.id.navi_name_textview);
+        bcsdImageView = fragmentView.findViewById(R.id.navi_item_developer);
+        closeImageView = fragmentView.findViewById(R.id.navi_close_imageview);
         closeImageView.setOnClickListener(v -> closeNavigationDrawer());
         bcsdImageView.setOnClickListener(this);
         for (Integer menuLayoutId : NavigationManager.getInstance().getMenuIdArray()) {
-            LinearLayout menuLayout = view.findViewById(menuLayoutId);
+            LinearLayout menuLayout = fragmentView.findViewById(menuLayoutId);
             if (menuLayout != null)
                 menuLayout.setOnClickListener(this);
         }
 
         init();
-        return view;
+        return fragmentView;
     }
 
     public void init() {
@@ -70,22 +68,38 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
         selectItemId = clickId;
         isMenuSelected = true;
         if (!NavigationManager.getInstance().isServiceSame(clickId)) {
-            setSelectedTextViewColor(clickId, view);
+            setSelectedTextViewColor(clickId);
         }
 
         closeNavigationDrawer();
     }
 
-    public void setSelectedTextViewColor(@IdRes int serviceId, View view) {
+    public void setSelectedTextViewColor(@IdRes int serviceId) {
         Integer textViewId = NavigationManager.getInstance().getMenuTextView(serviceId);
         if (textViewId != null) {
-            TextView changeText = view.findViewById(textViewId);
+            disableAllSelectedTextViewColor();
+            TextView changeText = fragmentView.findViewById(textViewId);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 changeText.setTextColor(getActivity().getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
             } else {
                 changeText.setTextColor(getActivity().getResources().getColor(R.color.colorAccent));
             }
         }
+    }
+
+    public void disableAllSelectedTextViewColor(){
+        for (Integer menuTextViewId : NavigationManager.getInstance().getMenuTextViewId()) {
+            TextView menuTextView = fragmentView.findViewById(menuTextViewId);
+            if (menuTextView != null)
+               {
+                   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                       menuTextView.setTextColor(getActivity().getResources().getColor(R.color.black, getActivity().getTheme()));
+                   } else {
+                       menuTextView.setTextColor(getActivity().getResources().getColor(R.color.black));
+                   }
+               }
+        }
+
     }
 
     public void closeNavigationDrawer() {
