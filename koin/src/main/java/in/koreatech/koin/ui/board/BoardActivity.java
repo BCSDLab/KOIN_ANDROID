@@ -55,11 +55,11 @@ public class BoardActivity extends KoinNavigationDrawerActivity implements Board
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appbarBase;
-    @BindView(R.id.freeboard_layout)
+    @BindView(R.id.board_layout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.board_swiperefreshlayout)
     SwipeRefreshLayoutBottom boardSwipeRefreshLayout;
-    @BindView(R.id.freeboard_recyclerview)
+    @BindView(R.id.board_recyclerview)
     RecyclerView boardListRecyclerView;
 
     @BindView(R.id.empty_board_list_frameLayout)
