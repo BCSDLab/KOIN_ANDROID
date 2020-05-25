@@ -181,7 +181,6 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @Override
     public void onBackPressed() {
-        setLastNavigationItem();
         finish();
     }
 

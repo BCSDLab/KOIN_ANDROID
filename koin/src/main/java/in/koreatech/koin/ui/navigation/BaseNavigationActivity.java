@@ -1,8 +1,10 @@
 package in.koreatech.koin.ui.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,91 +36,42 @@ import in.koreatech.koin.core.toast.ToastUtil;
 
 import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
 
-public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
+public abstract class BaseNavigationActivity extends ActivityBase implements View.OnClickListener {
+    public static final int NAVIGATION_OPEN_REQUEST = 1000;
+    public static final String IS_NAVIGATION_CLICKED = "IS_NAVIGATION_CLICKED";
+    public static final String NAVIGATION_ID = "NAVIGATION_ID";
     private final String TAG = "BaseNavigationActivity";
-    private final int LEFTNAVI = GravityCompat.START;
-    private final int RIGHTNAVI = GravityCompat.END;
-    private final String CURRENT_ID = "CURRENT_ID";
-    private final String BEFORE_ID = "BEFORE_ID";
-    private final String fontName = "fonts/notosanscjkkr_regular.otf";
-
     private Context context;
-
-    private DrawerLayout drawerLayout;
-    private NavigationView leftNavigationView;
-
     private long pressTime = 0;
-    private static int currentId = R.id.navi_item_home;
-    private static int beforeId = R.id.navi_item_home;
-
-    private InputMethodManager inputMethodManager;
     private LinearLayout openLeftNavigationDrawerOpenLinearLayout;
     private LinearLayout openHomeLinearLayout;
     private LinearLayout openSearchLinearLayout;
 
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(CURRENT_ID, currentId);
-        outState.putInt(BEFORE_ID, beforeId);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = setContext();
-        this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
-
     }
-
-    protected abstract Context setContext();
 
     @Override
     protected void onStart() {
         super.onStart();
-        toggleIcon(currentId);
-        setLeftNavigationDrawerName();
-        selectNavigationItem(currentId);
+        init();
     }
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            currentId = savedInstanceState.getInt(CURRENT_ID);
-            beforeId = savedInstanceState.getInt(BEFORE_ID);
-        }
-        int width;
-        drawerLayout = findViewById(getDrawerLayoutID());
-        drawerLayout.addDrawerListener(this);
-        drawerLayout.setScrimColor(getResources().getColor(R.color.black_alpha20));
-
-
-        for (int id : getMenuId()) {
-            View view = findViewById(id);
-            if (view != null) {
-                view.setOnClickListener(this);
-                changeMenuFont(view, fontName);
-            }
-        }
-
-        this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
-        this.openLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
+    private void init() {
+        toggleIcon(NavigationManager.getInstance().getCurrentService());
         this.openHomeLinearLayout = findViewById(getBottomNavigationHomeID());
         this.openSearchLinearLayout = findViewById(getBottomNavigationSearchID());
+        this.openLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
         this.openLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
         this.openHomeLinearLayout.setOnClickListener(this);
         this.openSearchLinearLayout.setOnClickListener(this);
-        this.leftNavigationView.setNavigationItemSelectedListener(this);
-        this.leftNavigationView.setOnClickListener(this);
-
-        width = getResources().getDisplayMetrics().widthPixels * 667 / 1000;
-        ViewGroup.LayoutParams params = this.leftNavigationView.getLayoutParams();
-        params.width = width;
-        this.leftNavigationView.setLayoutParams(params);
-        toggleIcon(currentId);
     }
+
+    protected abstract Context setContext();
+
 
     public void toggleIcon(int id) {
         ImageView imageView;
@@ -146,12 +99,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         }
     }
 
-    private void changeMenuFont(View view, String fontName) {
-        if (view instanceof TextView) {
-            ((TextView) view).setTypeface(Typeface.createFromAsset(getAssets(), fontName));
-        }
-    }
-
     public void clearToggle() {
         ImageView imageView;
         TextView textView;
@@ -165,59 +112,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         textView.setTextColor(getResources().getColor(R.color.black));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setLeftNavigationDrawerName();
-        if (drawerLayout != null) {
-            if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-                drawerLayout.closeDrawer(Gravity.LEFT);
-        }
-    }
-
-    public void setLastNavigationItem() {
-        currentId = beforeId;
-        Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(currentId));
-        Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(beforeId));
-        toggleIcon(currentId);
-        selectNavigationItem(currentId);
-    }
-
-    @Override
-    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(@NonNull View drawerView) {
-        ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-        TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-    }
-
-    @Override
-    public void onDrawerClosed(@NonNull View drawerView) {
-        ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-        TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-        textView.setTextColor(getResources().getColor(R.color.black));
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-        if (newState == STATE_DRAGGING) {
-            ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-            textView.setTextColor(getResources().getColor(R.color.black));
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -249,56 +143,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected abstract int getLeftNavigationDrawerID();
 
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        final int itemId = item.getItemId();
-        return goToNavigationItem(itemId);
-    }
-
-    private boolean goToNavigationItem(int itemId) {
-        if (itemId == getLeftNavigationDrawerID()) {
-            drawerLayout.closeDrawer(LEFTNAVI);
-            return true;
-        }
-
-        callDrawerItem(itemId);
-
-
-        drawerLayout.closeDrawer(LEFTNAVI);
-
-
-        return true;
-    }
-
-    private void selectNavigationItem(int itemId) {
-        if (itemId == R.id.navi_item_user_info || itemId == R.id.navi_item_version_info || itemId == R.id.navi_item_developer)
-            return;
-        for (int id : getMenuTextviewId()) {
-            TextView textView = findViewById(id);
-            String s = textView.getText().toString();
-            textView.setText(s);
-        }
-        for (int i = 0; i < getMenuId().length; i++) {
-            if (getMenuId()[i] == itemId) {
-                TextView textView = findViewById(getMenuTextviewId()[i]);
-                String s = textView.getText().toString();
-                String styledText = "<u><font color='#f7941e'>" + s + "</font></u>";
-                textView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);       //#f7941e
-            }
-        }
-    }
-
     // TODO -> 익명게시판 수정 후 주석 제거
     public void callDrawerItem(int itemId) {
-
-        if (itemId == currentId) {
-            selectNavigationItem(currentId);
+        if (!NavigationManager.getInstance().goToService(itemId))
             return;
-        }
-
-        beforeId = currentId;
-        currentId = itemId;
-
 
         if (itemId == R.id.navi_item_home) {
             goToMainActivity();
@@ -326,10 +174,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickNavigationLogin();
         } else if (itemId == R.id.navi_item_kakao_talk) {
             onClickNavigationkakaoTalk();
-            currentId = beforeId;
+            NavigationManager.getInstance().goToBeforeService();
         } else if (itemId == R.id.navi_item_developer) {
             onClickNavigationDeveloper();
-            currentId = beforeId;
+            NavigationManager.getInstance().goToBeforeService();
         } else if (itemId == R.id.navi_item_user_info) {
             onClickNavigationUserInfo();
         } else if (itemId == R.id.navi_item_timetable) {
@@ -342,13 +190,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             goToSearchActivity();
         } else {
             ToastUtil.getInstance().makeShort("서비스예정입니다");
-            currentId = beforeId;
         }
-
-        toggleIcon(currentId);
-
-        selectNavigationItem(currentId);
-
     }
 
     public void setLeftNavigationDrawerName() {
@@ -365,47 +207,38 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     public void onClick(View v) {
         int i = v.getId();
         if (i == getBottomNavigationCategoryID()) {
-            toggleNavigationDrawer();
+            openNavigationDrawer();
             return;
         }
         if (i == getBottomNavigationHomeID())
             i = R.id.navi_item_home;
         else if (i == getBottomNavigationSearchID())
             i = R.id.navi_item_search;
-        else {
-            selectNavigationItem(i);
-            toggleNavigationDrawer();
-        }
-        callDrawerItem(i);
+
         toggleIcon(i);
     }
 
-    private void toggleNavigationDrawer() {
-        if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-            drawerLayout.closeDrawer(Gravity.LEFT);
-        else
-            drawerLayout.openDrawer(Gravity.LEFT);
+    public void openNavigationDrawer() {
+        startActivityForResult(new Intent(this, KoinNavigationDrawer.class), NAVIGATION_OPEN_REQUEST);
+        overridePendingTransition(0, 0);
     }
 
-    private void onClickNavigationFreeBoard() {
-        checkUserInfoEnough(R.string.navigation_item_free_board);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NAVIGATION_OPEN_REQUEST) {
+            if (resultCode == RESULT_OK && data != null) {
+                boolean isNavigationClicked = data.getBooleanExtra(IS_NAVIGATION_CLICKED, false);
+                if (isNavigationClicked) {
+                    int serviceId = data.getIntExtra(NAVIGATION_ID, -1);
+                    if (serviceId != -1)
+                        callDrawerItem(serviceId);
+                }
+            }
+        }
+
     }
 
-    private void onClickNavigationRecruitBoard() {
-        checkUserInfoEnough(R.string.navigation_item_recruit_board);
-    }
-
-    private void onClickNavigationAnonymousBoard() {
-        checkUserInfoEnough(R.string.navigation_item_anonymous_board);
-    }
-
-    private void onClickNavigationCallvanshring() {
-        checkUserInfoEnough(R.string.navigation_item_callvan_sharing);
-    }
-
-    private void onClickNavigationUsedmarket() {
-        checkUserInfoEnough(R.string.navigation_item_usedmarket);
-    }
 
     private void onClickNavigationUserInfo() {
         checkUserInfoEnough(R.string.navigation_item_user_info);
@@ -426,35 +259,16 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.action_openRight) {
-            drawerLayout.openDrawer(RIGHTNAVI);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(getDrawerLayoutID());
-
-        if (drawer.isDrawerOpen(LEFTNAVI)) {
-            drawer.closeDrawer(LEFTNAVI);
-        } else if (drawer.isDrawerOpen(RIGHTNAVI)) {
-            drawer.closeDrawer(RIGHTNAVI);
-        } else {
-            if (System.currentTimeMillis() > pressTime + 2000) {
-                if (currentId != R.id.navi_item_home)
-                    callDrawerItem(R.id.navi_item_home);
-                else {
-                    pressTime = System.currentTimeMillis();
-                    ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
-                }
-            } else {
-                finishAffinity();
+        if (System.currentTimeMillis() > pressTime + 2000) {
+            if (NavigationManager.getInstance().getCurrentService() != R.id.navi_item_home)
+                callDrawerItem(R.id.navi_item_home);
+            else {
+                pressTime = System.currentTimeMillis();
+                ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
             }
+        } else {
+            finishAffinity();
         }
     }
 
@@ -483,7 +297,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     public void checkUserInfoEnough(int service) {
         if (getAuthorize() == AuthorizeConstant.ANONYMOUS) {
             showLoginRequestDialog();
-            currentId = beforeId;
+            NavigationManager.getInstance().goToBeforeService();
             return;
         }
         User user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
@@ -494,7 +308,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (FormValidatorUtil.validateStringIsEmpty(user.getUserNickName()) || FormValidatorUtil.validateStringIsEmpty(user.getUserName())) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
-                currentId = beforeId;
+                NavigationManager.getInstance().goToBeforeService();
             } else {
                 goToFreeBoardActivity();
             }
@@ -503,7 +317,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (FormValidatorUtil.validateStringIsEmpty(user.getUserNickName()) || FormValidatorUtil.validateStringIsEmpty(user.getUserName())) {
                 ToastUtil.getInstance().makeShort("해당 서비스를 이용하기 위해 사용자 정보를 입력해주세요.");
                 goToUserInfoActivity(service);
-                currentId = beforeId;
+                NavigationManager.getInstance().goToBeforeService();
             } else {
                 goToRecruitBoardActivity();
             }

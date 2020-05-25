@@ -267,6 +267,9 @@
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
+        <activity android:name=".ui.navigation.KoinNavigationDrawer"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            />
     </application>
 
 </manifest>

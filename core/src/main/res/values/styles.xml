@@ -89,5 +89,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+        <item name="windowActionBar">false</item>
     </style>
 </resources>

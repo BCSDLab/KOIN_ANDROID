@@ -57,7 +57,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         init();
     }
 
-    void init() {
+    public void init() {
         landArrayList = new ArrayList<>();
         landRecyclerView = findViewById(R.id.land_recyclerlayout);
         landGridLayoutManager = new GridLayoutManager(this, 2);

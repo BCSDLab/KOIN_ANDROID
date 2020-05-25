@@ -5,7 +5,9 @@
 
     <!--left drawer menu -->
     <string name="home">홈</string>
-
+    <string name="navigation_user_welcome">님, 안녕하세요!</string>
+    <string name="my_info">내정보</string>
+    <string name="school_info">학교정보</string>
     <!--학교 정보-->
     <string name="navigation_item_store">상점</string>
     <string name="navigation_item_bus">버스/교통</string>

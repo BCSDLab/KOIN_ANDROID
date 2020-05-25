@@ -287,7 +287,6 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> {
-                    setLastNavigationItem();
                     dialog.cancel();
                 });
         AlertDialog dialog = builder.create();    // 알림창 객체 생성

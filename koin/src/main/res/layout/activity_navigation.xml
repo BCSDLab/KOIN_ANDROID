@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:id="@+id/navigation_drawer_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <include
+        android:id="@+id/base_navigation_bar_bottom"
+        layout="@layout/base_navigation_bar_bottom" />
+
+</LinearLayout>
