@@ -193,16 +193,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Vie
         }
     }
 
-    public void setLeftNavigationDrawerName() {
-        TextView mNameTextview = findViewById(R.id.base_naviagtion_drawer_nickname_textview);
-        if (getAuthorize() == AuthorizeConstant.ANONYMOUS) // 비로그인일때 회원 정보 수정 비활성화
-        {
-            mNameTextview.setText("익명");
-        } else {
-            mNameTextview.setText(!getName().equals("") ? getName() : "익명");
-        }
-    }
-
     @Override
     public void onClick(View v) {
         int servicedId = v.getId();

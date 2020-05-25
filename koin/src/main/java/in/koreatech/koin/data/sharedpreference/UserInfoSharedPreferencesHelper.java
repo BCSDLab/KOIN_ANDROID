@@ -7,6 +7,7 @@ import android.util.Log;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.sharedpreference.BaseSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 public class UserInfoSharedPreferencesHelper extends BaseSharedPreferencesHelper {
     private final String TAG = UserInfoSharedPreferencesHelper.class.getSimpleName();
@@ -42,6 +43,8 @@ public class UserInfoSharedPreferencesHelper extends BaseSharedPreferencesHelper
 
     public User loadUser() {
         String userStr = sharedPreferences.getString(KEY_USER, "");
+        if (FormValidatorUtil.validateStringIsEmpty(userStr))
+            return null;
         User user = gsonHelper.jsonToObject(userStr, User.class);
         Log.d(TAG, "user: " + userStr);
         return user;

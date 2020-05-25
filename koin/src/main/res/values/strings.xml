@@ -2,7 +2,7 @@
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
     <string name="sign_up">회원 가입</string>
-
+    <string name="anonymous">익명</string>
     <!--left drawer menu -->
     <string name="home">홈</string>
     <string name="navigation_user_welcome">님, 안녕하세요!</string>

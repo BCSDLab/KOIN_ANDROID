@@ -16,10 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+
 import in.koreatech.koin.R;
+import in.koreatech.koin.constant.AuthorizeConstant;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 public class KoinNavigationDrawerFragment extends Fragment implements View.OnClickListener {
     private boolean isMenuSelected = false;
+    private TextView nameTextView;
     private ImageView bcsdImageView;
     private ImageView closeImageView;
     private int selectItemId;
@@ -29,9 +34,12 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_navigation, container, false);
         setSelectedTextViewColor(NavigationManager.getInstance().getCurrentService(), view);
+        nameTextView = view.findViewById(R.id.navi_name_textview);
         bcsdImageView = view.findViewById(R.id.navi_item_developer);
         closeImageView = view.findViewById(R.id.navi_close_imageview);
-        closeImageView.setOnClickListener(v -> {closeNavigationDrawer();});
+        closeImageView.setOnClickListener(v -> {
+            closeNavigationDrawer();
+        });
         bcsdImageView.setOnClickListener(this);
         for (Integer menuLayoutId : NavigationManager.getInstance().getMenuIdArray()) {
             LinearLayout menuLayout = view.findViewById(menuLayoutId);
@@ -45,6 +53,17 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
 
     public void init() {
         selectItemId = -1;
+        setLeftNavigationDrawerName();
+    }
+
+    private void setLeftNavigationDrawerName() {
+        nameTextView.setText(getName());
+    }
+
+
+    private String getName() {
+        String name  = NavigationManager.getInstance().getName();
+        return (FormValidatorUtil.validateEndPlaceIsEmpty(name)) ? getActivity().getResources().getString(R.string.anonymous) : name;
     }
 
     @Override
@@ -65,7 +84,7 @@ public class KoinNavigationDrawerFragment extends Fragment implements View.OnCli
             TextView changeText = view.findViewById(textViewId);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 changeText.setTextColor(getActivity().getResources().getColor(R.color.colorAccent, getActivity().getTheme()));
-            }else {
+            } else {
                 changeText.setTextColor(getActivity().getResources().getColor(R.color.colorAccent));
             }
         }

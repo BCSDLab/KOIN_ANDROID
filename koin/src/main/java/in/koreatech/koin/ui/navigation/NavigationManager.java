@@ -3,8 +3,11 @@ package in.koreatech.koin.ui.navigation;
 import androidx.annotation.IdRes;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import in.koreatech.koin.R;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 public class NavigationManager {
     private int currentService;
@@ -19,7 +22,7 @@ public class NavigationManager {
             R.id.navi_item_free_board, R.id.navi_item_recruit_board,
             R.id.navi_item_land, R.id.navi_item_lostfound
             , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
-           };
+    };
 
     private final Integer[] menuTextViewId = {
             R.id.navi_item_myinfo_textview,
@@ -40,11 +43,11 @@ public class NavigationManager {
         }
     }
 
-    public Integer[] getMenuIdArray(){
+    public Integer[] getMenuIdArray() {
         return menuId;
     }
 
-    public Integer[] getMenuTextViewId(){
+    public Integer[] getMenuTextViewId() {
         return menuTextViewId;
     }
 
@@ -89,5 +92,14 @@ public class NavigationManager {
         if (textViewHashMap.containsKey(id))
             return textViewHashMap.get(id);
         return null;
+    }
+
+    public String getName() {
+        if (UserInfoSharedPreferencesHelper.getInstance().loadUser() == null)
+            return "";
+        if (FormValidatorUtil.validateStringIsEmpty(UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName()))
+            return "";
+        else
+            return UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
     }
 }
