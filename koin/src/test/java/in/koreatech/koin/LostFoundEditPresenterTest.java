@@ -102,15 +102,7 @@ public class LostFoundEditPresenterTest {
 
     @Test
     public void errorCreateLostItemFromServer_WrongPhone_ShowsErrorToastMessage() {
-        String[] wrongPhoneList = {
-                "",
-                "a",
-                "1",
-                "12345678",
-                "01012345678",
-                "010.1234.5678",
-                "tel://010-1234-5678"
-        };
+        String[] wrongPhoneList = { "", "a", "1", "12345678", "01012345678", "010.1234.5678", "tel://010-1234-5678" };
 
         for (String wrongPhone : wrongPhoneList) {
             lostItem.setPhone(wrongPhone);
@@ -129,13 +121,7 @@ public class LostFoundEditPresenterTest {
 
     @Test
     public void errorCreateLostItemFromServer_EmptyContent_ShowsErrorToastMessage() {
-        String[] emptyHtmlContent = {
-                "<u></u>",
-                "<p> </p>",
-                "<l> </l>",
-                "<u></u>\n<l> </l>",
-                "<u></u>\n\n\n\n<l> </l><b></b>"
-        };
+        String[] emptyHtmlContent = { "<u></u>", "<p> </p>", "<l> </l>", "<u></u>\n<l> </l>", "<u></u>\n\n\n\n<l> </l><b></b>" };
 
         for (String emptyContent : emptyHtmlContent) {
             lostItem.setContent(emptyContent);
@@ -227,13 +213,7 @@ public class LostFoundEditPresenterTest {
 
     @Test
     public void errorUpdateLostItemFromServer_EmptyContent_ShowsErrorToastMessage() {
-        String[] emptyHtmlContent = {
-                "<u></u>",
-                "<p> </p>",
-                "<l> </l>",
-                "<u></u>\n<l> </l>",
-                "<u></u>\n\n\n\n<l> </l><b></b>"
-        };
+        String[] emptyHtmlContent = { "<u></u>", "<p> </p>", "<l> </l>", "<u></u>\n<l> </l>", "<u></u>\n\n\n\n<l> </l><b></b>" };
 
         for (String emptyContent : emptyHtmlContent) {
             lostItem.setContent(emptyContent);
