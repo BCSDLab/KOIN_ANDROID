@@ -70,7 +70,7 @@ public class LandPresenterTest {
         landPresenter.getLandList();
 
         verify(landView).showLoading();
-        verify(landView).showMessage("원룸 리스트를 받아오지 못했습니다");
+        verify(landView).showMessage(R.string.error_network);
         verify(landView).hideLoading();
     }
 }
