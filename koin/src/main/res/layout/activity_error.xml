@@ -1,118 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <in.koreatech.koin.core.appbar.AppBarBase
+            android:id="@+id/koin_base_app_bar_dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:titleText="@string/error_title" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:orientation="vertical">
 
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_app_bar_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:titleText="@string/error_title" />
-
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:orientation="vertical">
+                android:layout_margin="10dp"
+                android:fillViewport="true">
 
-                <ScrollView
+                <LinearLayout
+                    android:id="@+id/error_linear_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:fillViewport="true">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/error_linear_layout"
+
+                    <TextView
+                        android:id="@+id/error_title_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:lineHeight="24sp"
+                        android:text="@string/error_guide_title"
+                        android:textColor="@color/vivid_orange"
+                        android:textSize="16sp" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="14dp"
+                        android:text="" />
 
-                        <TextView
-                            android:id="@+id/error_title_message"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:lineHeight="24sp"
-                            android:text="@string/error_guide_title"
-                            android:textColor="@color/vivid_orange"
-                            android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/error_info_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:lineHeight="22sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray7"
+                        android:textSize="14sp"
+                        tools:text="예상치 못한 오류가 발생되었습니다." />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="14dp"
-                            android:text="" />
+                    <TextView
+                        android:id="@+id/error_guide_message"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:lineHeight="22sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/gray7"
+                        android:textSize="14sp"
+                        tools:text="다음과 같은 상황이 지속되신다면 문의바랍니다." />
 
-                        <TextView
-                            android:id="@+id/error_info_message"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:lineHeight="22sp"
-                            android:textAlignment="center"
-                            android:textColor="@color/gray7"
-                            android:textSize="14sp"
-                            tools:text="예상치 못한 오류가 발생되었습니다." />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="39dp"
+                        android:text="" />
 
-                        <TextView
-                            android:id="@+id/error_guide_message"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:lineHeight="22sp"
-                            android:textAlignment="center"
-                            android:textColor="@color/gray7"
-                            android:textSize="14sp"
-                            tools:text="다음과 같은 상황이 지속되신다면 문의바랍니다." />
+                    <Button
+                        android:id="@+id/error_home_button"
+                        android:layout_width="79.4dp"
+                        android:layout_height="28.7dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/button_rect_primary"
+                        android:text="@string/error_guide_home"
+                        android:textColor="@color/white" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="39dp"
-                            android:text="" />
+                    <Button
+                        android:id="@+id/error_kakaotalk_button"
+                        android:layout_width="79.4dp"
+                        android:layout_height="28.7dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/vivid_orange"
+                        android:includeFontPadding="false"
+                        android:text="@string/error_contact"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
-                        <Button
-                            android:id="@+id/error_home_button"
-                            android:layout_width="79.4dp"
-                            android:layout_height="28.7dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/button_rect_primary"
-                            android:text="@string/error_guide_home"
-                            android:textColor="@color/white" />
+            </ScrollView>
 
-                        <Button
-                            android:id="@+id/error_kakaotalk_button"
-                            android:layout_width="79.4dp"
-                            android:layout_height="28.7dp"
-                            android:includeFontPadding="false"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:background="@color/vivid_orange"
-                            android:text="@string/error_contact"
-                            android:textColor="@color/white" />
-                    </LinearLayout>
-
-                </ScrollView>
-
-            </RelativeLayout>
         </RelativeLayout>
+    </RelativeLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
