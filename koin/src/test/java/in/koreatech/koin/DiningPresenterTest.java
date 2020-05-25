@@ -41,15 +41,7 @@ public class DiningPresenterTest {
 
     @Test
     public void loadDiningList_ShowsUpdateDiningInfo() {
-        Dining dining = new Dining();
-        dining.setUid(1004);
-        dining.setDate("2020-04-29");
-        dining.setType("BREAKFAST");
-        dining.setPlace("한식");
-        dining.setPriceCard(2700);
-        dining.setPriceCash(3000);
-        dining.setKcal(888);
-
+        Dining dining = new Dining(1004, "2020-04-29", "BREAKFAST", "한식", 2700, 3000, 888);
         ArrayList<Dining> diningList = new ArrayList<>();
         diningList.add(dining);
 
