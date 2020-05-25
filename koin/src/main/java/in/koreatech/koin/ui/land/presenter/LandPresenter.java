@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Land;
-import in.koreatech.koin.data.network.interactor.BokdukInteractor;
 import in.koreatech.koin.data.network.interactor.LandInteractor;
 
 /**

@@ -4,7 +4,6 @@ import android.util.Log;
 
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
-import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.service.LandService;
 import io.reactivex.Observer;
