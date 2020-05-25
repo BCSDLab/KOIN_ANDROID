@@ -1,522 +1,514 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <in.koreatech.koin.core.appbar.AppBarBase
+            android:id="@+id/koin_base_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:rightButtonBackground="@drawable/ic_create"
+            app:titleText="내정보" />
+
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:orientation="vertical">
 
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_app_bar"
+
+            <ScrollView
+                android:id="@+id/userinfoedited_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:leftButtonBackground="@drawable/ic_back_arrow"
-                app:rightButtonBackground="@drawable/ic_create"
-                app:titleText="내정보" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="56dp">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:orientation="vertical">
-
-
-                <ScrollView
-                    android:id="@+id/userinfoedited_scrollview"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="56dp">
+                    android:layout_height="wrap_content">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <FrameLayout
+                        android:id="@+id/userinfoedited_base_info_framlayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="31dp"
+                        android:layout_marginTop="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <FrameLayout
-                            android:id="@+id/userinfoedited_base_info_framlayout"
+                        <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="31dp"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:alpha="0.2"
-                                android:background="@color/blue1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start|center"
-                                android:layout_marginStart="16dp"
-                                android:includeFontPadding="false"
-                                android:text="기본정보"
-                                android:textColor="@color/gray7"
-                                app:fontName="Custom6" />
-                        </FrameLayout>
-
-                        <TextView
-                            android:id="@+id/userinfoedited_id_textview"
-                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:includeFontPadding="false"
+                            android:alpha="0.2"
+                            android:background="@color/blue1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:text="아이디"
+                            android:includeFontPadding="false"
+                            android:text="기본정보"
+                            android:textColor="@color/gray7"
+                            app:fontName="Custom6" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/userinfoedited_id_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:includeFontPadding="false"
+                        android:text="아이디"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userinfoedited_base_info_framlayout" />
+
+                    <TextView
+                        android:id="@+id/userinfoedited_textview_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginEnd="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_id_textview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@+id/userinfoedited_id_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_id_textview"
+                        tools:text="abcdldjf@koreatech.ac.kr" />
+
+                    <TextView
+                        android:id="@+id/userinfoedited_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="이름"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toTopOf="@id/userinfoedited_nickname_textview"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_id_textview" />
+
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_name"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="61dp"
+                        android:layout_marginEnd="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_name_textview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@+id/userinfoedited_name_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_name_textview"
+                        tools:text="홍길동" />
+
+                    <TextView
+                        android:id="@+id/userinfoedited_nickname_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="닉네임"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userinfoedited_name_textview" />
+
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_nick_name"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="48dp"
+                        android:imeOptions="actionNext"
+                        android:includeFontPadding="false"
+                        android:inputType="text"
+                        android:lineSpacingExtra="7sp"
+                        android:maxLines="1"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:theme="@style/EditTextTheme"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_nickname_textview"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_nickname_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_nickname_textview"
+                        tools:text="anybody" />
+
+                    <LinearLayout
+                        android:id="@+id/userinfoedited_button_nickname_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="18dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_edittext_nick_name"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_nick_name"
+                        app:layout_constraintTop_toBottomOf="@+id/userinfoedited_edittext_name">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:src="@drawable/ic_search" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:lineSpacingExtra="4sp"
+                            android:text="중복확인"
                             android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/userinfoedited_base_info_framlayout" />
-
-                        <TextView
-                            android:id="@+id/userinfoedited_textview_id"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:layout_marginEnd="16dp"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_id_textview"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toEndOf="@+id/userinfoedited_id_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_id_textview"
-                            tools:text="abcdldjf@koreatech.ac.kr" />
-
-                        <TextView
-                            android:id="@+id/userinfoedited_name_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="이름"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toTopOf="@id/userinfoedited_nickname_textview"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_id_textview" />
-
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_name"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="61dp"
-                            android:layout_marginEnd="16dp"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_name_textview"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toEndOf="@+id/userinfoedited_name_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_name_textview"
-                            tools:text="홍길동" />
-
-                        <TextView
-                            android:id="@+id/userinfoedited_nickname_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="닉네임"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/userinfoedited_name_textview" />
-
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_nick_name"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="48dp"
-                            android:includeFontPadding="false"
-                            android:inputType="text"
-                            android:imeOptions="actionNext"
-                            android:maxLines="1"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            android:theme="@style/EditTextTheme"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_nickname_textview"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_nickname_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_nickname_textview"
-                            tools:text="anybody" />
-
-                        <LinearLayout
-                            android:id="@+id/userinfoedited_button_nickname_check"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="18dp"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_edittext_nick_name"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_nick_name"
-                            app:layout_constraintTop_toBottomOf="@+id/userinfoedited_edittext_name">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_marginStart="2dp"
-                                android:layout_marginEnd="2dp"
-                                android:src="@drawable/ic_search" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:lineSpacingExtra="4sp"
-                                android:text="중복확인"
-                                android:textColor="@color/gray9"
-                                android:textSize="8sp"
-                                app:fontName="Custom6" />
+                            android:textSize="8sp"
+                            app:fontName="Custom6" />
 
 
-                        </LinearLayout>
+                    </LinearLayout>
 
 
-                        <TextView
-                            android:id="@+id/userinfoedited_anonymous_nick_name_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="익명닉네임"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_nickname_textview" />
+                    <TextView
+                        android:id="@+id/userinfoedited_anonymous_nick_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="익명닉네임"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_nickname_textview" />
 
-                        <TextView
-                            android:id="@+id/userinfoedited_textview_anonymous_nick_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_anonymous_nick_name_textview"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_anonymous_nick_name_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_anonymous_nick_name_textview"
-                            tools:text="nobody" />
+                    <TextView
+                        android:id="@+id/userinfoedited_textview_anonymous_nick_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_anonymous_nick_name_textview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_anonymous_nick_name_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_anonymous_nick_name_textview"
+                        tools:text="nobody" />
 
-                        <TextView
-                            android:id="@+id/userinfoedited_phone_num_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="18dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="휴대전화"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_anonymous_nick_name_textview" />
+                    <TextView
+                        android:id="@+id/userinfoedited_phone_num_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="18dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="휴대전화"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_anonymous_nick_name_textview" />
 
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_phone_num_1"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="34dp"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:inputType="number"
-                            android:lineSpacingExtra="7sp"
-                            android:maxLength="3"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:theme="@style/EditTextTheme"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_phone_num_textview"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_phone_num_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_phone_num_textview"
-                            tools:text="010" />
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_phone_num_1"
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="34dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:inputType="number"
+                        android:lineSpacingExtra="7sp"
+                        android:maxLength="3"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:theme="@style/EditTextTheme"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_phone_num_textview"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_phone_num_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_phone_num_textview"
+                        tools:text="010" />
 
-                        <TextView
-                            android:id="@+id/userinfoeditededited_first_dash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="7dp"
-                            android:layout_marginTop="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="-"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_1"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
+                    <TextView
+                        android:id="@+id/userinfoeditededited_first_dash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginTop="16dp"
+                        android:lineSpacingExtra="7sp"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_1"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_phone_num_2"
-                            android:layout_width="64dp"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="9dp"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:lineSpacingExtra="7sp"
-                            android:maxLength="4"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:theme="@style/EditTextTheme"
-                            app:fontName="Custom6"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toEndOf="@id/userinfoeditededited_first_dash"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_phone_num_2"
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="9dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:inputType="number"
+                        android:lineSpacingExtra="7sp"
+                        android:maxLength="4"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:theme="@style/EditTextTheme"
+                        app:fontName="Custom6"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/userinfoeditededited_first_dash"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
-                        <TextView
-                            android:id="@+id/userinfoeditededited_second_dash"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_2"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name"
-                            tools:text="-" />
+                    <TextView
+                        android:id="@+id/userinfoeditededited_second_dash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_2"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name"
+                        tools:text="-" />
 
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_phone_num_3"
-                            android:layout_width="64dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="9dp"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:lineSpacingExtra="7sp"
-                            android:maxLength="4"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:theme="@style/EditTextTheme"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toEndOf="@id/userinfoeditededited_second_dash"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_phone_num_3"
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="9dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:inputType="number"
+                        android:lineSpacingExtra="7sp"
+                        android:maxLength="4"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:theme="@style/EditTextTheme"
+                        app:fontName="Custom6"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/userinfoeditededited_second_dash"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
-                        <TextView
-                            android:id="@+id/userinfoedited_gender_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="26dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="성별"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/userinfoedited_phone_num_textview" />
+                    <TextView
+                        android:id="@+id/userinfoedited_gender_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="26dp"
+                        android:lineSpacingExtra="7sp"
+                        android:text="성별"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userinfoedited_phone_num_textview" />
 
 
-                        <RadioGroup
-                            android:id="@+id/userinfoeditededited_radiogroup"
+                    <RadioGroup
+                        android:id="@+id/userinfoeditededited_radiogroup"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="61dp"
+                        android:layout_weight="4"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_gender_textview"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_gender_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_gender_textview">
+
+                        <RadioButton
+                            android:id="@+id/userinfoedited_radiobutton_gender_man"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_marginStart="61dp"
-                            android:layout_weight="4"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_gender_textview"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_gender_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_gender_textview">
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="true"
+                            android:drawableLeft="@drawable/radio_button_checked_24dp"
+                            android:drawablePadding="4dp"
+                            android:includeFontPadding="false"
+                            android:text="남자"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="15sp" />
 
-                            <RadioButton
-                                android:id="@+id/userinfoedited_radiobutton_gender_man"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:button="@null"
-                                android:checked="true"
-                                android:drawableLeft="@drawable/radio_button_checked_24dp"
-                                android:drawablePadding="4dp"
-                                android:includeFontPadding="false"
-                                android:text="남자"
-                                android:textColor="@color/colorPrimaryText"
-                                android:textSize="15sp" />
-
-                            <RadioButton
-                                android:id="@+id/userinfoedited_radiobutton_gender_woman"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="28dp"
-                                android:layout_weight="1"
-                                android:button="@null"
-                                android:checked="false"
-                                android:drawableLeft="@drawable/radio_button_checked_24dp"
-                                android:drawablePadding="4dp"
-                                android:includeFontPadding="false"
-                                android:paddingBottom="1dp"
-                                android:text="여자"
-                                android:textColor="@color/colorPrimaryText"
-                                android:textSize="15sp" />
-                        </RadioGroup>
+                        <RadioButton
+                            android:id="@+id/userinfoedited_radiobutton_gender_woman"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="28dp"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:checked="false"
+                            android:drawableLeft="@drawable/radio_button_checked_24dp"
+                            android:drawablePadding="4dp"
+                            android:includeFontPadding="false"
+                            android:paddingBottom="1dp"
+                            android:text="여자"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="15sp" />
+                    </RadioGroup>
 
 
-                        <FrameLayout
-                            android:id="@+id/userinfoedited_school_info_framlayout"
+                    <FrameLayout
+                        android:id="@+id/userinfoedited_school_info_framlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="31dp"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoeditededited_radiogroup">
+
+                        <ImageView
                             android:layout_width="match_parent"
-                            android:layout_height="31dp"
-                            android:layout_marginTop="24dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoeditededited_radiogroup">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:alpha="0.2"
-                                android:background="@color/blue1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="start|center"
-                                android:layout_marginStart="16dp"
-                                android:includeFontPadding="false"
-                                android:text="학교정보"
-                                android:textColor="@color/gray7"
-                                app:fontName="Custom6" />
-                        </FrameLayout>
+                            android:layout_height="match_parent"
+                            android:alpha="0.2"
+                            android:background="@color/blue1" />
 
                         <TextView
-                            android:id="@+id/userinfoedited_student_id_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
+                            android:layout_gravity="start|center"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="18dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="학번"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_school_info_framlayout" />
-
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_student_id"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="61dp"
-                            android:layout_marginEnd="16dp"
-                            android:hint="학번을 입력해주세요"
                             android:includeFontPadding="false"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/blue1"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_student_id_textview"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_student_id_textview"
-                            app:layout_constraintTop_toTopOf="@+id/userinfoedited_student_id_textview" />
+                            android:text="학교정보"
+                            android:textColor="@color/gray7"
+                            app:fontName="Custom6" />
+                    </FrameLayout>
 
-                        <TextView
-                            android:id="@+id/userinfoedited_major_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="26dp"
-                            android:layout_marginBottom="36dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="전공"
-                            android:textColor="@color/gray9"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toTopOf="@id/userinfoeditededited_change_info"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_student_id_textview"
-                            app:layout_constraintVertical_bias="0" />
+                    <TextView
+                        android:id="@+id/userinfoedited_student_id_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="18dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="학번"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_school_info_framlayout" />
 
-                        <EditText
-                            android:id="@+id/userinfoedited_edittext_major"
-                            android:layout_width="200dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="61dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="16dp"
-                            android:editable="false"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="7sp"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0"
-                            app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_major_textview"
-                            app:layout_constraintStart_toEndOf="@id/userinfoedited_major_textview"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_student_id"
-                            tools:text="메카트로닉스공학과" />
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_student_id"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="61dp"
+                        android:layout_marginEnd="16dp"
+                        android:hint="학번을 입력해주세요"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/blue1"
+                        android:textSize="13sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_student_id_textview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_student_id_textview"
+                        app:layout_constraintTop_toTopOf="@+id/userinfoedited_student_id_textview" />
 
-                        <TextView
-                            android:id="@+id/userinfoeditededited_change_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
-                            android:includeFontPadding="false"
-                            android:layout_marginBottom="20dp"
-                            android:gravity="center_horizontal"
-                            android:lineSpacingExtra="6sp"
-                            android:text="* 전과 등의 이유로 학번과 학부 정보가 불일치하는 경우\nbcsdlab@gmail.com 로 문의바랍니다. "
-                            android:textColor="@color/gray9"
-                            android:textSize="11sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/userinfoedited_major_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="26dp"
+                        android:layout_marginBottom="36dp"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:text="전공"
+                        android:textColor="@color/gray9"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toTopOf="@id/userinfoeditededited_change_info"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_student_id_textview"
+                        app:layout_constraintVertical_bias="0" />
+
+                    <EditText
+                        android:id="@+id/userinfoedited_edittext_major"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="61dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:editable="false"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="7sp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_major_textview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0"
+                        app:layout_constraintStart_toEndOf="@id/userinfoedited_major_textview"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_student_id"
+                        tools:text="메카트로닉스공학과" />
+
+                    <TextView
+                        android:id="@+id/userinfoeditededited_change_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="20dp"
+                        android:gravity="center_horizontal"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="* 전과 등의 이유로 학번과 학부 정보가 불일치하는 경우\nbcsdlab@gmail.com 로 문의바랍니다. "
+                        android:textColor="@color/gray9"
+                        android:textSize="11sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                </ScrollView>
+            </ScrollView>
 
-            </RelativeLayout>
         </RelativeLayout>
+    </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <include layout="@layout/base_navigation_drawer_left" />
-</androidx.drawerlayout.widget.DrawerLayout>
+    <include layout="@layout/base_navigation_bar_bottom" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
