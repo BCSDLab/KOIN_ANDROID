@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.ui.navigation.NavigationManager;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
@@ -182,6 +183,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     @Override
     public void onBackPressed() {
         finish();
+        NavigationManager.getInstance().goToBeforeService();
     }
 
     @OnClick(R.id.userinfo_button_delete_user)
