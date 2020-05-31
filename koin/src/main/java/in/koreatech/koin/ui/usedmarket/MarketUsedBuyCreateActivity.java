@@ -674,7 +674,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     }
 
     @Override
-    public void showMarketCreatefFail() {
+    public void showMarketCreateFail() {
         ToastUtil.getInstance().makeShort(R.string.server_failed);
     }
 

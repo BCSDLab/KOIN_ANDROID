@@ -4,7 +4,6 @@ import com.google.firebase.perf.metrics.AddTrace;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.interactor.MarketUsedInteractor;
@@ -22,19 +21,24 @@ public class MarketUsedCreatePresenter {
     public MarketUsedCreatePresenter(MarketUsedCreateContract.View marketCreateContractView, MarketUsedInteractor marketUsedInteractor) {
         this.marketUsedInteractor = marketUsedInteractor;
         this.marketCreateContractView = marketCreateContractView;
+        this.marketCreateContractView.setPresenter(this);
     }
 
     private final ApiCallback createMarketApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item marketItem = (Item) object;
-            marketCreateContractView.showMarketCreatedSuccess(marketItem);
+            if (object instanceof Item) {
+                Item marketItem = (Item) object;
+                marketCreateContractView.showMarketCreatedSuccess(marketItem);
+            } else {
+                marketCreateContractView.showMarketCreateFail();
+            }
             marketCreateContractView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            marketCreateContractView.showMarketCreatefFail();
+            marketCreateContractView.showMarketCreateFail();
             marketCreateContractView.hideLoading();
         }
     };
@@ -42,9 +46,13 @@ public class MarketUsedCreatePresenter {
     private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
-            Item marketItem = (Item) object;
-            if (marketItem.getUrl() != null)
-                marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
+            if (object instanceof Item) {
+                Item marketItem = (Item) object;
+                if (marketItem.getUrl() != null)
+                    marketCreateContractView.showImageUploadSuccess(marketItem.getUrl());
+            } else {
+                marketCreateContractView.showImageUploadFail();
+            }
             marketCreateContractView.hideLoading();
         }
 
@@ -65,12 +73,10 @@ public class MarketUsedCreatePresenter {
         if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
             marketCreateContractView.showMessage(R.string.market_used_phone_check);
             return;
-        }
-        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
             marketCreateContractView.showMessage(R.string.market_used_title_check);
             return;
-        }
-        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+        } else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
             marketCreateContractView.showMessage(R.string.market_used_content_check);
             return;
         }

@@ -20,6 +20,7 @@ public class MarketUsedEditPresenter {
     public MarketUsedEditPresenter(MarketUsedEditContract.View marketEditView, MarketUsedInteractor marketUsedInteractor) {
         this.marketEditView = marketEditView;
         this.marketUsedInteractor = marketUsedInteractor;
+        this.marketEditView.setPresenter(this);
     }
 
     private final ApiCallback contentEditApiCallback = new ApiCallback() {
@@ -29,12 +30,12 @@ public class MarketUsedEditPresenter {
             marketEditView.hideLoading();
         }
 
-
         public void onFailure(Throwable throwable) {
             marketEditView.showUpdateFail();
             marketEditView.hideLoading();
         }
     };
+
     @AddTrace(name = "MarketUsedDetailPresenter_uploadThumbnailImage")
     private final ApiCallback uploadImageApiCallback = new ApiCallback() {
         @Override
@@ -56,12 +57,10 @@ public class MarketUsedEditPresenter {
         if (marketItem.getIsPhoneOpen() == 1 && !FilterUtil.isPhoneValidate(marketItem.getPhone())) {
             marketEditView.showMessage(R.string.market_used_phone_check);
             return;
-        }
-        else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
+        } else if (FormValidatorUtil.validateStringIsEmpty(marketItem.getTitle())) {
             marketEditView.showMessage(R.string.market_used_title_check);
             return;
-        }
-        else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
+        } else if (FormValidatorUtil.validateHTMLStringIsEmpty(marketItem.getContent())) {
             marketEditView.showMessage(R.string.market_used_content_check);
             return;
         }
