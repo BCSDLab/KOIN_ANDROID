@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.land.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.LandInteractor;
@@ -14,6 +15,7 @@ public class LandDetailPresenter {
     public LandDetailPresenter(LandDetailContract.View landDetailView, LandInteractor landInteractor) {
         this.landInteractor = landInteractor;
         this.landDetailView = landDetailView;
+        this.landDetailView.setPresenter(this);
     }
 
     private final ApiCallback apiCallback = new ApiCallback() {
@@ -29,7 +31,7 @@ public class LandDetailPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            landDetailView.showMessage("원룸 정보를 받아오지 못했습니다.");
+            landDetailView.showMessage(R.string.error_network);
             landDetailView.hideLoading();
         }
     };
