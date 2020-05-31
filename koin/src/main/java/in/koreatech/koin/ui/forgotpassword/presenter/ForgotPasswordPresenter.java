@@ -11,14 +11,14 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-public class ForgotPasswordPresenter{
+public class ForgotPasswordPresenter {
 
     private final ForgotPasswordContract.View forgotPasswordView;
 
-    private final UserInteractor mUserInteractor;
+    private final UserInteractor userInteractor;
 
-    public ForgotPasswordPresenter(@NonNull ForgotPasswordContract.View forgotPasswordView) {
-        mUserInteractor = new UserRestInteractor();
+    public ForgotPasswordPresenter(@NonNull ForgotPasswordContract.View forgotPasswordView, UserInteractor userInteractor) {
+        this.userInteractor = userInteractor;
         this.forgotPasswordView = checkNotNull(forgotPasswordView, "forgatPasswordView cannnot be null");
         this.forgotPasswordView.setPresenter(this);
     }
@@ -29,12 +29,12 @@ public class ForgotPasswordPresenter{
      * @param id 포탈 계정 id
      */
     public void findPassword(String id) {
-        if(FormValidatorUtil.validateStringIsEmpty(id)){
+        if (FormValidatorUtil.validateStringIsEmpty(id)) {
             forgotPasswordView.showMessage(R.string.email_empty_string_warning);
             return;
         }
         this.forgotPasswordView.showProgress();
-        mUserInteractor.createFindPassword(id, findPasswordApiCallback);
+        userInteractor.createFindPassword(id, findPasswordApiCallback);
     }
 
     /**

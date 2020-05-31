@@ -31,6 +31,7 @@ import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchContract;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchPresenter;
 
@@ -165,7 +166,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
         this.hour = this.calendar.get(Calendar.HOUR_OF_DAY);
         this.min = this.calendar.get(Calendar.MINUTE);
 
-        setPresenter(new BusTimeTableSearchPresenter(this));
+        setPresenter(new BusTimeTableSearchPresenter(this, new TermRestInteractor()));
         showUserSelectDateTime();
         setDayPickerTime(this.hour, this.min);
 

@@ -12,7 +12,7 @@ import in.koreatech.koin.util.HashGeneratorUtil;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
-public class LoginPresenter{
+public class LoginPresenter {
     private final LoginContract.View loginView;
 
     private final UserInteractor userInteractor;
@@ -20,9 +20,9 @@ public class LoginPresenter{
 
     private String userPw;
 
-    public LoginPresenter(LoginContract.View loginView) {
-        this.userInteractor = new UserRestInteractor();
-        this.tokenSessionInteractor = new TokenSessionLocalInteractor();
+    public LoginPresenter(LoginContract.View loginView, UserInteractor userInteractor, TokenSessionInteractor tokenSessionInteractor) {
+        this.userInteractor = userInteractor;
+        this.tokenSessionInteractor = tokenSessionInteractor;
         this.loginView = checkNotNull(loginView, "signUpView cannnot be null");
         this.loginView.setPresenter(this);
     }
@@ -36,8 +36,8 @@ public class LoginPresenter{
      */
     public void login(String id, String password, Boolean isPasswordHash) {
         if (validateStringIsEmpty(id) || validateStringIsEmpty(password)) {
-                loginView.showMessage(R.string.login_email_password_empty_string_warning);
-                return;
+            loginView.showMessage(R.string.login_email_password_empty_string_warning);
+            return;
         }
         this.loginView.showProgress();
         this.userPw = HashGeneratorUtil.generateSHA256(password);
@@ -60,7 +60,7 @@ public class LoginPresenter{
         @Override
         public void onFailure(Throwable throwable) {
             loginView.hideProgress();
-            loginView.showMessage("로그인에 실패하였습니다");
+            loginView.showMessage(R.string.login_failed);
         }
     };
 

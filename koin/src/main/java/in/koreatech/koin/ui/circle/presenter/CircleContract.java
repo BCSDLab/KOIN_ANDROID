@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.circle.presenter;
 
+import androidx.annotation.StringRes;
+
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.contract.BaseView;
@@ -12,6 +14,8 @@ public interface CircleContract {
         void hideLoading();
 
         void showMessage(String message);
+
+        void showMessage(@StringRes int message);
 
         void onCircleListDataReceived(ArrayList<Circle> circleArrayList);
 

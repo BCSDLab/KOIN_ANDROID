@@ -12,7 +12,7 @@ public class FilterUtil implements InputFilter {
     public final static String FILTER_PASSWORD = "^(?=.*[a-zA-Z])(?=.*[\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"])(?=.*[0-9]).{6,18}$";
     public final static String FILTER_EMAIL = "^[a-z_0-9]{1,12}$";
     public final static String FILTER_PHONE = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$";
-    public final static String FILTER_NICKNAME = "^(?=.*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]).{1,10}$";
+    public final static String FILTER_NICKNAME = "^[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55\\{\\}\\[\\]\\/?.,;:|\\)*~`!^\\-_+<>@\\#$%&\\\\\\=\\(\\'\\\"]{1,10}$";
     private final Pattern pattern;
 
     public FilterUtil(String str) {

@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.search.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleInteractor;
@@ -28,7 +29,7 @@ public class SearchResultPresenter{
 
         @Override
         public void onFailure(Throwable throwable) {
-            searchResultView.showMessage("검색결과를 가져올 수 없습니다.");
+            searchResultView.showMessage(R.string.search_result_fail);
             searchResultView.hideLoading();
         }
     };

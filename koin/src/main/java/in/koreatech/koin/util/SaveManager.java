@@ -52,6 +52,8 @@ public class SaveManager {
         TimeTable timeTable = new TimeTable();
         JsonParser parser = new JsonParser();
         ArrayList<Integer> timeArrayList = new ArrayList<>();
+        if (FormValidatorUtil.validateStringIsEmpty(json))
+            return timeTable;
         JsonObject obj1 = (JsonObject) parser.parse(json);
         JsonArray arr1 = obj1.getAsJsonArray("timetable");
         for (int i = 0; i < arr1.size(); i++) {

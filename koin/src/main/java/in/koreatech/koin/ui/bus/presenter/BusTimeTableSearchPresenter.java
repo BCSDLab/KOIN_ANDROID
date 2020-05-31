@@ -22,9 +22,10 @@ public class BusTimeTableSearchPresenter {
     private final TermInteractor termInteractor;
 
 
-    public BusTimeTableSearchPresenter(BusTimeTableSearchContract.View busTimeTableSearchView) {
+    public BusTimeTableSearchPresenter(BusTimeTableSearchContract.View busTimeTableSearchView, TermInteractor termInteractor) {
         this.busTimeTableSearchView = busTimeTableSearchView;
-        termInteractor = new TermRestInteractor();
+        this.termInteractor = termInteractor;
+        this.busTimeTableSearchView.setPresenter(this);
     }
 
     private final ApiCallback termApiCallback = new ApiCallback() {             //방학인지 학기중인지 정보를 받아오는 api callback
@@ -37,7 +38,6 @@ public class BusTimeTableSearchPresenter {
 
         @Override
         public void onFailure(Throwable throwable) {
-            Log.d(TAG, throwable.getMessage());
             busTimeTableSearchView.hideLoading();
         }
     };
@@ -51,7 +51,7 @@ public class BusTimeTableSearchPresenter {
         try {
             busTime = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), Integer.parseInt(times[0]), Integer.parseInt(times[1]));
             busTimeTableSearchView.updateDaesungBusTime(busTime);
-        } catch (ParseException e) {
+        } catch (ParseException | ArrayIndexOutOfBoundsException e) {
             busTimeTableSearchView.updateFailDaesungBusDepartInfo();
         }
 
@@ -63,13 +63,6 @@ public class BusTimeTableSearchPresenter {
         String busTime;
         Bus currentSemesterBus;
         // 0 : 한기대 1 : 야우리 2 : 천안역
-        String day = "";
-        // 0 => 한기대 1 => 야우리
-        try {
-            day = TimeUtil.getDateDay(date, "yyyy-M-dd");
-        } catch (Exception e) {
-            busTimeTableSearchView.updateFailShuttleBusDepartInfo();
-        }
 
         switch (term % 10) {
             case 0:
@@ -80,13 +73,13 @@ public class BusTimeTableSearchPresenter {
                 currentSemesterBus = new VacationBus();
         }
 
-        if (!day.isEmpty() && !time.isEmpty()) {
+        if (!time.isEmpty()) {
             String[] times = time.split(":");
             String[] dates = date.split("-");
             try {
                 busTime = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), Integer.parseInt(dates[0]), Integer.parseInt(dates[1]), Integer.parseInt(dates[2]), Integer.parseInt(times[0]), Integer.parseInt(times[1]));
                 busTimeTableSearchView.updateShuttleBusTime(busTime);
-            } catch (ParseException e) {
+            } catch (ParseException | NumberFormatException e) {
                 busTimeTableSearchView.updateFailDaesungBusDepartInfo();
             }
             busTimeTableSearchView.showBusTimeInfo();

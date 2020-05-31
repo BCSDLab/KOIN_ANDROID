@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Version {
     public static final int PRIORITY_HIGH = 0; // 우선순위 높음
-    public static final int  PRIORITY_MIDDLE = 1; // 우선순위 중간
-    public static final int  PRIORITY_LOW = 2; // 우선순위 낮음
+    public static final int PRIORITY_MIDDLE = 1; // 우선순위 중간
+    public static final int PRIORITY_LOW = 2; // 우선순위 낮음
 
     @SerializedName("version")
     @Expose
@@ -23,6 +23,8 @@ public class Version {
     @SerializedName("updated_at")
     @Expose
     private String updateAt;
+
+    private String localVersion;
 
     public String getVersion() {
         return version;
@@ -52,6 +54,13 @@ public class Version {
         this.updateAt = updateAt;
     }
 
+    public String getLocalVersion() {
+        return localVersion;
+    }
+
+    public void setLocalVersion(String localVersion) {
+        this.localVersion = localVersion;
+    }
 
     public Version(String version) {
         this.version = version;
