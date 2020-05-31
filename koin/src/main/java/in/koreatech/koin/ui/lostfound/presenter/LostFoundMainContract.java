@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import androidx.annotation.StringRes;
+
 import in.koreatech.koin.core.contract.BaseView;
 import in.koreatech.koin.data.network.response.LostAndFoundPageResponse;
 
@@ -11,7 +13,7 @@ public interface LostFoundMainContract {
 
         void showLostAndFoundPageResponse(LostAndFoundPageResponse lostAndFoundPageResponse);
 
-        void showMessage(String message);
+        void showMessage(@StringRes int message);
 
     }
 }

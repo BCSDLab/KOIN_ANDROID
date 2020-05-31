@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -91,7 +92,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     }
 
     public void init() {
-        new LostFoundEditPresenter(this);
+        new LostFoundEditPresenter(this, new LostAndFoundRestInteractor());
         lostItem = new LostItem();
         lostItem.setType(0);
         lostItem.setPhoneOpen(false);
@@ -388,11 +389,6 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         startActivity(intent);
         finish();
         ToastUtil.getInstance().makeShort("생성되었습니다.");
-    }
-
-    @Override
-    public void showMessage(String message) {
-        ToastUtil.getInstance().makeShort(message);
     }
 
     @Override

@@ -15,44 +15,47 @@ public class LostFoundEditPresenter {
     private LostFoundEditContract.View lostFoundEditView;
     private LostAndFoundInteractor lostAndFoundInteractor;
 
-    public LostFoundEditPresenter(LostFoundEditContract.View lostFoundEditView) {
+    public LostFoundEditPresenter(LostFoundEditContract.View lostFoundEditView, LostAndFoundInteractor lostAndFoundInteractor) {
         this.lostFoundEditView = lostFoundEditView;
+        this.lostAndFoundInteractor = lostAndFoundInteractor;
         this.lostFoundEditView.setPresenter(this);
-        lostAndFoundInteractor = new LostAndFoundRestInteractor();
-
     }
 
-    final ApiCallback createLostFoundItemApiCallback = new ApiCallback() {
+    private final ApiCallback createLostFoundItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {
                 LostItem lostItem = (LostItem) object;
                 lostFoundEditView.showSuccessCreate(lostItem);
+            } else {
+                lostFoundEditView.showMessage(R.string.error_network);
             }
             lostFoundEditView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundEditView.hideLoading();
             lostFoundEditView.showMessage(R.string.error_network);
+            lostFoundEditView.hideLoading();
         }
     };
 
-    final ApiCallback updateLostFoundItemApiCallback = new ApiCallback() {
+    private final ApiCallback updateLostFoundItemApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
             if (object instanceof LostItem) {
                 LostItem lostItem = (LostItem) object;
                 lostFoundEditView.showSuccessUpdate(lostItem);
+            } else {
+                lostFoundEditView.showMessage(R.string.error_network);
             }
             lostFoundEditView.hideLoading();
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            lostFoundEditView.hideLoading();
             lostFoundEditView.showMessage(R.string.error_network);
+            lostFoundEditView.hideLoading();
         }
     };
 

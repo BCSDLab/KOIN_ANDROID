@@ -13,8 +13,6 @@ public interface LostFoundDetailContract {
 
         void updateLostDetailData(LostItem lostAndFound);
 
-        void showMessage(String message);
-
         void showMessage(@StringRes int message);
 
         void showGranted(boolean isGrant);

@@ -48,6 +48,7 @@ public class FilterUtil implements InputFilter {
     }
 
     public static boolean isPhoneValidate(String phone){
+        if(phone == null) return false;
         Matcher matcher = Pattern.compile(FILTER_PHONE).matcher(phone);
         return matcher.matches();
     }

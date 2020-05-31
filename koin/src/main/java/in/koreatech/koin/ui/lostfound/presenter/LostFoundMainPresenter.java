@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.lostfound.presenter;
 
+import in.koreatech.koin.R;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.interactor.LostAndFoundInteractor;
 import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
@@ -12,13 +13,14 @@ public class LostFoundMainPresenter{
     private LostAndFoundInteractor lostAndFoundInteractor;
     private LostFoundMainContract.View lostFoundMainView;
 
-    public LostFoundMainPresenter(LostFoundMainContract.View lostFoundMainView) {
+    public LostFoundMainPresenter(LostFoundMainContract.View lostFoundMainView, LostAndFoundInteractor lostAndFoundInteractor) {
         this.lostAndFoundInteractor = new LostAndFoundRestInteractor();
         this.lostFoundMainView = lostFoundMainView;
-        lostFoundMainView.setPresenter(this);
+        this.lostAndFoundInteractor = lostAndFoundInteractor;
+        this.lostFoundMainView.setPresenter(this);
     }
 
-    final ApiCallback lostItemApiCallback = new ApiCallback() {
+    private final ApiCallback lostItemApiCallback = new ApiCallback() {
         LostAndFoundPageResponse lostAndFoundPageResponse;
 
         @Override
@@ -28,13 +30,14 @@ public class LostFoundMainPresenter{
                 lostFoundMainView.showLostAndFoundPageResponse(lostAndFoundPageResponse);
                 lostFoundMainView.hideLoading();
             } else {
+                lostFoundMainView.showMessage(R.string.lost_and_found_list_fail);
                 lostFoundMainView.hideLoading();
-                lostFoundMainView.showMessage("리스트를 받아오지 못했습니다.");
             }
         }
 
         @Override
         public void onFailure(Throwable throwable) {
+            lostFoundMainView.showMessage(R.string.lost_and_found_list_fail);
             lostFoundMainView.hideLoading();
         }
     };

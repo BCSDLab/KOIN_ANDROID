@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.data.network.interactor.LostAndFoundRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -89,7 +90,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
             isEditPossible = true;
         }
         if (lostFoundCommentPresenter == null)
-            new LostFoundCommentPresenter(this);
+            new LostFoundCommentPresenter(this, new LostAndFoundRestInteractor());
         if (id != -1)
             lostFoundCommentPresenter.getLostItem(id);
     }
@@ -202,12 +203,6 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
         isEditComment = false;
         lostfoundCommentContentEdittext.getText().clear();
     }
-
-    @Override
-    public void showMessage(String message) {
-        ToastUtil.getInstance().makeShort(message);
-    }
-
     @Override
     public void showMessage(int message) {
         ToastUtil.getInstance().makeShort(message);
