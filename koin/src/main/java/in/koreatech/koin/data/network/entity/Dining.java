@@ -62,6 +62,18 @@ public class Dining {
     @Expose
     private String error;
 
+    public Dining() {}
+
+    public Dining(int uid, String date, String type, String place, int priceCard, int priceCash, int kcal) {
+        this.uid = uid;
+        this.date = date;
+        this.type = type;
+        this.place = place;
+        this.priceCard = priceCard;
+        this.priceCash = priceCash;
+        this.kcal = kcal;
+    }
+
     public Integer getUid() {
         return uid;
     }
