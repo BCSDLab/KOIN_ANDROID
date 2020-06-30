@@ -65,6 +65,14 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
 
+    /* Dependency - AndroidX JetPack Navigation */
+    api project.navigationFragmentJava
+    api project.navigationUIJava
+    api project.navigationFragmentKotlin
+    api project.navigationUIKotlin
+    api project.navigationDynamicFeature
+    androidTestImplementation project.navigationTest
+
     /* Dependency - Firebase */
     api project.firebaseCore
     api project.firebaseDatabase

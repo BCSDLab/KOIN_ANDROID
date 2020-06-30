@@ -32,6 +32,15 @@ buildscript {
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
         androidxMaterial = "com.google.android.material:material:$android_x_version"
 
+        /* Dependency - AndroidX JetPack Navigation */
+        def android_x_nav_version = "2.3.0"
+        navigationFragmentJava = "androidx.navigation:navigation-fragment:$android_x_nav_version"
+        navigationUIJava = "androidx.navigation:navigation-ui:$android_x_nav_version"
+        navigationFragmentKotlin = "androidx.navigation:navigation-fragment-ktx:$android_x_nav_version"
+        navigationUIKotlin = "androidx.navigation:navigation-ui-ktx:$android_x_nav_version"
+        navigationDynamicFeature = "androidx.navigation:navigation-dynamic-features-fragment:$android_x_nav_version"
+        navigationTest = "androidx.navigation:navigation-testing:$android_x_nav_version"
+
         /* Dependency - Firebase */
         def firebase_version = "17.0.0"
         firebaseCore = "com.google.firebase:firebase-core:$firebase_version"
