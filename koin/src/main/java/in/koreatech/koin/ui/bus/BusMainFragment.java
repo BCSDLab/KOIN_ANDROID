@@ -18,6 +18,7 @@ import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.util.BusTimerUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.ui.bus.presenter.BusMainContract;
@@ -491,12 +492,12 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
     @Override
     public void showLoading() {
-        ((BusActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
 
     }
 
     @Override
     public void hideLoading() {
-        ((BusActivity) getActivity()).hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 }

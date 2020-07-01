@@ -15,6 +15,11 @@
         <action
             android:id="@+id/navi_item_circle_action"
             app:destination="@+id/circle_main_fragment" />
+
+        <action
+            android:id="@+id/navi_item_bus_action"
+            app:destination="@+id/bus_view_pager_fragment" />
+
     </fragment>
 
 
@@ -36,6 +41,14 @@
         android:name="in.koreatech.koin.ui.circle.CircleDetailFragment"
         android:label="circle"
         tools:layout="@layout/circle_fragment_detail">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/bus_view_pager_fragment"
+        android:name="in.koreatech.koin.ui.bus.BusViewPagerFragment"
+        android:label="circle"
+        tools:layout="@layout/bus_fragment_view_pager">
 
     </fragment>
 

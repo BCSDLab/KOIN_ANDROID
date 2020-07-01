@@ -14,7 +14,7 @@ import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.board.BoardActivity;
-import in.koreatech.koin.ui.bus.BusActivity;
+import in.koreatech.koin.ui.bus.BusViewPagerFragment;
 import in.koreatech.koin.ui.callvan.CallvanActivity;
 import in.koreatech.koin.ui.circle.CircleFragment;
 import in.koreatech.koin.ui.dining.DiningActivity;
@@ -148,7 +148,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToBusActivity() {
-        goToActivityFinish(new Intent(this, BusActivity.class));
+        goToActivityFinish(new Intent(this, BusViewPagerFragment.class));
     }
 
     @Override
