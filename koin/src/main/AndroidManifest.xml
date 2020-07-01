@@ -170,11 +170,11 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.circle.CircleActivity"
+            android:name=".ui.circle.CircleFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.circle.CircleDetailActivity"
+            android:name=".ui.circle.CircleDetailFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity

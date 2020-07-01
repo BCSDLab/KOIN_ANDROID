@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="56dp"
+    tools:ignore="MissingPrefix">
+
+    <in.koreatech.koin.core.appbar.AppBarBase
+        android:id="@+id/koin_base_app_bar_dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:leftButtonBackground="@drawable/ic_back_arrow"
+        app:titleText="동아리" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/circle_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/circle_detail_logo_relative_layout"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/circle_detail_logo_border_imageview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp" />
+
+                <ImageView
+                    android:id="@+id/circle_detail_logo_background_imageview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp" />
+
+                <ImageView
+                    android:id="@+id/circle_detail_logo_imageview"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="1dp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/circle_detail_name_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20sp"
+                app:fontName="Custom5"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/circle_detail_logo_relative_layout"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="동아리명" />
+
+            <TextView
+                android:id="@+id/circle_detail_line_description_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="8dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/gray5"
+                android:textSize="13sp"
+                app:fontName="Custom6"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/circle_detail_logo_relative_layout"
+                app:layout_constraintTop_toBottomOf="@id/circle_detail_name_textview"
+                tools:text="동아리간략설명" />
+
+            <LinearLayout
+                android:id="@+id/circle_title_image_border"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="@color/blue1"
+                app:layout_constraintTop_toBottomOf="@id/circle_detail_logo_relative_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="동아리 목록"
+                    android:textColor="@color/gray9"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/circle_detail_main_logo_imageview"
+                android:layout_width="182dp"
+                android:layout_height="182dp"
+                android:layout_marginStart="89dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="89dp"
+                android:layout_marginBottom="24dp"
+                android:src="@drawable/image_no_image"
+                app:layout_constraintBottom_toTopOf="@+id/circle_category_list_border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_title_image_border" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/circle_category_list_border"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/circle_detail_main_logo_imageview">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.2"
+                    android:background="@color/blue1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/circle_detail_location_const_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:includeFontPadding="false"
+                    android:text="동아리방"
+                    android:textColor="@color/gray9"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintBottom_toTopOf="@id/circle_detail_major_business_const_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_goneMarginStart="16dp"
+                    app:layout_goneMarginTop="16dp"
+                    tools:text="동아리방" />
+
+                <TextView
+                    android:id="@+id/circle_detail_location_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@id/circle_detail_location_const_textview"
+                    app:layout_constraintTop_toTopOf="@+id/circle_detail_location_const_textview"
+                    tools:text="호" />
+
+
+                <TextView
+                    android:id="@+id/circle_detail_major_business_const_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:includeFontPadding="false"
+                    android:text="주요활동"
+                    android:textColor="@color/gray9"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circle_detail_location_textview"
+                    tools:text="주요활동" />
+
+                <TextView
+                    android:id="@+id/circle_detail_major_business_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/circle_detail_major_business_const_textview"
+                    app:layout_constraintTop_toTopOf="@+id/circle_detail_major_business_const_textview"
+                    tools:text="활동" />
+
+
+                <TextView
+                    android:id="@+id/circle_detail_professor_const_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:includeFontPadding="false"
+                    android:text="지도교수"
+                    android:textColor="@color/gray9"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circle_detail_major_business_textview"
+                    tools:text="지도교수" />
+
+
+                <TextView
+                    android:id="@+id/circle_detail_professor_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/circle_detail_professor_const_textview"
+                    app:layout_constraintTop_toTopOf="@+id/circle_detail_professor_const_textview"
+                    tools:text="교수님" />
+
+                <TextView
+                    android:id="@+id/circle_detail_introduce_url_const_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="16dp"
+                    android:includeFontPadding="false"
+                    android:text="홈페이지"
+                    android:textColor="@color/gray9"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/circle_detail_professor_textview"
+                    app:layout_constraintVertical_bias="0"
+                    tools:text="홈페이지" />
+
+                <TextView
+                    android:id="@+id/circle_detail_introduce_url_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:autoLink="web"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@id/circle_detail_introduce_url_const_textview"
+                    app:layout_constraintTop_toTopOf="@+id/circle_detail_introduce_url_const_textview"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="www.homepage.com" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/circle_detail_description_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="40dp"
+                android:includeFontPadding="false"
+                android:textColor="@color/colorPrimaryText"
+                app:fontName="Custom6"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toTopOf="@+id/circle_detail_facebook_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_category_list_border"
+                app:layout_goneMarginBottom="72dp"
+                app:layout_goneMarginEnd="16dp"
+                app:layout_goneMarginStart="16dp"
+                tools:text="설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명란설명설명란설명란란설명란설명란설명란설명란설명란" />
+
+            <Button
+                android:id="@+id/circle_detail_facebook_button"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/colorPrimary"
+                android:text="페이스북 바로가기"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/circle_detail_cyworld_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_detail_description_textview"
+                app:layout_goneMarginBottom="72dp" />
+
+
+            <Button
+                android:id="@+id/circle_detail_cyworld_button"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/orange3"
+                android:text="싸이월드 바로가기"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/circle_detail_naver_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_detail_facebook_button"
+                app:layout_goneMarginBottom="72dp" />
+
+            <Button
+                android:id="@+id/circle_detail_naver_button"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="72dp"
+                android:background="@color/green1"
+                android:text="네이버 바로가기"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/circle_detail_cyworld_button"
+                app:layout_goneMarginBottom="72dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</FrameLayout>
+

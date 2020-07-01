@@ -2,20 +2,23 @@ package in.koreatech.koin.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.util.NavigationManger;
 
 
 /**
  * 로그인 후 처음 보여지는 화면
  */
 public class MainActivity extends ActivityBase {
-    public static final int TIMETABLE_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,24 @@ public class MainActivity extends ActivityBase {
     @Override
     protected void onStart() {
         super.onStart();
+    }
 
+    @OnClick({R.id.base_navigation_bar_bottom_home_linearlayout, R.id.base_navigation_bar_bottom_category_linearlayout, R.id.base_navigation_bar_bottom_search_linearlayout})
+    public void onClickBottomNavigationBar(View view) {
+        switch (view.getId()) {
+            case R.id.base_navigation_bar_bottom_home_linearlayout:
+                goToHome();
+                break;
+            case R.id.base_navigation_bar_bottom_category_linearlayout:
+                break;
+            case R.id.base_navigation_bar_bottom_search_linearlayout:
+                break;
+
+        }
+    }
+
+    public void goToHome() {
+        NavigationManger.goToHome(this);
 
     }
 

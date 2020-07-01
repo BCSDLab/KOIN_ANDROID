@@ -20,9 +20,22 @@
 
     <fragment
         android:id="@+id/circle_main_fragment"
-        android:name="in.koreatech.koin.ui.main.MainFragment"
-        android:label="Blank"
-        tools:layout="@layout/fragment_main">
+        android:name="in.koreatech.koin.ui.circle.CircleFragment"
+        android:label="circle"
+        tools:layout="@layout/circle_fragment_main">
+
+        <action
+            android:id="@+id/navi_item_circle_detail_action"
+            app:destination="@+id/circle_detail_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/circle_detail_fragment"
+        android:name="in.koreatech.koin.ui.circle.CircleDetailFragment"
+        android:label="circle"
+        tools:layout="@layout/circle_fragment_detail">
 
     </fragment>
 

@@ -7,11 +7,14 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
@@ -22,30 +25,18 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.circle.presenter.CircleDetailContract;
 import in.koreatech.koin.ui.circle.presenter.CircleDetailPresenter;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 
-public class CircleDetailActivity extends KoinNavigationDrawerActivity implements CircleDetailContract.View {
-    private final String TAG = "CircleDetailActivity";
-
-    private Context context;
-    private CircleDetailPresenter cirlceDetailPresenter;
-    private Circle circle;
-    private int circleId;
-    private ArrayList<Circle.CircleUrl> url;
-
-    /* URL */
-    private String faceBookUrl;
-    private String naverUrl;
-    private String cyworldUrl;
-
-
+public class CircleDetailFragment extends KoinBaseFragment implements CircleDetailContract.View {
+    private final String TAG = "CircleDetailFragment";
     /* View Component */
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appbarBase;
@@ -77,56 +68,33 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
     Button circleDetailNaverButton;
     @BindView(R.id.circle_detail_cyworld_button)
     Button circleDetailCyworldButton;
+    private Context context;
+    private CircleDetailPresenter cirlceDetailPresenter;
+    private Circle circle;
+    private int circleId;
+    private ArrayList<Circle.CircleUrl> url;
+    /* URL */
+    private String faceBookUrl;
+    private String naverUrl;
+    private String cyworldUrl;
 
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.circle_activity_detail);
-        this.circleId = getIntent().getIntExtra("CIRCLE_ID", -1);
-        ButterKnife.bind(this);
-        context = this;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.circle_fragment_detail, container, false);
+        this.circleId = getArguments().getInt("CIRCLE_ID",-1);
+        ButterKnife.bind(this,view);
         init();
+
+        return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (this.circleId == -1) {
-            ToastUtil.getInstance().makeShort("동아리 리스트를 받아오지 못했습니다.");
-            finish();
-        }
-        if (cirlceDetailPresenter != null)
-            cirlceDetailPresenter.getCirlceInfo(this.circleId);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     private void init() {
-        appbarBase.setTransitionName(CircleActivity.SHARE_VIEW_NAME_APP_BAR);
-        this.circleDetailLogoImageview.setTransitionName(CircleActivity.SHARE_VIEW_NAME_LOGO);
-        this.circleDetailNameTextview.setTransitionName(CircleActivity.SHARE_VIEW_NAME);
-        this.circleDetailLineDescriptionTextview.setTransitionName(CircleActivity.SHARE_VIEW_DETAIL);
+        context = getContext();
         setPresenter(new CircleDetailPresenter(this, new CircleRestInteractor()));
+        cirlceDetailPresenter.getCirlceInfo(this.circleId);
     }
 
     @Override
@@ -173,16 +141,11 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
             onBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
-
     @OnClick(R.id.circle_detail_facebook_button)
     public void onClickedFacebookButton() {
         Uri uri = Uri.parse(this.faceBookUrl);
         try {
-            ApplicationInfo applicationInfo = getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+            ApplicationInfo applicationInfo = getContext().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
             if (applicationInfo.enabled) {
                 uri = Uri.parse("fb://facewebmodal/f?href=" + this.faceBookUrl);
             }
@@ -212,13 +175,13 @@ public class CircleDetailActivity extends KoinNavigationDrawerActivity implement
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
