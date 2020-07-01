@@ -29,8 +29,8 @@ public class NavigationManger {
         return new NavOptions.Builder()
                 .setEnterAnim(R.anim.trans_left_in)
                 .setExitAnim(R.anim.trans_left_out)
-                .setPopEnterAnim(R.anim.trans_left_in)
-                .setPopExitAnim(R.anim.trans_left_out)
+                .setPopEnterAnim(R.anim.trans_right_in)
+                .setPopExitAnim(R.anim.trans_right_out)
                 .build();
     }
 
@@ -38,8 +38,8 @@ public class NavigationManger {
         return new NavOptions.Builder()
                 .setEnterAnim(R.anim.trans_left_in)
                 .setExitAnim(R.anim.trans_left_out)
-                .setPopEnterAnim(R.anim.trans_left_in)
-                .setPopExitAnim(R.anim.trans_left_out)
+                .setPopEnterAnim(R.anim.trans_right_in)
+                .setPopExitAnim(R.anim.trans_right_out)
                 .setPopUpTo(R.id.main_fragment, true)
                 .build();
     }
