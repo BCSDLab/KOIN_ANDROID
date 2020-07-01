@@ -28,7 +28,6 @@ public class BusViewPagerFragment extends KoinBaseFragment {
     private final String TAG = "BusViewPagerFragment";
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;
-    private FirebasePerformanceUtil firebasePerformanceUtil;
 
     /* View Component */
     @BindView(R.id.koin_base_appbar)
@@ -61,15 +60,12 @@ public class BusViewPagerFragment extends KoinBaseFragment {
 
     @Override
     public void onDestroy() {
-        this.firebasePerformanceUtil.stop();
         super.onDestroy();
     }
 
 
     private void init() {
         this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getActivity().getSupportFragmentManager(), 3);
-        this.firebasePerformanceUtil = new FirebasePerformanceUtil("Bus_Activity");
-        this.firebasePerformanceUtil.start();
         this.viewPager.setOffscreenPageLimit(3);
         this.viewPager.setAdapter(this.mainViewPagerAdapter);
         this.viewPager.addOnPageChangeListener(mPageChangeListener);
