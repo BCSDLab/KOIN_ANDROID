@@ -50,6 +50,8 @@
 
     <color name="black_alpha12">#1f252525</color>
     <color name="black_alpha20">#33000000</color>
+    <color name="black_alpha25">#40000000</color>
+    <color name="black_alpha75">#BF000000</color>
     <color name="black_alpha80">#cc000000</color>
 
     <color name="orange1">#fdf3e8</color>

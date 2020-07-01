@@ -1,70 +1,41 @@
 package in.koreatech.koin.ui.circle;
 
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.view.LayoutInflater;
 import android.view.View;
-import android.transition.Explode;
-import android.util.Pair;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Circle;
 import in.koreatech.koin.data.network.interactor.CircleRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.circle.adapter.CircleRecyclerAdapter;
 import in.koreatech.koin.ui.circle.presenter.CircleContract;
 import in.koreatech.koin.ui.circle.presenter.CirclePresenter;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.util.NavigationManger;
 
-public class CircleActivity extends KoinNavigationDrawerActivity implements CircleContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = "CircleActivity";
-    public static final String SHARE_VIEW_NAME_APP_BAR = "KOIN_BASE_APPBAR";
-    public static final String SHARE_VIEW_NAME_LOGO = "LOGO";
-    public static final String SHARE_VIEW_DETAIL = "DETAIL";
-    public static final String SHARE_VIEW_NAME = "NAME";
-    private Context context;
-    private CircleRecyclerAdapter circleRecyclerAdapytercontext;
-
-    private CirclePresenter cirlcePresenter;
-    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
-    private ArrayList<Circle> cirlceArrayList; //store list
-    private ArrayList<Circle> circleAllArraylist; //All store list
-    private int categorySelectedNumber;
-    private Resources resource;
-    private String[] categoryCode;
-    private RecyclerView.ViewHolder viewHolder;
-
-
-    /* View Component */
-    @BindView(R.id.koin_base_app_bar_dark)
-    AppBarBase appbarBase;
-    @BindView(R.id.circle_recyclerview)
-    RecyclerView circleListRecyclerView;
-    ImageView circleItemLogoImageview;
-    ImageView circleItemLogoBackgroundImageview;
-    ImageView circleItemBackgroundImageview;
-    TextView circleItemNameTextview;
-    TextView circleItemDetailTextview;
-
+public class CircleFragment extends KoinBaseFragment implements CircleContract.View, SwipeRefreshLayout.OnRefreshListener {
+    private final String TAG = "CircleFragment";
     private final int[] mCircleCategoryListId = {
             R.id.circle_all_imageview,
             R.id.circle_art_imageview,
@@ -75,7 +46,6 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             R.id.circle_service_imageview,
             R.id.circle_etc_imageview,
     };
-
     private final int[] mCircleCategoryTextviewListId = {
             R.id.circle_all_textview,
             R.id.circle_art_textview,
@@ -96,40 +66,63 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             {R.drawable.ic_club_service, R.drawable.ic_club_service_on},
             {R.drawable.ic_club_etc, R.drawable.ic_club_etc_on},
     };
-
     private final int UN_CLICKED = 0;
     private final int CLIICKED = 1;
+    /* View Component */
+    @BindView(R.id.koin_base_app_bar_dark)
+    AppBarBase appbarBase;
+    @BindView(R.id.circle_recyclerview)
+    RecyclerView circleListRecyclerView;
+    private ImageView circleItemLogoImageview;
+    private ImageView circleItemLogoBackgroundImageview;
+    private ImageView circleItemBackgroundImageview;
+    private TextView circleItemNameTextview;
+    private TextView circleItemDetailTextview;
+    private Context context;
+    private CircleRecyclerAdapter circleRecyclerAdapytercontext;
+    private CirclePresenter cirlcePresenter;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
+    private ArrayList<Circle> cirlceArrayList; //store list
+    private ArrayList<Circle> circleAllArraylist; //All store list
+    private int categorySelectedNumber;
+    private Resources resource;
+    private String[] categoryCode;
+    private RecyclerView.ViewHolder viewHolder;
+    private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, final int position) {
+            viewHolder = circleListRecyclerView.findViewHolderForAdapterPosition(position);
+            circleItemLogoImageview = viewHolder.itemView.findViewById(R.id.circle_item_logo_imageview);
+            circleItemNameTextview = viewHolder.itemView.findViewById(R.id.circle_item_name_textview);
+            circleItemDetailTextview = viewHolder.itemView.findViewById(R.id.circle_item_detail_textview);
+            goToCircleDetailActivity(cirlceArrayList.get(position).getId(), cirlceArrayList.get(position).getName());
+        }
+
+        @Override
+        public void onLongClick(View view, int position) {
+        }
+    });
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.circle_fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        context = getContext();
+        init();
+        return view;
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        setContentView(R.layout.circle_activity_main);
-        ButterKnife.bind(this);
-        context = this;
-        init();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setCategoryColor(0, CLIICKED);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         this.cirlcePresenter.getCirlceList(1);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
     }
 
     @Override
@@ -140,12 +133,11 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
     private void init() {
         resource = getResources();
         this.categorySelectedNumber = 0; //메뉴 전체로 초기화
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(getContext());
         cirlceArrayList = new ArrayList<>();
         circleAllArraylist = new ArrayList<>();
         categoryCode = resource.getStringArray(R.array.cirlce_category_list_code);
         circleRecyclerAdapytercontext = new CircleRecyclerAdapter(context, new ArrayList<>());
-        setCategoryColor(0, CLIICKED);
         circleListRecyclerView.setHasFixedSize(true);
         circleListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
         circleListRecyclerView.setLayoutManager(layoutManager);
@@ -168,17 +160,15 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
         this.cirlcePresenter = presenter;
     }
 
-
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @OnClick({R.id.circle_all_linear_layout, R.id.circle_art_linear_layout, R.id.circle_show_linear_layout, R.id.circle_sport_linear_layout,
             R.id.circle_study_linear_layout, R.id.circle_religion_linear_layout, R.id.circle_service_linear_layout, R.id.circle_etc_linear_layout
     })
     public void onClickCircleCategory(View view) {
-        showProgressDialog(R.string.loading);
         initCategoryColor();
         switch (view.getId()) {
             case R.id.circle_all_linear_layout:
@@ -229,7 +219,6 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
             }
         }
         updateUserInterface();
-        hideProgressDialog();
     }
 
     public void initCategoryColor() {
@@ -238,18 +227,17 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
         }
     }
 
-
     public void setCategoryColor(int index, int type) {
-
-        ImageView icon = findViewById(mCircleCategoryListId[index]);
-        TextView text = findViewById(mCircleCategoryTextviewListId[index]);
+        if (getView() == null) return;
+        ImageView icon = getView().findViewById(mCircleCategoryListId[index]);
+        TextView text = getView().findViewById(mCircleCategoryTextviewListId[index]);
         text.setTextColor(getResources().getColor((type == UN_CLICKED) ? R.color.black : R.color.colorAccent));
         icon.setImageDrawable(getResources().getDrawable(mCircleCategoryIconListId[index][type]));
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -261,11 +249,9 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
     public void onCircleListDataReceived(ArrayList<Circle> circleArrayList) {
         cirlceArrayList.clear();
         circleAllArraylist.clear();
-
         cirlceArrayList.addAll(circleArrayList);
         circleAllArraylist.addAll(circleArrayList);
         sortByCategory(categoryCode[this.categorySelectedNumber]);
-
         updateUserInterface();
 
 
@@ -273,19 +259,10 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
     @Override
     public void goToCircleDetailActivity(int circleId, String circleName) {
-        getWindow().setExitTransition(new Explode());
-        getWindow().setAllowEnterTransitionOverlap(true);
-        Intent intent = new Intent(this, CircleDetailActivity.class);
-        ActivityOptions options = ActivityOptions
-                .makeSceneTransitionAnimation(this,
-                        Pair.create(appbarBase, SHARE_VIEW_NAME_APP_BAR),
-                        Pair.create(circleItemLogoImageview, SHARE_VIEW_NAME_LOGO),
-                        Pair.create(circleItemNameTextview, SHARE_VIEW_NAME),
-                        Pair.create(circleItemDetailTextview, SHARE_VIEW_DETAIL)
-                );
-        intent.putExtra("CIRCLE_ID", circleId);
-        intent.putExtra("CIRCLE_NAME", circleName);
-        startActivity(intent, options.toBundle());
+        Bundle bundle = new Bundle();
+        bundle.putInt("CIRCLE_ID", circleId);
+        bundle.putString("CIRCLE_NAME", circleName);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_circle_detail_action, bundle, NavigationManger.getNavigationAnimation());
     }
 
     @Override
@@ -296,23 +273,9 @@ public class CircleActivity extends KoinNavigationDrawerActivity implements Circ
 
     }
 
-    private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, final int position) {
-            viewHolder = circleListRecyclerView.findViewHolderForAdapterPosition(position);
-            circleItemLogoImageview = viewHolder.itemView.findViewById(R.id.circle_item_logo_imageview);
-            circleItemNameTextview = viewHolder.itemView.findViewById(R.id.circle_item_name_textview);
-            circleItemDetailTextview = viewHolder.itemView.findViewById(R.id.circle_item_detail_textview);
-            goToCircleDetailActivity(cirlceArrayList.get(position).getId(), cirlceArrayList.get(position).getName());
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-        }
-    });
-
     @Override
     public void onRefresh() {
         this.cirlcePresenter.getCirlceList(1);
     }
+
 }
