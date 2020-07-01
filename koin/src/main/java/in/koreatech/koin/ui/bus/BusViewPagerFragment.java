@@ -3,11 +3,13 @@ package in.koreatech.koin.ui.bus;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
@@ -16,14 +18,14 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
 
-public class BusActivity extends KoinNavigationDrawerActivity {
-    private final String TAG = "BusActivity";
+public class BusViewPagerFragment extends KoinBaseFragment {
+    private final String TAG = "BusViewPagerFragment";
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;
     private FirebasePerformanceUtil firebasePerformanceUtil;
@@ -39,13 +41,15 @@ public class BusActivity extends KoinNavigationDrawerActivity {
     private BusMainViewPagerAdapter mainViewPagerAdapter;
     private InputMethodManager inputMethodManager;
 
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.bus_activity_main);
-        ButterKnife.bind(this);
-        this.context = this;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.bus_fragment_view_pager, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
         init();
+        return view;
     }
 
     @Override
@@ -54,36 +58,16 @@ public class BusActivity extends KoinNavigationDrawerActivity {
         this.viewPager.addOnPageChangeListener(mPageChangeListener);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         this.firebasePerformanceUtil.stop();
         super.onDestroy();
     }
 
 
     private void init() {
-
-        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getSupportFragmentManager(), 3);
+        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getActivity().getSupportFragmentManager(), 3);
         this.firebasePerformanceUtil = new FirebasePerformanceUtil("Bus_Activity");
         this.firebasePerformanceUtil.start();
         this.viewPager.setOffscreenPageLimit(3);
@@ -93,7 +77,7 @@ public class BusActivity extends KoinNavigationDrawerActivity {
         changeFont(this.tabLayout.getChildAt(0), TABLAYOUT_fontName);
 
         //hide keyboard
-        this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+        this.inputMethodManager = (InputMethodManager) getContext().getSystemService(getContext().getApplicationContext().INPUT_METHOD_SERVICE);
     }
 
     final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -137,7 +121,7 @@ public class BusActivity extends KoinNavigationDrawerActivity {
         for (int i = 0; i < childCount; i++) {
             View viewChild = viewGroup.getChildAt(i);
             if (viewChild instanceof TextView) {
-                ((TextView) viewChild).setTypeface(Typeface.createFromAsset(getAssets(), fontName));
+                ((TextView) viewChild).setTypeface(Typeface.createFromAsset(getContext().getAssets(), fontName));
             } else if (viewChild instanceof ViewGroup) {
                 changeFont(viewChild, TABLAYOUT_fontName);
             }

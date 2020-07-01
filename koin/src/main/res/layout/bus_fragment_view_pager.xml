@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="56dp"
+    tools:ignore="MissingPrefix">
+
+
+    <in.koreatech.koin.core.appbar.AppBarBase
+        android:id="@+id/koin_base_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fontName="Bold"
+        app:leftButtonBackground="@drawable/ic_back_arrow"
+        app:titleText="버스 / 교통" />
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/bus_main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:background="@android:color/white">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bus_main_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_gravity="top"
+            android:layout_marginBottom="5dp"
+            android:lineSpacingExtra="7sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:fontName="Custom6" />
+
+    </androidx.viewpager.widget.ViewPager>
+
+</FrameLayout>
+
+
+

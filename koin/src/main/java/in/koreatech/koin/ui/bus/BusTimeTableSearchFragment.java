@@ -30,9 +30,9 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchContract;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchPresenter;
+import in.koreatech.koin.ui.main.MainActivity;
 
 public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTimeTableSearchContract.View {
     private final String TAG = "BusTimeTableSearchFragment";
@@ -305,7 +305,7 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void showLoading() {
-        ((BusActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
 
     }
 
@@ -316,6 +316,6 @@ public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTi
 
     @Override
     public void hideLoading() {
-        ((BusActivity) getActivity()).hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 }

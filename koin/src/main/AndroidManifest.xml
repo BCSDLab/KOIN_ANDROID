@@ -105,7 +105,7 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.bus.BusActivity"
+            android:name=".ui.bus.BusViewPagerFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
