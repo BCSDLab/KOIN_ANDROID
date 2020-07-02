@@ -43,6 +43,7 @@ public class MainFragment extends KoinBaseFragment {
                 NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_bus_action, null, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_dining_constraint_layout:
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_dining_action, null, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_free_board_constraint_layout:
                 break;
