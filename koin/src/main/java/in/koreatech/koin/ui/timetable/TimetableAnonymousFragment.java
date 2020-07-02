@@ -15,9 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -54,6 +57,8 @@ import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
@@ -63,6 +68,7 @@ import in.koreatech.koin.ui.timetable.presenter.TimetableAnonymousPresenter;
 import in.koreatech.koin.util.DepartmentCode;
 import in.koreatech.koin.util.FileUtil;
 import in.koreatech.koin.util.LogUtil;
+import in.koreatech.koin.util.NavigationManger;
 import in.koreatech.koin.util.ScreenshotUtil;
 import in.koreatech.koin.util.TimeDuplicateCheckUtil;
 
@@ -71,7 +77,7 @@ import static in.koreatech.koin.util.LectureFilterUtil.getFilterUtil;
 import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 
 
-public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity implements TimetableAnonymousContract.View, TimetableSelectAnonymousMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
+public class TimetableAnonymousFragment extends KoinBaseFragment implements TimetableAnonymousContract.View, TimetableSelectAnonymousMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
     public static final String TAG = "TimetableAnonymous";
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
@@ -145,13 +151,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     private String semester = "";
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.timetable_activity_main);
-        this.context = this;
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.timetable_fragment_main, container, false);
+        this.context = getContext();
+        ButterKnife.bind(this, view);
         init();
+        return view;
     }
 
 
@@ -174,7 +181,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         closeBottomSearchSheetButton();
         isBottomSheetOpen = false;
         isSemesterSelectSheetOpen = false;
-        this.layoutManager = new LinearLayoutManager(this);
+        this.layoutManager = new LinearLayoutManager(getContext());
         initBottomSheet();
         initDetailBottomSheet();
         initSearchRecyclerview();
@@ -188,24 +195,25 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         if (!checkIsAnonoymous()) {
-            goToTimetableActivty();
+            NavigationManger.getNavigationController(getActivity()).popBackStack();
+            NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_timetable_action, null);
+            return;
         }
-        TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
         this.timetablePresenter.getTimeTableVersion();
         this.timetablePresenter.readSemesters();
     }
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity)getActivity()).hideProgressDialog();
     }
 
     public boolean checkIsAnonoymous() {
@@ -214,9 +222,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public void askSaveToImagePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
+            if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                    || (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
         }
 
     }
@@ -224,8 +232,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public boolean checkStoragePermisson() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
+            if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                    || (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
                 return false;
             else
                 return true;
@@ -248,7 +256,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 if (saveImageFile != null) {
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
-                    sendBroadcast(mediaIntent);
+                    getActivity().sendBroadcast(mediaIntent);
                     ToastUtil.getInstance().makeShort( R.string.timetable_saved);
                 } else {
                     ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
@@ -271,7 +279,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     public void closeBottomSearchSheetButton() {
         this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        hideKeyboard(TimetableAnonymousActivity.this);
+        hideKeyboard(getActivity());
         clearFilterData();
     }
 
@@ -281,12 +289,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                showProgressDialog(R.string.saving);
+                ((MainActivity)getActivity()).showProgressDialog(R.string.saving);
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
                 saveTimeTableViewInBMP(semester);
-                hideProgressDialog();
+                ((MainActivity)getActivity()).hideProgressDialog();
             }, 2000);
 
         } else {
@@ -305,7 +313,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void initSemesterRecyclerview() {
-        timetableSemesterRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        timetableSemesterRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         timetableSemesterRecyclerAdapter = new TimetableSemesterRecyclerAdapter(this.context, semesters);
         timetableSemesterRecyclerview.setHasFixedSize(true);
         timetableSemesterRecyclerview.setNestedScrollingEnabled(false);
@@ -524,7 +532,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @OnClick(R.id.timetable_add_schedule_bottom_sheet_right_textview)
     public void onClickedBottomSheetRightButton() {
         clearFilterData();
-        hideKeyboard(TimetableAnonymousActivity.this);
+        hideKeyboard(getActivity());
         this.timetableSearchRecyclerview.setVisibility(View.INVISIBLE);
         closeBottomSearchSheetButton();
 
@@ -533,7 +541,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @OnClick(R.id.timetable_add_category_imageview)
     public void onClickedBottomSheetCategoryButton() {
         this.timetableSearchRecyclerview.setVisibility(View.VISIBLE);
-        this.timetableSelectAnonymousMajorDialog = new TimetableSelectAnonymousMajorDialog(this);
+        this.timetableSelectAnonymousMajorDialog = new TimetableSelectAnonymousMajorDialog(getContext());
         this.timetableSelectAnonymousMajorDialog.setOnCLickedDialogItemListener(this);
         this.timetableSelectAnonymousMajorDialog.setMajorDialogListener(new MajorDialogListener() {
             @Override
@@ -553,7 +561,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @OnClick(R.id.timetable_add_schedule_search_imageview)
     public void onClickedSearchButton() {
-        hideKeyboard(TimetableAnonymousActivity.this);
+        hideKeyboard(getActivity());
         selectedLectureSeperateArrayList.clear();
         selectedLectureArrayList.clear();
         String keyword = this.timetableAddScheduleSearchEdittext.getText().toString().trim();
@@ -611,7 +619,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void showDuplicateDialog(int position, ArrayList<TimeTable.TimeTableItem> duplicateTimeTableItems) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.timetable_duplicate_warning_message);
         StringBuilder duplicateClassTitile = new StringBuilder();
         duplicateClassTitile.append(TimeDuplicateCheckUtil.duplicateScheduleTostring(duplicateTimeTableItems));
@@ -631,7 +639,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     public void showAskDeleteTimeTableItemDialog(int index) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.timetable_delete_class_message);
         builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
@@ -876,13 +884,8 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void showUpdateAlertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.timetable_update_message);
         builder.setMessage(message);
         builder.setPositiveButton(R.string.positive,
@@ -917,7 +920,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     public void updateWidget() {
         Handler handler = new Handler();
-        handler.postDelayed(this::saveWidgetImage, 2000);
+        handler.post(this::saveWidgetImage);
     }
 
     public void saveWidgetImage() {
@@ -926,7 +929,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(this.timeTableScrollview, this.timeTableHeader);
         this.timetableView.setCheckStickersVisibilty(true);
         if (bitmap == null) return;
-        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        ContextWrapper contextWrapper = new ContextWrapper(getContext().getApplicationContext());
         File directory = contextWrapper.getDir("timeTable", Context.MODE_PRIVATE);
         File saveImageFile = new File(directory, "timetable.png");
         FileOutputStream fileOutputStream = null;
@@ -945,9 +948,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         }
 
         TimeTableSharedPreferencesHelper.getInstance().saveLastPathTimetableImage(directory.getAbsolutePath());
-        Intent intent = new Intent(this, TimetableWidget.class);
+        Intent intent = new Intent(getActivity(), TimetableWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        this.sendBroadcast(intent);
+        getActivity().sendBroadcast(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
 }

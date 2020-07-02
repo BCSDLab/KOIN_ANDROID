@@ -20,7 +20,7 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.util.DepartmentCode;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
 
-import static in.koreatech.koin.ui.timetable.TimetableAnonymousActivity.select;
+import static in.koreatech.koin.ui.timetable.TimetableAnonymousFragment.select;
 
 public class TimetableSelectAnonymousMajorDialog extends Dialog implements View.OnClickListener {
     public static final String TAG = "TimetableSelectMajor";

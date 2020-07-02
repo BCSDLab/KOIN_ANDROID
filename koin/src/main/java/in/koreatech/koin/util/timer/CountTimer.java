@@ -2,7 +2,6 @@ package in.koreatech.koin.util.timer;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +45,6 @@ public class CountTimer {
                         onTimerListener.onCountEvent(name, millisInFuture);
                 });
                 millisInFuture--;
-                Log.e(TAG, "run: " + millisInFuture);
             }
         }, 0, countDownInterval);
     }

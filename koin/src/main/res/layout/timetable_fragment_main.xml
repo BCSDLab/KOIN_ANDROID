@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -23,15 +22,14 @@
                 android:layout_height="56dp"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:rightButtonBackground="@drawable/ic_create"
-                app:titleText="시간표"/>
+                app:titleText="시간표" />
 
             <RelativeLayout
                 android:id="@+id/timetable_container_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
-                android:orientation="vertical"
-              >
+                android:orientation="vertical">
 
 
                 <in.koreatech.koin.ui.timetable.TimetableView
@@ -46,16 +44,12 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
-
         <include layout="@layout/timetable_bottom_sheet_add" />
 
         <include layout="@layout/timetable_bottom_sheet_select_semester" />
 
         <include layout="@layout/timetable_bottom_sheet_show_detail" />
 
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <include layout="@layout/base_navigation_drawer_left" />
-</androidx.drawerlayout.widget.DrawerLayout>
+</FrameLayout>
