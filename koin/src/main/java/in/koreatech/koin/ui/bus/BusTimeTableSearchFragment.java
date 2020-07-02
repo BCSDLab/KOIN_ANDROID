@@ -32,9 +32,10 @@ import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchContract;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableSearchPresenter;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.main.MainActivity;
 
-public class BusTimeTableSearchFragment extends BusBaseFragment implements BusTimeTableSearchContract.View {
+public class BusTimeTableSearchFragment extends KoinBaseFragment implements BusTimeTableSearchContract.View {
     private final String TAG = "BusTimeTableSearchFragment";
 
     private Unbinder unbinder;

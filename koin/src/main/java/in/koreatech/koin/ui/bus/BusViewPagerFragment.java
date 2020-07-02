@@ -18,17 +18,14 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 
 public class BusViewPagerFragment extends KoinBaseFragment {
     private final String TAG = "BusViewPagerFragment";
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
-    private Context context;
-
     /* View Component */
     @BindView(R.id.koin_base_appbar)
     AppBarBase koinBaseAppbar;
@@ -36,46 +33,9 @@ public class BusViewPagerFragment extends KoinBaseFragment {
     TabLayout tabLayout;
     @BindView(R.id.bus_main_viewpager)
     ViewPager viewPager;
-
+    private Context context;
     private BusMainViewPagerAdapter mainViewPagerAdapter;
     private InputMethodManager inputMethodManager;
-
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.bus_fragment_view_pager, container, false);
-        ButterKnife.bind(this, view);
-        this.context = getContext();
-        init();
-        return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        this.viewPager.addOnPageChangeListener(mPageChangeListener);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
-
-    private void init() {
-        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getActivity().getSupportFragmentManager(), 3);
-        this.viewPager.setOffscreenPageLimit(3);
-        this.viewPager.setAdapter(this.mainViewPagerAdapter);
-        this.viewPager.addOnPageChangeListener(mPageChangeListener);
-        this.tabLayout.setupWithViewPager(this.viewPager);
-        changeFont(this.tabLayout.getChildAt(0), TABLAYOUT_fontName);
-
-        //hide keyboard
-        this.inputMethodManager = (InputMethodManager) getContext().getSystemService(getContext().getApplicationContext().INPUT_METHOD_SERVICE);
-    }
-
     final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -101,6 +61,40 @@ public class BusViewPagerFragment extends KoinBaseFragment {
         }
     };
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.bus_fragment_view_pager, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
+        init();
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.viewPager.addOnPageChangeListener(mPageChangeListener);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.viewPager.setAdapter(null);
+    }
+
+    private void init() {
+        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getActivity().getSupportFragmentManager(), 3);
+        this.viewPager.setOffscreenPageLimit(3);
+        this.viewPager.setAdapter(this.mainViewPagerAdapter);
+        this.viewPager.addOnPageChangeListener(mPageChangeListener);
+        this.tabLayout.setupWithViewPager(this.viewPager);
+        changeFont(this.tabLayout.getChildAt(0), TABLAYOUT_fontName);
+
+        //hide keyboard
+        this.inputMethodManager = (InputMethodManager) getContext().getSystemService(getContext().getApplicationContext().INPUT_METHOD_SERVICE);
+    }
+
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
@@ -123,8 +117,6 @@ public class BusViewPagerFragment extends KoinBaseFragment {
             }
         }
     }
-
-
 }
 
 

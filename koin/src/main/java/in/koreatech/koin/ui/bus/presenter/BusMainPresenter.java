@@ -96,8 +96,8 @@ public class BusMainPresenter {
         // 0 => 한기대 2 => 터미널
         busMainView.showLoading();
         try {
-            int soonArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-            int laterArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
+            long soonArrival =  Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            long laterArrival =  Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             String soonDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
             String laterDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             busMainView.updateDaesungBusTime(soonArrival, laterArrival);

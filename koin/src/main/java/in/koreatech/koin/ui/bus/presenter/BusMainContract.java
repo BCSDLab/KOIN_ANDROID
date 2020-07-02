@@ -9,15 +9,15 @@ public interface BusMainContract {
 
         void hideLoading();
 
-        void updateShuttleBusTime(int current, int next);
+        void updateShuttleBusTime(long current, long next);
 
-        void updateCityBusTime(int current, int next);
+        void updateCityBusTime(long current, long next);
 
-        void updateDaesungBusTime(int current, int next);
+        void updateDaesungBusTime(long current, long next);
 
         void updateShuttleBusDepartInfo(String current, String next);
 
-        void updateCityBusDepartInfo(int current, int next);
+        void updateCityBusDepartInfo(long current, long next);
 
         void updateDaesungBusDepartInfo(String current, String next);
 

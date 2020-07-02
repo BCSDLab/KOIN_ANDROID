@@ -52,9 +52,10 @@ import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableVaca
 import in.koreatech.koin.ui.bus.bustimetable.seasonbustimetable.BusTimeTableVacationShuttleFragment;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTableContract;
 import in.koreatech.koin.ui.bus.presenter.BusTimeTablePresenter;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 
 
-public class BusTimeTableFragment extends BusBaseFragment implements BusTimeTableContract.View {
+public class BusTimeTableFragment extends KoinBaseFragment implements BusTimeTableContract.View {
     private final String TAG = "BusTimeTableFragment";
 
 
