@@ -1,50 +1,40 @@
 package in.koreatech.koin.ui.store;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
-
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
+import in.koreatech.koin.util.NavigationManger;
 
-public class StoreActivity extends KoinNavigationDrawerActivity implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = StoreActivity.class.getSimpleName();
-
-    private Context context;
-    private StoreRecyclerAdapter storeRecyclerAdapter;
-
-    private String today;
-    private StorePresenter storePresenter;
-    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
-    private ArrayList<Store> storeArrayList; //store list
-    private ArrayList<Store> storeAllArraylist; //All store list
-    private int storeCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
-    private Resources resources;
-    private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
+public class StoreFragment extends KoinBaseFragment implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
+    private final String TAG = StoreFragment.class.getSimpleName();
     private final int[] CATEGORY_ID = {R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
             R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc};
     private final int[] CATEGORY_TEXT_ID
@@ -53,22 +43,41 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
             R.id.store_category_hair_textview, R.id.store_category_etc_textview
     };
-
     /* View Component */
     @BindView(R.id.store_swiperefreshlayout)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.store_recyclerview)
     RecyclerView storeListRecyclerView;
+    private Context context;
+    private StoreRecyclerAdapter storeRecyclerAdapter;
+    private String today;
+    private StorePresenter storePresenter;
+    private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
+    private ArrayList<Store> storeArrayList; //store list
+    private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, final int position) {
+            goToStoreDetailActivity(storeArrayList.get(position).getUid(), storeArrayList.get(position).getName());
 
+        }
 
+        @Override
+        public void onLongClick(View view, int position) {
+        }
+    });
+    private ArrayList<Store> storeAllArraylist; //All store list
+    private int storeCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
+    private Resources resources;
+    private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.store_activity_main);
-        ButterKnife.bind(this);
-        context = this;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.store_fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        context = getContext();
         init();
-        //TODO:필터기능 추가
+        return view;
     }
 
     @Override
@@ -90,10 +99,9 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             sortStoreCategorize(this.storeCategoryNumber);
     }
 
-
     public void initCateGoryTextColor() {
         for (int id : CATEGORY_TEXT_ID) {
-            TextView textView = findViewById(id);
+            TextView textView = getView().findViewById(id);
             textView.setTextColor(getResources().getColor(R.color.black));
         }
     }
@@ -101,7 +109,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     public int getCategoryPoistionNumber(View view) {
         for (int i = 0; i < CATEGORY_ID.length; i++) {
             if (CATEGORY_ID[i] == view.getId() || CATEGORY_TEXT_ID[i] == view.getId()) {
-                TextView textview = findViewById(CATEGORY_TEXT_ID[i]);
+                TextView textview = getView().findViewById(CATEGORY_TEXT_ID[i]);
                 textview.setTextColor(getResources().getColor(R.color.colorAccent));
                 return i + 1;
             }
@@ -109,7 +117,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         return -1;
 
     }
-
 
     public void sortStoreCategorize(int position) {
         this.storeArrayList.clear();
@@ -131,21 +138,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
     }
@@ -155,7 +147,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         categoryCode = this.resources.getStringArray(R.array.store_category_list_code);
         swipeRefreshLayout.setOnRefreshListener(this);
         this.storeCategoryNumber = 0; //메뉴 전체로 초기화
-        this.layoutManager = new LinearLayoutManager(this);
+        this.layoutManager = new LinearLayoutManager(getContext());
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();
         this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<Store>());
@@ -173,15 +165,14 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         this.storePresenter = presenter;
     }
 
-
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -218,18 +209,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     }
 
-    private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, final int position) {
-            goToStoreDetailActivity(storeArrayList.get(position).getUid(), storeArrayList.get(position).getName());
-
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-        }
-    });
-
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
@@ -239,10 +218,10 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
     @Override
     public void goToStoreDetailActivity(int storeUid, String storeName) {
-        Intent intent = new Intent(this, StoreDetailActivity.class);
-        intent.putExtra("STORE_UID", storeUid);
-        intent.putExtra("STORE_NAME", storeName);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("STORE_UID", storeUid);
+        bundle.putString("STORE_NAME", storeName);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_store_detail_action, bundle, NavigationManger.getNavigationAnimation());
     }
 
     @Override
