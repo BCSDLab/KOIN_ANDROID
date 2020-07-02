@@ -34,6 +34,7 @@ public class MainFragment extends KoinBaseFragment {
     public void onClickedLayout(View v) {
         switch (v.getId()) {
             case R.id.activity_main_store_constraint_layout:
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_store_action, null, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_timetable_constraint_layout:
                 NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_timetable_anonymous_action, null, NavigationManger.getNavigationAnimation());

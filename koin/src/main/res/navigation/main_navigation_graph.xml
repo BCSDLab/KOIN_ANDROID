@@ -28,6 +28,10 @@
             android:id="@+id/navi_item_timetable_anonymous_action"
             app:destination="@+id/timetable_anonymous_fragment" />
 
+        <action
+            android:id="@+id/navi_item_store_action"
+            app:destination="@+id/store_fragment" />
+
     </fragment>
 
 
@@ -66,7 +70,7 @@
     <fragment
         android:id="@+id/timetable_fragment"
         android:name="in.koreatech.koin.ui.timetable.TimetableFragment"
-        android:label="bus"
+        android:label="timetable"
         tools:layout="@layout/timetable_fragment_main">
 
     </fragment>
@@ -83,4 +87,25 @@
             app:destination="@+id/timetable_fragment" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/store_fragment"
+        android:name="in.koreatech.koin.ui.store.StoreFragment"
+        android:label="store"
+        tools:layout="@layout/store_fragment_main">
+
+        <action
+            android:id="@+id/navi_item_store_detail_action"
+            app:destination="@+id/store_detail_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/store_detail_fragment"
+        android:name="in.koreatech.koin.ui.store.StoreDetailFragment"
+        android:label="store_detail"
+        tools:layout="@layout/store_fragment_detail">
+
+    </fragment>
+
 </navigation>

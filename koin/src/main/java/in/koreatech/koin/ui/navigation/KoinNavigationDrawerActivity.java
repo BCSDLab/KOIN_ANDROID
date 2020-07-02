@@ -24,7 +24,7 @@ import in.koreatech.koin.ui.search.SearchActivity;
 import in.koreatech.koin.ui.timetable.TimetableFragment;
 import in.koreatech.koin.ui.timetable.TimetableAnonymousFragment;
 import in.koreatech.koin.ui.usedmarket.MarketUsedActivity;
-import in.koreatech.koin.ui.store.StoreActivity;
+import in.koreatech.koin.ui.store.StoreFragment;
 import in.koreatech.koin.ui.login.LoginActivity;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
@@ -138,7 +138,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToStoreActivity() {
-        goToActivityFinish(new Intent(this, StoreActivity.class));
+        goToActivityFinish(new Intent(this, StoreFragment.class));
     }
 
     @Override

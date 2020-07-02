@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -17,8 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,6 +33,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -43,7 +49,7 @@ import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
 
-public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
+public class StoreDetailFragment extends KoinBaseFragment implements StoreDetailContract.View {
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
 
     private Context context;
@@ -89,27 +95,26 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     private StoreDetailMenuRecyclerAdapter storeDetailMenuRecyclerAdapter;
     private StoreDetailFlyerRecyclerAdapter storeDetailFlyerRecyclerAdapter;
 
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.store_activity_detail);
-        ButterKnife.bind(this);
-        this.context = this;
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.store_fragment_detail , container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
         init();
+        return view;
     }
 
     private void init() {
         this.store = new Store();
-        this.store.setUid(getIntent().getIntExtra("STORE_UID", 0));
-        this.store.setName(getIntent().getStringExtra("STORE_NAME"));
+        this.store.setUid(getArguments().getInt("STORE_UID", 0));
+        this.store.setName(getArguments().getString("STORE_NAME"));
 
         setPresenter(new StoreDetailPresenter(this, new StoreRestInteractor()));
         this.storeDetailPresenter.getStore(this.store.getUid());
 
-        menuLayoutManager = new LinearLayoutManager(this);
-        flyerLayoutManger = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        menuLayoutManager = new LinearLayoutManager(getContext());
+        flyerLayoutManger = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         this.storeMenuArrayList = new ArrayList<>();
         storeFlyerArrayList = new ArrayList<>();
         this.storeDetailMenuRecyclerAdapter = new StoreDetailMenuRecyclerAdapter(this.context, this.storeMenuArrayList);
@@ -172,14 +177,6 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
         updateUserInterface();
         onResume();
-
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
 
     }
 
@@ -260,7 +257,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     private void onClickCallButton() {
         String callNumber = this.store.getPhone();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             requestPermission();
             return;
         } else {
@@ -282,23 +279,16 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(getDrawerLayoutID());
-        if (drawer.isDrawerOpen(GravityCompat.START))
-            drawer.closeDrawer(GravityCompat.START);
-        else
-            finish();
-    }
+
 
     @Override
     public void requestPermission() {
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(this.context), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {//해당 권한이 없을 경우 실행
+        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {//해당 권한이 없을 경우 실행
             //설명 dialog 표시
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {//사용자가 권한 거부시 재 요청
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {//사용자가 권한 거부시 재 요청
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
             } else {//최초 권한 요청
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_CALL_PHONE);
             }
         }
     }
@@ -315,12 +305,12 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity)getActivity()).hideProgressDialog();
     }
 
     private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
