@@ -1,9 +1,8 @@
 package in.koreatech.koin.ui.bus;
 
-import in.koreatech.koin.core.fragment.BaseFragment;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 
-
-public class BusBaseFragment extends BaseFragment {
+public class BusBaseFragment{
 
     /**
      * Change fragment method from TabView
@@ -11,8 +10,8 @@ public class BusBaseFragment extends BaseFragment {
      * @param page page that selected
      * @return fragment fragment that selected
      */
-    public static BusBaseFragment newInstance(int page) {
-        BusBaseFragment fragment = null;
+    public static KoinBaseFragment newInstance(int page) {
+        KoinBaseFragment fragment = null;
         switch (page) {
             case 0:
                 fragment = new BusMainFragment();

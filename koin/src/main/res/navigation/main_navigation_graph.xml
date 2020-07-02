@@ -47,7 +47,9 @@
     <fragment
         android:id="@+id/bus_view_pager_fragment"
         android:name="in.koreatech.koin.ui.bus.BusViewPagerFragment"
-        android:label="circle"
+        android:label="bus"
+        app:popUpTo="@id/main_fragment"
+        app:popUpToInclusive="true"
         tools:layout="@layout/bus_fragment_view_pager">
 
     </fragment>

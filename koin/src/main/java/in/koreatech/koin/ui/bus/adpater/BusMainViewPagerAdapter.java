@@ -8,18 +8,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
+import in.koreatech.koin.ui.bus.BusBaseFragment;
 import in.koreatech.koin.ui.bus.BusMainFragment;
+import in.koreatech.koin.ui.bus.BusViewPagerFragment;
 
 public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
     private final String TAG = "BusMainViewPagerAdapter";
 
     private int tabCount;
     private final String[] mTabTitle = new String[]{"운행정보", "운행 정보 검색", "시간표"};
+    private FragmentManager fragmentManager;
 
     private final SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     public BusMainViewPagerAdapter(FragmentManager fragmentManager, int tabCount) {
         super(fragmentManager);
+        this.fragmentManager = fragmentManager;
         this.tabCount = tabCount;
     }
 
@@ -39,7 +43,7 @@ public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return BusMainFragment.newInstance(position);
+        return BusBaseFragment.newInstance(position);
     }
 
     @Override
@@ -48,8 +52,12 @@ public class BusMainViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public CharSequence getPageTitle(int position) {
         return mTabTitle[position];
     }
-
 }
