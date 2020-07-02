@@ -36,6 +36,7 @@ public class MainFragment extends KoinBaseFragment {
             case R.id.activity_main_store_constraint_layout:
                 break;
             case R.id.activity_main_timetable_constraint_layout:
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_timetable_anonymous_action, null, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_bus_constraint_layout:
                 NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_bus_action, null, NavigationManger.getNavigationAnimation());

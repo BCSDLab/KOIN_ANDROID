@@ -1,6 +1,8 @@
 package in.koreatech.koin;
 import android.app.Application;
 import android.content.Context;
+
+import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.util.ExceptionHandlerUtil;
@@ -25,6 +27,7 @@ public class KoinApplication extends Application {
     }
     private void init() {
         UserInfoSharedPreferencesHelper.getInstance().init(applicationContext);
+        TimeTableSharedPreferencesHelper.getInstance().init(applicationContext);
         ToastUtil.getInstance().init(applicationContext);
         RecentSearchSharedPreference.getInstance().init(applicationContext);
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandlerUtil(applicationContext));

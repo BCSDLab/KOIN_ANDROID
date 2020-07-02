@@ -15,9 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,7 +55,8 @@ import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
@@ -70,8 +74,8 @@ import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 import static in.koreatech.koin.util.TimeDuplicateCheckUtil.duplicateScheduleTostring;
 
 
-public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
-    public static final String TAG = "TimetableActivity";
+public class TimetableFragment extends KoinBaseFragment implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
+    public static final String TAG = "TimetableFragment";
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
     public static final int LOAD_TIME_MS = 500;
@@ -144,15 +148,17 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     private String semester = "";
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.timetable_activity_main);
-        this.context = this;
-        ButterKnife.bind(this);
-        init();
-    }
 
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.timetable_fragment_main, container, false);
+        this.context = getContext();
+        ButterKnife.bind(this, view);
+        init();
+        return view;
+    }
 
     public void init() {
         isLoading = false;
@@ -173,7 +179,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         closeBottomSearchSheetButton();
         isBottomSheetOpen = false;
         isSemesterSelectSheetOpen = false;
-        this.layoutManager = new LinearLayoutManager(this);
+        this.layoutManager = new LinearLayoutManager(getContext());
         initBottomSheet();
         initDetailBottomSheet();
         initSemesterSelectBottomSheet();
@@ -187,37 +193,46 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
         this.timetablePresenter.getTimetTableVersion();
         this.timetablePresenter.readSemesters();
     }
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity)getActivity()).hideProgressDialog();
     }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        if (imm != null)
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 
     public void askSaveToImagePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
+            if ((ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                    || (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
         }
 
     }
 
-
     public boolean checkStoragePermisson() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
+            if ((ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
+                    || (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
                 return false;
             else
                 return true;
@@ -240,14 +255,14 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                 if (saveImageFile != null) {
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
-                    sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved);
+                    getActivity().sendBroadcast(mediaIntent);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
                 } else {
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
         }
     }
 
@@ -263,7 +278,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     public void closeBottomSearchSheetButton() {
         this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        hideKeyboard(TimetableActivity.this);
+        hideKeyboard(getActivity());
         clearFilterData();
     }
 
@@ -273,7 +288,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                showProgressDialog(R.string.saving);
+                ((MainActivity)getActivity()).showProgressDialog(R.string.saving);
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
@@ -282,7 +297,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }, 2000);
 
         } else {
-            ToastUtil.getInstance().makeShort( R.string.need_permission);
+            ToastUtil.getInstance().makeShort(R.string.need_permission);
             askSaveToImagePermission();
         }
     }
@@ -297,7 +312,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     public void initSemesterRecyclerview() {
-        timetableSemesterRecyclerview.setLayoutManager(new LinearLayoutManager(this));
+        timetableSemesterRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         timetableSemesterRecyclerAdapter = new TimetableSemesterRecyclerAdapter(this.context, semesters);
         timetableSemesterRecyclerview.setHasFixedSize(true);
         timetableSemesterRecyclerview.setNestedScrollingEnabled(false);
@@ -322,7 +337,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         });
         timetableSemesterRecyclerview.setAdapter(timetableSemesterRecyclerAdapter);
     }
-
 
     public void initBottomSheet() {
         this.bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -399,7 +413,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }
         });
     }
-
 
     @OnClick(R.id.timetable_add_schedule_bottom_sheet_center_textview)
     public void onClickedBottomSheetCenterTextview() {
@@ -516,7 +529,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @OnClick(R.id.timetable_add_schedule_bottom_sheet_right_textview)
     public void onClickedBottomSheetRightButton() {
         clearFilterData();
-        hideKeyboard(TimetableActivity.this);
+        hideKeyboard(getActivity());
         this.timetableSearchRecyclerview.setVisibility(View.INVISIBLE);
         closeBottomSearchSheetButton();
 
@@ -525,7 +538,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @OnClick(R.id.timetable_add_category_imageview)
     public void onClickedBottomSheetCategoryButton() {
         this.timetableSearchRecyclerview.setVisibility(View.VISIBLE);
-        this.timetableSelectMajorDialog = new TimetableSelectMajorDialog(this);
+        this.timetableSelectMajorDialog = new TimetableSelectMajorDialog(getContext());
         this.timetableSelectMajorDialog.setOnCLickedDialogItemListener(this);
         this.timetableSelectMajorDialog.setMajorDialogListener(new MajorDialogListener() {
             @Override
@@ -542,10 +555,9 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Log.d("select", Integer.toString(select));
     }
 
-
     @OnClick(R.id.timetable_add_schedule_search_imageview)
     public void onClickedSearchButton() {
-        hideKeyboard(TimetableActivity.this);
+        hideKeyboard(getActivity());
         selectedLectureSeperateArrayList.clear();
         selectedLectureArrayList.clear();
         String keyword = this.timetableAddScheduleSearchEdittext.getText().toString().trim();
@@ -560,7 +572,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
         updateSearchRectclerview();
     }
-
 
     @OnTextChanged(R.id.timetable_add_schedule_search_edittext)
     public void searchItemEditext(CharSequence text) {
@@ -589,7 +600,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             this.timetableRecyclerAdapter.notifyDataSetChanged();
     }
 
-
     public void addTimeTableItemSelctedByRecyclerview(int position) {
         ArrayList<TimeTable.TimeTableItem> duplicateTimeTableItems;
         duplicateTimeTableItems = TimeDuplicateCheckUtil.checkDuplicateSchedule(this.timetableView.getAllTimeTableItems(), selectedLectureSeperateArrayList.get(position));
@@ -603,7 +613,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     public void showDuplicateDialog(int position, ArrayList<TimeTable.TimeTableItem> duplicateTimeTableItems) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.timetable_duplicate_warning_message);
         StringBuilder duplicateClassTitile = new StringBuilder();
         duplicateClassTitile.append(duplicateScheduleTostring(duplicateTimeTableItems));
@@ -623,7 +633,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     public void showAskDeleteTimeTableItemDialog(int index) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.timetable_delete_class_message);
         builder.setPositiveButton(R.string.positive,
                 (dialog, which) -> {
@@ -673,19 +683,9 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
     }
 
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
-        }
-        if (imm != null)
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeLong( message);
+        ToastUtil.getInstance().makeLong(message);
     }
 
     @Override
@@ -707,7 +707,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -722,7 +722,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -739,7 +739,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -868,13 +868,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
     }
 
     @Override
     public void showUpdateAlertDialog(String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.timetable_update_message);
         builder.setMessage(message);
         builder.setPositiveButton(R.string.positive,
@@ -900,7 +900,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     @Override
     public void updateWidget() {
         Handler handler = new Handler();
-        handler.postDelayed(this::saveWidgetImage, 2000);
+        handler.post(this::saveWidgetImage);
 
     }
 
@@ -919,7 +919,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(this.timeTableScrollview, this.timeTableHeader);
         this.timetableView.setCheckStickersVisibilty(true);
         if (bitmap == null) return;
-        ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+        ContextWrapper contextWrapper = new ContextWrapper(getActivity());
         File directory = contextWrapper.getDir("timeTable", Context.MODE_PRIVATE);
         File saveImageFile = new File(directory, "timetable.png");
         FileOutputStream fileOutputStream = null;
@@ -938,8 +938,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
 
         TimeTableSharedPreferencesHelper.getInstance().saveLastPathTimetableImage(directory.getAbsolutePath());
-        Intent intent = new Intent(this, TimetableWidget.class);
+        Intent intent = new Intent(getActivity(), TimetableWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        this.sendBroadcast(intent);
+        getActivity().sendBroadcast(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

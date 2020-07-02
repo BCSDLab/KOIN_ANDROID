@@ -21,8 +21,8 @@ import in.koreatech.koin.ui.dining.DiningActivity;
 import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
 import in.koreatech.koin.ui.land.LandActivity;
 import in.koreatech.koin.ui.search.SearchActivity;
-import in.koreatech.koin.ui.timetable.TimetableActivity;
-import in.koreatech.koin.ui.timetable.TimetableAnonymousActivity;
+import in.koreatech.koin.ui.timetable.TimetableFragment;
+import in.koreatech.koin.ui.timetable.TimetableAnonymousFragment;
 import in.koreatech.koin.ui.usedmarket.MarketUsedActivity;
 import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.ui.login.LoginActivity;
@@ -153,7 +153,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToTimetableActivty() {
-        goToActivityFinish(new Intent(this, TimetableActivity.class));
+        goToActivityFinish(new Intent(this, TimetableFragment.class));
     }
 
     @Override
@@ -167,7 +167,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToAnonymousTimeTableActivity() {
-        goToActivityFinish(new Intent(this, TimetableAnonymousActivity.class));
+        goToActivityFinish(new Intent(this, TimetableAnonymousFragment.class));
     }
 
     @Override

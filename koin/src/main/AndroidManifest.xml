@@ -186,11 +186,11 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.timetable.TimetableActivity"
+            android:name=".ui.timetable.TimetableFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.timetable.TimetableAnonymousActivity"
+            android:name=".ui.timetable.TimetableAnonymousFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
