@@ -29,7 +29,7 @@ public class SnackbarUtil {
         Snackbar.make(view, message, 5000).show();
     }
 
-    public static void makeLongSnackbarActionYes(View view, String message) {
+    public static void makeLongSnackbarActionYes(View view, String message, boolean b) {
         snackbar = Snackbar.make(view, message, LENGTH_LONG);
 
         snackbar.setAction("YES", v -> snackbar.dismiss());

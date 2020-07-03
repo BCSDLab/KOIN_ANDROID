@@ -4,14 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,28 +23,29 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Article;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.interactor.CommunityRestInteractor;
-import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.board.adpater.CommentRecyclerAdapter;
 import in.koreatech.koin.ui.board.presenter.ArticleCommentContract;
 import in.koreatech.koin.ui.board.presenter.ArticleCommentPresenter;
-import in.koreatech.koin.ui.login.LoginActivity;
-import in.koreatech.koin.ui.userinfo.UserInfoActivity;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.NavigationManger;
+import in.koreatech.koin.util.SnackbarUtil;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
-public class ArticleCommentActivity extends KoinNavigationDrawerActivity implements ArticleCommentContract.View, CommentRecyclerAdapter.OnCommentRemoveButtonClickListener {
+public class ArticleCommentFragment extends KoinBaseFragment implements ArticleCommentContract.View, CommentRecyclerAdapter.OnCommentRemoveButtonClickListener {
 
+    private final int REQ_CODE_ARTICLE_EDIT = 1;
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appBarBase;
     @BindView(R.id.article_comment_title)
@@ -81,9 +84,6 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     LinearLayout aritcleCommentCancelRegisterLayout;
     @BindView(R.id.article_comment_password_edittext)
     EditText articleCommentPasswordEdittext;
-
-
-    private final int REQ_CODE_ARTICLE_EDIT = 1;
     private CommentRecyclerAdapter commentRecyclerAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Comment> commentArrayList;
@@ -98,20 +98,20 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     private int boardUid;
     private int articleUid;
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_comment);
-        context = this;
-        ButterKnife.bind(this);
-        boardUid = getIntent().getIntExtra("BOARD_UID", 0);
-        articleUid = getIntent().getIntExtra("ARTICLE_UID", 0);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_article_comment, container, false);
+        context = getContext();
+        ButterKnife.bind(this, view);
+        boardUid = getArguments().getInt("BOARD_UID", 0 );
+        articleUid = getArguments().getInt("ARTICLE_UID",0);
         init();
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         String nickname = getNickname();
         AuthorizeConstant authorizeConstant = getAuthorize();
@@ -136,7 +136,7 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         isEditComment = false;
         iIsEditPossible = true;
         setPresenter(new ArticleCommentPresenter(this, new CommunityRestInteractor()));
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(getContext());
         commentArrayList = new ArrayList<>();
         commentRecyclerAdapter = new CommentRecyclerAdapter(context, commentArrayList);
         commentRecyclerAdapter.setCustomOnClickListener(this);
@@ -196,28 +196,22 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         if (boardUid != ID_ANONYMOUS) {
             AuthorizeConstant authorize = getAuthorize();
             if (authorize == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
+                AuthorizeManager.showLoginRequestDialog(getActivity());
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
-                showNickNameRequestDialog();
+            } else if (authorize == AuthorizeConstant.MEMBER && getNickname() == null) {
+                AuthorizeManager.showNickNameRequestDialog(getActivity());
                 return;
             }
         }
-        Intent intent = new Intent(context, ArticleEditActivity.class);
-        intent.putExtra("BOARD_UID", boardUid);
-        startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
+       // startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
+        Bundle bundle = new Bundle();
+        bundle.putInt("BOARD_UID", boardUid);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle ,NavigationManger.getNavigationAnimation());
 
     }
 
     public AuthorizeConstant getAuthorize() {
-        AuthorizeConstant authorizeConstant;
-        try {
-            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
-        } catch (NullPointerException e) {
-            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            authorizeConstant = UserInfoSharedPreferencesHelper.getInstance().checkAuthorize();
-        }
-        return authorizeConstant;
+        return AuthorizeManager.getAuthorize(getContext());
     }
 
     @OnClick({R.id.article_comment_content_linearlayout, R.id.article_comment_nickname_linearlayout,
@@ -230,10 +224,10 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
         AuthorizeConstant authorizeConstant = getAuthorize();
         if (!iIsEditPossible) {
             if (authorizeConstant == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
+                AuthorizeManager.showLoginRequestDialog(getActivity());
                 return;
             } else if (nickname.isEmpty()) {
-                showNickNameRequestDialog();
+                AuthorizeManager.showNickNameRequestDialog(getActivity());
                 return;
             }
 
@@ -460,7 +454,8 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     public void onArticleDataReceived(Article article) {
         this.article = article;
         this.article.setCreateDate(article.getCreateDate().substring(0, 10) + " " + article.getCreateDate().substring(11, 16));
-        this.article.setUpdateDate(article.getUpdateDate().substring(0, 10) + " " + article.getUpdateDate().substring(11, 16));;
+        this.article.setUpdateDate(article.getUpdateDate().substring(0, 10) + " " + article.getUpdateDate().substring(11, 16));
+        ;
         this.articleCommentCount = String.valueOf(article.getCommentCount());
         commentRecyclerAdapter.setArticle(this.article);
         commentArrayList.clear();
@@ -484,17 +479,12 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
+        ((MainActivity)getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -542,45 +532,6 @@ public class ArticleCommentActivity extends KoinNavigationDrawerActivity impleme
     }
 
     public String getNickname() {
-        String nickname = "";
-        try {
-            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
-        } catch (NullPointerException e) {
-            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
-        }
-        if (nickname == null) nickname = "";
-        return nickname;
-    }
-
-    public void showLoginRequestDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("회원 전용 서비스")
-                .setMessage("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("확인", (dialog, whichButton) -> {
-                    Intent intent = new Intent(this, LoginActivity.class);
-                    intent.putExtra("FIRST_LOGIN", false);
-                    startActivity(intent);
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-                })
-                .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
-        AlertDialog dialog = builder.create();    // 알림창 객체 생성
-        dialog.show();    // 알림창 띄우기
-    }
-
-    public void showNickNameRequestDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("닉네임이 필요합니다.")
-                .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("확인", (dialog, whichButton) -> {
-                    startActivity(new Intent(this, UserInfoActivity.class));
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-                })
-                .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
-        AlertDialog dialog = builder.create();    // 알림창 객체 생성
-        dialog.show();    // 알림창 띄우기
+        return AuthorizeManager.getUser(getContext()).getUserNickName();
     }
 }

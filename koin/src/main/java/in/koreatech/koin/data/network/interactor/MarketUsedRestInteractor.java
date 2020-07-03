@@ -4,16 +4,18 @@ import android.util.Log;
 
 import com.google.gson.JsonObject;
 
-import in.koreatech.koin.data.network.entity.Image;
-import in.koreatech.koin.data.network.service.TemporaryCommunityService;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import java.io.File;
+
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
 import in.koreatech.koin.data.network.entity.Comment;
+import in.koreatech.koin.data.network.entity.Image;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.response.MarketPageResponse;
 import in.koreatech.koin.data.network.service.MarketService;
+import in.koreatech.koin.data.network.service.TemporaryCommunityService;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,8 +26,6 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.HttpException;
-
-import java.io.File;
 
 import static in.koreatech.koin.core.network.RetrofitManager.addAuthorizationBearer;
 
@@ -463,6 +463,49 @@ public class MarketUsedRestInteractor implements MarketUsedInteractor {
                 });
     }
 
+    @Override
+    public void uploadImage(File file, String uuid, ApiCallback apiCallback) {
+        Observable<Image> imageObservable;
+        String token = UserInfoSharedPreferencesHelper.getInstance().loadToken();
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+        if (token != null) {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(MarketService.class).postUploadImage(addAuthorizationBearer(token), filePart);
+        } else {
+            imageObservable = RetrofitManager.getInstance().getRetrofit().create(TemporaryCommunityService.class).postUploadImage(filePart);
 
+        }
+        imageObservable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Image>() {
+
+                    @Override
+                    public void onSubscribe(Disposable disposable) {
+                        compositeDisposable.add(disposable);
+                    }
+
+                    @Override
+                    public void onNext(Image response) {
+                        if (response != null) {
+                            response.setUid(uuid);
+                            apiCallback.onSuccess(response);
+                        } else {
+                            apiCallback.onFailure(new Throwable("fail upload image"));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        if (throwable instanceof HttpException) {
+                            Log.d(TAG, ((HttpException) throwable).code() + " ");
+                        }
+                        apiCallback.onFailure(new Exception(uuid));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 }
 

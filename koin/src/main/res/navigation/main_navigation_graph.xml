@@ -36,6 +36,10 @@
             android:id="@+id/navi_item_dining_action"
             app:destination="@+id/dining_fragment" />
 
+        <action
+            android:id="@+id/navi_board_action"
+            app:destination="@+id/board_fragment" />
+
     </fragment>
 
 
@@ -119,5 +123,75 @@
         tools:layout="@layout/dining_fragment_main">
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/board_fragment"
+        android:name="in.koreatech.koin.ui.board.BoardFragment"
+        android:label="board"
+        tools:layout="@layout/fragment_board">
+        <action
+            android:id="@+id/navi_article_action"
+            app:destination="@+id/article_fragment" />
+
+        <action
+            android:id="@+id/navi_article_edit_action"
+            app:destination="@+id/article_edit_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/article_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleFragment"
+        android:label="article"
+        tools:layout="@layout/fragment_article">
+
+        <action
+            android:id="@+id/navi_article_action"
+            app:destination="@+id/article_fragment" />
+
+        <action
+            android:id="@+id/navi_article_edit_action"
+            app:destination="@+id/article_edit_fragment" />
+
+        <action
+            android:id="@+id/navi_article_comment_action"
+            app:destination="@+id/article_comment_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/article_edit_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleEditFragment"
+        android:label="article_edit"
+        tools:layout="@layout/fragment_article_edit">
+
+
+        <action
+            android:id="@+id/navi_article_action"
+            app:destination="@+id/article_fragment"
+            />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/article_comment_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleCommentFragment"
+        android:label="article_comment"
+        tools:layout="@layout/fragment_article_comment">
+
+        <action
+            android:id="@+id/navi_article_action"
+            app:destination="@+id/article_fragment" />
+
+        <action
+            android:id="@+id/navi_article_edit_action"
+            app:destination="@+id/article_edit_fragment" />
+
+    </fragment>
+
 
 </navigation>

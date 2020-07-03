@@ -1,4 +1,6 @@
 package in.koreatech.koin.ui.board.presenter;
+import android.graphics.Bitmap;
+
 import java.io.File;
 
 import in.koreatech.koin.core.network.ApiCallback;
@@ -13,7 +15,6 @@ public class ArticleEditPresenter {
 
     private final CommunityInteractor communityInteractor;
     private final MarketUsedInteractor marketUsedInteractor;
-    private String uploadImageId;
 
     public ArticleEditPresenter(ArticleEditContract.View articleEditView, CommunityInteractor communityInteractor) {
         this.articleEditView = articleEditView;
@@ -42,16 +43,16 @@ public class ArticleEditPresenter {
             Image item = (Image) object;
 
             if(item.getUrls() != null) {
-                articleEditView.showUploadImage(item.getUrls().get(0), uploadImageId);
+                articleEditView.showUploadImage(item.getUrls().get(0), item.getUid());
             } else {
-                articleEditView.showFailUploadImage(uploadImageId);
+                articleEditView.showFailUploadImage(item.getUid());
             }
 
         }
 
         @Override
         public void onFailure(Throwable throwable) {
-            articleEditView.showFailUploadImage(uploadImageId);
+            articleEditView.showFailUploadImage(throwable.getMessage());
         }
     };
 
@@ -76,11 +77,10 @@ public class ArticleEditPresenter {
     }
 
     public void uploadImage(File file, String uid) {
-        uploadImageId = uid;
         if(file == null) {
             articleEditView.showFailUploadImage(uid);
             return;
         }
-        marketUsedInteractor.uploadImage(file, uploadImageApiCallback);
+        marketUsedInteractor.uploadImage(file, uid, uploadImageApiCallback);
     }
 }

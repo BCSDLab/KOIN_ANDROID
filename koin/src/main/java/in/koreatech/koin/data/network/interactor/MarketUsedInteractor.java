@@ -1,9 +1,9 @@
 package in.koreatech.koin.data.network.interactor;
 
+import java.io.File;
+
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.MarketItem;
-
-import java.io.File;
 
 public interface MarketUsedInteractor {
     void readMarketList(int type, int limit, final ApiCallback apiCallback);
@@ -23,6 +23,8 @@ public interface MarketUsedInteractor {
     void uploadThumbnailImage(File file, final ApiCallback apiCallback);
 
     void uploadImage(File file, final ApiCallback apiCallback);
+
+    void uploadImage(File file, String uuid, final ApiCallback apiCallback);
 
     void createMarketItem(MarketItem marketItem, final ApiCallback apiCallback);
 
