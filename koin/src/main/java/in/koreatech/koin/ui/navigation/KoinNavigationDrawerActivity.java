@@ -13,7 +13,7 @@ import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.board.BoardActivity;
+import in.koreatech.koin.ui.board.BoardFragment;
 import in.koreatech.koin.ui.bus.BusViewPagerFragment;
 import in.koreatech.koin.ui.callvan.CallvanActivity;
 import in.koreatech.koin.ui.circle.CircleFragment;
@@ -172,21 +172,21 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToFreeBoardActivity() {
-        Intent intent = new Intent(this, BoardActivity.class);
+        Intent intent = new Intent(this, BoardFragment.class);
         intent.putExtra("BOARD_UID", ID_FREE);
         goToActivityFinish(intent);
     }
 
     @Override
     protected void goToRecruitBoardActivity() {
-        Intent intent = new Intent(this, BoardActivity.class);
+        Intent intent = new Intent(this, BoardFragment.class);
         intent.putExtra("BOARD_UID", ID_RECRUIT);
         goToActivityFinish(intent);
     }
 
     @Override
     protected void goToAnonymousBoardActivity() {
-        Intent intent = new Intent(this, BoardActivity.class);
+        Intent intent = new Intent(this, BoardFragment.class);
         intent.putExtra("BOARD_UID", ID_ANONYMOUS);
         goToActivityFinish(intent);
     }

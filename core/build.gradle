@@ -64,6 +64,7 @@ dependencies {
     api project.androidxRecyclerView
     api project.androidxCardView
     api project.androidxMaterial
+    api project.androidxFragment
 
     /* Dependency - AndroidX JetPack Navigation */
     api project.navigationFragmentJava
@@ -116,7 +117,5 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     api 'org.jetbrains:annotations:15.0'
-
-
 }
 apply plugin: 'com.google.gms.google-services'

@@ -27,7 +27,7 @@ import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.board.ArticleActivity;
+import in.koreatech.koin.ui.board.ArticleFragment;
 import in.koreatech.koin.ui.lostfound.LostFoundDetailActivity;
 import in.koreatech.koin.ui.search.adapter.SearchResultAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchResultContract;
@@ -147,17 +147,17 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
         Intent intent;
         switch (searchedArticleItem.getTableId()) {
             case 5: // 자유게시판
-                intent = new Intent(getActivity(), ArticleActivity.class);
+                intent = new Intent(getActivity(), ArticleFragment.class);
                 intent.putExtra("BOARD_UID", ID_FREE);
                 intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
                 break;
             case 6: // 자유게시판
-                intent = new Intent(getActivity(), ArticleActivity.class);
+                intent = new Intent(getActivity(), ArticleFragment.class);
                 intent.putExtra("BOARD_UID", ID_RECRUIT);
                 intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
                 break;
             case 7: // 취업게시판
-                intent = new Intent(getActivity(), ArticleActivity.class);
+                intent = new Intent(getActivity(), ArticleFragment.class);
                 intent.putExtra("BOARD_UID", ID_ANONYMOUS);
                 intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
                 break;

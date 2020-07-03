@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#175c8e</color>
-    <color name="colorPrimaryDark">#003360</color>
-    <color name="colorPrimaryLight">#5289be</color>
-    <color name="colorAccent">#f7941e</color>
-    <color name="colorBackground">#ffffff</color>
-    <color name="colorPrimaryText">#252525</color>
-    <color name="colorSecondaryText">#a1a1a1</color>
-    <color name="colorHintText">#e3e3e3</color>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary"  tools:override="true">#175c8e</color>
+    <color name="colorPrimaryDark"  tools:override="true">#003360</color>
+    <color name="colorPrimaryLight"  tools:override="true">#5289be</color>
+    <color name="colorAccent"  tools:override="true">#f7941e</color>
+    <color name="colorBackground"  tools:override="true">#ffffff</color>
+    <color name="colorPrimaryText"  tools:override="true">#252525</color>
+    <color name="colorSecondaryText"  tools:override="true">#a1a1a1</color>
+    <color name="colorHintText"  tools:override="true">#e3e3e3</color>
 
     <color name="divider">#ECECEC</color>
 

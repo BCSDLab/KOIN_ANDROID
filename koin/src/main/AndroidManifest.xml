@@ -117,17 +117,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.board.BoardActivity"
+            android:name=".ui.board.BoardFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.board.ArticleActivity"
+            android:name=".ui.board.ArticleFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.board.ArticleEditActivity"
+            android:name=".ui.board.ArticleEditFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar"
@@ -203,7 +203,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.board.ArticleCommentActivity"
+            android:name=".ui.board.ArticleCommentFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />

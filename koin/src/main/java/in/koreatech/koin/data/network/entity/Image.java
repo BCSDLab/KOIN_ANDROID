@@ -10,7 +10,17 @@ public class Image {
     @Expose
     private ArrayList<String> urls;
 
+    private String uid;
+
     public ArrayList<String> getUrls() {
         return urls;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

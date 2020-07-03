@@ -31,6 +31,10 @@ buildscript {
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
         androidxMaterial = "com.google.android.material:material:$android_x_version"
+        androidxFragment = "androidx.fragment:fragment:$android_x_version"
+
+        def android_x_fragment_version = "1.3.0-alpha04"
+        androidxFragment = "androidx.fragment:fragment:$android_x_fragment_version"
 
         /* Dependency - AndroidX JetPack Navigation */
         def android_x_nav_version = "2.3.0"
