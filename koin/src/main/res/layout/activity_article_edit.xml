@@ -169,18 +169,17 @@
 
             </RelativeLayout>
 
-
+            <!-- android:background="#e6e6e6" -->
             <HorizontalScrollView
                 android:id="@+id/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#e6e6e6"
                 android:scrollbars="none"
+                android:background="#000"
+                android:backgroundTint="@color/color_editor_toolbar_linearlayout_horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/include">
 
-
                 <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
-
 
             </HorizontalScrollView>
 

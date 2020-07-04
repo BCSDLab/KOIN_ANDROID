@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +57,7 @@ import in.koreatech.koin.util.ThemeUtil;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 import top.defaults.colorpicker.ColorPickerPopup;
+import top.defaults.colorpicker.ColorPickerView;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
@@ -523,7 +526,18 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
     }
 
     public void createColorPicker() {
-        new ColorPickerPopup.Builder(context)
+        View view = View.inflate(context, R.layout.dialog_color_picker, null);
+        ColorPickerView colorPickerView = view.findViewById(R.id.color_picker);
+        TextView textViewCurrentColor = view.findViewById(R.id.text_view_current_color);
+        colorPickerView.subscribe((color, fromUser) -> textViewCurrentColor.setText(colorHex(color)));
+
+        new AlertDialog.Builder(context)
+                .setView(view)
+                .setPositiveButton("선택", (dialogInterface, i) -> articleEditor.updateTextColor(colorHex(colorPickerView.getColor())))
+                .setNegativeButton("취소", null)
+                .show();
+
+        /*new ColorPickerPopup.Builder(context)
                 .initialColor(Color.RED) // 색초기화
                 .enableAlpha(true)
                 .okTitle("선택")
@@ -541,6 +555,6 @@ public class ArticleEditActivity extends KoinNavigationDrawerActivity implements
                     public void onColor(int color, boolean fromUser) {
 
                     }
-                });
+                });*/
     }
 }

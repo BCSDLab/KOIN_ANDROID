@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    android:orientation="vertical">
+
+    <top.defaults.colorpicker.ColorPickerView
+        android:id="@+id/color_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_view_current_color"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:background="@null"
+        android:padding="16dp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="18sp"
+        app:fontName="Custom5"
+        tools:text="#123456" />
+
+</LinearLayout>
