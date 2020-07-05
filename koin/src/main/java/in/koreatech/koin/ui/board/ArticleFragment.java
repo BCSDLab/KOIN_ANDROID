@@ -1,7 +1,6 @@
 package in.koreatech.koin.ui.board;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -292,13 +291,18 @@ public class ArticleFragment extends KoinBaseFragment implements ArticleContract
             return;
         }
 
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("IS_EDIT", true);
-        bundle.putInt("ARTICLE_UID", this.article.getArticleUid());
-        bundle.putInt("BOARD_UID", this.article.getBoardUid());
-        bundle.putString("ARTICLE_TITLE", this.article.getTitle());
-        bundle.putString("ARTICLE_CONTENT", this.article.getContent());
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle, NavigationManger.getNavigationAnimation());
+        switch (this.article.getBoardUid()) {
+            case ID_FREE:
+                goToArticleEdit(true, R.id.navi_free_article_edit_action);
+                break;
+            case ID_RECRUIT:
+                goToArticleEdit(true, R.id.navi_recruit_article_edit_action);
+                break;
+            case ID_ANONYMOUS:
+                goToArticleEdit(true, R.id.navi_anonymous_article_edit_action);
+                break;
+        }
+
 
     }
 
@@ -388,16 +392,7 @@ public class ArticleFragment extends KoinBaseFragment implements ArticleContract
 
     @Override
     public void showSuccessAdjustGrantedContent() {
-        String password = articlePasswordEdittext.getText().toString();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("IS_EDIT", true);
-        bundle.putInt("ARTICLE_UID", this.article.getArticleUid());
-        bundle.putInt("BOARD_UID", this.article.getBoardUid());
-        bundle.putString("ARTICLE_TITLE", this.article.getTitle());
-        bundle.putString("ARTICLE_CONTENT", this.article.getContent());
-        bundle.putString("NICKNAME", this.article.getAuthorNickname());
-        bundle.putString("PASSWORD", password);
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle, NavigationManger.getNavigationAnimation());
+        goToAnonymousArticleEdit(R.id.navi_anonymous_article_edit_action);
     }
 
     @Override
@@ -433,14 +428,50 @@ public class ArticleFragment extends KoinBaseFragment implements ArticleContract
             }
         }
 
-        //startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
         Bundle bundle = new Bundle();
         bundle.putInt("BOARD_UID", this.article.getBoardUid());
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle, NavigationManger.getNavigationAnimation());
+
+        switch (this.article.getBoardUid()) {
+            case ID_FREE:
+                goToArticleEdit(false, R.id.navi_free_article_edit_action);
+                break;
+            case ID_RECRUIT:
+                goToArticleEdit(false, R.id.navi_recruit_article_edit_action);
+                break;
+            case ID_ANONYMOUS:
+                goToArticleEdit(false, R.id.navi_anonymous_article_edit_action);
+                break;
+        }
+
     }
 
     @OnClick(R.id.article_comment_write_button)
     public void onClickedCommentWriteButton() {
+        switch (this.article.getBoardUid()) {
+            case ID_FREE:
+                goToComment(R.id.navi_free_article_comment_action);
+                break;
+            case ID_RECRUIT:
+                goToComment(R.id.navi_recruit_article_comment_action);
+                break;
+            case ID_ANONYMOUS:
+                goToComment(R.id.navi_anonymous_article_comment_action);
+                break;
+        }
+    }
+
+    private void goToArticleEdit(boolean isEdit, int id) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("IS_EDIT", isEdit);
+        bundle.putInt("ARTICLE_UID", this.article.getArticleUid());
+        bundle.putInt("BOARD_UID", this.article.getBoardUid());
+        bundle.putString("ARTICLE_TITLE", this.article.getTitle());
+        bundle.putString("ARTICLE_CONTENT", this.article.getContent());
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
+    }
+
+    private void goToAnonymousArticleEdit(int id) {
+        String password = articlePasswordEdittext.getText().toString();
         Bundle bundle = new Bundle();
         bundle.putBoolean("IS_EDIT", true);
         bundle.putInt("ARTICLE_UID", this.article.getArticleUid());
@@ -448,6 +479,18 @@ public class ArticleFragment extends KoinBaseFragment implements ArticleContract
         bundle.putString("ARTICLE_TITLE", this.article.getTitle());
         bundle.putString("ARTICLE_CONTENT", this.article.getContent());
         bundle.putString("NICKNAME", this.article.getAuthorNickname());
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_comment_action, bundle, NavigationManger.getNavigationAnimation());
+        bundle.putString("PASSWORD", password);
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
+    }
+
+    private void goToComment(int id) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("IS_EDIT", true);
+        bundle.putInt("ARTICLE_UID", this.article.getArticleUid());
+        bundle.putInt("BOARD_UID", this.article.getBoardUid());
+        bundle.putString("ARTICLE_TITLE", this.article.getTitle());
+        bundle.putString("ARTICLE_CONTENT", this.article.getContent());
+        bundle.putString("NICKNAME", this.article.getAuthorNickname());
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
     }
 }

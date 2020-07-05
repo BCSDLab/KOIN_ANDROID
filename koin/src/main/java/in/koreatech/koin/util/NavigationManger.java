@@ -1,6 +1,7 @@
 package in.koreatech.koin.util;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 
 public class NavigationManger {
+    public static final String TAG = "NavigationManger";
     public static final int FRAGMENT_CONTAINER_ID = R.id.nav_host_fragment;
 
     public static NavController getNavigationController(Activity activity) {
@@ -34,6 +36,26 @@ public class NavigationManger {
                 .build();
     }
 
+    public static NavOptions getNavigationDrawerServiceSelectAnimation() {
+        return new NavOptions.Builder()
+                .setEnterAnim(R.anim.trans_left_in)
+                .setExitAnim(R.anim.trans_left_out)
+                .setPopEnterAnim(R.anim.trans_right_in)
+                .setPopExitAnim(R.anim.trans_right_out)
+                .setPopUpTo(R.id.main_fragment, true)
+                .build();
+    }
+
+    public static NavOptions getNavigationDrawerOpenAnimation() {
+        return new NavOptions.Builder()
+                .setEnterAnim(R.anim.trans_right_in)
+                .setExitAnim(R.anim.no_animation)
+                .setPopEnterAnim(R.anim.no_animation)
+                .setPopExitAnim(R.anim.trans_left_out)
+                .build();
+    }
+
+
     public static NavOptions getGoToHomeNavigationAnimation() {
         return new NavOptions.Builder()
                 .setEnterAnim(R.anim.trans_left_in)
@@ -42,5 +64,13 @@ public class NavigationManger {
                 .setPopExitAnim(R.anim.trans_right_out)
                 .setPopUpTo(R.id.main_fragment, true)
                 .build();
+    }
+
+    public static boolean isDrawerOpen(Activity activity) {
+        return getCurrentServiceLabel(activity).equals(activity.getString(R.string.navigation_drawer));
+    }
+
+    public static String getCurrentServiceLabel(Activity activity) {
+        return NavigationManger.getNavigationController(activity).getCurrentDestination().getLabel().toString();
     }
 }

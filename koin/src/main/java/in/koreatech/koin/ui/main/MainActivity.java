@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.util.NavigationManger;
 
 
@@ -39,6 +37,7 @@ public class MainActivity extends ActivityBase {
                 goToHome();
                 break;
             case R.id.base_navigation_bar_bottom_category_linearlayout:
+                handleNavigationDrawer();
                 break;
             case R.id.base_navigation_bar_bottom_search_linearlayout:
                 break;
@@ -48,11 +47,15 @@ public class MainActivity extends ActivityBase {
 
     public void goToHome() {
         NavigationManger.goToHome(this);
-
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void handleNavigationDrawer() {
+        Bundle bundle = new Bundle();
+        if (NavigationManger.isDrawerOpen(this)) {
+            NavigationManger.getNavigationController(this).popBackStack();
+        } else {
+            bundle.putString("CURRENT_SERVICE", NavigationManger.getCurrentServiceLabel(this));
+            NavigationManger.getNavigationController(this).navigate(R.id.navi_navigation_drawer_action, bundle, NavigationManger.getNavigationDrawerOpenAnimation());
+        }
     }
 }

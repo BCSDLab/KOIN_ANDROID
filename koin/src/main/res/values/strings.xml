@@ -2,35 +2,42 @@
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
     <string name="sign_up">회원 가입</string>
-
+    <string name="anonymous">익명</string>
     <!--left drawer menu -->
     <string name="home">홈</string>
-
+    <string name="navigation_user_welcome">님, 안녕하세요!</string>
+    <string name="my_info">내정보</string>
+    <string name="school_info">학교정보</string>
+    <string name="customer_support">고객지원</string>
     <!--학교 정보-->
-    <string name="navigation_item_store">상점</string>
+    <string name="navigation_item_store">주변 상점</string>
     <string name="navigation_item_bus">버스/교통</string>
     <string name="navigation_item_dining">식단</string>
     <string name="navigation_item_circle">동아리</string>
     <!--<string name="navigation_item_faq">FAQ</string>-->
 
     <!--커뮤니티-->
+    <string name="community">커뮤니티</string>
     <string name="navigation_item_free_board">자유게시판</string>
     <string name="navigation_item_anonymous_board">익명게시판</string>
     <string name="navigation_item_recruit_board">취업게시판</string>
+    <string name="navigation_item_land">복덕방</string>
 
     <!--부가서비스-->
     <string name="navigation_item_callvan_sharing">콜밴쉐어링</string>
+    <string name="navigation_item_lostfound">분실물</string>
     <!--<string name="navigation_item_real_estate">복덕방</string>-->
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
 
     <!--right drawer menu-->
+    <string name="navigation_home">메인 화면</string>
     <string name="navigation_item_user_info">회원 정보</string>
     <!--<string name="navigation_item_setting">설정</string>-->
     <string name="navigation_item_koin_page">코인 사이트</string>
     <!--<string name="navigation_item_user_request">문의 사항</string>-->
-    <string name="navigation_item_kakao_talk">카카오톡 대화</string>
+    <string name="navigation_item_kakao_talk">카카오톡 1:1 대화</string>
     <string name="navigation_item_version_info">버전 정보</string>
     <string name="navigation_item_developer">만든 이</string>
     <string name="navigation_item_open_source">오픈소스</string>
@@ -56,6 +63,7 @@
     <string name="signup_term_check_message_checked">모든 약관에 동의하셨습니다.</string>
 
     <!-- Required value in actionbardrawertoggle -->
+    <string name="navigation_drawer">navigation drawer</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="signup_to_login">이미 계정이 있으신가요? <b> 로그인하기 </b> </string>

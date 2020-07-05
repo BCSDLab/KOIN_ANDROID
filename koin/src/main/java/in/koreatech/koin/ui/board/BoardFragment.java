@@ -1,7 +1,6 @@
 package in.koreatech.koin.ui.board;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +67,7 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
             if ((boardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
                 boardPresenter.getArticleGrant(articleArrayList.get(position).getArticleUid());
             else
-                goToArticleActivity(articleArrayList.get(position).getArticleUid(), boardUid == ID_ANONYMOUS);
+                goToArticleFragment(articleArrayList.get(position).getArticleUid(), boardUid == ID_ANONYMOUS);
         }
 
         @Override
@@ -151,17 +150,42 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
             if (authorize == AuthorizeConstant.ANONYMOUS) {
                 AuthorizeManager.showLoginRequestDialog(getActivity());
                 return;
-            } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
+            } else if (authorize == AuthorizeConstant.MEMBER && AuthorizeManager.getUser(getContext()).getUserNickName() == null) {
                 AuthorizeManager.showNickNameRequestDialog(getActivity());
                 return;
             }
         }
+
+        switch (boardUid) {
+            case ID_FREE:
+                goToArticleEdit(R.id.navi_free_article_edit_action);
+                break;
+            case ID_RECRUIT:
+                goToArticleEdit(R.id.navi_recruit_article_edit_action);
+                break;
+            case ID_ANONYMOUS:
+                goToArticleEdit(R.id.navi_anonymous_article_edit_action);
+                break;
+        }
+
+    }
+
+    private void goToArticleEdit(int id) {
         Bundle bundle = new Bundle();
         getParentFragmentManager().setFragmentResultListener(REQ_CODE_ARTICLE_EDIT, this, this::onFragmentResult);
         bundle.putInt("BOARD_UID", boardUid);
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle, NavigationManger.getNavigationAnimation());
-
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
     }
+
+    private void goToArticle(int id, int articleUid, boolean isArticleGrantEdit) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("BOARD_UID", boardUid);
+        bundle.putInt("ARTICLE_UID", articleUid);
+        bundle.putBoolean("ARTICLE_GRANT_EDIT", isArticleGrantEdit);
+        getParentFragmentManager().setFragmentResultListener(REQ_CODE_ARTICLE, this, this::onFragmentResult);
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
+    }
+
 
     @Override
     public void onBoardListDataReceived(ArticlePageResponse articlePage) {
@@ -188,18 +212,22 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
 
     @Override
     public void onArticleGranDataReceived(Article article) {
-        goToArticleActivity(article.getArticleUid(), article.isGrantEdit());
+        goToArticleFragment(article.getArticleUid(), article.isGrantEdit());
     }
 
     @Override
-    public void goToArticleActivity(int articleUid, boolean isArticleGrantEdit) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("BOARD_UID", boardUid);
-        bundle.putInt("ARTICLE_UID", articleUid);
-        bundle.putBoolean("ARTICLE_GRANT_EDIT", isArticleGrantEdit);
-        getParentFragmentManager().setFragmentResultListener(REQ_CODE_ARTICLE, this, this::onFragmentResult);
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_action, bundle, NavigationManger.getNavigationAnimation());
-
+    public void goToArticleFragment(int articleUid, boolean isArticleGrantEdit) {
+        switch (boardUid) {
+            case ID_FREE:
+                goToArticle(R.id.navi_free_article_action, articleUid, isArticleGrantEdit);
+                break;
+            case ID_RECRUIT:
+                goToArticle(R.id.navi_recruit_article_action, articleUid, isArticleGrantEdit);
+                break;
+            case ID_ANONYMOUS:
+                goToArticle(R.id.navi_anonymous_article_action, articleUid, isArticleGrantEdit);
+                break;
+        }
     }
 
     public void onFragmentResult(String key, Bundle bundle) {

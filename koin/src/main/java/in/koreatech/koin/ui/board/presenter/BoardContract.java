@@ -20,8 +20,7 @@ public interface BoardContract {
 
         void onBoardListDataReceived(ArticlePageResponse aricleArrayList);
 
-        void goToArticleActivity(int articleUid, boolean isGrantEdit);
-
+        void goToArticleFragment(int articleUid, boolean isGrantEdit);
 
     }
 
