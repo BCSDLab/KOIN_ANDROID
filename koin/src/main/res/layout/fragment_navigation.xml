@@ -77,7 +77,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:tag="@string/navigation_item_user_info">
 
             <ImageView
                 android:layout_width="18dp"
@@ -90,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/my_info"
+                android:tag="@string/navigation_item_user_info"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
 
@@ -128,8 +130,8 @@
                 android:id="@+id/navi_item_store"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:tag="@string/navigation_item_store"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_store">
 
                 <TextView
                     android:id="@+id/navi_item_store_textview"
@@ -138,6 +140,7 @@
                     android:paddingStart="17dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="7dp"
+                    android:tag="@string/navigation_item_store"
                     android:text="@string/navigation_item_store"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -148,7 +151,8 @@
                 android:id="@+id/navi_item_dining"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_dining">
 
                 <TextView
                     android:id="@+id/navi_item_dining_textview"
@@ -157,6 +161,7 @@
                     android:paddingStart="17dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="7dp"
+                    android:tag="@string/navigation_item_dining"
                     android:text="@string/navigation_item_dining"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -173,7 +178,8 @@
                 android:id="@+id/navi_item_bus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_bus">
 
                 <TextView
                     android:id="@+id/navi_item_bus_textview"
@@ -182,24 +188,27 @@
                     android:paddingStart="17dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
+                    android:tag="@string/navigation_item_bus"
                     android:text="@string/navigation_item_bus"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/navi_item_cirlce"
+                android:id="@+id/navi_item_circle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_circle">
 
                 <TextView
-                    android:id="@+id/navi_item_cirlce_textview"
+                    android:id="@+id/navi_item_circle_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="17dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
+                    android:tag="@string/navigation_item_circle"
                     android:text="@string/navigation_item_circle"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -216,7 +225,8 @@
                 android:id="@+id/navi_item_timetable"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_timetable">
 
                 <TextView
                     android:id="@+id/navi_item_timetable_textview"
@@ -226,17 +236,18 @@
                     android:paddingTop="7dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_timetable"
+                    android:tag="@string/navigation_item_timetable"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
-
 
 
             <LinearLayout
                 android:id="@+id/navi_item_land"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_land">
 
                 <TextView
                     android:id="@+id/navi_item_land_textview"
@@ -246,10 +257,10 @@
                     android:paddingTop="7dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_land"
+                    android:tag="@string/navigation_item_land"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -290,7 +301,8 @@
                 android:id="@+id/navi_item_anonymous_board"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_anonymous_board">
 
                 <TextView
                     android:id="@+id/navi_item_anonymous_board_textview"
@@ -300,6 +312,7 @@
                     android:paddingTop="12dp"
                     android:paddingBottom="7dp"
                     android:text="@string/navigation_item_anonymous_board"
+                    android:tag="@string/navigation_item_anonymous_board"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -308,7 +321,8 @@
                 android:id="@+id/navi_item_recruit_board"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_recruit_board">
 
                 <TextView
                     android:id="@+id/navi_item_recruit_board_textview"
@@ -318,6 +332,7 @@
                     android:paddingTop="12dp"
                     android:paddingBottom="7dp"
                     android:text="@string/navigation_item_recruit_board"
+                    android:tag="@string/navigation_item_recruit_board"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -333,7 +348,8 @@
                 android:id="@+id/navi_item_free_board"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_free_board">
 
                 <TextView
                     android:id="@+id/navi_item_free_board_textview"
@@ -342,6 +358,7 @@
                     android:paddingStart="17dp"
                     android:paddingTop="7dp"
                     android:paddingBottom="12dp"
+                    android:tag="@string/navigation_item_free_board"
                     android:text="@string/navigation_item_free_board"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -351,7 +368,8 @@
                 android:id="@+id/navi_item_lostfound"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_lostfound">
 
                 <TextView
                     android:id="@+id/navi_item_lostfound_textview"
@@ -361,6 +379,7 @@
                     android:paddingTop="7dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_lostfound"
+                    android:tag="@string/navigation_item_lostfound"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -405,7 +424,8 @@
                 android:id="@+id/navi_item_usedmarket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_usedmarket">
 
                 <TextView
                     android:id="@+id/navi_item_usedmarket_textview"
@@ -415,6 +435,7 @@
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
                     android:text="@string/navigation_item_usedmarket"
+                    android:tag="@string/navigation_item_usedmarket"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
 
@@ -460,7 +481,8 @@
                 android:id="@+id/navi_item_kakao_talk"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:tag="@string/navigation_item_kakao_talk">
 
                 <TextView
                     android:id="@+id/navi_item_kakao_talk_textview"
@@ -469,6 +491,7 @@
                     android:paddingStart="17dp"
                     android:paddingTop="12dp"
                     android:paddingBottom="7dp"
+                    android:tag="@string/navigation_item_kakao_talk"
                     android:text="@string/navigation_item_kakao_talk"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
@@ -487,7 +510,8 @@
             android:layout_gravity="end"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="15dp"
-            android:background="@drawable/ic_bcsd_logo" />
+            android:background="@drawable/ic_bcsd_logo"
+            android:tag="@string/navigation_item_developer" />
 
 
     </LinearLayout>

@@ -11,8 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import in.koreatech.koin.R;
+import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.util.AuthorizeManager;
 
 public abstract class BaseNavigationFragment extends KoinBaseFragment {
     private final String TAG = "BaseNavigationFragment";
@@ -31,8 +33,10 @@ public abstract class BaseNavigationFragment extends KoinBaseFragment {
     }
 
     protected void callDrawerItem(String tag) {
-        if (getCurrentService().equals(tag))
+        if (tag == null || getCurrentService().equals(tag)) {
+            closeNavigationDrawer();
             return;
+        }
 
         if (isServiceSame(R.string.navigation_item_store, tag)) {
             goToStoreFragment();
@@ -55,13 +59,15 @@ public abstract class BaseNavigationFragment extends KoinBaseFragment {
         } else if (isServiceSame(R.string.navigation_item_login, tag)) {
             onClickNavigationLogin();
         } else if (isServiceSame(R.string.navigation_item_kakao_talk, tag)) {
+            closeNavigationDrawer();
             onClickNavigationkakaoTalk();
         } else if (isServiceSame(R.string.navigation_item_developer, tag)) {
+            closeNavigationDrawer();
             onClickNavigationDeveloper();
         } else if (isServiceSame(R.string.navigation_item_user_info, tag)) {
-            goToUserInfo();
+            checkUserInfoEnough(tag);
         } else if (isServiceSame(R.string.navigation_item_timetable, tag)) {
-            goToTimetableFragment();
+            goToTimeTableFragment();
         } else if (isServiceSame(R.string.navigation_item_land, tag)) {
             goToLandFragment();
         } else {
@@ -73,6 +79,19 @@ public abstract class BaseNavigationFragment extends KoinBaseFragment {
         return getResources().getString(tag).equals(currentService);
     }
 
+    public void checkUserInfoEnough(String service) {
+        if (AuthorizeManager.getAuthorize(getContext()) == AuthorizeConstant.ANONYMOUS) {
+            closeNavigationDrawer();
+            showLoginRequestDialog();
+            return;
+        }
+
+        if (isServiceSame(R.string.navigation_item_usedmarket, service)) {
+            goToMarketFragment();
+        } else if (isServiceSame(R.string.navigation_item_user_info, service)) {
+            goToUserInfoFragment(0);
+        }
+    }
 
     protected abstract Context setContext();
 
@@ -93,13 +112,7 @@ public abstract class BaseNavigationFragment extends KoinBaseFragment {
 
     protected abstract void goToAnonymousBoardFragment();
 
-    ;
-
-    protected abstract void goToTimetableFragment();
-
     protected abstract void goToLandFragment();
-
-    protected abstract void goToAnonymousTimeTableFragment();
 
     protected abstract void goToMarketFragment();
 
@@ -109,8 +122,7 @@ public abstract class BaseNavigationFragment extends KoinBaseFragment {
 
     protected abstract void goToTimeTableFragment();
 
-    protected abstract void goToUserInfo();
-
+    protected abstract void closeNavigationDrawer();
     /*
      * Right Navigation Menu
      * */

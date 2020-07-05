@@ -98,7 +98,7 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
     }
 
     private void init() {
-        boardUid = getArguments().getInt("BOARD_UID", ID_FREE);
+        boardUid = requireArguments().getInt("BOARD_UID", ID_FREE);
         appbarBase.setTitleText((boardUid == ID_FREE) ? "자유게시판" : (boardUid == ID_RECRUIT) ? "취업게시판" : "익명게시판");
         boardSwipeRefreshLayout.setOnRefreshListener(this);
 

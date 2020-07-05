@@ -145,7 +145,7 @@
     <fragment
         android:id="@+id/timetable_anonymous_fragment"
         android:name="in.koreatech.koin.ui.timetable.TimetableAnonymousFragment"
-        android:label="@string/navigation_item_bus"
+        android:label="@string/navigation_item_timetable"
         tools:layout="@layout/timetable_fragment_main">
 
         <action

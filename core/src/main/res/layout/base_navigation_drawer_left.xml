@@ -66,6 +66,7 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center|start"
                 android:orientation="horizontal"
+                android:tag="@string/navigation_item_user_info"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_naviagtion_drawer_nickname_textview">
@@ -82,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="7dp"
                     android:text="내 정보"
+                    android:tag="@string/navigation_item_user_info"
                     android:textColor="#252525"
                     android:textSize="13sp" />
             </LinearLayout>
