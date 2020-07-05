@@ -84,7 +84,7 @@ public class BusViewPagerFragment extends KoinBaseFragment {
     }
 
     private void init() {
-        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getActivity().getSupportFragmentManager(), 3);
+        this.mainViewPagerAdapter = new BusMainViewPagerAdapter(getChildFragmentManager(), 3);
         this.viewPager.setOffscreenPageLimit(3);
         this.viewPager.setAdapter(this.mainViewPagerAdapter);
         this.viewPager.addOnPageChangeListener(mPageChangeListener);

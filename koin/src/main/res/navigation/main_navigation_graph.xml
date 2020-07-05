@@ -6,10 +6,60 @@
     app:startDestination="@id/main_fragment">
 
 
+    <action
+        android:id="@+id/navi_navigation_drawer_action"
+        app:destination="@+id/navigation_drawer_fragment" />
+
+
+    <fragment
+        android:id="@+id/navigation_drawer_fragment"
+        android:name="in.koreatech.koin.ui.navigation.KoinNavigationFragment"
+        android:label="@string/navigation_drawer"
+        tools:layout="@layout/fragment_navigation">
+
+        <action
+            android:id="@+id/navi_item_circle_action"
+            app:destination="@+id/circle_main_fragment" />
+
+        <action
+            android:id="@+id/navi_item_bus_action"
+            app:destination="@+id/bus_view_pager_fragment" />
+
+        <action
+            android:id="@+id/navi_item_timetable_action"
+            app:destination="@+id/timetable_fragment" />
+
+        <action
+            android:id="@+id/navi_item_timetable_anonymous_action"
+            app:destination="@+id/timetable_anonymous_fragment" />
+
+        <action
+            android:id="@+id/navi_item_store_action"
+            app:destination="@+id/store_fragment" />
+
+        <action
+            android:id="@+id/navi_item_dining_action"
+            app:destination="@+id/dining_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_board_action"
+            app:destination="@+id/recruit_board_fragment" />
+
+        <action
+            android:id="@+id/navi_free_board_action"
+            app:destination="@+id/free_board_fragment" />
+
+        <action
+            android:id="@+id/navi_anonymous_board_action"
+            app:destination="@+id/anonymous_board_fragment" />
+
+    </fragment>
+
+
     <fragment
         android:id="@+id/main_fragment"
         android:name="in.koreatech.koin.ui.main.MainFragment"
-        android:label="Blank"
+        android:label="@string/navigation_home"
         tools:layout="@layout/fragment_main">
 
         <action
@@ -37,8 +87,16 @@
             app:destination="@+id/dining_fragment" />
 
         <action
-            android:id="@+id/navi_board_action"
-            app:destination="@+id/board_fragment" />
+            android:id="@+id/navi_recruit_board_action"
+            app:destination="@+id/recruit_board_fragment" />
+
+        <action
+            android:id="@+id/navi_free_board_action"
+            app:destination="@+id/free_board_fragment" />
+
+        <action
+            android:id="@+id/navi_anonymous_board_action"
+            app:destination="@+id/anonymous_board_fragment" />
 
     </fragment>
 
@@ -46,7 +104,7 @@
     <fragment
         android:id="@+id/circle_main_fragment"
         android:name="in.koreatech.koin.ui.circle.CircleFragment"
-        android:label="circle"
+        android:label="@string/navigation_item_circle"
         tools:layout="@layout/circle_fragment_main">
 
         <action
@@ -59,7 +117,7 @@
     <fragment
         android:id="@+id/circle_detail_fragment"
         android:name="in.koreatech.koin.ui.circle.CircleDetailFragment"
-        android:label="circle"
+        android:label="@string/navigation_item_circle"
         tools:layout="@layout/circle_fragment_detail">
 
     </fragment>
@@ -67,7 +125,7 @@
     <fragment
         android:id="@+id/bus_view_pager_fragment"
         android:name="in.koreatech.koin.ui.bus.BusViewPagerFragment"
-        android:label="bus"
+        android:label="@string/navigation_item_bus"
         app:popUpTo="@id/main_fragment"
         app:popUpToInclusive="true"
         tools:layout="@layout/bus_fragment_view_pager">
@@ -78,7 +136,7 @@
     <fragment
         android:id="@+id/timetable_fragment"
         android:name="in.koreatech.koin.ui.timetable.TimetableFragment"
-        android:label="timetable"
+        android:label="@string/navigation_item_timetable"
         tools:layout="@layout/timetable_fragment_main">
 
     </fragment>
@@ -87,7 +145,7 @@
     <fragment
         android:id="@+id/timetable_anonymous_fragment"
         android:name="in.koreatech.koin.ui.timetable.TimetableAnonymousFragment"
-        android:label="bus"
+        android:label="@string/navigation_item_bus"
         tools:layout="@layout/timetable_fragment_main">
 
         <action
@@ -99,7 +157,7 @@
     <fragment
         android:id="@+id/store_fragment"
         android:name="in.koreatech.koin.ui.store.StoreFragment"
-        android:label="store"
+        android:label="@string/navigation_item_store"
         tools:layout="@layout/store_fragment_main">
 
         <action
@@ -111,7 +169,7 @@
     <fragment
         android:id="@+id/store_detail_fragment"
         android:name="in.koreatech.koin.ui.store.StoreDetailFragment"
-        android:label="store_detail"
+        android:label="@string/navigation_item_store"
         tools:layout="@layout/store_fragment_detail">
 
     </fragment>
@@ -119,79 +177,213 @@
     <fragment
         android:id="@+id/dining_fragment"
         android:name="in.koreatech.koin.ui.dining.DiningFragment"
-        android:label="store_detail"
+        android:label="@string/navigation_item_dining"
         tools:layout="@layout/dining_fragment_main">
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/board_fragment"
+        android:id="@+id/anonymous_board_fragment"
         android:name="in.koreatech.koin.ui.board.BoardFragment"
-        android:label="board"
+        android:label="@string/navigation_item_anonymous_board"
         tools:layout="@layout/fragment_board">
         <action
-            android:id="@+id/navi_article_action"
-            app:destination="@+id/article_fragment" />
+            android:id="@+id/navi_anonymous_article_action"
+            app:destination="@+id/anonymous_article_fragment" />
 
         <action
-            android:id="@+id/navi_article_edit_action"
-            app:destination="@+id/article_edit_fragment" />
+            android:id="@+id/navi_anonymous_article_edit_action"
+            app:destination="@+id/anonymous_article_edit_fragment" />
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/article_fragment"
+        android:id="@+id/anonymous_article_fragment"
         android:name="in.koreatech.koin.ui.board.ArticleFragment"
-        android:label="article"
+        android:label="@string/navigation_item_anonymous_board"
         tools:layout="@layout/fragment_article">
 
         <action
-            android:id="@+id/navi_article_action"
-            app:destination="@+id/article_fragment" />
+            android:id="@+id/navi_anonymous_article_action"
+            app:destination="@+id/anonymous_article_fragment" />
 
         <action
-            android:id="@+id/navi_article_edit_action"
-            app:destination="@+id/article_edit_fragment" />
+            android:id="@+id/navi_anonymous_article_edit_action"
+            app:destination="@+id/anonymous_article_edit_fragment" />
 
         <action
-            android:id="@+id/navi_article_comment_action"
-            app:destination="@+id/article_comment_fragment" />
+            android:id="@+id/navi_anonymous_article_comment_action"
+            app:destination="@+id/anonymous_article_comment_fragment" />
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/article_edit_fragment"
+        android:id="@+id/anonymous_article_edit_fragment"
         android:name="in.koreatech.koin.ui.board.ArticleEditFragment"
-        android:label="article_edit"
+        android:label="@string/navigation_item_anonymous_board"
         tools:layout="@layout/fragment_article_edit">
 
 
         <action
-            android:id="@+id/navi_article_action"
-            app:destination="@+id/article_fragment"
-            />
+            android:id="@+id/navi_anonymous_article_action"
+            app:destination="@+id/anonymous_article_fragment" />
 
     </fragment>
 
 
     <fragment
-        android:id="@+id/article_comment_fragment"
+        android:id="@+id/anonymous_article_comment_fragment"
         android:name="in.koreatech.koin.ui.board.ArticleCommentFragment"
-        android:label="article_comment"
+        android:label="@string/navigation_item_anonymous_board"
         tools:layout="@layout/fragment_article_comment">
 
         <action
-            android:id="@+id/navi_article_action"
-            app:destination="@+id/article_fragment" />
+            android:id="@+id/navi_anonymous_article_action"
+            app:destination="@+id/anonymous_article_fragment" />
 
         <action
-            android:id="@+id/navi_article_edit_action"
-            app:destination="@+id/article_edit_fragment" />
+            android:id="@+id/navi_anonymous_article_edit_action"
+            app:destination="@+id/anonymous_article_edit_fragment" />
 
     </fragment>
 
+
+    <fragment
+        android:id="@+id/free_board_fragment"
+        android:name="in.koreatech.koin.ui.board.BoardFragment"
+        android:label="@string/navigation_item_free_board"
+        tools:layout="@layout/fragment_board">
+        <action
+            android:id="@+id/navi_free_article_action"
+            app:destination="@+id/free_article_fragment" />
+
+        <action
+            android:id="@+id/navi_free_article_edit_action"
+            app:destination="@+id/free_article_edit_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/free_article_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleFragment"
+        android:label="@string/navigation_item_free_board"
+        tools:layout="@layout/fragment_article">
+
+        <action
+            android:id="@+id/navi_free_article_action"
+            app:destination="@+id/free_article_fragment" />
+
+        <action
+            android:id="@+id/navi_free_article_edit_action"
+            app:destination="@+id/free_article_edit_fragment" />
+
+        <action
+            android:id="@+id/navi_free_article_comment_action"
+            app:destination="@+id/free_article_comment_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/free_article_edit_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleEditFragment"
+        android:label="@string/navigation_item_free_board"
+        tools:layout="@layout/fragment_article_edit">
+
+
+        <action
+            android:id="@+id/navi_free_article_action"
+            app:destination="@+id/free_article_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/free_article_comment_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleCommentFragment"
+        android:label="@string/navigation_item_free_board"
+        tools:layout="@layout/fragment_article_comment">
+
+        <action
+            android:id="@+id/avi_free_article_action"
+            app:destination="@+id/free_article_fragment" />
+
+        <action
+            android:id="@+id/navi_free_article_edit_action"
+            app:destination="@+id/free_article_edit_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recruit_board_fragment"
+        android:name="in.koreatech.koin.ui.board.BoardFragment"
+        android:label="@string/navigation_item_recruit_board"
+        tools:layout="@layout/fragment_board">
+        <action
+            android:id="@+id/navi_recruit_article_action"
+            app:destination="@+id/recruit_article_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_article_edit_action"
+            app:destination="@+id/recruit_article_edit_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recruit_article_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleFragment"
+        android:label="@string/navigation_item_recruit_board"
+        tools:layout="@layout/fragment_article">
+
+        <action
+            android:id="@+id/navi_recruit_article_action"
+            app:destination="@+id/recruit_article_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_article_edit_action"
+            app:destination="@+id/recruit_article_edit_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_article_comment_action"
+            app:destination="@+id/recruit_article_comment_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recruit_article_edit_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleEditFragment"
+        android:label="@string/navigation_item_recruit_board"
+        tools:layout="@layout/fragment_article_edit">
+
+
+        <action
+            android:id="@+id/navi_recruit_article_action"
+            app:destination="@+id/recruit_article_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recruit_article_comment_fragment"
+        android:name="in.koreatech.koin.ui.board.ArticleCommentFragment"
+        android:label="@string/navigation_item_recruit_board"
+        tools:layout="@layout/fragment_article_comment">
+
+        <action
+            android:id="@+id/avi_recruit_article_action"
+            app:destination="@+id/recruit_article_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_article_edit_action"
+            app:destination="@+id/recruit_article_edit_fragment" />
+
+    </fragment>
 
 </navigation>

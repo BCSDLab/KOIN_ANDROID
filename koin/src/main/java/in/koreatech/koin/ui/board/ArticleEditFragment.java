@@ -446,16 +446,20 @@ public class ArticleEditFragment extends KoinBaseFragment implements ArticleEdit
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-        if (!isEdit) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("BOARD_UID", boardUid);
-            bundle.putInt("ARTICLE_UID", article.getArticleUid());
-            bundle.putBoolean("ARTICLE_GRANT_EDIT", true);
-            NavigationManger.getNavigationController(getActivity()).popBackStack();
-            NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_action, bundle, NavigationManger.getNavigationAnimation());
-        } else {
-            NavigationManger.getNavigationController(getActivity()).popBackStack();
+
+        switch (article.getBoardUid()) {
+            case ID_FREE:
+                goToArticle(R.id.navi_free_article_action, article);
+                break;
+            case ID_RECRUIT:
+                goToArticle(R.id.navi_recruit_article_action, article);
+                break;
+            case ID_ANONYMOUS:
+                goToArticle(R.id.navi_anonymous_article_action, article);
+                break;
         }
+
+
     }
 
     @Override
@@ -467,6 +471,19 @@ public class ArticleEditFragment extends KoinBaseFragment implements ArticleEdit
             articleEditor.onImageUploadComplete(url, uploadImageId);
         } catch (Exception e) {
             //ToastUtil.getInstance().makeShort( R.string.fail_upload);
+        }
+    }
+
+    private void goToArticle(int id, Article article) {
+        if (!isEdit) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("BOARD_UID", boardUid);
+            bundle.putInt("ARTICLE_UID", article.getArticleUid());
+            bundle.putBoolean("ARTICLE_GRANT_EDIT", true);
+            NavigationManger.getNavigationController(getActivity()).popBackStack();
+            NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
+        } else {
+            NavigationManger.getNavigationController(getActivity()).popBackStack();
         }
     }
 

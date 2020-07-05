@@ -1,7 +1,6 @@
 package in.koreatech.koin.ui.board;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -104,8 +103,8 @@ public class ArticleCommentFragment extends KoinBaseFragment implements ArticleC
         View view = inflater.inflate(R.layout.fragment_article_comment, container, false);
         context = getContext();
         ButterKnife.bind(this, view);
-        boardUid = getArguments().getInt("BOARD_UID", 0 );
-        articleUid = getArguments().getInt("ARTICLE_UID",0);
+        boardUid = getArguments().getInt("BOARD_UID", 0);
+        articleUid = getArguments().getInt("ARTICLE_UID", 0);
         init();
         return view;
     }
@@ -203,11 +202,25 @@ public class ArticleCommentFragment extends KoinBaseFragment implements ArticleC
                 return;
             }
         }
-       // startActivityForResult(intent, REQ_CODE_ARTICLE_EDIT);
+
+        switch (this.article.getBoardUid()) {
+            case ID_FREE:
+                goToArticleEdit(R.id.navi_free_article_edit_action);
+                break;
+            case ID_RECRUIT:
+                goToArticleEdit(R.id.navi_recruit_article_edit_action);
+                break;
+            case ID_ANONYMOUS:
+                goToArticleEdit(R.id.navi_anonymous_article_edit_action);
+                break;
+        }
+
+    }
+
+    private void goToArticleEdit(int id) {
         Bundle bundle = new Bundle();
         bundle.putInt("BOARD_UID", boardUid);
-        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_article_edit_action, bundle ,NavigationManger.getNavigationAnimation());
-
+        NavigationManger.getNavigationController(getActivity()).navigate(id, bundle, NavigationManger.getNavigationAnimation());
     }
 
     public AuthorizeConstant getAuthorize() {
@@ -479,12 +492,12 @@ public class ArticleCommentFragment extends KoinBaseFragment implements ArticleC
 
     @Override
     public void showLoading() {
-        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        ((MainActivity)getActivity()).hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
