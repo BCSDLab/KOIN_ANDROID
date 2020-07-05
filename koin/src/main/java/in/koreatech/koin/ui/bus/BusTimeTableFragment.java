@@ -117,12 +117,6 @@ public class BusTimeTableFragment extends KoinBaseFragment implements BusTimeTab
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         this.unbinder.unbind();

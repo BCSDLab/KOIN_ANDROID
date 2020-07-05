@@ -119,6 +119,7 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
         super.onStart();
         setTimer(REFRESH, REFRESH_TIME);
         refreshAllBusTime();
+
     }
 
     @Override
@@ -131,14 +132,6 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     @Override
     public void onStop() {
         super.onStop();
-    }
-
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        this.departureState = 0;
-        this.arrivalState = 1;
     }
 
     @Override
@@ -174,6 +167,8 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
         shuttleSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
         citybusTypeTextview.setVisibility(View.INVISIBLE);
         setPresenter(new BusMainPresenter(this, new CityBusRestInteractor(), new TermRestInteractor()));
+        this.departureState = 0;
+        this.arrivalState = 1;
     }
 
 

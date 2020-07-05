@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -20,13 +21,14 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 
 public class MainFragment extends KoinBaseFragment {
-    public static final int TIMETABLE_REQUEST_CODE = 1;
+    private long pressTime = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
+        init();
         return view;
     }
 
@@ -71,5 +73,19 @@ public class MainFragment extends KoinBaseFragment {
                 ToastUtil.getInstance().makeShort("서비스예정입니다");
                 break;
         }
+    }
+
+    private void init() {
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (System.currentTimeMillis() > pressTime + 2000) {
+                    pressTime = System.currentTimeMillis();
+                    ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
+                } else {
+                    getActivity().finishAffinity();
+                }
+            }
+        });
     }
 }

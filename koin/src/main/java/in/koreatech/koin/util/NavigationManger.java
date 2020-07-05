@@ -1,7 +1,6 @@
 package in.koreatech.koin.util;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -21,6 +20,8 @@ public class NavigationManger {
     }
 
     public static void goToHome(AppCompatActivity activity) {
+        if (getCurrentServiceLabel(activity).equals(activity.getResources().getString(R.string.navigation_home)))
+            return;
         Fragment navHostFragment = activity.getSupportFragmentManager().findFragmentById(FRAGMENT_CONTAINER_ID).getChildFragmentManager().getFragments().get(0);
         if (navHostFragment instanceof KoinBaseFragment)
             ((KoinBaseFragment) navHostFragment).addFinishingBackground();
@@ -38,11 +39,9 @@ public class NavigationManger {
 
     public static NavOptions getNavigationDrawerServiceSelectAnimation() {
         return new NavOptions.Builder()
-                .setEnterAnim(R.anim.trans_left_in)
-                .setExitAnim(R.anim.trans_left_out)
                 .setPopEnterAnim(R.anim.trans_right_in)
                 .setPopExitAnim(R.anim.trans_right_out)
-                .setPopUpTo(R.id.main_fragment, true)
+                .setPopUpTo(R.id.main_fragment, false)
                 .build();
     }
 
@@ -72,5 +71,9 @@ public class NavigationManger {
 
     public static String getCurrentServiceLabel(Activity activity) {
         return NavigationManger.getNavigationController(activity).getCurrentDestination().getLabel().toString();
+    }
+
+    public static String getCurrentServiceLabel(NavController navController) {
+        return navController.getCurrentDestination().getLabel().toString();
     }
 }
