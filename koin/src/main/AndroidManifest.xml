@@ -143,37 +143,37 @@
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedActivity"
+            android:name=".ui.usedmarket.MarketUsedFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedSellDetailActivity"
+            android:name=".ui.usedmarket.MarketUsedSellDetailFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedBuyDetailActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyDetailFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedBuyEditActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyEditFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedSellEditActivity"
+            android:name=".ui.usedmarket.MarketUsedSellEditFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedBuyCreateActivity"
+            android:name=".ui.usedmarket.MarketUsedBuyCreateFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedSellCreateActivity"
+            android:name=".ui.usedmarket.MarketUsedSellCreateFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
@@ -208,7 +208,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.usedmarket.MarketUsedDetailCommentActivity"
+            android:name=".ui.usedmarket.MarketUsedDetailCommentFragment"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />

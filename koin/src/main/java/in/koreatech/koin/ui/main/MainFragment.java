@@ -65,6 +65,7 @@ public class MainFragment extends KoinBaseFragment {
                 NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_recruit_board_action, bundle, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_used_market_constraint_layout:
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_market_used_action, null, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.activity_main_circle_constraint_layout:
                 NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_item_circle_action, null, NavigationManger.getNavigationAnimation());

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
@@ -21,23 +24,25 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedCommentContract;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
-import in.koreatech.koin.ui.userinfo.UserInfoEditedFragment;
-import in.koreatech.koin.ui.userinfo.UserInfoFragment;
-import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedDetailCommentAdapter;
+import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedCommentContract;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailCommentPresenter;
+import in.koreatech.koin.ui.userinfo.UserInfoFragment;
+import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.NavigationManger;
+import in.koreatech.koin.util.SnackbarUtil;
 
 
-public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivity implements MarketUsedCommentContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
+public class MarketUsedDetailCommentFragment extends KoinBaseFragment implements MarketUsedCommentContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
 
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appBarBase;
@@ -90,26 +95,27 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
     private Context context;
     private Comment SelectedComment;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.market_used_comment_activity);
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.market_used_comment_fragment, container, false);
+        ButterKnife.bind(this, view);
         init();
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         marketUsedCommentNicknameEdittext.setFocusable(false);
         marketUsedCommentNicknameEdittext.setClickable(false);
         if (item.getId() != -1)
             marketUsedDetatailCommentPresenter.readMarketDetail(item.getId());
-        if (getUser() != null && getUser().getUserNickName() != null) {
-            marketUsedCommentNicknameEdittext.setText(getUser().getUserNickName());
+        if (AuthorizeManager.getNickName(getContext()) != null) {
+            marketUsedCommentNicknameEdittext.setText(AuthorizeManager.getNickName(getContext()));
             marketUsedCommentContentEdittext.setFocusableInTouchMode(true);
             isEditPossible = true;
-            marketUsedCommentNicknameEdittext.setText(getUser().getUserNickName());
+            marketUsedCommentNicknameEdittext.setText(AuthorizeManager.getNickName(getContext()));
         } else {
             marketUsedCommentContentEdittext.setClickable(false);
             marketUsedCommentContentEdittext.setFocusable(false);
@@ -119,18 +125,18 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     public void init() {
         item = new Item();
-        context = this;
+        context = getContext();
         commentArrayList = new ArrayList<>();
         aritcleCommentPasswordLinearlayout.setVisibility(View.GONE);
-        item.setId(getIntent().getIntExtra("ITEM_ID", -1));
-        marketID = getIntent().getIntExtra("MARKET_ID", 0);
+        item.setId(getArguments().getInt("ITEM_ID", -1));
+        marketID = getArguments().getInt("MARKET_ID", 0);
         if (marketID == 0)
             appBarBase.setTitleText("팝니다");
         else
             appBarBase.setTitleText("삽니다");
         marketUsedDetatailCommentPresenter = new MarketUsedDetailCommentPresenter(this, new MarketUsedRestInteractor());
-        this.marketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(this, commentArrayList);
-        layoutManager = new LinearLayoutManager(this);
+        this.marketDetailCommentRecyclerAdapter = new MarketUsedDetailCommentAdapter(getContext(), commentArrayList);
+        layoutManager = new LinearLayoutManager(getActivity());
         marketUsedCommentContentRecyclerview.setHasFixedSize(true);
         marketUsedCommentContentRecyclerview.setLayoutManager(layoutManager); //layout 설정
         marketUsedCommentContentRecyclerview.setAdapter(this.marketDetailCommentRecyclerAdapter); //adapter 설정
@@ -157,43 +163,41 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
         if (id == AppBarBase.getLeftButtonId())
-            finish();
+            onBackPressed();
         else if (id == AppBarBase.getRightButtonId())
-            createActivityMove();
+            createMarketItemFragmentMove(marketID);
 
     }
 
-    public void createActivityMove() {
-        Intent intent;
-        if (marketID == 0)
-            intent = new Intent(this, MarketUsedSellCreateActivity.class);
-        else
-            intent = new Intent(this, MarketUsedBuyCreateActivity.class);
-
-        if (getAuthority() == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
+    public void createMarketItemFragmentMove(int id) {
+        if (AuthorizeManager.getAuthorize(getContext()) == AuthorizeConstant.ANONYMOUS) {
+            AuthorizeManager.showLoginRequestDialog(getActivity());
             return;
         }
-        if (getUser().getUserNickName() != null)
-            startActivity(intent);
-        else {
-            ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
-            intent = new Intent(this, UserInfoEditedFragment.class);
-            startActivity(intent);
+        if (AuthorizeManager.getNickName(getContext()) != null) {
+            if (id == 0) {
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_market_used_sell_create_action);
+            } else if (id == 1) {
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_market_used_buy_create_action);
+            }
+        } else {
+            AuthorizeManager.showNickNameRequestDialog(getActivity());
         }
+
     }
+
 
     @Override
     public void showMarketDataReceivedFail() {
@@ -257,32 +261,18 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
         this.SelectedComment = comment;
     }
 
-    public void showNickNameRequestDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("닉네임이 필요합니다.")
-                .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("확인", (dialog, whichButton) -> {
-                    startActivity(new Intent(this, UserInfoFragment.class));
-                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
-                })
-                .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
-        AlertDialog dialog = builder.create();    // 알림창 객체 생성
-        dialog.show();    // 알림창 띄우기
-    }
-
     @OnClick({R.id.market_used_comment_nickname_edittext, R.id.market_used_comment_nickname_linearlayout,
             R.id.market_used_comment_content_edittext, R.id.market_used_comment_content_linearlayout,
             R.id.market_used_comment_cancel_button, R.id.market_used_comment_register_button})
     public void onViewClicked(View view) {
-        String nickname = (getUser() != null) ? getUser().getUserNickName() : null;
-        AuthorizeConstant authorizeConstant = getAuthority();
+        String nickname = AuthorizeManager.getNickName(getContext());
+        AuthorizeConstant authorizeConstant = AuthorizeManager.getAuthorize(getContext());
         if (!isEditPossible) {
             if (authorizeConstant == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
+                AuthorizeManager.showLoginRequestDialog(getActivity());
                 return;
             } else if (nickname == null) {
-                showNickNameRequestDialog();
+                AuthorizeManager.showNickNameRequestDialog(getActivity());
                 return;
             }
         }
@@ -323,10 +313,5 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
             marketUsedDetatailCommentPresenter.editComment(this.SelectedComment, item, this.SelectedComment.getContent());
         }
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }

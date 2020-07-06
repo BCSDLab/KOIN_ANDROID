@@ -61,6 +61,10 @@
             android:id="@+id/navi_anonymous_board_action"
             app:destination="@+id/anonymous_board_fragment" />
 
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
+
     </fragment>
 
 
@@ -105,6 +109,10 @@
         <action
             android:id="@+id/navi_anonymous_board_action"
             app:destination="@+id/anonymous_board_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
 
     </fragment>
 
@@ -413,6 +421,160 @@
         android:name="in.koreatech.koin.ui.userinfo.UserInfoEditedFragment"
         android:label="@string/navigation_item_user_info"
         tools:layout="@layout/activity_user_info_edited">
+
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_fragment_main">
+
+        <action
+            android:id="@+id/navi_market_used_buy_detail_action"
+            app:destination="@+id/market_used_buy_detail_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_sell_detail_action"
+            app:destination="@+id/market_used_sell_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_buy_create_action"
+            app:destination="@+id/market_used_buy_create_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_sell_create_action"
+            app:destination="@+id/market_used_sell_create_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_buy_detail_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_buy_fragment_detail">
+
+        <action
+            android:id="@+id/navi_market_used_buy_create_action"
+            app:destination="@+id/market_used_buy_create_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_buy_edit_action"
+            app:destination="@+id/market_used_buy_edit_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_comment_action"
+            app:destination="@+id/market_used_comment_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_sell_detail_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_sell_fragment_detail">
+
+        <action
+            android:id="@+id/navi_market_used_sell_create_action"
+            app:destination="@+id/market_used_sell_create_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_sell_edit_action"
+            app:destination="@+id/market_used_sell_edit_fragment" />
+
+
+        <action
+            android:id="@+id/navi_market_used_comment_action"
+            app:destination="@+id/market_used_comment_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_buy_create_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyCreateFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_buy_fragment_detail">
+
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_buy_detail_action"
+            app:destination="@+id/market_used_buy_detail_fragment"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_sell_create_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellCreateFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_sell_fragment_detail">
+
+        <action
+            android:id="@+id/navi_market_used_sell_detail_action"
+            app:destination="@+id/market_used_sell_detail_fragment"/>
+
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_buy_edit_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedBuyEditFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_buy_edit_fragment">
+
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_buy_detail_action"
+            app:destination="@+id/market_used_buy_detail_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_sell_edit_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedSellEditFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_sell_edit_fragment">
+
+        <action
+            android:id="@+id/navi_market_used_sell_detail_action"
+            app:destination="@+id/market_used_sell_detail_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_action"
+            app:destination="@+id/market_used_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/market_used_comment_fragment"
+        android:name="in.koreatech.koin.ui.usedmarket.MarketUsedDetailCommentFragment"
+        android:label="@string/navigation_item_usedmarket"
+        tools:layout="@layout/market_used_comment_fragment">
+
+        <action
+            android:id="@+id/navi_market_used_buy_create_action"
+            app:destination="@+id/market_used_buy_create_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_sell_create_action"
+            app:destination="@+id/market_used_sell_create_fragment" />
 
 
     </fragment>

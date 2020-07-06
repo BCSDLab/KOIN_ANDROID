@@ -44,6 +44,16 @@ public class AuthorizeManager {
             return getUser(context).getUserNickName();
     }
 
+
+    public static String getPhoneNumber(Context context){
+        if(getUser(context) == null)
+            return null;
+        else if(getUser(context).getPhoneNumber() == null)
+            return null;
+        else
+            return getUser(context).getPhoneNumber();
+    }
+
     public static void showLoginRequestDialog(Activity activity) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("회원 전용 서비스")

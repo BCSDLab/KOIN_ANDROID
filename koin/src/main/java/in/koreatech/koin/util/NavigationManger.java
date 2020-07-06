@@ -50,6 +50,15 @@ public class NavigationManger {
                 .build();
     }
 
+    public static NavOptions.Builder getNavigationOptionAnimation() {
+        return new NavOptions.Builder()
+                .setEnterAnim(R.anim.trans_left_in)
+                .setExitAnim(R.anim.trans_left_out)
+                .setPopEnterAnim(R.anim.trans_right_in)
+                .setPopExitAnim(R.anim.trans_right_out);
+    }
+
+
     public static NavOptions getNavigationDrawerServiceSelectAnimation() {
         return new NavOptions.Builder()
                 .setPopEnterAnim(R.anim.trans_right_in)
