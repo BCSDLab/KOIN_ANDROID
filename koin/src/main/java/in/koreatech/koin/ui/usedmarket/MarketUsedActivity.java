@@ -21,10 +21,10 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
+import in.koreatech.koin.ui.userinfo.UserInfoEditedFragment;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedMainViewPagerAdapter;
-import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
 public class MarketUsedActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "MarketUsedActivity";
@@ -111,7 +111,7 @@ public class MarketUsedActivity extends KoinNavigationDrawerActivity {
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
-            intent = new Intent(this, UserInfoEditedActivity.class);
+            intent = new Intent(this, UserInfoEditedFragment.class);
             startActivity(intent);
         }
 

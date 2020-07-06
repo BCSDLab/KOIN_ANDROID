@@ -29,12 +29,12 @@ import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedCommentContract;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.Item;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
+import in.koreatech.koin.ui.userinfo.UserInfoEditedFragment;
+import in.koreatech.koin.ui.userinfo.UserInfoFragment;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedDetailCommentAdapter;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailCommentPresenter;
-import in.koreatech.koin.ui.userinfo.UserInfoActivity;
-import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
 
 
 public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivity implements MarketUsedCommentContract.View, MarketUsedDetailCommentAdapter.OnCommentRemoveButtonClickListener {
@@ -190,7 +190,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeShort("닉네임이 필요합니다.");
-            intent = new Intent(this, UserInfoEditedActivity.class);
+            intent = new Intent(this, UserInfoEditedFragment.class);
             startActivity(intent);
         }
     }
@@ -263,7 +263,7 @@ public class MarketUsedDetailCommentActivity extends KoinNavigationDrawerActivit
                 .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    startActivity(new Intent(this, UserInfoActivity.class));
+                    startActivity(new Intent(this, UserInfoFragment.class));
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());

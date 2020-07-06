@@ -156,7 +156,6 @@ public class KoinNavigationFragment extends BaseNavigationFragment implements Vi
 
     @Override
     protected void goToLostFoundFragment() {
-
     }
 
     @Override
@@ -166,7 +165,9 @@ public class KoinNavigationFragment extends BaseNavigationFragment implements Vi
 
     @Override
     protected void goToUserInfoFragment(int service) {
-
+        Bundle bundle = new Bundle();
+        bundle.putInt("CONDITION", service);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_userinfo_action, bundle, NavigationManger.getNavigationDrawerServiceSelectAnimation());
     }
 
     @Override
@@ -202,8 +203,6 @@ public class KoinNavigationFragment extends BaseNavigationFragment implements Vi
         startActivity(new Intent(getContext(), LoginActivity.class));
         ToastUtil.getInstance().makeShort("로그아웃 되었습니다.");
         getActivity().overridePendingTransition(R.anim.fade, R.anim.hold);
-
-
     }
 
     @Override

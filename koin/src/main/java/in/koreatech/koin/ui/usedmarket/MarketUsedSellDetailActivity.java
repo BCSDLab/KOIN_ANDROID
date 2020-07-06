@@ -20,7 +20,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -46,8 +45,8 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.usedmarket.adapter.MarketUsedDetailCommentAdapter;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailContract;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedDetailPresenter;
-import in.koreatech.koin.ui.userinfo.UserInfoActivity;
-import in.koreatech.koin.ui.userinfo.UserInfoEditedActivity;
+import in.koreatech.koin.ui.userinfo.UserInfoEditedFragment;
+import in.koreatech.koin.ui.userinfo.UserInfoFragment;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 
@@ -245,7 +244,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
             startActivity(intent);
         else {
             ToastUtil.getInstance().makeLong("닉네임이 필요합니다.");
-            intent = new Intent(this, UserInfoEditedActivity.class);
+            intent = new Intent(this, UserInfoEditedFragment.class);
             startActivity(intent);
         }
     }
@@ -472,7 +471,7 @@ public class MarketUsedSellDetailActivity extends KoinNavigationDrawerActivity i
                 .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    startActivity(new Intent(this, UserInfoActivity.class));
+                    startActivity(new Intent(this, UserInfoFragment.class));
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());

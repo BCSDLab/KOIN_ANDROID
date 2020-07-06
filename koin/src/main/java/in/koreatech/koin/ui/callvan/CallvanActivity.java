@@ -148,7 +148,7 @@ public class CallvanActivity extends KoinNavigationDrawerActivity {
 //            startActivity(intent);
 //        else {
 //            ToastUtil.makeLong(this, "닉네임이 필요합니다.");
-//            intent = new Intent(this, UserInfoEditedActivity.class);
+//            intent = new Intent(this, UserInfoEditedFragment.class);
 //            startActivity(intent);
 //        }
 

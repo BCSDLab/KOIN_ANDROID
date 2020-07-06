@@ -10,7 +10,7 @@ import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.login.LoginActivity;
-import in.koreatech.koin.ui.userinfo.UserInfoActivity;
+import in.koreatech.koin.ui.userinfo.UserInfoFragment;
 
 public class AuthorizeManager {
     public static AuthorizeConstant getAuthorize(Context context) {
@@ -33,6 +33,15 @@ public class AuthorizeManager {
             user = UserInfoSharedPreferencesHelper.getInstance().loadUser();
         }
         return user;
+    }
+
+    public static String getNickName(Context context){
+        if(getUser(context) == null)
+            return null;
+        else if(getUser(context).getUserNickName() == null)
+            return null;
+        else
+            return getUser(context).getUserNickName();
     }
 
     public static void showLoginRequestDialog(Activity activity) {
@@ -60,8 +69,7 @@ public class AuthorizeManager {
                 .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    activity.startActivity(new Intent(activity, UserInfoActivity.class));
-                    activity.overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
+                   NavigationManger.goToUserInfo(activity);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());
         AlertDialog dialog = builder.create();    // 알림창 객체 생성
