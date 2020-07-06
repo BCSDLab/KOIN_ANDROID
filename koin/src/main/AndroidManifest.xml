@@ -223,12 +223,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.land.LandActivity"
+            android:name=".ui.land.LandFragment"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.land.LandDetailActivity"
+            android:name=".ui.land.LandDetailFragment"
             android:label="코인 커뮤니티"
             android:screenOrientation="portrait"
             android:theme="@style/KAPTheme.NoActionBar" />

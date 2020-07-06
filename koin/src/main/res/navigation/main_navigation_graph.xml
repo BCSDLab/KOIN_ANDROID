@@ -65,6 +65,10 @@
             android:id="@+id/navi_market_used_action"
             app:destination="@+id/market_used_fragment" />
 
+        <action
+            android:id="@+id/navi_land_action"
+            app:destination="@+id/land_fragment" />
+
     </fragment>
 
 
@@ -506,7 +510,7 @@
 
         <action
             android:id="@+id/navi_market_used_buy_detail_action"
-            app:destination="@+id/market_used_buy_detail_fragment"/>
+            app:destination="@+id/market_used_buy_detail_fragment" />
 
     </fragment>
 
@@ -519,7 +523,7 @@
 
         <action
             android:id="@+id/navi_market_used_sell_detail_action"
-            app:destination="@+id/market_used_sell_detail_fragment"/>
+            app:destination="@+id/market_used_sell_detail_fragment" />
 
         <action
             android:id="@+id/navi_market_used_action"
@@ -578,5 +582,25 @@
 
 
     </fragment>
+
+
+    <fragment
+        android:id="@+id/land_fragment"
+        android:name="in.koreatech.koin.ui.land.LandFragment"
+        android:label="@string/navigation_item_land"
+        tools:layout="@layout/land_fragment_main">
+
+        <action
+            android:id="@+id/navi_land_detail_action"
+            app:destination="@+id/land_detail_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/land_detail_fragment"
+        android:name="in.koreatech.koin.ui.land.LandDetailFragment"
+        android:label="@string/navigation_item_land"
+        tools:layout="@layout/land_fragment_detail"/>
+
 
 </navigation>

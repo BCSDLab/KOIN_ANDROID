@@ -4,7 +4,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,31 +26,24 @@ import com.naver.maps.map.overlay.Marker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.LandRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandDetailContract;
 import in.koreatech.koin.ui.land.presenter.LandDetailPresenter;
-import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
+import in.koreatech.koin.ui.main.MainActivity;
 
 /**
  * 복덕방 상세페이지 Activity
  */
-public class LandDetailActivity extends KoinNavigationDrawerActivity implements LandDetailContract.View, OnMapReadyCallback {
-    private final String TAG = "LandDetailActivity";
-    private int landId;
-    private Double landLatitude;
-    private Double landLongitude;
-    private LandDetailPresenter landDetailPresenter;
-    private NaverMap naverMap;
-    private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
-
+public class LandDetailFragment extends KoinBaseFragment implements LandDetailContract.View, OnMapReadyCallback {
+    private final String TAG = "LandDetailFragment";
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appbarBase;
-
     @BindView(R.id.land_detail_name_textview) // 원룸명
             TextView landDetailNameTextView;
     @BindView(R.id.land_detail_charter_fee) // 전세
@@ -67,7 +62,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             TextView landDetailRoomSizeTextView;
     @BindView(R.id.land_detail_phone) // 문의 전화번호
             TextView landDetailPhoneTextView;
-
     @BindView(R.id.land_detail_noimage_textview) // 사진이 없을 경우 안내메시지
             TextView landDetailNoImageTextView;
     @BindView(R.id.land_detail_image_viewpager) // 집 사진 뷰페이저
@@ -76,8 +70,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             ImageView landDetailIcLeftImageview;
     @BindView(R.id.land_detail_ic_right_imageview) // 오른쪽 화살표
             ImageView landDetailIcRightImageview;
-    private LandDetailPagerAdapter landDetailPagerAdapter;
-
     @BindView(R.id.land_detail_airconditioner_imageview) // 에어컨 이미지
             ImageView landDetailAirconditionerImageview;
     @BindView(R.id.land_detail_airconditioner_textview) // 에어컨 텍스트
@@ -142,22 +134,28 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             ImageView landDetailElevatorImageView;
     @BindView(R.id.land_detail_elevator_textview) // 엘레베이터 텍스트
             TextView landDetailElevatorTextview;
-
     @BindView(R.id.land_detail_room_address_textview) // 원룸 위치 텍스트
             TextView landDetailRoomAddressTextView;
     @BindView(R.id.land_detail_room_address_text)
     TextView landDetailRoomAddressText;
     @BindView(R.id.activity_land_detail_navermap)
     LinearLayout landDetailRoomAddressNavermap;
+    private int landId;
+    private Double landLatitude;
+    private Double landLongitude;
+    private LandDetailPresenter landDetailPresenter;
+    private NaverMap naverMap;
+    private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
+    private LandDetailPagerAdapter landDetailPagerAdapter;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.land_activity_detail);
-        ButterKnife.bind(this);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.land_fragment_detail, container, false);
+        ButterKnife.bind(this, view);
         navermapNullGone();
         init();
+        return view;
     }
 
     /**
@@ -165,9 +163,9 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     private void navermapNullGone() {
 
-        landId = getIntent().getIntExtra("Land_ID", -1);
-        landLatitude = (Double) getIntent().getSerializableExtra("Land_latitude");
-        landLongitude = (Double) getIntent().getSerializableExtra("Land_longitude");
+        landId = getArguments().getInt("Land_ID", -1);
+        landLatitude = getArguments().getDouble("Land_latitude");
+        landLongitude = getArguments().getDouble("Land_longitude");
 
         if (landLatitude == null || landLongitude == null) {
             landDetailRoomAddressTextView.setVisibility(View.GONE);
@@ -187,7 +185,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
                 .camera(new CameraPosition(new LatLng(landLatitude, landLongitude), 14));
 
 
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         NaverMapFragment mapFragment = (NaverMapFragment) fm.findFragmentById(R.id.activity_land_detail_navermap);
         if (mapFragment == null) {
             mapFragment = NaverMapFragment.newInstance(options);
@@ -219,41 +217,15 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         if (landId == -1) {
             ToastUtil.getInstance().makeShort("원룸 정보를 불러오지 못했습니다.");
-            finish();
+            onBackPressed();
         }
         if (landDetailPresenter != null) {
             landDetailPresenter.getLandDetailInfo(landId);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.bind(this).unbind();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
     }
 
     /**
@@ -261,7 +233,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     /**
@@ -269,7 +241,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
      */
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
 
     }
 
@@ -334,11 +306,13 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             setGray(landDetailInductionImageView, landDetailInductionTextview, grayFilter);
         if (!land.getOptWaterPurifier())
             setGray(landDetailWaterpurifierImageView, landDetailWaterpurifierTextview, grayFilter);
-        if (!land.getOptBidet()) setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
+        if (!land.getOptBidet())
+            setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
         if (!land.getOptWasher())
             setGray(landDetailWasherImageView, landDetailWasherTextview, grayFilter);
         if (!land.getOptBed()) setGray(landDetailBedImageView, landDetailBedTextview, grayFilter);
-        if (!land.getOptDesk()) setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
+        if (!land.getOptDesk())
+            setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
         if (!land.getOptShoeCloset())
             setGray(landDetailShoeclosetImageView, landDetailShoeclosetTextview, grayFilter);
         if (!land.getOptVeranda())
@@ -371,7 +345,7 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
         initViewPagerListener();
         viewPager.addOnPageChangeListener(viewPagerOnPageChangeListener);
 
-        landDetailPagerAdapter = new LandDetailPagerAdapter(this, land.getImageUrls());
+        landDetailPagerAdapter = new LandDetailPagerAdapter(getContext(), land.getImageUrls());
         viewPager.setAdapter(landDetailPagerAdapter);
     }
 
@@ -435,10 +409,5 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
                 viewPager.arrowScroll(ViewPager.FOCUS_RIGHT);
                 break;
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }
