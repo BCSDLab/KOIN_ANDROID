@@ -146,7 +146,7 @@ public class KoinNavigationFragment extends BaseNavigationFragment implements Vi
 
     @Override
     protected void goToMarketFragment() {
-
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_market_used_action, null, NavigationManger.getNavigationDrawerServiceSelectAnimation());
     }
 
     @Override

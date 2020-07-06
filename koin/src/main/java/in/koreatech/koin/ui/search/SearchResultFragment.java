@@ -32,8 +32,8 @@ import in.koreatech.koin.ui.lostfound.LostFoundDetailActivity;
 import in.koreatech.koin.ui.search.adapter.SearchResultAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchResultContract;
 import in.koreatech.koin.ui.search.presenter.SearchResultPresenter;
-import in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailActivity;
-import in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailActivity;
+import in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailFragment;
+import in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailFragment;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
@@ -167,10 +167,10 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
                 break;
             case 10: // 중고장터
                 if (searchedArticleItem.getPermalink().contains("buy")) {
-                    intent = new Intent(getActivity(), MarketUsedBuyDetailActivity.class);
+                    intent = new Intent(getActivity(), MarketUsedBuyDetailFragment.class);
                     intent.putExtra("MARKET_ID", 1);
                 } else {
-                    intent = new Intent(getActivity(), MarketUsedSellDetailActivity.class);
+                    intent = new Intent(getActivity(), MarketUsedSellDetailFragment.class);
                     intent.putExtra("MARKET_ID", 0);
                 }
 

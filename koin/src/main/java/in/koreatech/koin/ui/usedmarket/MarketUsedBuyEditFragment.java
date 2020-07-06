@@ -20,61 +20,111 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.text.Editable;
+import android.text.Html;
+import android.text.InputFilter;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import android.telephony.PhoneNumberFormattingTextWatcher;
-import android.text.*;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.yunjaena.imageloader.ImageFailedType;
+import com.yunjaena.imageloader.ImageLoadListener;
+import com.yunjaena.imageloader.ImageLoader;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedEditContract;
+import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.MarketItem;
 import in.koreatech.koin.data.network.interactor.MarketUsedRestInteractor;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedEditContract;
 import in.koreatech.koin.ui.usedmarket.presenter.MarketUsedEditPresenter;
-import in.koreatech.koin.core.toast.ToastUtil;
-
-import java.io.*;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import in.koreatech.koin.util.AuthorizeManager;
 
 /**
  * This class edit item at MarketUsedBuyEdit
- * if the item edit success activity will be finished and go back to MarketUsedBuyDetailActivity
+ * if the item edit success activity will be finished and go back to MarketUsedBuyDetailFragment
  */
-public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity implements MarketUsedEditContract.View {
-    private final String TAG = "MarketUsedBuyEditActivity";
-    private final int MAXTITLELENGTH = 39;
+public class MarketUsedBuyEditFragment extends KoinBaseFragment implements MarketUsedEditContract.View , ImageLoadListener {
     private static final int MY_REQUEST_CODE = 100;
     private static final int REQUEST_GET_GALLERY = 1;
     private static final int REQUEST_TAKE_PHOTO = 2;
     private static final int REQUEST_CROP_IMAGE = 3;
+    private final String TAG = "MarketUsedBuyEditFragment";
+    private final int MAXTITLELENGTH = 39;
+    @BindView(R.id.market_used_buy_edit_thumbnail_imageview)
+    ImageView mMarketBuyEditThumbnailImageView;
+    @BindView(R.id.market_used_buy_edit_thumbnail_change_button)
+    Button mMarketBuyEditThumbnailChangeButton;
+    @BindView(R.id.market_used_buy_edit_title_textview)
+    EditText mMarketBuyEditTitleEditText;
+    @BindView(R.id.market_used_buy_edit_money_edittext)
+    EditText mMarketBuyEditMoneyEditText;
+    @BindView(R.id.market_used_buy_edit_phone_status_radiobutton_group)
+    RadioGroup mMarketBuyEditPhoneStatusRadioButtonGroup;
+    @BindView(R.id.market_used_buy_edit_is_phone_public_radiobutton)
+    RadioButton mMarketBuyEditIsPhonePublicRadioButton;
+    @BindView(R.id.market_used_buy_edit_is_phone_private_radiobutton)
+    RadioButton mMarketBuyEditIsPhonePrivateRadioButton;
+    @BindView(R.id.market_used_buy_edit_edittext_phone_num)
+    EditText marketBuyEditEditTextPhoneNum;
+    @BindView(R.id.market_used_buy_edit_buying_status_radiobutton_group)
+    RadioGroup mMarketBuyEditBuyingStatusRadioButtonGroup;
+    @BindView(R.id.market_used_buy_edit_is_buying_radiobutton)
+    RadioButton mMarketBuyEditIsBuyingRadioButton;
+    @BindView(R.id.market_used_buy_edit_is_stop_buying_radiobutton)
+    RadioButton mMarketBuyEditIsStopBuyingRadioButton;
+    @BindView(R.id.market_used_buy_edit_is_complete_buying_radiobutton)
+    RadioButton mMarketBuyEditIsCompleteBuyingRadioButton;
+    @BindView(R.id.market_used_buy_edit_content)
+    EditText mMarketBuyEditContent;
     private Context context;
-
     private int marketId;
     private int itemId;
     private String title;
@@ -85,9 +135,8 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     private int itemState;
     private String thumbNail;
     private ArrayList<String> imageUrl;
-
     private MarketItem marketItem;
-    private MarketUsedEditPresenter mMarketUsedEditPresenter;
+    private MarketUsedEditPresenter marketUsedEditPresenter;
     private Uri currentPhotoPath;
     private File mImageFile;
     private CustomProgressDialog customProgressDialog;
@@ -95,98 +144,41 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     private boolean mIsPhoneCheck;
     private boolean mIsContentCheck;
 
-
-    @BindView(R.id.market_used_buy_edit_thumbnail_imageview)
-    ImageView mMarketBuyEditThumbnailImageView;
-    @BindView(R.id.market_used_buy_edit_thumbnail_change_button)
-    Button mMarketBuyEditThumbnailChangeButton;
-    @BindView(R.id.market_used_buy_edit_title_textview)
-    EditText mMarketBuyEditTitleEditText;
-    @BindView(R.id.market_used_buy_edit_money_edittext)
-    EditText mMarketBuyEditMoneyEditText;
-
-    @BindView(R.id.market_used_buy_edit_phone_status_radiobutton_group)
-    RadioGroup mMarketBuyEditPhoneStatusRadioButtonGroup;
-    @BindView(R.id.market_used_buy_edit_is_phone_public_radiobutton)
-    RadioButton mMarketBuyEditIsPhonePublicRadioButton;
-    @BindView(R.id.market_used_buy_edit_is_phone_private_radiobutton)
-    RadioButton mMarketBuyEditIsPhonePrivateRadioButton;
-
-    @BindView(R.id.market_used_buy_edit_edittext_phone_num)
-    EditText marketBuyEditEditTextPhoneNum;
-
-
-    @BindView(R.id.market_used_buy_edit_buying_status_radiobutton_group)
-    RadioGroup mMarketBuyEditBuyingStatusRadioButtonGroup;
-    @BindView(R.id.market_used_buy_edit_is_buying_radiobutton)
-    RadioButton mMarketBuyEditIsBuyingRadioButton;
-    @BindView(R.id.market_used_buy_edit_is_stop_buying_radiobutton)
-    RadioButton mMarketBuyEditIsStopBuyingRadioButton;
-    @BindView(R.id.market_used_buy_edit_is_complete_buying_radiobutton)
-    RadioButton mMarketBuyEditIsCompleteBuyingRadioButton;
-
-    @BindView(R.id.market_used_buy_edit_content)
-    EditText mMarketBuyEditContent;
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.context = this;
-        setContentView(R.layout.market_used_buy_edit_activity);
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.market_used_sell_edit_fragment, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
+        marketId = getArguments().getInt("MARKET_ID", -1);
+        itemId = getArguments().getInt("ITEM_ID", -1);
+        title = getArguments().getString("MARKET_TITLE");
+        content = getArguments().getString("MARKET_CONTENT");
+        price = Integer.toString(getArguments().getInt("MARKET_PRICE", 0));
+        phoneNumber = getArguments().getString("MARKET_PHONE");
+        isPhoneOpen = getArguments().getBoolean("MARKET_PHONE_STATUS", false);
+        itemState = getArguments().getInt("MARKET_STATE", 0);
+        thumbNail = getArguments().getString("MARKET_THUMBNAIL_URL");
 
-        this.marketId = getIntent().getIntExtra("MARKET_ID", -1);
-        this.itemId = getIntent().getIntExtra("ITEM_ID", -1);
-        this.title = getIntent().getStringExtra("MARKET_TITLE");
-        content = getIntent().getStringExtra("MARKET_CONTENT");
-        this.price = Integer.toString(getIntent().getIntExtra("MARKET_PRICE", 0));
-        this.phoneNumber = getIntent().getStringExtra("MARKET_PHONE");
-        this.isPhoneOpen = getIntent().getBooleanExtra("MARKET_PHONE_STATUS", false);
-        this.itemState = getIntent().getIntExtra("MARKET_STATE", 0);
-        this.thumbNail = getIntent().getStringExtra("MARKET_THUMBNAIL_URL");
-        mImageFile = null;
-
-        if (this.phoneNumber == null) {
-            this.phoneNumber = UserInfoSharedPreferencesHelper.getInstance().loadUser().getPhoneNumber();
+        if (phoneNumber == null) {
+            phoneNumber = AuthorizeManager.getPhoneNumber(getContext());
         }
 
         init();
-
-
+        return view;
     }
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     void init() {
-        getPermisson();
         this.imageUrl = new ArrayList<>();
         this.marketItem = new MarketItem();
         setPresenter(new MarketUsedEditPresenter(this, new MarketUsedRestInteractor()));
@@ -255,20 +247,12 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         return imageGetter;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_article_edited, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 
     @OnClick(R.id.koin_base_app_bar_dark)
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
         if (id == AppBarBase.getLeftButtonId())
-            finish();
+            onBackPressed();
         else if (id == AppBarBase.getRightButtonId())
             onClickEditButton();
     }
@@ -276,48 +260,13 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
 
     @OnClick(R.id.market_used_buy_edit_thumbnail_change_button)
     void onThumbnailChangeButtonClick() {
-        getPermisson();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        if (checkCameraPermisson() && checkStoragePermisson()) {
-            builder.setMessage("이미지를 불러올 방법을 골라주세요.");
-            builder.setPositiveButton("카메라", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    File photoFile = null;
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); //사진을 찍기 위하여 설정합니다.
-
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException e) {
-                        Toast.makeText(context, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-
-                    if (photoFile != null) {
-                        currentPhotoPath = FileProvider.getUriForFile(context,
-                                "in.koreatech.koin.provider", photoFile);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath); //사진을 찍어 해당 Content uri를 photoUri에 적용시키기 위함
-                        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
-                    }
-
-                }
-            });
-
-            builder.setNegativeButton("갤러리", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent mediaScanIntent = new Intent(Intent.ACTION_PICK);
-                    mediaScanIntent.setType(android.provider.MediaStore.Images.Media.CONTENT_TYPE);
-                    mediaScanIntent.setData(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(mediaScanIntent, REQUEST_GET_GALLERY);
-                }
-            });
-            builder.setNeutralButton("취소", null);
-            builder.create().show();
-        } else
-            ToastUtil.getInstance().makeShort("기능 사용을 위한 권한 동의가 필요합니다.");
-
+        ImageLoader.with(getContext())
+                .setImageLoadListener(this)
+                .setChangeImageSize(true)
+                .setImageHeight(500)
+                .setImageWidth(500)
+                .showGalleryOrCameraSelectDialog();
     }
-
 
     @OnCheckedChanged({R.id.market_used_buy_edit_is_phone_public_radiobutton, R.id.market_used_buy_edit_is_phone_private_radiobutton})
     public void onPhoneRadioButtonCheckChanged(CompoundButton button, boolean checked) {
@@ -380,11 +329,12 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         marketBuyEditEditTextPhoneNum.setEnabled(false);                                //핸드폰번호텍스트 비활성화
         marketBuyEditEditTextPhoneNum.setTextIsSelectable(false);
         marketBuyEditEditTextPhoneNum.setClickable(false);
-        hideKeyboard(this);
+        hideKeyboard(getActivity());
     }
 
     /**
      * 키보드를 사라지게 하는 함수
+     *
      * @param activity
      */
     public void hideKeyboard(Activity activity) {
@@ -515,245 +465,6 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         }
         return formatChangedMoney;
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
-            return;
-        }
-        switch (requestCode) {
-            case REQUEST_GET_GALLERY:
-                //기존 갤러리에서 선택한 이미지 파일
-                Uri getImagePath = data.getData();
-                File oriFile = getImageFile(getImagePath);
-
-                //이미지 편집을 위해 선택한 이미지를 저장할 파일
-                currentPhotoPath = data.getData();
-
-                File copyFile = new File(currentPhotoPath.getPath());
-
-                //이미지 복사(이미지 편집시 원본 이미지가 변형되는것을 방지하기 위함)
-                createTempFile(copyFile, oriFile);
-
-                //이미지 편집 호출
-                cropImage();
-
-                break;
-
-            case REQUEST_TAKE_PHOTO:
-                cropImage();
-                MediaScannerConnection.scanFile(this, //앨범에 사진을 보여주기 위해 Scan을 합니다.
-                        new String[]{currentPhotoPath.getPath()}, null,
-                        new MediaScannerConnection.OnScanCompletedListener() {
-                            public void onScanCompleted(String path, Uri uri) {
-                            }
-                        });
-                break;
-
-            case REQUEST_CROP_IMAGE:
-
-                try {
-
-
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), currentPhotoPath);
-                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(bitmap, 500, 500);
-                    ByteArrayOutputStream bs = new ByteArrayOutputStream();
-                    OutputStream os;
-                    thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, bs); //이미지가 클 경우 OutOfMemoryException 발생이 예상되어 압축
-                    os = new FileOutputStream(mImageFile);
-                    thumbImage.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                    os.flush();
-                    os.close();
-                    // Glide.with(context).asBitmap().load(bitmap).into(mMarketBuyEditThumbnailImageView);
-                    mMarketUsedEditPresenter.uploadThumbnailImage(mImageFile);
-                } catch (Exception e) {
-                    Log.e("ERROR", e.getMessage().toString());
-                }
-
-
-                break;
-
-        }
-
-    }
-
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "koin" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures/koin/");
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
-        File image = File.createTempFile(
-                imageFileName,
-                ".jpg",
-                storageDir
-        );
-        return image;
-    }
-
-    /**
-     * 파일 복사
-     *
-     * @param oriFile  : 복사할 File
-     * @param copyFile : 복사될 File
-     * @return
-     */
-    public boolean createTempFile(File copyFile, File oriFile) {
-        boolean result = true;
-        try {
-            InputStream inputStream = new FileInputStream(oriFile);
-            OutputStream outputStream = new FileOutputStream(copyFile);
-
-            byte[] buffer = new byte[4096];
-            int bytesRead = 0;
-            while ((bytesRead = inputStream.read(buffer)) > 0) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-            inputStream.close();
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            result = false;
-        } catch (IOException e) {
-            result = false;
-        }
-        return result;
-    }
-
-
-    /**
-     * 이미지 편집
-     */
-    private void cropImage() {
-
-        this.grantUriPermission("com.android.camera", currentPhotoPath,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(currentPhotoPath, "image/*");
-
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        grantUriPermission(list.get(0).activityInfo.packageName, currentPhotoPath,
-                Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        int size = list.size();
-        if (size == 0) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            ToastUtil.getInstance().makeShort("용량이 큰 사진의 경우 시간이 오래 걸릴 수 있습니다.");
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.putExtra("crop", "true");
-            intent.putExtra("aspectX", 4);
-            intent.putExtra("aspectY", 3);
-            intent.putExtra("scale", true);
-            File croppedFileName = null;
-            try {
-                croppedFileName = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            File folder = new File(Environment.getExternalStorageDirectory() + "/Pictures/koin");
-            File tempFile = new File(folder.toString(), croppedFileName.getName());
-
-            mImageFile = tempFile;
-            currentPhotoPath = FileProvider.getUriForFile(this,
-                    "in.koreatech.koin.provider", tempFile);
-
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-
-            intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, currentPhotoPath);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString()); //Bitmap 형태로 받기 위해 해당 작업 진행
-
-            Intent i = new Intent(intent);
-            ResolveInfo res = list.get(0);
-            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            grantUriPermission(res.activityInfo.packageName, currentPhotoPath,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
-            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            startActivityForResult(i, REQUEST_CROP_IMAGE);
-
-
-        }
-    }
-
-    /**
-     * 선택된 uri의 사진 Path를 가져온다.
-     * uri 가 null 경우 마지막에 저장된 사진을 가져온다.
-     *
-     * @param uri
-     * @return
-     */
-    public File getImageFile(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-
-        if (uri == null) {
-            uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        }
-
-        Cursor cursor = getContentResolver().query(uri, projection, null, null,
-                MediaStore.Images.Media.DATE_MODIFIED + " desc");
-
-        if (cursor == null || cursor.getCount() < 1) {
-            return null;
-        }
-
-        int idxColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-
-        String path = cursor.getString(idxColumn);
-
-        if (cursor != null) {
-            cursor.close();
-            cursor = null;
-        }
-
-        return new File(path);
-
-    }
-
-
-    public void getPermisson() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) || (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED))
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_REQUEST_CODE);
-        }
-
-    }
-
-    public boolean checkCameraPermisson() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                return false;
-            else
-                return true;
-        } else
-            return true;
-    }
-
-    public boolean checkStoragePermisson() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
-                return false;
-            else
-                return true;
-        } else
-            return true;
-    }
-
     /**
      * Edit 메뉴를 클릭시 title, content, phone 형식을 검사
      * state를 확인해서 item edit
@@ -810,7 +521,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
             ToastUtil.getInstance().makeShort(R.string.market_used_title_content_check);
         this.marketItem.setType(this.marketId);
         if (mIsPhoneCheck && mIsTitlecheck && mIsContentCheck)
-            mMarketUsedEditPresenter.editMarketContent(this.itemId, this.marketItem);
+            marketUsedEditPresenter.editMarketContent(this.itemId, this.marketItem);
 
     }
 
@@ -827,7 +538,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
 
     @Override
     public void showUpdateSuccess() {
-        finish();
+        onBackPressed();
     }
 
     @Override
@@ -852,16 +563,44 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
 
     @Override
     public void setPresenter(MarketUsedEditPresenter presenter) {
-        this.mMarketUsedEditPresenter = presenter;
+        this.marketUsedEditPresenter = presenter;
     }
 
+    @Override
+    public void onImageAdded(List<Bitmap> bitmapList) {
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String imageFileName = "koin" + timeStamp + ".jpg";
+        try {
+            File imageFile = new File(context.getCacheDir(), imageFileName);
+            imageFile.createNewFile();
+            Bitmap bitmap = bitmapList.get(0);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            marketUsedEditPresenter.uploadThumbnailImage(imageFile);
+        } catch (Exception e) {
+            ToastUtil.getInstance().makeLong(R.string.fail_upload);
+        }
+    }
+
+    @Override
+    public void onImageFailed(ImageFailedType failedType) {
+        if (failedType != ImageFailedType.CANCEL)
+            ToastUtil.getInstance().makeShort(R.string.market_used_image_upload_failed);
+    }
+
+    
 
     public class DownloadImageTask extends AsyncTask<String, Void, Drawable> {
         protected Drawable doInBackground(String... urls) {
             for (String s : urls) {
                 try {
                     Drawable drawable = Drawable.createFromStream(new URL(s).openStream(), "src name");
-                    DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+                    DisplayMetrics dm = getContext().getApplicationContext().getResources().getDisplayMetrics();
                     int width = dm.widthPixels;
                     int height = dm.heightPixels;
                     Integer heigtbol = height / 3;
@@ -882,10 +621,5 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         protected void onPostExecute(Drawable drawable) {
             super.onPostExecute(drawable);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
     }
 }

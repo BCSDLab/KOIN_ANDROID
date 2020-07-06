@@ -99,6 +99,7 @@
     <string name="market_used_title_content_check">제목과 내용을 입력해주세요</string>
     <string name="market_used_list_last_page">마지막 품목입니다.</string>
     <string name="market_used_get_list_fail">리스트를 불러올수 없습니다.</string>
+    <string name="market_used_image_upload_failed">이미지 업로드에 실패하였습니다.</string>
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
 
