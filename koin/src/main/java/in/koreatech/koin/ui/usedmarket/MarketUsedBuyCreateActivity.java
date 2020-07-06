@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
 import android.util.Log;
 import android.view.View;
@@ -191,6 +192,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
         } else {
             isPhoneOpen = false;
             marketBuyCreateEditTextPhoneNum.setText(null);
+            marketBuyCreateEditTextPhoneNum.setEnabled(false);                      //핸드폰번호텍스트 비활성화
             marketBuyCreateEditTextPhoneNum.setTextIsSelectable(false);
             marketBuyCreateEditTextPhoneNum.setClickable(false);
         }
@@ -258,6 +260,9 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
             switch (button.getId()) {
                 case R.id.market_used_buy_create_is_phone_public_radiobutton:
                     setPhoneNumber();
+                    marketBuyCreateEditTextPhoneNum.setFocusableInTouchMode(true);
+                    marketBuyCreateEditTextPhoneNum.requestFocus();                                                     //포커스 부여
+                    marketBuyCreateEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //자동으로 '-' 생성
                     isPhoneOpen = true;
                     break;
                 case R.id.market_used_buy_create_is_phone_private_radiobutton:
@@ -293,6 +298,7 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     public void setPhoneNumber() {
         if (phoneNumber == null)
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
+        marketBuyCreateEditTextPhoneNum.setEnabled(true);                               //핸드폰번호텍스트 활성화
         marketBuyCreateEditTextPhoneNum.setTextIsSelectable(true);
         marketBuyCreateEditTextPhoneNum.setClickable(true);
         marketBuyCreateEditTextPhoneNum.setText(phoneNumber);
@@ -305,15 +311,19 @@ public class MarketUsedBuyCreateActivity extends ActivityBase implements MarketU
     public void unSetPhoneNumber() {
         phoneNumber = marketBuyCreateEditTextPhoneNum.getText().toString();
         marketBuyCreateEditTextPhoneNum.setText(null);
+        marketBuyCreateEditTextPhoneNum.setEnabled(false);                              //핸드폰번호텍스트 비활성화
         marketBuyCreateEditTextPhoneNum.setTextIsSelectable(false);
         marketBuyCreateEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
     }
 
-
+    /**
+     * 키보드를 사라지게 하는 함수
+     * @param activity
+     */
     public void hideKeyboard(Activity activity) {
         InputMethodManager im = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        im.hideSoftInputFromWindow(marketBuyCreateEditTextPhoneNum.getWindowToken(), 0);
     }
 
     /**

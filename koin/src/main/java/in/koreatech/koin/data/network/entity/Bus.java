@@ -16,29 +16,40 @@ import in.koreatech.koin.constant.BusType;
  * @since 2019.09.20
  * 버스 관련 model
  */
-public class Bus {
+public abstract class Bus {
 
 
     private static final String[] expressFromKoreatechToTerminal = {
-            "08:00",
-            "09:35",
+            /* TODO -> 코로나 바이러스 끝난 후 교체 필요
+             "08:00",
+             "09:35",
+             "10:35",
+             "11:35",
+             "12:25",
+             "13:15",
+             "14:05",
+             "15:05",
+             "16:05",
+             "16:55",
+             "18:05",
+             "18:55",
+             "19:35",
+             "20:00",
+             "21:05",
+             "21:55"
+             */
+
+            "8:35",
             "10:35",
-            "11:35",
-            "12:25",
-            "13:15",
-            "14:05",
-            "15:05",
-            "16:05",
-            "16:55",
-            "18:05",
-            "18:55",
-            "19:35",
-            "20:00",
-            "21:05",
-            "21:55"
+            "12:35",
+            "14:35",
+            "16:35",
+            "18:35",
+            "20:35"
     };
 
     private static final String[] expressFromTerminalToKoreatech = {
+            /* TODO -> 코로나 바이러스 끝난 후 교체 필요
             "07:00",
             "07:30",
             "09:00",
@@ -55,356 +66,16 @@ public class Bus {
             "19:30",
             "20:30",
             "21:00"
+             */
+
+            "8:05",
+            "10:00",
+            "12:00",
+            "14:00",
+            "16:00",
+            "18:00",
+            "20:30"
     };
-
-    private static final String[][] shuttleFromKoreatech = {
-            { // 월요일
-                    /*
-                        "09:10",
-                        "11:00",
-                        "14:00",
-                        "15:00",
-                        "16:00",
-                        "16:30",
-                        "17:00",
-                        "19:30",
-                        "21:00",
-                        "22:40"
-
-                     */
-                    // 2019-동계방학
-                    "14:00"
-            },
-            { // 화요일
-                    /*
-                        "09:10",
-                        "11:00",
-                        "14:00",
-                        "15:00",
-                        "16:00",
-                        "16:30",
-                        "17:00",
-                        "19:30",
-                        "21:00",
-                        "22:40"
-                     */
-                    // 2019-동계방학
-                    "14:00"
-            },
-            { // 수요일
-                    /*
-                        "09:10",
-                        "11:00",
-                        "14:00",
-                        "15:00",
-                        "16:00",
-                        "16:30",
-                        "17:00",
-                        "19:30",
-                        "21:00",
-                        "22:40"
-                     */
-                    // 2019-동계방학
-                    "14:00"
-            },
-            { // 목요일
-                    /*
-                        "09:10",
-                        "11:00",
-                        "14:00",
-                        "15:00",
-                        "16:00",
-                        "16:30",
-                        "17:00",
-                        "19:30",
-                        "21:00",
-                        "22:40"
-                     */
-                    // 2019-동계방학
-                    "14:00"
-            },
-            { // 금요일
-                    /*
-                        "09:10",
-                        "11:00",
-                        "14:00",
-                        "14:30",
-                        "15:00",
-                        "16:00",
-                        "16:30",
-                        "17:00",
-                        "19:30",
-                        "21:00",
-                        "22:40"
-                     */
-                    // 2019-동계방학
-                    "14:00"
-            },
-            { // 토요일
-                    /*
-                        "14:00"
-                     */
-            },
-            { // 일요일
-                    /*
-                        "17:00"
-                     */
-            }
-    };
-
-    private static final String[][] shuttleFromTerminal = {
-            { // 월요일
-                    /*
-                        "08:00",
-                        "10:10",
-                        "11:25",
-                        "14:25",
-                        "16:05",
-                        "16:25",
-                        "16:55",
-                        "17:25",
-                        "18:45",
-                        "19:55",
-                        "22:00"
-                     */
-                    // 2019-동계방학
-                    "08:00",
-                    "14:25"
-            },
-            { // 화요일
-                    /*
-                        "08:00",
-                        "10:10",
-                        "11:25",
-                        "14:25",
-                        "16:05",
-                        "16:25",
-                        "16:55",
-                        "17:25",
-                        "18:45",
-                        "19:55",
-                        "22:00"
-                     */
-                    // 2019-동계방학
-                    "08:00",
-                    "14:25"
-            },
-            { // 수요일
-                    /*
-                        "08:00",
-                        "10:10",
-                        "11:25",
-                        "14:25",
-                        "16:05",
-                        "16:25",
-                        "16:55",
-                        "17:25",
-                        "18:45",
-                        "19:55",
-                        "22:00"
-                     */
-                    // 2019-동계방학
-                    "08:00",
-                    "14:25"
-            },
-            { // 목요일
-                    /*
-                        "08:00",
-                        "10:10",
-                        "11:25",
-                        "14:25",
-                        "16:05",
-                        "16:25",
-                        "16:55",
-                        "17:25",
-                        "18:45",
-                        "19:55",
-                        "22:00"
-                     */
-                    // 2019-동계방학
-                    "08:00",
-                    "14:25"
-            },
-            { // 금요일
-                    /*
-                        "08:00",
-                        "10:10",
-                        "11:25",
-                        "14:25",
-                        "16:05",
-                        "16:25",
-                        "16:55",
-                        "17:25",
-                        "18:45",
-                        "19:55",
-                        "22:00"
-                     */
-                    // 2019-동계방학
-                    "08:00",
-                    "14:25"
-            },
-            { // 토요일
-                    /*
-                        "14:25",
-                        "18:45"
-                     */
-            },
-            { // 일요일
-                    /*
-                        "17:30",
-                        "21:15",
-                        "21:30"
-                     */
-            }
-    };
-
-    private static final String[][] shuttleFromStationToKoreatech = {
-            { // 월요일
-                    /*
-                        "08:05",
-                        "10:15",
-                        "11:30",
-                        "14:30",
-                        "16:10",
-                        "16:30",
-                        "17:00",
-                        "17:30",
-                        "18:50",
-                        "20:00",
-                        "22:05"
-                     */
-                    // 2019-동계방학
-                    "08:05",
-                    "14:30"
-            },
-            { // 화요일
-                    /*
-                        "08:05",
-                        "10:15",
-                        "11:30",
-                        "14:30",
-                        "16:10",
-                        "16:30",
-                        "17:00",
-                        "17:30",
-                        "18:50",
-                        "20:00",
-                        "22:05"
-                     */
-                    // 2019-동계방학
-                    "08:05",
-                    "14:30"
-            },
-            { // 수요일
-                    /*
-                        "08:05",
-                        "10:15",
-                        "11:30",
-                        "14:30",
-                        "16:10",
-                        "16:30",
-                        "17:00",
-                        "17:30",
-                        "18:50",
-                        "20:00",
-                        "22:05"
-                     */
-                    // 2019-동계방학
-                    "08:05",
-                    "14:30"
-            },
-            { // 목요일
-                    /*
-                        "08:05",
-                        "10:15",
-                        "11:30",
-                        "14:30",
-                        "16:10",
-                        "16:30",
-                        "17:00",
-                        "17:30",
-                        "18:50",
-                        "20:00",
-                        "22:05"
-                     */
-                    // 2019-동계방학
-                    "08:05",
-                    "14:30"
-            },
-            { // 금요일
-                    /*
-                        "08:05",
-                        "10:15",
-                        "11:30",
-                        "14:30",
-                        "16:10",
-                        "16:30",
-                        "17:00",
-                        "17:30",
-                        "18:50",
-                        "20:00",
-                        "22:05"
-                     */
-                    // 2019-동계방학
-                    "08:05",
-                    "14:30"
-            },
-            { // 토요일
-                    /*
-                        "14:30",
-                        "18:50"
-                     */
-            },
-            { // 일요일
-                    /*
-                        "17:35",
-                        "21:20",
-                        "21:35"
-                     */
-            }
-    };
-
-    private static final String[][] shuttleFromStationToTerminal = {
-            { // 월요일
-                    /*
-                        "09:30",
-                        "15:20"
-                     */
-            },
-            { // 화요일
-                    /*
-                        "09:30",
-                        "15:20"
-                     */
-            },
-            { // 수요일
-                    /*
-                        "09:30",
-                        "15:20"
-                     */
-            },
-            { // 목요일
-                    /*
-                        "09:30",
-                        "15:20"
-                     */
-            },
-            { // 금요일
-                    /*
-                        "09:30",
-                        "15:20"
-                     */
-            },
-            { // 토요일
-            },
-            { // 일요일
-            }
-    };
-
-    private static final Map<String, Object> shuttleTimeTables = new HashMap<String, Object>() {{
-        put("koreatech", shuttleFromKoreatech);
-        put("terminal", shuttleFromTerminal);
-    }};
 
     /**
      * @param timetable  남은 시간 값을 받고 싶은 시간표를 인자로 받는다.
@@ -504,7 +175,7 @@ public class Bus {
      * @return 남은 시간은 mills로 Long으로 반환해준다.
      * @throws ParseException 셔틀 버스 남은 시간을 반환 해주는 함수이다.
      */
-    public static long getRemainShuttleTimeToLong(String departEnglish, String arrivalEnglish, boolean isNow) throws ParseException {
+    public long getRemainShuttleTimeToLong(String departEnglish, String arrivalEnglish, boolean isNow) throws ParseException {
         String[] shuttleTimeTable = getCurrentDayShuttleDayStringArray(departEnglish, arrivalEnglish);
         int resultNowIndex;
         if (shuttleTimeTable == null) return -1;
@@ -548,7 +219,7 @@ public class Bus {
      * @return 해당 되는 셔틀 버스 시간을 String으로 반환해준다. 없는 경우 "" 로 반환
      * @throws ParseException
      */
-    public static String getNearShuttleTimeToString(String departEnglish, String arrivalEnglish, boolean isNow) throws ParseException {
+    public String getNearShuttleTimeToString(String departEnglish, String arrivalEnglish, boolean isNow) throws ParseException {
         String[] shuttleTimeTable = getCurrentDayShuttleDayStringArray(departEnglish, arrivalEnglish);
         int resultNowIndex;
 
@@ -566,7 +237,7 @@ public class Bus {
     }
 
 
-    public static String getNearShuttleTimeToString(String departEnglish, String arrivalEnglish, int year, int month, int day, int hour, int min) throws ParseException {
+    public String getNearShuttleTimeToString(String departEnglish, String arrivalEnglish, int year, int month, int day, int hour, int min) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         Calendar currentTime = Calendar.getInstance();
         String currentDate = String.format("%4d-%2d-%2d", year, month, day);
@@ -631,20 +302,18 @@ public class Bus {
      * @param arrivalEnglish koreatech, terminal, station 중 1
      * @return 해당하는 셔틀 버스 시간이 저장된 배열을 반환 해준다.
      */
-    private static String[] getCurrentDayShuttleDayStringArray(String departEnglish, String arrivalEnglish) {
+    private String[] getCurrentDayShuttleDayStringArray(String departEnglish, String arrivalEnglish) {
         TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
         Calendar currentTime = Calendar.getInstance(timeZone); // 오늘 일자의 Calendar 객체
-        String[] shuttleTimeTable;
         int dayType = (currentTime.get(Calendar.DAY_OF_WEEK) + 5) % 7;
 
-        if (!departEnglish.equals(BusType.STATION.getDestination())) { // 출발지가 천안역이 아니라면 ?
-            String[][] timeTable = (String[][]) shuttleTimeTables.get(departEnglish); // 출발지로 시간표 가져옴
-            shuttleTimeTable = timeTable[dayType];
-        } // 천안역이라면 ?
-        else
-            shuttleTimeTable = arrivalEnglish.equals(BusType.KOREATECH.getDestination()) ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
-
-        return shuttleTimeTable;
+        if (departEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination())) { // 출발지가 학교라면
+            return arrivalEnglish.equalsIgnoreCase(BusType.STATION.getDestination()) ? getShuttleFromKoreatechToStation()[dayType] : getShuttleFromKoreatechToTerminal()[dayType];
+        } else if (departEnglish.equalsIgnoreCase(BusType.STATION.getDestination())) { // 천안역이라면?
+            return arrivalEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination()) ? getShuttleFromStationToKoreatech()[dayType] : getShuttleFromStationToTerminal()[dayType];
+        } else { // 터미널이라면?
+            return arrivalEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination()) ? getShuttleFromTerminalToKoreatech()[dayType] : getShuttleFromTerminalToStation()[dayType];
+        }
     }
 
     /**
@@ -652,19 +321,15 @@ public class Bus {
      * @param arrivalEnglish koreatech, terminal, station 중 1
      * @return 해당하는 셔틀 버스 시간이 저장된 배열을 반환 해준다.
      */
-    private static String[] getCurrentDayShuttleDayStringArray(String departEnglish, String arrivalEnglish, int dayType) {
-        String[] shuttleTimeTable;
+    private String[] getCurrentDayShuttleDayStringArray(String departEnglish, String arrivalEnglish, int dayType) {
         dayType %= 7;
-
-
-        if (!departEnglish.equals(BusType.STATION.getDestination())) { // 출발지가 천안역이 아니라면 ?
-            String[][] timeTable = (String[][]) shuttleTimeTables.get(departEnglish); // 출발지로 시간표 가져옴
-            shuttleTimeTable = timeTable[dayType];
-        } // 천안역이라면 ?
-        else
-            shuttleTimeTable = arrivalEnglish.equals(BusType.KOREATECH.getDestination()) ? shuttleFromStationToKoreatech[dayType] : shuttleFromStationToTerminal[dayType];
-
-        return shuttleTimeTable;
+        if (departEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination())) { // 출발지가 학교라면
+            return arrivalEnglish.equalsIgnoreCase(BusType.STATION.getDestination()) ? getShuttleFromKoreatechToStation()[dayType] : getShuttleFromKoreatechToTerminal()[dayType];
+        } else if (departEnglish.equalsIgnoreCase(BusType.STATION.getDestination())) { // 천안역이라면?
+            return arrivalEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination()) ? getShuttleFromStationToKoreatech()[dayType] : getShuttleFromStationToTerminal()[dayType];
+        } else { // 터미널이라면?
+            return arrivalEnglish.equalsIgnoreCase(BusType.KOREATECH.getDestination()) ? getShuttleFromTerminalToKoreatech()[dayType] : getShuttleFromTerminalToStation()[dayType];
+        }
     }
 
     /**
@@ -684,6 +349,18 @@ public class Bus {
 
         return expressTimeTable;
     }
+
+    public abstract String[][] getShuttleFromStationToKoreatech();
+
+    public abstract String[][] getShuttleFromStationToTerminal();
+
+    public abstract String[][] getShuttleFromTerminalToKoreatech();
+
+    public abstract String[][] getShuttleFromTerminalToStation();
+
+    public abstract String[][] getShuttleFromKoreatechToStation();
+
+    public abstract String[][] getShuttleFromKoreatechToTerminal();
 
 
 }

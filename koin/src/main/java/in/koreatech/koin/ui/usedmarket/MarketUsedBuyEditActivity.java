@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.*;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -112,7 +113,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
     RadioButton mMarketBuyEditIsPhonePrivateRadioButton;
 
     @BindView(R.id.market_used_buy_edit_edittext_phone_num)
-    EditText mMarketBuyEditEditTextPhoneNum;
+    EditText marketBuyEditEditTextPhoneNum;
 
 
     @BindView(R.id.market_used_buy_edit_buying_status_radiobutton_group)
@@ -203,8 +204,8 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
         mMarketBuyEditMoneyEditText.setText(changeMoneyFormatToStringWithComma(this.price));
 
 
-        mMarketBuyEditEditTextPhoneNum.setFocusable(false);
-        mMarketBuyEditEditTextPhoneNum.setClickable(false);
+        marketBuyEditEditTextPhoneNum.setFocusable(false);
+        marketBuyEditEditTextPhoneNum.setClickable(false);
 
 
         if (this.isPhoneOpen) {
@@ -324,6 +325,10 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
             switch (button.getId()) {
                 case R.id.market_used_buy_edit_is_phone_public_radiobutton:
                     setPhoneNumber();
+                    marketBuyEditEditTextPhoneNum.setFocusableInTouchMode(true);
+                    marketBuyEditEditTextPhoneNum.requestFocus();                                                     //포커스를 부여
+                    marketBuyEditEditTextPhoneNum.addTextChangedListener(new PhoneNumberFormattingTextWatcher());     //자동으로 '-' 생성
+
                     this.isPhoneOpen = true;
                     break;
                 case R.id.market_used_buy_edit_is_phone_private_radiobutton:
@@ -357,29 +362,34 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
      * 번호 입력 Edittext 수정가능하도록 set
      */
     public void setPhoneNumber() {
-        mMarketBuyEditEditTextPhoneNum.setTextIsSelectable(true);
-        mMarketBuyEditEditTextPhoneNum.setClickable(true);
+        marketBuyEditEditTextPhoneNum.setEnabled(true);                                     //핸드폰번호텍스트 활성화
+        marketBuyEditEditTextPhoneNum.setTextIsSelectable(true);
+        marketBuyEditEditTextPhoneNum.setClickable(true);
         if (this.phoneNumber == null)
             ToastUtil.getInstance().makeShort("휴대폰 번호를 기입해주세요");
 
-        mMarketBuyEditEditTextPhoneNum.setText(this.phoneNumber);
+        marketBuyEditEditTextPhoneNum.setText(this.phoneNumber);
     }
 
     /**
      * 번호 입력 Edittext 수정 못하도록 set
      */
     public void unSetPhoneNumber() {
-        this.phoneNumber = mMarketBuyEditEditTextPhoneNum.getText().toString();
-        mMarketBuyEditEditTextPhoneNum.setText(null);
-        mMarketBuyEditEditTextPhoneNum.setTextIsSelectable(false);
-        mMarketBuyEditEditTextPhoneNum.setClickable(false);
+        this.phoneNumber = marketBuyEditEditTextPhoneNum.getText().toString();
+        marketBuyEditEditTextPhoneNum.setText(null);
+        marketBuyEditEditTextPhoneNum.setEnabled(false);                                //핸드폰번호텍스트 비활성화
+        marketBuyEditEditTextPhoneNum.setTextIsSelectable(false);
+        marketBuyEditEditTextPhoneNum.setClickable(false);
         hideKeyboard(this);
     }
 
-
+    /**
+     * 키보드를 사라지게 하는 함수
+     * @param activity
+     */
     public void hideKeyboard(Activity activity) {
         InputMethodManager im = (InputMethodManager) activity.getSystemService(activity.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        im.hideSoftInputFromWindow(marketBuyEditEditTextPhoneNum.getWindowToken(), 0);
     }
 
     //TODO -> content edit
@@ -750,7 +760,7 @@ public class MarketUsedBuyEditActivity extends KoinNavigationDrawerActivity impl
      */
     public void onClickEditButton() {
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(mMarketBuyEditContent.getText().toString().trim());
-        this.phoneNumber = mMarketBuyEditEditTextPhoneNum.getText().toString().trim();
+        this.phoneNumber = marketBuyEditEditTextPhoneNum.getText().toString().trim();
 
 
         if (this.isPhoneOpen) {
