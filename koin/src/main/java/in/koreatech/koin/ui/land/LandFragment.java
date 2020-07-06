@@ -1,10 +1,12 @@
 package in.koreatech.koin.ui.land;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,23 +24,24 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandContract;
 import in.koreatech.koin.ui.land.presenter.LandPresenter;
-
-import androidx.annotation.NonNull;
+import in.koreatech.koin.util.NavigationManger;
 
 /**
  * 복덕방 목록을 보여주는 Activity
  */
-public class LandActivity extends KoinNavigationDrawerActivity implements LandContract.View, OnMapReadyCallback {
-    private static final String TAG = "LandActivity";
+public class LandFragment extends KoinBaseFragment implements LandContract.View, OnMapReadyCallback {
+    private static final String TAG = "LandFragment";
+    HashMap<Marker, Integer> markerMap = new HashMap();
     private Context context;
     private LandPresenter landPresenter;
     private ArrayList<BokdukRoom> landArrayList;
@@ -46,21 +49,21 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     private GridLayoutManager landGridLayoutManager;
     private LandRecyclerAdapter landRecyclerAdapter;
     private NaverMap naverMap;
-    HashMap<Marker, Integer> markerMap = new HashMap();
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.land_activity_main);
-        ButterKnife.bind(this);
-        context = this;
-        init();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.land_fragment_main, container, false);
+        ButterKnife.bind(this, view);
+        context = getContext();
+        init(view);
+        return view;
     }
 
-    void init() {
+    void init(View view) {
         landArrayList = new ArrayList<>();
-        landRecyclerView = findViewById(R.id.land_recyclerlayout);
-        landGridLayoutManager = new GridLayoutManager(this, 2);
+        landRecyclerView = view.findViewById(R.id.land_recyclerlayout);
+        landGridLayoutManager = new GridLayoutManager(getContext(), 2);
         landRecyclerView.setLayoutManager(landGridLayoutManager);
         landRecyclerView.setNestedScrollingEnabled(false);
         landRecyclerView.setHasFixedSize(false);
@@ -77,14 +80,13 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
                 .camera(new CameraPosition(new LatLng(36.763695, 127.281796), 14));
 
 
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         NaverMapFragment mapFragment = (NaverMapFragment) fm.findFragmentById(R.id.activity_land_navermap);
         if (mapFragment == null) {
             mapFragment = NaverMapFragment.newInstance(options);
             fm.beginTransaction().add(R.id.activity_land_navermap, mapFragment).commit();
         }
         mapFragment.getMapAsync(this);
-
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)
@@ -97,7 +99,7 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
 
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         landPresenter.getLandList();
 
@@ -162,11 +164,11 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         if (landArrayList.size() <= index)
             return;
         BokdukRoom bokdukRoom = landArrayList.get(index);
-        Intent intent = new Intent(this, LandDetailActivity.class);
-        intent.putExtra("Land_ID", bokdukRoom.getId());
-        intent.putExtra("Land_latitude", bokdukRoom.getLatitude());
-        intent.putExtra("Land_longitude", bokdukRoom.getLongitude());
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("Land_ID", bokdukRoom.getId());
+        bundle.putDouble("Land_latitude", bokdukRoom.getLatitude());
+        bundle.putDouble("Land_longitude", bokdukRoom.getLongitude());
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_land_detail_action, bundle, NavigationManger.getNavigationAnimation());
     }
 
     /**
@@ -175,6 +177,17 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     @Override
     public void updateUserInterface() {
         landRecyclerAdapter = new LandRecyclerAdapter(landArrayList, context);
+        landRecyclerAdapter.setRecyclerViewClickListener(new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                goToLandDetailByIndex(position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        });
         landRecyclerView.setAdapter(landRecyclerAdapter);
     }
 
