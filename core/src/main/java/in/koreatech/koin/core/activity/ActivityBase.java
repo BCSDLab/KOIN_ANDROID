@@ -1,6 +1,7 @@
 package in.koreatech.koin.core.activity;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,6 +20,11 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+        try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } catch (IllegalStateException ignore) {
+
+        }
     }
 
 
