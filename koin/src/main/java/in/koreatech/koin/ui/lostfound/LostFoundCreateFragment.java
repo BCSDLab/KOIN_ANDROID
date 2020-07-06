@@ -1,7 +1,6 @@
 package in.koreatech.koin.ui.lostfound;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
@@ -11,12 +10,15 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
@@ -28,32 +30,27 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.entity.LostItem;
-import in.koreatech.koin.util.LoadImageFromUrl;
-import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.LostItem;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundEditContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundEditPresenter;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.util.LoadImageFromUrl;
+import in.koreatech.koin.util.NavigationManger;
+import in.koreatech.koin.util.SnackbarUtil;
 
 /**
  * 분실물 게시판 글 수정 및 작성
  */
-public class LostFoundEditActivity extends KoinNavigationDrawerActivity implements CompoundButton.OnCheckedChangeListener, Html.ImageGetter, LostFoundEditContract.View {
-    public static final String TAG = "LostFoundEditActivity";
+public class LostFoundCreateFragment extends KoinBaseFragment implements CompoundButton.OnCheckedChangeListener, Html.ImageGetter, LostFoundEditContract.View {
+    public static final String TAG = "LostFoundCreateFragment";
     public static final int CREATE_MODE = 0;
     public static final int EDIT_MODE = 1;
     private final Calendar calendar = Calendar.getInstance();
-    private int mode;
-    private LostItem lostItem;
-    private int lostDateYear;
-    private int lostDateMonth;
-    private int lostDateDay;
-    private LostFoundEditPresenter lostAndFoundPresenter;
-
     @BindView(R.id.lostfound_create_nestedscrollview)
     NestedScrollView lostfoundCreateNestedScrollView;
     @BindView(R.id.lostfound_create_lostdate_textview)
@@ -78,16 +75,22 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     EditText lostFoundCreatePlaceNameEditText;
     @BindView(R.id.lostfound_create_content_ediitext)
     EditText lostFoundCreateContentEditText;
+    private int mode;
+    private LostItem lostItem;
+    private int lostDateYear;
+    private int lostDateMonth;
+    private int lostDateDay;
+    private LostFoundEditPresenter lostAndFoundPresenter;
     private ArrayList<String> imageURL;
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.lostfound_create);
-        ButterKnife.bind(this);
-        mode = getIntent().getIntExtra("MODE", CREATE_MODE);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.lostfound_create_fragment, container, false);
+        ButterKnife.bind(this, view);
+        mode = requireArguments().getInt("MODE", CREATE_MODE);
         init();
+        return view;
     }
 
     public void init() {
@@ -104,7 +107,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         lostDateDay = calendar.get(Calendar.DAY_OF_MONTH);
         updateDateTextview(lostDateYear, lostDateMonth, lostDateDay);
         if (mode == EDIT_MODE) {
-            lostItem = (LostItem) getIntent().getSerializableExtra("LOST_ITEM");
+            lostItem = (LostItem) getArguments().getSerializable("LOST_ITEM");
             setLostItem(lostItem);
         }
         lostFoundCreateGetRadioButton.setOnCheckedChangeListener(this);
@@ -220,7 +223,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
     public void setDateTextviewFromDatePicker() {
 
-        DatePickerDialog datePicker = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
             lostDateYear = year;
             lostDateMonth = monthOfYear + 1;
             lostDateDay = dayOfMonth;
@@ -283,7 +286,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
     }
 
     public void onClickedCancelButton() {
-        SnackbarUtil.makeLongSnackbarActionYes(lostfoundCreateNestedScrollView, "취소하시겠습니까?", this::finish);
+        SnackbarUtil.makeLongSnackbarActionYes(lostfoundCreateNestedScrollView, "취소하시겠습니까?", this::onBackPressed);
     }
 
 
@@ -324,7 +327,7 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
         Drawable empty = getResources().getDrawable(R.drawable.image_no_image);
         d.addLevel(0, 0, empty);
         d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
-        new LoadImageFromUrl(lostFoundCreateContentEditText, this).execute(source, d);
+        new LoadImageFromUrl(lostFoundCreateContentEditText, getContext()).execute(source, d);
         return d;
     }
 
@@ -381,26 +384,25 @@ public class LostFoundEditActivity extends KoinNavigationDrawerActivity implemen
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
     public void showSuccessUpdate(LostItem lostItem) {
-        finish();
+        onBackPressed();
         ToastUtil.getInstance().makeShort("수정되었습니다.");
     }
 
     @Override
     public void showSuccessCreate(LostItem lostItem) {
-        Intent intent = new Intent(this, LostFoundDetailActivity.class);
-        intent.putExtra("ID", lostItem.getId());
-        startActivity(intent);
-        finish();
+        Bundle bundle = new Bundle();
+        bundle.putInt("ID", lostItem.getId());
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_detail_action, bundle, NavigationManger.getNavigationOptionAnimation().setPopUpTo(R.id.lostfound_create_fragment, true).build());
         ToastUtil.getInstance().makeShort("생성되었습니다.");
     }
 

@@ -156,6 +156,7 @@ public class KoinNavigationFragment extends BaseNavigationFragment implements Vi
 
     @Override
     protected void goToLostFoundFragment() {
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_action, null, NavigationManger.getNavigationDrawerServiceSelectAnimation());
     }
 
     @Override

@@ -19,7 +19,7 @@ import in.koreatech.koin.ui.callvan.CallvanActivity;
 import in.koreatech.koin.ui.circle.CircleFragment;
 import in.koreatech.koin.ui.dining.DiningFragment;
 import in.koreatech.koin.ui.land.LandFragment;
-import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
+import in.koreatech.koin.ui.lostfound.LostFoundMainFragment;
 import in.koreatech.koin.ui.search.SearchActivity;
 import in.koreatech.koin.ui.timetable.TimetableFragment;
 import in.koreatech.koin.ui.timetable.TimetableAnonymousFragment;
@@ -162,7 +162,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     }
 
     protected void goToLostFoundActivity() {
-        goToActivityFinish(new Intent(this, LostFoundMainActivity.class));
+        goToActivityFinish(new Intent(this, LostFoundMainFragment.class));
     }
 
     @Override

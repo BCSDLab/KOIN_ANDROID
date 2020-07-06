@@ -1,14 +1,16 @@
 package in.koreatech.koin.ui.lostfound;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,15 +27,17 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.lostfound.adapter.LostFoundCommentRecyclerviewAdapter;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundCommentContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundCommentPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.NavigationManger;
 import in.koreatech.koin.util.SnackbarUtil;
 
 
-public class LostFoundCommentActivity extends KoinNavigationDrawerActivity implements LostFoundCommentContract.View, LostFoundCommentRecyclerviewAdapter.OnCommentRemoveButtonClickListener {
+public class LostFoundCommentFragment extends KoinBaseFragment implements LostFoundCommentContract.View, LostFoundCommentRecyclerviewAdapter.OnCommentRemoveButtonClickListener {
 
     @BindView(R.id.lostfound_comment_title)
     TextView lostfoundCommentTitleTextView;
@@ -66,20 +70,22 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     private boolean isEditComment;
     private boolean isEditPossible;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.lostfound_comment_activity);
-        ButterKnife.bind(this);
-        id = getIntent().getIntExtra("ID", -1);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.lostfound_comment_fragment, container, false);
+        ButterKnife.bind(this, view);
+        context = getContext();
+        id = requireArguments().getInt("ID", -1);
         init();
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         String nickname = getNickname();
-        AuthorizeConstant authorizeConstant = getAuthority();
+        AuthorizeConstant authorizeConstant = AuthorizeManager.getAuthorize(getContext());
         if (nickname.isEmpty() || authorizeConstant == AuthorizeConstant.ANONYMOUS) {
             lostfoundCommentContentEdittext.setFocusable(false);
             lostfoundCommentContentEdittext.setClickable(false);
@@ -99,13 +105,13 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     public void init() {
         isEditComment = false;
         isEditPossible = true;
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(getContext());
         commentArrayList = new ArrayList<>();
         initRecyclerView();
     }
 
     public void initRecyclerView() {
-        commentRecyclerAdapter = new LostFoundCommentRecyclerviewAdapter(this, commentArrayList);
+        commentRecyclerAdapter = new LostFoundCommentRecyclerviewAdapter(getContext(), commentArrayList);
         commentRecyclerAdapter.setCustomOnClickListener(this);
         lostfoundCommentContentRecyclerview.setHasFixedSize(true);
         lostfoundCommentContentRecyclerview.setLayoutManager(layoutManager);
@@ -123,34 +129,30 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
 
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
 
     public void onClickCreateButton() {
-        AuthorizeConstant authorize = getAuthority();
+        AuthorizeConstant authorize = AuthorizeManager.getAuthorize(getContext());
         if (authorize == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
+            AuthorizeManager.showLoginRequestDialog(getActivity());
             return;
         } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
-            showNickNameRequestDialog();
+            AuthorizeManager.showNickNameRequestDialog(getActivity());
             return;
         }
-        Intent intent = new Intent(this, LostFoundEditActivity.class);
-        intent.putExtra("MODE", LostFoundEditActivity.CREATE_MODE);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("MODE", LostFoundCreateFragment.CREATE_MODE);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_create_action, bundle, NavigationManger.getNavigationAnimation());
     }
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
 
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -220,7 +222,7 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     }
 
     public String getNickname() {
-        String nickname = AuthorizeManager.getNickName(getApplicationContext());
+        String nickname = AuthorizeManager.getNickName(getContext());
         if (nickname == null)
             nickname = "";
         return nickname;
@@ -229,13 +231,13 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     @OnClick({R.id.lostfound_comment_content_linearlayout, R.id.lostfound_comment_content_edittext, R.id.lostfound_comment_cancel_button, R.id.lostfound_comment_register_button})
     public void onClicked(View view) {
         String nickname = getNickname();
-        AuthorizeConstant authorizeConstant = getAuthority();
+        AuthorizeConstant authorizeConstant = AuthorizeManager.getAuthorize(getContext());
         if (!isEditPossible) {
             if (authorizeConstant == AuthorizeConstant.ANONYMOUS) {
-                showLoginRequestDialog();
+                AuthorizeManager.showLoginRequestDialog(getActivity());
                 return;
             } else if (nickname.isEmpty()) {
-                showNickNameRequestDialog();
+                AuthorizeManager.showNickNameRequestDialog(getActivity());
                 return;
             }
         }

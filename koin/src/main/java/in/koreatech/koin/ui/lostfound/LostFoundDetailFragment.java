@@ -1,37 +1,42 @@
 package in.koreatech.koin.ui.lostfound;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.entity.LostItem;
-import in.koreatech.koin.util.LoadImageFromUrl;
-import in.koreatech.koin.util.SnackbarUtil;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.LostItem;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundDetailContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundDetailPresenter;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.LoadImageFromUrl;
+import in.koreatech.koin.util.NavigationManger;
+import in.koreatech.koin.util.SnackbarUtil;
 
 /**
  * 분실물 게시판 상세화면
  */
-public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implements LostFoundDetailContract.View, Html.ImageGetter {
+public class LostFoundDetailFragment extends KoinBaseFragment implements LostFoundDetailContract.View, Html.ImageGetter {
 
     @BindView(R.id.lostfound_detail_nestedscrollview)
     NestedScrollView lostfoundDetailNestedScrollview;
@@ -66,13 +71,14 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     private LostItem lostItem;
     private int id;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.lostfound_activity_detail);
-        ButterKnife.bind(this);
-        id = getIntent().getIntExtra("ID", -1);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.lostfound_detail_fragment, container, false);
+        ButterKnife.bind(this, view);
+        id = getArguments().getInt("ID", -1);
         init();
+        return view;
     }
 
     public void init() {
@@ -80,7 +86,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         if (id != -1)
             lostfoundDetailPresenter.getLostFoundDetailById(id);
@@ -88,12 +94,12 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
 
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -180,12 +186,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
 
     @Override
     public void showSuccessDeleted() {
-        finish();
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
+        onBackPressed();
     }
 
     @Override
@@ -195,18 +196,17 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
 
     @OnClick({R.id.lostfound_detail_comment_button, R.id.lostfound_detail_edit_button, R.id.lostfound_detail_delete_button})
     public void onClickedButton(View view) {
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.lostfound_detail_comment_button:
-                Intent commentIntent = new Intent(this, LostFoundCommentActivity.class);
-                commentIntent.putExtra("ID", id);
-                startActivity(commentIntent);
+                bundle.putInt("ID", id);
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.lostfound_comment_fragment, bundle, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.lostfound_detail_edit_button:
                 if (lostItem == null) return;
-                Intent lostFoundEditIntent = new Intent(this, LostFoundEditActivity.class);
-                lostFoundEditIntent.putExtra("LOST_ITEM", lostItem);
-                lostFoundEditIntent.putExtra("MODE", LostFoundEditActivity.EDIT_MODE);
-                startActivity(lostFoundEditIntent);
+                bundle.putSerializable("LOST_ITEM", lostItem);
+                bundle.putSerializable("MODE", LostFoundCreateFragment.EDIT_MODE);
+                NavigationManger.getNavigationController(getActivity()).navigate(R.id.lostfound_create_fragment, bundle, NavigationManger.getNavigationAnimation());
                 break;
             case R.id.lostfound_detail_delete_button:
                 SnackbarUtil.makeLongSnackbarActionYes(lostfoundDetailNestedScrollview, "글을 삭제할까요?", () -> {
@@ -220,24 +220,24 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
         if (id == AppBarBase.getLeftButtonId()) {
-            finish();
+            onBackPressed();
         } else if (id == AppBarBase.getRightButtonId()) {
             onClickCreateButton();
         }
     }
 
     public void onClickCreateButton() {
-        AuthorizeConstant authorize = getAuthority();
+        AuthorizeConstant authorize = AuthorizeManager.getAuthorize(getContext());
         if (authorize == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
+            AuthorizeManager.showLoginRequestDialog(getActivity());
             return;
         } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
-            showNickNameRequestDialog();
+            AuthorizeManager.showNickNameRequestDialog(getActivity());
             return;
         }
-        Intent intent = new Intent(this, LostFoundEditActivity.class);
-        intent.putExtra("MODE", LostFoundEditActivity.CREATE_MODE);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("MODE", LostFoundCreateFragment.CREATE_MODE);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_create_action, bundle, NavigationManger.getNavigationAnimation());
     }
 
     @Override
@@ -246,7 +246,7 @@ public class LostFoundDetailActivity extends KoinNavigationDrawerActivity implem
         Drawable empty = getResources().getDrawable(R.drawable.image_no_image);
         d.addLevel(0, 0, empty);
         d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
-        new LoadImageFromUrl(lostfoundDetailContentTextview, this).execute(source, d);
+        new LoadImageFromUrl(lostfoundDetailContentTextview, getContext()).execute(source, d);
         return d;
     }
 }

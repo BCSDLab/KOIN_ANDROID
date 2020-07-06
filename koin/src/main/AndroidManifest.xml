@@ -202,19 +202,19 @@
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.lostfound.LostFoundMainActivity"
+            android:name=".ui.lostfound.LostFoundMainFragment"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.lostfound.LostFoundDetailActivity"
+            android:name=".ui.lostfound.LostFoundDetailFragment"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.lostfound.LostFoundEditActivity"
+            android:name=".ui.lostfound.LostFoundCreateFragment"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.lostfound.LostFoundCommentActivity"
+            android:name=".ui.lostfound.LostFoundCommentFragment"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
