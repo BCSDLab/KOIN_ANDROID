@@ -28,7 +28,7 @@ import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.board.ArticleFragment;
-import in.koreatech.koin.ui.lostfound.LostFoundDetailActivity;
+import in.koreatech.koin.ui.lostfound.LostFoundDetailFragment;
 import in.koreatech.koin.ui.search.adapter.SearchResultAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchResultContract;
 import in.koreatech.koin.ui.search.presenter.SearchResultPresenter;
@@ -162,7 +162,7 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
                 intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
                 break;
             case 9: // 분실물
-                intent = new Intent(getActivity(), LostFoundDetailActivity.class);
+                intent = new Intent(getActivity(), LostFoundDetailFragment.class);
                 intent.putExtra("ID", searchedArticleItem.getId());
                 break;
             case 10: // 중고장터

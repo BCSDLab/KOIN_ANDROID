@@ -1,10 +1,12 @@
 package in.koreatech.koin.ui.lostfound;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,23 +16,26 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.LostItem;
 import in.koreatech.koin.data.network.response.LostAndFoundPageResponse;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.lostfound.presenter.LostFoundMainContract;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.lostfound.adapter.LostFoundMainActivityRecyclerviewAdapter;
+import in.koreatech.koin.ui.lostfound.presenter.LostFoundMainContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundMainPresenter;
+import in.koreatech.koin.ui.main.MainActivity;
+import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.NavigationManger;
 
-public class LostFoundMainActivity extends KoinNavigationDrawerActivity implements SwipeRefreshLayoutBottom.OnRefreshListener, LostFoundMainContract.View {
-    public static final String TAG = "LostFoundMainActivity";
+public class LostFoundMainFragment extends KoinBaseFragment implements SwipeRefreshLayoutBottom.OnRefreshListener, LostFoundMainContract.View {
+    public static final String TAG = "LostFoundMainFragment";
     public static final int LIMITITEM = 10;
     /* View Component */
     @BindView(R.id.lostfound_main_recyclerview)
@@ -45,13 +50,27 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     private Context context;
     private int currentPage;
     private int totalPage;
+    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getContext(), lostfoundMainRecyclerView, new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, final int position) {
+            Bundle bundle = new Bundle();
+            bundle.putInt("ID", lostItemArrayList.get(position).getId());
+            NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_detail_action, bundle, NavigationManger.getNavigationAnimation());
+        }
 
+        @Override
+        public void onLongClick(View view, int position) {
+        }
+
+    });
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.lostfound_activity_main);
-        ButterKnife.bind(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.lostfound_main_fragment, container, false);
+        ButterKnife.bind(this, view);
         init();
+        return view;
     }
 
     /**
@@ -63,7 +82,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     public void onClickedKoinBaseAppbar(View view) {
         int id = view.getId();
         if (id == AppBarBase.getLeftButtonId())
-            callDrawerItem(R.id.navi_item_home);
+            NavigationManger.goToHome(getActivity());
     }
 
     public void init() {
@@ -72,7 +91,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
         totalPage = 1;
         currentPage = 0;
@@ -82,12 +101,12 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     public void initVariable() {
         totalPage = 1;
         currentPage = 0;
-        context = this;
+        context = getContext();
         new LostFoundMainPresenter(this);
         lostItemArrayList = new ArrayList<>();
         lostfoundMainSwipeRefreshLayout.setOnRefreshListener(this);
-        lostFoundMainActivityRecyclerviewAdapter = new LostFoundMainActivityRecyclerviewAdapter(this, lostItemArrayList);
-        linearLayoutManager = new LinearLayoutManager(this);
+        lostFoundMainActivityRecyclerviewAdapter = new LostFoundMainActivityRecyclerviewAdapter(context, lostItemArrayList);
+        linearLayoutManager = new LinearLayoutManager(context);
     }
 
     /**
@@ -109,29 +128,14 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
         lostfoundMainSwipeRefreshLayout.setRefreshing(false);
     }
 
-
-    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getBaseContext(), lostfoundMainRecyclerView, new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, final int position) {
-            Intent intent = new Intent(context, LostFoundDetailActivity.class);
-            intent.putExtra("ID", lostItemArrayList.get(position).getId());
-            startActivity(intent);
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-        }
-
-    });
-
     @Override
     public void showLoading() {
-        showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     /**
@@ -168,7 +172,7 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     public void onClickedBaseAppbar(View v) {
         int id = v.getId();
         if (id == AppBarBase.getLeftButtonId()) {
-            goToMainActivity();
+            onBackPressed();
         } else if (id == AppBarBase.getRightButtonId()) {
             onClickCreateButton();
         }
@@ -180,16 +184,16 @@ public class LostFoundMainActivity extends KoinNavigationDrawerActivity implemen
     }
 
     public void onClickCreateButton() {
-        AuthorizeConstant authorize = getAuthority();
+        AuthorizeConstant authorize = AuthorizeManager.getAuthorize(getContext());
         if (authorize == AuthorizeConstant.ANONYMOUS) {
-            showLoginRequestDialog();
+            AuthorizeManager.showLoginRequestDialog(getActivity());
             return;
         } else if (authorize == AuthorizeConstant.MEMBER && UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName() == null) {
-            showNickNameRequestDialog();
+            AuthorizeManager.showNickNameRequestDialog(getActivity());
             return;
         }
-        Intent intent = new Intent(this, LostFoundEditActivity.class);
-        intent.putExtra("MODE", LostFoundEditActivity.CREATE_MODE);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("MODE", LostFoundCreateFragment.CREATE_MODE);
+        NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_lostfound_create_action, bundle, NavigationManger.getNavigationAnimation());
     }
 }

@@ -69,6 +69,10 @@
             android:id="@+id/navi_land_action"
             app:destination="@+id/land_fragment" />
 
+        <action
+            android:id="@+id/navi_lostfound_action"
+            app:destination="@+id/lostfound_main_fragment" />
+
     </fragment>
 
 
@@ -596,11 +600,70 @@
 
     </fragment>
 
+
     <fragment
         android:id="@+id/land_detail_fragment"
         android:name="in.koreatech.koin.ui.land.LandDetailFragment"
         android:label="@string/navigation_item_land"
-        tools:layout="@layout/land_fragment_detail"/>
+        tools:layout="@layout/land_fragment_detail" />
+
+
+    <fragment
+        android:id="@+id/lostfound_main_fragment"
+        android:name="in.koreatech.koin.ui.lostfound.LostFoundMainFragment"
+        android:label="@string/navigation_item_lostfound"
+        tools:layout="@layout/lostfound_main_fragment">
+
+        <action
+            android:id="@+id/navi_lostfound_detail_action"
+            app:destination="@+id/lostfound_detail_fragment" />
+
+        <action
+            android:id="@+id/navi_lostfound_create_action"
+            app:destination="@+id/lostfound_create_fragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lostfound_detail_fragment"
+        android:name="in.koreatech.koin.ui.lostfound.LostFoundDetailFragment"
+        android:label="@string/navigation_item_lostfound"
+        tools:layout="@layout/lostfound_detail_fragment">
+
+        <action
+            android:id="@+id/navi_lostfound_create_action"
+            app:destination="@+id/lostfound_create_fragment" />
+
+        <action
+            android:id="@+id/navi_lostfound_comment_action"
+            app:destination="@+id/lostfound_comment_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lostfound_create_fragment"
+        android:name="in.koreatech.koin.ui.lostfound.LostFoundCreateFragment"
+        android:label="@string/navigation_item_lostfound"
+        tools:layout="@layout/lostfound_create_fragment">
+
+        <action
+            android:id="@+id/navi_lostfound_detail_action"
+            app:destination="@+id/lostfound_detail_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/lostfound_comment_fragment"
+        android:name="in.koreatech.koin.ui.lostfound.LostFoundCommentFragment"
+        android:label="@string/navigation_item_lostfound"
+        tools:layout="@layout/lostfound_comment_fragment">
+
+        <action
+            android:id="@+id/navi_lostfound_create_action"
+            app:destination="@+id/lostfound_create_fragment" />
+
+    </fragment>
 
 
 </navigation>
