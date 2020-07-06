@@ -5,17 +5,19 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
 import android.text.InputFilter;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,34 +26,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditContract;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditContract;
+import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
 import in.koreatech.koin.util.FilterUtil;
 import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.util.NavigationManger;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.util.TimeUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
 
-public class UserInfoEditedActivity extends KoinNavigationDrawerActivity implements UserInfoEditContract.View {
-    private final String TAG = "UserInfoEditedActivity";
-    private Context context;
-
-    private User user;
-    private UserInfoEditPresenter userInfoEditPresenter;
-
-
-    private String changedNickname;
-    private boolean isNicknameChecked;
-
-    private ArrayList<String> ARRAY_MAJOR;
-
-    /* View Component */
-
+public class UserInfoEditedFragment extends KoinBaseFragment implements UserInfoEditContract.View {
+    private final String TAG = "UserInfoEditedFragment";
     //default data
     @BindView(R.id.userinfoedited_textview_id)
     public TextView userinfoeditedTextviewId;
@@ -65,6 +55,8 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     public LinearLayout userinfoeditedButtonNicknameCheck;
     @BindView(R.id.userinfoedited_edittext_phone_num_1)
     public EditText userinfoeditedEdittextPhone1;
+
+    /* View Component */
     @BindView(R.id.userinfoedited_edittext_phone_num_2)
     public EditText userinfoeditedEdittextPhone2;
     @BindView(R.id.userinfoedited_edittext_phone_num_3)
@@ -73,48 +65,32 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     public RadioButton userinfoeditedRadiobuttonGenderWoman;
     @BindView(R.id.userinfoedited_radiobutton_gender_man)
     public RadioButton userinfoeditedRadiobuttonGenderMan;
-
     //univ. data
     @BindView(R.id.userinfoedited_edittext_student_id)
     public EditText userinfoeditedEdittextStudentId;
     @BindView(R.id.userinfoedited_edittext_major)
     public EditText userinfoeditedTextviewMajor;
+    private Context context;
+    private User user;
+    private UserInfoEditPresenter userInfoEditPresenter;
+    private String changedNickname;
+    private boolean isNicknameChecked;
+    private ArrayList<String> ARRAY_MAJOR;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info_edited);
-        ButterKnife.bind(this);
-        this.context = this;
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_user_info_edited, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
         init();
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-
         readUser();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
     }
 
 
@@ -123,7 +99,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
         SnackbarUtil.makeLongSnackbarActionYes(this.userinfoeditedTextviewId, getString(R.string.back_button_pressed), new Runnable() {
             @Override
             public void run() {
-                finish();
+                onBackPressed();
             }
         });
     }
@@ -164,9 +140,9 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
                 this.userinfoeditedEdittextStudentId.requestFocus();
                 break;
             case R.id.userinfoedited_edittext_student_id:
-                view = this.getCurrentFocus();
+                view = getActivity().getCurrentFocus();
                 if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
 
@@ -390,7 +366,7 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @Override
     public void showConfirm() {
         ToastUtil.getInstance().makeShort("정보가 수정되었습니다.");
-        finish();
+        NavigationManger.getNavigationController(getActivity()).popBackStack();
     }
 
     @Override

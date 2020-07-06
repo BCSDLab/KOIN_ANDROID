@@ -27,7 +27,7 @@ import in.koreatech.koin.ui.usedmarket.MarketUsedActivity;
 import in.koreatech.koin.ui.store.StoreFragment;
 import in.koreatech.koin.ui.login.LoginActivity;
 import in.koreatech.koin.ui.main.MainActivity;
-import in.koreatech.koin.ui.userinfo.UserInfoActivity;
+import in.koreatech.koin.ui.userinfo.UserInfoFragment;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
@@ -212,7 +212,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToUserInfoActivity(int service) {
-        Intent intent = new Intent(this, UserInfoActivity.class);
+        Intent intent = new Intent(this, UserInfoFragment.class);
         intent.putExtra("CONDITION", service);
         startActivity(intent);
     }
@@ -301,7 +301,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
                 .setMessage("닉네임이 필요한 서비스입니다.\n닉네임을 추가 하시겠습니까?")
                 .setCancelable(false)
                 .setPositiveButton("확인", (dialog, whichButton) -> {
-                    startActivity(new Intent(this, UserInfoActivity.class));
+                    startActivity(new Intent(this, UserInfoFragment.class));
                     overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out);
                 })
                 .setNegativeButton("취소", (dialog, whichButton) -> dialog.cancel());

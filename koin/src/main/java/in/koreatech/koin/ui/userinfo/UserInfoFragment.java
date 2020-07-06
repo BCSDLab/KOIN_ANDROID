@@ -1,43 +1,36 @@
 package in.koreatech.koin.ui.userinfo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.ui.userinfo.presenter.UserInfoContract;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.userinfo.presenter.UserInfoContract;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoPresenter;
+import in.koreatech.koin.util.AuthorizeManager;
 import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.util.NavigationManger;
 import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.ui.login.LoginActivity;
 
-public class UserInfoActivity extends KoinNavigationDrawerActivity implements UserInfoContract.View {
-    private final String TAG = "UserInfoActivity";
-    private Context context;
-
-    private User user;
-    private int requiredService;
-    private UserInfoPresenter userInfoPresenter;
-
+public class UserInfoFragment extends KoinBaseFragment implements UserInfoContract.View {
+    private final String TAG = "UserInfoFragment";
     /* View Component */
     @BindView(R.id.userinfo_scrollview)
     public ScrollView userinfoScrollview;
-
     //default data
     @BindView(R.id.userinfo_textview_id)
     public TextView userinfoTextviewId;
@@ -51,59 +44,31 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     public TextView userinfoTextviewPhone;
     @BindView(R.id.userinfo_textview_gender)
     public TextView userinfoTextviewGender;
-
     //univ. data
     @BindView(R.id.userinfo_textview_student_id)
     public TextView userinfoTextviewStudentId;
     @BindView(R.id.userinfo_textview_major)
     public TextView userinfoTextviewMajor;
+    private Context context;
+    private User user;
+    private int requiredService;
+    private UserInfoPresenter userInfoPresenter;
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info);
-        ButterKnife.bind(this);
-        this.context = this;
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_user_info, container, false);
+        ButterKnife.bind(this, view);
+        this.context = getContext();
         init();
+        return view;
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-
         userInfoPresenter.getUserData();
     }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_user_info, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 
     @OnClick(R.id.koin_base_app_bar)
     public void onClickBaseAppbar(View v) {
@@ -111,7 +76,7 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
         else if (id == AppBarBase.getRightButtonId())
-            startActivity(new Intent(this, UserInfoEditedActivity.class));
+            NavigationManger.getNavigationController(getActivity()).navigate(R.id.navi_userinfo_edited_action, null, NavigationManger.getNavigationAnimation());
     }
 
     private void init() {
@@ -146,13 +111,12 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @Override
     public void checkRequiredInfo() {
-        Intent intent = getIntent();
-        this.requiredService = intent.getIntExtra("CONDITION", -1);
+        this.requiredService = getArguments().getInt("CONDITION", -1);
 
         switch (this.requiredService) {
             case R.string.navigation_item_free_board:
             case R.string.navigation_item_recruit_board:
-                String userName = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserName();
+                String userName = AuthorizeManager.getUser(getContext()).getUserName();
                 if (FormValidatorUtil.validateStringIsEmpty(userName) && userinfoTextviewName.getText().equals("-")) {
                     userinfoTextviewName.setText("이름을 입력해주세요");
 //                    userinfoTextviewName.setTypeface(Typeface.DEFAULT_BOLD);
@@ -179,11 +143,6 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        setLastNavigationItem();
-        finish();
-    }
 
     @OnClick(R.id.userinfo_button_delete_user)
     public void onClickDeleteUserButton() {
@@ -199,15 +158,12 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
 
     @OnClick(R.id.userinfo_button_logout_user)
     public void onClickLogoutButton() {
-        onClickNavigationLogout();
+        NavigationManger.logout(getActivity());
     }
 
     @Override
     public void onDeleteUserReceived() {
-        Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
+        NavigationManger.logout(getActivity());
     }
 
     @Override

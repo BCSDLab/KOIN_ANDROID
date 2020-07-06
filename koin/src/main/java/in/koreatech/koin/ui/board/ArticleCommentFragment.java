@@ -35,6 +35,7 @@ import in.koreatech.koin.ui.board.presenter.ArticleCommentPresenter;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.NavigationManger;
 import in.koreatech.koin.util.SnackbarUtil;
 
@@ -119,7 +120,7 @@ public class ArticleCommentFragment extends KoinBaseFragment implements ArticleC
         else
             articleCommentPresenter.getAnonymousArticle(articleUid);
 
-        if ((boardUid == ID_FREE || boardUid == ID_RECRUIT) && (nickname.isEmpty() || authorizeConstant == AuthorizeConstant.ANONYMOUS)) {
+        if ((boardUid == ID_FREE || boardUid == ID_RECRUIT) && (FormValidatorUtil.validateStringIsEmpty(nickname) || authorizeConstant == AuthorizeConstant.ANONYMOUS)) {
             articleCommentContentEdittext.setFocusable(false);
             articleCommentContentEdittext.setClickable(false);
             iIsEditPossible = false;
@@ -545,6 +546,6 @@ public class ArticleCommentFragment extends KoinBaseFragment implements ArticleC
     }
 
     public String getNickname() {
-        return AuthorizeManager.getUser(getContext()).getUserNickName();
+        return AuthorizeManager.getNickName(getContext());
     }
 }

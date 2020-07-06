@@ -158,11 +158,11 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.userinfo.UserInfoActivity"
+            android:name=".ui.userinfo.UserInfoFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.userinfo.UserInfoEditedActivity"
+            android:name=".ui.userinfo.UserInfoEditedFragment"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity

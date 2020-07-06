@@ -18,18 +18,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Comment;
 import in.koreatech.koin.data.network.entity.LostItem;
-import in.koreatech.koin.util.SnackbarUtil;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.lostfound.presenter.LostFoundCommentContract;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.lostfound.adapter.LostFoundCommentRecyclerviewAdapter;
+import in.koreatech.koin.ui.lostfound.presenter.LostFoundCommentContract;
 import in.koreatech.koin.ui.lostfound.presenter.LostFoundCommentPresenter;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.util.AuthorizeManager;
+import in.koreatech.koin.util.SnackbarUtil;
 
 
 public class LostFoundCommentActivity extends KoinNavigationDrawerActivity implements LostFoundCommentContract.View, LostFoundCommentRecyclerviewAdapter.OnCommentRemoveButtonClickListener {
@@ -219,15 +220,9 @@ public class LostFoundCommentActivity extends KoinNavigationDrawerActivity imple
     }
 
     public String getNickname() {
-        String nickname = "";
-        try {
-            nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
-        } catch (NullPointerException e) {
-            UserInfoSharedPreferencesHelper.getInstance().init(getApplicationContext());
-            if (UserInfoSharedPreferencesHelper.getInstance().loadUser() != null)
-                nickname = UserInfoSharedPreferencesHelper.getInstance().loadUser().getUserNickName();
-        }
-        if (nickname == null) nickname = "";
+        String nickname = AuthorizeManager.getNickName(getApplicationContext());
+        if (nickname == null)
+            nickname = "";
         return nickname;
     }
 
