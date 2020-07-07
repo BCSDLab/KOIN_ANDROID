@@ -21,11 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.core.activity.WebViewActivity;
-import in.koreatech.koin.ui.board.ArticleFragment;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
-import in.koreatech.koin.ui.lostfound.LostFoundDetailFragment;
 import in.koreatech.koin.ui.main.MainActivity;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -34,8 +31,6 @@ import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
 import in.koreatech.koin.ui.search.presenter.SearchArticleContract;
 import in.koreatech.koin.ui.search.presenter.SearchArticlePresenter;
-import in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailFragment;
-import in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailFragment;
 import in.koreatech.koin.util.NavigationManger;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
