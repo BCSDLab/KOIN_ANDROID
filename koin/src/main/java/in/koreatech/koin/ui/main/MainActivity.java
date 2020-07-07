@@ -58,6 +58,7 @@ public class MainActivity extends ActivityBase {
                 handleNavigationDrawer();
                 break;
             case R.id.base_navigation_bar_bottom_search_linearlayout:
+                goToSearch();
                 break;
 
         }
@@ -65,6 +66,10 @@ public class MainActivity extends ActivityBase {
 
     public void goToHome() {
         NavigationManger.goToHome(this);
+    }
+
+    public void goToSearch() {
+        NavigationManger.getNavigationController(this).navigate(R.id.navi_search_action, null, NavigationManger.getNavigationAnimation());
     }
 
 

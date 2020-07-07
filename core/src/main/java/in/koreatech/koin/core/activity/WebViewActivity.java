@@ -70,6 +70,8 @@ public class WebViewActivity extends ActivityBase {
         webView = findViewById(R.id.webView);
         webView.setWebChromeClient(new WebChromeClient());
         webView.getSettings().setJavaScriptEnabled(true);
+        WebSettings settings = webView.getSettings();
+        settings.setDomStorageEnabled(true);
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
