@@ -222,7 +222,7 @@
             android:label="코인 커뮤니티"
             android:theme="@style/Theme.AppCompat.Translucent" />
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".ui.search.SearchFragment"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity

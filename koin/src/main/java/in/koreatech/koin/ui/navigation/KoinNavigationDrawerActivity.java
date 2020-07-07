@@ -20,7 +20,7 @@ import in.koreatech.koin.ui.circle.CircleFragment;
 import in.koreatech.koin.ui.dining.DiningFragment;
 import in.koreatech.koin.ui.land.LandFragment;
 import in.koreatech.koin.ui.lostfound.LostFoundMainFragment;
-import in.koreatech.koin.ui.search.SearchActivity;
+import in.koreatech.koin.ui.search.SearchFragment;
 import in.koreatech.koin.ui.timetable.TimetableFragment;
 import in.koreatech.koin.ui.timetable.TimetableAnonymousFragment;
 import in.koreatech.koin.ui.usedmarket.MarketUsedFragment;
@@ -133,7 +133,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
 
     @Override
     protected void goToSearchActivity() {
-        goToActivityFinish(new Intent(this, SearchActivity.class));
+        goToActivityFinish(new Intent(this, SearchFragment.class));
     }
 
     @Override

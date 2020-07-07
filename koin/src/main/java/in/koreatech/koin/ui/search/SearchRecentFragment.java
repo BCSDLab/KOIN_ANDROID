@@ -18,12 +18,14 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.search.adapter.SearchRecentAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchRecentContract;
 import in.koreatech.koin.ui.search.presenter.SearchRecentPresenter;
 
 
-public class SearchRecentFragment extends Fragment implements SearchRecentContract.View {
+public class SearchRecentFragment extends KoinBaseFragment implements SearchRecentContract.View {
 
     @BindView(R.id.search_recent_recyclerview)
     RecyclerView searchRecentRecyclerview;
@@ -56,12 +58,12 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
 
     @Override
     public void showLoading() {
-        ((SearchActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        ((SearchActivity) getActivity()).hideLoading();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -85,7 +87,7 @@ public class SearchRecentFragment extends Fragment implements SearchRecentContra
     private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), searchRecentRecyclerview, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
-            ((SearchActivity) getActivity()).setSearchText(recentSearchData.get(position));
+            ((SearchFragment) getParentFragment()).setSearchText(recentSearchData.get(position));
         }
 
         @Override

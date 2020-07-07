@@ -18,6 +18,9 @@
         android:id="@+id/navi_userinfo_action"
         app:destination="@+id/userinfo_fragment" />
 
+    <action
+        android:id="@+id/navi_search_action"
+        app:destination="@+id/search_fragment"/>
 
     <fragment
         android:id="@+id/navigation_drawer_fragment"
@@ -662,6 +665,41 @@
         <action
             android:id="@+id/navi_lostfound_create_action"
             app:destination="@+id/lostfound_create_fragment" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/search_fragment"
+        android:name="in.koreatech.koin.ui.search.SearchFragment"
+        android:label="@string/navigation_item_search"
+        tools:layout="@layout/search_fragment_main">
+
+
+        <action
+            android:id="@+id/navi_anonymous_article_action"
+            app:destination="@+id/anonymous_article_fragment" />
+
+        <action
+            android:id="@+id/navi_recruit_article_action"
+            app:destination="@+id/recruit_article_fragment" />
+
+        <action
+            android:id="@+id/navi_free_article_action"
+            app:destination="@+id/free_article_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_buy_detail_action"
+            app:destination="@+id/market_used_buy_detail_fragment" />
+
+        <action
+            android:id="@+id/navi_market_used_sell_detail_action"
+            app:destination="@+id/market_used_sell_detail_fragment" />
+
+
+        <action
+            android:id="@+id/navi_lostfound_detail_action"
+            app:destination="@+id/lostfound_detail_fragment" />
 
     </fragment>
 

@@ -10,8 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import in.koreatech.koin.R;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 
-public class SearchNoResultFragment extends Fragment{
+public class SearchNoResultFragment extends KoinBaseFragment {
 
     @Nullable
     @Override

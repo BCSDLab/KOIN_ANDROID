@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,27 +17,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.activity.WebViewActivity;
-
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.swiperefreshbottom.SwipeRefreshLayoutBottom;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.SearchedArticle;
 import in.koreatech.koin.data.network.interactor.SearchArticleRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.ui.board.ArticleFragment;
-import in.koreatech.koin.ui.lostfound.LostFoundDetailFragment;
+import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.search.adapter.SearchResultAdapter;
 import in.koreatech.koin.ui.search.presenter.SearchResultContract;
 import in.koreatech.koin.ui.search.presenter.SearchResultPresenter;
-import in.koreatech.koin.ui.usedmarket.MarketUsedBuyDetailFragment;
-import in.koreatech.koin.ui.usedmarket.MarketUsedSellDetailFragment;
 
-import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
-import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_FREE;
-import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
-
-public class SearchResultFragment extends Fragment implements SwipeRefreshLayoutBottom.OnRefreshListener, SearchResultContract.View {
+public class SearchResultFragment extends KoinBaseFragment implements SwipeRefreshLayoutBottom.OnRefreshListener, SearchResultContract.View {
     @BindView(R.id.search_recyclerview)
     RecyclerView searchRecyclerview;
     @BindView(R.id.search_swipe_refresh_layout)
@@ -55,6 +45,17 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
     private SearchResultPresenter searchResultPresenter;
     private LinearLayoutManager linearLayoutManager;
     private SearchResultAdapter searchResultAdapter;
+    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), searchRecyclerview, new RecyclerViewClickListener() {
+        @Override
+        public void onClick(View view, final int position) {
+            ((SearchFragment) getParentFragment()).startFragmentByTableId(searchedArticles.get(position));
+        }
+
+        @Override
+        public void onLongClick(View view, int position) {
+        }
+
+    });
 
     @Nullable
     @Override
@@ -102,12 +103,12 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void showLoading() {
-        ((SearchActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
     }
 
     @Override
     public void hideLoading() {
-        ((SearchActivity) getActivity()).hideLoading();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     @Override
@@ -128,63 +129,4 @@ public class SearchResultFragment extends Fragment implements SwipeRefreshLayout
     public void setPresenter(SearchResultPresenter presenter) {
         this.searchResultPresenter = presenter;
     }
-
-    private RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(getActivity(), searchRecyclerview, new RecyclerViewClickListener() {
-        @Override
-        public void onClick(View view, final int position) {
-
-            startActivityByTableId(searchedArticles.get(position));
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-        }
-
-    });
-
-    private void startActivityByTableId(SearchedArticle searchedArticleItem) {
-        if (searchedArticleItem == null) return;
-        Intent intent;
-        switch (searchedArticleItem.getTableId()) {
-            case 5: // 자유게시판
-                intent = new Intent(getActivity(), ArticleFragment.class);
-                intent.putExtra("BOARD_UID", ID_FREE);
-                intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
-                break;
-            case 6: // 자유게시판
-                intent = new Intent(getActivity(), ArticleFragment.class);
-                intent.putExtra("BOARD_UID", ID_RECRUIT);
-                intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
-                break;
-            case 7: // 취업게시판
-                intent = new Intent(getActivity(), ArticleFragment.class);
-                intent.putExtra("BOARD_UID", ID_ANONYMOUS);
-                intent.putExtra("ARTICLE_UID", searchedArticleItem.getId());
-                break;
-            case 9: // 분실물
-                intent = new Intent(getActivity(), LostFoundDetailFragment.class);
-                intent.putExtra("ID", searchedArticleItem.getId());
-                break;
-            case 10: // 중고장터
-                if (searchedArticleItem.getPermalink().contains("buy")) {
-                    intent = new Intent(getActivity(), MarketUsedBuyDetailFragment.class);
-                    intent.putExtra("MARKET_ID", 1);
-                } else {
-                    intent = new Intent(getActivity(), MarketUsedSellDetailFragment.class);
-                    intent.putExtra("MARKET_ID", 0);
-                }
-
-                intent.putExtra("ITEM_ID", searchedArticleItem.getId());
-                break;
-            default:
-                intent = new Intent(getActivity(), WebViewActivity.class);
-                intent.putExtra("title", searchedArticleItem.getServiceName());
-                intent.putExtra("url", searchedArticleItem.getPermalink());
-                break;
-        }
-
-        getActivity().startActivity(intent);
-
-    }
-
 }
