@@ -25,6 +25,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     private Context context;
     private LayoutInflater layoutInflater; //inflate 사용위한 inflater
     private ArrayList<Store> storeArrayList; //학교 앞 상점 List
+    private int baseHeight = 0;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.store_name_textview)
@@ -55,7 +56,12 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.store_list_item, parent, false);
+        baseHeight = itemView.getMeasuredHeight();
         return new ViewHolder(itemView);
+    }
+
+    public int getHeight() {
+        return baseHeight * getItemCount();
     }
 
     @Override
