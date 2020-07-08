@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,48 +18,48 @@ import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Store;
 
-public class StorePagerAdapter extends RecyclerView.Adapter<StorePagerAdapter.StorePagerViewHolder> {
+public class StorePagerAdapter extends PagerAdapter {
 
+    private Context context;
     private List<Store> allStoreList;
     private String[] categoryCode;
 
-    public StorePagerAdapter(List<Store> allStoreList, String[] categoryCode) {
+    public StorePagerAdapter(Context context, List<Store> allStoreList, String[] categoryCode) {
+        this.context = context;
         this.allStoreList = allStoreList;
         this.categoryCode = categoryCode;
     }
 
-    @NonNull
     @Override
-    public StorePagerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new StorePagerViewHolder(parent.getContext(), LayoutInflater.from(parent.getContext()).inflate(R.layout.store_main_pager_item, parent, false));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull StorePagerViewHolder holder, int position) {
-        StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(holder.context, categorizeStore(position));
-        holder.storeRecyclerView.setAdapter(storeRecyclerAdapter);
-    }
-
-
-
-    @Override
-    public int getItemCount() {
+    public int getCount() {
         return categoryCode.length + 1;
     }
 
-    public static class StorePagerViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.store_recycler_view)
-        public RecyclerView storeRecyclerView;
+    @Override
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return (view == (View) object);
+    }
 
-        public Context context;
+    @NonNull
+    @Override
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        View view = LayoutInflater.from(context).inflate(R.layout.store_main_pager_item, container, false);
 
-        public StorePagerViewHolder(Context context, @NonNull View itemView) {
-            super(itemView);
-            this.context = context;
-            ButterKnife.bind(this, itemView);
+        RecyclerView storeRecyclerView = view.findViewById(R.id.store_recycler_view);
 
-            storeRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        }
+        StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(context, categorizeStore(position));
+        storeRecyclerView.setAdapter(storeRecyclerAdapter);
+        storeRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        view.setTag(position);
+        container.addView(view);
+
+        return view;
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((View) object);
     }
 
     public ArrayList<Store> categorizeStore(int position) {

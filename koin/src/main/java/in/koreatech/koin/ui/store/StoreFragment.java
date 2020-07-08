@@ -1,26 +1,22 @@
 package in.koreatech.koin.ui.store;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-import android.icu.util.Measure;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-import android.widget.Adapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 
@@ -37,7 +33,6 @@ import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.store.adapter.StorePagerAdapter;
-import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
 import in.koreatech.koin.util.NavigationManger;
@@ -55,12 +50,9 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
     /* View Component */
     @BindView(R.id.store_swiperefreshlayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    /*@BindView(R.id.store_recyclerview)
-    RecyclerView storeListRecyclerView;*/
     @BindView(R.id.store_pager)
-    ViewPager2 storePager;
+    ViewPager storePager;
     private Context context;
-    //private StoreRecyclerAdapter storeRecyclerAdapter;
     private StorePagerAdapter storePagerAdapter;
     private String today;
     private StorePresenter storePresenter;
@@ -81,16 +73,34 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
     private int storeCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
     private Resources resources;
     private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
-    private ViewPager2.OnPageChangeCallback storePagerCallback = new ViewPager2.OnPageChangeCallback() {
+    private ViewPager.OnPageChangeListener storePagerChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
         @Override
         public void onPageSelected(int position) {
-            super.onPageSelected(position);
 
-            storePager.getAdapter().
+            View view = storePager.findViewWithTag(position);
+            if(view != null) {
+                view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                int height = view.getMeasuredHeight();
+                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) storePager.getLayoutParams();
+                layoutParams.height = height;
+                Log.i("RecyclerHeight", String.valueOf(height));
+
+                storePager.setLayoutParams(layoutParams);
+            }
 
             initCateGoryTextColor();
             if (position != 0)
                 storeCategoryNumber = getCategoryPoistionNumber(getActivity().findViewById(CATEGORY_TEXT_ID[position - 1]));
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     };
 
@@ -117,11 +127,8 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
             R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
     public void storeCategoryOnCliked(View view) {
-        /*initCateGoryTextColor();
-        this.storeCategoryNumber = getCategoryPoistionNumber(view);*/
         storePager.setCurrentItem(getCategoryPoistionNumber(view), true);
-        /*if (!this.storeAllArraylist.isEmpty())
-            sortStoreCategorize(this.storeCategoryNumber);*/
+        //TODO("When clicked already selected position, Go to allList page(position 0)")
     }
 
     public void initCateGoryTextColor() {
@@ -140,31 +147,6 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
             }
         }
         return -1;
-
-    }
-
-    /*public void sortStoreCategorize(int position) {
-        this.storeArrayList.clear();
-        if (position == 0)
-            this.storeArrayList.addAll(this.storeAllArraylist);
-        else {
-            for (int a = 0; a < this.storeAllArraylist.size(); a++)
-                if (isSameCategory(this.storeAllArraylist.get(a).getCategory(), categoryCode[position - 1]))
-                    this.storeArrayList.add(this.storeAllArraylist.get(a));
-        }
-        updateUserInterface();
-
-    }*/
-
-    public boolean isSameCategory(String first, String second) {
-        if (first.equals("S001") && second.equals("S000"))
-            return true;
-        return first.equals(second);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     private void init() {
@@ -175,12 +157,6 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
         this.layoutManager = new LinearLayoutManager(getContext());
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();
-        /*this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<Store>());
-        storeListRecyclerView.setNestedScrollingEnabled(false);
-        storeListRecyclerView.setHasFixedSize(false);
-        storeListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
-        storeListRecyclerView.setLayoutManager(this.layoutManager);
-        storeListRecyclerView.setAdapter(this.storeRecyclerAdapter);*/
 
         setPresenter(new StorePresenter(this, new StoreRestInteractor()));
     }
@@ -216,27 +192,14 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
 
         this.storeArrayList.addAll(storeArrayList);
         this.storeAllArraylist.addAll(storeArrayList);
-        /*if (!this.storeArrayList.isEmpty())
-            sortStoreCategorize(this.storeCategoryNumber);*/
 
-        storePagerAdapter = new StorePagerAdapter(storeAllArraylist, categoryCode);
-        storePager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        storePagerAdapter = new StorePagerAdapter(getActivity(), storeAllArraylist, categoryCode);
         storePager.setAdapter(storePagerAdapter);
-        storePager.registerOnPageChangeCallback(storePagerCallback);
-
-        updateUserInterface();
-
+        storePager.addOnPageChangeListener(storePagerChangeListener);
 
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
-    }
-
-    @Override
-    public void updateUserInterface() {
-        /*this.storeRecyclerAdapter = new StoreRecyclerAdapter(context, this.storeArrayList);
-        storeListRecyclerView.setAdapter(this.storeRecyclerAdapter);*/
-
     }
 
     @OnClick(R.id.koin_base_appbar)
