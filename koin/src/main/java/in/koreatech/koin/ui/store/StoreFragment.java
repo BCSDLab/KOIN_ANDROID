@@ -33,6 +33,7 @@ import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
 import in.koreatech.koin.ui.koinfragment.KoinBaseFragment;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.store.adapter.StorePagerAdapter;
+import in.koreatech.koin.ui.store.listener.OnPageSelectedListener;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
 import in.koreatech.koin.util.NavigationManger;
@@ -73,34 +74,14 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
     private int storeCategoryNumber; // 1 .치킨 2. 피자 3. 탕수육 4. 도시락 5. 족발 6. 중국집 7. 일반음식점 8. 미용실 9. 기타
     private Resources resources;
     private String categoryCode[]; // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
-    private ViewPager.OnPageChangeListener storePagerChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
+    private OnPageSelectedListener storePagerChangeListener = new OnPageSelectedListener() {
         @Override
         public void onPageSelected(int position) {
-
-            View view = storePager.findViewWithTag(position);
-            if(view != null) {
-                view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                int height = view.getMeasuredHeight();
-                ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) storePager.getLayoutParams();
-                layoutParams.height = height;
-                Log.i("RecyclerHeight", String.valueOf(height));
-
-                storePager.setLayoutParams(layoutParams);
-            }
-
+            resetPagerHeight(position);
             initCateGoryTextColor();
-            if (position != 0)
+            if (position == 0) storeCategoryNumber = 0;
+            else
                 storeCategoryNumber = getCategoryPoistionNumber(getActivity().findViewById(CATEGORY_TEXT_ID[position - 1]));
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
         }
     };
 
@@ -127,8 +108,25 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
             R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
     public void storeCategoryOnCliked(View view) {
-        storePager.setCurrentItem(getCategoryPoistionNumber(view), true);
+        int categoryPosition = getCategoryPoistionNumber(view);
+        if (categoryPosition == storeCategoryNumber)
+            storePager.setCurrentItem(0, true);
+        else
+            storePager.setCurrentItem(categoryPosition, true);
         //TODO("When clicked already selected position, Go to allList page(position 0)")
+    }
+
+    private void resetPagerHeight(int position) {
+        View view = storePager.findViewWithTag(position);
+        if (view != null) {
+            view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            int height = view.getMeasuredHeight();
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) storePager.getLayoutParams();
+            layoutParams.height = height;
+            Log.i("RecyclerHeight", String.valueOf(height));
+
+            storePager.setLayoutParams(layoutParams);
+        }
     }
 
     public void initCateGoryTextColor() {
