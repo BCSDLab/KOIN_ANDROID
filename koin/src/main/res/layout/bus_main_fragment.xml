@@ -32,17 +32,35 @@
                     android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <androidx.appcompat.widget.AppCompatSpinner
-                        android:id="@+id/bus_main_fragment_bus_departure_spinner"
-                        android:layout_width="90dp"
+
+                    <LinearLayout
+                        android:id="@+id/bus_main_fragment_departure_linear_layout"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/spinner_no_border"
-                        android:entries="@array/bus_place"
-                        android:overlapAnchor="false"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:fontName="Bold" />
+                        android:gravity="center"
+                        >
+
+                        <in.koreatech.koin.core.spinner.RotateSpinner
+                            android:id="@+id/bus_main_fragment_bus_departure_spinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:entries="@array/bus_place"
+                            android:overlapAnchor="false"
+                            android:background="@null"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:fontName="Bold" />
+
+
+                        <ImageView
+                            android:id="@+id/bus_main_fragment_bus_departure_arrow_image_view"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:background="@drawable/ic_arrow_down"
+                            />
+
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -857,7 +875,7 @@
                                     android:id="@+id/bus_main_fragment_citybus_next_arrival_time_textview"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                     android:includeFontPadding="false"
+                                    android:includeFontPadding="false"
                                     android:letterSpacing="-0.02"
                                     android:lineSpacingExtra="2sp"
                                     android:text="운행정보없음"

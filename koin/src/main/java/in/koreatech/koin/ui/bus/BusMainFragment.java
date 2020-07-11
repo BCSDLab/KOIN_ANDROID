@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.Locale;
@@ -19,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.spinner.RotateSpinner;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.presenter.BusMainContract;
@@ -31,7 +33,6 @@ import in.koreatech.koin.util.timer.TimerManger;
 
 
 public class BusMainFragment extends KoinBaseFragment implements BusMainContract.View, SwipeRefreshLayout.OnRefreshListener, CountTimer.OnTimerListener {
-    private final String TAG = "BusMainFragment";
     public static final int REFRESH_TIME = 60000; // 1분 갱신
     public static final String CITY_NEXT_BUS = "CITY_NEXT_BUS";
     public static final String CITY_SOON_BUS = "CITY_SOON_BUS";
@@ -40,14 +41,19 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     public static final String SHUTTLE_NEXT_BUS = "SHUTTLE_NEXT_BUS";
     public static final String SHUTTLE_SOON_BUS = "SHUTTLE_SOON_BUS";
     public static final String REFRESH = "REFRESH";
-
+    private static final long ROTATE_ARROW_TIME = 300;
+    private final String TAG = "BusMainFragment";
     @BindView(R.id.bus_main_swiperefreshlayout)
     SwipeRefreshLayout busSwipeRefreshLayout;
     // Spinner
     @BindView(R.id.bus_main_fragment_bus_departure_spinner)
-    Spinner busDepartureSpinner;
+    RotateSpinner busDepartureSpinner;
     @BindView(R.id.bus_main_fragment_bus_arrival_spinner)
     Spinner busArrivalSpinner;
+    @BindView(R.id.bus_main_fragment_departure_linear_layout)
+    LinearLayout departureLinearLayout;
+    @BindView(R.id.bus_main_fragment_bus_departure_arrow_image_view)
+    ImageView departureArrowImageView;
     // Shuttle Bus
     @BindView(R.id.bus_main_fragment_shuttle_departure_textview)
     TextView shuttleDepatureTextview;
@@ -156,6 +162,11 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
         timerManger = new TimerManger();
         busDepartureSpinner.setSelection(0);
         busArrivalSpinner.setSelection(1);
+        departureLinearLayout.post(() -> {
+            int width = departureLinearLayout.getWidth();
+            busDepartureSpinner.setDropDownWidth(width);
+        });
+        busDepartureSpinner.setSpinnerEventsListener((spinner, isExpanded) -> rotateArrow(departureArrowImageView, isExpanded));
         this.departureState = 0;
         this.arrivalState = 1;
         busSwipeRefreshLayout.setOnRefreshListener(this);
@@ -198,6 +209,11 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     public void setSpinner() {
         busDepartureSpinner.setSelection(this.departureState);
         busArrivalSpinner.setSelection(this.arrivalState);
+    }
+
+    private void rotateArrow(ImageView imageView, boolean isExpanded) {
+        float rotateDegree = (isExpanded) ? 180f : 0f;
+        imageView.animate().rotation(rotateDegree).setDuration(ROTATE_ARROW_TIME).start();
     }
 
     @OnItemSelected(R.id.bus_main_fragment_bus_departure_spinner)
