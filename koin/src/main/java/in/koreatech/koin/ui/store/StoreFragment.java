@@ -113,7 +113,6 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
             storePager.setCurrentItem(0, true);
         else
             storePager.setCurrentItem(categoryPosition, true);
-        //TODO("When clicked already selected position, Go to allList page(position 0)")
     }
 
     private void resetPagerHeight(int position) {
@@ -194,6 +193,7 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
         storePagerAdapter = new StorePagerAdapter(getActivity(), storeAllArraylist, categoryCode);
         storePager.setAdapter(storePagerAdapter);
         storePager.addOnPageChangeListener(storePagerChangeListener);
+        storePagerChangeListener.onPageSelected(0);
 
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
