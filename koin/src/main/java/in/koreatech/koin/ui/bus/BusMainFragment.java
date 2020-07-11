@@ -41,7 +41,7 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     public static final String SHUTTLE_NEXT_BUS = "SHUTTLE_NEXT_BUS";
     public static final String SHUTTLE_SOON_BUS = "SHUTTLE_SOON_BUS";
     public static final String REFRESH = "REFRESH";
-    private static final long ROTATE_ARROW_TIME = 300;
+    private static final long ROTATE_ARROW_TIME = 200;
     private final String TAG = "BusMainFragment";
     @BindView(R.id.bus_main_swiperefreshlayout)
     SwipeRefreshLayout busSwipeRefreshLayout;
@@ -49,11 +49,15 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     @BindView(R.id.bus_main_fragment_bus_departure_spinner)
     RotateSpinner busDepartureSpinner;
     @BindView(R.id.bus_main_fragment_bus_arrival_spinner)
-    Spinner busArrivalSpinner;
+    RotateSpinner busArrivalSpinner;
     @BindView(R.id.bus_main_fragment_departure_linear_layout)
     LinearLayout departureLinearLayout;
     @BindView(R.id.bus_main_fragment_bus_departure_arrow_image_view)
     ImageView departureArrowImageView;
+    @BindView(R.id.bus_main_fragment_arrival_linear_layout)
+    LinearLayout arrivalLinearLayout;
+    @BindView(R.id.bus_main_fragment_bus_arrival_arrow_image_view)
+    ImageView arrivalArrowImageView;
     // Shuttle Bus
     @BindView(R.id.bus_main_fragment_shuttle_departure_textview)
     TextView shuttleDepatureTextview;
@@ -166,7 +170,14 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
             int width = departureLinearLayout.getWidth();
             busDepartureSpinner.setDropDownWidth(width);
         });
+        arrivalLinearLayout.post(() -> {
+            int width = arrivalLinearLayout.getWidth();
+            busArrivalSpinner.setDropDownWidth(width);
+        });
+        arrivalArrowImageView.setOnClickListener(v -> busArrivalSpinner.performClick());
+        departureArrowImageView.setOnClickListener(v -> busDepartureSpinner.performClick());
         busDepartureSpinner.setSpinnerEventsListener((spinner, isExpanded) -> rotateArrow(departureArrowImageView, isExpanded));
+        busArrivalSpinner.setSpinnerEventsListener((spinner, isExpanded) -> rotateArrow(arrivalArrowImageView, isExpanded));
         this.departureState = 0;
         this.arrivalState = 1;
         busSwipeRefreshLayout.setOnRefreshListener(this);
