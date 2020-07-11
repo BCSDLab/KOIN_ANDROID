@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +58,7 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
     private StorePresenter storePresenter;
     private RecyclerView.LayoutManager layoutManager; // RecyclerView LayoutManager
     private ArrayList<Store> storeArrayList; //store list
+    private int pagerMinimumHeight = 0;
     private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
@@ -121,8 +121,7 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
             view.measure(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             int height = view.getMeasuredHeight();
             ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) storePager.getLayoutParams();
-            layoutParams.height = height;
-            Log.i("RecyclerHeight", String.valueOf(height));
+            layoutParams.height = Math.max(pagerMinimumHeight, height);
 
             storePager.setLayoutParams(layoutParams);
         }
@@ -190,6 +189,8 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
         this.storeArrayList.addAll(storeArrayList);
         this.storeAllArraylist.addAll(storeArrayList);
 
+        if (pagerMinimumHeight == 0) pagerMinimumHeight = getPagerMinHeight();
+
         storePagerAdapter = new StorePagerAdapter(getActivity(), storeAllArraylist, categoryCode);
         storePager.setAdapter(storePagerAdapter);
         storePager.addOnPageChangeListener(storePagerChangeListener);
@@ -198,6 +199,10 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    private int getPagerMinHeight() {
+        return storePager.getHeight();
     }
 
     @OnClick(R.id.koin_base_appbar)
