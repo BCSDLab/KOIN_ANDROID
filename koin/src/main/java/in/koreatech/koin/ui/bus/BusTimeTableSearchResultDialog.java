@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,7 +29,15 @@ public class BusTimeTableSearchResultDialog extends Dialog {
     public BusTimeTableSearchResultDialog(@NonNull Context context, String shuttleBusTime, String daesungBusTime) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Window window = getWindow();
+        if(window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams layoutParams = window.getAttributes();
+            window.setWindowAnimations(R.style.BusSearchResultDialogPopupAnimationStyle);
+            window.setAttributes(layoutParams);
+        }
+
         setContentView(R.layout.bus_timetable_search_result_dialog);
         ButterKnife.bind(this);
         this.busTimeTableSearchResultShuttleBusTextview.setText(shuttleBusTime);
