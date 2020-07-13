@@ -1,11 +1,16 @@
 package in.koreatech.koin.ui.board;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,13 +66,32 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
     private ArrayList<Article> articleArrayList;
     private int pageNum;   //다음 호출할 페이지 인덱스
     private BoardPresenter boardPresenter;
+    private Animation brighterAnimation;
     private final RecyclerClickListener recyclerItemtouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
-            if ((boardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
-                boardPresenter.getArticleGrant(articleArrayList.get(position).getArticleUid());
-            else
-                goToArticleFragment(articleArrayList.get(position).getArticleUid(), boardUid == ID_ANONYMOUS);
+            ImageView imageView = view.findViewById(R.id.board_list_background_image_view);
+            brighterAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    imageView.setBackgroundColor(getResources().getColor(R.color.black_alpha10));
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if ((boardUid != ID_ANONYMOUS) && (UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.MEMBER))
+                        boardPresenter.getArticleGrant(articleArrayList.get(position).getArticleUid());
+                    else
+                        goToArticleFragment(articleArrayList.get(position).getArticleUid(), boardUid == ID_ANONYMOUS);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            imageView.startAnimation(brighterAnimation);
+
         }
 
         @Override
@@ -111,6 +135,12 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
         boardListRecyclerView.setLayoutManager(layoutManager);
         boardListRecyclerView.setAdapter(boardRecyclerAdapter);
         boardListRecyclerView.addOnItemTouchListener(recyclerItemtouchListener);
+
+        brighterAnimation = new AlphaAnimation(1f, 0f);
+        brighterAnimation.setStartTime(10);
+        brighterAnimation.setDuration(100);
+        brighterAnimation.setFillAfter(true);
+
         setPresenter(new BoardPresenter(this, new CommunityRestInteractor()));
 
         this.pageNum = 1;
