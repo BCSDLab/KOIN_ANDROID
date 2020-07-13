@@ -176,8 +176,8 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
         });
         arrivalArrowImageView.setOnClickListener(v -> busArrivalSpinner.performClick());
         departureArrowImageView.setOnClickListener(v -> busDepartureSpinner.performClick());
-        busDepartureSpinner.setSpinnerEventsListener((spinner, isExpanded) -> rotateArrow(departureArrowImageView, isExpanded));
-        busArrivalSpinner.setSpinnerEventsListener((spinner, isExpanded) -> rotateArrow(arrivalArrowImageView, isExpanded));
+        busDepartureSpinner.setSpinnerEventsListener(this::updateDepartureSpinnerView);
+        busArrivalSpinner.setSpinnerEventsListener(this::updateArrivalSpinnerView);
         this.departureState = 0;
         this.arrivalState = 1;
         busSwipeRefreshLayout.setOnRefreshListener(this);
@@ -191,6 +191,16 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
         setPresenter(new BusMainPresenter(this, new CityBusRestInteractor(), new TermRestInteractor()));
         this.departureState = 0;
         this.arrivalState = 1;
+    }
+
+    private void updateDepartureSpinnerView(Spinner spinner, boolean isExpanded) {
+        rotateArrow(departureArrowImageView, isExpanded);
+        updateSpinnerTextView(spinner);
+    }
+
+    private void updateArrivalSpinnerView(Spinner spinner, boolean isExpanded) {
+        rotateArrow(arrivalArrowImageView, isExpanded);
+        updateSpinnerTextView(spinner);
     }
 
 
@@ -225,6 +235,13 @@ public class BusMainFragment extends KoinBaseFragment implements BusMainContract
     private void rotateArrow(ImageView imageView, boolean isExpanded) {
         float rotateDegree = (isExpanded) ? 180f : 0f;
         imageView.animate().rotation(rotateDegree).setDuration(ROTATE_ARROW_TIME).start();
+    }
+
+    private void updateSpinnerTextView(Spinner spinner) {
+        if (spinner.getChildCount() > 0) {
+            ((TextView) spinner.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorAccent));
+            spinner.getChildAt(0).postDelayed(() -> ((TextView) spinner.getChildAt(0)).setTextColor(getResources().getColor(R.color.black)), 200);
+        }
     }
 
     @OnItemSelected(R.id.bus_main_fragment_bus_departure_spinner)
