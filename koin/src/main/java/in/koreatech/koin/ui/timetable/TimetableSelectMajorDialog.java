@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.util.DepartmentCode;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
+import in.koreatech.koin.util.DialogUtil;
 
 import static in.koreatech.koin.ui.timetable.TimetableFragment.select;
 
@@ -39,6 +40,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
 
         selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        DialogUtil.setDialogAnimation(getWindow());
         WindowManager.LayoutParams mWindowManager = new WindowManager.LayoutParams();
         mWindowManager.copyFrom(this.getWindow().getAttributes());
         mWindowManager.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;

@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
+import in.koreatech.koin.util.DialogUtil;
 import in.koreatech.koin.util.FilterUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import io.reactivex.annotations.NonNull;
@@ -46,7 +47,7 @@ public class AskNicknamePasswordDialog extends Dialog {
     public AskNicknamePasswordDialog(@NonNull Context context, String title, String content, int type) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        DialogUtil.setDialogAnimation(getWindow());
         setContentView(R.layout.anonymous_article_dialog);
         ButterKnife.bind(this);
         context = context;

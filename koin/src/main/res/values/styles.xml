@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BusSearchResultDialogPopupAnimationStyle">
-        <item name="android:windowEnterAnimation">@anim/anim_bus_search_dialog_show</item>
-        <item name="android:windowExitAnimation">@anim/anim_bus_search_dialog_hide</item>
+    <style name="DialogPopupAnimationStyle">
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_show</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_hide</item>
     </style>
 </resources>

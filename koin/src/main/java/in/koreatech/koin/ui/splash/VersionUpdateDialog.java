@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Version;
+import in.koreatech.koin.util.DialogUtil;
 
 import static androidx.core.content.ContextCompat.startActivity;
 import static com.google.common.reflect.Reflection.getPackageName;
@@ -42,7 +43,7 @@ public class VersionUpdateDialog extends Dialog {
         super(context);
         this.context = context;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        DialogUtil.setDialogAnimation(getWindow());
         setContentView(R.layout.version_update_dialog);
         this.versionDialogClickListener = versionDialogClickListener;
         ButterKnife.bind(this);

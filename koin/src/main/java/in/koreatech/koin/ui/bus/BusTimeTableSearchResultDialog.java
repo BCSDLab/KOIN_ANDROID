@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
+import in.koreatech.koin.util.DialogUtil;
 
 public class BusTimeTableSearchResultDialog extends Dialog {
 
@@ -29,14 +30,7 @@ public class BusTimeTableSearchResultDialog extends Dialog {
     public BusTimeTableSearchResultDialog(@NonNull Context context, String shuttleBusTime, String daesungBusTime) {
         super(context);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Window window = getWindow();
-        if(window != null) {
-            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            WindowManager.LayoutParams layoutParams = window.getAttributes();
-            window.setWindowAnimations(R.style.BusSearchResultDialogPopupAnimationStyle);
-            window.setAttributes(layoutParams);
-        }
+        DialogUtil.setDialogAnimation(getWindow());
 
         setContentView(R.layout.bus_timetable_search_result_dialog);
         ButterKnife.bind(this);
