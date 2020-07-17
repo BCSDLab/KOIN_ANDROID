@@ -8,11 +8,17 @@ import android.widget.TextView;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 
+import com.airbnb.lottie.LottieAnimationView;
+
+import java.nio.file.attribute.GroupPrincipal;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.util.NavigationManger;
+
+import static android.view.View.GONE;
 
 
 /**
@@ -90,50 +96,49 @@ public class MainActivity extends ActivityBase {
     }
 
     private void setNavigationCategoryButton(boolean isSelected) {
-        ImageView imageView;
-        TextView textView;
+        LottieAnimationView categoryLottieAnimationView = findViewById(R.id.base_navigation_bar_bottom_category_lottie_imageview);
+        ImageView categoryImageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
+        TextView categoryTextView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
         if (isSelected) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            setSelected(categoryLottieAnimationView, categoryImageView, categoryTextView);
         } else {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            setUnselected(categoryLottieAnimationView, categoryImageView, categoryTextView);
         }
     }
 
     private void setNavigationSearchButton(boolean isSelected) {
-        ImageView imageView;
-        TextView textView;
+        LottieAnimationView searchLottieAnimationView = findViewById(R.id.base_navigation_bar_bottom_search_lottie_imageview);
+        TextView searchTextView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
+        ImageView searchImageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
+
         if (isSelected) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu_blue);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            setSelected(searchLottieAnimationView, searchImageView, searchTextView);
         } else {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            setUnselected(searchLottieAnimationView, searchImageView, searchTextView);
         }
     }
 
     private void setNavigationHomeButton(boolean isSelected) {
-        ImageView imageView;
-        TextView textView;
+        LottieAnimationView homeLottieAnimationView = findViewById(R.id.base_navigation_bar_bottom_home_lottie_imageview);
+        ImageView homeImageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
+        TextView homeTextView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
         if (isSelected) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            setSelected(homeLottieAnimationView, homeImageView, homeTextView);
         } else {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home);
-            textView.setTextColor(getResources().getColor(R.color.black));
+            setUnselected(homeLottieAnimationView, homeImageView, homeTextView);
         }
     }
+
+    private void setSelected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView){
+        lottieAnimationView.setVisibility(View.VISIBLE);
+        lottieAnimationView.playAnimation();
+        imageView.setVisibility(GONE);
+        textView.setVisibility(GONE);
+    }
+    private void setUnselected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView){
+        lottieAnimationView.setVisibility(GONE);
+        imageView.setVisibility(View.VISIBLE);
+        textView.setVisibility(View.VISIBLE);
+    }
+
 }
