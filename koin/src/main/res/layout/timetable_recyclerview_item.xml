@@ -62,16 +62,16 @@
         android:textSize="13sp"
         tools:text="교양/ 3학점 / CLTR09876 /이춘화교양/ 3학점" />
 
-    <ImageButton
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/add_lecture_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:duplicateParentState="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="center"
         android:layout_marginTop="29dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="29dp"
-        android:background="@drawable/ic_add_lecture_item_button" />
+        android:duplicateParentState="true"
+         />
 </RelativeLayout>
