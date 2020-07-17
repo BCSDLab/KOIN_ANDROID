@@ -128,7 +128,7 @@ public class LoginActivity extends ActivityBase implements LoginContract.View {
 
     @Override
     public void showProgress() {
-        showProgressDialog("진행 중");
+        showProgressDialog();
     }
 
     @Override

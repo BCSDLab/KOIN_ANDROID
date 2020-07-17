@@ -10,8 +10,6 @@ import androidx.navigation.NavDestination;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import java.nio.file.attribute.GroupPrincipal;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
@@ -129,13 +127,14 @@ public class MainActivity extends ActivityBase {
         }
     }
 
-    private void setSelected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView){
+    private void setSelected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView) {
         lottieAnimationView.setVisibility(View.VISIBLE);
         lottieAnimationView.playAnimation();
         imageView.setVisibility(GONE);
         textView.setVisibility(GONE);
     }
-    private void setUnselected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView){
+
+    private void setUnselected(LottieAnimationView lottieAnimationView, ImageView imageView, TextView textView) {
         lottieAnimationView.setVisibility(GONE);
         imageView.setVisibility(View.VISIBLE);
         textView.setVisibility(View.VISIBLE);

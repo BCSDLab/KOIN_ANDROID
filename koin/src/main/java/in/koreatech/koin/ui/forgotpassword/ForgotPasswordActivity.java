@@ -87,7 +87,7 @@ public class ForgotPasswordActivity extends ActivityBase implements ForgotPasswo
 
     @Override
     public void showProgress() {
-        showProgressDialog(R.string.loading);
+        showProgressDialog();
     }
 
     @Override

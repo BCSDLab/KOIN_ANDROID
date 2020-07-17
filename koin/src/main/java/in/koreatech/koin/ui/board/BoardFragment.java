@@ -248,7 +248,7 @@ public class BoardFragment extends KoinBaseFragment implements BoardContract.Vie
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

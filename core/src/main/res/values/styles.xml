@@ -45,6 +45,10 @@
         <item name="android:indeterminateTintMode">src_in</item>
     </style>
 
+    <style name="LottieProgressTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="KAPNavigationHeader" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:textSize">15sp</item>
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>

@@ -94,7 +94,7 @@ public class LostFoundDetailFragment extends KoinBaseFragment implements LostFou
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

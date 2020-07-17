@@ -58,7 +58,7 @@ public class SearchRecentFragment extends KoinBaseFragment implements SearchRece
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

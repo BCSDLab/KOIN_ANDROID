@@ -189,7 +189,7 @@ public class DiningFragment extends KoinBaseFragment implements DiningContract.V
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

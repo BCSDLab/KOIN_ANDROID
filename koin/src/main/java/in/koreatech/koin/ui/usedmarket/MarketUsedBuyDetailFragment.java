@@ -109,7 +109,7 @@ public class MarketUsedBuyDetailFragment extends KoinBaseFragment implements Mar
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

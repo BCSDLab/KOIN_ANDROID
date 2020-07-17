@@ -167,7 +167,7 @@ public class StoreFragment extends KoinBaseFragment implements StoreContract.Vie
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

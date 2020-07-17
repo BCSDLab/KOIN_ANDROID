@@ -8,24 +8,20 @@ import in.koreatech.koin.core.R;
 
 public class CustomProgressDialog extends AsyncTask<Void, Void, Void> {
     private final String TAG = "CustomProgressDialog";
-
-    private ProgressDialog progressDialog;
-    private String message;
+    private LottieProgressDialog lottieProgressDialog;
 
 
-    public CustomProgressDialog(Context context, String msg) {
-        this.message = msg;
-        progressDialog = new ProgressDialog(context, R.style.KAPProgress);
-        progressDialog.setCancelable(false);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setIndeterminate(true);
+    public CustomProgressDialog(Context context) {
+        lottieProgressDialog = new LottieProgressDialog(context);
+        lottieProgressDialog.setCancelable(false);
+        lottieProgressDialog.setCanceledOnTouchOutside(false);
 
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        lottieProgressDialog.show();
+
     }
 
     @Override
@@ -40,16 +36,18 @@ public class CustomProgressDialog extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        if (lottieProgressDialog != null)
+            lottieProgressDialog.dismiss();
+
     }
 
     @Override
     protected void onCancelled(Void aVoid) {
-        if (progressDialog != null)
-            progressDialog.dismiss();
+        if (lottieProgressDialog != null)
+            lottieProgressDialog.dismiss();
         super.onCancelled(aVoid);
 
-        progressDialog = null;
+        lottieProgressDialog = null;
+
     }
 }

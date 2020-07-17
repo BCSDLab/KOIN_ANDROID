@@ -384,7 +384,7 @@ public class LostFoundCreateFragment extends KoinBaseFragment implements Compoun
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

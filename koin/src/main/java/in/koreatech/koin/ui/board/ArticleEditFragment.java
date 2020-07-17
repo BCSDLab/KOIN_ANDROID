@@ -420,7 +420,7 @@ public class ArticleEditFragment extends KoinBaseFragment implements ArticleEdit
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override

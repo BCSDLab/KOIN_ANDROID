@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
@@ -29,20 +28,13 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
 
 
     @Override
-    public void showProgressDialog(@Nullable String message) {
+    public void showProgressDialog() {
         if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(context, message);
+            customProgressDialog = new CustomProgressDialog(context);
             customProgressDialog.execute();
         }
     }
 
-    @Override
-    public void showProgressDialog(@StringRes int resId) {
-        if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(context, context.getResources().getString(resId));
-            customProgressDialog.execute();
-        }
-    }
 
     @Override
     public void hideProgressDialog() {

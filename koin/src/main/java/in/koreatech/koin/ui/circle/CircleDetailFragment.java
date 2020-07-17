@@ -175,7 +175,7 @@ public class CircleDetailFragment extends KoinBaseFragment implements CircleDeta
 
     @Override
     public void showLoading() {
-        ((MainActivity) getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
 

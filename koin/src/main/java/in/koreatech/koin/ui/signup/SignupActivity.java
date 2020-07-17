@@ -295,7 +295,7 @@ public class SignupActivity extends ActivityBase implements SignupContract.View 
 
     @Override
     public void showProgress() {
-        showProgressDialog(R.string.email_sending);
+        showProgressDialog();
     }
 
     @Override

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -149,7 +148,6 @@ public class TimetableFragment extends KoinBaseFragment implements TimetableCont
     private String semester = "";
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -201,12 +199,12 @@ public class TimetableFragment extends KoinBaseFragment implements TimetableCont
 
     @Override
     public void showLoading() {
-        ((MainActivity)getActivity()).showProgressDialog(R.string.loading);
+        ((MainActivity) getActivity()).showProgressDialog();
     }
 
     @Override
     public void hideLoading() {
-        ((MainActivity)getActivity()).hideProgressDialog();
+        ((MainActivity) getActivity()).hideProgressDialog();
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -288,7 +286,7 @@ public class TimetableFragment extends KoinBaseFragment implements TimetableCont
         Runnable runnable;
         if (checkStoragePermisson()) {
             runnable = () -> {
-                ((MainActivity)getActivity()).showProgressDialog(R.string.saving);
+                ((MainActivity) getActivity()).showProgressDialog();
             };
             handler.post(runnable);
             handler.postDelayed(() -> {
