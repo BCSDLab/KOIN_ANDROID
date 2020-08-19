@@ -1,9 +1,9 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/background</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
 
@@ -89,5 +89,21 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+    
+    <style name="AppTheme.Toolbar" parent="AppTheme" />
+    
+    <style name="AppTheme.Toolbar.Main" parent="AppTheme.Toolbar" >
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom</item>
+        <item name="cardBackgroundColor">@color/colorPrimary</item>
+        <item name="cardElevation">8dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom" parent="" >
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomLeft">@dimen/toolbar_main_corner_raduis</item>
+        <item name="cornerSizeBottomRight">@dimen/toolbar_main_corner_raduis</item>
     </style>
 </resources>
