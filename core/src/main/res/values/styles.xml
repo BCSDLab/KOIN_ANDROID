@@ -96,7 +96,7 @@
     <style name="AppTheme.Toolbar.Main" parent="AppTheme.Toolbar" >
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom</item>
         <item name="cardBackgroundColor">@color/colorPrimary</item>
-        <item name="cardElevation">8dp</item>
+        <item name="cardElevation">@dimen/toolbar_main_elevation</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.DifferentCornerSize.RoundedOnlyBottom" parent="" >
