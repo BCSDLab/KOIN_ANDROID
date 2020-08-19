@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="265dp"
+    android:layout_height="135dp"
+    app:cardElevation="@dimen/normal_card_elevation">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/bus_type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@android:color/black"
+            tools:backgroundTint="@color/orange">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bus03" />
+
+            <TextView
+                android:id="@+id/text_view_bus_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                tools:text="학교셔틀"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/text_view_remaining_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="00분 00초 남음"
+                android:layout_marginBottom="12dp"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/text_view_departures"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="한기대"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+
+                <ImageButton
+                    android:id="@+id/image_button_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_view_switch"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
+
+                <TextView
+                    android:id="@+id/text_view_arrival"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="한기대"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

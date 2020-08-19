@@ -27,5 +27,9 @@
     <!-- Redesigned MainActivity Toolbar -->
     <dimen name="toolbar_main_corner_raduis">24dp</dimen>
     <dimen name="toolbar_main_height">69dp</dimen>
+    <dimen name="toolbar_main_elevation">8dp</dimen>
+
+    <!-- Normal Cards -->
+    <dimen name="normal_card_elevation">4dp</dimen>
 
 </resources>
