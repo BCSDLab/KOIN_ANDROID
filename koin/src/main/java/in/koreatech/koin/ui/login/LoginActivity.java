@@ -17,7 +17,6 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
-import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.signup.SignupActivity;
 import in.koreatech.koin.ui.login.presenter.LoginContract;

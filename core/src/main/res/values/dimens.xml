@@ -24,4 +24,8 @@
 
     <dimen name="spinner_width">155dp</dimen>
 
+    <!-- Redesigned MainActivity Toolbar -->
+    <dimen name="toolbar_main_corner_raduis">24dp</dimen>
+    <dimen name="toolbar_main_height">69dp</dimen>
+
 </resources>
