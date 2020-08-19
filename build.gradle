@@ -30,7 +30,7 @@ buildscript {
         androidxAppCompat = "androidx.appcompat:appcompat:$android_x_version"
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
-        androidxMaterial = "com.google.android.material:material:$android_x_version"
+        androidxMaterial = "com.google.android.material:material:1.2.0"
 
         /* Dependency - Firebase */
         def firebase_version = "17.0.0"
