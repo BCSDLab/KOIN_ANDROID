@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="265dp"
     android:layout_height="135dp"
-    android:layout_margin="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="0dp"
     app:cardElevation="@dimen/normal_card_elevation">
 
     <LinearLayout
@@ -50,7 +52,7 @@
                 android:id="@+id/text_view_remaining_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="00분 00초 남음"
+                android:text="00분 00초 남음"
                 android:layout_marginBottom="12dp"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -66,7 +68,7 @@
                     android:id="@+id/text_view_departures"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="한기대"
+                    android:text="한기대"
                     android:textColor="@color/black"
                     android:textSize="12sp"/>
 
@@ -83,13 +85,12 @@
                     android:id="@+id/text_view_arrival"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:text="한기대"
+                    android:text="야우리"
                     android:textColor="@color/black"
                     android:textSize="12sp"/>
             </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

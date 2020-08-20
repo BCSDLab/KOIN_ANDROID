@@ -14,19 +14,19 @@ import in.koreatech.koin.R;
 
 public class BusPagerAdapter extends PagerAdapter {
     enum BusType {
-        SHUTTLE, DAESUNG, CIRYBUS
+        SHUTTLE, DAESUNG, CITYBUS
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return Integer.MAX_VALUE;
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.main_card_bus, container, false);
-        view.setTag(BusType.values()[position]);
+        view.setTag(BusType.values()[position % 3]);
 
         LinearLayout busTypeLayout = view.findViewById(R.id.bus_type_layout);
         TextView textViewBusType = view.findViewById(R.id.text_view_bus_type);
@@ -38,7 +38,7 @@ public class BusPagerAdapter extends PagerAdapter {
         } else if (BusType.DAESUNG.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.blue5));
             textViewBusType.setText("대성고속");
-        } else if (BusType.CIRYBUS.equals(tag)) {
+        } else if (BusType.CITYBUS.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.green3));
             textViewBusType.setText("시내버스");
         }
