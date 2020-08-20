@@ -1,6 +1,7 @@
 package in.koreatech.koin.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +15,7 @@ import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.utils.StatusBarUtil;
+import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 
 public class MainActivity extends ActivityBase {
@@ -24,6 +26,9 @@ public class MainActivity extends ActivityBase {
     MaterialCardView toolbar;
     @BindView(R.id.toolbar_layout)
     FrameLayout toolbarLayuout;
+
+    @BindView(R.id.main_view_pager)
+    ScaleViewPager mainViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,8 @@ public class MainActivity extends ActivityBase {
     private void init() {
         unbinder = ButterKnife.bind(this);
         StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayuout, getResources());
+
+        mainViewPager.setAdapter(new BusPagerAdapter());
     }
 
     @Override

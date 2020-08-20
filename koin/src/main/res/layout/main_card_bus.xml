@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="265dp"
     android:layout_height="135dp"
+    android:layout_margin="8dp"
     app:cardElevation="@dimen/normal_card_elevation">
 
     <LinearLayout
@@ -20,8 +21,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@android:color/black"
-            tools:backgroundTint="@color/orange">
+            android:background="@android:color/black">
 
             <ImageView
                 android:layout_width="wrap_content"
