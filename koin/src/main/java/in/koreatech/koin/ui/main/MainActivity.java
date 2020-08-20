@@ -3,6 +3,7 @@ package in.koreatech.koin.ui.main;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -42,7 +43,13 @@ public class MainActivity extends ActivityBase {
         unbinder = ButterKnife.bind(this);
         StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayuout, getResources());
 
+        initBusPager();
+    }
+
+    private void initBusPager() {
         mainViewPager.setAdapter(new BusPagerAdapter());
+        mainViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        mainViewPager.setOffscreenPageLimit(5);
     }
 
     @Override
