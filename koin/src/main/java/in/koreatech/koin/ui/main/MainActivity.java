@@ -1,6 +1,8 @@
 package in.koreatech.koin.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.graphics.Point;
@@ -31,6 +33,9 @@ public class MainActivity extends ActivityBase {
     @BindView(R.id.main_view_pager)
     ScaleViewPager mainViewPager;
 
+    @BindView(R.id.recycler_view_store_category)
+    RecyclerView recyclerViewStoreCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +49,18 @@ public class MainActivity extends ActivityBase {
         StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayuout, getResources());
 
         initBusPager();
+        initStoreRecyclerView();
     }
 
     private void initBusPager() {
         mainViewPager.setAdapter(new BusPagerAdapter());
         mainViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
         mainViewPager.setOffscreenPageLimit(5);
+    }
+
+    private void initStoreRecyclerView() {
+        recyclerViewStoreCategory.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        recyclerViewStoreCategory.setAdapter(new StoreCategoryRecyclerAdapter());
     }
 
     @Override
