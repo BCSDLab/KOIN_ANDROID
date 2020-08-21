@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/text_view_card_dining_korean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="한식"/>
+
+        <TextView
+            android:id="@+id/text_view_card_dining_onedish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/gray8"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_card_dining_korean"
+            android:text="일품"/>
+        <TextView
+            android:id="@+id/text_view_card_dining_western"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/gray8"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_card_dining_onedish"
+            android:text="양식"/>
+        <TextView
+            android:id="@+id/text_view_card_dining_special"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/gray8"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_card_dining_western"
+            android:text="특식"/>
+
+        <TextView
+            android:id="@+id/text_view_card_dining_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="아침"/>
+
+        <TableLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="64dp"
+            android:layout_marginStart="33dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="25dp" >
+
+            <TableRow
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    tools:text="메뉴1"/>
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    tools:text="메뉴2" />
+
+            </TableRow>
+
+            <TableRow
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    tools:text="메뉴3"/>
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    tools:text="메뉴4" />
+
+            </TableRow>
+
+            <TableRow
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    tools:text="메뉴5"/>
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    tools:text="메뉴6" />
+
+            </TableRow>
+
+            <TableRow
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    tools:text="메뉴7"/>
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    tools:text="메뉴8" />
+
+            </TableRow>
+
+            <TableRow
+                android:paddingBottom="8dp">
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    tools:text="메뉴9"/>
+                <TextView
+                    android:id="@+id/text_view_card_dining_menu_9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/black"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    tools:text="메뉴10" />
+
+            </TableRow>
+
+        </TableLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
