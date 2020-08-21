@@ -1,25 +1,27 @@
 package in.koreatech.koin.ui.main;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import android.graphics.Point;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.main.enums.DiningKinds;
 
 public class MainActivity extends ActivityBase {
 
@@ -28,13 +30,31 @@ public class MainActivity extends ActivityBase {
     @BindView(R.id.toolbar)
     MaterialCardView toolbar;
     @BindView(R.id.toolbar_layout)
-    FrameLayout toolbarLayuout;
+    FrameLayout toolbarLayout;
 
     @BindView(R.id.main_view_pager)
     ScaleViewPager mainViewPager;
 
     @BindView(R.id.recycler_view_store_category)
     RecyclerView recyclerViewStoreCategory;
+
+    @BindView(R.id.text_view_card_dining_korean)
+    TextView diningKorean;
+
+    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
+    List<TextView> textViewDiningKinds;
+
+    @BindViews({R.id.text_view_card_dining_menu_0,
+            R.id.text_view_card_dining_menu_1,
+            R.id.text_view_card_dining_menu_2,
+            R.id.text_view_card_dining_menu_3,
+            R.id.text_view_card_dining_menu_4,
+            R.id.text_view_card_dining_menu_5,
+            R.id.text_view_card_dining_menu_6,
+            R.id.text_view_card_dining_menu_7,
+            R.id.text_view_card_dining_menu_8,
+            R.id.text_view_card_dining_menu_9})
+    List<TextView> textViewDiningMenus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +66,11 @@ public class MainActivity extends ActivityBase {
 
     private void init() {
         unbinder = ButterKnife.bind(this);
-        StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayuout, getResources());
+        StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayout, getResources());
 
         initBusPager();
         initStoreRecyclerView();
+        initDining();
     }
 
     private void initBusPager() {
@@ -61,6 +82,16 @@ public class MainActivity extends ActivityBase {
     private void initStoreRecyclerView() {
         recyclerViewStoreCategory.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         recyclerViewStoreCategory.setAdapter(new StoreCategoryRecyclerAdapter());
+    }
+
+    private void initDining() {
+        selectDiningKind(textViewDiningKinds.get(DiningKinds.KOREAN.getPosition()));
+    }
+
+    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
+    void selectDiningKind(View view) {
+        for (TextView textView : textViewDiningKinds) textView.setSelected(false);
+        view.setSelected(true);
     }
 
     @Override
