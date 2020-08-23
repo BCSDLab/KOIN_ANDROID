@@ -12,13 +12,9 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observer;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.ui.bus.data.BusArrival;
-import in.koreatech.koin.ui.bus.data.BusArrivalWithStrTime;
 import in.koreatech.koin.util.BusTimerUtil;
-import in.koreatech.koin.util.TimeUtil;
 
 public class BusPagerAdapter extends PagerAdapter {
     enum BusType {
@@ -29,28 +25,11 @@ public class BusPagerAdapter extends PagerAdapter {
     List<View> itemViewsDaesung = new ArrayList<>();
     List<View> itemViewsCityBus = new ArrayList<>();
 
-    Observer shuttleObserver = (o, arg) -> {
-        updateShuttleBusTime(((BusArrivalWithStrTime) o).getSoonArrival());
-        updateShuttleBusDepartInfo(((BusArrivalWithStrTime) o).getCurrent());
-    };
-    Observer daesungObserver = (o, arg) -> {
-        updateDaesungBusTime(((BusArrivalWithStrTime) o).getSoonArrival());
-        updateDaesungBusDepartInfo(((BusArrivalWithStrTime) o).getCurrent());
-    };
-    Observer cityBusObserver = (o, arg) -> {
-        updateCityBusTime(((BusArrival) o).getSoonArrival());
-        updateCityBusDepartInfo(((BusArrival) o).getSoonArrival());
-    };
-
     private BusTimerUtil citySoonBusTimerUtil;
     private BusTimerUtil daesungBusSoonBusTimerUtil;
     private BusTimerUtil shuttleBusSoonBusTimerUtil;
 
-    public BusPagerAdapter(BusArrivalWithStrTime shuttleBusArrival, BusArrivalWithStrTime daesungBusArrival, BusArrival cityBusArrival) {
-        shuttleBusArrival.addObserver(shuttleObserver);
-        daesungBusArrival.addObserver(daesungObserver);
-        cityBusArrival.addObserver(cityBusObserver);
-
+    public BusPagerAdapter() {
         citySoonBusTimerUtil = new BusTimerUtil(10);
         daesungBusSoonBusTimerUtil = new BusTimerUtil(11);
         shuttleBusSoonBusTimerUtil = new BusTimerUtil(12);
@@ -106,7 +85,7 @@ public class BusPagerAdapter extends PagerAdapter {
         return (view == (View) object);
     }
 
-    private void updateShuttleBusTime(int current) {
+    public void updateShuttleBusTime(int current) {
         if (current >= 0) {
             shuttleBusSoonBusTimerUtil.setEndTime(current);
             for(View view : itemViewsShuttle) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
@@ -118,7 +97,7 @@ public class BusPagerAdapter extends PagerAdapter {
         }
     }
 
-    private void updateCityBusTime(int current) {
+    public void updateCityBusTime(int current) {
         if (current > 0) {
             this.citySoonBusTimerUtil.setEndTime(current);
             for(View view : itemViewsCityBus) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
@@ -132,7 +111,7 @@ public class BusPagerAdapter extends PagerAdapter {
         }
     }
 
-    private void updateDaesungBusTime(int current) {
+    public void updateDaesungBusTime(int current) {
         if (current > 0) {
             daesungBusSoonBusTimerUtil.setEndTime(current);
             for(View view : itemViewsDaesung) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
@@ -153,7 +132,7 @@ public class BusPagerAdapter extends PagerAdapter {
         }
     }
 
-    private void updateCityBusDepartInfo(int current) {
+    public void updateCityBusDepartInfo(int current) {
         for(View view : itemViewsCityBus) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
             if (current == 0) {
@@ -165,7 +144,7 @@ public class BusPagerAdapter extends PagerAdapter {
         }
     }
 
-    private void updateDaesungBusDepartInfo(String current) {
+    public void updateDaesungBusDepartInfo(String current) {
         for(View view : itemViewsDaesung) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
             textView.setVisibility(current.isEmpty() ? View.INVISIBLE : View.VISIBLE);

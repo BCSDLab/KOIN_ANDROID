@@ -380,7 +380,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         toggleIcon(i);
     }
 
-    private void toggleNavigationDrawer() {
+    protected void toggleNavigationDrawer() {
         if (drawerLayout.isDrawerOpen(Gravity.LEFT))
             drawerLayout.closeDrawer(Gravity.LEFT);
         else

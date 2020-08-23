@@ -5,12 +5,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
-public class BusCardPagerTransformer implements ViewPager.PageTransformer {
+public class ScaleCardPagerTransformer implements ViewPager.PageTransformer {
     private float baseScale;
     private float smallScale;
     private float startOffset;
 
-    public BusCardPagerTransformer(float baseScale, float smallScale, float startOffset) {
+    public ScaleCardPagerTransformer(float baseScale, float smallScale, float startOffset) {
         this.baseScale = baseScale;
         this.smallScale = smallScale;
         this.startOffset = startOffset;

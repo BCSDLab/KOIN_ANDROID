@@ -3,15 +3,16 @@ package in.koreatech.koin.ui.main;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.card.MaterialCardView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,14 +24,13 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
-import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
-import in.koreatech.koin.ui.bus.data.BusArrival;
-import in.koreatech.koin.ui.bus.data.BusArrivalWithStrTime;
 import in.koreatech.koin.ui.main.enums.DiningKinds;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.util.FirebasePerformanceUtil;
 
 public class MainActivity extends ActivityBase implements MainActivityContact.View {
     private static String TAG = MainActivity.class.getSimpleName();
@@ -40,6 +40,8 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     private int departureState = 0; // 0 : 한기대 1 : 야우리 2 : 천안역
     private int arrivalState = 1; // 0 : 한기대 1 : 야우리 2 : 천안역
 
+    private FirebasePerformanceUtil firebasePerformanceUtil;
+
 
     @BindView(R.id.toolbar)
     MaterialCardView toolbar;
@@ -47,13 +49,11 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     FrameLayout toolbarLayout;
     @BindView(R.id.main_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    BusPagerAdapter busPagerAdapter;
 
     //버스
     @BindView(R.id.main_view_pager)
     ScaleViewPager busCardViewPager;
-    BusArrivalWithStrTime shuttleBusArrival = new BusArrivalWithStrTime();
-    BusArrivalWithStrTime daesungBusArrival = new BusArrivalWithStrTime();
-    BusArrival cityBusArrival = new BusArrival();
 
     //상점
     @BindView(R.id.recycler_view_store_category)
@@ -88,13 +88,17 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
         setPresenter();
         StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayout, getResources());
 
+        this.firebasePerformanceUtil = new FirebasePerformanceUtil("Bus_Activity");
+        this.firebasePerformanceUtil.start();
+
         initBusPager();
         initStoreRecyclerView();
         initDining();
     }
 
     private void initBusPager() {
-        busCardViewPager.setAdapter(new BusPagerAdapter(shuttleBusArrival, daesungBusArrival, cityBusArrival));
+        busPagerAdapter = new BusPagerAdapter();
+        busCardViewPager.setAdapter(busPagerAdapter);
         busCardViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
         busCardViewPager.setOffscreenPageLimit(5);
     }
@@ -112,6 +116,11 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
         this.presenter = new MainActivityPresenter(this, new CityBusRestInteractor(), new TermRestInteractor());
     }
 
+    /*@OnClick(R.id.button_category)
+    void onClickCategory(View view) {
+        toggleNavigationDrawer();
+    }*/
+
     @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
     void selectDiningKind(View view) {
         for (TextView textView : textViewDiningKinds) textView.setSelected(false);
@@ -122,6 +131,7 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     protected void onResume() {
         super.onResume();
         if (this.presenter != null) {
+            showLoading();
             this.presenter.getCityBus(this.departureState, this.arrivalState);
             this.presenter.getDaesungBus(this.departureState, this.arrivalState);
             this.presenter.getTermInfo();
@@ -152,32 +162,32 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
 
     @Override
     public void updateShuttleBusTime(int current) {
-        shuttleBusArrival.setSoonArrival(current);
+        busPagerAdapter.updateShuttleBusTime(current);
     }
 
     @Override
     public void updateCityBusTime(int current) {
-        cityBusArrival.setSoonArrival(current);
+        busPagerAdapter.updateCityBusTime(current);
     }
 
     @Override
     public void updateDaesungBusTime(int current) {
-        daesungBusArrival.setSoonArrival(current);
+        busPagerAdapter.updateDaesungBusTime(current);
     }
 
     @Override
     public void updateShuttleBusDepartInfo(String current) {
-        shuttleBusArrival.setCurrent(current);
+        busPagerAdapter.updateShuttleBusDepartInfo(current);
     }
 
     @Override
     public void updateCityBusDepartInfo(int current) {
-        cityBusArrival.setSoonArrival(current);
+        busPagerAdapter.updateCityBusDepartInfo(current);
     }
 
     @Override
     public void updateDaesungBusDepartInfo(String current) {
-        daesungBusArrival.setCurrent(current);
+        busPagerAdapter.updateDaesungBusDepartInfo(current);
     }
 
     @Override
