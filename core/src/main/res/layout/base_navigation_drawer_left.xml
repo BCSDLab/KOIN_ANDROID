@@ -7,7 +7,7 @@
     android:id="@+id/left_nav_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="start"
+    android:layout_gravity="right"
     android:background="@color/background"
     android:fitsSystemWindows="false"
     android:theme="@style/KAPNavigationHeader">
