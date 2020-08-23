@@ -49,6 +49,16 @@
             android:gravity="center">
 
             <TextView
+                android:id="@+id/text_view_bus_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="401번 버스"
+                android:textSize="12sp"
+                android:textColor="@color/gray8"
+                android:gravity="center"
+                android:paddingBottom="4dp" />
+
+            <TextView
                 android:id="@+id/text_view_remaining_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
