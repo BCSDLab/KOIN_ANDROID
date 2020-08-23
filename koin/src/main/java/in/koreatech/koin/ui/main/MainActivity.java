@@ -24,6 +24,7 @@ import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.ui.main.enums.DiningKinds;
 
 public class MainActivity extends ActivityBase {
+    private static String TAG = MainActivity.class.getSimpleName();
 
     private Unbinder unbinder;
 
@@ -32,15 +33,15 @@ public class MainActivity extends ActivityBase {
     @BindView(R.id.toolbar_layout)
     FrameLayout toolbarLayout;
 
+    //버스
     @BindView(R.id.main_view_pager)
-    ScaleViewPager mainViewPager;
+    ScaleViewPager busCardViewPager;
 
+    //상점
     @BindView(R.id.recycler_view_store_category)
     RecyclerView recyclerViewStoreCategory;
 
-    @BindView(R.id.text_view_card_dining_korean)
-    TextView diningKorean;
-
+    //학식
     @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
     List<TextView> textViewDiningKinds;
 
@@ -74,9 +75,9 @@ public class MainActivity extends ActivityBase {
     }
 
     private void initBusPager() {
-        mainViewPager.setAdapter(new BusPagerAdapter());
-        mainViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
-        mainViewPager.setOffscreenPageLimit(5);
+        busCardViewPager.setAdapter(new BusPagerAdapter());
+        busCardViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
+        busCardViewPager.setOffscreenPageLimit(5);
     }
 
     private void initStoreRecyclerView() {
