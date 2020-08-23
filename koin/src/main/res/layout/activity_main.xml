@@ -50,76 +50,85 @@
         </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true" >
+        android:layout_marginTop="-24dp">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:fillViewport="true" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="버스/교통"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="20dp"/>
-
-            <in.koreatech.koin.core.viewpager.ScaleViewPager
-                android:id="@+id/main_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="151dp"
-                android:paddingStart="40dp"
-                android:paddingEnd="40dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:layout_marginTop="4dp"
-                android:clipToPadding="false"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주변상점"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="20dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_store_category"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="11dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:clipToPadding="false"/>
+                android:orientation="vertical"
+                android:layout_marginTop="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="식단"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="버스/교통"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="20dp"/>
 
-            <include layout="@layout/main_card_dining"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="11dp" />
+                <in.koreatech.koin.core.viewpager.ScaleViewPager
+                    android:id="@+id/main_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="151dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginTop="4dp"
+                    android:clipToPadding="false"/>
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주변상점"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="20dp"/>
 
-    </ScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_store_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="11dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:clipToPadding="false"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="식단"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="20dp"/>
+
+                <include layout="@layout/main_card_dining"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="11dp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>
