@@ -1,6 +1,10 @@
 package in.koreatech.koin.ui.main.presenter;
 
+import java.util.ArrayList;
+
 import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Dining;
+import in.koreatech.koin.ui.bus.data.BusArrival;
 import in.koreatech.koin.ui.bus.presenter.BusMainPresenter;
 
 public interface MainActivityContact {
@@ -8,12 +12,22 @@ public interface MainActivityContact {
         void showLoading();
         void hideLoading();
 
-        void updateBusPager();
-        void updateDining();
+        void updateShuttleBusTime(int current);
+        void updateCityBusTime(int current);
+        void updateDaesungBusTime(int current);
+        void updateShuttleBusDepartInfo(String current);
+        void updateCityBusDepartInfo(int current);
+        void updateDaesungBusDepartInfo(String current);
+        void updateFailDaesungBusDepartInfo();
+        void updateFailShuttleBusDepartInfo();
+        void updateFailCityBusDepartInfo();
+        void updateShuttleBusInfo(int term);
     }
 
     interface Presenter {
-        void getBusRemaningTime(long nowTime, int semester, int departure, int arrival);
-        void getDiningList(String date);
+        void getTermInfo();
+        void getCityBus(int depart, int arrival);
+        void getDaesungBus(int depart, int arrival);
+        void getShuttleBus(int depart, int arrival, int term);
     }
 }

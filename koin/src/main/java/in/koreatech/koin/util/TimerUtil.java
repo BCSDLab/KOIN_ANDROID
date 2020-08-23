@@ -87,6 +87,9 @@ public abstract class TimerUtil {
         timer.schedule(timerTask, 0, 1000);
     }
 
+    public String getStrTime() {
+        return strTime;
+    }
 
     public abstract void endTimer();
 
