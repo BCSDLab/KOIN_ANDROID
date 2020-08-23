@@ -26,8 +26,8 @@
             android:background="@android:color/black">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:src="@drawable/ic_bus03" />
 
             <TextView
@@ -50,20 +50,18 @@
 
             <TextView
                 android:id="@+id/text_view_bus_info"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="401번 버스"
+                tools:text="400번 버스"
                 android:textSize="12sp"
                 android:textColor="@color/gray8"
-                android:gravity="center"
                 android:paddingBottom="4dp" />
 
             <TextView
                 android:id="@+id/text_view_remaining_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00분 00초 남음"
-                android:layout_marginBottom="12dp"
+                android:text="운행정보없음"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/black" />
@@ -87,8 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/image_view_switch"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginEnd="11dp"
+                    android:padding="11dp"
                     android:background="?attr/selectableItemBackgroundBorderless" />
 
                 <TextView

@@ -1,11 +1,6 @@
 package in.koreatech.koin.ui.main.presenter;
 
-import java.util.ArrayList;
-
 import in.koreatech.koin.core.contract.BaseView;
-import in.koreatech.koin.data.network.entity.Dining;
-import in.koreatech.koin.ui.bus.data.BusArrival;
-import in.koreatech.koin.ui.bus.presenter.BusMainPresenter;
 
 public interface MainActivityContact {
     interface View extends BaseView<Presenter> {

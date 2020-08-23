@@ -35,6 +35,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         @Override
         public void onFailure(Throwable throwable) {
             Log.d(TAG, throwable.getMessage());
+            Log.e("Citybus Failed", "");
             view.updateFailCityBusDepartInfo();
             view.hideLoading();
         }
@@ -100,6 +101,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
             view.updateDaesungBusTime(soonArrival);
             view.updateDaesungBusDepartInfo(soonDeparture);
         } catch (ParseException e) {
+            Log.e("Daesung Failed", "");
             view.updateFailDaesungBusDepartInfo();
         }
 
@@ -129,10 +131,13 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         }
         try {
             int soonArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            int laterArrival = (int) currentSemesterBus.getRemainShuttleTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             String soonDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            String laterDeparture = currentSemesterBus.getNearShuttleTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), false);
             view.updateShuttleBusTime(soonArrival);
             view.updateShuttleBusDepartInfo(soonDeparture);
         } catch (ParseException e) {
+            Log.e("CityBus Failed", "getShuttlebus");
             view.updateFailCityBusDepartInfo();
         }
 

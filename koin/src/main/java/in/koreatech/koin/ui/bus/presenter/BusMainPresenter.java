@@ -46,6 +46,7 @@ public class BusMainPresenter {
             busMainView.hideLoading();
         }
     };
+
     private final ApiCallback termApiCallback = new ApiCallback() {             //방학인지 학기중인지 정보를 받아오는 api callback
         @Override
         public void onSuccess(Object object) {

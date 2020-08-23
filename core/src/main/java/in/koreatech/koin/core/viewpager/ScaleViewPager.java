@@ -3,7 +3,6 @@ package in.koreatech.koin.core.viewpager;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.AttributeSet;
-import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -22,16 +21,10 @@ public class ScaleViewPager extends ViewPager {
     }
 
     private void init(Context context) {
-        float density = context.getResources().getDisplayMetrics().density;
-        int pageMargin = (int) (8 * density);
-
-        //setPageMargin(pageMargin);
-
         Point point = new Point();
         ((WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getSize(point);
         float startOffset = (float)(getPaddingLeft())/(point.x - 2 * getPaddingLeft());
 
-        setPageTransformer(false, new BusCardPagerTransformer(1.0f, 0.9f, startOffset));
+        setPageTransformer(false, new ScaleCardPagerTransformer(1.0f, 0.9f, startOffset));
     }
-
 }
