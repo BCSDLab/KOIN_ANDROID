@@ -4,29 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.View;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
-
-import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
@@ -83,7 +81,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
             R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
-    public void storeCategoryOnCliked(View view) {
+    public void storeCategoryOnClicked(View view) {
         initCateGoryTextColor();
         this.storeCategoryNumber = getCategoryPoistionNumber(view);
         if (!this.storeAllArraylist.isEmpty())
@@ -151,10 +149,13 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     }
 
     private void init() {
+        Intent intent = getIntent();
         this.resources = getResources();
         categoryCode = this.resources.getStringArray(R.array.store_category_list_code);
         swipeRefreshLayout.setOnRefreshListener(this);
-        this.storeCategoryNumber = 0; //메뉴 전체로 초기화
+        if (intent.getExtras() == null) this.storeCategoryNumber = 0;
+        else
+            this.storeCategoryNumber = intent.getExtras().getInt("store_category", 0); //메뉴 초기화
         this.layoutManager = new LinearLayoutManager(this);
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();
@@ -166,6 +167,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         storeListRecyclerView.setAdapter(this.storeRecyclerAdapter);
 
         setPresenter(new StorePresenter(this, new StoreRestInteractor()));
+        storeCategoryOnClicked(findViewById(CATEGORY_TEXT_ID[this.storeCategoryNumber]));
     }
 
     @Override

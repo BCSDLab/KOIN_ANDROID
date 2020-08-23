@@ -1,5 +1,6 @@
 package in.koreatech.koin.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +23,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
@@ -30,6 +32,7 @@ import in.koreatech.koin.ui.main.enums.DiningKinds;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 
 public class MainActivity extends ActivityBase implements MainActivityContact.View {
@@ -41,7 +44,6 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     private int arrivalState = 1; // 0 : 한기대 1 : 야우리 2 : 천안역
 
     private FirebasePerformanceUtil firebasePerformanceUtil;
-
 
     @BindView(R.id.toolbar)
     MaterialCardView toolbar;
@@ -105,7 +107,19 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
 
     private void initStoreRecyclerView() {
         recyclerViewStoreCategory.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        recyclerViewStoreCategory.setAdapter(new StoreCategoryRecyclerAdapter());
+        StoreCategoryRecyclerAdapter adapter = new StoreCategoryRecyclerAdapter();
+        recyclerViewStoreCategory.setAdapter(adapter);
+        adapter.setRecyclerViewClickListener(new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                gotoStoreActivity(position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        });
     }
 
     private void initDining() {
@@ -114,6 +128,12 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
 
     public void setPresenter() {
         this.presenter = new MainActivityPresenter(this, new CityBusRestInteractor(), new TermRestInteractor());
+    }
+
+    private void gotoStoreActivity(int position) {
+        Intent intent = new Intent(MainActivity.this, StoreActivity.class);
+        intent.putExtra("store_category", position);
+        startActivity(intent);
     }
 
     /*@OnClick(R.id.button_category)
