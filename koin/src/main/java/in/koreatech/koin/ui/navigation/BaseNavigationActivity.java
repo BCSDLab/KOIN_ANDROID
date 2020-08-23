@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,17 +20,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.entity.User;
-import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.toast.ToastUtil;
-
-import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
+import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.util.FormValidatorUtil;
 
 public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private final String TAG = "BaseNavigationActivity";
@@ -133,7 +127,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(beforeId));
         selectNavigationItem(currentId);
     }
-
 
 
     @Override
