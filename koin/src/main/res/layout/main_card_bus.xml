@@ -12,7 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackground">
 
         <LinearLayout
             android:id="@+id/bus_type_layout"
@@ -47,7 +48,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="10dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:focusable="false"
+            android:clickable="false">
 
             <TextView
                 android:id="@+id/text_view_bus_info"
@@ -87,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/image_view_switch"
                     android:padding="11dp"
+                    android:clickable="true"
                     android:background="?attr/selectableItemBackgroundBorderless" />
 
                 <TextView

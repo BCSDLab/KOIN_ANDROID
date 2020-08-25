@@ -19,9 +19,19 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.util.BusTimerUtil;
 
 public class BusPagerAdapter extends PagerAdapter {
+
+    interface OnSwitchClickListener {
+        void onSwitchClick();
+    }
+
     enum BusType {
         SHUTTLE, DAESUNG, CITYBUS
     }
+
+    private OnSwitchClickListener onSwitchClickListener;
+
+    private int departureState = 0; // 0 : 한기대 1 : 야우리 2 : 천안역
+    private int arrivalState = 1; // 0 : 한기대 1 : 야우리 2 : 천안역
 
     private List<View> itemViewsShuttle = new ArrayList<>();
     private List<View> itemViewsDaesung = new ArrayList<>();
@@ -67,6 +77,12 @@ public class BusPagerAdapter extends PagerAdapter {
             textView.setText(citybusInfo + "번 버스");
             itemViewsCityBus.add(view);
         }
+
+        view.findViewById(R.id.image_button_switch).setOnClickListener(v -> {
+            departureState = Math.abs(departureState - 1);
+            arrivalState = Math.abs(arrivalState - 1);
+            if(onSwitchClickListener != null) onSwitchClickListener.onSwitchClick();
+        });
 
         container.addView(view);
 
@@ -127,7 +143,15 @@ public class BusPagerAdapter extends PagerAdapter {
         }
     }
 
+    public int getDepartureState() {
+        return departureState;
+    }
 
+    public int getArrivalState() {
+        return arrivalState;
+    }
 
-
+    public void setOnSwitchClickListener(OnSwitchClickListener onSwitchClickListener) {
+        this.onSwitchClickListener = onSwitchClickListener;
+    }
 }

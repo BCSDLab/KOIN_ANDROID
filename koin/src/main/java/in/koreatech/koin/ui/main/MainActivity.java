@@ -39,15 +39,13 @@ import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.TimerListener;
 
-public class MainActivity extends ActivityBase implements MainActivityContact.View, TimerRenewListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends ActivityBase implements MainActivityContact.View, TimerRenewListener, SwipeRefreshLayout.OnRefreshListener, BusPagerAdapter.OnSwitchClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
     public static final int REFRESH_TIME = 60; // 1분 갱신
 
     private MainActivityContact.Presenter presenter = null;
     private Unbinder unbinder;
-
-    private int departureState = 0; // 0 : 한기대 1 : 야우리 2 : 천안역
-    private int arrivalState = 1; // 0 : 한기대 1 : 야우리 2 : 천안역
+    
     private int term;
 
     private BusTimerUtil citySoonBusTimerUtil;
@@ -133,6 +131,7 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
 
     private void initBusPager() {
         busPagerAdapter = new BusPagerAdapter();
+        busPagerAdapter.setOnSwitchClickListener(this);
         busCardViewPager.setAdapter(busPagerAdapter);
         busCardViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
         busCardViewPager.setOffscreenPageLimit(5);
@@ -175,6 +174,8 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     void onClickCategory(View view) {
         toggleNavigationDrawer();
     }*/
+
+
 
     @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
     void selectDiningKind(View view) {
@@ -297,7 +298,7 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     @Override
     public void updateShuttleBusInfo(int term) {
         this.term = term;
-        presenter.getShuttleBus(this.departureState, this.arrivalState, term);
+        presenter.getShuttleBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState(), term);
     }
 
     @Override
@@ -308,14 +309,14 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     @Override
     public void refreshTimer(int code) {
         if (code == 10)
-            presenter.getCityBus(this.departureState, this.arrivalState);
+            presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
         else if (code == 11)
-            presenter.getDaesungBus(this.departureState, this.arrivalState);
+            presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
         else if (code == 12)
             presenter.getTermInfo();
         else if (code == 13) {
-            presenter.getCityBus(this.departureState, this.arrivalState);
-            presenter.getDaesungBus(this.departureState, this.arrivalState);
+            presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
+            presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             presenter.getTermInfo();
             refreshBusTimerUtil.setEndTime(REFRESH_TIME);
             refreshBusTimerUtil.startTimer();
@@ -326,9 +327,14 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     public void onRefresh() {
         if (this.presenter != null) {
             showLoading();
-            this.presenter.getCityBus(this.departureState, this.arrivalState);
-            this.presenter.getDaesungBus(this.departureState, this.arrivalState);
+            this.presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
+            this.presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getTermInfo();
         }
+    }
+
+    @Override
+    public void onSwitchClick() {
+        onRefresh();
     }
 }
