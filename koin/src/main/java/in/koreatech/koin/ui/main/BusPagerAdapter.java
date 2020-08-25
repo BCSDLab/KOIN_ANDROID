@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.koreatech.koin.R;
 import in.koreatech.koin.util.BusTimerUtil;
@@ -21,19 +23,13 @@ public class BusPagerAdapter extends PagerAdapter {
         SHUTTLE, DAESUNG, CITYBUS
     }
 
-    List<View> itemViewsShuttle = new ArrayList<>();
-    List<View> itemViewsDaesung = new ArrayList<>();
-    List<View> itemViewsCityBus = new ArrayList<>();
+    private List<View> itemViewsShuttle = new ArrayList<>();
+    private List<View> itemViewsDaesung = new ArrayList<>();
+    private List<View> itemViewsCityBus = new ArrayList<>();
 
-    private BusTimerUtil citySoonBusTimerUtil;
-    private BusTimerUtil daesungBusSoonBusTimerUtil;
-    private BusTimerUtil shuttleBusSoonBusTimerUtil;
-
-    public BusPagerAdapter() {
-        citySoonBusTimerUtil = new BusTimerUtil(10);
-        daesungBusSoonBusTimerUtil = new BusTimerUtil(11);
-        shuttleBusSoonBusTimerUtil = new BusTimerUtil(12);
-    }
+    private String shuttleInfo = "";
+    private String daesungInfo = "";
+    private int citybusInfo = 0;
 
     @Override
     public int getCount() {
@@ -48,19 +44,27 @@ public class BusPagerAdapter extends PagerAdapter {
 
         LinearLayout busTypeLayout = view.findViewById(R.id.bus_type_layout);
         TextView textViewBusType = view.findViewById(R.id.text_view_bus_type);
+        TextView textView = view.findViewById(R.id.text_view_bus_info);
 
         Object tag = view.getTag();
+
         if (BusType.SHUTTLE.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.colorAccent));
             textViewBusType.setText("학교셔틀");
+            textView.setVisibility(shuttleInfo.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(shuttleInfo + "분 출발");
             itemViewsShuttle.add(view);
         } else if (BusType.DAESUNG.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.blue5));
             textViewBusType.setText("대성고속");
+            textView.setVisibility(daesungInfo.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(daesungInfo + "분 출발");
             itemViewsDaesung.add(view);
         } else if (BusType.CITYBUS.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.green3));
             textViewBusType.setText("시내버스");
+            textView.setVisibility(citybusInfo == 0 ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(citybusInfo + "번 버스");
             itemViewsCityBus.add(view);
         }
 
@@ -85,71 +89,45 @@ public class BusPagerAdapter extends PagerAdapter {
         return (view == (View) object);
     }
 
-    public void updateShuttleBusTime(int current) {
-        if (current >= 0) {
-            shuttleBusSoonBusTimerUtil.setEndTime(current);
-            for(View view : itemViewsShuttle) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
-                    shuttleBusSoonBusTimerUtil.getStrTime());
-            shuttleBusSoonBusTimerUtil.startTimer();
-        } else {
-            shuttleBusSoonBusTimerUtil.stopTimer();
-            for(View view : itemViewsShuttle) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(R.string.bus_no_information);
+    public void updateShuttleBusTimeText(String value) {
+        for(View view : itemViewsShuttle) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(value);
+    }
+
+    public void updateCityBusTimeText(String value) {
+        for(View view : itemViewsCityBus) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(value);
+    }
+
+    public void updateDaesungBusTimeText(String value) {
+            for(View view : itemViewsDaesung) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(value);
+    }
+
+    public void updateShuttleBusDepartInfoText(String value) {
+        shuttleInfo = value;
+        for(View view : itemViewsShuttle) {            TextView textView = view.findViewById(R.id.text_view_bus_info);
+            textView.setVisibility(value.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(value + "분 출발");
         }
     }
 
-    public void updateCityBusTime(int current) {
-        if (current > 0) {
-            this.citySoonBusTimerUtil.setEndTime(current);
-            for(View view : itemViewsCityBus) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
-                    citySoonBusTimerUtil.getStrTime());
-            this.citySoonBusTimerUtil.startTimer();
-
-        } else {
-            for(View view : itemViewsCityBus) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
-                R.string.bus_no_information);
-            this.citySoonBusTimerUtil.stopTimer();
-        }
-    }
-
-    public void updateDaesungBusTime(int current) {
-        if (current > 0) {
-            daesungBusSoonBusTimerUtil.setEndTime(current);
-            for(View view : itemViewsDaesung) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
-                    daesungBusSoonBusTimerUtil.getStrTime());
-            daesungBusSoonBusTimerUtil.startTimer();
-        } else {
-            daesungBusSoonBusTimerUtil.stopTimer();
-            for(View view : itemViewsDaesung) ((TextView) view.findViewById(R.id.text_view_remaining_time)).setText(
-                    R.string.bus_no_information);
-        }
-    }
-
-    public void updateShuttleBusDepartInfo(String current) {
-        for(View view : itemViewsShuttle) {
-            TextView textView = view.findViewById(R.id.text_view_bus_info);
-            textView.setVisibility(current.isEmpty() ? View.INVISIBLE : View.VISIBLE);
-            textView.setText("(" + current + ")분 출발");
-        }
-    }
-
-    public void updateCityBusDepartInfo(int current) {
+    public void updateCityBusDepartInfoText(int value) {
+        citybusInfo = value;
         for(View view : itemViewsCityBus) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
-            if (current == 0) {
-                textView.setVisibility(View.INVISIBLE);
-            } else {
-                textView.setVisibility(View.VISIBLE);
-                textView.setText(Integer.toString(current) + "번 버스");
-            }
+            textView.setVisibility(value == 0 ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(value + "번 버스");
         }
     }
 
-    public void updateDaesungBusDepartInfo(String current) {
+    public void updateDaesungBusDepartInfoText(String value) {
+        daesungInfo = value;
         for(View view : itemViewsDaesung) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
-            textView.setVisibility(current.isEmpty() ? View.INVISIBLE : View.VISIBLE);
-            textView.setText("(" + current + ")분 출발");
+            textView.setVisibility(value.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setText(value + "분 출발");
         }
     }
+
+
+
 
 }
