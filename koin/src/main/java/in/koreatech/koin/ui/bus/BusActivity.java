@@ -1,6 +1,7 @@
 package in.koreatech.koin.ui.bus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,9 @@ public class BusActivity extends KoinNavigationDrawerActivity {
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;
     private FirebasePerformanceUtil firebasePerformanceUtil;
+
+    public int departureState = 0; // 0 : 한기대 1 : 야우리 2 : 천안역
+    public int arrivalState = 1; // 0 : 한기대 1 : 야우리 2 : 천안역
 
     /* View Component */
     @BindView(R.id.koin_base_appbar)
@@ -94,6 +98,12 @@ public class BusActivity extends KoinNavigationDrawerActivity {
 
         //hide keyboard
         this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
+
+        Intent intent = getIntent();
+        if(intent.getExtras() != null) {
+            departureState = intent.getExtras().getInt("departure", 0);
+            arrivalState = intent.getExtras().getInt("arrival", 1);
+        }
     }
 
     final ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
