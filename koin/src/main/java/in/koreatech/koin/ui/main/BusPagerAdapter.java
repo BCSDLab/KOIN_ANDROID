@@ -51,19 +51,19 @@ public class BusPagerAdapter extends PagerAdapter {
         if (BusType.SHUTTLE.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.colorAccent));
             textViewBusType.setText("학교셔틀");
-            textView.setVisibility(shuttleInfo.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(shuttleInfo.isEmpty() ? View.GONE : View.VISIBLE);
             textView.setText(shuttleInfo + "분 출발");
             itemViewsShuttle.add(view);
         } else if (BusType.DAESUNG.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.blue5));
             textViewBusType.setText("대성고속");
-            textView.setVisibility(daesungInfo.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(daesungInfo.isEmpty() ? View.GONE : View.VISIBLE);
             textView.setText(daesungInfo + "분 출발");
             itemViewsDaesung.add(view);
         } else if (BusType.CITYBUS.equals(tag)) {
             busTypeLayout.setBackgroundColor(ContextCompat.getColor(container.getContext(), R.color.green3));
             textViewBusType.setText("시내버스");
-            textView.setVisibility(citybusInfo == 0 ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(citybusInfo == 0 ? View.GONE : View.VISIBLE);
             textView.setText(citybusInfo + "번 버스");
             itemViewsCityBus.add(view);
         }
@@ -104,7 +104,7 @@ public class BusPagerAdapter extends PagerAdapter {
     public void updateShuttleBusDepartInfoText(String value) {
         shuttleInfo = value;
         for(View view : itemViewsShuttle) {            TextView textView = view.findViewById(R.id.text_view_bus_info);
-            textView.setVisibility(value.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
             textView.setText(value + "분 출발");
         }
     }
@@ -113,7 +113,7 @@ public class BusPagerAdapter extends PagerAdapter {
         citybusInfo = value;
         for(View view : itemViewsCityBus) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
-            textView.setVisibility(value == 0 ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(value == 0 ? View.GONE : View.VISIBLE);
             textView.setText(value + "번 버스");
         }
     }
@@ -122,7 +122,7 @@ public class BusPagerAdapter extends PagerAdapter {
         daesungInfo = value;
         for(View view : itemViewsDaesung) {
             TextView textView = view.findViewById(R.id.text_view_bus_info);
-            textView.setVisibility(value.isEmpty() ? View.INVISIBLE : View.VISIBLE);
+            textView.setVisibility(value.isEmpty() ? View.GONE : View.VISIBLE);
             textView.setText(value + "분 출발");
         }
     }
