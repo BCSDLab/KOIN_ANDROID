@@ -28,6 +28,7 @@ import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
+import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.bus.TimerRenewListener;
 import in.koreatech.koin.ui.main.enums.DiningKinds;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
@@ -39,7 +40,7 @@ import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.TimerListener;
 
-public class MainActivity extends ActivityBase implements MainActivityContact.View, TimerRenewListener, SwipeRefreshLayout.OnRefreshListener, BusPagerAdapter.OnSwitchClickListener {
+public class MainActivity extends ActivityBase implements MainActivityContact.View, TimerRenewListener, SwipeRefreshLayout.OnRefreshListener, BusPagerAdapter.OnSwitchClickListener, BusPagerAdapter.OnCardClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
     public static final int REFRESH_TIME = 60; // 1분 갱신
 
@@ -132,6 +133,7 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     private void initBusPager() {
         busPagerAdapter = new BusPagerAdapter();
         busPagerAdapter.setOnSwitchClickListener(this);
+        busPagerAdapter.setOnCardClickListener(this);
         busCardViewPager.setAdapter(busPagerAdapter);
         busCardViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
         busCardViewPager.setOffscreenPageLimit(5);
@@ -336,5 +338,13 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     @Override
     public void onSwitchClick() {
         onRefresh();
+    }
+
+    @Override
+    public void onCardClick(BusPagerAdapter.BusKind busKind) {
+        Intent intent = new Intent(MainActivity.this, BusActivity.class);
+        intent.putExtra("departure", busPagerAdapter.getDepartureState());
+        intent.putExtra("arrival", busPagerAdapter.getArrivalState());
+        startActivity(intent);
     }
 }
