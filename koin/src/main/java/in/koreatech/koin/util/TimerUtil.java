@@ -6,8 +6,6 @@ import android.os.Message;
 import android.widget.TextView;
 
 
-
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,6 +13,7 @@ import in.koreatech.koin.R;
 
 public abstract class TimerUtil {
     private final String TAG = "TimerUtil";
+    private TimerListener timerListener;
     public static final int SEND_CODE = 0;
     public static final int END_CODE = 1;
     protected Handler handler;
@@ -26,7 +25,6 @@ public abstract class TimerUtil {
 
     public TimerUtil() {
         handler = new Handler();
-
     }
 
     public void setEndTime(int endTime) {
@@ -35,6 +33,10 @@ public abstract class TimerUtil {
 
     public void setTextView(TextView textView) {
         this.textview = textView;
+    }
+
+    public void setTimerListener(TimerListener timerListener) {
+        this.timerListener = timerListener;
     }
 
     public void startTimer() {
@@ -46,11 +48,12 @@ public abstract class TimerUtil {
                     if (msg.what == END_CODE) {
                         endTimer();
                     }
-                    if (textview != null) {
-                        if (msg.what == END_CODE)
-                            textview.setText(R.string.bus_no_information);
-                        else
-                            textview.setText(strTime);
+                    if (msg.what == END_CODE) {
+                        if (textview != null) textview.setText(R.string.bus_no_information);
+                        if (timerListener != null) timerListener.onTimerUpdated("운행정보없음");
+                    } else {
+                        if (textview != null) textview.setText(strTime);
+                        if (timerListener != null) timerListener.onTimerUpdated(strTime);
                     }
                 }
             }
