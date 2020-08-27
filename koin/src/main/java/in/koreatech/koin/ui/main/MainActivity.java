@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -24,35 +25,52 @@ import butterknife.Unbinder;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
+import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
+import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.bus.TimerRenewListener;
 import in.koreatech.koin.ui.main.enums.DiningKinds;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.util.BusTimerUtil;
-import in.koreatech.koin.util.FirebasePerformanceUtil;
+import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
-import in.koreatech.koin.util.TimerListener;
 
-public class MainActivity extends ActivityBase implements MainActivityContact.View, TimerRenewListener, SwipeRefreshLayout.OnRefreshListener, BusPagerAdapter.OnSwitchClickListener, BusPagerAdapter.OnCardClickListener {
+import static in.koreatech.koin.util.DiningUtil.TYPE;
+
+public class MainActivity extends ActivityBase implements
+        MainActivityContact.View,
+        TimerRenewListener,
+        SwipeRefreshLayout.OnRefreshListener,
+        BusPagerAdapter.OnSwitchClickListener,
+        BusPagerAdapter.OnCardClickListener {
     private static String TAG = MainActivity.class.getSimpleName();
     public static final int REFRESH_TIME = 60; // 1분 갱신
+    private final int LIMITDATE = 7; // 식단 조회 제한 날짜
+
+    public final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
+    private String today;
+    private int changeDate;
+    private String currentDiningType;
+    private String currentDiningPlace;
 
     private MainActivityContact.Presenter presenter = null;
     private Unbinder unbinder;
-    
+
     private int term;
 
     private BusTimerUtil citySoonBusTimerUtil;
     private BusTimerUtil daesungBusSoonBusTimerUtil;
     private BusTimerUtil shuttleBusSoonBusTimerUtil;
     private BusTimerUtil refreshBusTimerUtil;
+
+    private Map<String, ArrayList<Dining>> diningMap = new HashMap<>();
 
     @BindView(R.id.toolbar)
     MaterialCardView toolbar;
@@ -73,6 +91,10 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     //학식
     @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
     List<TextView> textViewDiningKinds;
+    @BindView(R.id.view_empty_dining)
+    View viewEmptyDining;
+    @BindView(R.id.text_view_card_dining_time)
+    TextView textViewCardDiningTime;
 
     @BindViews({R.id.text_view_card_dining_menu_0,
             R.id.text_view_card_dining_menu_1,
@@ -120,10 +142,9 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
         shuttleBusSoonBusTimerUtil.setTimerRenewListener(this);
         refreshBusTimerUtil.setTimerRenewListener(this);
 
-        citySoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateCityBusTimeText(citySoonBusTimerUtil.getStrTime()));
-        daesungBusSoonBusTimerUtil.setTimerListener(value ->
-                busPagerAdapter.updateDaesungBusTimeText(daesungBusSoonBusTimerUtil.getStrTime()));
-        shuttleBusSoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateShuttleBusTimeText(shuttleBusSoonBusTimerUtil.getStrTime()));
+        citySoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateCityBusTimeText(value));
+        daesungBusSoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateDaesungBusTimeText(value));
+        shuttleBusSoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateShuttleBusTimeText(value));
 
         initBusPager();
         initStoreRecyclerView();
@@ -151,19 +172,18 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
 
             @Override
             public void onLongClick(View view, int position) {
-
             }
         });
     }
 
-
-
     private void initDining() {
-        selectDiningKind(textViewDiningKinds.get(DiningKinds.KOREAN.getPosition()));
+        today = TimeUtil.getDeviceCreatedDateOnlyString();
+        changeDate = 0;
+        if(setCurrentDiningType()) presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
     }
 
     public void setPresenter() {
-        this.presenter = new MainActivityPresenter(this, new CityBusRestInteractor(), new TermRestInteractor());
+        this.presenter = new MainActivityPresenter(this, new CityBusRestInteractor(), new TermRestInteractor(), new DiningRestInteractor());
     }
 
     private void gotoStoreActivity(int position) {
@@ -177,12 +197,17 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
         toggleNavigationDrawer();
     }*/
 
-
-
     @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
     void selectDiningKind(View view) {
         for (TextView textView : textViewDiningKinds) textView.setSelected(false);
         view.setSelected(true);
+        switch (view.getId()) {
+            case R.id.text_view_card_dining_korean: currentDiningPlace = "한식"; break;
+            case R.id.text_view_card_dining_onedish: currentDiningPlace = "일품식"; break;
+            case R.id.text_view_card_dining_western: currentDiningPlace = "양식"; break;
+            case R.id.text_view_card_dining_special: currentDiningPlace = "특식"; break;
+        }
+        updateUserInterface(currentDiningPlace);
     }
 
     @Override
@@ -194,20 +219,20 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     @Override
     protected void onPause() {
         super.onPause();
-        if(citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
-        if(daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
-        if(shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
-        if(refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
+        if (citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
+        if (daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
+        if (shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
+        if (refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        if(citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
-        if(daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
-        if(shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
-        if(refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
+        if (citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
+        if (daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
+        if (shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
+        if (refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
     }
 
     @Override
@@ -236,15 +261,10 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     @Override
     public void updateCityBusTime(int current) {
         if (current > 0) {
-            //citybusSoonDepartureTimeTextview.setVisibility(View.VISIBLE);
-            //citybusSoonDepartureTimeTextview.setText("(" + TimeUtil.getAddTimeSecond(current) + ")분 출발");
             this.citySoonBusTimerUtil.setEndTime(current);
             busPagerAdapter.updateCityBusTimeText(citySoonBusTimerUtil.getStrTime());
             this.citySoonBusTimerUtil.startTimer();
-
         } else {
-            //citybusSoonArrivalTimeTextview.setText(R.string.bus_no_information);
-            //citybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
             this.citySoonBusTimerUtil.stopTimer();
         }
     }
@@ -301,6 +321,99 @@ public class MainActivity extends ActivityBase implements MainActivityContact.Vi
     public void updateShuttleBusInfo(int term) {
         this.term = term;
         presenter.getShuttleBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState(), term);
+    }
+
+    @Override
+    public void showNetworkError() {
+        diningMap.clear();
+        showEmptyDining();
+        ToastUtil.getInstance().makeShort(R.string.error_network);
+    }
+
+    /**
+     * 현재 시간과 아침,점심,저녁의 운영 종료 시각을 비교하여 현재에 맞는 식단 TYPE 을 정해주는 메소드
+     *
+     * @return TYPE[] 에 저장된 BREAKFAST, LAUNCH, DINNER
+     */
+    private boolean setCurrentDiningType() {
+        if (TimeUtil.timeCompareWithCurrent(false, ENDTIME[0]) >= 0) {  // 0시부터 9시 전까지 BREAKFAST
+            currentDiningType = TYPE[0];
+            return true;
+        } else if (TimeUtil.timeCompareWithCurrent(false, ENDTIME[1]) >= 0) { // 9시부터 13시 30분까지 LUNCH
+            currentDiningType = TYPE[1];
+            return true;
+        } else if (TimeUtil.timeCompareWithCurrent(false, ENDTIME[2]) >= 0) {    // 13시 30분부터 18시 30분까지 DINNER
+            currentDiningType = TYPE[2];
+            return true;
+        } else {  // 18:30 분부터 23:59분까지 다음날 BREAKFAST
+            currentDiningType = TYPE[0];
+            return getNextDiningMenu();
+        }
+    }
+
+    public boolean getNextDiningMenu() {
+        if (changeDate < LIMITDATE) {
+            changeDate++;
+            today = TimeUtil.getChangeDate(changeDate);
+            return true;
+        } else showEmptyDining();
+        return false;
+    }
+
+
+    @Override
+    public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
+        diningMap.clear();
+
+        if (!diningArrayList.isEmpty()) {
+            for (Dining dining : DiningUtil.arrangeDinings(diningArrayList)) {
+                if (dining == null ) {
+                    continue;
+                }
+
+                String typeTemp = dining.getType();
+                if(!typeTemp.equals(currentDiningType)) continue;
+
+                String placeTemp = dining.getPlace();
+
+                if (diningMap.containsKey(placeTemp)) {
+                    diningMap.get(placeTemp).add(dining);
+                } else {
+                    ArrayList<Dining> dinings = new ArrayList<>();
+                    dinings.add(dining);
+                    diningMap.put(placeTemp, dinings);
+                }
+            }
+            hideEmptyDining();
+            selectDiningKind(textViewDiningKinds.get(DiningKinds.KOREAN.getPosition()));
+        } else {
+            showEmptyDining();
+        }
+
+        if (swipeRefreshLayout.isRefreshing()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void updateUserInterface(String place) {
+        for(TextView textView : textViewDiningMenus) textView.setText("");
+        if(diningMap.containsKey(place)) {
+            List<String> dinings = diningMap.get(place).get(0).getMenu();
+            for(int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
+                textViewDiningMenus.get(i).setText(dinings.get(i));
+            }
+        }
+    }
+
+    @Override
+    public void showEmptyDining() {
+        viewEmptyDining.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyDining() {
+        viewEmptyDining.setVisibility(View.GONE);
     }
 
     @Override

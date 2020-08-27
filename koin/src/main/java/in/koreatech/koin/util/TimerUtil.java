@@ -13,7 +13,7 @@ import in.koreatech.koin.R;
 
 public abstract class TimerUtil {
     private final String TAG = "TimerUtil";
-    private TimerListener timerListener;
+    protected TimerListener timerListener;
     public static final int SEND_CODE = 0;
     public static final int END_CODE = 1;
     protected Handler handler;

@@ -2,16 +2,20 @@ package in.koreatech.koin.ui.main.presenter;
 
 import android.util.Log;
 
+import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import in.koreatech.koin.constant.BusType;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
+import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.entity.RegularSemesterBus;
 import in.koreatech.koin.data.network.entity.SeasonalSemesterBus;
 import in.koreatech.koin.data.network.entity.Term;
 import in.koreatech.koin.data.network.entity.VacationBus;
 import in.koreatech.koin.data.network.interactor.CityBusInteractor;
+import in.koreatech.koin.data.network.interactor.DiningInteractor;
 import in.koreatech.koin.data.network.interactor.TermInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
 
@@ -21,6 +25,9 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
     private final MainActivityContact.View view;
     private final CityBusInteractor busInteractor;
     private final TermInteractor termInteractor;
+    private final DiningInteractor diningInteractor;
+
+    private boolean diningListApiCallCheck;
 
     private final ApiCallback apiCallback = new ApiCallback() {                     //시내버스의 시간을 받아오는 api callback
         @Override
@@ -56,10 +63,33 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         }
     };
 
-    public MainActivityPresenter(MainActivityContact.View view, CityBusInteractor busInteractor, TermInteractor termInteractor) {
+    private final ApiCallback diningApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            ArrayList<Dining> diningArrayList = (ArrayList<Dining>) object;
+            view.onDiningListDataReceived(diningArrayList);
+            diningListApiCallCheck = true;
+            view.hideLoading();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            // diningView.showMessage(throwable.getMessage());
+            diningListApiCallCheck = false;
+            if(!(throwable instanceof UnknownHostException))
+                view.showEmptyDining();
+            else
+                view.showNetworkError();
+
+            view.hideLoading();
+        }
+    };
+
+    public MainActivityPresenter(MainActivityContact.View view, CityBusInteractor busInteractor, TermInteractor termInteractor, DiningInteractor diningInteractor) {
         this.view = view;
         this.busInteractor = busInteractor;
         this.termInteractor = termInteractor;
+        this.diningInteractor = diningInteractor;
     }
 
     /**
@@ -142,5 +172,11 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         }
 
         view.hideLoading();
+    }
+
+    @Override
+    public void getDiningList(String date) {
+        view.showLoading();
+        diningInteractor.readDiningList(date, diningApiCallback);
     }
 }
