@@ -1,6 +1,9 @@
 package in.koreatech.koin.ui.main.presenter;
 
+import java.util.ArrayList;
+
 import in.koreatech.koin.core.contract.BaseView;
+import in.koreatech.koin.data.network.entity.Dining;
 
 public interface MainActivityContact {
     interface View extends BaseView<Presenter> {
@@ -17,6 +20,12 @@ public interface MainActivityContact {
         void updateFailShuttleBusDepartInfo();
         void updateFailCityBusDepartInfo();
         void updateShuttleBusInfo(int term);
+
+        void showNetworkError();
+        void onDiningListDataReceived(ArrayList<Dining> diningArrayList);
+        void updateUserInterface(String place);
+        void showEmptyDining();
+        void hideEmptyDining();
     }
 
     interface Presenter {
@@ -24,5 +33,7 @@ public interface MainActivityContact {
         void getCityBus(int depart, int arrival);
         void getDaesungBus(int depart, int arrival);
         void getShuttleBus(int depart, int arrival, int term);
+
+        void getDiningList(String date);
     }
 }
