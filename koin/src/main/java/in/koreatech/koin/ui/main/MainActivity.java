@@ -34,7 +34,6 @@ import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.bus.TimerRenewListener;
-import in.koreatech.koin.ui.main.enums.DiningKinds;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.store.StoreActivity;
@@ -55,10 +54,11 @@ public class MainActivity extends ActivityBase implements
     private final int LIMITDATE = 7; // 식단 조회 제한 날짜
 
     public final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
+    private final static String[] PLACES = {"한식", "일품식", "양식", "특식", "능수관", "수박여", "2캠퍼스"};
     private String today;
     private int changeDate;
     private String currentDiningType;
-    private String currentDiningPlace;
+    private int currentDiningPlacePosition = 0;
 
     private MainActivityContact.Presenter presenter = null;
     private Unbinder unbinder;
@@ -89,22 +89,24 @@ public class MainActivity extends ActivityBase implements
     RecyclerView recyclerViewStoreCategory;
 
     //학식
-    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
-    List<TextView> textViewDiningKinds;
+    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
+    List<TextView> textViewDiningPlaces;
     @BindView(R.id.view_empty_dining)
     View viewEmptyDining;
     @BindView(R.id.text_view_card_dining_time)
     TextView textViewCardDiningTime;
+    @BindView(R.id.text_view_dining_no_data)
+    TextView textViewDiningNoData;
 
     @BindViews({R.id.text_view_card_dining_menu_0,
-            R.id.text_view_card_dining_menu_1,
             R.id.text_view_card_dining_menu_2,
-            R.id.text_view_card_dining_menu_3,
             R.id.text_view_card_dining_menu_4,
-            R.id.text_view_card_dining_menu_5,
             R.id.text_view_card_dining_menu_6,
-            R.id.text_view_card_dining_menu_7,
             R.id.text_view_card_dining_menu_8,
+            R.id.text_view_card_dining_menu_1,
+            R.id.text_view_card_dining_menu_3,
+            R.id.text_view_card_dining_menu_5,
+            R.id.text_view_card_dining_menu_7,
             R.id.text_view_card_dining_menu_9})
     List<TextView> textViewDiningMenus;
 
@@ -179,7 +181,6 @@ public class MainActivity extends ActivityBase implements
     private void initDining() {
         today = TimeUtil.getDeviceCreatedDateOnlyString();
         changeDate = 0;
-        if(setCurrentDiningType()) presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
     }
 
     public void setPresenter() {
@@ -197,17 +198,30 @@ public class MainActivity extends ActivityBase implements
         toggleNavigationDrawer();
     }*/
 
-    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special})
+    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     void selectDiningKind(View view) {
-        for (TextView textView : textViewDiningKinds) textView.setSelected(false);
-        view.setSelected(true);
-        switch (view.getId()) {
-            case R.id.text_view_card_dining_korean: currentDiningPlace = "한식"; break;
-            case R.id.text_view_card_dining_onedish: currentDiningPlace = "일품식"; break;
-            case R.id.text_view_card_dining_western: currentDiningPlace = "양식"; break;
-            case R.id.text_view_card_dining_special: currentDiningPlace = "특식"; break;
+        for (int i = 0; i < textViewDiningPlaces.size(); i++) {
+            TextView textView = textViewDiningPlaces.get(i);
+            if(textView.getId() == view.getId()) {
+                textView.setSelected(true);
+                currentDiningPlacePosition = i;
+            }
+            else textView.setSelected(false);
         }
-        updateUserInterface(currentDiningPlace);
+        updateUserInterface(currentDiningPlacePosition);
+    }
+
+    void selectDiningKind(int placePosition) {
+        for (TextView textView : textViewDiningPlaces) textView.setSelected(false);
+        textViewDiningPlaces.get(placePosition).setSelected(true);
+        currentDiningPlacePosition = placePosition;
+        updateUserInterface(currentDiningPlacePosition);
+    }
+
+    void updateDiningTypeTextView() {
+        if (currentDiningType.equals(TYPE[0])) textViewCardDiningTime.setText("아침");
+        else if (currentDiningType.equals(TYPE[1])) textViewCardDiningTime.setText("점심");
+        else if (currentDiningType.equals(TYPE[2])) textViewCardDiningTime.setText("저녁");
     }
 
     @Override
@@ -364,6 +378,7 @@ public class MainActivity extends ActivityBase implements
     @Override
     public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
         diningMap.clear();
+        for(TextView textView : textViewDiningPlaces) textView.setVisibility(View.GONE);
 
         if (!diningArrayList.isEmpty()) {
             for (Dining dining : DiningUtil.arrangeDinings(diningArrayList)) {
@@ -382,10 +397,13 @@ public class MainActivity extends ActivityBase implements
                     ArrayList<Dining> dinings = new ArrayList<>();
                     dinings.add(dining);
                     diningMap.put(placeTemp, dinings);
+                    for(int i = 0; i < PLACES.length; i++) {
+                        if(PLACES[i].equals(placeTemp)) textViewDiningPlaces.get(i).setVisibility(View.VISIBLE);
+                    }
                 }
             }
             hideEmptyDining();
-            selectDiningKind(textViewDiningKinds.get(DiningKinds.KOREAN.getPosition()));
+            selectDiningKind(currentDiningPlacePosition);
         } else {
             showEmptyDining();
         }
@@ -396,13 +414,17 @@ public class MainActivity extends ActivityBase implements
     }
 
     @Override
-    public void updateUserInterface(String place) {
-        for(TextView textView : textViewDiningMenus) textView.setText("");
-        if(diningMap.containsKey(place)) {
-            List<String> dinings = diningMap.get(place).get(0).getMenu();
+    public void updateUserInterface(int placePosition) {
+        if(diningMap.containsKey(PLACES[placePosition])) {
+            for(TextView textView : textViewDiningMenus) textView.setText("");
+            textViewDiningNoData.setVisibility(View.GONE);
+            List<String> dinings = diningMap.get(PLACES[placePosition]).get(0).getMenu();
             for(int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
                 textViewDiningMenus.get(i).setText(dinings.get(i));
             }
+        } else {
+            if(placePosition < PLACES.length - 1) selectDiningKind(++placePosition);
+            else showEmptyDining();
         }
     }
 
@@ -445,6 +467,8 @@ public class MainActivity extends ActivityBase implements
             this.presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getTermInfo();
+            if(setCurrentDiningType()) presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
+            updateDiningTypeTextView();
         }
     }
 
