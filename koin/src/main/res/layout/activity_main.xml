@@ -704,7 +704,7 @@
 
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
