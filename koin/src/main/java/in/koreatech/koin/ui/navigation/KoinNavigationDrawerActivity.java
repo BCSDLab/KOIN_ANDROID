@@ -8,25 +8,25 @@ import android.net.Uri;
 import androidx.appcompat.app.AlertDialog;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.activity.WebViewActivity;
 import in.koreatech.koin.constant.AuthorizeConstant;
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.core.activity.WebViewActivity;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.board.BoardActivity;
 import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.callvan.CallvanActivity;
 import in.koreatech.koin.ui.circle.CircleActivity;
 import in.koreatech.koin.ui.dining.DiningActivity;
-import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
 import in.koreatech.koin.ui.land.LandActivity;
+import in.koreatech.koin.ui.login.LoginActivity;
+import in.koreatech.koin.ui.lostfound.LostFoundMainActivity;
+import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.search.SearchActivity;
+import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.ui.timetable.TimetableActivity;
 import in.koreatech.koin.ui.timetable.TimetableAnonymousActivity;
 import in.koreatech.koin.ui.usedmarket.MarketUsedActivity;
-import in.koreatech.koin.ui.store.StoreActivity;
-import in.koreatech.koin.ui.login.LoginActivity;
-import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.userinfo.UserInfoActivity;
 
 import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_ANONYMOUS;
@@ -84,20 +84,6 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         return mMenuTextviewId;
     }
 
-    @Override
-    protected int getBottomNavigationCategoryID() {
-        return R.id.base_navigation_bar_bottom_category_linearlayout;
-    }
-
-    @Override
-    protected int getBottomNavigationHomeID() {
-        return R.id.base_navigation_bar_bottom_home_linearlayout;
-    }
-
-    @Override
-    protected int getBottomNavigationSearchID() {
-        return R.id.base_navigation_bar_bottom_search_linearlayout;
-    }
 
     /**
      * left navigation drawer 서비스 메뉴 호출
