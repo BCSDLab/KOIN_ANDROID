@@ -34,6 +34,7 @@ import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.bus.TimerRenewListener;
+import in.koreatech.koin.ui.dining.DiningActivity;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.store.StoreActivity;
@@ -95,8 +96,8 @@ public class MainActivity extends ActivityBase implements
     View viewEmptyDining;
     @BindView(R.id.text_view_card_dining_time)
     TextView textViewCardDiningTime;
-    @BindView(R.id.text_view_dining_no_data)
-    TextView textViewDiningNoData;
+    @BindView(R.id.dining_container)
+    View viewDiningContainer;
 
     @BindViews({R.id.text_view_card_dining_menu_0,
             R.id.text_view_card_dining_menu_2,
@@ -181,6 +182,10 @@ public class MainActivity extends ActivityBase implements
     private void initDining() {
         today = TimeUtil.getDeviceCreatedDateOnlyString();
         changeDate = 0;
+        viewDiningContainer.setOnClickListener((view) -> {
+            Intent intent = new Intent(MainActivity.this, DiningActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void setPresenter() {
@@ -417,7 +422,6 @@ public class MainActivity extends ActivityBase implements
     public void updateUserInterface(int placePosition) {
         if(diningMap.containsKey(PLACES[placePosition])) {
             for(TextView textView : textViewDiningMenus) textView.setText("");
-            textViewDiningNoData.setVisibility(View.GONE);
             List<String> dinings = diningMap.get(PLACES[placePosition]).get(0).getMenu();
             for(int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
                 textViewDiningMenus.get(i).setText(dinings.get(i));
