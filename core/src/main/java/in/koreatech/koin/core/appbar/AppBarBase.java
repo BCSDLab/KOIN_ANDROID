@@ -91,6 +91,11 @@ public class AppBarBase extends AppBarLayout {
         Drawable rightButtonBackground = typedArray.getDrawable(R.styleable.AppBarBase_rightButtonBackground);
         String rightButtonString = typedArray.getString(R.styleable.AppBarBase_rightButtonText);
         int rightButtonVisibility = typedArray.getInt(R.styleable.AppBarBase_rightButtonVisibility, View.VISIBLE);
+        int leftButtonHeight = typedArray.getDimensionPixelSize(R.styleable.AppBarBase_leftButtonHeight, -1);
+        int rightButtonHeight = typedArray.getDimensionPixelSize(R.styleable.AppBarBase_leftButtonHeight, -1);
+        int leftButtonWidth = typedArray.getDimensionPixelSize(R.styleable.AppBarBase_leftButtonHeight, -1);
+        int rightButtonWidth = typedArray.getDimensionPixelSize(R.styleable.AppBarBase_leftButtonHeight, -1);
+
         /* background */
         background.setBackgroundColor(backgroundColor);
         /* title */
@@ -102,11 +107,19 @@ public class AppBarBase extends AppBarLayout {
         leftButton.setBackground(leftButtonBackground);
         leftButton.setText(leftButtonString);
         leftButton.setVisibility(leftButtonVisibility);
+        if(leftButtonHeight!= -1 || leftButtonWidth != -1){
+            leftButton.setHeight(leftButtonHeight);
+            leftButton.setWidth(leftButtonWidth);
+        }
         /* rightButton */
         rightButton.setTextColor(rightButtonColor);
         rightButton.setBackground(rightButtonBackground);
         rightButton.setText(rightButtonString);
         rightButton.setVisibility(rightButtonVisibility);
+        if(leftButtonHeight!= -1 || leftButtonWidth != -1){
+            rightButton.setHeight(rightButtonHeight);
+            rightButton.setWidth(rightButtonWidth);
+        }
 
         typedArray.recycle();
     }
