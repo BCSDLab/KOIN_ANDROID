@@ -92,7 +92,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             }
         }
         View leftArrowButton = findViewById(getLeftArrowButtonId());
-        leftArrowButton.setOnClickListener(this);
+        leftArrowButton.setOnClickListener(this);                       //왼쪽화살표  클릭리스너 등록
 
         this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
         this.leftNavigationView.setNavigationItemSelectedListener(this);
