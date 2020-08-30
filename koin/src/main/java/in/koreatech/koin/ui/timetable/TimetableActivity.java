@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -75,7 +76,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
     public static final int LOAD_TIME_MS = 500;
-    public static final float BOTTOM_NAVIGATION_HEIGHT_PX = Resources.getSystem().getDisplayMetrics().density * 56;
+    public static final float BOTTOM_NAVIGATION_HEIGHT_PX = Resources.getSystem().getDisplayMetrics().density * 0;
 
     public static int select = -1;          //TimetableSelectMajorDialog에서 선택했던것을 기억하는 변수
     @BindView(R.id.timetable_timetableview)
@@ -114,6 +115,8 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     TableLayout timeTableHeader;
     @BindView(R.id.timetable_select_semester_textview)
     TextView selectSemesterTextview;
+    @BindView(R.id.timetable_add_floating_button)
+    FloatingActionButton timetableAddFloatingButton;
 
     private Context context;
     private UserLockBottomSheetBehavior bottomSheetBehavior;
@@ -144,6 +147,16 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     private String semester = "";
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        if (imm != null)
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,7 +165,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         ButterKnife.bind(this);
         init();
     }
-
 
     public void init() {
         isLoading = false;
@@ -213,7 +225,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     }
 
-
     public boolean checkStoragePermisson() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
@@ -241,13 +252,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     mediaIntent.setData(Uri.fromFile(saveImageFile));
                     sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
                 } else {
-                    ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
                 }
             }
         } catch (NullPointerException e) {
-            ToastUtil.getInstance().makeShort( R.string.timetable_saved_fail);
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
         }
     }
 
@@ -267,6 +278,11 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         clearFilterData();
     }
 
+    @OnClick(R.id.timetable_add_floating_button)
+    public void onClickedTimetableAddFloatingButton(View view){
+        onAddClassButtonClicked();
+    }
+
     @OnClick(R.id.timetable_save_timetable_image_linearlayout)
     public void clickedSaveTimetable() {
         Handler handler = new Handler();
@@ -282,7 +298,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }, 2000);
 
         } else {
-            ToastUtil.getInstance().makeShort( R.string.need_permission);
+            ToastUtil.getInstance().makeShort(R.string.need_permission);
             askSaveToImagePermission();
         }
     }
@@ -323,7 +339,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         timetableSemesterRecyclerview.setAdapter(timetableSemesterRecyclerAdapter);
     }
 
-
     public void initBottomSheet() {
         this.bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -333,6 +348,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_EXPANDED:
                         timetableView.setMarginBottom(bottomSheet.getHeight());
                         isBottomSheetOpen = true;
+                        setTimetableAddFloatingButtonVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         isBottomSheetOpen = false;
@@ -340,6 +356,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_HIDDEN:
                         timetableView.setMarginBottom((int) BOTTOM_NAVIGATION_HEIGHT_PX);
                         isBottomSheetOpen = false;
+                        setTimetableAddFloatingButtonVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -358,6 +375,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_EXPANDED:
                         timetableView.setMarginBottom(bottomSheet.getHeight());
                         isBottomDetailSheetOpen = true;
+                        setTimetableAddFloatingButtonVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         isBottomDetailSheetOpen = false;
@@ -365,6 +383,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_HIDDEN:
                         timetableView.setMarginBottom((int) BOTTOM_NAVIGATION_HEIGHT_PX);
                         isBottomDetailSheetOpen = false;
+                        setTimetableAddFloatingButtonVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -383,6 +402,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_EXPANDED:
                         timetableView.setMarginBottom(bottomSheet.getHeight());
                         isSemesterSelectSheetOpen = true;
+                        setTimetableAddFloatingButtonVisibility(View.GONE);
                         break;
                     case BottomSheetBehavior.STATE_DRAGGING:
                         isSemesterSelectSheetOpen = false;
@@ -390,6 +410,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     case BottomSheetBehavior.STATE_HIDDEN:
                         timetableView.setMarginBottom((int) BOTTOM_NAVIGATION_HEIGHT_PX);
                         isSemesterSelectSheetOpen = false;
+                        setTimetableAddFloatingButtonVisibility(View.VISIBLE);
                         break;
                 }
             }
@@ -399,7 +420,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             }
         });
     }
-
 
     @OnClick(R.id.timetable_add_schedule_bottom_sheet_center_textview)
     public void onClickedBottomSheetCenterTextview() {
@@ -465,7 +485,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         if (id == AppBarBase.getLeftButtonId())
             onBackPressed();
         else if (id == AppBarBase.getRightButtonId()) {
-            onAddClassButtonClicked();
+            toggleNavigationDrawer();
         }
     }
 
@@ -542,7 +562,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Log.d("select", Integer.toString(select));
     }
 
-
     @OnClick(R.id.timetable_add_schedule_search_imageview)
     public void onClickedSearchButton() {
         hideKeyboard(TimetableActivity.this);
@@ -560,7 +579,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
         updateSearchRectclerview();
     }
-
 
     @OnTextChanged(R.id.timetable_add_schedule_search_edittext)
     public void searchItemEditext(CharSequence text) {
@@ -588,7 +606,6 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         if (this.timetableRecyclerAdapter != null)
             this.timetableRecyclerAdapter.notifyDataSetChanged();
     }
-
 
     public void addTimeTableItemSelctedByRecyclerview(int position) {
         ArrayList<TimeTable.TimeTableItem> duplicateTimeTableItems;
@@ -673,19 +690,9 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         }
     }
 
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
-        if (view == null) {
-            view = new View(activity);
-        }
-        if (imm != null)
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
     @Override
     public void showFailMessage(String message) {
-        ToastUtil.getInstance().makeLong( message);
+        ToastUtil.getInstance().makeLong(message);
     }
 
     @Override
@@ -707,7 +714,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailAddTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -722,7 +729,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailEditTimeTable() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -739,7 +746,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
 
     @Override
     public void showFailDeleteTimeTableItem() {
-        ToastUtil.getInstance().makeShort( R.string.error_network);
+        ToastUtil.getInstance().makeShort(R.string.error_network);
     }
 
     @Override
@@ -941,5 +948,13 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
         Intent intent = new Intent(this, TimetableWidget.class);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         this.sendBroadcast(intent);
+    }
+
+
+    public void setTimetableAddFloatingButtonVisibility(int visibility) {
+        if (visibility == View.GONE)
+            timetableAddFloatingButton.hide();
+        else
+            timetableAddFloatingButton.show();
     }
 }
