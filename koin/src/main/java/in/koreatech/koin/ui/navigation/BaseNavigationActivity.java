@@ -91,6 +91,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
                 changeMenuFont(view, fontName);
             }
         }
+        View leftArrowButton = findViewById(getLeftArrowButtonId());
+        leftArrowButton.setOnClickListener(this);
 
         this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
         this.leftNavigationView.setNavigationItemSelectedListener(this);
@@ -153,6 +155,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract int getLeftNavigationDrawerID();
 
+    protected abstract int getLeftArrowButtonId();
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -191,6 +195,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
                 textView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);       //#f7941e
             }
         }
+
     }
 
     // TODO -> 익명게시판 수정 후 주석 제거
@@ -225,8 +230,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 //            onClickNavigationCallvanshring();
         } else if (itemId == R.id.navi_item_usedmarket) {
             goToMarketActivity();
-        } else if (itemId == R.id.navi_item_lostfound) {
-            goToLostFoundActivity();
         } else if (itemId == R.id.navi_item_login) {
             onClickNavigationLogin();
         } else if (itemId == R.id.navi_item_kakao_talk) {
