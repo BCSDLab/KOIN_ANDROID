@@ -20,10 +20,13 @@
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:fontName="Bold"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:leftButtonHeight="14dp"
+                app:leftButtonWidth="14dp"
+                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:rightButtonHeight="18dp"
+                app:rightButtonWidth="12dp"
                 app:titleText="복덕방" />
 
             <RelativeLayout
@@ -53,7 +56,7 @@
                             android:id="@+id/land_recyclerlayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="144dp"
+                            android:layout_marginBottom="88dp"
 
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -64,20 +67,17 @@
                             android:layout_width="0dp"
                             android:layout_height="300dp"
                             android:layout_marginBottom="8dp"
+                            android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toTopOf="@+id/land_recyclerlayout"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            android:nestedScrollingEnabled="false"
-                            >
-                        </LinearLayout>
+                            app:layout_constraintStart_toStartOf="parent"></LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.core.widget.NestedScrollView>
 
             </RelativeLayout>
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
