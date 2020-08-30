@@ -48,7 +48,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
             R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
     };
-    private final int drawerLeftArrowId = R.id.drawer_left_arrow_button;
+    private final int drawerLeftArrowId = R.id.drawer_left_arrow_button;    //왼쪽화살표 id
 
     @Override
     protected Context setContext() {
