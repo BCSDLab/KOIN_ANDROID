@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -27,21 +26,17 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
-import in.koreatech.koin.core.utils.StatusBarUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.bus.BusActivity;
-import in.koreatech.koin.ui.bus.TimerRenewListener;
 import in.koreatech.koin.ui.dining.DiningActivity;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.store.StoreActivity;
-import in.koreatech.koin.util.BusTimerUtil;
 import in.koreatech.koin.util.DiningUtil;
-import in.koreatech.koin.util.Time;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.timer.CountTimer;
 import in.koreatech.koin.util.timer.TimerManager;
@@ -139,7 +134,6 @@ public class MainActivity extends ActivityBase implements
         timerManager = new TimerManager();
         unbinder = ButterKnife.bind(this);
         setPresenter();
-        StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayout, getResources());
 
         swipeRefreshLayout.setOnRefreshListener(this);
 

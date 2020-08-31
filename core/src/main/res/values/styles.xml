@@ -13,6 +13,8 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
+
+
     <style name="KAPTheme" parent="AppTheme">
 
     </style>
@@ -20,6 +22,10 @@
     <style name="KAPTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="KAPTheme.NoActionBar.WhiteStatus" parent="KAPTheme.NoActionBar" >
+        <item name="colorPrimaryDark">@color/gray8</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
