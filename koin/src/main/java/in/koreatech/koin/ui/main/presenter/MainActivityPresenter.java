@@ -127,6 +127,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         view.showLoading();
         try {
             int soonArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
+            Log.i(TAG, String.valueOf(soonArrival));
             String soonDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
             view.updateDaesungBusTime(soonArrival);
             view.updateDaesungBusDepartInfo(soonDeparture);
