@@ -48,10 +48,10 @@ public abstract class TimerUtil {
                     if (msg.what == END_CODE) {
                         endTimer();
                     }
-                    if (msg.what == END_CODE) {
-                        if (textview != null) textview.setText(R.string.bus_no_information);
+                    else {
+                        /*if (textview != null) textview.setText(R.string.bus_no_information);
                         if (timerListener != null) timerListener.onTimerUpdated("운행정보없음");
-                    } else {
+                    } else {*/
                         if (textview != null) textview.setText(strTime);
                         if (timerListener != null) timerListener.onTimerUpdated(strTime);
                     }

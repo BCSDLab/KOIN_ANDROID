@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -40,18 +41,25 @@ import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.util.BusTimerUtil;
 import in.koreatech.koin.util.DiningUtil;
+import in.koreatech.koin.util.Time;
 import in.koreatech.koin.util.TimeUtil;
+import in.koreatech.koin.util.timer.CountTimer;
+import in.koreatech.koin.util.timer.TimerManager;
 
 import static in.koreatech.koin.util.DiningUtil.TYPE;
 
 public class MainActivity extends ActivityBase implements
         MainActivityContact.View,
-        TimerRenewListener,
         SwipeRefreshLayout.OnRefreshListener,
         BusPagerAdapter.OnSwitchClickListener,
-        BusPagerAdapter.OnCardClickListener {
+        BusPagerAdapter.OnCardClickListener, CountTimer.OnTimerListener {
     private static String TAG = MainActivity.class.getSimpleName();
-    public static final int REFRESH_TIME = 60; // 1분 갱신
+    public static final int REFRESH_TIME = 60000; // 1분 갱신
+    public static final int SECOND = 1000; //1초
+    public static final String CITY_SOON_BUS = "CITY_SOON_BUS";
+    public static final String DAESUNG_SOON_BUS = "DAESUNG_SOON_BUS";
+    public static final String SHUTTLE_SOON_BUS = "SHUTTLE_SOON_BUS";
+    public static final String REFRESH = "REFRESH";
     private final int LIMITDATE = 7; // 식단 조회 제한 날짜
 
     public final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
@@ -66,10 +74,7 @@ public class MainActivity extends ActivityBase implements
 
     private int term;
 
-    private BusTimerUtil citySoonBusTimerUtil;
-    private BusTimerUtil daesungBusSoonBusTimerUtil;
-    private BusTimerUtil shuttleBusSoonBusTimerUtil;
-    private BusTimerUtil refreshBusTimerUtil;
+    TimerManager timerManager;
 
     private Map<String, ArrayList<Dining>> diningMap = new HashMap<>();
 
@@ -122,32 +127,21 @@ public class MainActivity extends ActivityBase implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (refreshBusTimerUtil != null) {
-            refreshBusTimerUtil.setEndTime(REFRESH_TIME); // 5분마다 갱신
-            refreshBusTimerUtil.startTimer();
-        }
+        timerManager.addTimer(REFRESH, REFRESH_TIME, new CountTimer.OnTimerListener() {
+            @Override
+            public void onCountEvent(String name, long millisUntilFinished) {
+
+            }
+        });
     }
 
     private void init() {
+        timerManager = new TimerManager();
         unbinder = ButterKnife.bind(this);
         setPresenter();
         StatusBarUtil.applyTopPaddingStatusBarHeight(toolbarLayout, getResources());
 
         swipeRefreshLayout.setOnRefreshListener(this);
-
-        citySoonBusTimerUtil = new BusTimerUtil(10);
-        daesungBusSoonBusTimerUtil = new BusTimerUtil(11);
-        shuttleBusSoonBusTimerUtil = new BusTimerUtil(12);
-        refreshBusTimerUtil = new BusTimerUtil(13);
-
-        citySoonBusTimerUtil.setTimerRenewListener(this);
-        daesungBusSoonBusTimerUtil.setTimerRenewListener(this);
-        shuttleBusSoonBusTimerUtil.setTimerRenewListener(this);
-        refreshBusTimerUtil.setTimerRenewListener(this);
-
-        citySoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateCityBusTimeText(value));
-        daesungBusSoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateDaesungBusTimeText(value));
-        shuttleBusSoonBusTimerUtil.setTimerListener(value -> busPagerAdapter.updateShuttleBusTimeText(value));
 
         initBusPager();
         initStoreRecyclerView();
@@ -155,12 +149,14 @@ public class MainActivity extends ActivityBase implements
     }
 
     private void initBusPager() {
-        busPagerAdapter = new BusPagerAdapter();
+
+
+        busPagerAdapter = new BusPagerAdapter(this);
         busPagerAdapter.setOnSwitchClickListener(this);
         busPagerAdapter.setOnCardClickListener(this);
         busCardViewPager.setAdapter(busPagerAdapter);
         busCardViewPager.setCurrentItem(Integer.MAX_VALUE / 2);
-        busCardViewPager.setOffscreenPageLimit(5);
+        busCardViewPager.setOffscreenPageLimit(3);
     }
 
     private void initStoreRecyclerView() {
@@ -238,20 +234,13 @@ public class MainActivity extends ActivityBase implements
     @Override
     protected void onPause() {
         super.onPause();
-        if (citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
-        if (daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
-        if (shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
-        if (refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
+        if(timerManager != null) timerManager.stopAllTimer();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
-        if (citySoonBusTimerUtil != null) citySoonBusTimerUtil.stopTimer();
-        if (daesungBusSoonBusTimerUtil != null) daesungBusSoonBusTimerUtil.stopTimer();
-        if (shuttleBusSoonBusTimerUtil != null) shuttleBusSoonBusTimerUtil.stopTimer();
-        if (refreshBusTimerUtil != null) refreshBusTimerUtil.stopTimer();
     }
 
     @Override
@@ -267,24 +256,21 @@ public class MainActivity extends ActivityBase implements
     @Override
     public void updateShuttleBusTime(int current) {
         if (current >= 0) {
-            shuttleBusSoonBusTimerUtil.setEndTime(current);
-            busPagerAdapter.updateShuttleBusTimeText(shuttleBusSoonBusTimerUtil.getStrTime());
-            shuttleBusSoonBusTimerUtil.startTimer();
+            timerManager.addTimer(SHUTTLE_SOON_BUS, current * 1000, busPagerAdapter);
+            timerManager.startTimer(SHUTTLE_SOON_BUS);
         } else {
-            shuttleBusSoonBusTimerUtil.stopTimer();
+            timerManager.stopTimer(SHUTTLE_SOON_BUS);
             busPagerAdapter.updateShuttleBusTimeText(getString(R.string.bus_no_information));
         }
-
     }
 
     @Override
     public void updateCityBusTime(int current) {
         if (current > 0) {
-            this.citySoonBusTimerUtil.setEndTime(current);
-            busPagerAdapter.updateCityBusTimeText(citySoonBusTimerUtil.getStrTime());
-            this.citySoonBusTimerUtil.startTimer();
+            timerManager.addTimer(CITY_SOON_BUS, current * 1000, busPagerAdapter);
+            timerManager.startTimer(CITY_SOON_BUS);
         } else {
-            this.citySoonBusTimerUtil.stopTimer();
+            timerManager.stopTimer(CITY_SOON_BUS);
         }
     }
 
@@ -295,13 +281,12 @@ public class MainActivity extends ActivityBase implements
 
     @Override
     public void updateDaesungBusTime(int current) {
-        if (current > 0) {
-            daesungBusSoonBusTimerUtil.setEndTime(current);
-            busPagerAdapter.updateDaesungBusTimeText(daesungBusSoonBusTimerUtil.getStrTime());
-            daesungBusSoonBusTimerUtil.startTimer();
+        if (current >= 0) {
+            timerManager.addTimer(DAESUNG_SOON_BUS, current * 1000, busPagerAdapter);
+            timerManager.startTimer(DAESUNG_SOON_BUS);
         } else {
-            daesungBusSoonBusTimerUtil.stopTimer();
-            busPagerAdapter.updateDaesungBusDepartInfoText(getString(R.string.bus_no_information));
+            timerManager.stopTimer(DAESUNG_SOON_BUS);
+            busPagerAdapter.updateDaesungBusTimeText(getString(R.string.bus_no_information));
         }
     }
 
@@ -317,21 +302,21 @@ public class MainActivity extends ActivityBase implements
 
     @Override
     public void updateFailDaesungBusDepartInfo() {
-        daesungBusSoonBusTimerUtil.stopTimer();
+        timerManager.stopTimer(DAESUNG_SOON_BUS);
         busPagerAdapter.updateDaesungBusTimeText(getString(R.string.bus_no_information));
         busPagerAdapter.updateDaesungBusDepartInfoText("");
     }
 
     @Override
     public void updateFailShuttleBusDepartInfo() {
-        daesungBusSoonBusTimerUtil.stopTimer();
+        timerManager.stopTimer(SHUTTLE_SOON_BUS);
         busPagerAdapter.updateShuttleBusTimeText(getString(R.string.bus_no_information));
         busPagerAdapter.updateShuttleBusDepartInfoText("");
     }
 
     @Override
     public void updateFailCityBusDepartInfo() {
-        daesungBusSoonBusTimerUtil.stopTimer();
+        timerManager.stopTimer(CITY_SOON_BUS);
         busPagerAdapter.updateCityBusTimeText(getString(R.string.bus_no_information));
         busPagerAdapter.updateCityBusDepartInfoText(0);
     }
@@ -448,23 +433,6 @@ public class MainActivity extends ActivityBase implements
     }
 
     @Override
-    public void refreshTimer(int code) {
-        if (code == 10)
-            presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
-        else if (code == 11)
-            presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
-        else if (code == 12)
-            presenter.getTermInfo();
-        else if (code == 13) {
-            presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
-            presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
-            presenter.getTermInfo();
-            refreshBusTimerUtil.setEndTime(REFRESH_TIME);
-            refreshBusTimerUtil.startTimer();
-        }
-    }
-
-    @Override
     public void onRefresh() {
         if (this.presenter != null) {
             showLoading();
@@ -487,5 +455,10 @@ public class MainActivity extends ActivityBase implements
         intent.putExtra("departure", busPagerAdapter.getDepartureState());
         intent.putExtra("arrival", busPagerAdapter.getArrivalState());
         startActivity(intent);
+    }
+
+    @Override
+    public void onCountEvent(String name, long millisUntilFinished) {
+        if(name.equals(REFRESH)) onRefresh();
     }
 }
