@@ -10,10 +10,11 @@
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="android:textColorSecondary">@color/colorSecondaryText</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:windowTranslucentStatus">true</item>
-        <!-- <item name="android:windowLightStatusBar">true</item> -->
+    </style>
+
+    <style name="KAPTheme.NoActionBar.WhiteStatus" parent="KAPTheme.NoActionBar" >
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>
