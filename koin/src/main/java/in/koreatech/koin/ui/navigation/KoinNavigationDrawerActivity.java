@@ -49,6 +49,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
             R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
     };
     private final int drawerLeftArrowId = R.id.drawer_left_arrow_button;    //왼쪽화살표 id
+    private final int logoId = R.id.bcsd_logo;                              //bcsd 로고 id;
 
     @Override
     protected Context setContext() {
@@ -65,6 +66,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         return R.id.left_nav_view;
     }
 
+
     @Override
     protected int[] getMenuId() {
         return mMenuId;
@@ -78,6 +80,11 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected int getLeftArrowButtonId() {
         return drawerLeftArrowId;
+    }
+
+    @Override
+    protected int getLogoId() {
+        return logoId;
     }
 
     /**
