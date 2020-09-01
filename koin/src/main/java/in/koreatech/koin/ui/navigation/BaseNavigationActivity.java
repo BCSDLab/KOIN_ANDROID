@@ -92,7 +92,9 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             }
         }
         View leftArrowButton = findViewById(getLeftArrowButtonId());
-        leftArrowButton.setOnClickListener(this);                       //왼쪽화살표  클릭리스너 등록
+        leftArrowButton.setOnClickListener((view) -> toggleNavigationDrawer());                       //왼쪽화살표  클릭리스너 등록
+        View logoImageView = findViewById(getLogoId());
+        logoImageView.setOnClickListener(this);                                                       //로고 클릭리스너 등록
 
         this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
         this.leftNavigationView.setNavigationItemSelectedListener(this);
@@ -157,6 +159,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract int getLeftArrowButtonId();
 
+    protected abstract int getLogoId();
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -217,7 +221,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         } else if (itemId == R.id.navi_item_dining) {
             goToDiningActivity();
         } else if (itemId == R.id.navi_item_bus) {
-            goToBusActivity();
+            toggleNavigationDrawer();
+            //goToBusActivity();
         } else if (itemId == R.id.navi_item_cirlce) {
             goToCircleActivity();
         } else if (itemId == R.id.navi_item_free_board) {
@@ -235,7 +240,8 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         } else if (itemId == R.id.navi_item_kakao_talk) {
             onClickNavigationkakaoTalk();
             currentId = beforeId;
-        } else if (itemId == R.id.navi_item_developer) {
+        } else if (itemId == R.id.bcsd_logo) {
+            Log.e("asdf", "logo");
             onClickNavigationDeveloper();
             currentId = beforeId;
         } else if (itemId == R.id.navi_item_user_info) {

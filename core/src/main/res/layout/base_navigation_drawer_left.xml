@@ -29,7 +29,10 @@
                 android:id="@+id/drawer_left_arrow_button"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginLeft="14dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="14dp"
                 android:src="@drawable/arrows_arrow_left" />
 
             <TextView
@@ -246,6 +249,7 @@
             android:gravity="bottom">
 
             <ImageView
+                android:id="@+id/bcsd_logo"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_marginRight="16dp"
