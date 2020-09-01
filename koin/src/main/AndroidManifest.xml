@@ -95,10 +95,6 @@
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.main.MainActivityOld"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.store.StoreActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />

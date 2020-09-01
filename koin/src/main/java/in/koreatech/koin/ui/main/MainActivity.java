@@ -188,10 +188,10 @@ public class MainActivity extends ActivityBase implements
         startActivity(intent);
     }
 
-    /*@OnClick(R.id.button_category)
+    @OnClick(R.id.button_category)
     void onClickCategory(View view) {
         toggleNavigationDrawer();
-    }*/
+    }
 
     @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     void selectDiningKind(View view) {

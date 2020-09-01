@@ -27,7 +27,6 @@ import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.splash.presenter.SplashPresenter;
 import in.koreatech.koin.ui.login.LoginActivity;
-import in.koreatech.koin.ui.main.MainActivityOld;
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends ActivityBase implements SplashContract.View, VersionDialogClickListener {
