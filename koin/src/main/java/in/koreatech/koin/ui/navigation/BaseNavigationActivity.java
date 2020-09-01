@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,22 +20,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.constant.AuthorizeConstant;
-
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.entity.User;
-import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.User;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
+import in.koreatech.koin.util.FormValidatorUtil;
 
-import static androidx.drawerlayout.widget.DrawerLayout.STATE_DRAGGING;
-
-public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, DrawerLayout.DrawerListener {
+public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     private final String TAG = "BaseNavigationActivity";
-    private final int LEFTNAVI = GravityCompat.START;
-    private final int RIGHTNAVI = GravityCompat.END;
+    private final int LEFTNAVI = GravityCompat.END;
+    private final int RIGHTNAVI = GravityCompat.START;
     private final String CURRENT_ID = "CURRENT_ID";
     private final String BEFORE_ID = "BEFORE_ID";
     private final String fontName = "fonts/notosanscjkkr_regular.otf";
@@ -52,9 +46,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     private static int beforeId = R.id.navi_item_home;
 
     private InputMethodManager inputMethodManager;
-    private LinearLayout openLeftNavigationDrawerOpenLinearLayout;
-    private LinearLayout openHomeLinearLayout;
-    private LinearLayout openSearchLinearLayout;
 
 
     @Override
@@ -77,7 +68,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     @Override
     protected void onStart() {
         super.onStart();
-        toggleIcon(currentId);
         setLeftNavigationDrawerName();
         selectNavigationItem(currentId);
     }
@@ -91,7 +81,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         }
         int width;
         drawerLayout = findViewById(getDrawerLayoutID());
-        drawerLayout.addDrawerListener(this);
         drawerLayout.setScrimColor(getResources().getColor(R.color.black_alpha20));
 
 
@@ -104,47 +93,16 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         }
 
         this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
-        this.openLeftNavigationDrawerOpenLinearLayout = findViewById(getBottomNavigationCategoryID());
-        this.openHomeLinearLayout = findViewById(getBottomNavigationHomeID());
-        this.openSearchLinearLayout = findViewById(getBottomNavigationSearchID());
-        this.openLeftNavigationDrawerOpenLinearLayout.setOnClickListener(this);
-        this.openHomeLinearLayout.setOnClickListener(this);
-        this.openSearchLinearLayout.setOnClickListener(this);
         this.leftNavigationView.setNavigationItemSelectedListener(this);
         this.leftNavigationView.setOnClickListener(this);
 
-        width = getResources().getDisplayMetrics().widthPixels * 667 / 1000;
+        width = getResources().getDisplayMetrics().widthPixels;
         ViewGroup.LayoutParams params = this.leftNavigationView.getLayoutParams();
         params.width = width;
         this.leftNavigationView.setLayoutParams(params);
-        toggleIcon(currentId);
+
     }
 
-    public void toggleIcon(int id) {
-        ImageView imageView;
-        TextView textView;
-        clearToggle();
-        if (id == R.id.navi_item_home) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home_on);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else if (id == R.id.navi_item_search) {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu_blue);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_home);
-            textView.setTextColor(getResources().getColor(R.color.black));
-            imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-            textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-            imageView.setBackgroundResource(R.drawable.ic_search_menu);
-            textView.setTextColor(getResources().getColor(R.color.black));
-        }
-    }
 
     private void changeMenuFont(View view, String fontName) {
         if (view instanceof TextView) {
@@ -152,18 +110,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         }
     }
 
-    public void clearToggle() {
-        ImageView imageView;
-        TextView textView;
-        imageView = findViewById(R.id.base_navigation_bar_bottom_home_imageview);
-        textView = findViewById(R.id.base_navigation_bar_bottom_home_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_home);
-        textView.setTextColor(getResources().getColor(R.color.black));
-        imageView = findViewById(R.id.base_navigation_bar_bottom_search_imageview);
-        textView = findViewById(R.id.base_navigation_bar_bottom_search_textview);
-        imageView.setBackgroundResource(R.drawable.ic_search_menu);
-        textView.setTextColor(getResources().getColor(R.color.black));
-    }
 
     @Override
     protected void onResume() {
@@ -179,45 +125,9 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         currentId = beforeId;
         Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(currentId));
         Log.d(TAG, "beforeID: " + getResources().getResourceEntryName(beforeId));
-        toggleIcon(currentId);
         selectNavigationItem(currentId);
     }
 
-    @Override
-    public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(@NonNull View drawerView) {
-        ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-        TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-        textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-    }
-
-    @Override
-    public void onDrawerClosed(@NonNull View drawerView) {
-        ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-        TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-        imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-        textView.setTextColor(getResources().getColor(R.color.black));
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-        if (newState == STATE_DRAGGING) {
-            ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category_on);
-            textView.setTextColor(getResources().getColor(R.color.colorPrimary));
-        } else {
-            ImageView imageView = findViewById(R.id.base_navigation_bar_bottom_category_imageview);
-            TextView textView = findViewById(R.id.base_navigation_bar_bottom_category_textview);
-            imageView.setBackgroundResource(R.drawable.ic_bottom_category);
-            textView.setTextColor(getResources().getColor(R.color.black));
-        }
-    }
 
     @Override
     protected void onPause() {
@@ -238,11 +148,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract int[] getMenuTextviewId();
 
-    protected abstract int getBottomNavigationCategoryID();
-
-    protected abstract int getBottomNavigationHomeID();
-
-    protected abstract int getBottomNavigationSearchID();
 
     protected abstract int getDrawerLayoutID();
 
@@ -345,7 +250,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             currentId = beforeId;
         }
 
-        toggleIcon(currentId);
 
         selectNavigationItem(currentId);
 
@@ -364,27 +268,16 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == getBottomNavigationCategoryID()) {
-            toggleNavigationDrawer();
-            return;
-        }
-        if (i == getBottomNavigationHomeID())
-            i = R.id.navi_item_home;
-        else if (i == getBottomNavigationSearchID())
-            i = R.id.navi_item_search;
-        else {
-            selectNavigationItem(i);
-            toggleNavigationDrawer();
-        }
+        selectNavigationItem(i);
+        toggleNavigationDrawer();
         callDrawerItem(i);
-        toggleIcon(i);
     }
 
     protected void toggleNavigationDrawer() {
         if (drawerLayout.isDrawerOpen(Gravity.LEFT))
             drawerLayout.closeDrawer(Gravity.LEFT);
         else
-            drawerLayout.openDrawer(Gravity.LEFT);
+            drawerLayout.openDrawer(Gravity.RIGHT);
     }
 
     private void onClickNavigationFreeBoard() {
