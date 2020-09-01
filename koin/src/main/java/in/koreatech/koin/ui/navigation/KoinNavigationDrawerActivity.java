@@ -84,20 +84,6 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         return mMenuTextviewId;
     }
 
-    @Override
-    protected int getBottomNavigationCategoryID() {
-        return R.id.base_navigation_bar_bottom_category_linearlayout;
-    }
-
-    @Override
-    protected int getBottomNavigationHomeID() {
-        return R.id.base_navigation_bar_bottom_home_linearlayout;
-    }
-
-    @Override
-    protected int getBottomNavigationSearchID() {
-        return R.id.base_navigation_bar_bottom_search_linearlayout;
-    }
 
     /**
      * left navigation drawer 서비스 메뉴 호출
