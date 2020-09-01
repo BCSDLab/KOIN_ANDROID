@@ -1,7 +1,9 @@
 package in.koreatech.koin.ui.navigation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -82,6 +85,37 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         int width;
         drawerLayout = findViewById(getDrawerLayoutID());
         drawerLayout.setScrimColor(getResources().getColor(R.color.black_alpha20));
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+                if(slideOffset < 0.5f) {
+                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.colorPrimary));
+                        getWindow().getDecorView().setSystemUiVisibility(0);
+                    } else
+                        getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.colorPrimary));
+                } else {
+                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                        getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.background));
+                        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    } else
+                        getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.gray8));
+                }
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
 
         for (int id : getMenuId()) {
@@ -250,9 +284,26 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             currentId = beforeId;
         }
 
-
         selectNavigationItem(currentId);
 
+    }
+
+    public void callDrawerItem(int itemId, Bundle bundle) {
+        if (itemId == currentId) {
+            selectNavigationItem(currentId);
+            return;
+        }
+
+        beforeId = currentId;
+        currentId = itemId;
+
+        if (itemId == R.id.navi_item_store) {
+            goToStoreActivity(bundle);
+        } else if (itemId == R.id.navi_item_bus) {
+            goToBusActivity(bundle);
+        }
+
+        selectNavigationItem(currentId);
     }
 
     public void setLeftNavigationDrawerName() {
@@ -433,6 +484,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     protected abstract void goToDiningActivity();
 
     protected abstract void goToBusActivity();
+
+    protected abstract void goToStoreActivity(Bundle bundle);
+
+    protected abstract void goToBusActivity(Bundle bundle);
 
     protected abstract void goToFreeBoardActivity();
 

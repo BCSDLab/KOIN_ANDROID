@@ -149,13 +149,15 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     }
 
     private void init() {
-        Intent intent = getIntent();
         this.resources = getResources();
         categoryCode = this.resources.getStringArray(R.array.store_category_list_code);
         swipeRefreshLayout.setOnRefreshListener(this);
-        if (intent.getExtras() == null) this.storeCategoryNumber = 0;
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle == null) this.storeCategoryNumber = 0;
         else
-            this.storeCategoryNumber = intent.getExtras().getInt("store_category", 0); //메뉴 초기화
+            this.storeCategoryNumber = bundle.getInt("store_category", 0); //메뉴 초기화
         this.layoutManager = new LinearLayoutManager(this);
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();

@@ -100,9 +100,10 @@ public class BusActivity extends KoinNavigationDrawerActivity {
         this.inputMethodManager = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
 
         Intent intent = getIntent();
-        if(intent.getExtras() != null) {
-            departureState = intent.getExtras().getInt("departure", 0);
-            arrivalState = intent.getExtras().getInt("arrival", 1);
+        Bundle bundle = intent.getExtras();
+        if(bundle != null) {
+            departureState = bundle.getInt("departure", 0);
+            arrivalState = bundle.getInt("arrival", 1);
         }
     }
 
