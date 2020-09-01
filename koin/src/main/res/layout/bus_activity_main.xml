@@ -39,6 +39,8 @@
                     android:layout_height="47dp"
                     android:lineSpacingExtra="7sp"
                     android:textColor="@color/black"
+                    app:tabIndicatorColor="@color/colorAccent"
+                    app:tabSelectedTextColor="@color/black"
                     android:textSize="15sp"
                     app:fontName="Custom6"
                     android:layout_gravity="top"

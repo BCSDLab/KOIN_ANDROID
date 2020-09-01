@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import in.koreatech.koin.R;
-import in.koreatech.koin.core.activity.ActivityBase;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
@@ -35,6 +34,7 @@ import in.koreatech.koin.ui.bus.BusActivity;
 import in.koreatech.koin.ui.dining.DiningActivity;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
@@ -43,7 +43,7 @@ import in.koreatech.koin.util.timer.TimerManager;
 
 import static in.koreatech.koin.util.DiningUtil.TYPE;
 
-public class MainActivity extends ActivityBase implements
+public class MainActivity extends KoinNavigationDrawerActivity implements
         MainActivityContact.View,
         SwipeRefreshLayout.OnRefreshListener,
         BusPagerAdapter.OnSwitchClickListener,
@@ -173,8 +173,7 @@ public class MainActivity extends ActivityBase implements
         today = TimeUtil.getDeviceCreatedDateOnlyString();
         changeDate = 0;
         viewDiningContainer.setOnClickListener((view) -> {
-            Intent intent = new Intent(MainActivity.this, DiningActivity.class);
-            startActivity(intent);
+            callDrawerItem(R.id.navi_item_dining);
         });
     }
 
@@ -183,9 +182,9 @@ public class MainActivity extends ActivityBase implements
     }
 
     private void gotoStoreActivity(int position) {
-        Intent intent = new Intent(MainActivity.this, StoreActivity.class);
-        intent.putExtra("store_category", position);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("store_category", position);
+        callDrawerItem(R.id.navi_item_store, bundle);
     }
 
     @OnClick(R.id.button_category)
@@ -445,10 +444,10 @@ public class MainActivity extends ActivityBase implements
 
     @Override
     public void onCardClick(BusPagerAdapter.BusKind busKind) {
-        Intent intent = new Intent(MainActivity.this, BusActivity.class);
-        intent.putExtra("departure", busPagerAdapter.getDepartureState());
-        intent.putExtra("arrival", busPagerAdapter.getArrivalState());
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putInt("departure", busPagerAdapter.getDepartureState());
+        bundle.putInt("arrival", busPagerAdapter.getArrivalState());
+        callDrawerItem(R.id.navi_item_bus, bundle);
     }
 
     @Override

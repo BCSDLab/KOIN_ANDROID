@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -11,6 +12,7 @@ import in.koreatech.koin.R;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.activity.WebViewActivity;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.entity.User;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.board.BoardActivity;
@@ -135,6 +137,22 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void goToBusActivity() {
         goToActivityFinish(new Intent(this, BusActivity.class));
+    }
+
+    @Override
+    protected void goToStoreActivity(Bundle bundle) {
+        Intent intent = new Intent(this, StoreActivity.class);
+        intent.putExtras(bundle);
+
+        goToActivityFinish(intent);
+    }
+
+    @Override
+    protected void goToBusActivity(Bundle bundle) {
+        Intent intent = new Intent(this, BusActivity.class);
+        intent.putExtras(bundle);
+
+        goToActivityFinish(intent);
     }
 
     @Override
