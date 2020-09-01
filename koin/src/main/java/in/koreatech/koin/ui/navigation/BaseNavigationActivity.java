@@ -221,8 +221,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         } else if (itemId == R.id.navi_item_dining) {
             goToDiningActivity();
         } else if (itemId == R.id.navi_item_bus) {
-            toggleNavigationDrawer();
-            //goToBusActivity();
+            goToBusActivity();
         } else if (itemId == R.id.navi_item_cirlce) {
             goToCircleActivity();
         } else if (itemId == R.id.navi_item_free_board) {
@@ -241,7 +240,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             onClickNavigationkakaoTalk();
             currentId = beforeId;
         } else if (itemId == R.id.bcsd_logo) {
-            Log.e("asdf", "logo");
             onClickNavigationDeveloper();
             currentId = beforeId;
         } else if (itemId == R.id.navi_item_user_info) {
@@ -283,10 +281,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     }
 
     protected void toggleNavigationDrawer() {
-        if (drawerLayout.isDrawerOpen(Gravity.RIGHT))
-            drawerLayout.closeDrawer(Gravity.RIGHT);
+        if (drawerLayout.isDrawerOpen(GravityCompat.END))
+            drawerLayout.closeDrawer(GravityCompat.END);
         else
-            drawerLayout.openDrawer(Gravity.RIGHT);
+            drawerLayout.openDrawer(GravityCompat.END);
     }
 
     private void onClickNavigationFreeBoard() {

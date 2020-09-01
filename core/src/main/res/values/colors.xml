@@ -71,7 +71,6 @@
     <color name="blue8">#9fa9b3</color>
     <color name="blue_alpha30">#4d7c9fae</color>
     <color name="blue_alpha51">#33d2dae2</color>
-    <color name="blue_alpha20">#33d2dae2</color>
 
     <!-- BusWidget -->
     <color name="deep_light_navy">@color/blue5</color>
