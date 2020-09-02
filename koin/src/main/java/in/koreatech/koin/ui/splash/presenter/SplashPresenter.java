@@ -6,30 +6,97 @@ import androidx.annotation.NonNull;
 
 import java.util.StringTokenizer;
 
-import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
-import in.koreatech.koin.data.network.interactor.TokenSessionInteractor;
-import in.koreatech.koin.data.network.interactor.TokenSessionLocalInteractor;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Auth;
 import in.koreatech.koin.data.network.entity.Version;
 import in.koreatech.koin.data.network.interactor.AppVersionRestInteractor;
+import in.koreatech.koin.data.network.interactor.TokenSessionInteractor;
+import in.koreatech.koin.data.network.interactor.TokenSessionLocalInteractor;
 import in.koreatech.koin.data.network.interactor.UserInteractor;
 import in.koreatech.koin.data.network.interactor.UserRestInteractor;
+import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.util.TimeUtil;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static in.koreatech.koin.util.FormValidatorUtil.validateStringIsEmpty;
 
-public class SplashPresenter{
-    private static final String TAG = "SplashPresenter";
+public class SplashPresenter {
     public static final String ANDROID_CODE = "android";
+    private static final String TAG = "SplashPresenter";
     private final SplashContract.View splashView;
     private final UserInteractor authInteractor;
     private final TokenSessionInteractor tokenSessionInteractor;
     private final AppVersionRestInteractor appVersionRestInteractor;
+    /**
+     * 토큰이 유효한 경우 메인 화면으로 이동
+     * 토큰이 유효하지 않은 경우 로그인화면으로 이동
+     */
+    private final ApiCallback sessionApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            splashView.gotoMain();
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            splashView.gotoLogin();
+        }
+    };
+    /**
+     * read token api 결과를 처리하는 api callback
+     * 성공했을 경우 올바른지 확인하는 메소드로 이동
+     */
+    private final ApiCallback authApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            Auth auth = (Auth) (object);
+            validateCurrentSession(auth);
+        }
+
+        @Override
+        public void onFailure(Throwable throwable) {
+            splashView.gotoLogin();
+        }
+    };
     private String currentVersionName;
     private String storeVersionName;
+    /**
+     * 버전 검사 api callback
+     */
+    private ApiCallback versionApiCallback = new ApiCallback() {
+        @Override
+        public void onSuccess(Object object) {
+            Version version = (Version) object;
+            storeVersionName = version.getVersion();
+            int currentMajor, currentMinor, currentPoint;
+            int storeMajor, storeMinor, storePoint;
+            try {
+                StringTokenizer currentVersionTokenizer = new StringTokenizer(currentVersionName, ".");
+                StringTokenizer storeVersionTokenizer = new StringTokenizer(storeVersionName, ".");
+                currentMajor = Integer.parseInt(currentVersionTokenizer.nextToken());
+                currentMinor = Integer.parseInt(currentVersionTokenizer.nextToken());
+                currentPoint = Integer.parseInt(currentVersionTokenizer.nextToken());
+                storeMajor = Integer.parseInt(storeVersionTokenizer.nextToken());
+                storeMinor = Integer.parseInt(storeVersionTokenizer.nextToken());
+                storePoint = Integer.parseInt(storeVersionTokenizer.nextToken());
+                if (storeMajor > currentMajor) {
+                    splashView.gotoAppMarket(Version.PRIORITY_HIGH, storeVersionName);
+                } else if (storeMajor == currentMajor && storeMinor > currentMinor) {
+                    splashView.gotoAppMarket(Version.PRIORITY_MIDDLE, storeVersionName);
+                } else {
+                    splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage() + "current version : " + currentVersionName + "store version : " + storeVersionName);
+                splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
+            }
+        }
 
+        @Override
+        public void onFailure(Throwable throwable) {
+            splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
+        }
+    };
 
     public SplashPresenter(@NonNull SplashContract.View splashView) {
         authInteractor = new UserRestInteractor();
@@ -92,23 +159,6 @@ public class SplashPresenter{
     }
 
     /**
-     * read token api 결과를 처리하는 api callback
-     * 성공했을 경우 올바른지 확인하는 메소드로 이동
-     */
-    private final ApiCallback authApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            Auth auth = (Auth) (object);
-            validateCurrentSession(auth);
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            splashView.gotoLogin();
-        }
-    };
-
-    /**
      * 현재 토큰이 올바른지 검사하는 메소드
      *
      * @param auth token, user로 구성된 파라미터
@@ -116,58 +166,6 @@ public class SplashPresenter{
     private void validateCurrentSession(Auth auth) {
         this.tokenSessionInteractor.validateCurrentSession(auth, sessionApiCallback);
     }
-
-    /**
-     * 토큰이 유효한 경우 메인 화면으로 이동
-     * 토큰이 유효하지 않은 경우 로그인화면으로 이동
-     */
-    private final ApiCallback sessionApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            splashView.gotoMain();
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            splashView.gotoLogin();
-        }
-    };
-
-    /**
-     * 버전 검사 api callback
-     */
-    private ApiCallback versionApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            Version version = (Version) object;
-            storeVersionName = version.getVersion();
-            int currentMajor, currentMinor, currentPoint;
-            int storeMajor, storeMinor, storePoint;
-            try {
-                StringTokenizer currentVersionTokenizer = new StringTokenizer(currentVersionName, ".");
-                StringTokenizer storeVersionTokenizer = new StringTokenizer(storeVersionName, ".");
-                currentMajor = Integer.parseInt(currentVersionTokenizer.nextToken());
-                currentMinor = Integer.parseInt(currentVersionTokenizer.nextToken());
-                currentPoint = Integer.parseInt(currentVersionTokenizer.nextToken());
-                storeMajor = Integer.parseInt(storeVersionTokenizer.nextToken());
-                storeMinor = Integer.parseInt(storeVersionTokenizer.nextToken());
-                storePoint = Integer.parseInt(storeVersionTokenizer.nextToken());
-                if (storeMajor > currentMajor) {
-                    splashView.gotoAppMarket(Version.PRIORITY_HIGH, storeVersionName);
-                } else if (storeMinor > currentMinor) {
-                    splashView.gotoAppMarket(Version.PRIORITY_MIDDLE, storeVersionName);
-                } else splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
-            } catch (Exception e) {
-                Log.d(TAG, e.getMessage() + "current version : " + currentVersionName + "store version : " + storeVersionName);
-                splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
-            }
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            splashView.gotoAppMarket(Version.PRIORITY_LOW, storeVersionName);
-        }
-    };
 
 }
 
