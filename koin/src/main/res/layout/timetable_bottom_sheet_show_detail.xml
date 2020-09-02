@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_pale_grey_rectangle"
+        android:background="@drawable/bg_rect_gray1"
         android:orientation="horizontal"
         android:weightSum="6">
 
@@ -29,9 +29,9 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:text="삭제"
-            android:textColor="@color/squash"
+            android:textColor="@color/colorAccent"
             android:textSize="15sp"
-            app:font_name="Custom6" />
+            app:fontName="Custom6" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_center_textview"
@@ -41,9 +41,9 @@
             android:includeFontPadding="false"
             android:gravity="center"
             android:text="수업상세"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp"
-            app:font_name="Custom5" />
+            app:fontName="Custom5" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_right_textview"
@@ -55,7 +55,7 @@
             android:text="완료"
             android:textColor="@color/black"
             android:textSize="15sp"
-            app:font_name="Custom6" />
+            app:fontName="Custom6" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:letterSpacing="-0.03"
             android:lineSpacingExtra="3sp"
             android:textSize="15sp"
-            app:font_name="Bold"
+            app:fontName="Bold"
             tools:text="영어1" />
 
 
@@ -100,7 +100,7 @@
             android:letterSpacing="-0.03"
             android:lineSpacingExtra="3sp"
             android:textSize="12sp"
-            app:font_name="Custom6"
+            app:fontName="Custom6"
             tools:text="detail" />
 
 
@@ -138,7 +138,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="수업명*"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -160,11 +160,11 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_marginStart="10dp"-->
-    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:background="@drawable/bg_gray_underline"-->
     <!--android:hint="필수 입력사항입니다."-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->
@@ -187,7 +187,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="담당교수"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -209,10 +209,10 @@
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--android:layout_marginStart="10dp"-->
-    <!--android:background="@drawable/bg_greyish_brown_bottom_underline"-->
+    <!--android:background="@drawable/bg_gray_underline"-->
     <!--android:includeFontPadding="false"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->
@@ -235,7 +235,7 @@
     <!--android:layout_marginStart="20dp"-->
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:text="학점"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -343,7 +343,7 @@
     <!--android:lineSpacingExtra="6sp"-->
     <!--android:layout_marginStart="20dp"-->
     <!--android:text="시긴"-->
-    <!--android:textColor="@color/warm_grey" />-->
+    <!--android:textColor="@color/gray9" />-->
 
     <!--</LinearLayout>-->
 
@@ -366,7 +366,7 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:layout_marginStart="10dp"-->
     <!--android:textColor="@color/black"-->
-    <!--android:textColorHint="@color/cloudy_blue" />-->
+    <!--android:textColorHint="@color/blue1" />-->
 
     <!--</LinearLayout>-->
     <!--</LinearLayout>-->

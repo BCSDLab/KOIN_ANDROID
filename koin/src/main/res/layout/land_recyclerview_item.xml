@@ -11,7 +11,7 @@
         android:layout_width="160dp"
         android:layout_height="127dp"
 
-        android:background="@drawable/bg_rect_cloudy_blue"
+        android:background="@drawable/bg_rect_blue1"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
-                    android:background="@drawable/bg_rect_darkgreen_radius_18dp"
+                    android:background="@drawable/bg_rect_green3_radius_18dp"
                     android:gravity="center"
                     android:lineSpacingExtra="12sp"
                     android:text="월세"
@@ -84,7 +84,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
+                    android:textColor="@color/gray7"
                     android:textSize="12sp"
                     tools:text="880만원 (1학기)" />
             </LinearLayout>
@@ -101,7 +101,7 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
-                    android:background="@drawable/bg_rect_squash_radius_18dp"
+                    android:background="@drawable/bg_rect_accent_radius_18dp"
                     android:gravity="center"
                     android:lineSpacingExtra="12sp"
                     android:text="전세"
@@ -123,7 +123,7 @@
                     android:lineSpacingExtra="10sp"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/warm_grey_two"
+                    android:textColor="@color/gray7"
                     android:textSize="12sp"
                     tools:text="X" />
             </LinearLayout>

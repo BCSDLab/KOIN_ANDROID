@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="50dp"
-                android:background="@color/cloudy_blue"
+                android:background="@color/blue1"
                 app:layout_constraintTop_toBottomOf="@+id/callvan_room_info_layout" />
 
             <FrameLayout

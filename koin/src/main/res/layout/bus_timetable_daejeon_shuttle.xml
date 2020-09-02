@@ -8,7 +8,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:background="@color/light_navy">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:layout_width="0dp"
@@ -24,7 +24,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="대전"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="주 5일중 금요일 하교\n일요일 등교"
-            android:textColor="@color/light_navy"
+            android:textColor="@color/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -53,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/light_navy"
+        android:background="@color/colorPrimary"
         android:gravity="center">
 
         <TextView
@@ -96,7 +96,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/cloudy_blue"
+        android:background="@color/blue1"
         android:gravity="center">
 
         <TextView
@@ -139,7 +139,7 @@
         android:layout_height="0dp"
         android:layout_margin="0dp"
         android:layout_weight="1"
-        android:background="@color/light_navy"
+        android:background="@color/colorPrimary"
         android:gravity="center">
 
         <TextView

@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+        <in.koreatech.koin.core.appbar.AppBarBase
             android:id="@+id/koin_base_appbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:left_button_background="@drawable/ic_back_arrow"
-            app:title_text="콜밴쉐어링 개설" />
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:titleText="콜밴쉐어링 개설" />
 
         <ScrollView
             android:id="@+id/create_room_scrollview"
@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -49,7 +49,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="출발지 선택"
-                        android:textColor="@color/warm_grey_two" />
+                        android:textColor="@color/gray7" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="목적지 선택"
-                        android:textColor="@color/warm_grey_two" />
+                        android:textColor="@color/gray7" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -159,7 +159,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="날짜 선택"
-                        android:textColor="@color/warm_grey_two" />
+                        android:textColor="@color/gray7" />
                 </FrameLayout>
 
                 <LinearLayout
@@ -210,7 +210,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -218,7 +218,7 @@
                         android:layout_gravity="start|center"
                         android:layout_marginStart="16dp"
                         android:text="시간 선택"
-                        android:textColor="@color/warm_grey_two" />
+                        android:textColor="@color/gray7" />
                 </FrameLayout>
 
 
@@ -244,7 +244,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.2"
-                android:background="@color/cloudy_blue" />
+                android:background="@color/blue1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -268,7 +268,7 @@
                         android:layout_marginRight="13dp"
                         android:lineSpacingExtra="7sp"
                         android:text="2019 / 3 / 24"
-                        android:textColor="@color/squash"
+                        android:textColor="@color/colorAccent"
                         android:textStyle="bold"
                         android:lineHeight="22sp"
                         android:textSize="15sp" />
@@ -278,7 +278,7 @@
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="7sp"
                         android:text="오후 00시 00분"
-                        android:textColor="@color/squash"
+                        android:textColor="@color/colorAccent"
                         android:textStyle="bold"
                         android:lineHeight="22sp"
                         android:textSize="15sp" />
@@ -292,7 +292,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:background="@color/squash"
+                    android:background="@color/colorAccent"
                     android:gravity="center"
                     android:lineSpacingExtra="7sp"
                     android:text="만들기"
