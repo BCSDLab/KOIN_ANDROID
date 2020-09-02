@@ -19,17 +19,20 @@
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:fontName="Bold"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:leftButtonHeight="14dp"
+                app:leftButtonWidth="14dp"
+                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:rightButtonHeight="18dp"
+                app:rightButtonWidth="12dp"
                 app:titleText="복덕방" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
-                android:layout_marginBottom="56dp"
                 android:orientation="vertical">
 
                 <ScrollView
@@ -828,7 +831,6 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include layout="@layout/base_navigation_drawer_left" />
