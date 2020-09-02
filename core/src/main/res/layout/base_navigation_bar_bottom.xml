@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:gravity="bottom"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_gray_top_border"
+        android:background="@drawable/bg_gray4_top_border"
         android:weightSum="3">
 
         <LinearLayout

@@ -5,7 +5,6 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:ignore="MissingPrefix">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -17,36 +16,54 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create"
-                app:title_text="시간표"/>
+                android:layout_height="wrap_content"
+                app:fontName="Bold"
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:leftButtonHeight="14dp"
+                app:leftButtonWidth="14dp"
+                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:rightButtonHeight="18dp"
+                app:rightButtonWidth="12dp"
+                app:titleText="시간표"/>
 
             <RelativeLayout
                 android:id="@+id/timetable_container_relativelayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/white"
                 android:layout_marginTop="56dp"
-                android:orientation="vertical"
               >
 
 
-                <in.koreatech.koin.core.util.timetable.TimetableView
+                <in.koreatech.koin.ui.timetable.TimetableView
                     android:id="@+id/timetable_timetableview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:activate_timebar="false"
-                    app:header_height="20dp"
-                    app:row_count="16">
+                    app:activateTimebar="false"
+                    app:headerHeight="20dp"
+                    app:rowCount="16">
 
-                </in.koreatech.koin.core.util.timetable.TimetableView>
+                </in.koreatech.koin.ui.timetable.TimetableView>
             </RelativeLayout>
-        </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/timetable_add_floating_button"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                app:fabCustomSize="48dp"
+                app:maxImageSize="24dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_create"
+                app:tint="@color/white"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginBottom="40dp"
+                />
+        </RelativeLayout>
 
         <include layout="@layout/timetable_bottom_sheet_add" />
 

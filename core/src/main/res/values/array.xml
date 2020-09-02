@@ -86,18 +86,18 @@
         <item>야우리</item>
         <item>천안역</item>
     </string-array>
-<!-- 학기중
-    <string-array name="bus_stop_place">
-        <item>천안 등교/하교</item>
-        <item>천안 셔틀</item>
-        <item>청주 등교/하교</item>
-        <item>청주 셔틀</item>
-        <item>서울 등교/하교</item>
-        <item>대전 등교/하교</item>
-    </string-array>
--->
+    <!-- 학기중-->
+        <string-array name="bus_stop_place">
+            <item>천안 등교/하교</item>
+            <item>천안 셔틀</item>
+            <item>청주 등교/하교</item>
+            <item>청주 셔틀</item>
+            <item>서울 등교/하교</item>
+            <item>대전 등교/하교</item>
+        </string-array>
+
     <!-- 방학중 -->
-    <string-array name="bus_stop_place">
+    <string-array name="bus_stop_place_season">
         <item>천안계절등교/하교</item>
         <item>천안방학등교/하교</item>
         <item>두정동등교/하교</item>
@@ -107,17 +107,17 @@
         <item>서울(방학전체)</item>
         <item>천안순환(월~금)</item>
     </string-array>
-<!-- 학기중
-    <string-array name="bus_stop_cheonan_start_end">
-        <item>천안역</item>
-        <item>터미널</item>
-        <item>두정역</item>
-        <item>고속철</item>
-        <item>신방동</item>
-    </string-array>
--->
+    <!-- 학기중-->
+        <string-array name="bus_stop_cheonan_start_end">
+            <item>천안역</item>
+            <item>터미널</item>
+            <item>두정역</item>
+            <item>고속철</item>
+            <item>신방동</item>
+        </string-array>
+
     <!-- 방학중 -->
-    <string-array name="bus_stop_cheonan_start_end">
+    <string-array name="bus_stop_cheonan_start_end_season">
         <item>터미널</item>
         <item>천안역</item>
 
@@ -127,16 +127,16 @@
         <item>한기대->야우리</item>
         <item>야우리->한기대</item>
     </string-array>
-<!-- 학기중
-    <string-array name="bus_stop_chungju">
-        <item>체육관</item>
-        <item>용암동</item>
-        <item>산남동</item>
-        <item>분평동</item>
-    </string-array>
--->
+    <!-- 학기중-->
+        <string-array name="bus_stop_chungju">
+            <item>체육관</item>
+            <item>용암동</item>
+            <item>산남동</item>
+            <item>분평동</item>
+        </string-array>
+
     <!-- 방학중 -->
-    <string-array name="bus_stop_chungju">
+    <string-array name="bus_stop_chungju_season">
         <item>용암동 등교</item>
         <item>체육관 등교</item>
         <item>용암동 하교</item>
@@ -243,39 +243,6 @@
         <item>50</item>
     </string-array>
 
-    <integer-array name="category_item_id">
-        <item>@+id/navi_item_store</item>
-        <item>@+id/navi_item_dining</item>
-        <item>@+id/navi_item_bus</item>
-        <item>@+id/navi_item_cirlce</item>
-        <item>@+id/navi_item_free_board</item>
-        <item>@+id/navi_item_recruit_board</item>
-        <item>@+id/navi_item_anonymous_board</item>
-        <!--<item>@+id/navi_item_callvansharing</item>-->
-        <item>@+id/navi_item_usedmarket</item>
-        <item>@+id/navi_item_user_info</item>
-        <item>@+id/navi_item_login</item>
-        <item>@+id/navi_item_kakao_talk</item>
-        <item>@+id/navi_item_developer</item>
-
-
-    </integer-array>
-
-    <integer-array name="chart_color">
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/gray2</item>
-        <item>@color/colorPrimary_triadic_orange</item>
-        <item>@color/colorPrimaryLightLess1</item>
-        <item>@color/colorPrimaryLightLess2</item>
-        <item>@color/colorPrimaryLight</item>
-    </integer-array>
-
     <string-array name="dining_time">
         <item>평일</item>
         <item>08:00 ~ 09:00</item>
@@ -363,4 +330,3 @@
         <item>C007</item>
     </string-array>
 </resources>
-

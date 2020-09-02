@@ -18,12 +18,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:title_text="상점" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:leftButtonHeight="14dp"
+                app:leftButtonWidth="14dp"
+                app:rightButtonHeight="18dp"
+                app:rightButtonWidth="12dp"
+                app:titleText="상점" />
 
         </LinearLayout>
 
@@ -32,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="56dp"
-            android:layout_marginBottom="56dp"
             android:background="@color/white"
             android:fillViewport="true">
 
@@ -119,7 +123,7 @@
                     android:maxLines="1"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    app:font_name="Custom5"
+                    app:fontName="Custom5"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="상점명" />
@@ -133,9 +137,9 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="전화번호"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
 
@@ -149,7 +153,7 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview"
                     tools:text="010-5181-1203" />
@@ -162,9 +166,9 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="운영시간"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_const_phone_num" />
 
@@ -178,7 +182,7 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toEndOf="@+id/store_detail_const_time_textview"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_phone_textview"
                     tools:text="14:00 ~" />
@@ -192,9 +196,9 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="주소정보"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_const_time_textview" />
 
@@ -208,7 +212,7 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constrainedHeight="true"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -225,9 +229,9 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="배달금액"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_address_textview" />
 
@@ -241,7 +245,7 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constrainedHeight="true"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -259,9 +263,9 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
                     android:text="기타정보"
-                    android:textColor="@color/warm_grey"
+                    android:textColor="@color/gray9"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_deliver_textview" />
 
@@ -276,7 +280,7 @@
                     android:lineSpacingExtra="5sp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0"
@@ -297,7 +301,7 @@
                     android:text="#배달가능"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
 
@@ -315,7 +319,7 @@
                     android:text="#카드가능"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
 
@@ -332,7 +336,7 @@
                     android:text="#계좌이체가능"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    app:font_name="Custom6"
+                    app:fontName="Custom6"
                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
 
@@ -372,7 +376,7 @@
                         android:text="전화하기"
                         android:textColor="@color/white"
                         android:textSize="13sp"
-                        app:font_name="Custom6" />
+                        app:fontName="Custom6" />
                 </LinearLayout>
 
                 <FrameLayout
@@ -388,7 +392,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:alpha="0.2"
-                        android:background="@color/cloudy_blue" />
+                        android:background="@color/blue1" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -398,9 +402,9 @@
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
                         android:text="메뉴 소개"
-                        android:textColor="@color/warm_grey"
+                        android:textColor="@color/gray9"
                         android:textSize="13sp"
-                        app:font_name="Custom6" />
+                        app:fontName="Custom6" />
                 </FrameLayout>
 
 
@@ -431,7 +435,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--navigation drawer-->

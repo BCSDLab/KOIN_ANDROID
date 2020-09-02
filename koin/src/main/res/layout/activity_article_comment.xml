@@ -18,12 +18,12 @@
             android:layout_height="match_parent">
 
 
-            <in.koreatech.koin.core.bases.KoinBaseAppbarDark
+            <in.koreatech.koin.core.appbar.AppBarBase
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:left_button_background="@drawable/ic_back_arrow"
-                app:right_button_background="@drawable/ic_create" />
+                app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_create" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                             android:layout_marginEnd="16dp"
                             android:textColor="@color/black"
                             android:textSize="16sp"
-                            app:font_name="Regular"
+                            app:fontName="Regular"
                             app:layout_constrainedWidth="true"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
@@ -70,9 +70,9 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            app:font_name="Regular"
+                            app:fontName="Regular"
                             android:text="@string/board_view_count"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title" />
@@ -82,10 +82,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
-                            app:font_name="Regular"
+                            app:fontName="Regular"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_view_count_korean"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -97,10 +97,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
-                            app:font_name="Regular"
+                            app:fontName="Regular"
                             android:gravity="center"
                             android:text=" · "
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_view_count"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title" />
@@ -108,12 +108,12 @@
                         <TextView
                             android:id="@+id/article_comment_writer"
                             android:layout_width="wrap_content"
-                            app:font_name="Regular"
+                            app:fontName="Regular"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:layout_marginTop="1dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintStart_toEndOf="@id/article_comment_dot"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -121,13 +121,13 @@
 
                         <TextView
                             android:id="@+id/article_comment_create_date"
-                            app:font_name="Custom4"
+                            app:fontName="Custom4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="1dp"
                             android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:textColor="@color/warm_grey"
+                            android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_title"
@@ -179,7 +179,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="17.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -190,14 +190,14 @@
                                 android:id="@+id/article_comment_password_edittext"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:inputType="textPassword"
                                 android:layout_marginStart="11dp"
                                 android:layout_marginTop="6dp"
                                 android:layout_marginBottom="5.7dp"
                                 android:background="@null"
                                 android:hint="비밀번호를 입력해주세요"
-                                android:textColorHint="@color/white_three"
+                                android:textColorHint="@color/gray3"
                                 android:letterSpacing="-0.05"
                                 android:lineSpacingExtra="10sp"
                                 android:textColor="@color/black"
@@ -213,7 +213,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15.5dp"
                             android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_warm_grey_rectangle"
+                            android:background="@drawable/bg_gray9_rectangle"
                             android:orientation="vertical"
                             app:layout_constraintTop_toBottomOf="@+id/article_comment_password_linearlayout"
                           >
@@ -229,10 +229,10 @@
                                 <EditText
                                     android:id="@+id/article_comment_nickname_edittext"
                                     android:layout_width="wrap_content"
-                                    app:font_name="Regular"
+                                    app:fontName="Regular"
                                     android:layout_height="wrap_content"
                                     android:background="@null"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:hint="닉네임을 입력해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
@@ -254,9 +254,9 @@
                                     android:id="@+id/article_comment_content_edittext"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:font_name="Regular"
+                                    app:fontName="Regular"
                                     android:background="@null"
-                                    android:textColorHint="@color/white_three"
+                                    android:textColorHint="@color/gray3"
                                     android:hint="댓글을 작성해주세요"
                                     android:letterSpacing="-0.05"
                                     android:lineSpacingExtra="10sp"
@@ -281,20 +281,20 @@
                                 android:id="@+id/article_comment_cancel_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:layout_marginEnd="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
 
                             <Button
                                 android:id="@+id/article_comment_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:layout_marginStart="4dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>
@@ -317,29 +317,29 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="4.3dp"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="취소" />
                             <Button
                                 android:id="@+id/article_comment_anonymous_delete_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="4.3dp"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:layout_marginEnd="4.3dp"
                                 android:layout_weight="1"
                                 android:textColor="@color/red"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="삭제" />
                             <Button
                                 android:id="@+id/article_comment_anonymous_register_button"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                app:font_name="Regular"
+                                app:fontName="Regular"
                                 android:layout_marginStart="4.3dp"
                                 android:layout_weight="1"
-                                android:background="@drawable/bg_warm_grey_rectangle"
+                                android:background="@drawable/bg_gray9_rectangle"
                                 android:text="등록" />
 
                         </LinearLayout>
