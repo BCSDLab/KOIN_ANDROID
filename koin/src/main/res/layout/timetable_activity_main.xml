@@ -59,6 +59,7 @@
                 app:maxImageSize="24dp"
                 android:layout_marginRight="6dp"
                 android:src="@drawable/ic_create"
+                app:tint="@color/white"
                 android:backgroundTint="@color/colorPrimary"
                 android:layout_marginBottom="40dp"
                 />

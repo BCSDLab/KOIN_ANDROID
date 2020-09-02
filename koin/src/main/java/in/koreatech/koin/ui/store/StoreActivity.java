@@ -88,7 +88,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
             R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
-    public void storeCategoryOnCliked(View view) {
+    public void storeCategoryOnClicked(View view) {
         initCateGoryTextColor();
         this.storeCategoryNumber = getCategoryPoistionNumber(view);
         if (!this.storeAllArraylist.isEmpty())
@@ -157,7 +157,13 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         this.resources = getResources();
         categoryCode = this.resources.getStringArray(R.array.store_category_list_code);
         swipeRefreshLayout.setOnRefreshListener(this);
-        this.storeCategoryNumber = 0; //메뉴 전체로 초기화
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle == null)
+            this.storeCategoryNumber = 0;
+        else
+            this.storeCategoryNumber = bundle.getInt("store_category", 0); //메뉴 초기화
         this.layoutManager = new LinearLayoutManager(this);
         this.storeArrayList = new ArrayList<>();
         this.storeAllArraylist = new ArrayList<>();
@@ -169,6 +175,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         storeListRecyclerView.setAdapter(this.storeRecyclerAdapter);
 
         setPresenter(new StorePresenter(this, new StoreRestInteractor()));
+        storeCategoryOnClicked(findViewById(CATEGORY_TEXT_ID[this.storeCategoryNumber]));
     }
 
     @Override
