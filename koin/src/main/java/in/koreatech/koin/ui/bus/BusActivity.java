@@ -135,8 +135,11 @@ public class BusActivity extends KoinNavigationDrawerActivity {
     @OnClick(R.id.koin_base_appbar)
     public void koinBaseAppbarClick(View view) {
         int id = view.getId();
-        if (id == AppBarBase.getLeftButtonId())
+        if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
+        }else if(id == AppBarBase.getRightButtonId()){
+            toggleNavigationDrawer();
+        }
     }
 
     private void changeFont(View view, String fontName) {

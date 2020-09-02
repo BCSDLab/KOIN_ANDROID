@@ -125,6 +125,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
                 changeMenuFont(view, fontName);
             }
         }
+        View leftArrowButton = findViewById(getLeftArrowButtonId());
+        leftArrowButton.setOnClickListener((view) -> toggleNavigationDrawer());                       //왼쪽화살표  클릭리스너 등록
+        View logoImageView = findViewById(getLogoId());
+        logoImageView.setOnClickListener(this);                                                       //로고 클릭리스너 등록
 
         this.leftNavigationView = findViewById(getLeftNavigationDrawerID());
         this.leftNavigationView.setNavigationItemSelectedListener(this);
@@ -187,6 +191,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract int getLeftNavigationDrawerID();
 
+    protected abstract int getLeftArrowButtonId();
+
+    protected abstract int getLogoId();
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,10 +229,11 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (getMenuId()[i] == itemId) {
                 TextView textView = findViewById(getMenuTextviewId()[i]);
                 String s = textView.getText().toString();
-                String styledText = "<u><font color='#f7941e'>" + s + "</font></u>";
+                String styledText = "<font color='#f7941e'>" + s + "</font>";
                 textView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);       //#f7941e
             }
         }
+
     }
 
     // TODO -> 익명게시판 수정 후 주석 제거
@@ -259,14 +268,12 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 //            onClickNavigationCallvanshring();
         } else if (itemId == R.id.navi_item_usedmarket) {
             goToMarketActivity();
-        } else if (itemId == R.id.navi_item_lostfound) {
-            goToLostFoundActivity();
         } else if (itemId == R.id.navi_item_login) {
             onClickNavigationLogin();
         } else if (itemId == R.id.navi_item_kakao_talk) {
             onClickNavigationkakaoTalk();
             currentId = beforeId;
-        } else if (itemId == R.id.navi_item_developer) {
+        } else if (itemId == R.id.bcsd_logo) {
             onClickNavigationDeveloper();
             currentId = beforeId;
         } else if (itemId == R.id.navi_item_user_info) {
@@ -325,10 +332,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
     }
 
     protected void toggleNavigationDrawer() {
-        if (drawerLayout.isDrawerOpen(Gravity.LEFT))
-            drawerLayout.closeDrawer(Gravity.LEFT);
+        if (drawerLayout.isDrawerOpen(GravityCompat.END))
+            drawerLayout.closeDrawer(GravityCompat.END);
         else
-            drawerLayout.openDrawer(Gravity.RIGHT);
+            drawerLayout.openDrawer(GravityCompat.END);
     }
 
     private void onClickNavigationFreeBoard() {

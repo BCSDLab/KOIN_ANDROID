@@ -23,6 +23,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
+                app:rightButtonBackground="@drawable/ic_hamburger_button"
+                app:leftButtonHeight="14dp"
+                app:leftButtonWidth="14dp"
+                app:rightButtonHeight="18dp"
+                app:rightButtonWidth="12dp"
                 app:titleText="상점" />
 
         </LinearLayout>
@@ -32,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="56dp"
-            android:layout_marginBottom="56dp"
             android:background="@color/white"
             android:fillViewport="true">
 
@@ -431,7 +435,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--navigation drawer-->
