@@ -11,6 +11,8 @@
         </attr>
         <attr name="leftButtonTextColor" format="reference|color" />
         <attr name="leftButtonBackground" format="reference" />
+        <attr name="leftButtonHeight" format="reference|dimension" />
+        <attr name="leftButtonWidth" format="reference|dimension" />
         <attr name="leftButtonText" format="reference|string" />
         <attr name="leftButtonVisibility">
             <enum name="visible" value="0x00000000" />
@@ -18,6 +20,8 @@
             <enum name="gone" value="0x00000008" />
         </attr>
         <attr name="rightButtonTextColor" format="reference|color" />
+        <attr name="rightButtonHeight" format="reference|dimension" />
+        <attr name="rightButtonWidth" format="reference|dimension" />
         <attr name="rightButtonVisibility" >
             <enum name="visible" value="0x00000000" />
             <enum name="invisible" value="0x00000004" />

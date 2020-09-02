@@ -24,31 +24,23 @@ import com.naver.maps.map.overlay.Marker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.Land;
 import in.koreatech.koin.data.network.interactor.LandRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandDetailContract;
 import in.koreatech.koin.ui.land.presenter.LandDetailPresenter;
-import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 
 /**
  * 복덕방 상세페이지 Activity
  */
 public class LandDetailActivity extends KoinNavigationDrawerActivity implements LandDetailContract.View, OnMapReadyCallback {
     private final String TAG = "LandDetailActivity";
-    private int landId;
-    private Double landLatitude;
-    private Double landLongitude;
-    private LandDetailPresenter landDetailPresenter;
-    private NaverMap naverMap;
-    private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
-
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appbarBase;
-
     @BindView(R.id.land_detail_name_textview) // 원룸명
             TextView landDetailNameTextView;
     @BindView(R.id.land_detail_charter_fee) // 전세
@@ -67,7 +59,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             TextView landDetailRoomSizeTextView;
     @BindView(R.id.land_detail_phone) // 문의 전화번호
             TextView landDetailPhoneTextView;
-
     @BindView(R.id.land_detail_noimage_textview) // 사진이 없을 경우 안내메시지
             TextView landDetailNoImageTextView;
     @BindView(R.id.land_detail_image_viewpager) // 집 사진 뷰페이저
@@ -76,8 +67,6 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             ImageView landDetailIcLeftImageview;
     @BindView(R.id.land_detail_ic_right_imageview) // 오른쪽 화살표
             ImageView landDetailIcRightImageview;
-    private LandDetailPagerAdapter landDetailPagerAdapter;
-
     @BindView(R.id.land_detail_airconditioner_imageview) // 에어컨 이미지
             ImageView landDetailAirconditionerImageview;
     @BindView(R.id.land_detail_airconditioner_textview) // 에어컨 텍스트
@@ -142,13 +131,19 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             ImageView landDetailElevatorImageView;
     @BindView(R.id.land_detail_elevator_textview) // 엘레베이터 텍스트
             TextView landDetailElevatorTextview;
-
     @BindView(R.id.land_detail_room_address_textview) // 원룸 위치 텍스트
             TextView landDetailRoomAddressTextView;
     @BindView(R.id.land_detail_room_address_text)
     TextView landDetailRoomAddressText;
     @BindView(R.id.activity_land_detail_navermap)
     LinearLayout landDetailRoomAddressNavermap;
+    private int landId;
+    private Double landLatitude;
+    private Double landLongitude;
+    private LandDetailPresenter landDetailPresenter;
+    private NaverMap naverMap;
+    private ViewPager.OnPageChangeListener viewPagerOnPageChangeListener;
+    private LandDetailPagerAdapter landDetailPagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -215,6 +210,8 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
         int id = view.getId();
         if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
+        } else if (id == AppBarBase.getRightButtonId()) {
+            toggleNavigationDrawer();
         }
     }
 
@@ -334,11 +331,13 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             setGray(landDetailInductionImageView, landDetailInductionTextview, grayFilter);
         if (!land.getOptWaterPurifier())
             setGray(landDetailWaterpurifierImageView, landDetailWaterpurifierTextview, grayFilter);
-        if (!land.getOptBidet()) setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
+        if (!land.getOptBidet())
+            setGray(landDetailBidetImageView, landDetailBidetTextview, grayFilter);
         if (!land.getOptWasher())
             setGray(landDetailWasherImageView, landDetailWasherTextview, grayFilter);
         if (!land.getOptBed()) setGray(landDetailBedImageView, landDetailBedTextview, grayFilter);
-        if (!land.getOptDesk()) setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
+        if (!land.getOptDesk())
+            setGray(landDetailDeskImageView, landDetailDeskTextview, grayFilter);
         if (!land.getOptShoeCloset())
             setGray(landDetailShoeclosetImageView, landDetailShoeclosetTextview, grayFilter);
         if (!land.getOptVeranda())

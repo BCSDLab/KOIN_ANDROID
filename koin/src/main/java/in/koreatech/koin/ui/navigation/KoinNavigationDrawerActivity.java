@@ -41,25 +41,17 @@ import static in.koreatech.koin.constant.URLConstant.COMMUNITY.ID_RECRUIT;
 public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     //시간표,복덕방,분실물
     private final int[] mMenuId = {
-            R.id.navi_item_myinfo,
-            R.id.navi_item_store, R.id.navi_item_bus,
-            R.id.navi_item_dining, R.id.navi_item_cirlce,
-            R.id.navi_item_timetable, R.id.navi_item_anonymous_board,
-            R.id.navi_item_free_board, R.id.navi_item_recruit_board,
-            R.id.navi_item_land, R.id.navi_item_lostfound
-            , R.id.navi_item_usedmarket, R.id.navi_item_kakao_talk,
-            R.id.navi_item_version_info, R.id.navi_item_developer}; //닉네임 레이아웃 추가
+            R.id.navi_item_myinfo, R.id.navi_item_store,
+            R.id.navi_item_bus, R.id.navi_item_dining,
+            R.id.navi_item_timetable, R.id.navi_item_land}; //닉네임 레이아웃 추가
 
     private final int[] mMenuTextviewId = {
-            R.id.navi_item_myinfo_textview,
-            R.id.navi_item_store_textview, R.id.navi_item_bus_textview,
-            R.id.navi_item_dining_textview, R.id.navi_item_cirlce_textview,
-            R.id.navi_item_timetable_textview, R.id.navi_item_anonymous_board_textview,
-            R.id.navi_item_free_board_textview, R.id.navi_item_recruit_board_textview,
-            R.id.navi_item_land_textview, R.id.navi_item_lostfound_textview
-            , R.id.navi_item_usedmarket_textview, R.id.navi_item_kakao_talk_textview,
-            R.id.navi_item_version_info_textview, R.id.navi_item_developer_textview
+            R.id.navi_item_myinfo_textview, R.id.navi_item_store_textview,
+            R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
+            R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
     };
+    private final int drawerLeftArrowId = R.id.drawer_left_arrow_button;    //왼쪽화살표 id
+    private final int logoId = R.id.bcsd_logo;                              //bcsd 로고 id;
 
     @Override
     protected Context setContext() {
@@ -76,6 +68,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         return R.id.left_nav_view;
     }
 
+
     @Override
     protected int[] getMenuId() {
         return mMenuId;
@@ -86,6 +79,15 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
         return mMenuTextviewId;
     }
 
+    @Override
+    protected int getLeftArrowButtonId() {
+        return drawerLeftArrowId;
+    }
+
+    @Override
+    protected int getLogoId() {
+        return logoId;
+    }
 
     /**
      * left navigation drawer 서비스 메뉴 호출
