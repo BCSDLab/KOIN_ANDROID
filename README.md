@@ -85,6 +85,9 @@ Koreatech Community Project (ver. Android)
     - 에티터 추가
     - 버스 시간표 업데이트
     
+- 2.2.8
+    로그인시 중고 장터 접근 안 되는 버그 수정
+    
 - 3.0.0
     -   서비스 축소
         - 주변 상점
