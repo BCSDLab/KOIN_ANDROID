@@ -523,7 +523,10 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
 
     protected abstract void onClickNavigationDeveloper();
 
-    protected abstract void onClickNavigationLogout();
+    protected void onClickNavigationLogout() {
+        currentId = R.id.navi_item_home;
+        beforeId = R.id.navi_item_home;
+    }
 
     protected abstract void onClickNavigationLogin();
 
