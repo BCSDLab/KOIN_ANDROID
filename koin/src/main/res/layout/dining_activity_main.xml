@@ -46,6 +46,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="56dp"
+                        android:layout_marginBottom="56dp"
                         android:fillViewport="true">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
@@ -240,35 +241,12 @@
 
                     </androidx.core.widget.NestedScrollView>
 
-                    <FrameLayout
-                        android:id="@+id/empty_dining_list_frameLayout"
+                    <include
+                        layout="@layout/dining_view_empty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="164dp"
-                        android:background="@color/white"
-                        android:visibility="gone">
+                        android:layout_marginTop="164dp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="80dp"
-                                android:contentDescription="TODO"
-                                android:src="@drawable/image_nothing_show" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingTop="10dp"
-                                android:text="학교에서 식단이 업로드 되지 않았습니다" />
-                        </LinearLayout>
-
-                    </FrameLayout>
                 </RelativeLayout>
 
 

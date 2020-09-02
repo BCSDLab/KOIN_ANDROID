@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 String applicationName = 'koin'
 android {
-    compileSdkVersion project.compileSdkVersion
-
     defaultConfig {
         applicationId "in.koreatech.koin"
-        minSdkVersion 21
-        targetSdkVersion 28
         versionCode 20208
+        minSdkVersion 21
+        compileSdkVersion project.compileSdkVersion
+        minSdkVersion project.minSdkVersion
+        targetSdkVersion project.targetSdkVersion
         versionName "2.2.8"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

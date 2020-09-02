@@ -195,13 +195,13 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
 
     public void init() {
-        busDepartureSpinner.setSelection(0);
-        busArrivalSpinner.setSelection(1);
-        this.departureState = 0;
-        this.arrivalState = 1;
+        this.departureState = ((BusActivity) getActivity()).departureState;
+        this.arrivalState = ((BusActivity) getActivity()).arrivalState;
+        busDepartureSpinner.setSelection(departureState);
+        busArrivalSpinner.setSelection(arrivalState);
         busSwipeRefreshLayout.setOnRefreshListener(this);
         setPresenter(new BusMainPresenter(this, new CityBusRestInteractor(), new TermRestInteractor()));
-        this.busMainPresenter.getCityBus(0, 1);
+        this.busMainPresenter.getCityBus(departureState, arrivalState);
         citybusSoonDepartureTimeTextview.setVisibility(View.INVISIBLE);
         citybusNextDepartureTimeTextview.setVisibility(View.INVISIBLE);
         daesungNextDepartureTimeTextview.setVisibility(View.INVISIBLE);

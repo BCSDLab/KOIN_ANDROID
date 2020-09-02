@@ -21,16 +21,19 @@ buildscript {
 
     ext {
         /* Common */
-        compileSdkVersion = 28
+        compileSdkVersion = 29
         minSdkVersion = 21
-        targetSdkVersion = 26
+        targetSdkVersion = 29
 
         /* Dependency - AndroidX Jetpack */
         def android_x_version = "1.0.0"
         androidxAppCompat = "androidx.appcompat:appcompat:$android_x_version"
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
-        androidxMaterial = "com.google.android.material:material:$android_x_version"
+
+        /* Dependency - AndroidX Material */
+        def android_x_material_version = "1.2.0"
+        androidxMaterial = "com.google.android.material:material:$android_x_material_version"
 
         /* Dependency - Firebase */
         def firebase_version = "17.0.0"
