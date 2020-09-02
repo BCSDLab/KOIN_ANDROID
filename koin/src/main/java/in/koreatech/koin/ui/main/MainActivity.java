@@ -1,6 +1,5 @@
 package in.koreatech.koin.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -30,12 +29,9 @@ import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
 import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
-import in.koreatech.koin.ui.bus.BusActivity;
-import in.koreatech.koin.ui.dining.DiningActivity;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
-import in.koreatech.koin.ui.store.StoreActivity;
 import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.timer.CountTimer;
@@ -48,31 +44,17 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
         SwipeRefreshLayout.OnRefreshListener,
         BusPagerAdapter.OnSwitchClickListener,
         BusPagerAdapter.OnCardClickListener, CountTimer.OnTimerListener {
-    private static String TAG = MainActivity.class.getSimpleName();
     public static final int REFRESH_TIME = 60000; // 1분 갱신
     public static final int SECOND = 1000; //1초
     public static final String CITY_SOON_BUS = "CITY_SOON_BUS";
     public static final String DAESUNG_SOON_BUS = "DAESUNG_SOON_BUS";
     public static final String SHUTTLE_SOON_BUS = "SHUTTLE_SOON_BUS";
     public static final String REFRESH = "REFRESH";
-    private final int LIMITDATE = 7; // 식단 조회 제한 날짜
-
     public final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
     private final static String[] PLACES = {"한식", "일품식", "양식", "특식", "능수관", "수박여", "2캠퍼스"};
-    private String today;
-    private int changeDate;
-    private String currentDiningType;
-    private int currentDiningPlacePosition = 0;
-
-    private MainActivityContact.Presenter presenter = null;
-    private Unbinder unbinder;
-
-    private int term;
-
+    private static String TAG = MainActivity.class.getSimpleName();
+    private final int LIMITDATE = 7; // 식단 조회 제한 날짜
     TimerManager timerManager;
-
-    private Map<String, ArrayList<Dining>> diningMap = new HashMap<>();
-
     @BindView(R.id.toolbar)
     MaterialCardView toolbar;
     @BindView(R.id.toolbar_layout)
@@ -80,15 +62,12 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @BindView(R.id.main_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     BusPagerAdapter busPagerAdapter;
-
     //버스
     @BindView(R.id.main_view_pager)
     ScaleViewPager busCardViewPager;
-
     //상점
     @BindView(R.id.recycler_view_store_category)
     RecyclerView recyclerViewStoreCategory;
-
     //학식
     @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     List<TextView> textViewDiningPlaces;
@@ -98,7 +77,6 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     TextView textViewCardDiningTime;
     @BindView(R.id.dining_container)
     View viewDiningContainer;
-
     @BindViews({R.id.text_view_card_dining_menu_0,
             R.id.text_view_card_dining_menu_2,
             R.id.text_view_card_dining_menu_4,
@@ -110,6 +88,14 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
             R.id.text_view_card_dining_menu_7,
             R.id.text_view_card_dining_menu_9})
     List<TextView> textViewDiningMenus;
+    private String today;
+    private int changeDate;
+    private String currentDiningType;
+    private int currentDiningPlacePosition = 0;
+    private MainActivityContact.Presenter presenter = null;
+    private Unbinder unbinder;
+    private int term;
+    private Map<String, ArrayList<Dining>> diningMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +129,6 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     }
 
     private void initBusPager() {
-
-
         busPagerAdapter = new BusPagerAdapter(this);
         busPagerAdapter.setOnSwitchClickListener(this);
         busPagerAdapter.setOnCardClickListener(this);
@@ -196,11 +180,10 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     void selectDiningKind(View view) {
         for (int i = 0; i < textViewDiningPlaces.size(); i++) {
             TextView textView = textViewDiningPlaces.get(i);
-            if(textView.getId() == view.getId()) {
+            if (textView.getId() == view.getId()) {
                 textView.setSelected(true);
                 currentDiningPlacePosition = i;
-            }
-            else textView.setSelected(false);
+            } else textView.setSelected(false);
         }
         updateUserInterface(currentDiningPlacePosition);
     }
@@ -227,7 +210,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        if(timerManager != null) timerManager.stopAllTimer();
+        if (timerManager != null) timerManager.stopAllTimer();
     }
 
     @Override
@@ -353,7 +336,9 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
             changeDate++;
             today = TimeUtil.getChangeDate(changeDate);
             return true;
-        } else showEmptyDining();
+        } else {
+            showEmptyDining();
+        }
         return false;
     }
 
@@ -361,16 +346,16 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
         diningMap.clear();
-        for(TextView textView : textViewDiningPlaces) textView.setVisibility(View.GONE);
+        for (TextView textView : textViewDiningPlaces) textView.setVisibility(View.GONE);
 
         if (!diningArrayList.isEmpty()) {
             for (Dining dining : DiningUtil.arrangeDinings(diningArrayList)) {
-                if (dining == null ) {
+                if (dining == null) {
                     continue;
                 }
 
                 String typeTemp = dining.getType();
-                if(!typeTemp.equals(currentDiningType)) continue;
+                if (!typeTemp.equals(currentDiningType)) continue;
 
                 String placeTemp = dining.getPlace();
 
@@ -380,8 +365,9 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
                     ArrayList<Dining> dinings = new ArrayList<>();
                     dinings.add(dining);
                     diningMap.put(placeTemp, dinings);
-                    for(int i = 0; i < PLACES.length; i++) {
-                        if(PLACES[i].equals(placeTemp)) textViewDiningPlaces.get(i).setVisibility(View.VISIBLE);
+                    for (int i = 0; i < PLACES.length; i++) {
+                        if (PLACES[i].equals(placeTemp))
+                            textViewDiningPlaces.get(i).setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -398,14 +384,14 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void updateUserInterface(int placePosition) {
-        if(diningMap.containsKey(PLACES[placePosition])) {
-            for(TextView textView : textViewDiningMenus) textView.setText("");
+        if (diningMap.containsKey(PLACES[placePosition])) {
+            for (TextView textView : textViewDiningMenus) textView.setText("");
             List<String> dinings = diningMap.get(PLACES[placePosition]).get(0).getMenu();
-            for(int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
+            for (int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
                 textViewDiningMenus.get(i).setText(dinings.get(i));
             }
         } else {
-            if(placePosition < PLACES.length - 1) selectDiningKind(++placePosition);
+            if (placePosition < PLACES.length - 1) selectDiningKind(++placePosition);
             else showEmptyDining();
         }
     }
@@ -432,7 +418,8 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
             this.presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getTermInfo();
-            if(setCurrentDiningType()) presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
+            if (setCurrentDiningType())
+                presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
             updateDiningTypeTextView();
         }
     }
@@ -452,6 +439,6 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onCountEvent(String name, long millisUntilFinished) {
-        if(name.equals(REFRESH)) onRefresh();
+        if (name.equals(REFRESH)) onRefresh();
     }
 }

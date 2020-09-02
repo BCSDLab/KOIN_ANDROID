@@ -160,7 +160,8 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        if (bundle == null) this.storeCategoryNumber = 0;
+        if (bundle == null)
+            this.storeCategoryNumber = 0;
         else
             this.storeCategoryNumber = bundle.getInt("store_category", 0); //메뉴 초기화
         this.layoutManager = new LinearLayoutManager(this);
