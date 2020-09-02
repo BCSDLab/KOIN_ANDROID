@@ -195,7 +195,7 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
             if (getMenuId()[i] == itemId) {
                 TextView textView = findViewById(getMenuTextviewId()[i]);
                 String s = textView.getText().toString();
-                String styledText = "<u><font color='#f7941e'>" + s + "</font></u>";
+                String styledText = "<font color='#f7941e'>" + s + "</font>";
                 textView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);       //#f7941e
             }
         }
