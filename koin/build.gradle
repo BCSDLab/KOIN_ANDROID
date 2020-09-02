@@ -4,12 +4,12 @@ String applicationName = 'koin'
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 20208
+        versionCode 30000
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
-        versionName "2.2.8"
+        versionName "3.0.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
