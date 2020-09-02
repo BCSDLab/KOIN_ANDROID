@@ -257,6 +257,7 @@ public class KoinNavigationDrawerActivity extends BaseNavigationActivity {
     @Override
     protected void onClickNavigationLogout() {
         //TODO:API 오류 복구 후 제거
+        super.onClickNavigationLogout();
         UserInfoSharedPreferencesHelper.getInstance().removeCallvanRoomUid();
         int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
 
