@@ -79,6 +79,23 @@ Koreatech Community Project (ver. Android)
     - 식단표 2캠패스 출력시 한식 미 출력 수정
     - 채용게시판에서 취업게시판으로 변경
 
+- 2.2.7
+    - 검색 기능추가
+    - 시간표 학기별 조회 기능 추가
+    - 에티터 추가
+    - 버스 시간표 업데이트
+    
+- 3.0.0
+    -   서비스 축소
+        - 주변 상점
+        - 버스 / 교통
+        - 식단
+        - 시간표
+        - 복덕방
+    - 메인 화면 변경
+    - Navigation Drawer 변경
+
+
 ## Technology stack
   - Java 8
   - Android SDK
