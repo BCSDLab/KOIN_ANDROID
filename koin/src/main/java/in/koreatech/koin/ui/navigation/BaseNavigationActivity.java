@@ -1,7 +1,6 @@
 package in.koreatech.koin.ui.navigation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,22 +31,18 @@ import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public abstract class BaseNavigationActivity extends ActivityBase implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+    private static int currentId = R.id.navi_item_home;
+    private static int beforeId = R.id.navi_item_home;
     private final String TAG = "BaseNavigationActivity";
     private final int LEFTNAVI = GravityCompat.END;
     private final int RIGHTNAVI = GravityCompat.START;
     private final String CURRENT_ID = "CURRENT_ID";
     private final String BEFORE_ID = "BEFORE_ID";
     private final String fontName = "fonts/notosanscjkkr_regular.otf";
-
     private Context context;
-
     private DrawerLayout drawerLayout;
     private NavigationView leftNavigationView;
-
     private long pressTime = 0;
-    private static int currentId = R.id.navi_item_home;
-    private static int beforeId = R.id.navi_item_home;
-
     private InputMethodManager inputMethodManager;
 
 
@@ -88,14 +83,14 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
         drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-                if(slideOffset < 0.5f) {
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                if (slideOffset < 0.5f) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.colorPrimary));
                         getWindow().getDecorView().setSystemUiVisibility(0);
                     } else
                         getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.colorPrimary));
                 } else {
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(BaseNavigationActivity.this, R.color.background));
                         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     } else

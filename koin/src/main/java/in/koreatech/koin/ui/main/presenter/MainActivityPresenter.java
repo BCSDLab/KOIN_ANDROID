@@ -26,9 +26,6 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
     private final CityBusInteractor busInteractor;
     private final TermInteractor termInteractor;
     private final DiningInteractor diningInteractor;
-
-    private boolean diningListApiCallCheck;
-
     private final ApiCallback apiCallback = new ApiCallback() {                     //시내버스의 시간을 받아오는 api callback
         @Override
         public void onSuccess(Object object) {
@@ -62,7 +59,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
             view.hideLoading();
         }
     };
-
+    private boolean diningListApiCallCheck;
     private final ApiCallback diningApiCallback = new ApiCallback() {
         @Override
         public void onSuccess(Object object) {
@@ -76,7 +73,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         public void onFailure(Throwable throwable) {
             // diningView.showMessage(throwable.getMessage());
             diningListApiCallCheck = false;
-            if(!(throwable instanceof UnknownHostException))
+            if (!(throwable instanceof UnknownHostException))
                 view.showEmptyDining();
             else
                 view.showNetworkError();
@@ -127,7 +124,6 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         view.showLoading();
         try {
             int soonArrival = (int) Bus.getRemainExpressTimeToLong(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
-            Log.i(TAG, String.valueOf(soonArrival));
             String soonDeparture = Bus.getNearExpressTimeToString(BusType.getValueOf(depart), BusType.getValueOf(arrival), true);
             view.updateDaesungBusTime(soonArrival);
             view.updateDaesungBusDepartInfo(soonDeparture);

@@ -15,18 +15,17 @@ import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 
 public class StoreCategoryRecyclerAdapter extends RecyclerView.Adapter<StoreCategoryRecyclerAdapter.ViewHolder> {
 
-    private RecyclerViewClickListener recyclerViewClickListener = null;
-
-    public void setRecyclerViewClickListener(RecyclerViewClickListener recyclerViewClickListener) {
-        this.recyclerViewClickListener = recyclerViewClickListener;
-    }
-
     private final String[] CATEGORY_TEXT_ID = {
             "치킨", "피자", "탕수육", "도시락", "족발", "중국집", "일반음식", "미용실", "기타"
     };
     private final int[] CATEGORY_IMAGE_ID = {
             R.drawable.ic_chicken, R.drawable.ic_pizza, R.drawable.ic_sweet_pork, R.drawable.ic_dosirak, R.drawable.ic_porkfeet, R.drawable.ic_chinese, R.drawable.ic_normal, R.drawable.ic_hair, R.drawable.ic_etc
     };
+    private RecyclerViewClickListener recyclerViewClickListener = null;
+
+    public void setRecyclerViewClickListener(RecyclerViewClickListener recyclerViewClickListener) {
+        this.recyclerViewClickListener = recyclerViewClickListener;
+    }
 
     @NonNull
     @Override
@@ -41,7 +40,8 @@ public class StoreCategoryRecyclerAdapter extends RecyclerView.Adapter<StoreCate
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(recyclerViewClickListener != null) recyclerViewClickListener.onClick(v, position);
+                if (recyclerViewClickListener != null)
+                    recyclerViewClickListener.onClick(v, position);
             }
         });
     }
