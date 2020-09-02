@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -22,23 +23,22 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
-import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandContract;
 import in.koreatech.koin.ui.land.presenter.LandPresenter;
-
-import androidx.annotation.NonNull;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 
 /**
  * 복덕방 목록을 보여주는 Activity
  */
 public class LandActivity extends KoinNavigationDrawerActivity implements LandContract.View, OnMapReadyCallback {
     private static final String TAG = "LandActivity";
+    HashMap<Marker, Integer> markerMap = new HashMap();
     private Context context;
     private LandPresenter landPresenter;
     private ArrayList<BokdukRoom> landArrayList;
@@ -46,7 +46,6 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
     private GridLayoutManager landGridLayoutManager;
     private LandRecyclerAdapter landRecyclerAdapter;
     private NaverMap naverMap;
-    HashMap<Marker, Integer> markerMap = new HashMap();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +91,8 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         int id = v.getId();
         if (id == AppBarBase.getLeftButtonId()) {
             onBackPressed();
+        } else if (id == AppBarBase.getRightButtonId()) {
+            toggleNavigationDrawer();
         }
     }
 

@@ -35,8 +35,7 @@
                 <ScrollView
                     android:id="@+id/userinfoedited_scrollview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="56dp">
+                    android:layout_height="wrap_content">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -515,7 +514,6 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <include layout="@layout/base_navigation_bar_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <include layout="@layout/base_navigation_drawer_left" />
