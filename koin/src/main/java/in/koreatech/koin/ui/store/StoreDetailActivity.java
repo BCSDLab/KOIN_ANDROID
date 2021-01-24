@@ -40,6 +40,7 @@ import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
+import in.koreatech.koin.util.FirebaseEventUtil;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
@@ -249,13 +250,14 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         requestPermission();
 
         AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(new ContextThemeWrapper(this.context, R.style.KAPDialog));
+        builder = new AlertDialog.Builder(context);
 
         builder.setMessage(this.store.getName() + "\n\n" + this.store.getPhone());
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
                     onClickCallButton();    //call intent 수행
+                    FirebaseEventUtil.getInstance(this).endTrackStoreCallTime();
                 });
         builder.setNegativeButton("취소",
                 (dialog, which) -> dialog.dismiss());
