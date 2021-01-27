@@ -22,6 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
         <activity android:name=".ui.main.MainActivity"
