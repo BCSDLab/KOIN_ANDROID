@@ -56,15 +56,15 @@ Koreatech Community Project (ver. Android)
   - 시간표 테두리 변경
   - 위젯 자동 업데이트 변경
   - 카테고리 유지 안됨 수정
-  
+
 - 2.2.3
   - 복덕방 서비스 추가
   - 분실물 서비스 추가
   - 비밀번호 검사 로직 변경
-  
+
 -  2.2.4
     - 버스시간표 수정
-    
+
 - 2.2.5
     - 식단표 위젯 추가
     - 버스 위젯 추가
@@ -84,10 +84,10 @@ Koreatech Community Project (ver. Android)
     - 시간표 학기별 조회 기능 추가
     - 에티터 추가
     - 버스 시간표 업데이트
-    
+
 - 2.2.8
     로그인시 중고 장터 접근 안 되는 버그 수정
-    
+
 - 3.0.0
     -   서비스 축소
         - 주변 상점
@@ -97,6 +97,13 @@ Koreatech Community Project (ver. Android)
         - 복덕방
     - 메인 화면 변경
     - Navigation Drawer 변경
+
+- 3.0.1
+    - 버그 수정
+      - 상점 전화 번호 출력 오류 수정
+      - 상점 주소 출력 오류 수정
+    - Firebase Event 추가
+      - 상점 진입 후 상점에 전화하는 시간 이벤트 추가
 
 
 ## Technology stack
