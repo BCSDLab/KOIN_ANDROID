@@ -65,8 +65,9 @@ public class FirebaseEventUtil {
     }
 
     private void track(String name, Bundle bundle) {
-        if (!BuildConfig.IS_DEBUG)
+        if (!BuildConfig.IS_DEBUG) {
             firebaseAnalytics.logEvent(name, bundle);
+        }
     }
 
 

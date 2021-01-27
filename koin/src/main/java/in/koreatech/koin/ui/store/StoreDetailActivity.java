@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -210,13 +209,21 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         if (this.store.getPhone() == null) {
             phoneTextView.setText("-");
             storeDetailCallButton.setVisibility(View.INVISIBLE);
+        } else {
+            phoneTextView.setText(this.store.getPhone());
         }
         if (this.store.getAddress() == null) {
             addressTextview.setText("-");
+        } else {
+            addressTextview.setText(this.store.getAddress());
         }
+
         if (this.store.getDescription() == null) {
             etcTextview.setText("-");
+        } else {
+            etcTextview.setText(this.store.getDescription());
         }
+
         /*
         phoneTextView.setText(Objects.requireNonNull(this.store.phone,"-"));
         addressTextview.setText(Objects.requireNonNullElse(this.store.address,"-"));
