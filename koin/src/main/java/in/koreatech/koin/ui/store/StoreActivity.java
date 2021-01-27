@@ -28,6 +28,7 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
+import in.koreatech.koin.util.FirebaseEventUtil;
 
 public class StoreActivity extends KoinNavigationDrawerActivity implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = StoreActivity.class.getSimpleName();
@@ -73,6 +74,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         ButterKnife.bind(this);
         context = this;
         init();
+        FirebaseEventUtil.getInstance(this).startTrackStoreCallTime();
         //TODO:필터기능 추가
     }
 

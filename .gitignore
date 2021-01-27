@@ -7,9 +7,6 @@ local.properties
 
 # Gradle generated files
 .gradle/
-gradlew
-gradlew.bat
-
 
 # Signing files
 .signing/
