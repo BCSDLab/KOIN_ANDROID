@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -40,6 +39,7 @@ import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
+import in.koreatech.koin.util.FirebaseEventUtil;
 import in.koreatech.koin.util.FormValidatorUtil;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
@@ -209,13 +209,21 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         if (this.store.getPhone() == null) {
             phoneTextView.setText("-");
             storeDetailCallButton.setVisibility(View.INVISIBLE);
+        } else {
+            phoneTextView.setText(this.store.getPhone());
         }
         if (this.store.getAddress() == null) {
             addressTextview.setText("-");
+        } else {
+            addressTextview.setText(this.store.getAddress());
         }
+
         if (this.store.getDescription() == null) {
             etcTextview.setText("-");
+        } else {
+            etcTextview.setText(this.store.getDescription());
         }
+
         /*
         phoneTextView.setText(Objects.requireNonNull(this.store.phone,"-"));
         addressTextview.setText(Objects.requireNonNullElse(this.store.address,"-"));
@@ -249,13 +257,14 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         requestPermission();
 
         AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(new ContextThemeWrapper(this.context, R.style.KAPDialog));
+        builder = new AlertDialog.Builder(context);
 
         builder.setMessage(this.store.getName() + "\n\n" + this.store.getPhone());
 
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
                     onClickCallButton();    //call intent 수행
+                    FirebaseEventUtil.getInstance(this).endTrackStoreCallTime();
                 });
         builder.setNegativeButton("취소",
                 (dialog, which) -> dialog.dismiss());
