@@ -414,6 +414,7 @@
                             android:layout_gravity="start|center"
                             android:background="@null"
                             android:hint="상점 검색"
+                            android:imeOptions="actionDone"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="6sp"
                             android:maxLines="1"
@@ -424,8 +425,10 @@
                             app:fontName="Custom6"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/search_image_view"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0" />
 
                         <ImageView
                             android:id="@+id/search_image_view"

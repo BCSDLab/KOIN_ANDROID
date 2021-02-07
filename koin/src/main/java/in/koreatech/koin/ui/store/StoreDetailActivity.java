@@ -254,7 +254,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         if (this.store.getDescription() == null) {
             etcTextview.setText("-");
         } else {
-            etcTextview.setText(this.store.getDescription());
+            etcTextview.setText(this.store.getDescription().replace("\\n",System.getProperty("line.separator")));
         }
 
         /*
