@@ -1,5 +1,7 @@
 package in.koreatech.koin.util;
 
+import android.text.TextUtils;
+
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -334,6 +336,8 @@ public class TimeUtil {
     }
 
     public static boolean isBetweenCurrentTime(String starTime, String endTime) {
+        if(TextUtils.isEmpty(starTime) || TextUtils.isEmpty(endTime))
+            return true;
         try {
             SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
             String curTime = parser.format(new Date());

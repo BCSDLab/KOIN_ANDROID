@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -29,15 +30,15 @@ public class StoreFlyerViewActivity extends ActivityBase {
     // 스와이프 길이
     public static final int SWIPE_THRESHOLD = 200;
     public static final int SWIPE_VELOCITY_THRESHOLD = 200;
+    @BindView(R.id.store_flyer_imageview)
+    PhotoView flyerImageview;
+    @BindView(R.id.current_page_text_view)
+    TextView currentPageTextView;
     private int maxImageCount;
-
     private boolean isZoomed;
     private GestureDetector gestureDetector;
     private int currentPostition;
     private ArrayList<String> urls;
-
-    @BindView(R.id.store_flyer_imageview)
-    PhotoView flyerImageview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class StoreFlyerViewActivity extends ActivityBase {
         if (getIntent() == null) finish();
         currentPostition = getIntent().getIntExtra("POSITION", 0);
         urls = getIntent().getStringArrayListExtra("URLS");
+        currentPageTextView.setText(getString(R.string.flyer_current_page_text, currentPostition + 1, urls.size()));
         maxImageCount = urls.size();
         init();
     }
@@ -72,29 +74,6 @@ public class StoreFlyerViewActivity extends ActivityBase {
                 isZoomed = false;
             }
         });
-    }
-
-
-    /**
-     * 화면 밖 또는 close 이미지 버튼을 클릭했을때 액티비티 종료
-     * 왼쪽 버튼을 누르면 이전 전단지로 오른쪽 버튼을 누를시 다음 전단지로 넘어간다.
-     */
-    @OnClick({R.id.store_flyer_close_imagebutton, R.id.store_flyer_framelayout, R.id.store_flyer_before_imagebutton, R.id.store_flyer_after_button, R.id.store_flyer_after_linearlayout, R.id.store_flyer_before_linearlayout})
-    public void onClicked(View view) {
-        switch (view.getId()) {
-            case R.id.store_flyer_close_imagebutton:
-            case R.id.store_flyer_framelayout:
-                finish();
-                break;
-            case R.id.store_flyer_before_imagebutton:
-            case R.id.store_flyer_before_linearlayout:
-                onSlide(true);
-                break;
-            case R.id.store_flyer_after_button:
-            case R.id.store_flyer_after_linearlayout:
-                onSlide(false);
-                break;
-        }
     }
 
     /**
@@ -128,6 +107,15 @@ public class StoreFlyerViewActivity extends ActivityBase {
     }
 
     /**
+     * 종료 버튼 누를 시 종료
+     * @param view
+     */
+    @OnClick(R.id.store_flyer_close_imagebutton)
+    public void onClickedCloseButton(View view){
+        finish();
+    }
+
+    /**
      * 왼쪽에서 오르쪽으로 스와이프를 했을때는 전 전단지를 보여주고 반대일 경우에는 그다음 전단지를 보여준다.
      *
      * @param isLeftToRightSlide 왼쪽에서 오른쪽으로 스와이프를 하는지
@@ -140,7 +128,7 @@ public class StoreFlyerViewActivity extends ActivityBase {
                 currentPostition = maxImageCount;
             currentPostition = (currentPostition - 1);
         }
-
+        currentPageTextView.setText(getString(R.string.flyer_current_page_text, currentPostition + 1, urls.size()));
         Glide.with(this).load(urls.get(currentPostition)).into(flyerImageview);
         isZoomed = false;
     }
