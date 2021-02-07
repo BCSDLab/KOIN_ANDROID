@@ -44,10 +44,15 @@ public class StoreRepository implements StoreDataSource {
             storeList = new ArrayList<>();
             cacheIsDirty = false;
             return storeRemoteDataSource.getStoreList()
-                    .doOnSuccess(stores -> storeList.addAll(stores));
+                    .doOnSuccess(stores -> storeList.addAll(stores))
+                    .toObservable()
+                    .flatMap(Observable::fromIterable)
+                    .toSortedList(this::sortStore);
         }
-
-        return Single.just(storeList);
+        return Single.just(storeList)
+                .toObservable()
+                .flatMap(Observable::fromIterable)
+                .toSortedList(this::sortStore);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class StoreRepository implements StoreDataSource {
                                 return true;
                         }
                         return false;
-                    }).toSortedList((o1, o2) -> o1.getName().compareTo(o2.getName()));
+                    }).toSortedList(this::sortStore);
         }
 
         return Single.just(storeList)
@@ -77,7 +82,7 @@ public class StoreRepository implements StoreDataSource {
                             return true;
                     }
                     return false;
-                }).toSortedList((o1, o2) -> o1.getName().compareTo(o2.getName()));
+                }).toSortedList(this::sortStore);
     }
 
     @Override
@@ -97,7 +102,7 @@ public class StoreRepository implements StoreDataSource {
                 .toObservable()
                 .flatMap(Observable::fromIterable)
                 .filter(store -> store.getName().contains(name))
-                .toSortedList((o1, o2) -> o1.getName().compareTo(o2.getName()));
+                .toSortedList(this::sortStore);
     }
 
     @Override
@@ -110,7 +115,7 @@ public class StoreRepository implements StoreDataSource {
                     .toObservable()
                     .flatMap(Observable::fromIterable)
                     .filter(store -> {
-                        if(!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())){
+                        if (!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())) {
                             return false;
                         }
                         for (String item : category) {
@@ -134,7 +139,7 @@ public class StoreRepository implements StoreDataSource {
                 .toObservable()
                 .flatMap(Observable::fromIterable)
                 .filter(store -> {
-                    if(!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())){
+                    if (!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())) {
                         return false;
                     }
                     for (String item : category) {
@@ -162,5 +167,20 @@ public class StoreRepository implements StoreDataSource {
     @Override
     public void refresh() {
         cacheIsDirty = true;
+    }
+
+    private int sortStore(Store o1, Store o2) {
+        boolean isFirstStoreOpened = TimeUtil.isBetweenCurrentTime(o1.getOpenTime(), o1.getCloseTime());
+        boolean isSecondStoredOpened = TimeUtil.isBetweenCurrentTime(o2.getOpenTime(), o2.getCloseTime());
+        if (isFirstStoreOpened && isSecondStoredOpened) {
+            return o1.getName().compareTo(o2.getName());
+        } else if (!isFirstStoreOpened && isSecondStoredOpened) {
+            return 1;
+        } else if (isFirstStoreOpened && !isSecondStoredOpened) {
+            return -1;
+        } else {
+            return o1.getName().compareTo(o2.getName());
+        }
+
     }
 }
