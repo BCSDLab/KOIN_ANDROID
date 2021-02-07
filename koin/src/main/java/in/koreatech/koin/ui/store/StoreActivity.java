@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -127,6 +129,17 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
             }
         });
 
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            switch (actionId) {
+                case EditorInfo.IME_ACTION_DONE:
+                    hideKeyboard(this);
+                    break;
+                default:
+                    return false;
+            }
+            return true;
+
+        });
         searchImageView.setOnClickListener(v -> searchEditText.setText(""));
 
         compositeDisposable.add(
