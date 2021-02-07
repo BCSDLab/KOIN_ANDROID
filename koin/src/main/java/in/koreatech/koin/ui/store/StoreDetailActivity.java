@@ -9,9 +9,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -20,8 +20,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -32,15 +35,17 @@ import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerClickListener;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
+import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
-import in.koreatech.koin.data.network.interactor.StoreRestInteractor;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
+import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreDetailContract;
 import in.koreatech.koin.ui.store.presenter.StoreDetailPresenter;
 import in.koreatech.koin.util.FirebaseEventUtil;
 import in.koreatech.koin.util.FormValidatorUtil;
+import in.koreatech.koin.util.schedulers.SchedulerProvider;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
@@ -58,7 +63,8 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @BindView(R.id.store_detail_deliver_textview)
     TextView deliverTextview;
     @BindView(R.id.store_detail_call_button)
-    LinearLayout storeDetailCallButton;
+    FloatingActionButton
+            storeDetailCallButton;
     //배달/카드/계좌이체 여부
     @BindView(R.id.store_detail_is_delivery_textview)
     TextView isDeliveryTextView;
@@ -71,6 +77,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     RecyclerView menuListRecyclerView;
     @BindView(R.id.store_detail_flyer_recyclerview)
     RecyclerView flyerListRecyclerView;
+    @BindView(R.id.store_random_recycler_view)
+    RecyclerView storeRandomRecyclerView;
+    @BindView(R.id.how_about_here_text_view)
+    TextView howAboutHereTextView;
+
     private Context context;
     private StoreDetailPresenter storeDetailPresenter;
     private Store store;
@@ -108,9 +119,10 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         this.store = new Store();
         this.store.setUid(getIntent().getIntExtra("STORE_UID", 0));
         this.store.setName(getIntent().getStringExtra("STORE_NAME"));
+        this.store.setCategory(getIntent().getStringExtra("CATEGORY"));
 
-        setPresenter(new StoreDetailPresenter(this, new StoreRestInteractor()));
-        this.storeDetailPresenter.getStore(this.store.getUid());
+        setPresenter(new StoreDetailPresenter(this, Injection.provideStoreRepository(), SchedulerProvider.getInstance()));
+        this.storeDetailPresenter.start(this.store.getUid(), 3,this.store.getUid(), this.store.getCategory());
 
         menuLayoutManager = new LinearLayoutManager(this);
         flyerLayoutManger = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -183,24 +195,45 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     }
 
     @Override
+    public void onRandomStoreListReceived(List<Store> storeList) {
+        if(storeList == null || storeList.isEmpty()){
+            howAboutHereTextView.setVisibility(View.GONE);
+            return;
+        }
+        StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<>(storeList));
+        storeRandomRecyclerView.setNestedScrollingEnabled(false);
+        storeRandomRecyclerView.setHasFixedSize(false);
+        storeRandomRecyclerView.addOnItemTouchListener(new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                goToStoreDetailActivity(storeList.get(position).getUid(), storeList.get(position).getName(),storeList.get(position).getCategory());
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+            }
+        }));
+        storeRandomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        storeRandomRecyclerView.setAdapter(storeRecyclerAdapter);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
 
     }
 
-//    private void setTextviewTextWithBackground(TextView textView, String firstText, boolean isOk) {
-//        if (isOk) {
-//            textView.setText(firstText + "가능");
-//            textView.setBackground(getResources().getDrawable(R.drawable.button_rect_accent_radius_25dp));
-//            textView.setTextColor(getResources().getColor(R.color.white));
-//        } else {
-//            textView.setText(firstText + "불가능");
-//            textView.setBackground(getResources().getDrawable(R.drawable.button_rect_mono_radius_25dp));
-//            textView.setTextColor(getResources().getColor(R.color.colorSecondaryText));
-//        }
-//        textView.setPadding(20, 0, 20, 0);
-//    }
+    public void goToStoreDetailActivity(int storeUid, String storeName, String category) {
+        Intent intent = new Intent(this, StoreDetailActivity.class);
+        intent.putExtra("STORE_UID", storeUid);
+        intent.putExtra("STORE_NAME", storeName);
+        intent.putExtra("CATEGORY", category);
+        startActivity(intent);
+        finish();
+    }
+
+
 
     @Override
     public void updateUserInterface() {
@@ -288,6 +321,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         ToastUtil.getInstance().makeShort(message);
     }
 
+    @Override
+    public void showMessage(@StringRes int message) {
+        ToastUtil.getInstance().makeShort(message);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item != null && item.getItemId() == android.R.id.home) {
             onBackPressed();
@@ -336,5 +374,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void hideLoading() {
         hideProgressDialog();
+    }
+
+    @Override
+    protected void onDestroy() {
+        storeDetailPresenter.unSubscribe();
+        super.onDestroy();
     }
 }

@@ -16,6 +16,6 @@ public interface ShopService {
 
     //Get Shop list API
     @GET(SHOPS + "/{id}")
-    Observable<Store> getStore(@Path("id") int uid);
+    Single<Store> getStore(@Path("id") int uid);
 
 }

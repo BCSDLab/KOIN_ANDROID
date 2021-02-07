@@ -42,8 +42,16 @@ public class StoreRemoteDataSource implements StoreDataSource {
     }
 
     @Override
-    public Single<List<Store>> getRandomStoreListByCategory(int count, String... category) {
+    public Single<List<Store>> getRandomStoreListByCategory(int count, int currentStoreID, String... category) {
         return Single.never();
+    }
+
+    @Override
+    public Single<Store> getStoreDetail(int storeID) {
+        return RetrofitManager.getInstance()
+                .getRetrofit()
+                .create(ShopService.class)
+                .getStore(storeID);
     }
 
     @Override

@@ -156,6 +156,9 @@
     <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
 
+    <!--store-->
+    <string name="store_how_about_here">여기는 어떠세요?</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
