@@ -332,7 +332,6 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         builder.setPositiveButton("통화",
                 (dialog, which) -> {
                     onClickCallButton();    //call intent 수행
-                    FirebaseEventUtil.getInstance(this).endTrackStoreCallTime();
                 });
         builder.setNegativeButton("취소",
                 (dialog, which) -> dialog.dismiss());
@@ -347,6 +346,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
             requestPermission();
             return;
         } else {
+            FirebaseEventUtil.getInstance(this).endTrackStoreCallTime();
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + callNumber))); //콜 인텐트 수행
         }
     }
