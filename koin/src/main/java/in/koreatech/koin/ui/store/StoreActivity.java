@@ -96,6 +96,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         ButterKnife.bind(this);
         context = this;
         init();
+        getCurrentCategoryStoreItem();
         FirebaseEventUtil.getInstance(this).startTrackStoreCallTime();
     }
 
@@ -169,7 +170,6 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     @Override
     public void onStart() {
         super.onStart();
-        getCurrentCategoryStoreItem();
     }
 
     @OnClick({R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
