@@ -351,14 +351,45 @@
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_flyer_recyclerview" />
 
                 <TextView
+                    android:id="@+id/menu_spread_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintTop_toBottomOf="@id/store_detail_recyclerview"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toStartOf="@+id/arrow_image_view"
+                    android:text="@string/show_more_menu"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/arrow_image_view"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:layout_constraintTop_toTopOf="@+id/menu_spread_text_view"
+                    app:layout_constraintBottom_toBottomOf="@+id/menu_spread_text_view"
+                    app:layout_constraintStart_toEndOf="@+id/menu_spread_text_view"
+                    android:layout_marginStart="4dp"
+                    android:visibility="gone"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_arrow_back"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                    />
+
+
+                <TextView
                     android:id="@+id/how_about_here_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15sp"
+                    android:layout_marginTop="48dp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/store_detail_recyclerview"
+                    app:layout_constraintTop_toBottomOf="@id/menu_spread_text_view"
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     android:textColor="@color/black"
+                    app:layout_goneMarginTop="70dp"
                     android:text="@string/store_how_about_here"
                     />
 

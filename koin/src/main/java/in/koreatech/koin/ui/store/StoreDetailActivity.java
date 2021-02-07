@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.StringRes;
@@ -48,6 +49,7 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.schedulers.SchedulerProvider;
 
 public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
+    private static final int ITEM_MAX_SIZE = 6;
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
     /* View Component */
     @BindView(R.id.store_detail_title_textview)
@@ -81,6 +83,10 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     RecyclerView storeRandomRecyclerView;
     @BindView(R.id.how_about_here_text_view)
     TextView howAboutHereTextView;
+    @BindView(R.id.menu_spread_text_view)
+    TextView menuSpreadTextView;
+    @BindView(R.id.arrow_image_view)
+    ImageView arrowImageView;
 
     private Context context;
     private StoreDetailPresenter storeDetailPresenter;
@@ -104,6 +110,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     private ArrayList<String> storeFlyerArrayList;
     private StoreDetailMenuRecyclerAdapter storeDetailMenuRecyclerAdapter;
     private StoreDetailFlyerRecyclerAdapter storeDetailFlyerRecyclerAdapter;
+    private boolean isMenuSpread = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +173,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
         if (this.store.getImageUrls() != null)
             storeFlyerArrayList.addAll(this.store.getImageUrls());
         storeDetailFlyerRecyclerAdapter.notifyDataSetChanged();
+
         if (!store.getMenus().isEmpty()) {
             for (int a = 0; a < store.getMenus().size(); a++) {
                 Store storeItemDetail = new Store();
@@ -184,13 +192,34 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
                 storeItemDetail.setDetail(stringBuilder.toString());
                 this.storeMenuArrayList.add(storeItemDetail);
             }
-            this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(this.storeMenuArrayList);
-            this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
         }
 
-
+        updateStoreMenu();
         updateUserInterface();
-        onResume();
+    }
+
+    private void updateStoreMenu(){
+        if(storeMenuArrayList.size() <= ITEM_MAX_SIZE){
+            menuSpreadTextView.setVisibility(View.GONE);
+            arrowImageView.setVisibility(View.GONE);
+            this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(this.storeMenuArrayList);
+        }else{
+            menuSpreadTextView.setVisibility(View.VISIBLE);
+            arrowImageView.setVisibility(View.VISIBLE);
+
+            if(arrowImageView.getRotation() == 180F) {
+                arrowImageView.setRotation(0F);
+                isMenuSpread = false;
+                menuSpreadTextView.setText(R.string.hide_menu);
+                this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(this.storeMenuArrayList);
+            }else{
+                arrowImageView.setRotation(180F);
+                isMenuSpread = true;
+                menuSpreadTextView.setText(R.string.show_more_menu);
+                this.storeDetailMenuRecyclerAdapter.setStoreMenuArrayList(new ArrayList<>(this.storeMenuArrayList.subList(0, ITEM_MAX_SIZE)));
+            }
+        }
+        this.storeDetailMenuRecyclerAdapter.notifyDataSetChanged();
 
     }
 
@@ -200,6 +229,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
             howAboutHereTextView.setVisibility(View.GONE);
             return;
         }
+
         StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<>(storeList));
         storeRandomRecyclerView.setNestedScrollingEnabled(false);
         storeRandomRecyclerView.setHasFixedSize(false);
@@ -283,6 +313,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 //        setTextviewTextWithBackground(isCardTextView, "#카드", this.store.isCardOk);
 //        setTextviewTextWithBackground(isBankTextView, "#계좌이체", this.store.isBankOk);
 
+    }
+
+    @OnClick({R.id.arrow_image_view, R.id.menu_spread_text_view})
+    public void onClickedMenuSpread(View view){
+        updateStoreMenu();
     }
 
     @OnClick(R.id.store_detail_call_button)
