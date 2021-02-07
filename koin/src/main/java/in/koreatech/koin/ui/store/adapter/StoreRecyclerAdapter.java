@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,9 +19,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import in.koreatech.koin.R;
 import in.koreatech.koin.data.network.entity.Store;
+import in.koreatech.koin.util.TimeUtil;
 
 public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdapter.ViewHolder> {
-    private final String TAG = StoreRecyclerAdapter.class.getSimpleName();
+    private final String TAG = "StoreRecyclerAdapter";
 
     private Context context;
     private LayoutInflater layoutInflater; //inflate 사용위한 inflater
@@ -35,6 +37,8 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         TextView textViewCard; //카드 결제 여부
         @BindView(R.id.store_account_textview)
         TextView textViewAccountTransfer;  //계좌이체 결제 여부
+        @BindView(R.id.ready_store_frame_layout)
+        FrameLayout readyStoreFrameLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -46,8 +50,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.storeArrayList = new ArrayList<>();
-        Collections.sort(storeArrayList);
-        this.storeArrayList.addAll(storeArrayList);
+        this.storeArrayList = storeArrayList;
     }
 
 
@@ -82,6 +85,14 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
             holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
         } else {
             holder.textViewAccountTransfer.setTextColor(ContextCompat.getColor(context, R.color.blue1));
+        }
+
+        if(store.getOpenTime() != null && store.getCloseTime() != null){
+            if(TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())){
+                holder.readyStoreFrameLayout.setVisibility(View.GONE);
+            }else{
+                holder.readyStoreFrameLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 

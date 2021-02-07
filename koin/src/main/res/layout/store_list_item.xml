@@ -4,12 +4,40 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:layout_marginStart="16dp"
     android:layout_marginTop="4dp"
-    android:layout_marginEnd="16dp"
     android:layout_marginBottom="4dp"
+    android:layout_marginStart="1dp"
+    android:layout_marginEnd="1dp"
     app:cardBackgroundColor="@color/white"
     tool:ignore="MissingPrefix">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <FrameLayout
+            android:id="@+id/ready_store_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:alpha="0.3"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="준비중"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                />
+
+        </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,7 +103,6 @@
                 app:fontName="Custom6" />
 
         </LinearLayout>
-
-
     </LinearLayout>
+    </FrameLayout>
 </androidx.cardview.widget.CardView>

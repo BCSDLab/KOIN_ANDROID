@@ -1,41 +1,62 @@
 package in.koreatech.koin.ui.store.presenter;
 
-import java.util.ArrayList;
-
-import in.koreatech.koin.core.network.ApiCallback;
-import in.koreatech.koin.data.network.entity.Store;
-import in.koreatech.koin.data.network.interactor.StoreInteractor;
-import in.koreatech.koin.data.network.response.StoresResponse;
+import in.koreatech.koin.R;
+import in.koreatech.koin.data.StoreRepository;
+import in.koreatech.koin.util.schedulers.SchedulerProvider;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class StorePresenter {
 
     private final StoreContract.View storeView;
+    private final StoreRepository storeRepository;
+    private final CompositeDisposable compositeDisposable;
+    private final SchedulerProvider schedulerProvider;
 
-    private final StoreInteractor storeInteractor;
-
-    public StorePresenter(StoreContract.View storeView, StoreInteractor storeInteractor) {
+    public StorePresenter(StoreContract.View storeView, StoreRepository storeRepository, SchedulerProvider schedulerProvider) {
         this.storeView = storeView;
-        this.storeInteractor = storeInteractor;
+        this.schedulerProvider = schedulerProvider;
+        this.storeRepository = storeRepository;
+        compositeDisposable = new CompositeDisposable();
     }
 
-    private final ApiCallback apiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            ArrayList<Store> arrayList = ((StoresResponse) object).storeArrayList;
-            storeView.onStoreListDataReceived(arrayList);
-            storeView.hideLoading();
-        }
+    public void getStoreListWithCategory(String... category) {
+        compositeDisposable.add(
+                storeRepository.getStoreListByCategory(category)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(storeView::onStoreListDataReceived,
+                                throwable -> storeView.showMessage(R.string.error_network))
+        );
 
-        @Override
-        public void onFailure(Throwable throwable) {
-            storeView.showMessage(throwable.getMessage());
-            storeView.hideLoading();
-        }
-    };
+    }
 
     public void getStoreList() {
-        storeView.showLoading();
-        storeInteractor.readStoreList(apiCallback);
+        compositeDisposable.add(
+                storeRepository.getStoreList()
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .doOnSubscribe(disposable -> storeView.showLoading())
+                        .doFinally(storeView::hideLoading)
+                        .subscribe(storeView::onStoreListDataReceived,
+                                throwable -> storeView.showMessage(R.string.error_network))
+        );
     }
 
+    public void getStoreListWithStoreName(String storeName){
+        compositeDisposable.add(
+                storeRepository.getStoreListByName(storeName)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(storeView::onStoreListDataReceived,
+                                throwable -> storeView.showMessage(R.string.error_network))
+        );
+    }
+
+    public void unSubscribe() {
+        compositeDisposable.dispose();
+    }
+
+    public void refresh() {
+        storeRepository.refresh();
+    }
 }
