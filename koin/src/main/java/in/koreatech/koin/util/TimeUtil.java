@@ -9,12 +9,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeUtil {
-    private static Calendar cal;
     private final static SimpleDateFormat MMDDE = new SimpleDateFormat("MM월 DD일 (E)", Locale.KOREAN);
     private final static SimpleDateFormat YYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
     private final static SimpleDateFormat YYMMDD = new SimpleDateFormat("yyMMdd");
     private final static SimpleDateFormat YYYYMMDDHHMM = new SimpleDateFormat("yyyyMMddHHmm");
     private final static SimpleDateFormat HHMM = new SimpleDateFormat("HH:mm");
+    private static Calendar cal;
 
     private static SimpleDateFormat getTimestampStringFormat() {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -258,8 +258,8 @@ public class TimeUtil {
         return YYYYMMDD.format(cal.getTime());
     }
 
-    public static String getChangeDateFormatYYMMDD(int date)
-    {   cal = Calendar.getInstance();
+    public static String getChangeDateFormatYYMMDD(int date) {
+        cal = Calendar.getInstance();
         cal.add(Calendar.DATE, date);
         YYMMDD.setTimeZone(TimeZone.getDefault());
         return YYMMDD.format(cal.getTime());
@@ -332,5 +332,32 @@ public class TimeUtil {
 
         return day;
     }
+
+    public static boolean isBetweenCurrentTime(String starTime, String endTime) {
+        try {
+            SimpleDateFormat parser = new SimpleDateFormat("HH:mm");
+            String curTime = parser.format(new Date());
+            Date start = parser.parse(starTime);
+            Date end = parser.parse(endTime);
+            Date current = parser.parse(curTime);
+
+            if (end.before(start)) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(end);
+                cal.add(Calendar.DAY_OF_YEAR, 1);
+                end.setTime(cal.getTimeInMillis());
+            }
+
+            if (current.after(start) && current.before(end)) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
 }

@@ -8,6 +8,7 @@ import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.data.network.response.StoresResponse;
 import in.koreatech.koin.data.network.service.ShopService;
 import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -22,39 +23,13 @@ public class StoreRestInteractor implements StoreInteractor {
     public StoreRestInteractor() {
     }
 
+
     @Override
-    public void readStoreList(ApiCallback apiCallback) {
-        RetrofitManager.getInstance().getRetrofit().create(ShopService.class).getShopList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<StoresResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(StoresResponse stores) {
-                        if (!stores.storeArrayList.isEmpty()) {
-                            apiCallback.onSuccess(stores);
-                        } else {
-                            apiCallback.onFailure(new Throwable("서버와의 연결이 불안정합니다"));
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+    public Single<StoresResponse> readStoreList() {
+        return   RetrofitManager.getInstance()
+                .getRetrofit()
+                .create(ShopService.class).
+                        getShopList();
     }
 
     @Override

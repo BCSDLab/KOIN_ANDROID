@@ -37,12 +37,9 @@ public class StoreCategoryRecyclerAdapter extends RecyclerView.Adapter<StoreCate
     public void onBindViewHolder(@NonNull StoreCategoryRecyclerAdapter.ViewHolder holder, int position) {
         holder.textView.setText(CATEGORY_TEXT_ID[position]);
         holder.imageView.setImageResource(CATEGORY_IMAGE_ID[position]);
-        holder.container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (recyclerViewClickListener != null)
-                    recyclerViewClickListener.onClick(v, position);
-            }
+        holder.container.setOnClickListener(v -> {
+            if (recyclerViewClickListener != null)
+                recyclerViewClickListener.onClick(v, position);
         });
     }
 
