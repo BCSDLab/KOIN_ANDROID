@@ -22,7 +22,5 @@ public interface StoreContract {
         void onStoreListDataReceived(List<Store> storeArrayList);
 
         void updateUserInterface();
-
-        void goToStoreDetailActivity(int storeUid, String storeName);
     }
 }

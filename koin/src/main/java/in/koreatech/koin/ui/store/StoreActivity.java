@@ -79,7 +79,7 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private final RecyclerClickListener recyclerItemTouchListener = new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
         @Override
         public void onClick(View view, final int position) {
-            goToStoreDetailActivity(storeArrayList.get(position).getUid(), storeArrayList.get(position).getName());
+            goToStoreDetailActivity(storeArrayList.get(position).getUid(), storeArrayList.get(position).getName(),storeArrayList.get(position).getCategory());
         }
 
         @Override
@@ -288,11 +288,11 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         }
     }
 
-    @Override
-    public void goToStoreDetailActivity(int storeUid, String storeName) {
+    public void goToStoreDetailActivity(int storeUid, String storeName, String category) {
         Intent intent = new Intent(this, StoreDetailActivity.class);
         intent.putExtra("STORE_UID", storeUid);
         intent.putExtra("STORE_NAME", storeName);
+        intent.putExtra("CATEGORY", category);
         startActivity(intent);
     }
 

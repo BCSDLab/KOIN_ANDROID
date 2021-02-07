@@ -31,11 +31,11 @@ public class StorePresenter {
     }
 
     public void getStoreList() {
+        storeView.showLoading();
         compositeDisposable.add(
                 storeRepository.getStoreList()
                         .subscribeOn(schedulerProvider.io())
                         .observeOn(schedulerProvider.ui())
-                        .doOnSubscribe(disposable -> storeView.showLoading())
                         .doFinally(storeView::hideLoading)
                         .subscribe(storeView::onStoreListDataReceived,
                                 throwable -> storeView.showMessage(R.string.error_network))

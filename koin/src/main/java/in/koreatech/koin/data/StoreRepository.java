@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import in.koreatech.koin.data.network.entity.Store;
+import in.koreatech.koin.util.TimeUtil;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -101,8 +101,7 @@ public class StoreRepository implements StoreDataSource {
     }
 
     @Override
-    public Single<List<Store>> getRandomStoreListByCategory(int count, String... category) {
-        Random rand = new Random();
+    public Single<List<Store>> getRandomStoreListByCategory(int count, int currentStoreID, String... category) {
         if (cacheIsDirty || storeList == null) {
             storeList = new ArrayList<>();
             cacheIsDirty = false;
@@ -111,8 +110,11 @@ public class StoreRepository implements StoreDataSource {
                     .toObservable()
                     .flatMap(Observable::fromIterable)
                     .filter(store -> {
+                        if(!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())){
+                            return false;
+                        }
                         for (String item : category) {
-                            if (store.getCategory().equals(item))
+                            if (store.getCategory().equals(item) && store.getUid() != currentStoreID)
                                 return true;
                         }
                         return false;
@@ -132,8 +134,11 @@ public class StoreRepository implements StoreDataSource {
                 .toObservable()
                 .flatMap(Observable::fromIterable)
                 .filter(store -> {
+                    if(!TimeUtil.isBetweenCurrentTime(store.getOpenTime(), store.getCloseTime())){
+                        return false;
+                    }
                     for (String item : category) {
-                        if (store.getCategory().equals(item))
+                        if (store.getCategory().equals(item) && store.getUid() != currentStoreID)
                             return true;
                     }
                     return false;
@@ -147,6 +152,11 @@ public class StoreRepository implements StoreDataSource {
                 .flatMap(Observable::fromIterable)
                 .take(count)
                 .toList();
+    }
+
+    @Override
+    public Single<Store> getStoreDetail(int storeID) {
+        return storeRemoteDataSource.getStoreDetail(storeID);
     }
 
     @Override

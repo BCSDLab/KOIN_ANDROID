@@ -12,7 +12,9 @@ public interface StoreDataSource {
 
     Single<List<Store>> getStoreListByName(String name);
 
-    Single<List<Store>> getRandomStoreListByCategory(int count, String... category);
+    Single<List<Store>> getRandomStoreListByCategory(int count, int currentStoreID, String... category);
+
+    Single<Store> getStoreDetail(int storeID);
 
     void refresh();
 }

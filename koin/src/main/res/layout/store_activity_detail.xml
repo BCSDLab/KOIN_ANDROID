@@ -28,7 +28,7 @@
                 app:leftButtonWidth="14dp"
                 app:rightButtonHeight="18dp"
                 app:rightButtonWidth="12dp"
-                app:titleText="상점" />
+                app:titleText="주변상점" />
 
         </LinearLayout>
 
@@ -43,62 +43,18 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="120dp"
                 android:background="@color/white">
 
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.044"
+                    android:id="@+id/guideline_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.044" />
-
-
+                
                 <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.186"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.531" />
-
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.531"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.531" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.683"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.683" />
-
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.147"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.147" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.813"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.86" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.622"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.622" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_vertical_0.953"
+                    android:id="@+id/guideline_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -124,7 +80,7 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     app:fontName="Custom5"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="상점명" />
 
@@ -140,7 +96,7 @@
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
 
                 <TextView
@@ -169,7 +125,7 @@
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_const_phone_num" />
 
                 <TextView
@@ -199,7 +155,7 @@
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_const_time_textview" />
 
                 <TextView
@@ -232,7 +188,7 @@
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_address_textview" />
 
                 <TextView
@@ -266,7 +222,7 @@
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_deliver_textview" />
 
 
@@ -302,7 +258,7 @@
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:fontName="Custom6"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
 
                 <TextView
@@ -340,53 +296,15 @@
                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_etc_textview" />
 
-                <LinearLayout
-                    android:id="@+id/store_detail_call_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/button_rect_primary"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingTop="7dp"
-                    app:layout_constrainedHeight="true"
-                    app:layout_constrainedWidth="true"
-                    android:paddingEnd="16dp"
-                    android:paddingBottom="7dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintHorizontal_bias="0"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.683"
-                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_phone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="6sp"
-                        android:text="전화하기"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        app:fontName="Custom6" />
-                </LinearLayout>
-
                 <FrameLayout
                     android:id="@+id/border_frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="31dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/store_detail_call_button">
+                    app:layout_goneMarginTop="72dp"
+                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -413,8 +331,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="11dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="24dp"
                     android:background="@color/background"
                     android:clipToPadding="false"
                     android:paddingBottom="12dp"
@@ -422,18 +339,57 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/store_detail_recyclerview"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="12dp"
-                    android:background="@color/background"
                     android:clipToPadding="false"
                     android:paddingBottom="12dp"
+                    tools:listitem="@layout/store_detail_menu_list_item"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline_end"
                     app:layout_constraintTop_toBottomOf="@+id/store_detail_flyer_recyclerview" />
 
+                <TextView
+                    android:id="@+id/how_about_here_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/store_detail_recyclerview"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    android:textColor="@color/black"
+                    android:text="@string/store_how_about_here"
+                    />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/store_random_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16.5dp"
+                    tools:listitem="@layout/store_list_item"
+                    android:clipToPadding="false"
+                    app:layout_constraintTop_toBottomOf="@id/how_about_here_text_view"
+                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                    app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/store_detail_call_button"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="48dp"
+            android:src="@drawable/basic_phone_outline"
+            android:backgroundTint="@color/colorPrimary"
+            app:borderWidth="0dp"
+            android:scaleType="center"
+            app:tint="@color/white"
+            android:layout_width="56dp"
+            android:layout_height="56dp"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
