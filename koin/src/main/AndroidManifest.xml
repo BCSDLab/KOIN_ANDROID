@@ -219,7 +219,7 @@
         <activity
             android:name=".ui.store.StoreFlyerViewActivity"
             android:label="코인 커뮤니티"
-            android:theme="@style/Theme.AppCompat.Translucent" />
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.search.SearchActivity"
             android:label="코인 커뮤니티"
