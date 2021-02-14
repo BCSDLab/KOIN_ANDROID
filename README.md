@@ -105,10 +105,17 @@ Koreatech Community Project (ver. Android)
     - Firebase Event 추가
       - 상점 진입 후 상점에 전화하는 시간 이벤트 추가
 
+- 3.0.2
+  - 상점 기능 추가
+      - 상점 검색
+      - 상점 상세화면에서 다른 상점 추천
+      - 카테고리 한번 더 클릭시 전체 상점 출력
+      - 상점 전화하기 버튼 디자인 변경
 
 ## Technology stack
   - Java 8
   - Android SDK
   - Firebase
   - Retrofit2
+  - RxJava
   - ButterKnife

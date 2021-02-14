@@ -12,9 +12,6 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-
-import com.crashlytics.android.Crashlytics;
-
 import in.koreatech.koin.BuildConfig;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
@@ -27,7 +24,7 @@ import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.splash.presenter.SplashPresenter;
 import in.koreatech.koin.ui.login.LoginActivity;
-import io.fabric.sdk.android.Fabric;
+
 
 public class SplashActivity extends ActivityBase implements SplashContract.View, VersionDialogClickListener {
     private final String TAG = "SplashActivity";
@@ -59,8 +56,6 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
         currentVersionName = getVersionName();
         //TODO : 버전 확인, 업데이트
         //TODO : 자동로그인 방식 수정 필요 (토큰 업데이트)
-        if (!BuildConfig.IS_DEBUG)
-            Fabric.with(this, new Crashlytics());
     }
 
     @Override

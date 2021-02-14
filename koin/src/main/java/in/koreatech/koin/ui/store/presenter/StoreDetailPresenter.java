@@ -1,39 +1,62 @@
 package in.koreatech.koin.ui.store.presenter;
 
-import in.koreatech.koin.core.network.ApiCallback;
-import in.koreatech.koin.data.network.entity.Store;
-import in.koreatech.koin.data.network.interactor.StoreInteractor;
+import android.util.Log;
+
+import in.koreatech.koin.R;
+import in.koreatech.koin.data.StoreRepository;
+import in.koreatech.koin.ui.store.StoreDetailViewModel;
+import in.koreatech.koin.util.schedulers.SchedulerProvider;
+import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class StoreDetailPresenter {
 
     private final StoreDetailContract.View storeView;
+    private final StoreRepository storeRepository;
+    private final CompositeDisposable compositeDisposable;
+    private final SchedulerProvider schedulerProvider;
 
-    private final StoreInteractor storeInteractor;
-
-    public StoreDetailPresenter(StoreDetailContract.View storeView, StoreInteractor storeInteractor) {
+    public StoreDetailPresenter(StoreDetailContract.View storeView, StoreRepository storeRepository, SchedulerProvider schedulerProvider) {
         this.storeView = storeView;
-        this.storeInteractor = storeInteractor;
+        this.schedulerProvider = schedulerProvider;
+        this.storeRepository = storeRepository;
+        compositeDisposable = new CompositeDisposable();
     }
 
-    private final ApiCallback apiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            Store store = (Store) object;
-            storeView.onStoreDataReceived(store);
-            storeView.hideLoading();
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            storeView.showMessage("상점 정보를 불러오지 못했습니다.");
-            storeView.hideLoading();
-        }
-    };
-
-
-    public void getStore(int id) {
+    public void getStore(int storeID) {
         storeView.showLoading();
-        storeInteractor.readStore(id, apiCallback);
+        compositeDisposable.add(
+                storeRepository.getStoreDetail(storeID)
+                        .doFinally(storeView::hideLoading)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(storeView::onStoreDataReceived,
+                                throwable -> storeView.showMessage(R.string.error_network))
+        );
     }
 
+
+    public void start(int storeID, int categoryItemCount, int currentStoreID, String... category) {
+        storeView.showLoading();
+        compositeDisposable.add(
+                Single.zip(
+                        storeRepository.getStoreDetail(storeID),
+                        storeRepository.getRandomStoreListByCategory(categoryItemCount, currentStoreID, category),
+                        StoreDetailViewModel::new
+                ).doFinally(storeView::hideLoading)
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(storeDetailViewModel -> {
+                                    storeView.onStoreDataReceived(storeDetailViewModel.getStore());
+                                    storeView.onRandomStoreListReceived(storeDetailViewModel.getRandomStoreList());
+                                },
+                                throwable -> {
+                                    Log.e("StoreDetailPresenter", "error: ", throwable);
+                                    storeView.showMessage(R.string.error_network);
+                                }));
+    }
+
+    public void unSubscribe() {
+        compositeDisposable.dispose();
+    }
 }
