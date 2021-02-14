@@ -4,19 +4,16 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven {
-            url 'https://maven.fabric.io/public'
+            url 'https://naver.jfrog.io/artifactory/maven/'
         }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-        classpath 'com.google.gms:google-services:3.2.1'
-        classpath 'com.google.firebase:firebase-plugins:1.1.5'
-        classpath 'io.fabric.tools:gradle:1.29.0'
+        classpath 'com.android.tools.build:gradle:4.1.2'
+        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
     }
 
     ext {
@@ -77,7 +74,7 @@ allprojects {
         google()
         jcenter()
         maven {
-            url 'https://navercorp.bintray.com/maps'
+            url 'https://naver.jfrog.io/artifactory/maven/'
         }
         maven { url "https://jitpack.io" }
     }
