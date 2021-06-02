@@ -112,6 +112,11 @@ Koreatech Community Project (ver. Android)
       - 카테고리 한번 더 클릭시 전체 상점 출력
       - 상점 전화하기 버튼 디자인 변경
 
+- 3.0.3
+  - 원룸 도어락 표시 버그 수정
+  - Target SDK 30 업데이트
+  - Read & Write Permission 제거
+
 ## Technology stack
   - Java 8
   - Android SDK
