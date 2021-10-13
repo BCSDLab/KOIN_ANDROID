@@ -193,6 +193,7 @@
         <activity
             android:name=".ui.land.LandActivity"
             android:label="코인 커뮤니티"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.land.LandDetailActivity"

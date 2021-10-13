@@ -35,53 +35,87 @@
                 android:layout_marginTop="56dp"
                 android:orientation="vertical">
 
-                <androidx.core.widget.NestedScrollView
+                <in.koreatech.koin.core.stickysrcollview.StickyNestedScrollView
+                    android:id="@+id/sticky_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
-                    app:layout_constrainedHeight="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0">
+                    android:fillViewport="true"
+                    app:stickyHeader="@+id/search_view_container">
 
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/land_layout"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/land_recyclerlayout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="88dp"
-
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent" />
-                        <!--app:layout_constraintHorizontal_bias="0.5"-->
                         <LinearLayout
                             android:id="@+id/activity_land_navermap"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="300dp"
-                            android:layout_marginBottom="8dp"
-                            android:nestedScrollingEnabled="false"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toTopOf="@+id/land_recyclerlayout"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"></LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.core.widget.NestedScrollView>
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <LinearLayout
+                            android:id="@+id/search_view_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/search_view_inside_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:background="@drawable/bg_white5_blue1_border_rectangle"
+                                android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/search_edit_text"
+                                android:layout_width="0dp"
+                                android:layout_height="44dp"
+                                android:layout_marginStart="13dp"
+                                android:hint="@string/search"
+                                android:layout_weight="1"
+                                android:background="@null" />
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_search" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/land_recyclerlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:overScrollMode="never"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+
+                    </LinearLayout>
+                </in.koreatech.koin.core.stickysrcollview.StickyNestedScrollView>
+
 
             </RelativeLayout>
         </RelativeLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
     <include layout="@layout/base_navigation_drawer_left" />
-
 
 </androidx.drawerlayout.widget.DrawerLayout>

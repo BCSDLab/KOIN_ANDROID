@@ -3,7 +3,15 @@ package in.koreatech.koin.ui.land;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,14 +25,15 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.core.stickysrcollview.StickyNestedScrollView;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.network.entity.BokdukRoom;
 import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
@@ -38,14 +47,17 @@ import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
  */
 public class LandActivity extends KoinNavigationDrawerActivity implements LandContract.View, OnMapReadyCallback {
     private static final String TAG = "LandActivity";
-    HashMap<Marker, Integer> markerMap = new HashMap();
     private Context context;
     private LandPresenter landPresenter;
     private ArrayList<BokdukRoom> landArrayList;
     private RecyclerView landRecyclerView;
+    private EditText searchEditText;
+    private LinearLayout searchLayout;
+    private LinearLayout searchInsideLayout;
     private GridLayoutManager landGridLayoutManager;
     private LandRecyclerAdapter landRecyclerAdapter;
     private NaverMap naverMap;
+    private Marker[] marker;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,17 +66,61 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         ButterKnife.bind(this);
         context = this;
         init();
+        landPresenter.getLandList();
     }
 
     void init() {
         landArrayList = new ArrayList<>();
         landRecyclerView = findViewById(R.id.land_recyclerlayout);
-        landGridLayoutManager = new GridLayoutManager(this, 2);
+        searchEditText = findViewById(R.id.search_edit_text);
+        landGridLayoutManager = new GridLayoutManager(this, 1);
         landRecyclerView.setLayoutManager(landGridLayoutManager);
-        landRecyclerView.setNestedScrollingEnabled(false);
-        landRecyclerView.setHasFixedSize(false);
         setPresenter(new LandPresenter(this, new BokdukRestInteractor()));
+        searchLayout = findViewById(R.id.search_view_container);
+        searchInsideLayout = findViewById(R.id.search_view_inside_container);
+        scrollToSearchView();
+        searchInsideLayout.setOnClickListener(v -> searchLayout.performClick());
+        initSearchLayout();
+        initLandRecyclerViewPadding();
         naverMapSetting();
+    }
+
+    private void initLandRecyclerViewPadding() {
+        StickyNestedScrollView scrollView = findViewById(R.id.sticky_scroll_view);
+        scrollView.post(() -> {
+            int paddingSize = scrollView.getHeight() - searchLayout.getHeight();
+            landRecyclerView.setMinimumHeight(paddingSize);
+        });
+    }
+
+
+    private void scrollToSearchView() {
+        StickyNestedScrollView stickyScrollView = findViewById(R.id.sticky_scroll_view);
+        searchLayout.setOnClickListener(v -> runOnUiThread(() -> stickyScrollView.scrollTo(0, searchLayout.getTop())));
+    }
+
+    private void initSearchLayout() {
+        searchEditText.setOnClickListener(v -> searchLayout.performClick());
+        searchEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                searchLayout.performClick();
+            }
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                landPresenter.getLandList(s.toString());
+            }
+        });
     }
 
     /**
@@ -96,14 +152,6 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         }
     }
 
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        landPresenter.getLandList();
-
-    }
-
     @Override
     public void setPresenter(LandPresenter presenter) {
         this.landPresenter = presenter;
@@ -121,7 +169,6 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
         landArrayList.addAll(landList);
         updateUserInterface();
         makeNavermapMarker(landArrayList);
-
     }
 
     /**
@@ -130,7 +177,8 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
      * @param landList 복덕방의 위도, 경도값을 가진 데이터
      */
     public void makeNavermapMarker(ArrayList<BokdukRoom> landList) {
-        Marker[] marker = new Marker[landList.size()];
+        removeMarker();
+        marker = new Marker[landList.size()];
         for (int i = 0; i < landList.size(); i++) {
             marker[i] = new Marker();
 
@@ -139,19 +187,45 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
             if (latitude == null || langitute == null) {
                 continue;
             }
+            marker[i].setIcon(OverlayImage.fromResource(R.drawable.ic_marker_normal));
             marker[i].setPosition(new LatLng(latitude, langitute));
             marker[i].setMap(naverMap);
-            marker[i].setWidth(44);
-            marker[i].setHeight(46);
+            marker[i].setWidth(dpToPx(20));
+            marker[i].setHeight(dpToPx(26));
             marker[i].setTag(Integer.toString(i));
             marker[i].setOnClickListener(overlay -> {
                 Marker clickedMarker = (Marker) overlay;
                 String index = (String) clickedMarker.getTag();
-                if (index != null)
-                    goToLandDetailByIndex(Integer.parseInt(index));
+                if (index != null) {
+                    selectMarker(marker, Integer.parseInt(index));
+                    selectList(Integer.parseInt(index));
+                }
                 return true;
             });
         }
+    }
+
+    private void removeMarker() {
+        if (marker != null) {
+            for (Marker currentMarker : marker) {
+                currentMarker.setMap(null);
+            }
+        }
+    }
+
+    private void selectMarker(Marker[] markers, int selectIndex) {
+        for (int i = 0; i < markers.length; i++) {
+            if (i == selectIndex) {
+                markers[i].setIcon(OverlayImage.fromResource(R.drawable.ic_marker_selected));
+                continue;
+            }
+            markers[i].setIcon(OverlayImage.fromResource(R.drawable.ic_marker_normal));
+        }
+    }
+
+    private void selectList(int index) {
+        if (landRecyclerAdapter == null) return;
+        landRecyclerAdapter.select(index);
     }
 
     /**
@@ -200,8 +274,11 @@ public class LandActivity extends KoinNavigationDrawerActivity implements LandCo
 
         this.naverMap = naverMap;
         landPresenter.getLandList();
-
     }
 
+    private int dpToPx(int dp) {
+        DisplayMetrics dm = new DisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
+    }
 
 }
