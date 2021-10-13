@@ -85,6 +85,9 @@ dependencies {
     api project.okhttp
     api project.okhttpLogging
 
+    /* Dependency - sticky scroll view */
+    api project.stickyScrollView
+
     api 'androidx.constraintlayout:constraintlayout:1.1.3'
 
 

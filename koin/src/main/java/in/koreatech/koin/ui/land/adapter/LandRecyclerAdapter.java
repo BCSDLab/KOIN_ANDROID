@@ -6,13 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +30,7 @@ import in.koreatech.koin.ui.land.LandDetailActivity;
 public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapter.ViewHolder> {
 
     private ArrayList<BokdukRoom> landArrayList; //학교 앞 원룸 List
+    private ArrayList<Boolean> selectedArrayList;
     private Context context;
 
     /**
@@ -34,16 +39,35 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
      * @param landArrayList api로 받아온 복덕방배열
      * @param context       현재 화면상태
      */
-    public LandRecyclerAdapter(ArrayList landArrayList, Context context) {
+    public LandRecyclerAdapter(ArrayList<BokdukRoom> landArrayList, Context context) {
         this.landArrayList = new ArrayList<>();
+        int size = landArrayList.size();
+        this.selectedArrayList = new ArrayList<>(createPrefilledList(size, Boolean.FALSE));
         this.landArrayList.addAll(landArrayList);
+        Collections.fill(this.selectedArrayList, Boolean.FALSE);
         this.context = context;
         Log.e("landArrayList size : ", Integer.toString(landArrayList.size()));
+    }
 
+    public void select(int index) {
+        if (index >= selectedArrayList.size()) return;
+        Collections.fill(this.selectedArrayList, Boolean.FALSE);
+        selectedArrayList.set(index, Boolean.TRUE);
+        notifyDataSetChanged();
+    }
+
+    public <T> List<T> createPrefilledList(int size, T item) {
+        ArrayList<T> list = new ArrayList<T>(size);
+        for (int i = 0; i < size; i++) {
+            list.add(item);
+        }
+        return list;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View view; //onBindViewHolder 함수에서 아이템의 클릭리스너를 달기위한 view
+        @BindView(R.id.container)
+        LinearLayout container;  //원룸의 이름을 표시할 TextView
         @BindView(R.id.land_name_textview)
         TextView textViewLandName;  //원룸의 이름을 표시할 TextView
         @BindView(R.id.month_fee_textview)
@@ -94,15 +118,14 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
         return new LandRecyclerAdapter.ViewHolder(itemView);
     }
 
-    /**
-     * ViewHolder에 들어갈 데이터를 연결해주는 함수
-     *
-     * @param holder   뷰홀더
-     * @param position 아이템을 선택했을때 위치
-     */
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setIsRecyclable(false);
+        if (selectedArrayList.size() > position && selectedArrayList.get(position)) {
+            holder.container.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_rect_accent));
+        } else {
+            holder.container.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_rect_blue1));
+        }
         holder.onBind(landArrayList.get(position));
         BokdukRoom land = landArrayList.get(position);
         holder.view.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +136,7 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, LandDetailActivity.class);
-                if (position != RecyclerView.NO_POSITION) {
+                if (holder.getAdapterPosition() != RecyclerView.NO_POSITION) {
                     intent.putExtra("Land_ID", land.getId());
                     intent.putExtra("Land_latitude", land.getLatitude());
                     intent.putExtra("Land_longitude", land.getLongitude());
@@ -125,9 +148,7 @@ public class LandRecyclerAdapter extends RecyclerView.Adapter<LandRecyclerAdapte
             }
         });
 
-
     }
-
 
     @Override
     public int getItemCount() {
