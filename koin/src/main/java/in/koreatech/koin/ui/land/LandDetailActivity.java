@@ -3,7 +3,9 @@ package in.koreatech.koin.ui.land;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +22,7 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.NaverMapOptions;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -200,9 +203,16 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
             return;
         } else
             marker.setPosition(new LatLng(landLatitude, landLongitude));
+
+        marker.setIcon(OverlayImage.fromResource(R.drawable.ic_marker_selected));
         marker.setMap(naverMap);
-        marker.setWidth(44);
-        marker.setHeight(46);
+        marker.setWidth(dpToPx(20));
+        marker.setHeight(dpToPx(26));
+    }
+
+    private int dpToPx(int dp) {
+        DisplayMetrics dm = new DisplayMetrics();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, dm);
     }
 
     @OnClick(R.id.koin_base_app_bar_dark)

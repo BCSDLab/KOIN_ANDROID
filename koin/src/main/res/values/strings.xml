@@ -164,4 +164,5 @@
     <string name="flyer_current_page_text">%d/%d</string>
     <string name="show_more_menu">메뉴 더보기</string>
     <string name="hide_menu">메뉴 접기</string>
+    <string name="search">검색</string>
 </resources>
