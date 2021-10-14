@@ -1,5 +1,7 @@
 package in.koreatech.koin.ui.land.presenter;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
 
 import in.koreatech.koin.core.network.ApiCallback;
@@ -44,7 +46,22 @@ public class LandPresenter {
     public void getLandList() {
         landList.clear();
         bokdukInteractor.readBokdukList(apiCallback);
+    }
 
+    public void getLandList(String name) {
+        if (landList.isEmpty()) return;
+
+        if (TextUtils.isEmpty(name)) {
+            landView.onLandListDataReceived(landList);
+            return;
+        }
+
+        ArrayList<BokdukRoom> filterLands = new ArrayList<>();
+        for (BokdukRoom room : landList) {
+            if (room.name.contains(name))
+                filterLands.add(room);
+        }
+        landView.onLandListDataReceived(filterLands);
     }
 
 }
