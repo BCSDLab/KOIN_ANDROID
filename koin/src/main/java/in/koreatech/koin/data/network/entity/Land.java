@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 public class Land {
-    @SerializedName("opt_electronic_door_lock")
+    @SerializedName("opt_electronic_door_locks")
     @Expose
     private boolean optElectronicDoorLock;
 
