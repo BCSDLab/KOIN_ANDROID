@@ -64,6 +64,10 @@ buildscript {
         def okhttp_version = "3.4.2"
         okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
         okhttpLogging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+        /* Dependency - sticky scroll view */
+        def sticky_scroll_view_version = "1.0.2"
+        stickyScrollView = "com.github.amarjain07:StickyScrollView:$sticky_scroll_view_version"
     }
 
 

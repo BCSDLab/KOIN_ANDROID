@@ -117,6 +117,9 @@ Koreatech Community Project (ver. Android)
   - Target SDK 30 업데이트
   - Read & Write Permission 제거
 
+- 3.0.4
+  - 복덕방 서비스 디자인 개선
+
 ## Technology stack
   - Java 8
   - Android SDK
