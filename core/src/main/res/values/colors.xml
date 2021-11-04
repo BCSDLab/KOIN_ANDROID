@@ -30,6 +30,8 @@
     <color name="white2">#dadada</color>
     <color name="white3">#f1f1f1</color>
     <color name="white4">#f6f6f6</color>
+    <color name="white5">#f6f8f9</color>
+    <color name="white6">#f9f9f9</color>
     <color name="white_alpha87">#dee3e3e3</color>
 
 
@@ -60,7 +62,6 @@
     <color name="green2">#2fc76e</color>
     <color name="green3">#4db297</color>
     <color name="green_alpha30">#4d4db297</color>
-    ​
     <color name="blue1">#d2dae2</color>
     <color name="blue2">#e0e5eb</color>
     <color name="blue3">#eaf3fc</color>
