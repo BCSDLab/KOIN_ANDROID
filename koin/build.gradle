@@ -1,8 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
 
-String applicationName = 'koin'
+def applicationName = 'koin'
 
 android {
     defaultConfig {
@@ -92,11 +95,10 @@ dependencies {
     })
     androidTestImplementation 'androidx.test:runner:1.2.0'
 
-
-    implementation(group: 'com.google.guava', name: 'guava', version: '24.1-jre') {
+    implementation(group: 'com.google.guava', name: 'guava', version: '27.0.1-android') {
         exclude group: 'com.google.guava', module: 'failureaccess'
     }
-
+    
     /* Dependency - glide */
     implementation project.glide
     annotationProcessor project.glideAnnotation
@@ -107,10 +109,14 @@ dependencies {
 
     //naver map
     implementation 'com.naver.maps:map-sdk:3.10.2'
+
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
     implementation 'com.github.irshulx:laser-native-editor:3.0.4'
     implementation 'com.github.duanhong169:colorpicker:1.1.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
+}
+repositories {
+    mavenCentral()
 }
