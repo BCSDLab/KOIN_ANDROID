@@ -76,15 +76,9 @@ android {
 }
 
 def getPassword() {
-    try {
-        def stringsFile = file("./src/main/res/values/keys.xml")
-        return new XmlParser().parse(stringsFile).string.find {
-            it.@name.equals 'koin_store_password'
-        }.text()
-    } catch (e) {
-        println(e)
-        return ""
-    }
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty('koin_store_password')
 }
 
 dependencies {
