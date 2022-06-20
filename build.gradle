@@ -73,6 +73,11 @@ buildscript {
         /* Dependency - KTX */
         def ktx_core_version = "1.8.0"
         androidXKtx = "androidx.core:core-ktx:$ktx_core_version"
+
+        /* Dependency - Hilt */
+        hilt_version = "2.38.1"
+        hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
+        hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
     }
 
     dependencies {
@@ -80,6 +85,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
     }
 }
 

@@ -80,11 +80,11 @@ dependencies {
 
     /* Dependency - glide */
     api project.glide
-    annotationProcessor project.glideAnnotation
+    kapt project.glideAnnotation
 
     /* Dependency - butterknife */
     api project.butterknife
-    annotationProcessor project.butterknifeAnnotation
+    kapt project.butterknifeAnnotation
 
     /* Dependency - okhttp */
     api project.okhttp
