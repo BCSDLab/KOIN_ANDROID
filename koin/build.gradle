@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'kotlin-kapt'
 }
 
 def applicationName = 'koin'
@@ -76,6 +77,10 @@ android {
             outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
         }
     }
+
+    buildFeatures {
+        dataBinding true
+    }
 }
 
 def getPassword() {
@@ -98,7 +103,7 @@ dependencies {
     implementation(group: 'com.google.guava', name: 'guava', version: '27.0.1-android') {
         exclude group: 'com.google.guava', module: 'failureaccess'
     }
-    
+
     /* Dependency - glide */
     implementation project.glide
     annotationProcessor project.glideAnnotation
