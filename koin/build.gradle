@@ -4,6 +4,7 @@ plugins {
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 def applicationName = 'koin'
@@ -106,11 +107,11 @@ dependencies {
 
     /* Dependency - glide */
     implementation project.glide
-    annotationProcessor project.glideAnnotation
+    kapt project.glideAnnotation
 
     /* Dependency - butterknife */
     implementation project.butterknife
-    annotationProcessor project.butterknifeAnnotation
+    kapt project.butterknifeAnnotation
 
     //naver map
     implementation 'com.naver.maps:map-sdk:3.10.2'
@@ -121,6 +122,10 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
+
+    implementation project.hiltAndroid
+    kapt project.hiltCompiler
+
 }
 repositories {
     mavenCentral()
