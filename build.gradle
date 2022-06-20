@@ -78,6 +78,10 @@ buildscript {
         hilt_version = "2.38.1"
         hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
         hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
+
+        /* Dependency - Coroutine */
+        def coroutine_version = "1.6.3"
+        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
     }
 
     dependencies {
