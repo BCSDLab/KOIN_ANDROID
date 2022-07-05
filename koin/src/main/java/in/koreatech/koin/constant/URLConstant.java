@@ -4,6 +4,8 @@ package in.koreatech.koin.constant;
  * KOIN API URL
  */
 public class URLConstant {
+    public static final String BASE_URL_PRODUCTION = "https://api.koreatech.in"; //release server
+    public static final String BASE_URL_STAGE = "https://api.koreatech.in"; //development server
 
     public static final String ADMIN = "admin/";
     public static final String VERSION = "versions";

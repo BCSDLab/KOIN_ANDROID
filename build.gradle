@@ -29,6 +29,12 @@ buildscript {
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
 
+        def activity_version = "1.4.0"
+        androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
+
+        def fragment_version = "1.4.1"
+        androidXFragmentKtx = "androidx.fragment:fragment-ktx:$fragment_version"
+
         /* Dependency - AndroidX Material */
         def android_x_material_version = "1.2.0"
         androidxMaterial = "com.google.android.material:material:$android_x_material_version"
@@ -40,7 +46,7 @@ buildscript {
         firebasePerformance = "com.google.firebase:firebase-perf:$firebase_version"
 
         /* Dependency - Retrofit2 */
-        def retrofit_version = "2.3.0"
+        def retrofit_version = "2.9.0"
         retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
         retrofitGsonConvert = "com.squareup.retrofit2:converter-gson:$retrofit_version"
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
@@ -82,6 +88,11 @@ buildscript {
         /* Dependency - Coroutine */
         def coroutine_version = "1.6.3"
         coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
+        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
+
+        /* Dependency - AndroidX Security */
+        def security_version = "1.1.0-alpha03"
+        androidXSecurity = "androidx.security:security-crypto:$security_version"
     }
 
     dependencies {

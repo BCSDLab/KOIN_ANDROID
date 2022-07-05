@@ -87,6 +87,11 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" />
+
+        <activity
+            android:name=".ui.login.LoginActivityNew"
+            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" />
+
         <activity
             android:name=".ui.signup.SignupActivity"
             android:theme="@style/KAPTheme.NoActionBar" />

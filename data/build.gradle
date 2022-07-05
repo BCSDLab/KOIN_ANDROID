@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -39,6 +41,21 @@ android {
 dependencies {
     implementation project.androidXKtx
     implementation project.coroutineAndroid
+
+    implementation project(':domain')
+
+    /* Dependency - okhttp */
+    implementation project.okhttp
+    implementation project.okhttpLogging
+
+    /* Dependency - Retrofit2 */
+    implementation project.retrofit
+    implementation project.retrofitGsonConvert
+
+    implementation project.hiltAndroid
+    kapt project.hiltCompiler
+
+    implementation project.androidXSecurity
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

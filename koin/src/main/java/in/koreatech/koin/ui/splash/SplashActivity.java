@@ -12,9 +12,13 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+
 import in.koreatech.koin.BuildConfig;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.activity.ActivityBase;
+import in.koreatech.koin.ui.login.contract.LoginContract;
 import in.koreatech.koin.ui.main.MainActivity;
 import in.koreatech.koin.ui.splash.presenter.SplashContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
@@ -24,6 +28,7 @@ import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.splash.presenter.SplashPresenter;
 import in.koreatech.koin.ui.login.LoginActivity;
+import kotlin.Unit;
 
 
 public class SplashActivity extends ActivityBase implements SplashContract.View, VersionDialogClickListener {
@@ -34,6 +39,10 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private FirebasePerformanceUtil firebasePerformanceUtil;
     private PackageInfo pakageInfo;
     private String currentVersionName;
+
+    private final ActivityResultLauncher<Unit> loginLauncher = registerForActivityResult(new LoginContract(), result -> {
+
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +101,7 @@ public class SplashActivity extends ActivityBase implements SplashContract.View,
     private final Runnable mLoginActivityRunnable = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(context, LoginActivity.class));
+            loginLauncher.launch(Unit.INSTANCE);
             overridePendingTransition(R.anim.fade, R.anim.hold);
             finish();
             firebasePerformanceUtil.stop();

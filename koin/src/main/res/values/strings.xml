@@ -45,6 +45,9 @@
     <string name="version_check_failed">버전 정보를 불러오지 못하였습니다. 네트워크 연결을 확인해주세요.</string>
     <string name="token_out_dated">인증 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
 
+    <!-- 로그인 -->
+    <string name="login_required_field_not_filled">아이디와 비밀번호를 입력해주세요</string>
+
 
     <!-- URL -->
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
