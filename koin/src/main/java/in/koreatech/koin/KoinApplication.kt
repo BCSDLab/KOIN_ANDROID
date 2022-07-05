@@ -6,8 +6,13 @@ import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import `in`.koreatech.koin.util.font_change.Typekit
 import android.app.Application
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class KoinApplication : Application() {
+
     override fun onCreate() {
         super.onCreate()
         Typekit.getInstance()

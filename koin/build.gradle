@@ -93,6 +93,8 @@ def getPassword() {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
+    implementation project(':data')
+    implementation project(':domain')
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
