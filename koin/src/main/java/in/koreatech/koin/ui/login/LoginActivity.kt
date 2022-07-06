@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class LoginActivityNew : DataBindingActivity<ActivityLoginBinding>() {
+class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
     override val layoutId: Int
         get() = R.layout.activity_login
 

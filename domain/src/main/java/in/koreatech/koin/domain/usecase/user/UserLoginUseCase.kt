@@ -13,12 +13,10 @@ class UserLoginUseCase @Inject constructor(
         portalAccount: String,
         password: String
     ): Result<Unit> {
-        return try {
+        return kotlin.runCatching {
             val authToken = userRepository.getToken(portalAccount, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
             Result.success(Unit)
-        } catch (t: Throwable) {
-            Result.failure(t)
         }
     }
 }
