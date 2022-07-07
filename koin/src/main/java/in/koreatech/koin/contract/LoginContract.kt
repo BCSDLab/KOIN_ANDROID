@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.ui.login.contract
+package `in`.koreatech.koin.contract
 
 import `in`.koreatech.koin.ui.login.LoginActivity
 import android.content.Context
