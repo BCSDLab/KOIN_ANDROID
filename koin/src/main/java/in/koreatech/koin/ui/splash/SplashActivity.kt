@@ -6,7 +6,7 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.network.RetrofitManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
-import `in`.koreatech.koin.domain.model.version.VersionUpdatePriority
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.main.MainActivity
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
@@ -27,7 +27,9 @@ import kotlinx.coroutines.yield
 @AndroidEntryPoint
 class SplashActivity : ActivityBase() {
 
-    private lateinit var firebasePerformanceUtil: FirebasePerformanceUtil
+    private val firebasePerformanceUtil by lazy {
+        FirebasePerformanceUtil("koin_start")
+    }
 
     private val splashViewModel by viewModels<SplashViewModel>()
     private val createdTime = System.currentTimeMillis()
@@ -42,7 +44,11 @@ class SplashActivity : ActivityBase() {
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
-        init()
+
+        firebasePerformanceUtil.start()
+        RetrofitManager.getInstance().init()
+        UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
+
         initViewModel()
         splashViewModel.checkUpdate()
     }
@@ -92,20 +98,13 @@ class SplashActivity : ActivityBase() {
         }
     }
 
-    fun init() {
-        this.firebasePerformanceUtil = FirebasePerformanceUtil("koin_start")
-        this.firebasePerformanceUtil.start()
-        RetrofitManager.getInstance().init()
-        UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
-    }
-
     private fun createVersionUpdateDialog(
         currentVersion: String,
         latestVersion: String,
         versionUpdatePriority: VersionUpdatePriority
     ) {
         val dialog =
-            VersionUpdateDialogNew(versionUpdatePriority, currentVersion, latestVersion)
+            VersionUpdateDialog(versionUpdatePriority, currentVersion, latestVersion)
         dialog.setDialogOptionClickListener(
             onLaterButtonClicked = {
                 splashViewModel.checkToken()

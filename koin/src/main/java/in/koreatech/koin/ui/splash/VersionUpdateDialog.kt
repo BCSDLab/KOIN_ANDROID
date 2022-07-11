@@ -2,21 +2,18 @@ package `in`.koreatech.koin.ui.splash
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.VersionUpdateDialogBinding
-import `in`.koreatech.koin.domain.model.version.VersionUpdatePriority
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.util.ext.windowHeight
 import `in`.koreatech.koin.util.ext.windowWidth
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.DialogFragment
 
-class VersionUpdateDialogNew(
+class VersionUpdateDialog(
     private val versionUpdatePriority: VersionUpdatePriority,
     private val currentVersion: String,
     private val latestVersion: String
