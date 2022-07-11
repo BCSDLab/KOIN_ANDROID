@@ -39,7 +39,7 @@ class SplashViewModel @Inject constructor(
 
     fun checkToken() {
         viewModelScope.launch {
-            isTokenSavedInDeviceUseCase().also {
+            _tokenIsSaved.value = isTokenSavedInDeviceUseCase().also {
                 if(it) _tokenIsValid.value = getUserInfoUseCase()
             }
         }
