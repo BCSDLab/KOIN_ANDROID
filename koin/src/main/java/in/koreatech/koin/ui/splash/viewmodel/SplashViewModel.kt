@@ -32,7 +32,6 @@ class SplashViewModel @Inject constructor(
 
     fun checkUpdate() {
         viewModelScope.launch {
-            delay(100)
             _updateCheckResult.value = getVersionInformationUseCase()
         }
     }

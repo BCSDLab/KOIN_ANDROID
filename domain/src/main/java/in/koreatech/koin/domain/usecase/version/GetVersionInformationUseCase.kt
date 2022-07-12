@@ -1,8 +1,8 @@
 package `in`.koreatech.koin.domain.usecase.version
 
 import `in`.koreatech.koin.domain.model.version.Version
-import `in`.koreatech.koin.domain.model.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.repository.VersionRepository
+import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import javax.inject.Inject
 
 class GetVersionInformationUseCase @Inject constructor(
