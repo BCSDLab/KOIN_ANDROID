@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.domain.model.version
+package `in`.koreatech.koin.domain.state.version
 
 sealed class VersionUpdatePriority {
     object High : VersionUpdatePriority()
