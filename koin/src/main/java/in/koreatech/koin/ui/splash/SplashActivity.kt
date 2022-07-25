@@ -60,25 +60,20 @@ class SplashActivity : ActivityBase() {
                     if (it.isSuccess) {
                         val (currentVersion, latestVersion, versionUpdatePriority) = it.getOrThrow()
                         when (versionUpdatePriority) {
-                            VersionUpdatePriority.High, VersionUpdatePriority.Low -> {
+                            VersionUpdatePriority.High, VersionUpdatePriority.Medium -> {
                                 createVersionUpdateDialog(
                                     currentVersion,
                                     latestVersion,
                                     versionUpdatePriority
                                 )
                             }
-                            VersionUpdatePriority.Medium, VersionUpdatePriority.None -> {
-                                checkToken()
-                            }
                         }
                     } else {
                         ToastUtil.getInstance().makeShort(R.string.version_check_failed)
-                        checkToken()
                     }
                 }
             } catch (t: Throwable) {
                 ToastUtil.getInstance().makeShort(R.string.version_check_failed)
-                checkToken()
             }
         }
 
