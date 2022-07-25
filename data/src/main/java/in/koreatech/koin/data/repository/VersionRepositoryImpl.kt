@@ -15,7 +15,6 @@ class VersionRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getLatestVersionFromRemote(): String {
-        //return versionRemoteDataSource.getAndroidAppVersion().version
-        return "3.1.0"
+        return versionRemoteDataSource.getAndroidAppVersion().version
     }
 }
