@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.data.response
+package `in`.koreatech.koin.data.response.user
 
 data class UserInfoEditResponse(
     val success: String,

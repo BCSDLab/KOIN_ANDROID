@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.data.response
+package `in`.koreatech.koin.data.response.user
 
 import com.google.gson.annotations.SerializedName
 

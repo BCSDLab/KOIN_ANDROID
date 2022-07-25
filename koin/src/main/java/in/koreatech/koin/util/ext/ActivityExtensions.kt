@@ -1,10 +1,17 @@
 package `in`.koreatech.koin.util.ext
 
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import android.app.Activity
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 
 inline val Activity.windowHeight: Int
@@ -42,3 +49,13 @@ inline val Activity.windowWidth: Int
             }
         }
     }
+
+fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwner, viewModel: T) {
+    viewModel.isLoading.observe(lifecycleOwner) {
+        if(it) {
+            showProgressDialog("로딩 중...")
+        } else {
+            hideProgressDialog()
+        }
+    }
+}
