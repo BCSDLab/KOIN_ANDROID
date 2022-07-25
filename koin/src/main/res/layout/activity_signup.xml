@@ -1,528 +1,532 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/signup_box"
-    tools:ignore="MissingPrefix"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.063"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.063" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/signup_box"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingPrefix">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.528"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.528" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.555"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.555" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.608"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.608" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.063"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.063" />
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.637"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.637" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.528"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.528" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.922"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.922" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.555"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.555" />
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.948"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.948" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.522"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.522" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.044"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.044" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.122"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.122" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.889"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.889" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.858"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.858" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.608"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.608" />
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.183"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.183" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.637"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.637" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.817"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.817" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.100"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.100" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.366"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.366" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.431"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.431" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.444"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.444" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.475"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.475" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.509"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.509" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.188"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.188" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.319"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.319" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.397"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.397" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.719"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.719" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.77"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.77" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.922"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.922" />
 
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.100"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.100" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.948"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.948" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.353"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.353" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.659"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.659" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.522"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.522" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.689"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.689" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.044"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.044" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_horizontal_0.789"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.789" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.122"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.122" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_0.111"
-        android:layout_width="1dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.111" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.889"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.889" />
 
-    <Button
-        android:id="@+id/signup_back_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/ic_black_back_arrow"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.100"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.100"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.063" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.858"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.858" />
 
-    <TextView
-        android:id="@+id/signup_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fontName="Bold"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="233dp"
-        android:text="회원가입"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.188" />
 
-    <LinearLayout
-        android:id="@+id/signup_id_linearlayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.353"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.319">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.183"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.183" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.817"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.817" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.100"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.366"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.366" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.431"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.431" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.444"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.444" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.475"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.475" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.509"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.509" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.188"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.188" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.319"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.319" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.397"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.397" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.719"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.719" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.77"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.77" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.100"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.353"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.353" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.659"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.659" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.689"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.689" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizontal_0.789"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.789" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_0.111"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.111" />
+
+        <Button
+            android:id="@+id/signup_back_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/ic_black_back_arrow"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.100"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.100"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.044"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.063" />
+
+        <TextView
+            android:id="@+id/signup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="233dp"
+            android:text="회원가입"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:fontName="Bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.188" />
+
+        <LinearLayout
+            android:id="@+id/signup_id_linearlayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.353"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.319">
+
+            <EditText
+                android:id="@+id/signup_edittext_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="KOREATECH 이메일"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/blue1"
+                android:textSize="15sp"
+                app:fontName="Regular" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/koreatech_email"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="15sp"
+                app:fontName="Regular" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/signup_id_divider_linearlayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blue1"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.366"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.366" />
 
         <EditText
-            android:id="@+id/signup_edittext_id"
+            android:id="@+id/signup_edittext_pw"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:fontName="Regular"
-            android:layout_weight="1"
+            android:layout_height="0dp"
             android:background="@null"
-            android:hint="KOREATECH 이메일"
-            android:imeOptions="actionNext"
-            android:inputType="text"
+            android:hint="비밀번호"
+            android:imeOptions="actionGo"
+            android:inputType="textPassword"
+            android:maxLength="18"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textColorHint="@color/blue1"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:textSize="15sp"
             app:fontName="Regular"
-            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.431"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.397" />
+
+        <LinearLayout
+            android:id="@+id/signup_password_divider_linearlayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blue1"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.444"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.444" />
+
+        <EditText
+            android:id="@+id/signup_edittext_pw_confirm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@null"
+            android:hint="비밀번호 확인"
+            android:imeOptions="actionGo"
+            android:inputType="textPassword"
+            android:maxLength="18"
             android:maxLines="1"
-            android:text="@string/koreatech_email"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="15sp" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/blue1"
+            android:textSize="15sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.509"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.475" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/signup_id_divider_linearlayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/blue1"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.366"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.366" />
-
-    <EditText
-        android:id="@+id/signup_edittext_pw"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:fontName="Regular"
-        android:background="@null"
-        android:hint="비밀번호"
-        android:imeOptions="actionGo"
-        android:inputType="textPassword"
-        android:maxLength="18"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textColorHint="@color/blue1"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.431"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.397" />
-
-    <LinearLayout
-        android:id="@+id/signup_password_divider_linearlayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/blue1"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.444"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.444" />
-
-    <EditText
-        android:id="@+id/signup_edittext_pw_confirm"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@null"
-        app:fontName="Regular"
-        android:hint="비밀번호 확인"
-        android:imeOptions="actionGo"
-        android:inputType="textPassword"
-        android:maxLength="18"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:textColorHint="@color/blue1"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.509"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.122"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.475" />
-
-    <LinearLayout
-        android:id="@+id/signup_password_confirm_divider_linearlayout"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/blue1"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_vertical_0.889"
-        app:layout_constraintTop_toTopOf="@id/guideline_horizontal_0.522" />
-
-    <TextView
-        android:id="@+id/signup_input_info"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:lineSpacingExtra="6sp"
-        app:fontName="Regular"
-        android:text="* 특수문자를 포함한 영어와 숫자 6~18 자리로 입력해주세요"
-        android:textColor="@color/colorAccent"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.555"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.858"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.528" />
-
-    <TextView
-        android:id="@+id/signup_textview_personal_info_terms"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:gravity="center_vertical"
-        app:fontName="Regular"
-        android:text="개인정보 이용약관"
-        android:textColor="@color/gray9"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.637"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toTopOf="@id/guideline_horizontal_0.608" />
-
-    <CheckBox
-        android:id="@+id/signup_check_box_personal_info_terms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="W,1:1"
-        android:layout_marginStart="125dp"
-        android:layout_marginEnd="8dp"
-        android:background="@drawable/checkbutton_round_squash_24dp"
-        android:button="@null"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.637"
-        app:layout_constraintEnd_toStartOf="@+id/singup_agree_textview"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.608"
-        app:layout_goneMarginEnd="8dp" />
-
-    <TextView
-        android:id="@+id/singup_agree_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:fontName="Regular"
-        android:gravity="center"
-        android:text="동의"
-        android:textColor="@color/gray9"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.637"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.608" />
-
-    <TextView
-        android:id="@+id/signup_textview_signup_terms"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_vertical"
-        app:fontName="Regular"
-        android:text="코인 이용약관"
-        android:textColor="@color/gray9"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.689"
-        app:layout_constraintEnd_toStartOf="@+id/signup_check_box_signup_terms"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.659" />
-
-    <CheckBox
-        android:id="@+id/signup_check_box_signup_terms"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintDimensionRatio="W,1:1"
-        android:background="@drawable/checkbutton_round_squash_24dp"
-        android:button="@null"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.689"
-        app:layout_constraintEnd_toStartOf="@+id/singup_agree_two_textview"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.659" />
-
-    <TextView
-        android:id="@+id/singup_agree_two_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:fontName="Regular"
-        android:gravity="center"
-        android:text="동의"
-        android:textColor="@color/gray9"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.689"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
-        app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.659" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/signup_send_verification_button"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/colorAccent"
-        android:gravity="center"
-        android:text="이메일 인증하기"
-        android:textColor="@color/white"
-        app:fontName="Regular"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.789"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.719"
-        app:layout_constraintVertical_bias="0.0" />
-
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.948"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.817"
-        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.922"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.183">
+        <LinearLayout
+            android:id="@+id/signup_password_confirm_divider_linearlayout"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blue1"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_vertical_0.889"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal_0.522" />
 
         <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="5sp"
-            android:text="Copyright @ "
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:fontName="Custom4" />
+            android:id="@+id/signup_input_info"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:lineSpacingExtra="6sp"
+            android:text="* 특수문자를 포함한 영어와 숫자 6~18 자리로 입력해주세요"
+            android:textColor="@color/colorAccent"
+            android:textSize="11sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.555"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.858"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.528" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/signup_text_view_privacy_terms"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="5sp"
-            android:text="BCSD Lab "
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:fontName="Custom3" />
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="개인정보 이용약관"
+            android:textColor="@color/gray9"
+            android:textSize="13sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.637"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toTopOf="@id/guideline_horizontal_0.608" />
+
+        <CheckBox
+            android:id="@+id/signup_check_box_privacy_terms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/checkbutton_round_squash_24dp"
+            android:button="@null"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.637"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toStartOf="@+id/signup_textview_agree_privacy_terms"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.608"
+            app:layout_goneMarginEnd="8dp" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/signup_textview_agree_privacy_terms"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="5sp"
-            android:text="All rights reserved."
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:fontName="Custom4" />
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="동의"
+            android:textColor="@color/gray9"
+            android:textSize="13sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.637"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.608" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/signup_text_view_koin_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
+            android:text="코인 이용약관"
+            android:textColor="@color/gray9"
+            android:textSize="13sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.689"
+            app:layout_constraintEnd_toStartOf="@+id/signup_check_box_koin_terms"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.659" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <CheckBox
+            android:id="@+id/signup_check_box_koin_terms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/checkbutton_round_squash_24dp"
+            android:button="@null"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.689"
+            app:layout_constraintDimensionRatio="W,1:1"
+            app:layout_constraintEnd_toStartOf="@+id/signup_textview_agree_koin_terms"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.659" />
+
+        <TextView
+            android:id="@+id/signup_textview_agree_koin_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="동의"
+            android:textColor="@color/gray9"
+            android:textSize="13sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.689"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.659" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/signup_send_verification_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="이메일 인증하기"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.789"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.719"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal_0.948"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.817"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.183"
+            app:layout_constraintTop_toBottomOf="@id/guideline_horizontal_0.922">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="5sp"
+                android:text="Copyright @ "
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:fontName="Custom4" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="5sp"
+                android:text="BCSD Lab "
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:fontName="Custom3" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="5sp"
+                android:text="All rights reserved."
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:fontName="Custom4" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

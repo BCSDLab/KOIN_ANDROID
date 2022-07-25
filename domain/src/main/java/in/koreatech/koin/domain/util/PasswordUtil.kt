@@ -2,11 +2,11 @@ package `in`.koreatech.koin.domain.util
 
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.util.regex.Pattern
 
-object HashUtil {
-    fun generateSHA256(message: String): String {
-        return HashUtil.hashString(message, "SHA-256")
-    }
+object PasswordUtil {
+    private const val FILTER_PASSWORD =
+        "^(?=.*[a-zA-Z])(?=.*[`₩~!@#$%<>^&*()\\-=+_?<>:;\"',.{}|[]/\\\\]])(?=.*[0-9]).{6,18}$"
 
     private fun hashString(message: String, algorithm: String): String {
         try {
@@ -26,5 +26,16 @@ object HashUtil {
             ex.printStackTrace()
         }
         return ""
+    }
+
+    fun generateSHA256(message: String): String {
+        return PasswordUtil.hashString(message, "SHA-256")
+    }
+
+    //비밀번호가 사용 가능한지 체크하는 메서드, 특수문자 1개 이상, 6~18
+    fun isPasswordValidate(password: String): Boolean {
+        val matcher =
+            Pattern.compile(FILTER_PASSWORD).matcher(password)
+        return matcher.matches()
     }
 }
