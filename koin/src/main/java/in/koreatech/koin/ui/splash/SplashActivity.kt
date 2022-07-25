@@ -50,6 +50,10 @@ class SplashActivity : ActivityBase() {
         UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
 
         initViewModel()
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
         splashViewModel.checkUpdate()
     }
 
@@ -100,15 +104,6 @@ class SplashActivity : ActivityBase() {
     ) {
         val dialog =
             VersionUpdateDialog(versionUpdatePriority, currentVersion, latestVersion)
-        dialog.setDialogOptionClickListener(
-            onLaterButtonClicked = {
-                splashViewModel.checkToken()
-            },
-            onUpdateButtonClicked = {
-                gotoPlayStore()
-                finish()
-            }
-        )
         dialog.show(supportFragmentManager, "Dialog")
 
     }
@@ -132,25 +127,6 @@ class SplashActivity : ActivityBase() {
             overridePendingTransition(R.anim.fade, R.anim.hold)
             finish()
             firebasePerformanceUtil.stop()
-        }
-    }
-
-    private fun gotoPlayStore() {
-        val appPackageName: String = packageName
-        try {
-            val appStoreIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
-            appStoreIntent.setPackage("com.android.vending")
-            ContextCompat.startActivity(this, appStoreIntent, null)
-        } catch (exception: ActivityNotFoundException) {
-            ContextCompat.startActivity(
-                this,
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
-                ),
-                null
-            )
         }
     }
 }

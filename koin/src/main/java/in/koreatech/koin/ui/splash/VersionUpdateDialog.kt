@@ -3,24 +3,30 @@ package `in`.koreatech.koin.ui.splash
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.VersionUpdateDialogBinding
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
+import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.ext.windowHeight
 import `in`.koreatech.koin.util.ext.windowWidth
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 
 class VersionUpdateDialog(
     private val versionUpdatePriority: VersionUpdatePriority,
     private val currentVersion: String,
-    private val latestVersion: String
+    private val latestVersion: String,
 ) : DialogFragment() {
     private lateinit var binding: VersionUpdateDialogBinding
 
-    var dialogOptionClickListener: DialogOptionClickListener? = null
+    private val viewModel by activityViewModels<SplashViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +53,11 @@ class VersionUpdateDialog(
                 requireActivity().getString(R.string.version_update_update_version, latestVersion)
 
             versionUpdateDialogLaterTextview.setOnClickListener {
-                dialogOptionClickListener?.onLaterButtonClicked()
+                viewModel.checkToken()
                 dismiss()
             }
             versionUpdateDialogUpdateTextview.setOnClickListener {
-                dialogOptionClickListener?.onUpdateButtonClicked()
+                gotoPlayStore()
             }
         }
 
@@ -67,24 +73,23 @@ class VersionUpdateDialog(
         dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
-    inline fun setDialogOptionClickListener(
-        crossinline onLaterButtonClicked: () -> Unit,
-        crossinline onUpdateButtonClicked: () -> Unit
-    ) {
-        dialogOptionClickListener = object : DialogOptionClickListener {
-            override fun onLaterButtonClicked() {
-                onLaterButtonClicked()
-            }
 
-            override fun onUpdateButtonClicked() {
-                onUpdateButtonClicked()
-            }
-
+    private fun gotoPlayStore() {
+        val appPackageName: String = requireContext().packageName
+        try {
+            val appStoreIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+            appStoreIntent.setPackage("com.android.vending")
+            ContextCompat.startActivity(requireContext(), appStoreIntent, null)
+        } catch (exception: ActivityNotFoundException) {
+            ContextCompat.startActivity(
+                requireContext(),
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName")
+                ),
+                null
+            )
         }
-    }
-
-    interface DialogOptionClickListener {
-        fun onLaterButtonClicked()
-        fun onUpdateButtonClicked()
     }
 }
