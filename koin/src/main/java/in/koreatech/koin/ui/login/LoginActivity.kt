@@ -36,11 +36,15 @@ class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
         withLoading(this@LoginActivity, this)
         observeLiveData(loginResult) {
             if(it?.isSuccess == true) {
-                SnackbarUtil.makeShortSnackbar(binding.root, "로그인 성공")
+                gotoMainActivity()
             } else {
                 SnackbarUtil.makeShortSnackbar(binding.root, it?.exceptionOrNull()?.message ?: "Unknown exception")
             }
         }
+    }
+
+    private fun gotoMainActivity() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
     }
 
     private fun initView() = with(binding) {
