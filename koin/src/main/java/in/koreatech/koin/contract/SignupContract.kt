@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.contract
 
-import `in`.koreatech.koin.ui.signup.SignupActivityNew
+import `in`.koreatech.koin.ui.signup.SignupActivity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import androidx.activity.result.contract.ActivityResultContract
 
 class SignupContract: ActivityResultContract<String?, String?>() {
     override fun createIntent(context: Context, input: String?): Intent {
-        return Intent(context, SignupActivityNew::class.java).apply {
+        return Intent(context, SignupActivity::class.java).apply {
             putExtra(PORTAL_ACCOUNT, input)
         }
     }

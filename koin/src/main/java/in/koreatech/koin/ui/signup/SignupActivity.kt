@@ -7,11 +7,11 @@ import `in`.koreatech.koin.databinding.ActivitySignupBinding
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.signup.dialog.SignupKoinTermsDialog
 import `in`.koreatech.koin.ui.signup.dialog.SignupPrivacyTermsDialog
-import `in`.koreatech.koin.ui.signup.viewmodel.SignupKoinTermViewModel
 import `in`.koreatech.koin.ui.signup.viewmodel.SignupViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import android.graphics.Paint
 import android.os.Bundle
@@ -19,7 +19,7 @@ import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignupActivityNew : DataBindingActivity<ActivitySignupBinding>() {
+class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
     override val layoutId: Int
         get() = R.layout.activity_signup
 
@@ -42,11 +42,11 @@ class SignupActivityNew : DataBindingActivity<ActivitySignupBinding>() {
     }
 
     private fun initViewModel() = with(signupViewModel) {
-        withLoading(this@SignupActivityNew, this)
+        withLoading(this@SignupActivity, this)
         observeLiveData(signupContinuationState) { result ->
             if (result != null) {
-                try {
-                    when (result.getOrThrow()) {
+                result.onSuccess { signupContinuationState ->
+                    when (signupContinuationState) {
                         SignupContinuationState.EmailIsNotValidate -> {
                             SnackbarUtil.makeShortSnackbar(binding.root, "이메일을 확인해 주세요")
                         }
@@ -66,17 +66,33 @@ class SignupActivityNew : DataBindingActivity<ActivitySignupBinding>() {
                             SnackbarUtil.makeShortSnackbar(binding.root, "비밀번호가 일치하지 않습니다")
                         }
                         SignupContinuationState.RequestedEmailValidation -> {
-
+                            showRequestedEmailValidationDialog()
+                        }
+                        SignupContinuationState.AlreadySentEmailValidation -> {
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.email_already_send_or_email_requested))
                         }
                     }
-                } catch (t: Throwable) {
+                }.onFailure {
                     SnackbarUtil.makeShortSnackbar(binding.root, "이메일 인증 중 오류가 발생했습니다")
                 }
             }
         }
     }
 
+    private fun showRequestedEmailValidationDialog() {
+        SnackbarUtil.makeSnackbarActionWebView(
+            this,
+            R.id.signup_box,
+            "10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?",
+            "KOREATECH E-mail 인증",
+            getString(R.string.koreatech_url),
+            5000
+        )
+    }
+
     private fun initView() = with(binding) {
+        signupBackButton.setOnClickListener { finish() }
+
         signupEdittextId.setText(portalAccount ?: "")
 
         signupTextViewPrivacyTerms.paintFlags =
@@ -88,7 +104,17 @@ class SignupActivityNew : DataBindingActivity<ActivitySignupBinding>() {
             SignupPrivacyTermsDialog().show(supportFragmentManager, SIGNUP_PRIVACY_TERMS_DIALOG)
         }
         signupTextViewKoinTerms.setOnClickListener {
-            SignupKoinTermsDialog().show(supportFragmentManager, SIGNUP_PRIVACY_TERMS_DIALOG)
+            SignupKoinTermsDialog().show(supportFragmentManager, SIGNUP_PERSONAL_INFO_TERMS_DIALOG)
+        }
+
+        signupSendVerificationButton.setOnClickListener {
+            signupViewModel.continueSignup(
+                portalAccount = signupEdittextId.textString,
+                password = signupEdittextPw.textString,
+                passwordConfirm = signupEdittextPwConfirm.textString,
+                isAgreedPrivacyTerms = signupCheckBoxPrivacyTerms.isChecked,
+                isAgreedKoinTerms = signupCheckBoxKoinTerms.isChecked
+            )
         }
     }
 
