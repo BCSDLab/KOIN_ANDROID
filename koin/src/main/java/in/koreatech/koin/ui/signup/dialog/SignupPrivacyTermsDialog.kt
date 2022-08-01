@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.signup.dialog
 
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.databinding.DialogTermsBinding
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.ui.signup.viewmodel.SignupPrivacyTermViewModel
@@ -30,7 +31,7 @@ class SignupPrivacyTermsDialog : DialogFragment(), IProgressDialog {
         savedInstanceState: Bundle?
     ): View {
         initViewModel()
-        binding.dialogTermsTitle.text = "개인정보 이용약관"
+        binding.dialogTermsTitle.text = getString(R.string.signup_privacy_terms)
 
         return binding.root
     }
@@ -48,7 +49,7 @@ class SignupPrivacyTermsDialog : DialogFragment(), IProgressDialog {
                 it.onSuccess { text ->
                     binding.dialogTermsContent.text = text
                 }.onFailure { t ->
-                    binding.dialogTermsContent.text = "약관을 가져오는 중 오류가 발생했습니다.\n${t.localizedMessage}."
+                    binding.dialogTermsContent.text = getString(R.string.signup_privacy_terms_error, t.localizedMessage)
                 }
             } else {
                 binding.dialogTermsContent.text = ""

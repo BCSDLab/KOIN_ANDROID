@@ -48,32 +48,32 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                 result.onSuccess { signupContinuationState ->
                     when (signupContinuationState) {
                         SignupContinuationState.EmailIsNotValidate -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, "이메일을 확인해 주세요")
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_email))
                         }
                         SignupContinuationState.NotAgreedKoinTerms -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, "코인 이용약관에 동의해 주세요")
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_koin_terms))
                         }
                         SignupContinuationState.NotAgreedPrivacyTerms -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, "개인정보 이용약관에 동의해 주세요")
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_privacy_terms))
                         }
                         SignupContinuationState.PasswordIsNotValidate -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
-                                "특수문자를 포함한 영어와 숫자 6~18 자리 비밀번호를 입력해주세요"
+                                getString(R.string.signup_error_check_password)
                             )
                         }
                         SignupContinuationState.PasswordNotMatching -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, "비밀번호가 일치하지 않습니다")
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_password_match))
                         }
                         SignupContinuationState.RequestedEmailValidation -> {
                             showRequestedEmailValidationDialog()
                         }
                         SignupContinuationState.AlreadySentEmailValidation -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.email_already_send_or_email_requested))
+                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_email_already_send_or_email_requested))
                         }
                     }
                 }.onFailure {
-                    SnackbarUtil.makeShortSnackbar(binding.root, "이메일 인증 중 오류가 발생했습니다")
+                    SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_when_email_validation))
                 }
             }
         }
@@ -83,8 +83,8 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
         SnackbarUtil.makeSnackbarActionWebView(
             this,
             R.id.signup_box,
-            "10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?",
-            "KOREATECH E-mail 인증",
+            getString(R.string.signup_email_validation_completed_message),
+            getString(R.string.signup_email_validation_completed_title),
             getString(R.string.koreatech_url),
             5000
         )
