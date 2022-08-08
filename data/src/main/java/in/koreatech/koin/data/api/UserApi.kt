@@ -6,8 +6,7 @@ import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.RegisterResponse
-import retrofit2.http.Body
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface UserApi {
     @POST(URLConstant.USER.LOGIN)
