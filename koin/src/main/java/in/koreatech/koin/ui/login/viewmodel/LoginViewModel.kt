@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.login.viewmodel
 
+import `in`.koreatech.koin.core.util.ignoreCancelledResult
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import androidx.lifecycle.LiveData
@@ -25,7 +26,7 @@ class LoginViewModel @Inject constructor(
     ) {
         if(isLoading.value == false) {
             viewModelScope.launchWithLoading {
-                _loginResult.value = userLoginUseCase(portalAccount, password)
+                _loginResult.value = ignoreCancelledResult { userLoginUseCase(portalAccount, password) }
             }
         }
     }
