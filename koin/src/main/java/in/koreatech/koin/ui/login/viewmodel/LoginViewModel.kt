@@ -24,10 +24,8 @@ class LoginViewModel @Inject constructor(
         password: String
     ) {
         if(isLoading.value == false) {
-            _isLoading.value = true
-            viewModelScope.launch {
+            viewModelScope.launchWithLoading {
                 _loginResult.value = userLoginUseCase(portalAccount, password)
-                _isLoading.value = false
             }
         }
     }
