@@ -22,8 +22,6 @@ class SplashViewModel @Inject constructor(
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : BaseViewModel() {
 
-    private var requestedCheckUpdated = false
-
     private val _updateCheckResult = MutableLiveData<Result<Version>?>(null)
     val updateCheckResult: LiveData<Result<Version>?> get() = _updateCheckResult
 
@@ -34,20 +32,17 @@ class SplashViewModel @Inject constructor(
     val tokenIsValid: LiveData<Result<User>?> get() = _tokenIsValid
 
     fun checkUpdate() {
-        if (!requestedCheckUpdated) {
-            requestedCheckUpdated = true
-            viewModelScope.launch {
-                try {
-                    _updateCheckResult.value = getVersionInformationUseCase().also {
-                        if (!(it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.High ||
-                                    it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.Medium)
-                        ) {
-                            checkToken()
-                        }
+        viewModelScope.launch {
+            try {
+                _updateCheckResult.value = getVersionInformationUseCase().also {
+                    if (!(it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.High ||
+                                it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.Medium)
+                    ) {
+                        checkToken()
                     }
-                } catch (t: Throwable) {
-                    checkToken()
                 }
+            } catch (t: Throwable) {
+                checkToken()
             }
         }
     }
