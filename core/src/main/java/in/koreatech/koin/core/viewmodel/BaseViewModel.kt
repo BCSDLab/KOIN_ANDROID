@@ -35,4 +35,5 @@ open class BaseViewModel : ViewModel() {
         _isLoading.value = true
         block()
         _isLoading.value = false
+    }
 }
