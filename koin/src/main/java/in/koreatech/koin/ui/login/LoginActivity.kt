@@ -5,9 +5,11 @@ import `in`.koreatech.koin.core.activity.DataBindingActivity
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
+import `in`.koreatech.koin.ui.main.MainActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
+import android.content.Intent
 import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
@@ -31,12 +33,12 @@ class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
     }
 
     private fun initViewModel() = with(loginViewModel) {
-        observeLiveData(loginResult) {
-            if(it?.isSuccess == true) {
-                SnackbarUtil.makeShortSnackbar(binding.root, "로그인 성공")
-            } else {
-                SnackbarUtil.makeShortSnackbar(binding.root, it?.exceptionOrNull()?.message ?: "Unknown exception")
-            }
+        observeLiveData(loginSuccessEvent) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+
+        observeLiveData(loginErrorMessage) {
+            SnackbarUtil.makeShortSnackbar(binding.root, it)
         }
 
         observeLiveData(isLoading) {
