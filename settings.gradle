@@ -1,1 +1,3 @@
 include ':koin', ':core'
+include ':data'
+include ':domain'
