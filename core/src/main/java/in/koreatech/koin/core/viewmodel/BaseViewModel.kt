@@ -16,24 +16,64 @@ open class BaseViewModel : ViewModel() {
     fun CoroutineScope.launchWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
+        ignoreCancellationException: Boolean = true,
         block: suspend CoroutineScope.() -> Unit
-    ): Job = viewModelScope.launch(
+    ) = this.launch(
         context, start
     ) {
         _isLoading.value = true
-        block()
+        if(ignoreCancellationException) {
+            ignoreCancellationException { block() }
+        }
+        else {
+            block()
+        }
         _isLoading.value = false
     }
 
     fun <T> CoroutineScope.asyncWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
+        ignoreCancellationException: Boolean = true,
         block: suspend CoroutineScope.() -> T
-    ) = viewModelScope.async(
+    ) = this.async(
         context, start
     ) {
         _isLoading.value = true
-        block()
+        if(ignoreCancellationException) {
+            ignoreCancellationException { block() }
+        }
+        else {
+            block()
+        }
         _isLoading.value = false
+    }
+
+    fun CoroutineScope.launchIgnoreCancellation(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend CoroutineScope.() -> Unit
+    ) = this.launch(
+        context, start
+    ) {
+        ignoreCancellationException { block() }
+    }
+
+    fun <T> CoroutineScope.asyncIgnoreCancellation(
+        context: CoroutineContext = EmptyCoroutineContext,
+        start: CoroutineStart = CoroutineStart.DEFAULT,
+        block: suspend CoroutineScope.() -> T
+    ) = this.async(
+        context, start
+    ) {
+        ignoreCancellationException { block() }
+    }
+}
+
+private inline fun <T> ignoreCancellationException(block: () -> T) {
+    try {
+        block()
+    } catch (e: CancellationException) {
+
     }
 }
