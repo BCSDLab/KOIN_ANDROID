@@ -1,0 +1,62 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    defaultConfig {
+        compileSdkVersion project.compileSdkVersion
+        minSdkVersion project.minSdkVersion
+        targetSdkVersion project.targetSdkVersion
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_DEBUG", "true"
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_DEBUG", "false"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation project.androidXKtx
+    implementation project.coroutineAndroid
+
+    implementation project(':domain')
+
+    /* Dependency - okhttp */
+    implementation project.okhttp
+    implementation project.okhttpLogging
+
+    /* Dependency - Retrofit2 */
+    implementation project.retrofit
+    implementation project.retrofitGsonConvert
+
+    implementation project.hiltAndroid
+    kapt project.hiltCompiler
+
+    implementation project.androidXSecurity
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+}
