@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.ui.splash.viewmodel
 
-import `in`.koreatech.koin.core.util.ignoreCancelledResult
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
@@ -15,7 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -35,8 +32,7 @@ class SplashViewModel @Inject constructor(
     val tokenState : LiveData<TokenState> get() = _tokenState
 
     fun checkUpdate() {
-        viewModelScope.launch {
-            ignoreCancelledResult {
+        viewModelScope.launchIgnoreCancellation {
                 getVersionInformationUseCase()
                     .onSuccess {
                         _version.value = it
@@ -49,12 +45,12 @@ class SplashViewModel @Inject constructor(
                         _checkVersionError.value = it
                         checkToken()
                     }
-            }
+
         }
     }
 
     fun checkToken() {
-        viewModelScope.launch {
+        viewModelScope.launchIgnoreCancellation {
             isTokenSavedInDeviceUseCase().also {
                 if (it) getUserInfoUseCase().onSuccess {
                     _tokenState.value = TokenState.Valid
