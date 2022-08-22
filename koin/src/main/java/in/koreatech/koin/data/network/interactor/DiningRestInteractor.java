@@ -3,12 +3,15 @@ package in.koreatech.koin.data.network.interactor;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.core.network.RetrofitManager;
 import in.koreatech.koin.data.network.entity.Dining;
 import in.koreatech.koin.data.network.service.DiningService;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -55,5 +58,10 @@ public class DiningRestInteractor implements DiningInteractor {
 
                     }
                 });
+    }
+
+    @Override
+    public Observable<ArrayList<Dining>> readDingingList(String date) {
+        return RetrofitManager.getInstance().getRetrofit().create(DiningService.class).getDiningMenu(date);
     }
 }

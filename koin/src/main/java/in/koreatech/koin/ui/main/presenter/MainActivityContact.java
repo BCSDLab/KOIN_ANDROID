@@ -23,7 +23,6 @@ public interface MainActivityContact {
 
         void showNetworkError();
         void onDiningListDataReceived(ArrayList<Dining> diningArrayList);
-        void updateUserInterface(int placePosition);
         void showEmptyDining();
         void hideEmptyDining();
     }
