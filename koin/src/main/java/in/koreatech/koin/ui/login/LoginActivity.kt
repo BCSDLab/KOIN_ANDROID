@@ -41,10 +41,6 @@ class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
         }
     }
 
-    private fun gotoMainActivity() {
-        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-    }
-
     private fun initView() = with(binding) {
         loginEdittextId.setOnEditorActionListener { v, actionId, event ->
             loginEdittextPw.requestFocus()

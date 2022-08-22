@@ -7,5 +7,5 @@ interface SignupRepository {
     suspend fun requestEmailVerification(
         portalAccount: String,
         hashedPassword: String
-    )
+    ): Result<Unit>
 }
