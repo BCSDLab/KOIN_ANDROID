@@ -8,6 +8,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.ui.main.MainActivity
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -58,41 +59,27 @@ class SplashActivity : ActivityBase() {
     }
 
     private fun initViewModel() = with(splashViewModel) {
-        observeLiveData(updateCheckResult) {
-            try {
-                if (it != null) {
-                    if (it.isSuccess) {
-                        val (currentVersion, latestVersion, versionUpdatePriority) = it.getOrThrow()
-                        when (versionUpdatePriority) {
-                            VersionUpdatePriority.High, VersionUpdatePriority.Medium -> {
-                                createVersionUpdateDialog(
-                                    currentVersion,
-                                    latestVersion,
-                                    versionUpdatePriority
-                                )
-                            }
-                        }
-                    } else {
-                        ToastUtil.getInstance().makeShort(R.string.version_check_failed)
-                    }
+        observeLiveData(version) { (currentVersion, latestVersion, versionUpdatePriority) ->
+            when (versionUpdatePriority) {
+                VersionUpdatePriority.High, VersionUpdatePriority.Medium -> {
+                    createVersionUpdateDialog(
+                        currentVersion,
+                        latestVersion,
+                        versionUpdatePriority
+                    )
                 }
-            } catch (t: Throwable) {
-                ToastUtil.getInstance().makeShort(R.string.version_check_failed)
             }
         }
 
-        observeLiveData(tokenIsSaved) {
-            if (it == false)
-                gotoLoginActivityOrDelay()
+        observeLiveData(checkVersionError) {
+            ToastUtil.getInstance().makeShort(R.string.version_check_failed)
         }
 
-        observeLiveData(tokenIsValid) {
-            if (it != null) {
-                if (it.isSuccess) {
-                    gotoMainActivityOrDelay()
-                } else {
-                    gotoLoginActivityOrDelay()
-                }
+        observeLiveData(tokenState) {
+            when(it) {
+                TokenState.Invalid -> gotoLoginActivityOrDelay()
+                TokenState.NotFound -> gotoLoginActivityOrDelay()
+                TokenState.Valid -> gotoMainActivityOrDelay()
             }
         }
     }

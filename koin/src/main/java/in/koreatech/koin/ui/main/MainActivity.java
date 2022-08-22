@@ -1,6 +1,9 @@
 package in.koreatech.koin.ui.main;
 
+import static in.koreatech.koin.util.DiningUtil.TYPE;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -32,12 +35,9 @@ import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
-import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.timer.CountTimer;
 import in.koreatech.koin.util.timer.TimerManager;
-
-import static in.koreatech.koin.util.DiningUtil.TYPE;
 
 public class MainActivity extends KoinNavigationDrawerActivity implements
         MainActivityContact.View,
@@ -92,6 +92,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     private int changeDate;
     private String currentDiningType;
     private int currentDiningPlacePosition = 0;
+    private String currentDiningPlace = "";
     private MainActivityContact.Presenter presenter = null;
     private Unbinder unbinder;
     private int term;
@@ -101,18 +102,14 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        timerManager.addTimer(REFRESH, REFRESH_TIME, new CountTimer.OnTimerListener() {
-            @Override
-            public void onCountEvent(String name, long millisUntilFinished) {
+        timerManager.addTimer(REFRESH, REFRESH_TIME, (name, millisUntilFinished) -> {
 
-            }
         });
     }
 
@@ -120,9 +117,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
         timerManager = new TimerManager();
         unbinder = ButterKnife.bind(this);
         setPresenter();
-
         swipeRefreshLayout.setOnRefreshListener(this);
-
         initBusPager();
         initStoreRecyclerView();
         initDining();
@@ -156,6 +151,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     private void initDining() {
         today = TimeUtil.getDeviceCreatedDateOnlyString();
         changeDate = 0;
+        selectDiningKind(findViewById(R.id.text_view_card_dining_korean));
         viewDiningContainer.setOnClickListener((view) -> {
             callDrawerItem(R.id.navi_item_dining);
         });
@@ -183,16 +179,19 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
             if (textView.getId() == view.getId()) {
                 textView.setSelected(true);
                 currentDiningPlacePosition = i;
-            } else textView.setSelected(false);
+                currentDiningPlace = textView.getText().toString();
+            } else {
+                textView.setSelected(false);
+            }
         }
-        updateUserInterface(currentDiningPlacePosition);
+        selectDiningKind(currentDiningPlacePosition);
+        updateDiningList();
     }
 
     void selectDiningKind(int placePosition) {
         for (TextView textView : textViewDiningPlaces) textView.setSelected(false);
         textViewDiningPlaces.get(placePosition).setSelected(true);
         currentDiningPlacePosition = placePosition;
-        updateUserInterface(currentDiningPlacePosition);
     }
 
     void updateDiningTypeTextView() {
@@ -345,54 +344,29 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onDiningListDataReceived(ArrayList<Dining> diningArrayList) {
-        diningMap.clear();
-        for (TextView textView : textViewDiningPlaces) textView.setVisibility(View.GONE);
-
-        if (!diningArrayList.isEmpty()) {
-            for (Dining dining : DiningUtil.arrangeDinings(diningArrayList)) {
-                if (dining == null) {
-                    continue;
-                }
-
-                String typeTemp = dining.getType();
-                if (!typeTemp.equals(currentDiningType)) continue;
-
-                String placeTemp = dining.getPlace();
-
-                if (diningMap.containsKey(placeTemp)) {
-                    diningMap.get(placeTemp).add(dining);
+        updateDiningTypeTextView();
+        Dining selectedDining = null;
+        for (Dining dining : diningArrayList) {
+            if (dining.getType().equals(currentDiningType) && dining.getPlace().equals(currentDiningPlace)) {
+                selectedDining = dining;
+                break;
+            }
+        }
+        if (selectedDining == null) {
+            showEmptyDining();
+        } else {
+            hideEmptyDining();
+            for (int i = 0; i < textViewDiningMenus.size(); i++) {
+                if (selectedDining.getMenu().size() > i) {
+                    this.textViewDiningMenus.get(i).setText(selectedDining.getMenu().get(i));
                 } else {
-                    ArrayList<Dining> dinings = new ArrayList<>();
-                    dinings.add(dining);
-                    diningMap.put(placeTemp, dinings);
-                    for (int i = 0; i < PLACES.length; i++) {
-                        if (PLACES[i].equals(placeTemp))
-                            textViewDiningPlaces.get(i).setVisibility(View.VISIBLE);
-                    }
+                    this.textViewDiningMenus.get(i).setText("");
                 }
             }
-            hideEmptyDining();
-            selectDiningKind(currentDiningPlacePosition);
-        } else {
-            showEmptyDining();
         }
 
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
-        }
-    }
-
-    @Override
-    public void updateUserInterface(int placePosition) {
-        if (diningMap.containsKey(PLACES[placePosition])) {
-            for (TextView textView : textViewDiningMenus) textView.setText("");
-            List<String> dinings = diningMap.get(PLACES[placePosition]).get(0).getMenu();
-            for (int i = 0; i < Math.min(textViewDiningMenus.size(), dinings.size()); i++) {
-                textViewDiningMenus.get(i).setText(dinings.get(i));
-            }
-        } else {
-            if (placePosition < PLACES.length - 1) selectDiningKind(++placePosition);
-            else showEmptyDining();
         }
     }
 
@@ -414,14 +388,24 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void onRefresh() {
         if (this.presenter != null) {
-            showLoading();
             this.presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
             this.presenter.getTermInfo();
-            if (setCurrentDiningType())
-                presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
-            updateDiningTypeTextView();
+            updateDiningList();
         }
+    }
+
+    private void refreshBusViews() {
+        if (this.presenter != null) {
+            this.presenter.getCityBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
+            this.presenter.getDaesungBus(busPagerAdapter.getDepartureState(), busPagerAdapter.getArrivalState());
+            this.presenter.getTermInfo();
+        }
+    }
+
+    private void updateDiningList() {
+        if (setCurrentDiningType())
+            presenter.getDiningList(TimeUtil.getChangeDateFormatYYMMDD(changeDate));
     }
 
     @Override
@@ -439,6 +423,6 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onCountEvent(String name, long millisUntilFinished) {
-        if (name.equals(REFRESH)) onRefresh();
+        if (name.equals(REFRESH)) refreshBusViews();
     }
 }

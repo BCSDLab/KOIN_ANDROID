@@ -1,18 +1,18 @@
 package `in`.koreatech.koin.ui.splash.viewmodel
 
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.version.Version
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @HiltViewModel
@@ -22,40 +22,43 @@ class SplashViewModel @Inject constructor(
     private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase
 ) : BaseViewModel() {
 
-    private var requestedCheckUpdated = false
+    private val _version = MutableLiveData<Version>()
+    val version: LiveData<Version> get() = _version
 
-    private val _updateCheckResult = MutableLiveData<Result<Version>?>(null)
-    val updateCheckResult: LiveData<Result<Version>?> get() = _updateCheckResult
+    private val _checkVersionError = SingleLiveEvent<Throwable>()
+    val checkVersionError: LiveData<Throwable> get() = _checkVersionError
 
-    private val _tokenIsSaved = MutableLiveData<Boolean>(null)
-    val tokenIsSaved: LiveData<Boolean> get() = _tokenIsSaved
-
-    private val _tokenIsValid = MutableLiveData<Result<User>?>(null)
-    val tokenIsValid: LiveData<Result<User>?> get() = _tokenIsValid
+    private val _tokenState = SingleLiveEvent<TokenState>()
+    val tokenState : LiveData<TokenState> get() = _tokenState
 
     fun checkUpdate() {
-        if (!requestedCheckUpdated) {
-            requestedCheckUpdated = true
-            viewModelScope.launch {
-                try {
-                    _updateCheckResult.value = getVersionInformationUseCase().also {
-                        if (!(it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.High ||
-                                    it.getOrThrow().versionUpdatePriority is VersionUpdatePriority.Medium)
+        viewModelScope.launchIgnoreCancellation {
+                getVersionInformationUseCase()
+                    .onSuccess {
+                        _version.value = it
+                        if (!(it.versionUpdatePriority is VersionUpdatePriority.High ||
+                                    it.versionUpdatePriority is VersionUpdatePriority.Medium)
                         ) {
                             checkToken()
                         }
+                    }.onFailure {
+                        _checkVersionError.value = it
+                        checkToken()
                     }
-                } catch (t: Throwable) {
-                    checkToken()
-                }
-            }
+
         }
     }
 
     fun checkToken() {
-        viewModelScope.launch {
-            _tokenIsSaved.value = isTokenSavedInDeviceUseCase().also {
-                if (it) _tokenIsValid.value = getUserInfoUseCase()
+        viewModelScope.launchIgnoreCancellation {
+            isTokenSavedInDeviceUseCase().also {
+                if (it) getUserInfoUseCase().onSuccess {
+                    _tokenState.value = TokenState.Valid
+                }.onFailure {
+                    _tokenState.value = TokenState.Invalid
+                } else {
+                    _tokenState.value = TokenState.NotFound
+                }
             }
         }
     }
