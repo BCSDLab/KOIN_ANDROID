@@ -45,15 +45,11 @@ class SignupPrivacyTermsDialog : DialogFragment(), IProgressDialog {
     private fun initViewModel() = with(signupPrivacyTermViewModel) {
         withLoading(viewLifecycleOwner, this)
         observeLiveData(content) {
-            if (it != null) {
-                it.onSuccess { text ->
-                    binding.dialogTermsContent.text = text
-                }.onFailure { t ->
-                    binding.dialogTermsContent.text = getString(R.string.signup_privacy_terms_error, t.localizedMessage)
-                }
-            } else {
-                binding.dialogTermsContent.text = ""
-            }
+            binding.dialogTermsContent.text = it
+        }
+
+        observeLiveData(contentLoadingError) { t ->
+            if(t != null) binding.dialogTermsContent.text = getString(R.string.signup_privacy_terms_error, t.localizedMessage)
         }
     }
 

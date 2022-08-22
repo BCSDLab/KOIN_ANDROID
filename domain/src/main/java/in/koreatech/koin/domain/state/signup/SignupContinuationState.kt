@@ -7,5 +7,4 @@ sealed class SignupContinuationState {
     object PasswordNotMatching: SignupContinuationState()
     object NotAgreedPrivacyTerms: SignupContinuationState()
     object NotAgreedKoinTerms: SignupContinuationState()
-    object AlreadySentEmailValidation: SignupContinuationState()
 }

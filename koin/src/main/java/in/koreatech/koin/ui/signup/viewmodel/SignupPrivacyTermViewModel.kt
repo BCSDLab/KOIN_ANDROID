@@ -13,15 +13,19 @@ import javax.inject.Inject
 class SignupPrivacyTermViewModel @Inject constructor(
     private val getPrivacyTermTextUseCase: GetPrivacyTermTextUseCase
 ) : BaseViewModel() {
+    private val _content = MutableLiveData<String>()
+    val content : LiveData<String> get() = _content
 
-    private val _content = MutableLiveData<Result<String>?>()
-    val content : LiveData<Result<String>?> get() = _content
+    private val _contentLoadingError = MutableLiveData<Throwable?>()
+    val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
 
     fun getPrivacyTermText() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _content.value = getPrivacyTermTextUseCase()
-            _isLoading.value = false
+        viewModelScope.launchWithLoading {
+            getPrivacyTermTextUseCase().onSuccess {
+                _content.value = it
+            }.onFailure {
+                _contentLoadingError.value = it
+            }
         }
     }
 }

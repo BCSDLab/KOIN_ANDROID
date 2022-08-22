@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.signup.viewmodel
 
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.signup.SignupRequestEmailVerificationUseCase
 import androidx.lifecycle.LiveData
@@ -16,11 +17,12 @@ class SignupViewModel @Inject constructor(
     private val signupRequestEmailVerificationUseCase: SignupRequestEmailVerificationUseCase
 ): BaseViewModel() {
 
-    private val _signupContinuationState = MutableLiveData<Result<SignupContinuationState>?>()
-    val signupContinuationState: LiveData<Result<SignupContinuationState>?>
+    private val _signupContinuationState = SingleLiveEvent<SignupContinuationState>()
+    val signupContinuationState: LiveData<SignupContinuationState>
         get() = _signupContinuationState
 
-    var signUpJob: Job? = null
+    private val _signupContinuationError = SingleLiveEvent<Throwable>()
+    val signupContinuationError: LiveData<Throwable> get() = _signupContinuationError
 
     fun continueSignup(
         portalAccount: String,
@@ -29,13 +31,15 @@ class SignupViewModel @Inject constructor(
         isAgreedPrivacyTerms: Boolean,
         isAgreedKoinTerms: Boolean
     ) {
-        if(signUpJob == null || !signUpJob!!.isActive) {
-            signUpJob = viewModelScope.launch {
-                _isLoading.value = true
-                _signupContinuationState.value = signupRequestEmailVerificationUseCase(
+        if(isLoading.value == false) {
+            viewModelScope.launchWithLoading {
+                signupRequestEmailVerificationUseCase(
                     portalAccount, password, passwordConfirm, isAgreedPrivacyTerms, isAgreedKoinTerms
-                )
-                _isLoading.value = false
+                ).onSuccess {
+                    _signupContinuationState.value = it
+                }.onFailure {
+                    _signupContinuationError.value = it
+                }
             }
         }
     }
