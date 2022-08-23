@@ -29,19 +29,19 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
 
     private fun initViewModel() = with(forgotPasswordViewModel) {
         withLoading(this@ForgotPasswordActivity, forgotPasswordViewModel)
-        observeLiveData(passwordResetEmailRequestState) { result ->
-            result?.onSuccess {
-                SnackbarUtil.makeSnackbarActionWebView(
-                    this@ForgotPasswordActivity,
-                    R.id.forgot_password_id_edittext,
-                    "학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?",
-                    "KOREATECH E-mail 인증",
-                    getString(R.string.koreatech_url),
-                    5000
-                )
-            }?.onFailure {
-                SnackbarUtil.makeShortSnackbar(binding.root, it.message)
-            }
+        observeLiveData(passwordResetEmailRequested) {
+            SnackbarUtil.makeSnackbarActionWebView(
+                this@ForgotPasswordActivity,
+                R.id.forgot_password_id_edittext,
+                "학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?",
+                "KOREATECH E-mail 인증",
+                getString(R.string.koreatech_url),
+                5000
+            )
+        }
+
+        observeLiveData(passwordResetEmailRequestError) { t ->
+            SnackbarUtil.makeShortSnackbar(binding.root, t.message)
         }
     }
 
