@@ -18,8 +18,12 @@ import in.koreatech.koin.data.network.interactor.CityBusInteractor;
 import in.koreatech.koin.data.network.interactor.DiningInteractor;
 import in.koreatech.koin.data.network.interactor.TermInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityPresenter implements MainActivityContact.Presenter {
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private static final String TAG = MainActivityPresenter.class.getSimpleName();
 
     private final MainActivityContact.View view;
@@ -56,28 +60,6 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         public void onFailure(Throwable throwable) {
             Log.d(TAG, throwable.getMessage());
             view.updateFailCityBusDepartInfo();
-            view.hideLoading();
-        }
-    };
-    private boolean diningListApiCallCheck;
-    private final ApiCallback diningApiCallback = new ApiCallback() {
-        @Override
-        public void onSuccess(Object object) {
-            ArrayList<Dining> diningArrayList = (ArrayList<Dining>) object;
-            view.onDiningListDataReceived(diningArrayList);
-            diningListApiCallCheck = true;
-            view.hideLoading();
-        }
-
-        @Override
-        public void onFailure(Throwable throwable) {
-            // diningView.showMessage(throwable.getMessage());
-            diningListApiCallCheck = false;
-            if (!(throwable instanceof UnknownHostException))
-                view.showEmptyDining();
-            else
-                view.showNetworkError();
-
             view.hideLoading();
         }
     };
@@ -173,7 +155,12 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
 
     @Override
     public void getDiningList(String date) {
-        view.showLoading();
-        diningInteractor.readDiningList(date, diningApiCallback);
+        compositeDisposable.add(
+                diningInteractor.readDingingList(date)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnSubscribe(disposable -> view.showLoading())
+                        .doOnComplete(view::hideLoading)
+                        .subscribe(view::onDiningListDataReceived, throwable -> view.showEmptyDining()));
     }
 }

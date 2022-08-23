@@ -23,19 +23,11 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
             password != passwordConfirm -> Result.success(SignupContinuationState.PasswordNotMatching)
             !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
             !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
-
-            else -> try {
-                signupRepository.requestEmailVerification(
-                    portalAccount = portalAccount,
-                    hashedPassword = password.toSHA256()
-                )
-                Result.success(SignupContinuationState.RequestedEmailValidation)
-            } catch (t: Throwable) {
-                if(t.message == "HTTP 409 ") { // 이메일 인증을 한 경우
-                    Result.success(SignupContinuationState.AlreadySentEmailValidation)
-                } else {
-                    Result.failure(t)
-                }
+            else -> signupRepository.requestEmailVerification(
+                portalAccount = portalAccount,
+                hashedPassword = password.toSHA256()
+            ).map {
+                SignupContinuationState.RequestedEmailValidation
             }
         }
     }

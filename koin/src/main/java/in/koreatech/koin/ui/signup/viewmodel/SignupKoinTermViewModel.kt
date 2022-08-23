@@ -15,14 +15,19 @@ class SignupKoinTermViewModel @Inject constructor(
     private val getKoinTermTextUseCase: GetKoinTermTextUseCase
 ) : BaseViewModel() {
 
-    private val _content = MutableLiveData<Result<String>?>()
-    val content : LiveData<Result<String>?> get() = _content
+    private val _content = MutableLiveData<String>()
+    val content : LiveData<String> get() = _content
+
+    private val _contentLoadingError = MutableLiveData<Throwable?>()
+    val contentLoadingError: LiveData<Throwable?> get() = _contentLoadingError
 
     fun getKoinTermText() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            _content.value = getKoinTermTextUseCase()
-            _isLoading.value = false
+        viewModelScope.launchWithLoading {
+            getKoinTermTextUseCase().onSuccess {
+                _content.value = it
+            }.onFailure {
+                _contentLoadingError.value = it
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.contract.SignupContract
 import `in`.koreatech.koin.core.activity.DataBindingActivity
 import `in`.koreatech.koin.databinding.ActivitySignupBinding
+import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.signup.dialog.SignupKoinTermsDialog
 import `in`.koreatech.koin.ui.signup.dialog.SignupPrivacyTermsDialog
@@ -43,39 +44,51 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
 
     private fun initViewModel() = with(signupViewModel) {
         withLoading(this@SignupActivity, this)
-        observeLiveData(signupContinuationState) { result ->
-            if (result != null) {
-                result.onSuccess { signupContinuationState ->
-                    when (signupContinuationState) {
-                        SignupContinuationState.EmailIsNotValidate -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_email))
-                        }
-                        SignupContinuationState.NotAgreedKoinTerms -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_koin_terms))
-                        }
-                        SignupContinuationState.NotAgreedPrivacyTerms -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_privacy_terms))
-                        }
-                        SignupContinuationState.PasswordIsNotValidate -> {
-                            SnackbarUtil.makeShortSnackbar(
-                                binding.root,
-                                getString(R.string.signup_error_check_password)
-                            )
-                        }
-                        SignupContinuationState.PasswordNotMatching -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_password_match))
-                        }
-                        SignupContinuationState.RequestedEmailValidation -> {
-                            showRequestedEmailValidationDialog()
-                        }
-                        SignupContinuationState.AlreadySentEmailValidation -> {
-                            SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_email_already_send_or_email_requested))
-                        }
-                    }
-                }.onFailure {
-                    SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_when_email_validation))
+        observeLiveData(signupContinuationState) { state ->
+            when (state) {
+                SignupContinuationState.EmailIsNotValidate -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_error_check_email)
+                    )
+                }
+                SignupContinuationState.NotAgreedKoinTerms -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_error_check_koin_terms)
+                    )
+                }
+                SignupContinuationState.NotAgreedPrivacyTerms -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_error_check_privacy_terms)
+                    )
+                }
+                SignupContinuationState.PasswordIsNotValidate -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_error_check_password)
+                    )
+                }
+                SignupContinuationState.PasswordNotMatching -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_error_check_password_match)
+                    )
+                }
+                SignupContinuationState.RequestedEmailValidation -> {
+                    showRequestedEmailValidationDialog()
                 }
             }
+        }
+        observeLiveData(signupContinuationError) { t ->
+            SnackbarUtil.makeShortSnackbar(
+                binding.root,
+                when (t) {
+                    is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
+                    else -> getString(R.string.signup_error_when_email_validation)
+                }
+            )
         }
     }
 
