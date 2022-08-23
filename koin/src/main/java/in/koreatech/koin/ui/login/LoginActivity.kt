@@ -2,19 +2,18 @@ package `in`.koreatech.koin.ui.login
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.DataBindingActivity
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
+import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.MainActivity
+import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import android.content.Intent
-import android.os.Build.VERSION_CODES.P
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -39,11 +38,6 @@ class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
 
         observeLiveData(loginErrorMessage) {
             SnackbarUtil.makeShortSnackbar(binding.root, it)
-        }
-
-        observeLiveData(isLoading) {
-            if(it) showProgressDialog("로딩 중...")
-            else hideProgressDialog()
         }
     }
 
@@ -78,15 +72,16 @@ class LoginActivity : DataBindingActivity<ActivityLoginBinding>() {
         }
 
         loginButtonSignup.setOnClickListener {
-
+            startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
         }
 
         forgotPasswordLinearLayout.setOnClickListener {
-
+            startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 
         anonymousLoginLinearLayout.setOnClickListener {
-
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            finish()
         }
     }
 }
