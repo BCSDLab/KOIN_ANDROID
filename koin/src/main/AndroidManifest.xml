@@ -50,7 +50,7 @@
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="@string/navermap_keyvalue" />
+            android:value="${naverMapKey}" />
 
         <receiver
             android:name=".ui.timetable.TimetableWidget"
