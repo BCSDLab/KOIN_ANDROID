@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.di.source
 
+import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import android.content.Context
@@ -13,6 +14,14 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalDataSourceModule {
+    @Provides
+    @Singleton
+    fun provideSignupLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ) : SignupTermsLocalDataSource {
+        return SignupTermsLocalDataSource(applicationContext)
+    }
+
     @Provides
     @Singleton
     fun provideTokenLocalDataSource(

@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.data.mapper
 
-import `in`.koreatech.koin.data.response.AuthResponse
-import `in`.koreatech.koin.data.response.UserResponse
+import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 
