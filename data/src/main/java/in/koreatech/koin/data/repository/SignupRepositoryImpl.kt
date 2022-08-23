@@ -3,7 +3,9 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.repository.SignupRepository
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class SignupRepositoryImpl @Inject constructor(
@@ -18,12 +20,23 @@ class SignupRepositoryImpl @Inject constructor(
         return signupTermsLocalDataSource.getKoinTermText()
     }
 
-    override suspend fun requestEmailVerification(portalAccount: String, hashedPassword: String) {
-        userRemoteDataSource.sendRegisterEmail(
-            LoginRequest(
-                portalAccount = portalAccount,
-                passwordHashed = hashedPassword
+    override suspend fun requestEmailVerification(
+        portalAccount: String,
+        hashedPassword: String
+    ): Result<Unit> {
+        return try {
+            userRemoteDataSource.sendRegisterEmail(
+                LoginRequest(
+                    portalAccount = portalAccount,
+                    passwordHashed = hashedPassword
+                )
             )
-        )
+            Result.success(Unit)
+        } catch (e: HttpException) {
+            if (e.code() == 409) Result.failure(SignupAlreadySentEmailException())
+            else Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
     }
 }
