@@ -2,7 +2,7 @@ package `in`.koreatech.koin.ui.login
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
-import `in`.koreatech.koin.core.util.activityDataBinding
+import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
 import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
@@ -20,7 +20,7 @@ import java.util.*
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase() {
-    private val binding by activityDataBinding<ActivityLoginBinding>(R.layout.activity_login)
+    private val binding by dataBinding<ActivityLoginBinding>(R.layout.activity_login)
 
     private val loginViewModel by viewModels<LoginViewModel>()
 
