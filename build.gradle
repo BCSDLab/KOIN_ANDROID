@@ -29,6 +29,9 @@ buildscript {
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
 
+        def lifecycle_version = "2.5.1"
+        androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
         def activity_version = "1.4.0"
         androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
 
