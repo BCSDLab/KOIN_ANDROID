@@ -113,6 +113,10 @@
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
 
     <!-- Forgot password -->
+    <string name="forgotpassword_title">FORGOT PASSWORD?</string>
+    <string name="forgotpassword_message">비밀번호 초기화가 필요합니다.\n계정을 찾으려면 KOREATECH 이메일을 입력해주세요.</string>
+    <string name="forgotpassword_reset_password_button">RESET PASSWORD</string>
+    <string name="forgotpassword_goto_login_button">비밀번호가 기억나시나요? 로그인하기</string>
     <string name="forgotpassword_sent_email_title">KOREATECH E-mail 인증</string>
     <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 

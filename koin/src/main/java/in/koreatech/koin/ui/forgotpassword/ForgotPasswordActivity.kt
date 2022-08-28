@@ -41,8 +41,8 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
             )
         }
 
-        observeLiveData(passwordResetEmailRequestError) { t ->
-            SnackbarUtil.makeShortSnackbar(binding.root, t.message)
+        observeLiveData(passwordResetEmailRequestErrorMessage) { message ->
+            SnackbarUtil.makeShortSnackbar(binding.root, message)
         }
     }
 
