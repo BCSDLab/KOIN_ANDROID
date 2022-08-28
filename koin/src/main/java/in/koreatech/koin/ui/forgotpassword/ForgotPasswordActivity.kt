@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.forgotpassword
 
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.core.activity.DataBindingActivity
 import `in`.koreatech.koin.databinding.ActivityForgotPasswordBinding
 import `in`.koreatech.koin.ui.forgotpassword.viewmodel.ForgotPasswordViewModel
@@ -33,10 +34,10 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
             SnackbarUtil.makeSnackbarActionWebView(
                 this@ForgotPasswordActivity,
                 R.id.forgot_password_id_edittext,
-                "학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?",
-                "KOREATECH E-mail 인증",
+                getString(R.string.forgotpassword_sent_email_message),
+                getString(R.string.forgotpassword_sent_email_title),
                 getString(R.string.koreatech_url),
-                5000
+                GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
             )
         }
 
@@ -60,5 +61,4 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
             finish()
         }
     }
-
 }

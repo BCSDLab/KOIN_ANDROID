@@ -112,6 +112,10 @@
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
 
+    <!-- Forgot password -->
+    <string name="forgotpassword_sent_email_title">KOREATECH E-mail 인증</string>
+    <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
+
     <!--Timetable-->
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
