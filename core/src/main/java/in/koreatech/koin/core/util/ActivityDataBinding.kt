@@ -51,7 +51,7 @@ class ActivityDataBindingProperty<T : ViewDataBinding>(
 }
 
 @Suppress("unused")
-inline fun <reified T : ViewDataBinding> AppCompatActivity.activityDataBinding(@LayoutRes layoutId: Int):
+inline fun <reified T : ViewDataBinding> AppCompatActivity.dataBinding(@LayoutRes layoutId: Int):
         ReadOnlyProperty<AppCompatActivity, T> {
     return ActivityDataBindingProperty(layoutId)
 }
