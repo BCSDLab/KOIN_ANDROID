@@ -70,6 +70,7 @@ dependencies {
     api project.androidxRecyclerView
     api project.androidxCardView
     api project.androidxMaterial
+    api project.androidXLifecycle
 
     /* Dependency - Firebase */
     api project.firebaseCore
