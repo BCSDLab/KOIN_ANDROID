@@ -15,17 +15,15 @@ class ForgotPasswordViewModel @Inject constructor(
     private val _passwordResetEmailRequested = SingleLiveEvent<Unit>()
     val passwordResetEmailRequested: LiveData<Unit> get() = _passwordResetEmailRequested
 
-    private val _passwordResetEmailRequestError = SingleLiveEvent<Throwable>()
-    val passwordResetEmailRequestError: LiveData<Throwable> get() = _passwordResetEmailRequestError
+    private val _passwordResetEmailRequestErrorMessage = SingleLiveEvent<String>()
+    val passwordResetEmailRequestErrorMessage: LiveData<String> get() = _passwordResetEmailRequestErrorMessage
 
     fun requestFindPasswordEmail(portalAccount: String) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
-                requestFindPasswordEmailUseCase(portalAccount).onSuccess {
-                    _passwordResetEmailRequested.call()
-                }.onFailure {
-                    _passwordResetEmailRequestError.value = it
-                }
+                requestFindPasswordEmailUseCase(portalAccount)?.also {
+                    _passwordResetEmailRequestErrorMessage.value = it.message
+                } ?: _passwordResetEmailRequested.call()
             }
         }
     }
