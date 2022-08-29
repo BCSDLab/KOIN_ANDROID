@@ -21,6 +21,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        manifestPlaceholders = [naverMapKey: getNaverMapKey()]
     }
 
     lintOptions {
@@ -88,6 +89,12 @@ def getPassword() {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
     return properties.getProperty('koin_store_password')
+}
+
+def getNaverMapKey() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty('navermap_key')
 }
 
 dependencies {
