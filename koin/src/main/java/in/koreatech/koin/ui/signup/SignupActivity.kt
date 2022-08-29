@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.signup
 
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.contract.SignupContract
 import `in`.koreatech.koin.core.activity.DataBindingActivity
 import `in`.koreatech.koin.databinding.ActivitySignupBinding
@@ -99,7 +100,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
             getString(R.string.signup_email_validation_completed_message),
             getString(R.string.signup_email_validation_completed_title),
             getString(R.string.koreatech_url),
-            5000
+            GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
         )
     }
 
