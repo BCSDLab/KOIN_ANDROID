@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,10 +36,12 @@ import in.koreatech.koin.ui.dining.adapter.DiningRecyclerAdapter;
 import in.koreatech.koin.ui.dining.presenter.DiningContract;
 import in.koreatech.koin.ui.dining.presenter.DiningPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
 
-public class DiningActivity extends KoinNavigationDrawerActivity implements DiningContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class DiningActivity extends KoinNavigationDrawerActivityNew implements DiningContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final static String[] TYPE = {"BREAKFAST", "LUNCH", "DINNER"};
     private final static String[] ENDTIME = {"09:00", "13:30", "18:30"};   // 아침, 점심, 저녁 식당 운영 종료시간 및 초기화 시간
     private final String TAG = "DiningActivity";
@@ -380,5 +383,11 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
         return true;
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Dining.INSTANCE;
     }
 }

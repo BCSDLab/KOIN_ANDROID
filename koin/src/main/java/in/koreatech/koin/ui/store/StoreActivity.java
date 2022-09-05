@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +35,8 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
@@ -43,7 +46,7 @@ import in.koreatech.koin.util.schedulers.SchedulerProvider;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class StoreActivity extends KoinNavigationDrawerActivity implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class StoreActivity extends KoinNavigationDrawerActivityNew implements StoreContract.View, SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = "StoreActivity";
     private final int ALL_CATEGORY = -1;
     private final int[] CATEGORY_ID = {
@@ -356,5 +359,11 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         storePresenter.unSubscribe();
         compositeDisposable.dispose();
         super.onDestroy();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Store.INSTANCE;
     }
 }

@@ -14,4 +14,8 @@ class TokenRepositoryImpl @Inject constructor(
     override suspend fun getAccessToken(): String? {
         return tokenLocalDataSource.getAccessToken()
     }
+
+    override suspend fun removeToken() {
+        tokenLocalDataSource.removeAccessToken()
+    }
 }

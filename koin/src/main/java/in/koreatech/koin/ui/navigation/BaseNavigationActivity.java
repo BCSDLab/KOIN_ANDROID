@@ -228,7 +228,6 @@ public abstract class BaseNavigationActivity extends ActivityBase implements Nav
                 textView.setText(Html.fromHtml(styledText), TextView.BufferType.SPANNABLE);       //#f7941e
             }
         }
-
     }
 
     // TODO -> 익명게시판 수정 후 주석 제거

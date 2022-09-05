@@ -29,4 +29,10 @@ class UserErrorHandlerImpl @Inject constructor(
             }.withUnknown(context)
         }
     }
+
+    override fun handleGetUserInfoError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
 }
