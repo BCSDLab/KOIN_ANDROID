@@ -56,6 +56,8 @@ import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
@@ -72,7 +74,7 @@ import static in.koreatech.koin.util.LectureFilterUtil.getFilterUtil;
 import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 
 
-public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity implements TimetableAnonymousContract.View, TimetableSelectAnonymousMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
+public class TimetableAnonymousActivity extends KoinNavigationDrawerActivityNew implements TimetableAnonymousContract.View, TimetableSelectAnonymousMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
     public static final String TAG = "TimetableAnonymous";
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
@@ -202,9 +204,6 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     protected void onStart() {
         super.onStart();
-        if (!checkIsAnonoymous()) {
-            goToTimetableActivty();
-        }
         TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
         this.timetablePresenter.getTimeTableVersion();
         this.timetablePresenter.readSemesters();
@@ -963,4 +962,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             timetableAddFloatingButton.show();
     }
 
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Timetable.INSTANCE;
+    }
 }

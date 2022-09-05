@@ -6,6 +6,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,11 +27,17 @@ class TokenAuthenticator @Inject constructor(
             if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) null
             else {
                 val accessToken = tokenLocalDataSource.getAccessToken()
-                if (accessToken.isNullOrEmpty()) {
+                if("Bearer $accessToken" == response.request().header("Authorization")) {
+                    tokenLocalDataSource.removeAccessToken()
                     goToLoginActivity()
                     null
                 } else {
-                    getRequest(response, accessToken)
+                    if (accessToken.isNullOrEmpty()) {
+                        goToLoginActivity()
+                        null
+                    } else {
+                        getRequest(response, accessToken)
+                    }
                 }
             }
         } catch (e: Exception) {

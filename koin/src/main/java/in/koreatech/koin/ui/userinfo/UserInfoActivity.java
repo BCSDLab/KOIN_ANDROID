@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.view.Menu;
@@ -18,6 +19,8 @@ import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
@@ -26,7 +29,7 @@ import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.SnackbarUtil;
 import in.koreatech.koin.ui.login.LoginActivity;
 
-public class UserInfoActivity extends KoinNavigationDrawerActivity implements UserInfoContract.View {
+public class UserInfoActivity extends KoinNavigationDrawerActivityNew implements UserInfoContract.View {
     private final String TAG = "UserInfoActivity";
     private Context context;
 
@@ -179,12 +182,6 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        setLastNavigationItem();
-        finish();
-    }
-
     @OnClick(R.id.userinfo_button_delete_user)
     public void onClickDeleteUserButton() {
         final int roomUid = UserInfoSharedPreferencesHelper.getInstance().loadCallvanRoomUid();
@@ -223,6 +220,12 @@ public class UserInfoActivity extends KoinNavigationDrawerActivity implements Us
     @Override
     public void showMessage(String message) {
 
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.MyInfo.INSTANCE;
     }
 }
 

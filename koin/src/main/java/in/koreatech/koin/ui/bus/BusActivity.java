@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
@@ -20,10 +21,12 @@ import butterknife.OnClick;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
 
-public class BusActivity extends KoinNavigationDrawerActivity {
+public class BusActivity extends KoinNavigationDrawerActivityNew {
     private final String TAG = "BusActivity";
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;
@@ -159,6 +162,11 @@ public class BusActivity extends KoinNavigationDrawerActivity {
     }
 
 
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Bus.INSTANCE;
+    }
 }
 
 

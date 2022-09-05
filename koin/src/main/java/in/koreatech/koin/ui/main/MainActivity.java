@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -35,11 +36,13 @@ import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.timer.CountTimer;
 import in.koreatech.koin.util.timer.TimerManager;
 
-public class MainActivity extends KoinNavigationDrawerActivity implements
+public class MainActivity extends KoinNavigationDrawerActivityNew implements
         MainActivityContact.View,
         SwipeRefreshLayout.OnRefreshListener,
         BusPagerAdapter.OnSwitchClickListener,
@@ -424,5 +427,11 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @Override
     public void onCountEvent(String name, long millisUntilFinished) {
         if (name.equals(REFRESH)) refreshBusViews();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Main.INSTANCE;
     }
 }
