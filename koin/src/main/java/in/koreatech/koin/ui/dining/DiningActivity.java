@@ -35,7 +35,6 @@ import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.ui.dining.adapter.DiningRecyclerAdapter;
 import in.koreatech.koin.ui.dining.presenter.DiningContract;
 import in.koreatech.koin.ui.dining.presenter.DiningPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.DiningUtil;

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.text.InputFilter;
@@ -24,9 +25,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditContract;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.data.network.entity.User;
@@ -37,7 +39,7 @@ import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.ui.userinfo.presenter.UserInfoEditPresenter;
 
-public class UserInfoEditedActivity extends KoinNavigationDrawerActivity implements UserInfoEditContract.View {
+public class UserInfoEditedActivity extends KoinNavigationDrawerActivityNew implements UserInfoEditContract.View {
     private final String TAG = "UserInfoEditedActivity";
     private Context context;
 
@@ -453,5 +455,11 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     public void onNicknameCheckSuccess(String nickname) {
         isNicknameChecked = true;
         changedNickname = nickname;
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.MyInfo.INSTANCE;
     }
 }

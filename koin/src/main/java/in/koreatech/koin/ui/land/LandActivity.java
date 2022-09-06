@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -40,7 +38,6 @@ import in.koreatech.koin.data.network.interactor.BokdukRestInteractor;
 import in.koreatech.koin.ui.land.adapter.LandRecyclerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandContract;
 import in.koreatech.koin.ui.land.presenter.LandPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 

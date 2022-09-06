@@ -35,11 +35,14 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class KoinNavigationDrawerActivityNew : ActivityBase(),
     NavigationView.OnNavigationItemSelectedListener {
     protected abstract val menuState: MenuState
+
+    val drawerLayoutId get() = R.id.drawer_layout
+
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
 
     private val drawerLayout by lazy {
-        findViewById<DrawerLayout>(R.id.drawer_layout)
+        findViewById<DrawerLayout>(drawerLayoutId)
     }
 
     private val leftNavigationView by lazy {
