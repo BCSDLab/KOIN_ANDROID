@@ -35,13 +35,13 @@ import in.koreatech.koin.data.network.interactor.LandRestInteractor;
 import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandDetailContract;
 import in.koreatech.koin.ui.land.presenter.LandDetailPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 
 /**
  * 복덕방 상세페이지 Activity
  */
-public class LandDetailActivity extends KoinNavigationDrawerActivityNew implements LandDetailContract.View, OnMapReadyCallback {
+public class LandDetailActivity extends KoinNavigationDrawerActivity implements LandDetailContract.View, OnMapReadyCallback {
     private final String TAG = "LandDetailActivity";
     @BindView(R.id.koin_base_app_bar_dark)
     AppBarBase appbarBase;

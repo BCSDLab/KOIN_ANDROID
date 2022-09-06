@@ -53,7 +53,7 @@ import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
@@ -72,7 +72,7 @@ import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 import static in.koreatech.koin.util.TimeDuplicateCheckUtil.duplicateScheduleTostring;
 
 
-public class TimetableActivity extends KoinNavigationDrawerActivityNew implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
+public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
     public static final String TAG = "TimetableActivity";
     public static final int MY_REQUEST_CODE = 1;
     public static final int MAX_ITEM_LOAD = 40;
