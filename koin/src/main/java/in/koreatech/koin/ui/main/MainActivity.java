@@ -34,13 +34,13 @@ import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
 import in.koreatech.koin.ui.main.presenter.MainActivityPresenter;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.TimeUtil;
 import in.koreatech.koin.util.timer.CountTimer;
 import in.koreatech.koin.util.timer.TimerManager;
 
-public class MainActivity extends KoinNavigationDrawerActivityNew implements
+public class MainActivity extends KoinNavigationDrawerActivity implements
         MainActivityContact.View,
         SwipeRefreshLayout.OnRefreshListener,
         BusPagerAdapter.OnSwitchClickListener,

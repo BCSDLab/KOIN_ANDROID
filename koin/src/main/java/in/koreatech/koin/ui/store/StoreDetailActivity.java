@@ -39,7 +39,7 @@ import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
@@ -50,7 +50,7 @@ import in.koreatech.koin.util.FirebaseEventUtil;
 import in.koreatech.koin.util.FormValidatorUtil;
 import in.koreatech.koin.util.schedulers.SchedulerProvider;
 
-public class StoreDetailActivity extends KoinNavigationDrawerActivityNew implements StoreDetailContract.View {
+public class StoreDetailActivity extends KoinNavigationDrawerActivity implements StoreDetailContract.View {
     private static final int ITEM_MAX_SIZE = 6;
     private final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;  //User Permission Request Code
     /* View Component */

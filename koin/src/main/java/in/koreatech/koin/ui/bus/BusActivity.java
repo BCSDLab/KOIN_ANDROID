@@ -20,12 +20,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
+import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.FirebasePerformanceUtil;
 import in.koreatech.koin.ui.bus.adpater.BusMainViewPagerAdapter;
 
-public class BusActivity extends KoinNavigationDrawerActivityNew {
+public class BusActivity extends KoinNavigationDrawerActivity {
     private final String TAG = "BusActivity";
     private final String TABLAYOUT_fontName = "fonts/notosanscjkkr_regular.otf";
     private Context context;

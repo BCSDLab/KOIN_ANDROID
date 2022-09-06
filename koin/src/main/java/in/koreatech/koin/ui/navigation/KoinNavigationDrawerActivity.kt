@@ -32,7 +32,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-abstract class KoinNavigationDrawerActivityNew : ActivityBase(),
+abstract class KoinNavigationDrawerActivity : ActivityBase(),
     NavigationView.OnNavigationItemSelectedListener {
     protected abstract val menuState: MenuState
 
@@ -192,7 +192,7 @@ abstract class KoinNavigationDrawerActivityNew : ActivityBase(),
 
         observeLiveData(logoutEvent) {
             finishAffinity()
-            startActivity(Intent(this@KoinNavigationDrawerActivityNew, LoginActivity::class.java))
+            startActivity(Intent(this@KoinNavigationDrawerActivity, LoginActivity::class.java))
         }
 
         observeLiveData(logoutError) {
