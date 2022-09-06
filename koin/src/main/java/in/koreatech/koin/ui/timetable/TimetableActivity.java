@@ -53,7 +53,6 @@ import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
-import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivityNew;
 import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
