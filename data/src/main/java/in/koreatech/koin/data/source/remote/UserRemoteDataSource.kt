@@ -34,4 +34,8 @@ class UserRemoteDataSource(
     ): DefaultResponse {
         return userApi.postPasswordReset(idRequest)
     }
+
+    suspend fun deleteUser(): DefaultResponse {
+        return userAuthApi.deleteUser()
+    }
 }

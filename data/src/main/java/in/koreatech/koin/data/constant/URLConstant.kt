@@ -6,7 +6,7 @@ package `in`.koreatech.koin.data.constant
 object URLConstant {
 
     const val BASE_URL_PRODUCTION = "https://api.koreatech.in" //release server
-    const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
+    const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
 
     const val ADMIN = "admin/"
     const val VERSION = "versions"

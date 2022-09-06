@@ -460,6 +460,6 @@ public class UserInfoEditedActivity extends KoinNavigationDrawerActivity impleme
     @NonNull
     @Override
     protected MenuState getMenuState() {
-        return MenuState.MyInfo.INSTANCE;
+        return MenuState.UserInfo.INSTANCE;
     }
 }
