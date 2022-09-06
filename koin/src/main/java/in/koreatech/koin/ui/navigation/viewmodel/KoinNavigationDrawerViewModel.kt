@@ -3,12 +3,10 @@ package `in`.koreatech.koin.ui.navigation.viewmodel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
-import `in`.koreatech.koin.domain.usecase.user.LogoutUseCase
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.state.UserState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class KoinNavigationDrawerViewModel @Inject constructor(
-    private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : BaseViewModel() {
 
     private val _userState = MutableLiveData<UserState>()
@@ -34,12 +31,6 @@ class KoinNavigationDrawerViewModel @Inject constructor(
 
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent : LiveData<MenuState> get() = _menuEvent
-
-    private val _logoutEvent = SingleLiveEvent<Unit>()
-    val logoutEvent : LiveData<Unit> get() = _logoutEvent
-
-    private val _logoutError = SingleLiveEvent<String>()
-    val logoutError : LiveData<String> get() = _logoutError
 
     fun getUser() {
         viewModelScope.launch {
@@ -60,16 +51,5 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     fun selectMenu(menuState: MenuState) {
         _selectedMenu.value = menuState
         _menuEvent.value = menuState
-    }
-
-    fun logout() {
-        viewModelScope.launchWithLoading {
-            try {
-                logoutUseCase()
-                _logoutEvent.call()
-            } catch (t: Throwable) {
-                _logoutError.value = "로그아웃에 실패했습니다."
-            }
-        }
     }
 }

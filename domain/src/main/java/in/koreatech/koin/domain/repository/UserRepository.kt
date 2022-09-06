@@ -14,4 +14,6 @@ interface UserRepository {
     suspend fun requestPasswordResetEmail(
         portalAccount: String
     )
+
+    suspend fun deleteUser()
 }

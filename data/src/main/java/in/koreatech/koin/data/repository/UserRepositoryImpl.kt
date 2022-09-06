@@ -28,4 +28,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun requestPasswordResetEmail(portalAccount: String) {
         userRemoteDataSource.sendPasswordResetEmail(IdRequest(portalAccount))
     }
+
+    override suspend fun deleteUser() {
+        userRemoteDataSource.deleteUser()
+    }
 }

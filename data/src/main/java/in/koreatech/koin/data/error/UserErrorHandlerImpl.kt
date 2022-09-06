@@ -35,4 +35,10 @@ class UserErrorHandlerImpl @Inject constructor(
             unknownErrorHandler(context)
         }
     }
+
+    override fun handleDeleteUser(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
 }
