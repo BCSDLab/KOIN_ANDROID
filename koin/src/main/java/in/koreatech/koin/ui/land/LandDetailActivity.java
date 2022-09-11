@@ -36,6 +36,7 @@ import in.koreatech.koin.ui.land.adapter.LandDetailPagerAdapter;
 import in.koreatech.koin.ui.land.presenter.LandDetailContract;
 import in.koreatech.koin.ui.land.presenter.LandDetailPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 
 /**
  * 복덕방 상세페이지 Activity
@@ -449,5 +450,11 @@ public class LandDetailActivity extends KoinNavigationDrawerActivity implements 
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Land.INSTANCE;
     }
 }

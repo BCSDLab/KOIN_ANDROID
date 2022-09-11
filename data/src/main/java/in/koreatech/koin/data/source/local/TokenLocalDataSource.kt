@@ -37,6 +37,12 @@ class TokenLocalDataSource @Inject constructor(
         sharedPreferences.getString(SHARED_PREF_KEY, null)
     }
 
+    suspend fun removeAccessToken() = withContext(Dispatchers.IO) {
+        with(sharedPreferences.edit()) {
+            remove(SHARED_PREF_KEY)
+            apply()
+        }
+    }
 
     companion object {
         private const val SHARED_PREF_FILENAME = "token"

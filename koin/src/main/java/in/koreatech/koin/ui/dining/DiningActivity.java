@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ import in.koreatech.koin.ui.dining.adapter.DiningRecyclerAdapter;
 import in.koreatech.koin.ui.dining.presenter.DiningContract;
 import in.koreatech.koin.ui.dining.presenter.DiningPresenter;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.util.DiningUtil;
 import in.koreatech.koin.util.TimeUtil;
 
@@ -380,5 +382,11 @@ public class DiningActivity extends KoinNavigationDrawerActivity implements Dini
     public boolean dispatchTouchEvent(MotionEvent ev) {
         super.dispatchTouchEvent(ev);
         return true;
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Dining.INSTANCE;
     }
 }
