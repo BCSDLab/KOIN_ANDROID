@@ -21,7 +21,6 @@ class UserRepositoryImpl @Inject constructor(
 
         return authResponse.toAuthToken()
     }
-
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser()
     }
