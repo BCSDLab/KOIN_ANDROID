@@ -10,4 +10,8 @@ interface UserRepository {
     ): AuthToken
 
     suspend fun getUserInfo(): User
+
+    suspend fun requestPasswordResetEmail(
+        portalAccount: String
+    )
 }

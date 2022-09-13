@@ -2,8 +2,10 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.RegisterResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 
@@ -25,5 +27,11 @@ class UserRemoteDataSource(
         loginRequest: LoginRequest
     ): RegisterResponse {
         return userApi.postRegister(loginRequest)
+    }
+
+    suspend fun sendPasswordResetEmail(
+        idRequest: IdRequest
+    ): DefaultResponse {
+        return userApi.postPasswordReset(idRequest)
     }
 }

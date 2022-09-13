@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
 import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.version.GetVersionInformationUseCase
+import `in`.koreatech.koin.ui.navigation.state.UserState
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -52,12 +53,14 @@ class SplashViewModel @Inject constructor(
     fun checkToken() {
         viewModelScope.launchIgnoreCancellation {
             isTokenSavedInDeviceUseCase().also {
-                if (it) getUserInfoUseCase().onSuccess {
-                    _tokenState.value = TokenState.Valid
-                }.onFailure {
-                    _tokenState.value = TokenState.Invalid
+                if (it) getUserInfoUseCase().let { (user, error) ->
+                    if (error != null) {
+                        _tokenState.value = TokenState.Invalid
+                    } else {
+                        _tokenState.value = TokenState.Valid
+                    }
                 } else {
-                    _tokenState.value = TokenState.NotFound
+                    _tokenState.value = TokenState.Invalid
                 }
             }
         }

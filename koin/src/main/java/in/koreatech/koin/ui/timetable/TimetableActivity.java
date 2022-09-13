@@ -54,6 +54,7 @@ import in.koreatech.koin.data.network.entity.Semester;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
@@ -956,5 +957,11 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
             timetableAddFloatingButton.hide();
         else
             timetableAddFloatingButton.show();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Timetable.INSTANCE;
     }
 }

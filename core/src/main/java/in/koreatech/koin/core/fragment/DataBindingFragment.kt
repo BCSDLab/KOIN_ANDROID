@@ -12,15 +12,20 @@ abstract class DataBindingFragment<T : ViewDataBinding> : BaseFragment() {
     @get:LayoutRes
     abstract val layoutId: Int
 
-    lateinit var binding: T
-        private set
+    private var _binding: T? = null
+    val binding: T get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
