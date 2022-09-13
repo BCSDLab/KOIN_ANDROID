@@ -8,8 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
+import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.progressdialog.CustomProgressDialog;
 import in.koreatech.koin.core.progressdialog.IProgressDialog;
+import in.koreatech.koin.core.toast.ToastUtil;
 
 
 public class ActivityBase extends AppCompatActivity implements IProgressDialog {
@@ -26,7 +28,6 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
 
         }
     }
-
 
     @Override
     public void showProgressDialog(@Nullable String message) {

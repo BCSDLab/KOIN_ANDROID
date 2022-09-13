@@ -103,11 +103,11 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:layout_gravity="center"
-                android:background="@color/white"
+                android:background="@drawable/bg_rect_vividorange_radius_10dp"
                 android:letterSpacing="0.02"
                 android:lineSpacingExtra="4sp"
                 android:text="한식"
-                android:textColor="@color/very_dark_gray"
+                android:textColor="@color/vivid_orange"
                 android:textSize="13sp" />
 
 

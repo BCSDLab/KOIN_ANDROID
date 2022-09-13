@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.mapper.toUser
+import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -20,8 +21,11 @@ class UserRepositoryImpl @Inject constructor(
 
         return authResponse.toAuthToken()
     }
-
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser()
+    }
+
+    override suspend fun requestPasswordResetEmail(portalAccount: String) {
+        userRemoteDataSource.sendPasswordResetEmail(IdRequest(portalAccount))
     }
 }

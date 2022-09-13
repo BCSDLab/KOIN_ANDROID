@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +34,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
@@ -356,5 +357,11 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         storePresenter.unSubscribe();
         compositeDisposable.dispose();
         super.onDestroy();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Store.INSTANCE;
     }
 }

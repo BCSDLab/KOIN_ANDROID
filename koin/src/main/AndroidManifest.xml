@@ -27,7 +27,8 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
 
-        <receiver android:name=".ui.dining.DiningWidget">
+
+        <receiver android:name=".ui.dining.appwidget.DiningAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -50,7 +51,7 @@
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="@string/navermap_keyvalue" />
+            android:value="${naverMapKey}" />
 
         <receiver
             android:name=".ui.timetable.TimetableWidget"
@@ -106,55 +107,6 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.board.BoardActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.board.ArticleActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.board.ArticleEditActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.callvan.CallvanActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.callvan.CreateRoomActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedSellDetailActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedBuyDetailActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedBuyEditActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedSellEditActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedBuyCreateActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedSellCreateActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.userinfo.UserInfoActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
@@ -164,22 +116,6 @@
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.store.StoreDetailActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.circle.CircleActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.circle.CircleDetailActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.board.ArticleCommentActivity"
-            android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.usedmarket.MarketUsedDetailCommentActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
@@ -200,29 +136,9 @@
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.lostfound.LostFoundMainActivity"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.lostfound.LostFoundDetailActivity"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.lostfound.LostFoundEditActivity"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.lostfound.LostFoundCommentActivity"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.store.StoreFlyerViewActivity"
             android:label="코인 커뮤니티"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".ui.search.SearchActivity"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.error.ErrorActivity"
             android:label="코인 커뮤니티"
