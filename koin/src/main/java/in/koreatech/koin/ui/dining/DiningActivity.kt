@@ -4,6 +4,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.DiningActivityMainBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.toColorForHtml
 import `in`.koreatech.koin.domain.util.ext.toUnderlineForHtml
@@ -159,14 +160,13 @@ class DiningActivity : KoinNavigationDrawerActivity(),
                 diningAdapter.setData(listOf())
                 binding.diningViewEmpty.emptyDiningListFrameLayout.visibility = View.VISIBLE
             } else {
-                with(typeFilter(diningViewModel.selectedType)) {
+                with(DiningUtil.typeFiltering(this, diningViewModel.selectedType)) {
                     if (isEmpty()) {
-                        diningAdapter.setData(listOf())
                         binding.diningViewEmpty.emptyDiningListFrameLayout.visibility = View.VISIBLE
                     } else {
-                        diningAdapter.setData(arrange())
                         binding.diningViewEmpty.emptyDiningListFrameLayout.visibility = View.GONE
                     }
+                    diningAdapter.setData(this)
                 }
             }
         }

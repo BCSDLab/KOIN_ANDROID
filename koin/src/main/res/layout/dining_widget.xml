@@ -106,7 +106,7 @@
                 android:background="@drawable/bg_rect_vividorange_radius_10dp"
                 android:letterSpacing="0.02"
                 android:lineSpacingExtra="4sp"
-                android:text="한식"
+                android:text="@string/dining_korean"
                 android:textColor="@color/vivid_orange"
                 android:textSize="13sp" />
 
@@ -131,7 +131,7 @@
                 android:background="@color/white"
                 android:letterSpacing="0.02"
                 android:lineSpacingExtra="4sp"
-                android:text="일품식"
+                android:text="@string/dining_onedish"
                 android:textColor="@color/very_dark_gray"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -154,10 +154,10 @@
                 android:background="@color/white"
                 android:letterSpacing="0.02"
                 android:lineSpacingExtra="4sp"
-                android:text="양식"
+                android:text="@string/dining_western"
                 android:textColor="@color/very_dark_gray"
                 android:textSize="13sp"
-                tools:text="양식" />
+                tools:text="@string/dining_western" />
 
         </LinearLayout>
 
@@ -179,7 +179,7 @@
                 android:background="@color/white"
                 android:letterSpacing="0.02"
                 android:lineSpacingExtra="4sp"
-                android:text="능수관"
+                android:text="@string/dining_nungsu"
                 android:textColor="@color/very_dark_gray"
                 android:textSize="13sp" />
         </LinearLayout>
@@ -204,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="학교에서 식단이 업로드 되지 않았습니다."
+            android:text="@string/dining_non_upload"
             android:textColor="@color/white"
             android:textSize="13sp" />
         <TextView

@@ -49,10 +49,11 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getNextDayDiningData(): Boolean {
-        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(selectedDate.value!!))
+        val currentDate = selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
+        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(currentDate))
         return if (dateDifference < 7) {
             val nextDayDate =
-                TimeUtil.getNextDayDate(TimeUtil.stringToDateYYYYMMDD(selectedDate.value!!))
+                TimeUtil.getNextDayDate(TimeUtil.stringToDateYYYYMMDD(currentDate))
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(nextDayDate)
             updateDiningData(nextDayDate)
             true
@@ -60,10 +61,11 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getPreviousDayDiningData(): Boolean {
-        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(selectedDate.value!!))
+        val currentDate = selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
+        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(currentDate))
         return if (dateDifference > -7) {
             val previousDay =
-                TimeUtil.getPreviousDayDate(TimeUtil.stringToDateYYYYMMDD(selectedDate.value!!))
+                TimeUtil.getPreviousDayDate(TimeUtil.stringToDateYYYYMMDD(currentDate))
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(previousDay)
             updateDiningData(previousDay)
             true

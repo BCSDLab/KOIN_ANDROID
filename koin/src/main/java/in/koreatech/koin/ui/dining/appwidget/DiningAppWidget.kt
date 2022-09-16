@@ -8,6 +8,7 @@ import `in`.koreatech.koin.data.mapper.toDining
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.usecase.dining.DiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import android.app.PendingIntent
@@ -18,6 +19,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,10 +28,13 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.Date
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class DiningAppWidget : AppWidgetProvider() {
+    @Inject
+    lateinit var diningUseCase: DiningUseCase
     private var currentDiningPlace: DiningPlace = DiningPlace.Korean
-    private var retrofit: Retrofit? = null
     private var job: Job? = null
 
     private fun updateAppWidget(
@@ -101,7 +106,7 @@ class DiningAppWidget : AppWidgetProvider() {
             else TimeUtil.getCurrentTime()
         setDate(remoteViews, targetDay)
         job = CoroutineScope(Dispatchers.IO).launch {
-            getDiningList(targetDay)
+            diningUseCase(targetDay)
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         setDiningList(it, context)
@@ -283,23 +288,5 @@ class DiningAppWidget : AppWidgetProvider() {
         //선택한 버튼의 텍스트 색상과 백그라운드를 강조하는 것으로 변경
         remoteViews.setTextColor(id, context.getColor(R.color.vivid_orange))
         remoteViews.setInt(id, "setBackgroundResource", R.drawable.bg_rect_vividorange_radius_10dp)
-    }
-
-    private fun getRetrofitInstance(): Retrofit {
-        if (retrofit == null) {
-            retrofit = Retrofit.Builder().baseUrl(BASE_URL_PRODUCTION).addConverterFactory(
-                GsonConverterFactory.create()
-            ).build()
-        }
-        return retrofit!!
-    }
-
-    private suspend fun getDiningList(date: Date): Result<List<Dining>> {
-        return kotlin.runCatching {
-            getRetrofitInstance().create(DiningApi::class.java)
-                .getDining(TimeUtil.dateFormatToYYMMDD(date)).map {
-                    it.toDining()
-                }
-        }
     }
 }
