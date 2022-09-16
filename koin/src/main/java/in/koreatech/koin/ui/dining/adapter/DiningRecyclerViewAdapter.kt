@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.data.mapper.toLineChangingString
 import `in`.koreatech.koin.databinding.DiningListItemBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -27,8 +28,14 @@ class DiningRecyclerViewAdapter @Inject constructor(
     override fun onBindViewHolder(holder: DiningViewHolder, position: Int) {
         with(holder.binding) {
             this.diningItemTitle.text = diningData[position].place
-            this.diningItemInfo.text = diningData[position].kcal
-            this.diningItemPrice.text = diningData[position].price
+            this.diningItemInfo.text =
+                "${diningData[position].kcal}${context.getString(R.string.dining_kcal)}"
+            this.diningItemPrice.text =
+                "${context.getString(R.string.dining_cashbee)} ${diningData[position].priceCard}${
+                    context.getString(R.string.dining_money_unit)
+                } / ${context.getString(R.string.dining_cash)} ${diningData[position].priceCash}${
+                    context.getString(R.string.dining_money_unit)
+                }"
             this.diningItemMenu.text = diningData[position].menu.toLineChangingString()
         }
     }
