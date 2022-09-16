@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.dining.viewmodel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.usecase.dining.CheckCorrectDateRangeUseCase
 import `in`.koreatech.koin.domain.usecase.dining.DiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DiningViewModel @Inject constructor(
-    private val diningUseCase: DiningUseCase
+    private val diningUseCase: DiningUseCase,
+    private val checkCorrectDateRangeUseCase: CheckCorrectDateRangeUseCase
 ) : BaseViewModel() {
     private val _isDataLoaded = MutableLiveData<Boolean>()
     val isDataLoaded: LiveData<Boolean> get() = _isDataLoaded
@@ -49,11 +51,12 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getNextDayDiningData(): Boolean {
-        val currentDate = selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
-        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(currentDate))
-        return if (dateDifference < 7) {
+        val currentDate = TimeUtil.stringToDateYYYYMMDD(
+            selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
+        )
+        return if (checkCorrectDateRangeUseCase(currentDate)) {
             val nextDayDate =
-                TimeUtil.getNextDayDate(TimeUtil.stringToDateYYYYMMDD(currentDate))
+                TimeUtil.getNextDayDate(currentDate)
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(nextDayDate)
             updateDiningData(nextDayDate)
             true
@@ -61,11 +64,12 @@ class DiningViewModel @Inject constructor(
     }
 
     fun getPreviousDayDiningData(): Boolean {
-        val currentDate = selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
-        val dateDifference = TimeUtil.getDateDifferenceWithToday(TimeUtil.stringToDateYYYYMMDD(currentDate))
-        return if (dateDifference > -7) {
+        val currentDate = TimeUtil.stringToDateYYYYMMDD(
+            selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
+        )
+        return if (checkCorrectDateRangeUseCase(currentDate)) {
             val previousDay =
-                TimeUtil.getPreviousDayDate(TimeUtil.stringToDateYYYYMMDD(currentDate))
+                TimeUtil.getPreviousDayDate(currentDate)
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(previousDay)
             updateDiningData(previousDay)
             true
