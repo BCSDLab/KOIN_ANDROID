@@ -7,7 +7,7 @@ data class User(
     val anonymousNickname: String?,
     val portalAccount: String,
     val identity: UserIdentity,
-    val name: String,
+    val name: String?,
     val studentNumber: String?,
     val profileImageUrl: String?,
     val gender: Gender,
@@ -16,6 +16,6 @@ data class User(
     val accountNonExpired: Boolean,
     val accountNonLocked: Boolean,
     val credentialsNonExpired: Boolean,
-    val username: String,
+    val username: String?,
     val major: String?
 )

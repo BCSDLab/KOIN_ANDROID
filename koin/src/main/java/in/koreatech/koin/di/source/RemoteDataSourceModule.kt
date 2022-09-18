@@ -1,9 +1,11 @@
 package `in`.koreatech.koin.di.source
 
+import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import android.content.Context
@@ -32,5 +34,13 @@ object RemoteDataSourceModule {
         versionApi: VersionApi
     ) : VersionRemoteDataSource {
         return VersionRemoteDataSource(versionApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeptRemoteDataSource(
+        deptApi: DeptApi
+    ) : DeptRemoteDataSource {
+        return DeptRemoteDataSource(deptApi)
     }
 }

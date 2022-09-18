@@ -110,7 +110,7 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.userinfo.UserInfoEditedActivity"
+            android:name=".ui.userinfo.UserInfoEditActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity

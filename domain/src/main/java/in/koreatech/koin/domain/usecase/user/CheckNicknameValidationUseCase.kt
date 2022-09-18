@@ -5,16 +5,16 @@ import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
-class UserRemoveUseCase @Inject constructor(
+class CheckNicknameValidationUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
-        return Unit to try {
-            userRepository.deleteUser()
-            null
+    suspend operator fun invoke(nickname: String) : Pair<Boolean?, ErrorHandler?> {
+        return try {
+            if(nickname.isBlank()) throw IllegalArgumentException()
+            userRepository.isUsernameDuplicated(nickname) to null
         } catch (t: Throwable) {
-            userErrorHandler.handleDeleteUserError(t)
+            null to userErrorHandler.handleUsernameDuplicatedError(t)
         }
     }
 }

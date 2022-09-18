@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.di.error
 
+import `in`.koreatech.koin.data.error.DeptErrorHandlerImpl
 import `in`.koreatech.koin.data.error.UserErrorHandlerImpl
+import `in`.koreatech.koin.domain.error.dept.DeptErrorHandler
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import android.content.Context
 import dagger.Module
@@ -19,4 +21,10 @@ object ErrorHandlerModule {
     fun provideUserErrorHandler(
         @ApplicationContext applicationContext: Context
     ): UserErrorHandler = UserErrorHandlerImpl(applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideDeptErrorHandler(
+        @ApplicationContext applicationContext: Context
+    ): DeptErrorHandler = DeptErrorHandlerImpl(applicationContext)
 }
