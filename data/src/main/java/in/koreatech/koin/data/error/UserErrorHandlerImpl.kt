@@ -4,6 +4,9 @@ import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.data.util.handleCommonError
 import `in`.koreatech.koin.data.util.unknownErrorHandler
 import `in`.koreatech.koin.data.util.withUnknown
+import `in`.koreatech.koin.domain.constant.ERROR_INVALID_STUDENT_ID
+import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_GENDER_NOT_SET
+import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import android.content.Context
@@ -36,9 +39,37 @@ class UserErrorHandlerImpl @Inject constructor(
         }
     }
 
-    override fun handleDeleteUser(throwable: Throwable): ErrorHandler {
+    override fun handleDeleteUserError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             unknownErrorHandler(context)
+        }
+    }
+
+    override fun handleUsernameDuplicatedError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when(it) {
+                is IllegalArgumentException -> {
+                    ErrorHandler(context.getString(R.string.error_nickname_error))
+                }
+            }
+            unknownErrorHandler(context)
+        }
+    }
+
+    override fun handleUpdateUserError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when {
+                it is IndexOutOfBoundsException || it.message == ERROR_INVALID_STUDENT_ID -> {
+                    ErrorHandler(context.getString(R.string.error_invalid_student_number))
+                }
+                it.message == ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK -> {
+                    ErrorHandler(context.getString(R.string.error_nickname_validation_not_performed))
+                }
+                it.message == ERROR_USERINFO_GENDER_NOT_SET -> {
+                    ErrorHandler(context.getString(R.string.error_gender_not_checked))
+                }
+                else -> unknownErrorHandler(context)
+            }
         }
     }
 }

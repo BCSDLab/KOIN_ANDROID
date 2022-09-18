@@ -16,4 +16,6 @@ interface UserRepository {
     )
 
     suspend fun deleteUser()
+    suspend fun isUsernameDuplicated(nickname: String): Boolean
+    suspend fun updateUser(user: User)
 }

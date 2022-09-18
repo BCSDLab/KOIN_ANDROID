@@ -10,7 +10,7 @@ inline fun AppBarBase.setAppBarButtonClickedListener(
     setOnClickListener {
         if (it.id == AppBarBase.getLeftButtonId()) {
             leftButtonClicked()
-        } else if (id == AppBarBase.getRightButtonId()) {
+        } else if (it.id == AppBarBase.getRightButtonId()) {
             rightButtonClicked()
         }
     }

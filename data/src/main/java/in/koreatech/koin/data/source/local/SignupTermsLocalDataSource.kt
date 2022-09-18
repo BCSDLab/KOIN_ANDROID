@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.local
 
 import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -11,7 +12,7 @@ import java.io.InputStreamReader
 import java.nio.channels.AsynchronousFileChannel
 
 class SignupTermsLocalDataSource @Inject constructor(
-    private val applicationContext: Context
+    @ApplicationContext private val applicationContext: Context
 ) {
     suspend fun getPrivacyTermText(): String = withContext(Dispatchers.IO) {
         applicationContext.assets.open(PRIVACY_TERMS_TEXT_FILE_NAME).bufferedReader().useLines { lines ->

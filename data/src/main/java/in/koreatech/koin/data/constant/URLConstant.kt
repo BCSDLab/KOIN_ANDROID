@@ -82,4 +82,9 @@ object URLConstant {
         const val TEMP = "/temp"
         const val TEMP_IMAGE_UPLOAD: String = "$TEMP/items/image/upload"
     }
+
+    object DEPT {
+        const val DEPT = "/dept"
+        const val DEPTS = "/depts"
+    }
 }

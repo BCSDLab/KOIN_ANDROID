@@ -8,6 +8,7 @@ import `in`.koreatech.koin.databinding.ActivityUserInfoBinding
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.toUserState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
@@ -25,6 +26,10 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<ActivityUserInfoBinding>(R.layout.activity_user_info)
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
+    private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
+        if(edited) userInfoViewModel.getUserInfo()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -41,7 +46,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
                 onBackPressed()
             },
             rightButtonClicked = {
-                startActivity(Intent(this@UserInfoActivity, UserInfoEditedActivity::class.java))
+                userInfoEditActivityNew.launch(Unit)
             }
         )
 
@@ -61,8 +66,8 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         withLoading(this@UserInfoActivity, this)
 
         observeLiveData(user) { user ->
-            user?.let {
-                val userState = it.toUserState(this@UserInfoActivity)
+            if(user != null) {
+                val userState = user.toUserState(this@UserInfoActivity)
                 binding.userinfoTextviewId.text = userState.portalAccount
                 binding.userinfoTextviewName.text = userState.username
                 binding.userinfoTextviewNickName.text = userState.userNickname
@@ -71,11 +76,15 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
                 binding.userinfoTextviewGender.text = userState.gender
                 binding.userinfoTextviewStudentId.text = userState.studentNumber
                 binding.userinfoTextviewMajor.text = userState.major
-            } ?: ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+            } else {
+                ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+                finish()
+            }
         }
 
         observeLiveData(getUserErrorMessage) {
             ToastUtil.getInstance().makeShort(it)
+            finish()
         }
 
         observeLiveData(logoutEvent) {
