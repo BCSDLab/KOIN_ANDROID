@@ -45,14 +45,10 @@ class UserInfoViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launchWithLoading {
-        try {
-            userLogoutUseCase()
-            _logoutEvent.call()
-        } catch (t: Throwable) {
-            _logoutErrorMessage.value = "로그아웃에 실패했습니다."
-        }
+        userLogoutUseCase()?.let {
+            _logoutErrorMessage.value = it.message
+        } ?: _logoutEvent.call()
     }
-
 
     fun removeUser() = viewModelScope.launchWithLoading {
         userRemoveUseCase().second?.let { errorHandler ->
