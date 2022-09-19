@@ -1,261 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fitsSystemWindows="true"
-    tools:ignore="MissingPrefix">
+<layout>
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingPrefix">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/freeboard_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/freeboard_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_app_bar_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:fontName="Bold"
-                app:leftButtonBackground="@drawable/ic_back_arrow"
-                app:leftButtonHeight="14dp"
-                app:leftButtonWidth="14dp"
-                app:rightButtonBackground="@drawable/ic_hamburger_button"
-                app:rightButtonHeight="18dp"
-                app:rightButtonWidth="12dp" />
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/dining_swiperefreshlayout"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <RelativeLayout
+                <in.koreatech.koin.core.appbar.AppBarBase
+                    android:id="@+id/koin_base_app_bar_dark"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    app:fontName="Bold"
+                    app:leftButtonBackground="@drawable/ic_back_arrow"
+                    app:leftButtonHeight="14dp"
+                    app:leftButtonWidth="14dp"
+                    app:rightButtonBackground="@drawable/ic_hamburger_button"
+                    app:rightButtonHeight="18dp"
+                    app:rightButtonWidth="12dp" />
 
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/dining_swiperefreshlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <androidx.core.widget.NestedScrollView
-                        android:id="@+id/article_comment_scrollview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="56dp"
-                        android:layout_marginBottom="56dp"
-                        android:fillViewport="true">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.1" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline2"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.35" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline4"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.65" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline3"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.836" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline5"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.3" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline6"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.464" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline7"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.628" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline8"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.372" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline9"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.536" />
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline10"
-                                android:layout_width="1dp"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.7" />
-
-                            <Button
-                                android:id="@+id/dining_before_date_button"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_arrow_left"
-                                android:textSize="24sp"
-                                app:layout_constraintStart_toStartOf="@+id/guideline"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                            <TextView
-                                android:id="@+id/dining_date_textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center_horizontal"
-                                android:lineSpacingExtra="7sp"
-                                android:textColor="#000000"
-                                android:textSize="15sp"
-                                app:fontName="Custom5"
-                                app:layout_constraintBottom_toBottomOf="@+id/dining_before_date_button"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline4"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                                app:layout_constraintTop_toTopOf="@+id/dining_before_date_button"
-                                tools:text="2019년 3월 24일" />
-
-
-                            <Button
-                                android:id="@+id/dining_next_date_button"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_alignTop="@+id/dining_before_date_button"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_arrow_right"
-                                android:textSize="24sp"
-                                app:layout_constraintStart_toStartOf="@+id/guideline3"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/dining_lunch_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="19dp"
-                                android:background="@color/red_alpha0"
-                                android:gravity="center"
-                                android:text="점심"
-                                android:textColor="@color/colorPrimaryText"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline9"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="@+id/guideline6"
-                                app:layout_constraintTop_toBottomOf="@+id/dining_date_textView" />
-
-                            <TextView
-                                android:id="@+id/dining_breakfast_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="19dp"
-                                android:layout_marginBottom="26dp"
-                                android:background="@color/red_alpha0"
-                                android:text="아침"
-                                android:textColor="@color/colorPrimaryText"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                                app:layout_constraintHorizontal_bias="1.0"
-                                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                                app:layout_constraintTop_toBottomOf="@+id/dining_date_textView" />
-
-                            <TextView
-                                android:id="@+id/dining_dinner_button"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="19dp"
-                                android:layout_marginBottom="26dp"
-                                android:background="@color/red_alpha0"
-                                android:gravity="center"
-                                android:text="저녁"
-                                android:textColor="@color/colorPrimaryText"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline10"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="@+id/guideline7"
-                                app:layout_constraintTop_toBottomOf="@+id/dining_date_textView"
-                                app:layout_constraintVertical_bias="0.0" />
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/dining_recyclerview"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="12dp"
-                                android:lineSpacingExtra="10sp"
-                                android:textColor="@color/black"
-                                app:layout_constrainedWidth="true"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/dining_lunch_button"
-                                app:layout_constraintVertical_bias="1.0" />
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </androidx.core.widget.NestedScrollView>
-
-                    <include
-                        layout="@layout/dining_view_empty"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="164dp" />
-
-                </RelativeLayout>
+                        android:orientation="vertical">
 
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-        </RelativeLayout>
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/article_comment_scrollview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="56dp"
+                            android:layout_marginBottom="56dp"
+                            android:fillViewport="true">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-    <include layout="@layout/base_navigation_drawer_left" />
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.1" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline2"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.35" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline4"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.65" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline3"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.836" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline5"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.3" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline6"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.464" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline7"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.628" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline8"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.372" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline9"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.536" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline10"
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.7" />
+
+                                <Button
+                                    android:id="@+id/dining_before_date_button"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/ic_arrow_left"
+                                    android:textSize="24sp"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline"
+                                    app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.drawerlayout.widget.DrawerLayout>
+                                <TextView
+                                    android:id="@+id/dining_date_textView"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:lineSpacingExtra="7sp"
+                                    android:textColor="#000000"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom5"
+                                    app:layout_constraintBottom_toBottomOf="@+id/dining_before_date_button"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                                    app:layout_constraintHorizontal_bias="0.5"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                                    app:layout_constraintTop_toTopOf="@+id/dining_before_date_button"
+                                    tools:text="2019년 3월 24일" />
+
+
+                                <Button
+                                    android:id="@+id/dining_next_date_button"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignTop="@+id/dining_before_date_button"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="20dp"
+                                    android:background="@drawable/ic_arrow_right"
+                                    android:textSize="24sp"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline3"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/dining_lunch_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="19dp"
+                                    android:background="@color/red_alpha0"
+                                    android:gravity="center"
+                                    android:text="@string/dining_lunch"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline9"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline6"
+                                    app:layout_constraintTop_toBottomOf="@+id/dining_date_textView" />
+
+                                <TextView
+                                    android:id="@+id/dining_breakfast_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="19dp"
+                                    android:layout_marginBottom="26dp"
+                                    android:background="@color/red_alpha0"
+                                    android:text="@string/dining_breakfast"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                                    app:layout_constraintHorizontal_bias="1.0"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                                    app:layout_constraintTop_toBottomOf="@+id/dining_date_textView" />
+
+                                <TextView
+                                    android:id="@+id/dining_dinner_button"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="19dp"
+                                    android:layout_marginBottom="26dp"
+                                    android:background="@color/red_alpha0"
+                                    android:gravity="center"
+                                    android:text="@string/dining_dinner"
+                                    android:textColor="@color/colorPrimaryText"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBottom_toTopOf="@+id/dining_recyclerview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline10"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline7"
+                                    app:layout_constraintTop_toBottomOf="@+id/dining_date_textView"
+                                    app:layout_constraintVertical_bias="0.0" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/dining_recyclerview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="16dp"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:layout_marginBottom="12dp"
+                                    android:lineSpacingExtra="10sp"
+                                    android:textColor="@color/black"
+                                    app:layout_constrainedWidth="true"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_bias="0.0"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/dining_lunch_button"
+                                    app:layout_constraintVertical_bias="1.0" />
+
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.core.widget.NestedScrollView>
+
+                        <include
+                            android:id="@+id/dining_view_empty"
+                            layout="@layout/dining_view_empty"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="164dp" />
+
+                    </RelativeLayout>
+
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </RelativeLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include layout="@layout/base_navigation_drawer_left" />
+
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

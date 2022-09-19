@@ -13,3 +13,6 @@ val String.isValidStudentId: Boolean get() {
     val year: Int = this.trim().substring(0..3).toInt()
     return year in 1992..Calendar.getInstance().get(Calendar.YEAR)
 }
+
+fun String.toUnderlineForHtml() = "<u>$this</u>"
+fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" //color = #ff000000 형태
