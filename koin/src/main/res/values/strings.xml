@@ -209,4 +209,19 @@
     <string name="user_info_id_hint">학번 입력시 자동 입력</string>
     <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
     <string name="nickname_available">사용 가능한 닉네임입니다</string>
+
+    <!-- Dining -->
+    <string name="dining_no_more_data_load">"더 이상 데이터를 불러올 수 없습니다."</string>
+    <string name="dining_breakfast">아침</string>
+    <string name="dining_lunch">점심</string>
+    <string name="dining_dinner">저녁</string>
+    <string name="dining_kcal">kcal</string>
+    <string name="dining_cashbee">캐쉬비</string>
+    <string name="dining_money_unit">원</string>
+    <string name="dining_cash">현금</string>
+    <string name="dining_korean">한식</string>
+    <string name="dining_onedish">일품식</string>
+    <string name="dining_western">양식</string>
+    <string name="dining_nungsu">능수관</string>
+    <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
 </resources>
