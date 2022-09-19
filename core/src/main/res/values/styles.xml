@@ -13,8 +13,6 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-    <style name="EditTextTheme.sdf" parent="@android:style/Widget.EditText" />
-
     <style name="KAPTheme" parent="AppTheme">
 
     </style>
