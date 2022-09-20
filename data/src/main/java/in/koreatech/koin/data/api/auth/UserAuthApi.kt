@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
@@ -14,7 +15,7 @@ interface UserAuthApi {
     suspend fun getUser(): UserResponse
 
     @PUT(URLConstant.USER.ME)
-    suspend fun putUser(@Body userResponse: UserResponse): UserResponse
+    suspend fun putUser(@Body userRequest: UserRequest): UserResponse
 
     @DELETE(URLConstant.USER.ME)
     suspend fun deleteUser(): DefaultResponse

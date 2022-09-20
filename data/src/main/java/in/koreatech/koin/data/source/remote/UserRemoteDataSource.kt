@@ -4,10 +4,9 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.DefaultResponse
-import `in`.koreatech.koin.data.response.user.RegisterResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.request.user.UserRequest
+import `in`.koreatech.koin.data.response.user.*
+import retrofit2.HttpException
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
@@ -33,5 +32,17 @@ class UserRemoteDataSource(
         idRequest: IdRequest
     ): DefaultResponse {
         return userApi.postPasswordReset(idRequest)
+    }
+
+    suspend fun deleteUser(): DefaultResponse {
+        return userAuthApi.deleteUser()
+    }
+
+    suspend fun checkNickname(nickname: String): CheckNicknameResponse {
+        return userApi.checkNickname(nickname)
+    }
+
+    suspend fun updateUser(userRequest: UserRequest): UserResponse {
+        return userAuthApi.putUser(userRequest)
     }
 }

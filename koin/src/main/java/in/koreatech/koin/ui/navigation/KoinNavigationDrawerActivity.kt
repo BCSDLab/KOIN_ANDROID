@@ -27,6 +27,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -106,7 +107,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
 
         findViewById<View>(R.id.navi_item_myinfo).setOnClickListener {
-            koinNavigationDrawerViewModel.selectMenu(MenuState.MyInfo)
+            koinNavigationDrawerViewModel.selectMenu(MenuState.UserInfo)
         }
 
         val leftArrowButton = findViewById<View>(R.id.drawer_left_arrow_button)
@@ -119,7 +120,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToNavigationDeveloper()
         }
 
-        initViewModel()
+        initDrawerViewModel()
         koinNavigationDrawerViewModel.getUser()
         koinNavigationDrawerViewModel.initMenu(menuState)
     }
@@ -148,7 +149,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun initViewModel() = with(koinNavigationDrawerViewModel) {
+    private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(userState) { (user, _) ->
             val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
             if (isAnonymous) {
@@ -180,7 +181,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 } else {
                     goToTimetableActivty()
                 }
-                MenuState.MyInfo -> if (isAnonymous) {
+                MenuState.UserInfo -> if (isAnonymous) {
                     showLoginRequestDialog()
                 } else {
                     goToUserInfoActivity()
@@ -188,15 +189,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
             }
             drawerLayout.closeDrawer()
-        }
-
-        observeLiveData(logoutEvent) {
-            finishAffinity()
-            startActivity(Intent(this@KoinNavigationDrawerActivity, LoginActivity::class.java))
-        }
-
-        observeLiveData(logoutError) {
-            ToastUtil.getInstance().makeShort(it)
         }
     }
 
@@ -350,10 +342,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }
         val dialog = builder.create() // 알림창 객체 생성
         dialog.show() // 알림창 띄우기
-    }
-
-    fun onClickNavigationLogout() {
-        koinNavigationDrawerViewModel.logout()
     }
 
     private fun goToActivityFinish(intent: Intent) {
