@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.di.usecase
 
 import `in`.koreatech.koin.domain.repository.DiningRepository
+import `in`.koreatech.koin.domain.usecase.dining.CheckCorrectDateRangeUseCase
 import `in`.koreatech.koin.domain.usecase.dining.DiningUseCase
 import dagger.Module
 import dagger.Provides
@@ -15,5 +16,11 @@ object UseCaseModule {
     @Singleton
     fun provideDiningUseCase(
         diningRepository: DiningRepository
-    ): DiningUseCase  = DiningUseCase(diningRepository)
+    ): DiningUseCase = DiningUseCase(diningRepository)
+
+    @Provides
+    @Singleton
+    fun provideCheckCorrectDateRangeUseCase(): CheckCorrectDateRangeUseCase {
+        return CheckCorrectDateRangeUseCase()
+    }
 }
