@@ -195,8 +195,8 @@ public class BusMainFragment extends BusBaseFragment implements BusMainContract.
 
 
     public void init() {
-        this.departureState = ((BusActivity) getActivity()).departureState;
-        this.arrivalState = ((BusActivity) getActivity()).arrivalState;
+        this.departureState = ((BusActivity) getActivity()).getDepartureState();
+        this.arrivalState = ((BusActivity) getActivity()).getArrivalState();
         busDepartureSpinner.setSelection(departureState);
         busArrivalSpinner.setSelection(arrivalState);
         busSwipeRefreshLayout.setOnRefreshListener(this);

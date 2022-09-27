@@ -10,7 +10,6 @@ object URLConstant {
 
     const val ADMIN = "admin/"
     const val VERSION = "versions"
-    const val BUS = "buses"
     const val DINING = "dinings"
     const val SHOPS = "shops"
     const val FAQ = "faqs"
@@ -20,6 +19,13 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+
+    object BUS {
+        const val BUS = "bus"
+        const val COURSES = "$BUS/courses"
+        const val TIMETABLE = "$BUS/timetable"
+        const val BUSES = "/buses"
+    }
 
     object USER {
         const val USER = "user"
