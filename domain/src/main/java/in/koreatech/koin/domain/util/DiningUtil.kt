@@ -8,7 +8,8 @@ import `in`.koreatech.koin.domain.util.ext.typeFilter
 object DiningUtil {
     private val diningEndTime = listOf("09:00", "13:30", "18:30")
 
-    fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> = diningList.typeFilter(type).arrange()
+    fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
+        diningList.typeFilter(type).arrange()
 
     fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
         DiningType.Breakfast
@@ -21,4 +22,15 @@ object DiningUtil {
     }
 
     fun isNextDay() = TimeUtil.compareWithCurrentTime(diningEndTime[2]) < 0
+
+    fun getCurrentDate() =
+        if (isNextDay()) TimeUtil.getNextDayDate(TimeUtil.getCurrentTime())
+        else TimeUtil.getCurrentTime()
+
+    fun findDining(diningList: List<Dining>, type: DiningType, place: String): Dining? {
+        diningList.typeFilter(type).forEach {
+            if (it.place == place) return it
+        }
+        return null
+    }
 }
