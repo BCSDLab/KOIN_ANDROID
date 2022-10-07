@@ -119,38 +119,45 @@ class DiningAppWidget : AppWidgetProvider() {
         val remoteViews = RemoteViews(context.packageName, R.layout.dining_widget)
         val currentType = DiningUtil.getCurrentType()
         remoteViews.removeAllViews(R.id.dining_widget_place_layout)
-        DiningUtil.typeFiltering(diningList, currentType).forEachIndexed { index, dining ->
-            if (index < DINING.WIDGET_PLACE_NUMBERS) {
-                val placeRemoteViews = RemoteViews(context.packageName, R.layout.dining_widget_place)
-                remoteViews.addView(
-                    R.id.dining_widget_place_layout,
-                    placeRemoteViews
-                )
-                if (currentDiningPlace == null) {
-                    if (index == 0) {
-                        currentDiningPlace = dining.place
-                        makePlaceViewSelected(
-                            context,
-                            R.id.dining_widget_place_name_textview,
-                            placeRemoteViews
-                        )
+        with(DiningUtil.typeFiltering(diningList, currentType)) {
+            var isCurrentPlaceInDining = false
+            forEachIndexed { index, dining ->
+                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) isCurrentPlaceInDining = true
+            }
+            if (!isCurrentPlaceInDining) currentDiningPlace = null
+            forEachIndexed { index, dining ->
+                if (index < DINING.WIDGET_PLACE_NUMBERS) {
+                    val placeRemoteViews = RemoteViews(context.packageName, R.layout.dining_widget_place)
+                    remoteViews.addView(
+                        R.id.dining_widget_place_layout,
+                        placeRemoteViews
+                    )
+                    if (currentDiningPlace == null) {
+                        if (index == 0) {
+                            currentDiningPlace = dining.place
+                            makePlaceViewSelected(
+                                context,
+                                R.id.dining_widget_place_name_textview,
+                                placeRemoteViews
+                            )
+                        }
+                    } else {
+                        if (currentDiningPlace == dining.place) {
+                            makePlaceViewSelected(
+                                context,
+                                R.id.dining_widget_place_name_textview,
+                                placeRemoteViews
+                            )
+                        }
                     }
-                } else {
-                    if (currentDiningPlace == dining.place) {
-                        makePlaceViewSelected(
-                            context,
-                            R.id.dining_widget_place_name_textview,
-                            placeRemoteViews
-                        )
-                    }
+                    placeRemoteViews.setTextViewText(R.id.dining_widget_place_name_textview, dining.place)
+                    setButtonEventName(
+                        placeRemoteViews,
+                        context,
+                        "${DINING.WIDGET_ACTION_CLICKED} ${dining.place}",
+                        R.id.dining_widget_place_name_textview
+                    )
                 }
-                placeRemoteViews.setTextViewText(R.id.dining_widget_place_name_textview, dining.place)
-                setButtonEventName(
-                    placeRemoteViews,
-                    context,
-                    "${DINING.WIDGET_ACTION_CLICKED} ${dining.place}",
-                    R.id.dining_widget_place_name_textview
-                )
             }
         }
         val selectedDining =
