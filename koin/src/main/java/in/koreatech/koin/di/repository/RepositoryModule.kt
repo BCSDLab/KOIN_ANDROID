@@ -9,12 +9,15 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.*
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
+import `in`.koreatech.koin.data.repository.LandRepositoryImpl
 import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.LandRemoteDataSource
 import `in`.koreatech.koin.domain.repository.DiningRepository
+import `in`.koreatech.koin.domain.repository.LandRepository
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -81,5 +84,13 @@ object RepositoryModule {
         diningRemoteDataSource: DiningRemoteDataSource
     ): DiningRepository {
         return DiningRepositoryImpl(diningRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLandRepository(
+        landRemoteDataSource: LandRemoteDataSource
+    ): LandRepository {
+        return LandRepositoryImpl(landRemoteDataSource)
     }
 }

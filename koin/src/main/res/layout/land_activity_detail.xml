@@ -1,837 +1,838 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+<layout>
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_app_bar_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:fontName="Bold"
-                app:leftButtonBackground="@drawable/ic_back_arrow"
-                app:leftButtonHeight="14dp"
-                app:leftButtonWidth="14dp"
-                app:rightButtonBackground="@drawable/ic_hamburger_button"
-                app:rightButtonHeight="18dp"
-                app:rightButtonWidth="12dp"
-                app:titleText="복덕방" />
-
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <ScrollView
+                <in.koreatech.koin.core.appbar.AppBarBase
+                    android:id="@+id/koin_base_app_bar_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0">
+                    app:fontName="Bold"
+                    app:leftButtonBackground="@drawable/ic_back_arrow"
+                    app:leftButtonHeight="14dp"
+                    app:leftButtonWidth="14dp"
+                    app:rightButtonBackground="@drawable/ic_hamburger_button"
+                    app:rightButtonHeight="18dp"
+                    app:rightButtonWidth="12dp"
+                    app:titleText="복덕방" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="56dp"
+                    android:orientation="vertical">
+
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/land_detail_name_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="128dp"
-                            android:layout_marginTop="44dp"
-                            android:layout_marginEnd="128dp"
-                            android:textColor="@color/black"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="골든빌(A,B)" />
-
-                        <TextView
-                            android:id="@+id/land_detail_room_info_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="91dp"
-                            android:lineHeight="11sp"
-                            android:text="원룸 정보"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/land_detail_name_textview" />
-
-                        <TableLayout
-                            android:id="@+id/land_detail_room_info_tablelayout"
-                            android:layout_width="328dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="11dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_land_detail_table"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/land_detail_room_info_textview">
-
-                            <TableRow
-                                android:layout_marginTop="2dp"
-                                android:background="@color/white"
-                                android:paddingStart="14dp"
-                                android:paddingTop="8dp"
-                                android:paddingEnd="14dp"
-                                android:paddingBottom="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="전세"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_charter_fee"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="-" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="17dp"
-                                    android:text="방 종류"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_room_type"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="7dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="원룸" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_marginTop="1dp"
-                                android:background="@color/white"
-                                android:paddingStart="14dp"
-                                android:paddingTop="8dp"
-                                android:paddingEnd="14dp"
-                                android:paddingBottom="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="월세"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_monthly_fee"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="200만 원(6개월)" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="17dp"
-                                    android:text="보증금"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_deposit"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="7dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="119만 9천원" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_marginTop="1dp"
-                                android:background="@color/white"
-                                android:paddingStart="14dp"
-                                android:paddingTop="8dp"
-                                android:paddingEnd="14dp"
-                                android:paddingBottom="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="층수"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_floor"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="4층" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="17dp"
-                                    android:text="관리비"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_management_fee"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="7dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="21만 원" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_marginTop="1dp"
-                                android:layout_marginBottom="2dp"
-                                android:background="@color/white"
-                                android:paddingStart="14dp"
-                                android:paddingTop="8dp"
-                                android:paddingEnd="14dp"
-                                android:paddingBottom="8dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="방 크기"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_room_size"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="5평" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="17dp"
-                                    android:text="연락처"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="13sp" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_phone"
-                                    android:layout_width="90dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="7dp"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp"
-                                    tools:text="010-1234-1234" />
-                            </TableRow>
-                        </TableLayout>
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/land_detail_image_framelayout"
-                            android:layout_width="328dp"
-                            android:layout_height="184dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@color/blue1"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/land_detail_room_info_tablelayout">
-
-                            <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/land_detail_image_viewpager"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_margin="1dp"
-                                android:background="@color/white1"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:id="@+id/land_detail_ic_left_imageview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_left_02"
-                                android:visibility="invisible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <ImageView
-                                android:id="@+id/land_detail_ic_right_imageview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_right_02"
-                                android:visibility="invisible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/land_detail_noimage_textview"
+                                android:id="@+id/land_detail_name_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@color/colorAccent"
-                                android:gravity="center_vertical"
-                                android:paddingStart="3dp"
-                                android:paddingTop="1dp"
-                                android:paddingEnd="3dp"
-                                android:paddingBottom="1dp"
-                                android:textAlignment="center"
-                                android:textColor="@color/white"
-                                android:textSize="13sp"
+                                android:layout_marginStart="128dp"
+                                android:layout_marginTop="44dp"
+                                android:layout_marginEnd="128dp"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"
                                 android:textStyle="bold"
-                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:text="이미지 준비 중입니다." />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/land_detail_room_option_constraintlayout"
-                            android:layout_width="328dp"
-                            android:layout_height="335dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="40dp"
-                            android:layout_marginEnd="16dp"
-                            android:background="@drawable/bg_blue_rectangle"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/land_detail_image_framelayout">
+                                tools:text="골든빌(A,B)" />
 
                             <TextView
-                                android:id="@+id/land_detail_room_option_textview"
+                                android:id="@+id/land_detail_room_info_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:text="원룸 옵션"
+                                android:layout_marginTop="91dp"
+                                android:lineHeight="11sp"
+                                android:text="@string/land_detail_land_info"
                                 android:textColor="@color/black"
                                 android:textSize="15sp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toBottomOf="@id/land_detail_name_textview" />
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_airconditioner_linearlayout"
-                                android:layout_width="wrap_content"
+                            <TableLayout
+                                android:id="@+id/land_detail_room_info_tablelayout"
+                                android:layout_width="328dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="11dp"
+                                android:layout_marginEnd="16dp"
+                                android:background="@drawable/bg_land_detail_table"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_info_textview">
 
+                                <TableRow
+                                    android:layout_marginTop="2dp"
+                                    android:background="@color/white"
+                                    android:paddingStart="14dp"
+                                    android:paddingTop="8dp"
+                                    android:paddingEnd="14dp"
+                                    android:paddingBottom="8dp">
 
-                                <ImageView
-                                    android:id="@+id/land_detail_airconditioner_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_airconditioner" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_charter"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <TextView
-                                    android:id="@+id/land_detail_airconditioner_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="에어컨"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/land_detail_charter_fee"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="-" />
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_refrigerator_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toEndOf="@id/land_detail_airconditioner_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="17dp"
+                                        android:text="@string/land_detail_room_type"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <ImageView
-                                    android:id="@+id/land_detail_refrigerator_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_refrigerator" />
+                                    <TextView
+                                        android:id="@+id/land_detail_room_type"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="7dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="원룸" />
+                                </TableRow>
 
-                                <TextView
-                                    android:id="@+id/land_detail_refrigerator_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="냉장고"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                <TableRow
+                                    android:layout_marginTop="1dp"
+                                    android:background="@color/white"
+                                    android:paddingStart="14dp"
+                                    android:paddingTop="8dp"
+                                    android:paddingEnd="14dp"
+                                    android:paddingBottom="8dp">
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_closet_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toEndOf="@id/land_detail_refrigerator_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_monthly_fee"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <ImageView
-                                    android:id="@+id/land_detail_closet_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_closet" />
+                                    <TextView
+                                        android:id="@+id/land_detail_monthly_fee"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="200만 원(6개월)" />
 
-                                <TextView
-                                    android:id="@+id/land_detail_closet_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="옷장"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="17dp"
+                                        android:text="@string/land_detail_deposit"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_tv_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="42dp"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginEnd="43dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toEndOf="@id/land_detail_closet_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+                                    <TextView
+                                        android:id="@+id/land_detail_deposit"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="7dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="119만 9천원" />
+                                </TableRow>
 
-                                <ImageView
-                                    android:id="@+id/land_detail_tv_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_tv" />
+                                <TableRow
+                                    android:layout_marginTop="1dp"
+                                    android:background="@color/white"
+                                    android:paddingStart="14dp"
+                                    android:paddingTop="8dp"
+                                    android:paddingEnd="14dp"
+                                    android:paddingBottom="8dp">
 
-                                <TextView
-                                    android:id="@+id/land_detail_tv_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="TV"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_detail_floor_number"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_microwave_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_airconditioner_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_airconditioner_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_airconditioner_linearlayout">
+                                    <TextView
+                                        android:id="@+id/land_detail_floor"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="4층" />
 
-                                <ImageView
-                                    android:id="@+id/land_detail_microwave_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_microwave_range" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="17dp"
+                                        android:text="@string/land_detail_management_fee"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <TextView
-                                    android:id="@+id/land_detail_microwave_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="전자레인지"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/land_detail_management_fee"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="7dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="21만 원" />
+                                </TableRow>
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_gas_range_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_refrigerator_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_refrigerator_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_refrigerator_linearlayout">
+                                <TableRow
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginBottom="2dp"
+                                    android:background="@color/white"
+                                    android:paddingStart="14dp"
+                                    android:paddingTop="8dp"
+                                    android:paddingEnd="14dp"
+                                    android:paddingBottom="8dp">
 
-                                <ImageView
-                                    android:id="@+id/land_detail_gas_range_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_gas_stove" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_detail_room_size"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <TextView
-                                    android:id="@+id/land_detail_gas_range_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="가스레인지"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
+                                    <TextView
+                                        android:id="@+id/land_detail_room_size"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="5평" />
 
-                            <LinearLayout
-                                android:id="@+id/land_detail_induction_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_closet_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_closet_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_closet_linearlayout">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="17dp"
+                                        android:text="@string/land_detail_call_number"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="13sp" />
 
-                                <ImageView
-                                    android:id="@+id/land_detail_induction_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_induction_range" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_induction_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="인덕션"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_water_purifier_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_tv_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_tv_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_tv_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_water_purifier_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_water_purifier" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_water_purifier_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="정수기"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_washer_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_microwave_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_microwave_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_microwave_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_washer_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_clothes_washer" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_washer_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="세탁기"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_bed_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_gas_range_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_gas_range_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_gas_range_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_bed_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_bed" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_bed_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="침대"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_desk_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_induction_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_induction_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_induction_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_desk_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_desk" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_desk_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="책상"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_shoe_closet_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_water_purifier_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_water_purifier_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_water_purifier_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_shoe_closet_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_shoe_rack" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_shoe_closet_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="신발장"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_doorlock_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginBottom="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_washer_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_washer_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_washer_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_doorlock_imageview"
-                                    android:layout_width="30dp"
-                                    android:layout_height="30dp"
-                                    android:src="@drawable/ic_doorlock" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_doorlock_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="도어락"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_bidet_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginBottom="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_bed_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_bed_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_bed_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_bidet_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_bidet" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_bidet_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="비데"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_veranda_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginBottom="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_desk_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_desk_linearlayout"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_desk_linearlayout">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_veranda_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_veranda" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_veranda_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:text="베란다"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:id="@+id/land_detail_elevator_linearlayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="22dp"
-                                android:layout_marginBottom="22dp"
-                                android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="@id/land_detail_shoe_closet_linearlayout"
-                                app:layout_constraintStart_toStartOf="@id/land_detail_shoe_closet_linearlayout"
-                                app:layout_constraintTop_toBottomOf="@id/land_detail_shoe_closet_linearlayout"
-                                app:layout_constraintBottom_toBottomOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/land_detail_elevator_imageview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/ic_elevator" />
-
-                                <TextView
-                                    android:id="@+id/land_detail_elevator_textview"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="엘리베이터"
-                                    android:textColor="@color/gray10"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="37dp"
-                            android:layout_marginBottom="20dp"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_constraintlayout">
-
-                            <TextView
-                                android:id="@+id/land_detail_room_address_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="원룸 위치"
-                                android:textColor="@color/black"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/land_detail_room_address_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginTop="7dp"
-                                android:textSize="13sp"
-                                tools:text="충청남도 천안시 동남구 병천면 가전7길 1-13" />
+                                    <TextView
+                                        android:id="@+id/land_detail_phone"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="7dp"
+                                        android:textColor="@color/black"
+                                        android:textSize="12sp"
+                                        tools:text="010-1234-1234" />
+                                </TableRow>
+                            </TableLayout>
 
                             <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                                android:id="@+id/land_detail_image_framelayout"
+                                android:layout_width="328dp"
+                                android:layout_height="184dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="16dp"
+                                android:background="@color/blue1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_info_tablelayout">
 
-                                <LinearLayout
-                                    android:id="@+id/activity_land_detail_navermap"
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/land_detail_image_viewpager"
                                     android:layout_width="match_parent"
-                                    android:layout_height="165dp"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:nestedScrollingEnabled="false"
-                                    android:orientation="horizontal"
-                                    app:layout_constraintBottom_toTopOf="@+id/land_recyclerlayout"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="@color/white1"
+                                    app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/land_detail_ic_left_imageview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_left_02"
+                                    android:visibility="invisible"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <ImageView
+                                    android:id="@+id/land_detail_ic_right_imageview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_right_02"
+                                    android:visibility="invisible"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/land_detail_no_image_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:background="@color/colorAccent"
+                                    android:gravity="center_horizontal"
+                                    android:paddingStart="3dp"
+                                    android:paddingTop="1dp"
+                                    android:paddingEnd="3dp"
+                                    android:paddingBottom="1dp"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    tools:text="이미지 준비 중입니다." />
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/land_detail_room_option_constraintlayout"
+                                android:layout_width="328dp"
+                                android:layout_height="335dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="40dp"
+                                android:layout_marginEnd="16dp"
+                                android:background="@drawable/bg_blue_rectangle"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/land_detail_image_framelayout">
 
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </ScrollView>
+                                <TextView
+                                    android:id="@+id/land_detail_room_option_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:text="@string/land_detail_land_option"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_airconditioner_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="42dp"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_airconditioner_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_airconditioner" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_airconditioner_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_air_conditioner"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_refrigerator_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="42dp"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toEndOf="@id/land_detail_airconditioner_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_refrigerator_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_refrigerator" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_refrigerator_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_refrigerator"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_closet_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="42dp"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toEndOf="@id/land_detail_refrigerator_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_closet_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_closet" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_closet_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_closet"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_tv_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="42dp"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginEnd="43dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toEndOf="@id/land_detail_closet_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_textview">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_tv_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_tv" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_tv_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_tv"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_microwave_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_airconditioner_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_airconditioner_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_airconditioner_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_microwave_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_microwave_range" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_microwave_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_detail_microwave"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_gas_range_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_refrigerator_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_refrigerator_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_refrigerator_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_gas_range_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_gas_stove" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_gas_range_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_detail_gas_range"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_induction_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_closet_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_closet_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_closet_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_induction_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_induction_range" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_induction_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_induction"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_water_purifier_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_tv_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_tv_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_tv_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_water_purifier_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_water_purifier" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_water_purifier_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_water_purifier"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_washer_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_microwave_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_microwave_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_microwave_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_washer_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_clothes_washer" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_washer_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_laundry_machine"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_bed_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_gas_range_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_gas_range_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_gas_range_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_bed_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_bed" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_bed_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_bed"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_desk_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_induction_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_induction_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_induction_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_desk_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_desk" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_desk_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_desk"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_shoe_closet_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_water_purifier_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_water_purifier_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_water_purifier_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_shoe_closet_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_shoe_rack" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_shoe_closet_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_shoe_closet"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_doorlock_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginBottom="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_washer_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_washer_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_washer_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_doorlock_imageview"
+                                        android:layout_width="30dp"
+                                        android:layout_height="30dp"
+                                        android:src="@drawable/ic_doorlock" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_doorlock_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_door_lock"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_bidet_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginBottom="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_bed_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_bed_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_bed_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_bidet_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_bidet" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_bidet_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_bidet"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_veranda_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginBottom="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_desk_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_desk_linearlayout"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_desk_linearlayout">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_veranda_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:src="@drawable/ic_veranda" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_veranda_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="@string/land_detail_veranda"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/land_detail_elevator_linearlayout"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="22dp"
+                                    android:layout_marginBottom="22dp"
+                                    android:orientation="vertical"
+                                    app:layout_constraintEnd_toEndOf="@id/land_detail_shoe_closet_linearlayout"
+                                    app:layout_constraintStart_toStartOf="@id/land_detail_shoe_closet_linearlayout"
+                                    app:layout_constraintTop_toBottomOf="@id/land_detail_shoe_closet_linearlayout"
+                                    app:layout_constraintBottom_toBottomOf="parent">
+
+                                    <ImageView
+                                        android:id="@+id/land_detail_elevator_imageview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/ic_elevator" />
+
+                                    <TextView
+                                        android:id="@+id/land_detail_elevator_textview"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/land_detail_elevator"
+                                        android:textColor="@color/gray10"
+                                        android:textSize="10sp" />
+                                </LinearLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="37dp"
+                                android:layout_marginBottom="20dp"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/land_detail_room_option_constraintlayout">
+
+                                <TextView
+                                    android:id="@+id/land_detail_room_address_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="@string/land_detail_land_position"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/land_detail_room_address_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="7dp"
+                                    android:textSize="13sp"
+                                    tools:text="충청남도 천안시 동남구 병천면 가전7길 1-13" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <LinearLayout
+                                        android:id="@+id/activity_land_detail_navermap"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="165dp"
+                                        android:layout_marginTop="20dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:nestedScrollingEnabled="false"
+                                        android:orientation="horizontal"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                            </LinearLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </ScrollView>
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <include layout="@layout/base_navigation_drawer_left" />
-</androidx.drawerlayout.widget.DrawerLayout>
+        <include layout="@layout/base_navigation_drawer_left" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

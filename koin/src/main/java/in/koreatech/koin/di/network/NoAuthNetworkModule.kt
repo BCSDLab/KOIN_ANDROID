@@ -4,6 +4,7 @@ import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.DeptApi
 import `in`.koreatech.koin.data.api.DiningApi
+import `in`.koreatech.koin.data.api.LandApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.VersionApi
 import dagger.Module
@@ -15,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -79,5 +81,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): DiningApi {
         return retrofit.create(DiningApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLandApi(
+        @NoAuth retrofit: Retrofit
+    ): LandApi {
+        return retrofit.create(LandApi::class.java)
     }
 }
