@@ -4,6 +4,5 @@ import `in`.koreatech.koin.data.constant.URLConstant
 import com.google.gson.annotations.SerializedName
 
 data class IdRequest(
-    @SerializedName(URLConstant.USER.ID)
-    val portalAccount: String
+    @SerializedName(URLConstant.USER.ID) val portalAccount: String
 )
