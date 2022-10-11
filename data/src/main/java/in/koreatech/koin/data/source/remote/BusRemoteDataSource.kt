@@ -1,12 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.BusApi
-import `in`.koreatech.koin.data.response.bus.BusCourseResponse
-import `in`.koreatech.koin.data.response.bus.NextBusResponse
-import `in`.koreatech.koin.data.response.bus.express.ExpressBusTimetableResponse
-import `in`.koreatech.koin.data.response.bus.express.express
-import `in`.koreatech.koin.data.response.bus.shuttle.ShuttleBusTimetableResponse
-import `in`.koreatech.koin.data.response.bus.shuttle.shuttle
+import `in`.koreatech.koin.data.response.bus.*
 import javax.inject.Inject
 
 class BusRemoteDataSource @Inject constructor(
@@ -17,27 +12,40 @@ class BusRemoteDataSource @Inject constructor(
     }
 
     suspend fun getShuttleBusTimetable(
+        busDirection: String,
         region: String
-    ) : ShuttleBusTimetableResponse {
-        return busApi.getBusTimetable("shuttle", region).shuttle
+    ): List<BusTimetableResponse> {
+        return busApi.getBusTimetable("shuttle", busDirection, region)
     }
 
     suspend fun getCommutingBusTimetable(
+        busDirection: String,
         region: String
-    ) : ShuttleBusTimetableResponse {
-        return busApi.getBusTimetable("commuting", region).shuttle
+    ): List<BusTimetableResponse> {
+        return busApi.getBusTimetable("commuting", busDirection, region)
     }
 
     suspend fun getExpressBusTimetable(
+        busDirection: String,
         region: String
-    ) : ExpressBusTimetableResponse {
-        return busApi.getBusTimetable("express", region).express
+    ): List<ExpressBusRouteResponse> {
+        return busApi.getExpressBusTimetable(busDirection, region)
+    }
+
+    suspend fun searchBus(
+        date: String, // yyyy-MM-dd
+        time: String, // HH:mm
+        departure: String,
+        arrival: String
+    ) : List<BusSearchResponse> {
+        return busApi.searchBus(date, time, departure, arrival)
     }
 
     suspend fun getBuses(
+        busType: String,
         departure: String,
         arrival: String
-    ): NextBusResponse {
-        return busApi.getBuses(departure, arrival)
+    ): BusResponse {
+        return busApi.getBus(busType, departure, arrival)
     }
 }
