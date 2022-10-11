@@ -35,7 +35,6 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.dining_activity_main)
-
         init()
         with(diningViewModel) {
             updateDiningData()

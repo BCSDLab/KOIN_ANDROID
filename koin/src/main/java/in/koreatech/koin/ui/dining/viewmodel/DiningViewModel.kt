@@ -28,13 +28,14 @@ class DiningViewModel @Inject constructor(
     var selectedType: DiningType = DiningUtil.getCurrentType()
 
     init {
-        if (!DiningUtil.isNextDay()) _selectedDate.value =
-            TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
-        else _selectedDate.value =
-            TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getNextDayDate(TimeUtil.getCurrentTime()))
+        _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(DiningUtil.getCurrentDate())
     }
 
-    fun updateDiningData(date: Date = TimeUtil.stringToDateYYYYMMDD(selectedDate.value!!)) {
+    fun updateDiningData(
+        date: Date = TimeUtil.stringToDateYYYYMMDD(
+            selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(DiningUtil.getCurrentDate())
+        )
+    ) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 diningUseCase(date)
