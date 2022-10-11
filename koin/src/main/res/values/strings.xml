@@ -228,4 +228,6 @@
     <string name="bus_tab_info">운행정보</string>
     <string name="bus_tab_search_info">운행 정보 검색</string>
     <string name="bus_tab_timetable">시간표</string>
+    <string name="bus_timetable_ride">승차장소</string>
+    <string name="bus_timetable_ride_time">시간</string>
 </resources>
