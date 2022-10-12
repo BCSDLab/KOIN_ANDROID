@@ -94,9 +94,7 @@
                                     android:src="@drawable/ic_search" />
 
                                 </LinearLayout>
-
                             </LinearLayout>
-
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/land_recyclerlayout"
                                 android:layout_width="match_parent"
@@ -106,18 +104,11 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent" />
-
-
                         </LinearLayout>
                     </in.koreatech.koin.core.stickysrcollview.StickyNestedScrollView>
-
-
                 </RelativeLayout>
             </RelativeLayout>
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-        <include layout="@layout/base_navigation_drawer_left" />
-
+        <include layout="@layout/base_navigation_drawer_right" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
