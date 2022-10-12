@@ -91,7 +91,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
 
                         userinfoeditedEdittextNickName.setText(user.nickname)
 
-                        if (user.phoneNumber?.isEmpty() == false) {
+                        if (user.phoneNumber == null || user.phoneNumber?.isEmpty() == false) {
                             userinfoeditedEdittextPhoneNum1.setText("")
                             userinfoeditedEdittextPhoneNum2.setText("")
                             userinfoeditedEdittextPhoneNum3.setText("")
@@ -113,7 +113,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
 
                         userinfoeditedEdittextStudentId.apply {
                             setText(user.studentNumber)
-                            if (user.studentNumber?.isEmpty() == false) {
+                            if (user.studentNumber == null || user.studentNumber?.isEmpty() == false) {
                                 isEnabled = true
                                 setDefaultBackground()
                                 userinfoeditedEdittextMajor.setText("")
