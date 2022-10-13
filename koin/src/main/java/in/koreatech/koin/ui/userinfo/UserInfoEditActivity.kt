@@ -80,7 +80,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                         userinfoeditedEdittextName.apply {
                             setText(user.name)
 
-                            if (user.name == null || user.name!!.isEmpty()) {
+                            if (user.name.isNullOrEmpty()) {
                                 isEnabled = true
                                 setDefaultBackground()
                             } else {
@@ -91,7 +91,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
 
                         userinfoeditedEdittextNickName.setText(user.nickname)
 
-                        if (user.phoneNumber == null || user.phoneNumber?.isEmpty() == false) {
+                        if (user.phoneNumber.isNullOrEmpty()) {
                             userinfoeditedEdittextPhoneNum1.setText("")
                             userinfoeditedEdittextPhoneNum2.setText("")
                             userinfoeditedEdittextPhoneNum3.setText("")
