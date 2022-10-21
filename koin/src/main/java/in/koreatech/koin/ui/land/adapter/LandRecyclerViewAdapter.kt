@@ -41,7 +41,7 @@ class LandRecyclerViewAdapter @Inject constructor(
                 container.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.bg_rect_blue1)
             }
             landNameTextview.text = landData[position].name
-            monthFeeTextview.text= landData[position].monthlyFee
+            monthFeeTextview.text = landData[position].monthlyFee
             charterFeeTextview.text = landData[position].charterFee
             root.setOnClickListener {
                 val intent = Intent(context, LandDetailActivity::class.java)
