@@ -18,7 +18,7 @@ class NaverMapFragment: MapFragment() {
         val view = super.onCreateView(inflater, container, savedInstanceState)
         view?.setOnTouchListener { touchView: View, event: MotionEvent? ->
             touchView.parent.requestDisallowInterceptTouchEvent(true)
-            mapView!!.onTouchEvent(event)
+            mapView?.onTouchEvent(event)
             view.performClick()
             true
         }
