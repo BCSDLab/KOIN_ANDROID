@@ -48,14 +48,14 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private final String TAG = "StoreActivity";
     private final int ALL_CATEGORY = -1;
     private final int[] CATEGORY_ID = {
-            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
-            R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc
+            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_dosirak, R.id.store_category_sweet_pork_feet,
+            R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_cafe, R.id.store_category_hair, R.id.store_category_etc
     };
     private final int[] CATEGORY_TEXT_ID
             = {
-            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_sweet_pork_textview, R.id.store_category_dosirak_textview,
+            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_dosirak_textview,
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
-            R.id.store_category_hair_textview, R.id.store_category_etc_textview
+            R.id.store_category_cafe_textview, R.id.store_category_hair_textview, R.id.store_category_etc_textview
     };
 
     /* View Component */
@@ -186,11 +186,12 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         super.onStart();
     }
 
-    @OnClick({R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
-            R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc,
-            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_sweet_pork_textview, R.id.store_category_dosirak_textview,
+    @OnClick({
+            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_dosirak, R.id.store_category_sweet_pork_feet,
+            R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_cafe, R.id.store_category_hair, R.id.store_category_etc,
+            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_dosirak_textview,
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
-            R.id.store_category_hair_textview, R.id.store_category_etc_textview}
+            R.id.store_category_cafe_textview, R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
     public void storeCategoryOnClicked(View view) {
         initCateGoryTextColor();
