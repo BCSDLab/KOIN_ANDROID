@@ -45,6 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import dagger.hilt.android.AndroidEntryPoint;
+import in.koreatech.koin.KoinApplication;
 import in.koreatech.koin.R;
 import in.koreatech.koin.core.appbar.AppBarBase;
 import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
@@ -71,7 +73,7 @@ import static in.koreatech.koin.util.LectureFilterUtil.getFilterUtil;
 import static in.koreatech.koin.util.SeparateTime.getSpertateTimeToString;
 import static in.koreatech.koin.util.TimeDuplicateCheckUtil.duplicateScheduleTostring;
 
-
+@AndroidEntryPoint
 public class TimetableActivity extends KoinNavigationDrawerActivity implements TimetableContract.View, TimetableSelectMajorDialog.OnCLickedDialogItemListener, RecyclerViewClickListener {
     public static final String TAG = "TimetableActivity";
     public static final int MY_REQUEST_CODE = 1;
@@ -170,7 +172,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetablePresenter(this));
+        setPresenter(new TimetablePresenter(this, (KoinApplication) getApplication()));
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
