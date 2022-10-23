@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import in.koreatech.koin.KoinApplication;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.Semester;
@@ -32,10 +33,10 @@ public class TimetableAnonymousPresenter {
     private TimetableAnonymousContract.View timeTableView;
     private int deleteId;
 
-    public TimetableAnonymousPresenter(TimetableAnonymousContract.View timeTableView) {
+    public TimetableAnonymousPresenter(TimetableAnonymousContract.View timeTableView, KoinApplication koinApplication) {
         this.timeTableView = timeTableView;
         this.appVersionInteractor = new AppVersionRestInteractor();
-        this.timeTableInteractor = new TimeTableRestInteractor();
+        this.timeTableInteractor = new TimeTableRestInteractor(koinApplication);
         this.lectureInteractor = new LectureRestInteractor();
     }
 
