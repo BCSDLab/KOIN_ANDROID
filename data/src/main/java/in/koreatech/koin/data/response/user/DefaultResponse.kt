@@ -3,9 +3,9 @@ package `in`.koreatech.koin.data.response.user
 import com.google.gson.annotations.SerializedName
 
 data class DefaultResponse(
-    val success: Boolean,
-    val message: String,
-    val error: String,
-    val code: String,
+    @SerializedName("success") val success: Boolean,
+    @SerializedName("message") val message: String,
+    @SerializedName("error") val error: String,
+    @SerializedName("code") val code: String,
     @SerializedName("grantEdit") val isGrantEdit: Boolean
 )
