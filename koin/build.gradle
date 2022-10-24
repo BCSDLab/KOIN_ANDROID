@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.appdistribution'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
@@ -12,12 +13,12 @@ def applicationName = 'koin'
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 30004
+        versionCode 30005
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
-        versionName "3.0.4"
+        versionName project.versionName
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -54,6 +55,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
+            firebaseAppDistribution {
+                artifactType="APK"
+                releaseNotes="${project.versionName} release"
+                groups="bcsd"
+            }
         }
     }
 
@@ -76,11 +82,11 @@ android {
         targetCompatibility 1.8
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
-        }
-    }
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
+//        }
+//    }
 
     buildFeatures {
         dataBinding true

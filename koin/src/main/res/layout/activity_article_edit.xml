@@ -200,7 +200,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <include layout="@layout/base_navigation_drawer_left" />
+        <include layout="@layout/base_navigation_drawer_right" />
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

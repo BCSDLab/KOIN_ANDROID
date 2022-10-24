@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.response.user
 
+import com.google.gson.annotations.SerializedName
+
 data class CheckNicknameResponse(
-    val success: String
+    @SerializedName("success") val success: String
 )
