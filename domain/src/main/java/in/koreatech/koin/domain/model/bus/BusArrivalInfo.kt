@@ -2,8 +2,37 @@ package `in`.koreatech.koin.domain.model.bus
 
 import java.time.LocalTime
 
-data class BusArrivalInfo<T : BusRemainTime>(
-    val nowBus: T?,
-    val nextBus: T?,
-    val nowBusTime: LocalTime?
-)
+sealed class BusArrivalInfo {
+    data class ShuttleBusArrivalInfo(
+        val nowBusRemainTime: Long?,
+        val nextBusRemainTime: Long?,
+        val nowBusArrivalTime: LocalTime?,
+        val nextBusArrivalTime: LocalTime?,
+        val criteria: LocalTime
+    ) : BusArrivalInfo()
+
+    data class CommutingBusArrivalInfo(
+        val nowBusRemainTime: Long?,
+        val nextBusRemainTime: Long?,
+        val nowBusArrivalTime: LocalTime?,
+        val nextBusArrivalTime: LocalTime?,
+        val criteria: LocalTime
+    ) : BusArrivalInfo()
+
+    data class ExpressBusArrivalInfo(
+        val nowBusRemainTime: Long?,
+        val nextBusRemainTime: Long?,
+        val nowBusArrivalTime: LocalTime?,
+        val nextBusArrivalTime: LocalTime?,
+        val criteria: LocalTime
+    ) : BusArrivalInfo()
+
+    data class CityBusArrivalInfo(
+        val nowBusRemainTime: Long?,
+        val nextBusRemainTime: Long?,
+        val nowBusArrivalTime: LocalTime?,
+        val nextBusArrivalTime: LocalTime?,
+        val busNumber: Int?,
+        val criteria: LocalTime
+    ) : BusArrivalInfo()
+}

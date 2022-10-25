@@ -23,27 +23,23 @@ interface BusRepository {
 
     suspend fun getShuttleBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean = true
-    ): Pair<BusRemainTime.ShuttleBusRemainTime?, BusRemainTime.ShuttleBusRemainTime?>
+        arrival: BusNode
+    ): BusArrivalInfo.ShuttleBusArrivalInfo
 
     suspend fun getExpressBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean = true
-    ): Pair<BusRemainTime.ExpressBusRemainTime?, BusRemainTime.ExpressBusRemainTime?>
+        arrival: BusNode
+    ): BusArrivalInfo.ExpressBusArrivalInfo
 
     suspend fun getCommutingBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean = true
-    ): Pair<BusRemainTime.CommutingBusRemainTime?, BusRemainTime.CommutingBusRemainTime?>
+        arrival: BusNode
+    ): BusArrivalInfo.CommutingBusArrivalInfo
 
     suspend fun getCityBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean = true
-    ): Pair<BusRemainTime.CityBusRemainTime?, BusRemainTime.CityBusRemainTime?>
+        arrival: BusNode
+    ): BusArrivalInfo.CityBusArrivalInfo
 
     suspend fun searchBus(
         time: LocalDateTime,

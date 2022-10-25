@@ -15,7 +15,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BusActivity : ActivityBase() {
     private val binding by dataBinding<BusActivityMainBinding>(R.layout.bus_activity_main)
     private val busMainViewPager2Adapter = BusMainViewPager2Adapter(this)

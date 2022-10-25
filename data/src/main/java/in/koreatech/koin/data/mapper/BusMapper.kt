@@ -2,9 +2,12 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.constant.BUS_RESPONSE_TIME_FORMAT
 import `in`.koreatech.koin.data.response.bus.*
+import `in`.koreatech.koin.data.util.nowTime
 import `in`.koreatech.koin.domain.model.bus.*
+import android.util.Log
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
@@ -65,36 +68,63 @@ fun List<ExpressBusRouteResponse>.toExpressBusRoute(): BusRoute.ExpressBusRoute 
     )
 }
 
-fun BusResponse.toShuttleBusRemainTimePair() =
-    nowBus?.let {
-        BusRemainTime.ShuttleBusRemainTime(it.remainTimeSecond)
-    } to nextBus?.let {
-        BusRemainTime.ShuttleBusRemainTime(it.remainTimeSecond)
-    }
+fun BusResponse.toShuttleBusArrivalInfo() = nowTime.let { time ->
+    BusArrivalInfo.ShuttleBusArrivalInfo(
+        nowBusRemainTime = nowBus?.remainTimeSecond,
+        nextBusRemainTime = nextBus?.remainTimeSecond,
+        nowBusArrivalTime = nowBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        nextBusArrivalTime = nextBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        criteria = time
+    )
+}
 
-fun BusResponse.toCommutingBusRemainTimePair() =
-    nowBus?.let {
-        BusRemainTime.CommutingBusRemainTime(it.remainTimeSecond)
-    } to nextBus?.let {
-        BusRemainTime.CommutingBusRemainTime(it.remainTimeSecond)
-    }
 
-fun BusResponse.toExpressBusRemainTimePair() =
-    nowBus?.let {
-        BusRemainTime.ExpressBusRemainTime(it.remainTimeSecond)
-    } to nextBus?.let {
-        BusRemainTime.ExpressBusRemainTime(it.remainTimeSecond)
-    }
+fun BusResponse.toCommutingBusRemainTimePair() =  nowTime.let { time ->
+    BusArrivalInfo.CommutingBusArrivalInfo(
+        nowBusRemainTime = nowBus?.remainTimeSecond,
+        nextBusRemainTime = nextBus?.remainTimeSecond,
+        nowBusArrivalTime = nowBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        nextBusArrivalTime = nextBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        criteria = time
+    )
+}
 
-fun BusResponse.toCityBusRemainTimePair() =
-    nowBus?.let {
-        BusRemainTime.CityBusRemainTime(
-            it.busNumber ?: -1, it.remainTimeSecond
-        )
-    } to nextBus?.let {
-        BusRemainTime.CityBusRemainTime(
-            it.busNumber?: -1, it.remainTimeSecond)
-    }
+fun BusResponse.toExpressBusRemainTimePair() = nowTime.let { time ->
+    BusArrivalInfo.ExpressBusArrivalInfo(
+        nowBusRemainTime = nowBus?.remainTimeSecond,
+        nextBusRemainTime = nextBus?.remainTimeSecond,
+        nowBusArrivalTime = nowBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        nextBusArrivalTime = nextBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        criteria = time
+    )
+}
+
+fun BusResponse.toCityBusRemainTimePair() = nowTime.let { time ->
+    BusArrivalInfo.CityBusArrivalInfo(
+        nowBusRemainTime = nowBus?.remainTimeSecond,
+        nextBusRemainTime = nextBus?.remainTimeSecond,
+        nowBusArrivalTime = nowBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        nextBusArrivalTime = nextBus?.let {
+            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
+        },
+        busNumber = nowBus?.busNumber,
+        criteria = time
+    )
+}
 
 fun BusSearchResponse.toBusSearchResult(searchDateTime: LocalDateTime) : BusSearchResult {
     val searchTime = LocalTime.parse(
