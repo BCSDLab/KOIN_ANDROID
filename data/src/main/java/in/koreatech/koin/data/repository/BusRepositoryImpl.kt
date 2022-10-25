@@ -14,14 +14,6 @@ import javax.inject.Inject
 class BusRepositoryImpl @Inject constructor(
     private val busRemoteDataSource: BusRemoteDataSource
 ) : BusRepository {
-    private var shuttleBusRemainTime: Pair<BusRemainTime.ShuttleBusRemainTime?, BusRemainTime.ShuttleBusRemainTime?>? =
-        null
-    private var expressBusRemainTime: Pair<BusRemainTime.ExpressBusRemainTime?, BusRemainTime.ExpressBusRemainTime?>? =
-        null
-    private var commutingBusRemainTime: Pair<BusRemainTime.CommutingBusRemainTime?, BusRemainTime.CommutingBusRemainTime?>? =
-        null
-    private var cityBusRemainTime: Pair<BusRemainTime.CityBusRemainTime?, BusRemainTime.CityBusRemainTime?>? =
-        null
 
     override suspend fun getBusCourses(): List<BusCourse> {
         return busRemoteDataSource.getBusCourses().map { it.toBusCourse() }
@@ -66,71 +58,46 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun getShuttleBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean
-    ): Pair<BusRemainTime.ShuttleBusRemainTime?, BusRemainTime.ShuttleBusRemainTime?> {
-
-        return try {
-            busRemoteDataSource.getBuses(
+        arrival: BusNode
+    ): BusArrivalInfo.ShuttleBusArrivalInfo {
+        return busRemoteDataSource.getBuses(
                 busType = BusType.Shuttle.busTypeString,
                 departure = departure.busNodeString,
                 arrival = arrival.busNodeString
-            ).toShuttleBusRemainTimePair().also { shuttleBusRemainTime = it }
-        } catch (t: Throwable) {
-            if (getFromCacheWhenFailed && shuttleBusRemainTime != null) shuttleBusRemainTime!!
-            else throw t
-        }
+            ).toShuttleBusArrivalInfo()
     }
 
     override suspend fun getExpressBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean
-    ): Pair<BusRemainTime.ExpressBusRemainTime?, BusRemainTime.ExpressBusRemainTime?> {
-        return try {
-            busRemoteDataSource.getBuses(
+        arrival: BusNode
+    ): BusArrivalInfo.ExpressBusArrivalInfo {
+        return busRemoteDataSource.getBuses(
                 busType = BusType.Express.busTypeString,
                 departure = departure.busNodeString,
                 arrival = arrival.busNodeString
             ).toExpressBusRemainTimePair()
-        } catch (t: Throwable) {
-            if (getFromCacheWhenFailed && expressBusRemainTime != null) expressBusRemainTime!!
-            else throw t
-        }
     }
 
     override suspend fun getCommutingBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean
-    ): Pair<BusRemainTime.CommutingBusRemainTime?, BusRemainTime.CommutingBusRemainTime?> {
-        return try {
-            busRemoteDataSource.getBuses(
+        arrival: BusNode
+    ): BusArrivalInfo.CommutingBusArrivalInfo {
+        return busRemoteDataSource.getBuses(
                 busType = BusType.Commuting.busTypeString,
                 departure = departure.busNodeString,
                 arrival = arrival.busNodeString
             ).toCommutingBusRemainTimePair()
-        } catch (t: Throwable) {
-            if (getFromCacheWhenFailed && commutingBusRemainTime != null) commutingBusRemainTime!!
-            else throw t
-        }
     }
 
     override suspend fun getCityBusRemainTime(
         departure: BusNode,
-        arrival: BusNode,
-        getFromCacheWhenFailed: Boolean
-    ): Pair<BusRemainTime.CityBusRemainTime?, BusRemainTime.CityBusRemainTime?> {
-        return try {
-            busRemoteDataSource.getBuses(
+        arrival: BusNode
+    ): BusArrivalInfo.CityBusArrivalInfo {
+        return busRemoteDataSource.getBuses(
                 busType = BusType.City.busTypeString,
                 departure = departure.busNodeString,
                 arrival = arrival.busNodeString
             ).toCityBusRemainTimePair()
-        } catch (t: Throwable) {
-            if (getFromCacheWhenFailed && cityBusRemainTime != null) cityBusRemainTime!!
-            else throw t
-        }
     }
 
     override suspend fun searchBus(

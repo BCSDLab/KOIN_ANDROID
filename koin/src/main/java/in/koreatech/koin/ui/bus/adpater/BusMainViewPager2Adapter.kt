@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.bus.adpater
 import `in`.koreatech.koin.ui.bus.BusMainFragment
 import `in`.koreatech.koin.ui.bus.BusTimeTableFragment
 import `in`.koreatech.koin.ui.bus.BusTimeTableSearchFragment
+import `in`.koreatech.koin.ui.bus.fragment.BusMainFragmentNew
 import android.util.SparseArray
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -18,7 +19,7 @@ class BusMainViewPager2Adapter(
 
     override fun createFragment(position: Int): Fragment {
         return registeredFragments[position] ?: when(position) {
-            0 -> BusMainFragment()
+            0 -> BusMainFragmentNew()
             1 -> BusTimeTableSearchFragment()
             2 -> BusTimeTableFragment()
             else -> throw IllegalArgumentException("Position must be lower than $itemCount")

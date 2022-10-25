@@ -73,6 +73,7 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
     api project.androidXLifecycle
+    api project.androidXLivedata
 
     /* Dependency - Firebase */
     api project.firebaseCore
