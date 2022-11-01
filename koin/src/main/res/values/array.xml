@@ -297,15 +297,15 @@
         <item>기타</item>
     </string-array>
 
-    <!--기타(S000), 콜벤(S001), 정식(S002), 족발(S003), 중국집(S004), 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 미용실(S009)-->
+    <!--기타(S000), 콜벤(S001), 정식(S002), 족발(S003), 중국집(S004), 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 미용실(S009), 카페(S010)-->
     <string-array name="store_category_list_code">
         <item>S005</item>
         <item>S006</item>
-        <item>S007</item>
         <item>S002</item>
         <item>S003</item>
         <item>S004</item>
         <item>S008</item>
+        <item>S010</item>
         <item>S009</item>
         <item>S000</item>
     </string-array>
