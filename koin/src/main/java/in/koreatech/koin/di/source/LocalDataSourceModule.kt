@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.di.source
 
+import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
@@ -36,5 +37,13 @@ object LocalDataSourceModule {
         @ApplicationContext applicationContext: Context
     ) : VersionLocalDataSource {
         return VersionLocalDataSource(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeptLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ) : DeptLocalDataSource {
+        return DeptLocalDataSource(applicationContext)
     }
 }
