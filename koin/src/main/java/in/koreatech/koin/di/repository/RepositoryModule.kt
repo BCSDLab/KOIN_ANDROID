@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
+import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.SignupRepository
@@ -68,10 +69,11 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDeptRepository(
-        deptRemoteDataSource: DeptRemoteDataSource
+        deptRemoteDataSource: DeptRemoteDataSource,
+        deptLocalDataSource: DeptLocalDataSource
     ) : DeptRepository {
         return DeptRepositoryImpl(
-            deptRemoteDataSource
+            deptRemoteDataSource, deptLocalDataSource
         )
     }
 
