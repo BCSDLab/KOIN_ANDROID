@@ -70,7 +70,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @BindView(R.id.recycler_view_store_category)
     RecyclerView recyclerViewStoreCategory;
     //학식
-    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
+    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     List<TextView> textViewDiningPlaces;
     @BindView(R.id.view_empty_dining)
     View viewEmptyDining;
@@ -173,7 +173,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
         toggleNavigationDrawer();
     }
 
-    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
+    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     void selectDiningKind(View view) {
         for (int i = 0; i < textViewDiningPlaces.size(); i++) {
             TextView textView = textViewDiningPlaces.get(i);

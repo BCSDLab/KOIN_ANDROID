@@ -37,7 +37,7 @@
                     android:paddingTop="18dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="16dp"
-                    android:text="한식"
+                    android:text="A코너"
                     android:textColor="@color/color_main_card_meal_type_text"
                     android:textSize="13sp" />
 
@@ -50,7 +50,7 @@
                     android:paddingTop="18dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="16dp"
-                    android:text="일품"
+                    android:text="B코너"
                     android:textColor="@color/color_main_card_meal_type_text"
                     android:textSize="13sp"/>
 
@@ -63,22 +63,9 @@
                     android:paddingTop="18dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="16dp"
-                    android:text="양식"
+                    android:text="C코너"
                     android:textColor="@color/color_main_card_meal_type_text"
                     android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/text_view_card_dining_special"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:paddingStart="8dp"
-                    android:paddingTop="18dp"
-                    android:paddingEnd="8dp"
-                    android:paddingBottom="16dp"
-                    android:text="특식"
-                    android:textColor="@color/color_main_card_meal_type_text"
-                    android:textSize="13sp"/>
 
                 <TextView
                     android:id="@+id/text_view_card_dining_neungsugwan"
