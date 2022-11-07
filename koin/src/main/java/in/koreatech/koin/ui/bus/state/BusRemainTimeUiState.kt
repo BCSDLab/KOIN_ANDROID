@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.ui.bus.state
 
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.domain.model.bus.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.BusType
 import android.content.Context

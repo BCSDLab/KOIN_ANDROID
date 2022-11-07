@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.domain.model.bus
+package `in`.koreatech.koin.domain.model.bus.timer
 
 import java.time.LocalTime
 

@@ -1,15 +1,12 @@
 package `in`.koreatech.koin.domain.usecase.bus.timer
 
 import `in`.koreatech.koin.domain.constant.BUS_REMAIN_TIME_UPDATE_PERIOD
-import `in`.koreatech.koin.domain.model.bus.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
-import `in`.koreatech.koin.domain.model.bus.BusRemainTime
 import `in`.koreatech.koin.domain.repository.BusRepository
 import `in`.koreatech.koin.domain.util.ext.minute
 import `in`.koreatech.koin.domain.util.ext.second
-import `in`.koreatech.koin.domain.util.getTimerTickFlow
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import java.time.Duration
 import java.time.LocalTime

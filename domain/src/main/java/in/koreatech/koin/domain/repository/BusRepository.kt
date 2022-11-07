@@ -1,25 +1,19 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.bus.*
+import `in`.koreatech.koin.domain.model.bus.course.BusCourse
+import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import java.time.LocalDateTime
 
 interface BusRepository {
-    suspend fun getBusCourses(): List<BusCourse>
+    suspend fun getShuttleBusCourses(): List<Pair<BusCourse, String>>
+    suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>>
 
-    suspend fun getShuttleBusTimetable(
-        busDirection: BusDirection,
-        region: String
-    ): List<BusRoute.ShuttleBusRoute>
-
-    suspend fun getExpressBusTimetable(
-        busDirection: BusDirection,
-        region: String
-    ): BusRoute.ExpressBusRoute
-
-    suspend fun getCommutingBusTimetable(
-        busDirection: BusDirection,
-        region: String
-    ): List<BusRoute.CommutingBusRoute>
+    suspend fun getShuttleBusTimetable(busCourse: BusCourse): List<BusRoute.ShuttleBusRoute>
+    suspend fun getExpressBusTimetable(busCourse: BusCourse): BusRoute.ExpressBusRoute
+    suspend fun getCityBusTimetable(): BusRoute.CityBusRoute
 
     suspend fun getShuttleBusRemainTime(
         departure: BusNode,

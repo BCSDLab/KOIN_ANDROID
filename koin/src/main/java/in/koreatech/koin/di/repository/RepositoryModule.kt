@@ -10,6 +10,7 @@ import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
+import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.*
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.SignupRepository
@@ -83,8 +84,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideBusRepository(
+        busLocalDataSource: BusLocalDataSource,
         busRemoteDataSource: BusRemoteDataSource
     ): BusRepository {
-        return BusRepositoryImpl(busRemoteDataSource)
+        return BusRepositoryImpl(busLocalDataSource, busRemoteDataSource)
     }
 }

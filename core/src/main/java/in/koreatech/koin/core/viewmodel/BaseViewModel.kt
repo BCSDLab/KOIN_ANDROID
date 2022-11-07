@@ -9,7 +9,7 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-open class BaseViewModel : ViewModel() {
+open class BaseViewModel() : ViewModel() {
     protected val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
