@@ -12,3 +12,8 @@ data class ExpressBusRouteResponse(
     @SerializedName("arrival") val arrival: String,
     @SerializedName("charge") val charge: Int,
 )
+
+data class CityBusRouteResponse(
+    val startBusNode: String,
+    val timeInfo: String
+)

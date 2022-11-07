@@ -4,10 +4,13 @@ import `in`.koreatech.koin.data.constant.BUS_RESPONSE_TIME_FORMAT
 import `in`.koreatech.koin.data.response.bus.*
 import `in`.koreatech.koin.data.util.nowTime
 import `in`.koreatech.koin.domain.model.bus.*
-import android.util.Log
+import `in`.koreatech.koin.domain.model.bus.course.BusCourse
+import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
+import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
@@ -16,33 +19,13 @@ fun BusCourseResponse.toBusCourse() = BusCourse(
     region = region
 )
 
-fun BusTimetableResponse.toCommutingBusRoute(): BusRoute.CommutingBusRoute {
-    return BusRoute.CommutingBusRoute(
-        routeName = routeName,
-        arrivalInfo = arrivalInfo.map { route ->
-            BusNodeInfo.ShuttleNodeInfo(
-                node = route.nodeName,
-                arrivalTime = LocalTime.parse(
-                    route.arrivalTime, DateTimeFormatter.ofPattern(
-                        BUS_RESPONSE_TIME_FORMAT
-                    )
-                )
-            )
-        }
-    )
-}
-
 fun BusTimetableResponse.toShuttleBusRoute(): BusRoute.ShuttleBusRoute {
     return BusRoute.ShuttleBusRoute(
         routeName = routeName,
         arrivalInfo = arrivalInfo.map { route ->
             BusNodeInfo.ShuttleNodeInfo(
                 node = route.nodeName,
-                arrivalTime = LocalTime.parse(
-                    route.arrivalTime, DateTimeFormatter.ofPattern(
-                        BUS_RESPONSE_TIME_FORMAT
-                    )
-                )
+                arrivalTime = route.arrivalTime
             )
         }
     )
@@ -52,19 +35,17 @@ fun List<ExpressBusRouteResponse>.toExpressBusRoute(): BusRoute.ExpressBusRoute 
     return BusRoute.ExpressBusRoute(
         arrivalInfo = map { route ->
             BusNodeInfo.ExpressNodeInfo(
-                departureTime =  LocalTime.parse(
-                    route.departure, DateTimeFormatter.ofPattern(
-                        BUS_RESPONSE_TIME_FORMAT
-                    )
-                ),
-                arrivalTime =  LocalTime.parse(
-                    route.arrival, DateTimeFormatter.ofPattern(
-                        BUS_RESPONSE_TIME_FORMAT
-                    )
-                ),
+                departureTime = route.departure,
+                arrivalTime = route.arrival,
                 charge = route.charge
             )
         }
+    )
+}
+
+fun List<CityBusRouteResponse>.toCityBusRoute(): BusRoute.CityBusRoute {
+    return BusRoute.CityBusRoute(
+        arrivalInfo = map { BusNodeInfo.CitybusNodeInfo(it.startBusNode, it.timeInfo) }
     )
 }
 
@@ -83,7 +64,7 @@ fun BusResponse.toShuttleBusArrivalInfo() = nowTime.let { time ->
 }
 
 
-fun BusResponse.toCommutingBusRemainTimePair() =  nowTime.let { time ->
+fun BusResponse.toCommutingBusRemainTimePair() = nowTime.let { time ->
     BusArrivalInfo.CommutingBusArrivalInfo(
         nowBusRemainTime = nowBus?.remainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
@@ -126,7 +107,7 @@ fun BusResponse.toCityBusRemainTimePair() = nowTime.let { time ->
     )
 }
 
-fun BusSearchResponse.toBusSearchResult(searchDateTime: LocalDateTime) : BusSearchResult {
+fun BusSearchResponse.toBusSearchResult(searchDateTime: LocalDateTime): BusSearchResult {
     val searchTime = LocalTime.parse(
         busTime, DateTimeFormatter.ofPattern(
             BUS_RESPONSE_TIME_FORMAT

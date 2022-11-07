@@ -3,11 +3,9 @@ package `in`.koreatech.koin.ui.bus.fragment
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
-import `in`.koreatech.koin.databinding.BusMainFragmentBinding
 import `in`.koreatech.koin.databinding.BusMainFragmentNewBinding
-import `in`.koreatech.koin.domain.model.bus.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
-import `in`.koreatech.koin.domain.model.bus.BusRemainTime
 import `in`.koreatech.koin.ui.bus.adpater.BusRemainTimeAdapter
 import `in`.koreatech.koin.ui.bus.state.toCityBusRemainTimeUiState
 import `in`.koreatech.koin.ui.bus.state.toExpressBusRemainTimeUiState
@@ -19,8 +17,6 @@ import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator

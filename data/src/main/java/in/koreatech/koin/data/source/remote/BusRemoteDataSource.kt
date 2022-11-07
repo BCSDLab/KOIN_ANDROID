@@ -26,10 +26,9 @@ class BusRemoteDataSource @Inject constructor(
     }
 
     suspend fun getExpressBusTimetable(
-        busDirection: String,
-        region: String
+        busDirection: String
     ): List<ExpressBusRouteResponse> {
-        return busApi.getExpressBusTimetable(busDirection, region)
+        return busApi.getExpressBusTimetable(busDirection, "")
     }
 
     suspend fun searchBus(

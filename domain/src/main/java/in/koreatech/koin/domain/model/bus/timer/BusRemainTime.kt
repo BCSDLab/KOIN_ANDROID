@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.domain.model.bus
+package `in`.koreatech.koin.domain.model.bus.timer
 
 sealed class BusRemainTime {
     data class CityBusRemainTime(
