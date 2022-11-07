@@ -3,15 +3,20 @@ package `in`.koreatech.koin
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.RecentSearchSharedPreference
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
+import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.util.ExceptionHandlerUtil
 import `in`.koreatech.koin.util.font_change.Typekit
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class KoinApplication : Application() {
+
+    @Inject
+    lateinit var tokenRepository: TokenRepository
 
     override fun onCreate() {
         super.onCreate()
