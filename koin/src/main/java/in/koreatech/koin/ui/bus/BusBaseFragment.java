@@ -18,7 +18,6 @@ public class BusBaseFragment extends BaseFragment {
                 fragment = new BusMainFragment();
                 break;
             case 1:
-                fragment = new BusTimeTableSearchFragment();
                 break;
             case 2:
                 fragment = new BusTimeTableFragment();

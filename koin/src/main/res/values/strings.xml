@@ -243,4 +243,9 @@
     <string name="bus_timetable_city_start_node">기점</string>
     <string name="bus_timetable_city_ride_time">종합터미널 - 병천</string>
     <string name="bus_timetable_shuttle_time_format">HH:mm</string>
+    <string name="bus_name_city">시내버스</string>
+    <string name="bus_name_commuting">통학버스</string>
+    <string name="bus_name_express">대성고속</string>
+    <string name="bus_name_shuttle">셔틀버스</string>
+    <string name="bus_timetable_search_result_dialog_close">닫기</string>
 </resources>

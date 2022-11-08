@@ -37,6 +37,9 @@ class BusActivity : ActivityBase() {
     }
 
     private fun initView() = with(binding) {
+        koinBaseAppbar.leftButton.setOnClickListener {
+            finish()
+        }
         busMainViewpager.apply {
             offscreenPageLimit = 3
             adapter = busMainViewPager2Adapter

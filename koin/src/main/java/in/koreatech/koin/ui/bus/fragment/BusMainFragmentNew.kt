@@ -4,8 +4,10 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
 import `in`.koreatech.koin.databinding.BusMainFragmentNewBinding
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
+import `in`.koreatech.koin.domain.model.bus.busNodeSelection
+import `in`.koreatech.koin.domain.model.bus.spinnerSelection
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.ui.bus.adpater.BusRemainTimeAdapter
 import `in`.koreatech.koin.ui.bus.state.toCityBusRemainTimeUiState
 import `in`.koreatech.koin.ui.bus.state.toExpressBusRemainTimeUiState
@@ -92,18 +94,3 @@ class BusMainFragmentNew : DataBindingFragment<BusMainFragmentNewBinding>() {
         }
     }
 }
-
-val BusNode.spinnerSelection
-    get() = when (this) {
-        BusNode.Koreatech -> 0
-        BusNode.Station -> 2
-        BusNode.Terminal -> 1
-    }
-
-val Int.busNodeSelection
-    get() = when (this) {
-        0 -> BusNode.Koreatech
-        2 -> BusNode.Station
-        1 -> BusNode.Terminal
-        else -> throw IllegalArgumentException("Not supported selection.")
-    }
