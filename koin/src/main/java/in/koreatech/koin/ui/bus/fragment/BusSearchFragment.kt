@@ -4,10 +4,8 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.BusTimetableSearchFragmentBinding
-import `in`.koreatech.koin.databinding.BusTimetableSearchResultDialogBinding
 import `in`.koreatech.koin.domain.model.bus.busNodeSelection
 import `in`.koreatech.koin.domain.model.bus.spinnerSelection
-import `in`.koreatech.koin.ui.bus.adpater.search.BusSearchResultAdapter
 import `in`.koreatech.koin.ui.bus.dialog.BusSearchResultDialog
 import `in`.koreatech.koin.ui.bus.state.BusSearchResultItem
 import `in`.koreatech.koin.ui.bus.state.toBusSearchResultItem
@@ -15,13 +13,9 @@ import `in`.koreatech.koin.ui.bus.viewmodel.BusSearchViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
-import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.DatePicker
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +25,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class BusSearchFragmentNew : DataBindingFragment<BusTimetableSearchFragmentBinding>() {
+class BusSearchFragment : DataBindingFragment<BusTimetableSearchFragmentBinding>() {
     override val layoutId: Int = R.layout.bus_timetable_search_fragment
 
     private val busSearchViewModel by viewModels<BusSearchViewModel>()
