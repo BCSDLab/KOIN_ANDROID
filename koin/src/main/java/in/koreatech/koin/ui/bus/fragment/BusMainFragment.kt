@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusMainFragmentNew : DataBindingFragment<BusMainFragmentNewBinding>() {
+class BusMainFragment : DataBindingFragment<BusMainFragmentNewBinding>() {
     override val layoutId: Int = R.layout.bus_main_fragment_new
 
     private val viewModel by viewModels<BusMainFragmentViewModel>()

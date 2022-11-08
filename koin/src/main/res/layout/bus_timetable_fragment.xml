@@ -161,8 +161,8 @@
             app:layout_constraintRight_toRightOf="@id/guideline_vertical_0.956"
             app:layout_constraintTop_toTopOf="@id/guideline_horizental_0.212" />
 
-        <FrameLayout
-            android:id="@+id/bus_timetable_fragment"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/bus_timetable_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

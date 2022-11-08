@@ -4,6 +4,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
 import `in`.koreatech.koin.databinding.BusTimetableFragmentBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
+import `in`.koreatech.koin.ui.bus.adpater.timetable.pager.BusTimetableViewPager2Adapter
 import `in`.koreatech.koin.ui.bus.viewmodel.BusTimetableViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 import android.os.Bundle
@@ -13,15 +14,12 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusTimetableFragmentNew : DataBindingFragment<BusTimetableFragmentBinding>() {
+class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() {
     override val layoutId: Int = R.layout.bus_timetable_fragment
 
     private val busTimetableViewModel by viewModels<BusTimetableViewModel>()
 
-    private val shuttleBusTimetableFragment = ShuttleBusTimetableFragment()
-    private val expressBusTimetableFragment = ExpressBusTimetableFragment()
-    private val cityBusTimetableFragment = CityBusTimetableFragment()
-
+    private val busTimetableViewPager2Adapter by lazy { BusTimetableViewPager2Adapter(requireActivity()) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,6 +30,12 @@ class BusTimetableFragmentNew : DataBindingFragment<BusTimetableFragmentBinding>
 
     private fun initView() {
         busTimetableViewModel.setBusType(BusType.Shuttle)
+
+        binding.busTimetablePager.apply {
+            offscreenPageLimit = 3
+            isUserInputEnabled = false
+            adapter = busTimetableViewPager2Adapter
+        }
 
         binding.busTimetableBustypeShuttle.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Shuttle)
@@ -55,20 +59,14 @@ class BusTimetableFragmentNew : DataBindingFragment<BusTimetableFragmentBinding>
     }
 
     private fun switchShuttleBusTimetable() {
-        requireActivity().supportFragmentManager.commit {
-            replace(R.id.bus_timetable_fragment, shuttleBusTimetableFragment)
-        }
+        binding.busTimetablePager.setCurrentItem(0, true)
     }
 
     private fun switchExpressBusTimetable() {
-        requireActivity().supportFragmentManager.commit {
-            replace(R.id.bus_timetable_fragment, expressBusTimetableFragment)
-        }
+        binding.busTimetablePager.setCurrentItem(1, true)
     }
 
     private fun switchCityBusTimetable() {
-        requireActivity().supportFragmentManager.commit {
-            replace(R.id.bus_timetable_fragment, cityBusTimetableFragment)
-        }
+        binding.busTimetablePager.setCurrentItem(2, true)
     }
 }

@@ -94,8 +94,8 @@ buildscript {
 
         /* Dependency - Coroutine */
         def coroutine_version = "1.6.3"
-        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
-        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
+        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
 
         /* Dependency - AndroidX Security */
         def security_version = "1.1.0-alpha03"
