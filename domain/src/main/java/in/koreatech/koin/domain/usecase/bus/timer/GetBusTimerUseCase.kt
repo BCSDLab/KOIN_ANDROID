@@ -1,10 +1,9 @@
 package `in`.koreatech.koin.domain.usecase.bus.timer
 
 import `in`.koreatech.koin.domain.constant.BUS_REMAIN_TIME_UPDATE_PERIOD
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.repository.BusRepository
-import `in`.koreatech.koin.domain.util.ext.minute
 import `in`.koreatech.koin.domain.util.ext.second
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -16,6 +15,8 @@ import javax.inject.Inject
 class GetBusTimerUseCase @Inject constructor(
     private val busRepository: BusRepository
 ) {
+    var count = 1L
+
     private fun getBusDataFlow(
         departure: BusNode,
         arrival: BusNode
@@ -43,7 +44,6 @@ class GetBusTimerUseCase @Inject constructor(
     ) = flow {
         val period = 1.second
         var time = System.currentTimeMillis()
-        var count = 1L
         var list = getBusArrivalInfo(departure, arrival)
 
         fun getDurationOrReset(
@@ -65,11 +65,15 @@ class GetBusTimerUseCase @Inject constructor(
             System.currentTimeMillis().let {
                 if (it - time >= period) {
 
-                    if (count % 1.minute == 0L) {
+                    if (count / 60 > 0 || count == 0L) {
                         list = getBusArrivalInfo(departure, arrival)
+                        count = 0
                     }
 
                     val nowLocalTime = LocalTime.now(ZoneId.of("Asia/Seoul"))
+
+                    time += period
+                    count++
 
                     emit(
                         list.mapNotNull { busArrivalInfo ->
@@ -126,8 +130,6 @@ class GetBusTimerUseCase @Inject constructor(
                             }
                         }
                     )
-                    time += period
-                    count++
                 } else delay(period / 100)
             }
         }
