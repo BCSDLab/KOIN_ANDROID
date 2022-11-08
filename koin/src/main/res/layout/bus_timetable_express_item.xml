@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_view_bus_departure_time"
@@ -16,22 +16,14 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             tools:text="08:35"
+            android:layout_weight="1"
             android:textColor="@color/black"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="13sp" />
 
         <View
             android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="@color/blue1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_departure_time"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_height="match_parent"
+            android:background="@color/blue1" />
 
         <TextView
             android:id="@+id/text_view_bus_arrival_time"
@@ -43,19 +35,12 @@
             tools:text="08:56"
             android:textColor="@color/black"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_charge"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_departure_time"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1"/>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="@color/blue1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_charge"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:background="@color/blue1" />
 
         <TextView
             android:id="@+id/text_view_charge"
@@ -67,12 +52,8 @@
             android:paddingBottom="8dp"
             android:textColor="@color/black"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="1700원" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

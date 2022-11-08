@@ -58,6 +58,7 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
             cityBusTimetableAdapter.submitList(
                 list.map { it.toCityBusTimetableUiItem() }
             )
+            binding.recyclerView.smoothScrollToPosition(0)
         }
     }
 }
