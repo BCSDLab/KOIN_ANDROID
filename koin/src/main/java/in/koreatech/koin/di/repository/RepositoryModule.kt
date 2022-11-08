@@ -12,6 +12,11 @@ import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.remote.*
+import `in`.koreatech.koin.domain.model.bus.BusNode
+import `in`.koreatech.koin.domain.model.bus.course.BusCourse
+import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
+import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.repository.DiningRepository
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
@@ -21,6 +26,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Singleton
 
 @Module
