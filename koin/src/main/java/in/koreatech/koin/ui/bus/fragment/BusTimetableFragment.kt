@@ -58,15 +58,24 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
         }
     }
 
-    private fun switchShuttleBusTimetable() {
-        binding.busTimetablePager.setCurrentItem(0, true)
+    private fun switchShuttleBusTimetable() = with(binding) {
+        busTimetablePager.setCurrentItem(0, true)
+        busTimetableBustypeShuttle.alpha = 1f
+        busTimetableBustypeDaesung.alpha = 0.5f
+        busTimetableBustypeCity.alpha = 0.5f
     }
 
-    private fun switchExpressBusTimetable() {
-        binding.busTimetablePager.setCurrentItem(1, true)
+    private fun switchExpressBusTimetable() = with(binding) {
+        busTimetablePager.setCurrentItem(1, true)
+        busTimetableBustypeShuttle.alpha = 0.5f
+        busTimetableBustypeDaesung.alpha = 1f
+        busTimetableBustypeCity.alpha = 0.5f
     }
 
-    private fun switchCityBusTimetable() {
-        binding.busTimetablePager.setCurrentItem(2, true)
+    private fun switchCityBusTimetable() = with(binding) {
+        busTimetablePager.setCurrentItem(2, true)
+        busTimetableBustypeShuttle.alpha = 0.5f
+        busTimetableBustypeDaesung.alpha = 0.5f
+        busTimetableBustypeCity.alpha = 1f
     }
 }
