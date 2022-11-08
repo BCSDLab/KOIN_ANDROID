@@ -2,13 +2,17 @@ package `in`.koreatech.koin.ui.bus
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.BusActivityMainBinding
 import `in`.koreatech.koin.ui.bus.adpater.BusMainViewPager2Adapter
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -18,15 +22,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusActivity : ActivityBase() {
+class BusActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<BusActivityMainBinding>(R.layout.bus_activity_main)
     private val busMainViewPager2Adapter = BusMainViewPager2Adapter(this)
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil("Bus_Activity")
     }
-
-    var departureState = 0 // 0 : 한기대 1 : 야우리 2 : 천안역
-    var arrivalState = 1 // 0 : 한기대 1 : 야우리 2 : 천안역
+    override val menuState: MenuState = MenuState.Bus
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,11 @@ class BusActivity : ActivityBase() {
     }
 
     private fun initView() = with(binding) {
-        koinBaseAppbar.leftButton.setOnClickListener {
-            finish()
+        koinBaseAppbar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
+                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+            }
         }
         busMainViewpager.apply {
             offscreenPageLimit = 3

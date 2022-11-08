@@ -24,23 +24,24 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:text="@string/bus_timetable_daesung_departure"
             android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/bottom_divider"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_arrival_time"
+            app:layout_constraintEnd_toStartOf="@id/divider1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_divider"
-            android:text="@string/bus_timetable_daesung_departure" />
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
         <View
+            android:id="@+id/divider1"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/blue1"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_departure_time"
+            app:layout_constraintBottom_toTopOf="@id/bottom_divider"
             app:layout_constraintEnd_toStartOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintTop_toBottomOf="@id/top_divider"
-            app:layout_constraintBottom_toTopOf="@id/bottom_divider" />
+            app:layout_constraintStart_toEndOf="@id/text_view_bus_departure_time"
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
 
         <TextView
@@ -50,23 +51,24 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:text="@string/bus_timetable_daesung_arrival"
             android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/bottom_divider"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_ride_time"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_departure_time"
-            app:layout_constraintTop_toBottomOf="@id/top_divider"
-            android:text="@string/bus_timetable_daesung_arrival" />
+            app:layout_constraintEnd_toStartOf="@id/divider2"
+            app:layout_constraintStart_toEndOf="@id/divider1"
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
         <View
+            android:id="@+id/divider2"
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="@color/blue1"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_arrival_time"
+            app:layout_constraintBottom_toTopOf="@id/bottom_divider"
             app:layout_constraintEnd_toStartOf="@id/text_view_bus_ride_time"
-            app:layout_constraintTop_toBottomOf="@id/top_divider"
-            app:layout_constraintBottom_toTopOf="@id/bottom_divider" />
+            app:layout_constraintStart_toEndOf="@id/text_view_bus_arrival_time"
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
         <TextView
             android:id="@+id/text_view_bus_ride_time"
@@ -76,14 +78,14 @@
             android:minWidth="96dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:text="@string/bus_timetable_daesung_charge"
             android:textColor="?attr/colorPrimary"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/bottom_divider"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_arrival_time"
-            app:layout_constraintTop_toBottomOf="@id/top_divider"
-            android:text="@string/bus_timetable_daesung_charge" />
+            app:layout_constraintStart_toEndOf="@id/divider2"
+            app:layout_constraintTop_toBottomOf="@id/top_divider" />
 
         <View
             android:id="@+id/bottom_divider"

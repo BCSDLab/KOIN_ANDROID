@@ -84,6 +84,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
             shuttleBusTimetableAdapter.submitList(
                 list.map { it.toShuttleBusTimetableUiItem() }
             )
+            binding.recyclerView.smoothScrollToPosition(0)
         }
     }
 }

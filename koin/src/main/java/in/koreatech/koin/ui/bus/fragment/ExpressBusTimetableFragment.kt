@@ -71,6 +71,7 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
             expressBusTimetableAdapter.submitList(
                 list.map { it.toExpressBusTimetableUiItem(requireContext()) }
             )
+            binding.recyclerView.smoothScrollToPosition(0)
         }
     }
 }
