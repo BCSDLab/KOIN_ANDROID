@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_view_search_result_bus_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="start|center_vertical"
+            android:letterSpacing="-0.04"
+            android:lineSpacingExtra="7sp"
+            android:textSize="15sp"
+            tools:text="대성고속"
+            android:paddingStart="24dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            tools:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/text_view_search_result_bus_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:background="@color/white"
+            android:gravity="end|center_vertical"
+            android:letterSpacing="-0.02"
+            android:lineSpacingExtra="7sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="19:00"
+            android:paddingStart="8dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+    </LinearLayout>
+</layout>
+
