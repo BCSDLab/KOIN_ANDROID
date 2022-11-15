@@ -5,6 +5,8 @@ import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.usecase.bus.search.SearchBusUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -55,12 +57,16 @@ class BusSearchViewModel @Inject constructor(
     }
 
     fun search() = viewModelScope.launchWithLoading {
-        _busSearchResult.value = searchBusUseCase.invoke(
+        searchBusUseCase.invoke(
             dateTime = LocalDateTime.of(
                 selectedDate.value, selectedTime.value
             ),
             departure = departure.value ?: BusNode.Koreatech,
             arrival = arrival.value ?: BusNode.Terminal
-        )
+        ).onSuccess {
+            _busSearchResult.value = it
+        }.onFailure {
+            _errorToast.value = it.message
+        }
     }
 }

@@ -17,6 +17,7 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
+import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -57,6 +58,7 @@ class BusMainFragment : DataBindingFragment<BusMainFragmentNewBinding>() {
 
     private fun initViewModel() = with(viewModel) {
         (activity as ActivityBase).withLoading(viewLifecycleOwner, this)
+        withToastError(this@BusMainFragment, binding.root)
 
         observeLiveData(departure) {
             binding.busDepartureSpinner.setSelection(it.spinnerSelection)
@@ -87,10 +89,6 @@ class BusMainFragment : DataBindingFragment<BusMainFragmentNewBinding>() {
                 }
             }
             busRemainTimeAdapter.submitList(uiState)
-
-            observeLiveData(getBusTimerError) {
-                SnackbarUtil.makeShortSnackbar(binding.root, it)
-            }
         }
     }
 }

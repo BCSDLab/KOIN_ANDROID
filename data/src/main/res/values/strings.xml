@@ -15,4 +15,7 @@
     <string name="error_nickname_validation_not_performed">닉네임 중복체크를 해주세요</string>
     <string name="error_gender_not_checked">성별을 체크해 주세요</string>
     <string name="error_failed_logout">로그아웃에 실패했습니다.</string>
+
+    <!-- bus -->
+    <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
 </resources>

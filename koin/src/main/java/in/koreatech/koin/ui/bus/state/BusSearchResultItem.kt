@@ -11,7 +11,5 @@ data class BusSearchResultItem(
 
 fun BusSearchResult.toBusSearchResultItem() = BusSearchResultItem(
     busType = busType,
-    time = busTime.toLocalTime().format(
-        DateTimeFormatter.ofPattern("HH:mm")
-    )
+    time = busTimeString
 )

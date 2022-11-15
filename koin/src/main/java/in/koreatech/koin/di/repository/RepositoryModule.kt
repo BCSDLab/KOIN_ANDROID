@@ -22,9 +22,11 @@ import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.repository.VersionRepository
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -91,9 +93,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideBusRepository(
+        @ApplicationContext applicationContext: Context,
         busLocalDataSource: BusLocalDataSource,
         busRemoteDataSource: BusRemoteDataSource
     ): BusRepository {
-        return BusRepositoryImpl(busLocalDataSource, busRemoteDataSource)
+        return BusRepositoryImpl(applicationContext, busLocalDataSource, busRemoteDataSource)
     }
 }

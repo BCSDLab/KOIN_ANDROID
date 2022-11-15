@@ -2,19 +2,25 @@ package `in`.koreatech.koin.ui.bus.viewmodel
 
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asFlow
-import androidx.lifecycle.liveData
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
+import android.util.Log
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 
 @HiltViewModel
 class BusMainFragmentViewModel @Inject constructor(
-    private val getBusTimerUseCase: GetBusTimerUseCase
+    private val getBusTimerUseCase: GetBusTimerUseCase,
+    private val busErrorHandler: BusErrorHandler
 ) : BaseViewModel() {
 
     private val _departure = MutableLiveData<BusNode>(BusNode.Koreatech)
@@ -23,22 +29,27 @@ class BusMainFragmentViewModel @Inject constructor(
     val departure: LiveData<BusNode> get() = _departure
     val arrival: LiveData<BusNode> get() = _arrival
 
-    private val _getBusTimerError = MutableLiveData<String>()
-    val getBusTimerError: LiveData<String> get() = _getBusTimerError
-
     val busTimer = liveData {
         departure.asFlow().combine(arrival.asFlow()) { departure: BusNode, arrival: BusNode ->
             departure to arrival
-        }.collectLatest {
-            getBusTimerUseCase(it.first, it.second)
-                .catch {
-                    _getBusTimerError.postValue(it.message)
-                }
-                .collectLatest { busArrivalInfoList ->
-                    emit(busArrivalInfoList)
-                    _isLoading.postValue(false)
-                }
         }
+            .distinctUntilChanged()
+            .collectLatest { (departure, arrival) ->
+                _isLoading.value = false
+                try {
+                    if (departure != arrival) {
+                        getBusTimerUseCase(departure, arrival)
+                            .conflate()
+                            .collect { result ->
+                                emit(result)
+                            }
+                    }
+
+                } catch (_: CancellationException) {
+                } catch (e: Exception) {
+                    _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
+                }
+            }
     }
 
     fun setDeparture(departure: BusNode) {

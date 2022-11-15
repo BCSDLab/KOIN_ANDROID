@@ -11,11 +11,14 @@ import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.repository.BusRepository
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class BusRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val busLocalDataSource: BusLocalDataSource,
     private val busRemoteDataSource: BusRemoteDataSource
 ) : BusRepository {
@@ -110,7 +113,7 @@ class BusRepositoryImpl @Inject constructor(
             departure = departure.busNodeString,
             arrival = arrival.busNodeString
         ).map {
-            it.toBusSearchResult(time)
+            it.toBusSearchResult(context)
         }
     }
 }

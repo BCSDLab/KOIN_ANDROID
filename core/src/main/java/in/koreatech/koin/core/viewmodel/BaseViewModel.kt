@@ -3,8 +3,6 @@ package `in`.koreatech.koin.core.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -12,6 +10,9 @@ import kotlin.coroutines.EmptyCoroutineContext
 open class BaseViewModel() : ViewModel() {
     protected val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
+
+    protected val _errorToast = SingleLiveEvent<String>()
+    val errorToast : LiveData<String> get() = _errorToast
 
     fun CoroutineScope.launchWithLoading(
         context: CoroutineContext = EmptyCoroutineContext,
@@ -67,6 +68,10 @@ open class BaseViewModel() : ViewModel() {
         context, start
     ) {
         ignoreCancellationException { block() }
+    }
+
+    fun updateErrorMessage(errorMessage: String) {
+        _errorToast.value = errorMessage
     }
 }
 

@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BusTimetableViewModel @Inject constructor() : BaseViewModel() {
     private val _showingBusType = MutableLiveData<BusType>()
-    val showingBusType : LiveData<BusType> get() = _showingBusType
+    val showingBusType: LiveData<BusType> get() = _showingBusType
 
     fun setBusType(busType: BusType) {
         _showingBusType.value = busType

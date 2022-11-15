@@ -7,5 +7,6 @@ interface BusErrorHandler {
     fun handleGetBusCoursesError(throwable: Throwable) : ErrorHandler
     fun handleGetBusTimetableError(throwable: Throwable) : ErrorHandler
     fun handleGetBusRemainTimeError(throwable: Throwable) : ErrorHandler
+    fun handleGetBusCoursesErrorHandler(throwable: Throwable): ErrorHandler
     fun handleSearchBusError(throwable: Throwable) : ErrorHandler
 }

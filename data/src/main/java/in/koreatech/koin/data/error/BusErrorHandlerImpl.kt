@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class BusErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
-) : BusErrorHandler{
+) : BusErrorHandler {
     override fun handleGetBusCoursesError(throwable: Throwable): ErrorHandler =
         throwable.handleCommonError(context) {
             unknownErrorHandler(context)
@@ -23,6 +23,11 @@ class BusErrorHandlerImpl @Inject constructor(
         }
 
     override fun handleGetBusRemainTimeError(throwable: Throwable): ErrorHandler =
+        throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+
+    override fun handleGetBusCoursesErrorHandler(throwable: Throwable): ErrorHandler =
         throwable.handleCommonError(context) {
             unknownErrorHandler(context)
         }
