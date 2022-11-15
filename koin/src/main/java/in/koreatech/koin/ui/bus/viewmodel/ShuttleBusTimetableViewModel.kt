@@ -7,7 +7,9 @@ import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusCoursesUseCase
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusRoutesUseCase
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusTimetableUseCase
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.bus.state.ShuttleBusTimetableUiItem
+import `in`.koreatech.koin.util.ext.onFailureToast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -23,15 +25,12 @@ class ShuttleBusTimetableViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val busCourses = mutableListOf<Pair<BusCourse, String>>()
 
-    private val _errorMessage = SingleLiveEvent<String>()
-
     private val _busCoursesString = MutableLiveData<List<String>>()
     private val _busRoutes = MutableLiveData<List<String>>()
     private val _busTimetables = MutableLiveData<List<BusNodeInfo.ShuttleNodeInfo>>()
     private val _selectedCoursesPosition = MutableLiveData(0)
     private val _selectedRoutesPosition = MutableLiveData(0)
 
-    val errorMessage: LiveData<String> get() = _errorMessage
     val busCoursesString: LiveData<List<String>> get() = _busCoursesString
     val busRoutes: LiveData<List<String>> get() = _busRoutes
     val busTimetables: LiveData<List<BusNodeInfo.ShuttleNodeInfo>> get() = _busTimetables
@@ -59,28 +58,37 @@ class ShuttleBusTimetableViewModel @Inject constructor(
     }
 
     private suspend fun updateShuttleBusCourse() {
-        getShuttleBusCoursesUseCase().also { courses ->
-            busCourses.clear()
-            busCourses.addAll(courses)
-            _busCoursesString.value = courses.map { (_, name) -> name }
-        }
+        getShuttleBusCoursesUseCase()
+            .onSuccess { courses ->
+                busCourses.clear()
+                busCourses.addAll(courses)
+                _busCoursesString.value = courses.map { (_, name) -> name }
+            }
+            .onFailureToast(this)
     }
 
     private suspend fun updateShuttleBusRoute() {
         if (busCourses.isNotEmpty()) {
-            _busRoutes.value = getShuttleBusRoutesUseCase(
+            getShuttleBusRoutesUseCase(
                 busCourses[selectedCoursesPosition.value ?: 0].first
             )
+                .onSuccess {
+                    _busRoutes.value = it
+                }
+                .onFailureToast(this)
         }
     }
 
     private suspend fun updateShuttleBusTimetable() {
         if (busCourses.isNotEmpty() && !busRoutes.value.isNullOrEmpty()) {
-            _busTimetables.value =
-                getShuttleBusTimetableUseCase(
-                    busCourses[selectedCoursesPosition.value ?: 0].first,
-                    busRoutes.value!![selectedRoutesPosition.value ?: 0]
-                )
+            getShuttleBusTimetableUseCase(
+                busCourses[selectedCoursesPosition.value ?: 0].first,
+                busRoutes.value!![selectedRoutesPosition.value ?: 0]
+            )
+                .onSuccess {
+                    _busTimetables.value = it
+                }
+                .onFailureToast(this)
         }
     }
 }

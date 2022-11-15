@@ -10,6 +10,8 @@ import `in`.koreatech.koin.domain.usecase.bus.timetable.express.GetExpressBusTim
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusCoursesUseCase
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusRoutesUseCase
 import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusTimetableUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.bus.state.ShuttleBusTimetableUiItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,11 +24,7 @@ import javax.inject.Inject
 class CityBusTimetableViewModel @Inject constructor(
     private val getCityBusTimetableUseCase: GetCityBusTimetableUseCase,
 ) : BaseViewModel() {
-    private val _errorMessage = SingleLiveEvent<String>()
-
     private val _busTimetables = MutableLiveData<List<BusNodeInfo.CitybusNodeInfo>>()
-
-    val errorMessage: LiveData<String> get() = _errorMessage
     val busTimetables: LiveData<List<BusNodeInfo.CitybusNodeInfo>> get() = _busTimetables
 
     init {
@@ -36,6 +34,12 @@ class CityBusTimetableViewModel @Inject constructor(
     }
 
     private suspend fun updateCityBusTimetable() {
-        _busTimetables.value = getCityBusTimetableUseCase()
+        getCityBusTimetableUseCase()
+            .onSuccess {
+                _busTimetables.value = it
+            }
+            .onFailure {
+                _errorToast.value = it.message
+            }
     }
 }

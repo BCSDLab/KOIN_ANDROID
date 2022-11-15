@@ -13,6 +13,7 @@ import `in`.koreatech.koin.ui.bus.viewmodel.BusSearchViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
+import `in`.koreatech.koin.util.ext.withToastError
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
@@ -61,6 +62,7 @@ class BusSearchFragment : DataBindingFragment<BusTimetableSearchFragmentBinding>
 
     private fun initViewModel() = with(busSearchViewModel) {
         (requireActivity() as? IProgressDialog)?.withLoading(viewLifecycleOwner, this)
+        withToastError(this@BusSearchFragment, binding.root)
 
         observeLiveData(selectedDate) {
             binding.busTimetableSearchDateTextview.text = it.format(

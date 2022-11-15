@@ -11,6 +11,7 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
+import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -50,9 +51,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
     private fun initViewModel() = with(shuttleBusTimetableViewModel) {
         (requireActivity() as? IProgressDialog)?.withLoading(viewLifecycleOwner, this)
 
-        observeLiveData(errorMessage) {
-            SnackbarUtil.makeShortSnackbar(view, it)
-        }
+        withToastError(this@ShuttleBusTimetableFragment, binding.root)
 
         observeLiveData(busCoursesString) { courses ->
             binding.busTimetableCoursesSpinner.adapter =

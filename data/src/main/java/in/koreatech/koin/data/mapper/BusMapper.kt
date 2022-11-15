@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.data.constant.BUS_RESPONSE_TIME_FORMAT
 import `in`.koreatech.koin.data.response.bus.*
 import `in`.koreatech.koin.data.util.nowTime
@@ -9,6 +10,7 @@ import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import android.content.Context
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -107,15 +109,9 @@ fun BusResponse.toCityBusRemainTimePair() = nowTime.let { time ->
     )
 }
 
-fun BusSearchResponse.toBusSearchResult(searchDateTime: LocalDateTime): BusSearchResult {
-    val searchTime = LocalTime.parse(
-        busTime, DateTimeFormatter.ofPattern(
-            BUS_RESPONSE_TIME_FORMAT
-        )
-    )
-
+fun BusSearchResponse.toBusSearchResult(context: Context): BusSearchResult {
     return BusSearchResult(
         busType = busName.toBusType(),
-        busTime = LocalDateTime.of(searchDateTime.toLocalDate(), searchTime)
+        busTimeString = busTime ?: context.getString(R.string.bus_end_information)
     )
 }
