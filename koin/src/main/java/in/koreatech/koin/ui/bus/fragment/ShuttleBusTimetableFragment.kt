@@ -37,6 +37,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = shuttleBusTimetableAdapter
+            itemAnimator = null
         }
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->

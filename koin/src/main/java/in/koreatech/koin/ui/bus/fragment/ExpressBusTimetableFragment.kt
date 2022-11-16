@@ -41,6 +41,7 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = expressBusTimetableAdapter
+            itemAnimator = null
         }
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->

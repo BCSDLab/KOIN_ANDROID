@@ -27,7 +27,7 @@ class GetBusTimerUseCase @Inject constructor(
         arrival: BusNode
     ) = flow {
         val period = 1.second
-        var time = System.currentTimeMillis()
+        var time = System.currentTimeMillis() - 1.second
         var list = getBusArrivalInfo(departure, arrival)
 
         while (true) {

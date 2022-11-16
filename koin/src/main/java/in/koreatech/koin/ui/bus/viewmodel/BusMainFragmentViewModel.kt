@@ -53,7 +53,6 @@ class BusMainFragmentViewModel @Inject constructor(
     }
 
     fun setDeparture(departure: BusNode) {
-        _isLoading.value = true
         if (departure == _arrival.value) {
             _arrival.value = _departure.value
         }
@@ -61,7 +60,6 @@ class BusMainFragmentViewModel @Inject constructor(
     }
 
     fun setArrival(arrival: BusNode) {
-        _isLoading.value = true
         if (arrival == _departure.value) {
             _departure.value = _arrival.value
         }
