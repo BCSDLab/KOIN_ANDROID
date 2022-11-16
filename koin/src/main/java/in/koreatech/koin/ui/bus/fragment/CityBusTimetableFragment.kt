@@ -45,6 +45,7 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = cityBusTimetableAdapter
+            itemAnimator = null
         }
     }
 

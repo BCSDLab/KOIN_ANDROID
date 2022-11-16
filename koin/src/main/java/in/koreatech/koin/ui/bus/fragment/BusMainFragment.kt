@@ -52,7 +52,7 @@ class BusMainFragment : DataBindingFragment<BusMainFragmentNewBinding>() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = busRemainTimeAdapter
-            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+            itemAnimator = null
         }
     }
 
