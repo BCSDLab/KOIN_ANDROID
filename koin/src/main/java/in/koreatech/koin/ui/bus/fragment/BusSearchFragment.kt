@@ -15,8 +15,10 @@ import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
 import `in`.koreatech.koin.util.ext.withToastError
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.View
+import android.widget.DatePicker
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -100,14 +102,15 @@ class BusSearchFragment : DataBindingFragment<BusTimetableSearchFragmentBinding>
             ?: LocalDate.now()).let {
             Triple(it.year, it.monthValue - 1, it.dayOfMonth)
         }
-        DatePickerDialog(requireContext()).apply {
-            updateDate(year, month, dayOfMonth)
-            setOnDateSetListener { _, year, month, dayOfMonth ->
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
                 busSearchViewModel.setSelectedDate(
                     LocalDate.of(year, month + 1, dayOfMonth)
                 )
-            }
-        }.show()
+            },
+            year, month, dayOfMonth
+        ).show()
     }
 
     private fun showSearchResultDialog(list: List<BusSearchResultItem>) {

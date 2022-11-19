@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <TextView
@@ -14,15 +14,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
+            android:background="@color/white"
             android:gravity="start|center_vertical"
             android:letterSpacing="-0.04"
             android:lineSpacingExtra="7sp"
+            android:paddingStart="24dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
             android:textSize="15sp"
             tools:text="대성고속"
-            android:paddingStart="24dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             tools:textColor="@color/gray" />
 
         <TextView
@@ -34,13 +35,13 @@
             android:gravity="end|center_vertical"
             android:letterSpacing="-0.02"
             android:lineSpacingExtra="7sp"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="8dp"
             android:textColor="@color/black"
             android:textSize="15sp"
-            tools:text="19:00"
-            android:paddingStart="8dp"
-            android:paddingEnd="24dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp" />
+            tools:text="19:00" />
     </LinearLayout>
 </layout>
 
