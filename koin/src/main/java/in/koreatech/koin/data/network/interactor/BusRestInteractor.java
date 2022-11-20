@@ -9,6 +9,7 @@ import in.koreatech.koin.data.response.bus.BusResponse;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.HttpException;
 
@@ -19,110 +20,69 @@ public class BusRestInteractor implements BusInteractor {
     }
 
     @Override
-    public void readCityBusList(ApiCallback apiCallback, String depart, String arrival) {
-        RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("city", depart, arrival)
+    public Disposable readCityBusList(ApiCallback apiCallback, String depart, String arrival) {
+        return RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("city", depart, arrival)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BusResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BusResponse busResponse) {
-                        if (busResponse != null) {
-                            apiCallback.onSuccess(busResponse);
-                        } else {
-                            apiCallback.onFailure(new Throwable("fail read city bus list"));
+                .subscribe(
+                        busResponse -> {
+                            if (busResponse != null) {
+                                apiCallback.onSuccess(busResponse);
+                            } else {
+                                apiCallback.onFailure(new Throwable("fail read city bus list"));
+                            }
+                        },
+                        throwable -> {
+                            if (throwable instanceof HttpException) {
+                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                            }
+                            apiCallback.onFailure(throwable);
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                );
     }
 
     @Override
-    public void readDaesungBusList(ApiCallback apiCallback, String depart, String arrival) {
-
-        RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("express", depart, arrival)
+    public Disposable readDaesungBusList(ApiCallback apiCallback, String depart, String arrival) {
+        return RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("express", depart, arrival)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BusResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BusResponse busResponse) {
-                        if (busResponse != null) {
-                            apiCallback.onSuccess(busResponse);
-                        } else {
-                            apiCallback.onFailure(new Throwable("fail read express bus list"));
+                .subscribe(
+                        busResponse -> {
+                            if (busResponse != null) {
+                                apiCallback.onSuccess(busResponse);
+                            } else {
+                                apiCallback.onFailure(new Throwable("fail read express bus list"));
+                            }
+                        },
+                        throwable -> {
+                            if (throwable instanceof HttpException) {
+                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                            }
+                            apiCallback.onFailure(throwable);
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                );
     }
 
     @Override
-    public void readShuttleBusList(ApiCallback apiCallback, String depart, String arrival) {
-
-        RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("shuttle", depart, arrival)
+    public Disposable readShuttleBusList(ApiCallback apiCallback, String depart, String arrival) {
+        return RetrofitManager.getInstance().getRetrofit().create(BusService.class).getBusList("shuttle", depart, arrival)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BusResponse>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(BusResponse busResponse) {
-                        if (busResponse != null) {
-                            apiCallback.onSuccess(busResponse);
-                        } else {
-                            apiCallback.onFailure(new Throwable("fail read shuttle bus list"));
+                .subscribe(
+                        busResponse -> {
+                            if (busResponse != null) {
+                                apiCallback.onSuccess(busResponse);
+                            } else {
+                                apiCallback.onFailure(new Throwable("fail read shuttle bus list"));
+                            }
+                        },
+                        throwable -> {
+                            if (throwable instanceof HttpException) {
+                                Log.d(TAG, ((HttpException) throwable).code() + " ");
+                            }
+                            apiCallback.onFailure(throwable);
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        if (throwable instanceof HttpException) {
-                            Log.d(TAG, ((HttpException) throwable).code() + " ");
-                        }
-                        apiCallback.onFailure(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                );
     }
 
 }

@@ -144,7 +144,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         String departString = getBusNodeString(depart);
         String arrivalString = getBusNodeString(arrival);
 
-        busInteractor.readCityBusList(apiCallbackCitybus, departString, arrivalString);
+        compositeDisposable.add(busInteractor.readCityBusList(apiCallbackCitybus, departString, arrivalString));
     }
 
     public void getDaesungBus(int depart, int arrival) {
@@ -152,7 +152,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         String departString = getBusNodeString(depart);
         String arrivalString = getBusNodeString(arrival);
 
-        busInteractor.readDaesungBusList(apiCallbackDaesung, departString, arrivalString);
+        compositeDisposable.add(busInteractor.readDaesungBusList(apiCallbackDaesung, departString, arrivalString));
     }
 
     /**
@@ -169,7 +169,7 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
         String departString = getBusNodeString(depart);
         String arrivalString = getBusNodeString(arrival);
 
-        busInteractor.readShuttleBusList(apiCallbackShuttle, departString, arrivalString);
+        compositeDisposable.add(busInteractor.readShuttleBusList(apiCallbackShuttle, departString, arrivalString));
     }
 
     @Override
@@ -190,5 +190,9 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
             return BusType.TERMINAL.getDestination();
         else
             return BusType.STATION.getDestination();
+    }
+
+    private void dispose() {
+        compositeDisposable.dispose();
     }
 }
