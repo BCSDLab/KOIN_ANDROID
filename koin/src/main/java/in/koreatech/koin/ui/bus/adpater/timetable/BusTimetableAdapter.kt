@@ -41,7 +41,7 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
 
     final override fun submitList(list: List<T>?) {
         super.submitList(
-            if (list != null) {
+            if (!list.isNullOrEmpty()) {
                 mutableListOf<T>().apply {
                     add(list[0])
                     addAll(list)
@@ -53,7 +53,7 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
 
     final override fun submitList(list: List<T>?, commitCallback: Runnable?) {
         super.submitList(
-            if (list != null) {
+            if (!list.isNullOrEmpty()) {
                 mutableListOf<T>().apply {
                     add(list[0])
                     addAll(list)
