@@ -1,16 +1,22 @@
 package `in`.koreatech.koin.data.source.local
 
+import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.data.response.bus.CityBusRouteResponse
 import `in`.koreatech.koin.domain.model.bus.BusDirection
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class BusLocalDataSource {
+class BusLocalDataSource @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
     fun getCityBusTimetable(): List<CityBusRouteResponse> {
         return listOf(
-            CityBusRouteResponse("시간표(터미널)", "6:00(첫) - 22:30(막) (10분간격)"),
-            CityBusRouteResponse("시간표(병천)", "6:10(첫) - 22:45(막) (10분간격)"),
-            CityBusRouteResponse("소요시간", "약 40분")
+            CityBusRouteResponse(context.getString(R.string.bus_citybus_timetable_terminal_node), context.getString(R.string.bus_citybus_timetable_terminal_time)),
+            CityBusRouteResponse(context.getString(R.string.bus_citybus_timetable_byeongcheon_node), context.getString(R.string.bus_citybus_timetable_byeongcheon_time)),
+            CityBusRouteResponse(context.getString(R.string.bus_citybus_timetable_require_time), context.getString(R.string.bus_citybus_timetable_require_time_value))
         )
     }
 

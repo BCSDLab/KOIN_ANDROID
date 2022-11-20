@@ -41,7 +41,9 @@ object LocalDataSourceModule {
 
     @Provides
     @Singleton
-    fun provideBusLocalDataSource() : BusLocalDataSource {
-        return BusLocalDataSource()
+    fun provideBusLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ) : BusLocalDataSource {
+        return BusLocalDataSource(applicationContext)
     }
 }
