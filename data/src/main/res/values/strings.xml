@@ -18,4 +18,10 @@
 
     <!-- bus -->
     <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
+    <string name="bus_citybus_timetable_terminal_node">시간표(터미널)</string>
+    <string name="bus_citybus_timetable_terminal_time">6:00(첫) - 22:30(막) (10분간격)</string>
+    <string name="bus_citybus_timetable_byeongcheon_node">시간표(병천)</string>
+    <string name="bus_citybus_timetable_byeongcheon_time">6:10(첫) - 22:45(막) (10분간격)</string>
+    <string name="bus_citybus_timetable_require_time">소요시간</string>
+    <string name="bus_citybus_timetable_require_time_value">약 40분</string>
 </resources>
