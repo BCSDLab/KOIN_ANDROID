@@ -17,15 +17,13 @@ import java.time.ZoneId
 import javax.inject.Inject
 
 class GetBusTimerUseCase @Inject constructor(
-    private val busRepository: BusRepository,
-    private val busErrorHandler: BusErrorHandler
+    private val busRepository: BusRepository
 ) {
-    var count = 1L
-
     operator fun invoke(
         departure: BusNode,
         arrival: BusNode
     ) = flow {
+        var count = 1L
         val period = 1.second
         var time = System.currentTimeMillis() - 1.second
         var list = getBusArrivalInfo(departure, arrival)
@@ -52,14 +50,14 @@ class GetBusTimerUseCase @Inject constructor(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 },
                                 nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
                                     getDurationOrReset(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 }
                             )
                             is BusArrivalInfo.ExpressBusArrivalInfo -> busArrivalInfo.copy(
@@ -68,14 +66,14 @@ class GetBusTimerUseCase @Inject constructor(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 },
                                 nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
                                     getDurationOrReset(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 }
                             )
                             is BusArrivalInfo.ShuttleBusArrivalInfo -> busArrivalInfo.copy(
@@ -84,14 +82,14 @@ class GetBusTimerUseCase @Inject constructor(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 },
                                 nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
                                     getDurationOrReset(
                                         it,
                                         busArrivalInfo.criteria,
                                         nowLocalTime
-                                    )
+                                    ) { count = 0L }
                                 }
                             )
                             is BusArrivalInfo.CommutingBusArrivalInfo -> null
@@ -115,14 +113,15 @@ class GetBusTimerUseCase @Inject constructor(
         add(busRepository.getCityBusRemainTime(departure, arrival))
     }
 
-    private fun getDurationOrReset(
+    private inline fun getDurationOrReset(
         busRemainTime: Long,
         localTimeCriteria: LocalTime,
-        localTimeNow: LocalTime
+        localTimeNow: LocalTime,
+        onTimeEnd: () -> Unit
     ): Long {
         return (busRemainTime - Duration.between(localTimeCriteria, localTimeNow).seconds).let {
             if (it < 0) {
-                count = 0L
+                onTimeEnd()
                 0
             } else {
                 it
