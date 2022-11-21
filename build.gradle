@@ -33,6 +33,9 @@ buildscript {
         def lifecycle_version = "2.5.1"
         androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
+        def livedata_version = "2.5.1"
+        androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
+
         def activity_version = "1.4.0"
         androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
 
@@ -91,8 +94,8 @@ buildscript {
 
         /* Dependency - Coroutine */
         def coroutine_version = "1.6.3"
-        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
-        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
+        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
 
         /* Dependency - AndroidX Security */
         def security_version = "1.1.0-alpha03"

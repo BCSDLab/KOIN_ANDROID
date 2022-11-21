@@ -34,5 +34,6 @@ public interface MainActivityContact {
         void getShuttleBus(int depart, int arrival, int term);
 
         void getDiningList(String date);
+        void dispose();
     }
 }
