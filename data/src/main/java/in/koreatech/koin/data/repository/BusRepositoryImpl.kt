@@ -25,12 +25,12 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun getShuttleBusCourses(): List<Pair<BusCourse, String>> {
         return busRemoteDataSource.getBusCourses()
-            .map { it.toBusCourse().let { it to it.toCourseNameString() } }
+            .map { it.toBusCourse().let { it to it.toCourseNameString(context) } }
     }
 
     override suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>> {
         return busLocalDataSource.getExpressCourses()
-            .map { it to it.toCourseNameString() }
+            .map { it to it.toCourseNameString(context) }
     }
 
     override suspend fun getShuttleBusTimetable(busCourse: BusCourse): List<BusRoute.ShuttleBusRoute> {

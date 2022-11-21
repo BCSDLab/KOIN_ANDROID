@@ -215,8 +215,9 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         unbinder.unbind();
+        presenter.dispose();
+        super.onDestroy();
     }
 
     @Override
