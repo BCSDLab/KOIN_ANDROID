@@ -192,7 +192,8 @@ public class MainActivityPresenter implements MainActivityContact.Presenter {
             return BusType.STATION.getDestination();
     }
 
-    private void dispose() {
+    @Override
+    public void dispose() {
         compositeDisposable.dispose();
     }
 }

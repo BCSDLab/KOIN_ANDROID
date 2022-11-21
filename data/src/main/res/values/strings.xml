@@ -24,4 +24,10 @@
     <string name="bus_citybus_timetable_byeongcheon_time">6:10(첫) - 22:45(막) (10분간격)</string>
     <string name="bus_citybus_timetable_require_time">소요시간</string>
     <string name="bus_citybus_timetable_require_time_value">약 40분</string>
+    <string name="bus_course_shuttle_to_koreatech">셔틀 등교</string>
+    <string name="bus_course_shuttle_from_koreatech">셔틀 하교</string>
+    <string name="bus_course_commuting_to_koreatech">등교</string>
+    <string name="bus_course_commuting_from_koreatech">하교</string>
+    <string name="bus_course_express_to_koreatech"><![CDATA[야우리->한기대]]></string>
+    <string name="bus_course_express_from_koreatech"><![CDATA[한기대->야우리]]></string>
 </resources>
