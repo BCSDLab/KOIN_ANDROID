@@ -76,6 +76,8 @@ android {
 //    }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
@@ -109,6 +111,7 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
