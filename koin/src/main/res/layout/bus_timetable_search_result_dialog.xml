@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+<layout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_weight="0.295"
-        android:layout_height="0dp"
-        android:background="@color/blue_alpha51"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
 
         <TextView
+            android:id="@+id/text_view_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/blue_alpha51"
             android:gravity="left|center_vertical"
             android:letterSpacing="-0.04"
             android:lineHeight="27sp"
@@ -22,107 +19,30 @@
             android:padding="16dp"
             android:text="운행 정보 조회"
             android:textColor="@color/black"
-            android:textSize="18sp" />
-    </LinearLayout>
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="0.705"
-        android:layout_height="0dp"
-        android:orientation="vertical">
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:weightSum="1">
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_title" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="22dp"
-                android:layout_weight="0.3"
-                android:gravity="left|center_vertical"
-                android:letterSpacing="-0.04"
-                android:lineHeight="22sp"
-                android:lineSpacingExtra="7sp"
-                android:text="학교셔틀"
-                android:textColor="@color/colorAccent"
-                android:textSize="15sp" />
+        <Button
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:id="@+id/button_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="?attr/colorPrimary"
+            android:text="@string/bus_timetable_search_result_dialog_close" />
 
-            <TextView
-                android:id="@+id/bus_timetable_search_result_shuttle_bus_textview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:background="@color/white"
-                android:gravity="right|center_vertical"
-                android:letterSpacing="-0.02"
-                android:lineHeight="22sp"
-                android:lineSpacingExtra="7sp"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="22dp"
-                android:layout_weight="0.3"
-                android:gravity="left|center_vertical"
-                android:letterSpacing="-0.04"
-                android:lineHeight="22sp"
-                android:lineSpacingExtra="7sp"
-                android:text="대성고속"
-                android:textColor="@color/gray"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/bus_timetable_search_result_daesung_bus_textview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:background="@color/white"
-                android:gravity="right|center_vertical"
-                android:letterSpacing="-0.02"
-                android:lineHeight="22sp"
-                android:lineSpacingExtra="7sp"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
-            android:gravity="end|center_vertical"
-            android:orientation="horizontal"
-            android:paddingRight="14dp"
-            android:paddingBottom="9dp">
-
-            <Button
-                android:id="@+id/bus_timetable_search_result_close_button"
-                android:layout_width="58dp"
-                android:layout_height="36dp"
-                android:background="@color/red_alpha0"
-                android:letterSpacing="-0.04"
-                android:lineHeight="22sp"
-                android:lineSpacingExtra="7sp"
-                android:text="닫기"
-                android:gravity="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
 

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/bus_departure_spinner"
+            android:layout_width="90dp"
+            android:layout_height="65dp"
+            android:background="@drawable/spinner_no_border"
+            android:entries="@array/bus_place"
+            android:overlapAnchor="false"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:fontName="Bold"
+            app:layout_constraintEnd_toStartOf="@id/bus_departure_text_view"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bus_departure_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:lineHeight="29sp"
+            android:lineSpacingExtra="9sp"
+            android:text="에서"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:fontName="Custom2"
+            app:layout_constraintEnd_toStartOf="@id/bus_arrival_spinner"
+            app:layout_constraintStart_toEndOf="@id/bus_departure_spinner"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/bus_arrival_spinner"
+            android:layout_width="90dp"
+            android:layout_height="65dp"
+            android:background="@drawable/spinner_no_border"
+            android:entries="@array/bus_place"
+            android:lineSpacingExtra="9sp"
+            android:overlapAnchor="false"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:fontName="Bold"
+            app:layout_constraintEnd_toStartOf="@id/bus_arrival_text_view"
+            app:layout_constraintStart_toEndOf="@id/bus_departure_text_view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bus_arrival_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:gravity="center"
+            android:lineHeight="29sp"
+            android:lineSpacingExtra="9sp"
+            android:overlapAnchor="false"
+            android:text="갑니다"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:fontName="Custom2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bus_arrival_spinner"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bus_departure_text_view"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_shuttle_bus_remain_time" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

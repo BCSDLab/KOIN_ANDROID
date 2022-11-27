@@ -16,6 +16,20 @@
     <string name="error_gender_not_checked">성별을 체크해 주세요</string>
     <string name="error_failed_logout">로그아웃에 실패했습니다.</string>
 
+    <!-- bus -->
+    <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
+    <string name="bus_citybus_timetable_terminal_node">시간표(터미널)</string>
+    <string name="bus_citybus_timetable_terminal_time">6:00(첫) - 22:30(막) (10분간격)</string>
+    <string name="bus_citybus_timetable_byeongcheon_node">시간표(병천)</string>
+    <string name="bus_citybus_timetable_byeongcheon_time">6:10(첫) - 22:45(막) (10분간격)</string>
+    <string name="bus_citybus_timetable_require_time">소요시간</string>
+    <string name="bus_citybus_timetable_require_time_value">약 40분</string>
+    <string name="bus_course_shuttle_to_koreatech">셔틀 등교</string>
+    <string name="bus_course_shuttle_from_koreatech">셔틀 하교</string>
+    <string name="bus_course_commuting_to_koreatech">등교</string>
+    <string name="bus_course_commuting_from_koreatech">하교</string>
+    <string name="bus_course_express_to_koreatech"><![CDATA[야우리->한기대]]></string>
+    <string name="bus_course_express_from_koreatech"><![CDATA[한기대->야우리]]></string>
     <!-- dept -->
     <string name="dept_mechanical_engineering">기계공학부</string>
     <string name="dept_mechatronics_engineering">메카트로닉스공학부</string>
