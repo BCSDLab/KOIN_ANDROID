@@ -13,6 +13,7 @@ import `in`.koreatech.koin.ui.dining.adapter.DiningRecyclerViewAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -172,11 +173,16 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     }
 
     private fun setTextSelected(view: TextView) {
-        view.text = Html.fromHtml(
-            view.text.toString().toColorForHtml(getString(R.color.colorAccent))
-                .toUnderlineForHtml(),
-            Html.FROM_HTML_MODE_LEGACY
-        )
+        view.text = if (Build.VERSION_CODES.N > Build.VERSION.SDK_INT) {
+            Html.fromHtml(view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+                .toUnderlineForHtml())
+        } else {
+            Html.fromHtml(
+                view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+                    .toUnderlineForHtml(),
+                Html.FROM_HTML_MODE_LEGACY
+            )
+        }
     }
 
     private fun setSwipeRefreshingFalse() {
