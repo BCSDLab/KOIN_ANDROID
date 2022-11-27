@@ -1,35 +1,20 @@
 package `in`.koreatech.koin.di.repository
 
 import `in`.koreatech.koin.data.repository.*
-import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.domain.repository.*
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
-import `in`.koreatech.koin.data.source.local.BusLocalDataSource
+import `in`.koreatech.koin.data.source.local.*
 import `in`.koreatech.koin.data.source.remote.*
-import `in`.koreatech.koin.domain.model.bus.BusNode
-import `in`.koreatech.koin.domain.model.bus.course.BusCourse
-import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
-import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
-import `in`.koreatech.koin.domain.repository.DiningRepository
-import `in`.koreatech.koin.domain.repository.SignupRepository
-import `in`.koreatech.koin.domain.repository.TokenRepository
-import `in`.koreatech.koin.domain.repository.UserRepository
-import `in`.koreatech.koin.domain.repository.VersionRepository
 import android.content.Context
-import dagger.Module
-import dagger.Provides
+import com.google.android.datatransport.runtime.dagger.Module
+import com.google.android.datatransport.runtime.dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.time.LocalDateTime
-import java.time.LocalTime
 import javax.inject.Singleton
 
 @Module
@@ -75,10 +60,11 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDeptRepository(
-        deptRemoteDataSource: DeptRemoteDataSource
+        deptRemoteDataSource: DeptRemoteDataSource,
+        deptLocalDataSource: DeptLocalDataSource
     ) : DeptRepository {
         return DeptRepositoryImpl(
-            deptRemoteDataSource
+            deptRemoteDataSource, deptLocalDataSource
         )
     }
 
