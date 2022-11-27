@@ -19,7 +19,7 @@ buildscript {
         /* Common */
         compileSdkVersion = 31
         minSdkVersion = 21
-        targetSdkVersion = 30
+        targetSdkVersion = 31
         versionName = "3.0.6"
 
         kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
