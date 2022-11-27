@@ -17,18 +17,21 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_koin"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
-        <activity android:name=".ui.main.MainActivity"
+        <activity
+            android:name=".ui.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
 
 
-        <receiver android:name=".ui.dining.appwidget.DiningAppWidget">
+        <receiver
+            android:name=".ui.dining.appwidget.DiningAppWidget"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -39,6 +42,7 @@
         </receiver>
         <receiver
             android:name=".ui.bus.BusWidget"
+            android:exported="false"
             android:label="@string/navigation_item_bus">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -55,6 +59,7 @@
 
         <receiver
             android:name=".ui.timetable.TimetableWidget"
+            android:exported="false"
             android:label="@string/navigation_item_timetable">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -77,6 +82,7 @@
 
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,60 +93,75 @@
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" />
         <activity
             android:name=".ui.signup.SignupActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
+            android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.store.StoreActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.dining.DiningActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.bus.BusActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.userinfo.UserInfoActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.userinfo.UserInfoEditActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.store.StoreDetailActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.timetable.TimetableActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.timetable.TimetableAnonymousActivity"
+            android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.land.LandActivity"
+            android:exported="false"
             android:label="코인 커뮤니티"
-            android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.land.LandDetailActivity"
+            android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
             android:name=".ui.store.StoreFlyerViewActivity"
+            android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.error.ErrorActivity"
+            android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
     </application>
