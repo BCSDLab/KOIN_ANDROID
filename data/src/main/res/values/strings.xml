@@ -30,4 +30,17 @@
     <string name="bus_course_commuting_from_koreatech">하교</string>
     <string name="bus_course_express_to_koreatech"><![CDATA[야우리->한기대]]></string>
     <string name="bus_course_express_from_koreatech"><![CDATA[한기대->야우리]]></string>
+    <!-- dept -->
+    <string name="dept_mechanical_engineering">기계공학부</string>
+    <string name="dept_mechatronics_engineering">메카트로닉스공학부</string>
+    <string name="dept_electrical_electronics_and_communication_engineering">전기전자통신공학부</string>
+    <string name="dept_computer_science_and_engineering">컴퓨터공학부</string>
+    <string name="dept_industrial_design">디자인공학부</string>
+    <string name="dept_architectural_engineering">건축공학부</string>
+    <string name="dept_energy_meterials_chemical_engineering">에너지신소재화학공학부</string>
+    <string name="dept_industrial_management">산업경영학부</string>
+    <string name="dept_employment_service">고용서비스정책학과</string>
+    <string name="dept_hrd">HRD</string>
+    <string name="dept_department_of_future_technology">융합</string>
+    <string name="dept_liberal_arts">교양학부</string>
 </resources>
