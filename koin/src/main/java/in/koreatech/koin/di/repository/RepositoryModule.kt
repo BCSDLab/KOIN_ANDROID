@@ -1,28 +1,19 @@
 package `in`.koreatech.koin.di.repository
 
 import `in`.koreatech.koin.data.repository.*
-import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
-import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.domain.repository.*
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
 import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
 import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
-import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
-import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
-import `in`.koreatech.koin.domain.repository.DiningRepository
-import `in`.koreatech.koin.domain.repository.SignupRepository
-import `in`.koreatech.koin.domain.repository.TokenRepository
-import `in`.koreatech.koin.domain.repository.UserRepository
-import `in`.koreatech.koin.domain.repository.VersionRepository
-import dagger.Module
-import dagger.Provides
+import `in`.koreatech.koin.data.source.local.*
+import `in`.koreatech.koin.data.source.remote.*
+import android.content.Context
+import com.google.android.datatransport.runtime.dagger.Module
+import com.google.android.datatransport.runtime.dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -83,5 +74,15 @@ object RepositoryModule {
         diningRemoteDataSource: DiningRemoteDataSource
     ): DiningRepository {
         return DiningRepositoryImpl(diningRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBusRepository(
+        @ApplicationContext applicationContext: Context,
+        busLocalDataSource: BusLocalDataSource,
+        busRemoteDataSource: BusRemoteDataSource
+    ): BusRepository {
+        return BusRepositoryImpl(applicationContext, busLocalDataSource, busRemoteDataSource)
     }
 }

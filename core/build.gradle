@@ -38,6 +38,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -71,6 +73,7 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
     api project.androidXLifecycle
+    api project.androidXLivedata
 
     /* Dependency - Firebase */
     api project.firebaseCore
