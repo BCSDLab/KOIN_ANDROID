@@ -56,7 +56,7 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="APK"
+                artifactType="AAB"
                 releaseNotes="${project.versionName} release"
                 groups="bcsd"
             }
