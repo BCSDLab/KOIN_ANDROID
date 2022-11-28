@@ -11,6 +11,7 @@ import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
+import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
@@ -33,6 +34,8 @@ class LoginActivity : ActivityBase() {
     }
 
     private fun initViewModel() = with(loginViewModel) {
+        withLoading(this@LoginActivity, this)
+        
         observeLiveData(loginSuccessEvent) {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
