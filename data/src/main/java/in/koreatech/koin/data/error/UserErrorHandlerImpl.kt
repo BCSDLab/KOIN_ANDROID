@@ -17,6 +17,20 @@ import javax.inject.Inject
 class UserErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserErrorHandler {
+    override fun handleGetTokenError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when(it) {
+                is HttpException -> {
+                    when(it.code()) {
+                        401 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
+                        else -> null
+                    }
+                }
+                else -> null
+            }.withUnknown(context)
+        }
+    }
+
     override fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when(it) {
