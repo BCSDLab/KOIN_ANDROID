@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -39,6 +40,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
@@ -372,7 +374,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(getDrawerLayoutID());
+        DrawerLayout drawer = findViewById(getDrawerLayoutId());
         if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
         else
@@ -415,5 +417,11 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
     protected void onDestroy() {
         storeDetailPresenter.unSubscribe();
         super.onDestroy();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Store.INSTANCE;
     }
 }

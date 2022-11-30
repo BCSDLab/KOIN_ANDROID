@@ -13,8 +13,6 @@
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
-
-
     <style name="KAPTheme" parent="AppTheme">
 
     </style>

@@ -23,7 +23,6 @@ public interface MainActivityContact {
 
         void showNetworkError();
         void onDiningListDataReceived(ArrayList<Dining> diningArrayList);
-        void updateUserInterface(int placePosition);
         void showEmptyDining();
         void hideEmptyDining();
     }
@@ -35,5 +34,6 @@ public interface MainActivityContact {
         void getShuttleBus(int depart, int arrival, int term);
 
         void getDiningList(String date);
+        void dispose();
     }
 }

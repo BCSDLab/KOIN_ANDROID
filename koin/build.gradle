@@ -1,21 +1,28 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.appdistribution'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
 
-String applicationName = 'koin'
+def applicationName = 'koin'
 
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 30004
+        versionCode 30007
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
-        versionName "3.0.4"
+        versionName project.versionName
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        manifestPlaceholders = [naverMapKey: getNaverMapKey()]
     }
 
     lintOptions {
@@ -35,7 +42,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "true"
             firebaseCrashlytics {
@@ -48,6 +55,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
+            firebaseAppDistribution {
+                artifactType="AAB"
+                releaseNotes="${project.versionName} release"
+                groups="bcsd"
+            }
         }
     }
 
@@ -64,33 +76,42 @@ android {
 //    }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
-        }
+//    applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            outputFileName = "${applicationName}_v${defaultConfig.versionName}_${variant.buildType.name}.apk"
+//        }
+//    }
+
+    buildFeatures {
+        dataBinding true
     }
 }
 
 def getPassword() {
-    try {
-        def stringsFile = file("./src/main/res/values/keys.xml")
-        return new XmlParser().parse(stringsFile).string.find {
-            it.@name.equals 'koin_store_password'
-        }.text()
-    } catch (e) {
-        println(e)
-        return ""
-    }
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty('koin_store_password')
+}
+
+def getNaverMapKey() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty('navermap_key')
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':core')
+    implementation project(':data')
+    implementation project(':domain')
 
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -98,25 +119,32 @@ dependencies {
     })
     androidTestImplementation 'androidx.test:runner:1.2.0'
 
-
-    implementation(group: 'com.google.guava', name: 'guava', version: '24.1-jre') {
+    implementation(group: 'com.google.guava', name: 'guava', version: '27.0.1-android') {
         exclude group: 'com.google.guava', module: 'failureaccess'
     }
 
     /* Dependency - glide */
     implementation project.glide
-    annotationProcessor project.glideAnnotation
+    kapt project.glideAnnotation
 
     /* Dependency - butterknife */
     implementation project.butterknife
-    annotationProcessor project.butterknifeAnnotation
+    kapt project.butterknifeAnnotation
 
     //naver map
     implementation 'com.naver.maps:map-sdk:3.10.2'
+
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
     implementation 'com.github.irshulx:laser-native-editor:3.0.4'
     implementation 'com.github.duanhong169:colorpicker:1.1.1'
     implementation 'com.github.chrisbanes:PhotoView:2.1.3'
     implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
+
+    implementation project.hiltAndroid
+    kapt project.hiltCompiler
+
+}
+repositories {
+    mavenCentral()
 }

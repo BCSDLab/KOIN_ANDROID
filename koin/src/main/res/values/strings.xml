@@ -45,15 +45,15 @@
     <string name="version_check_failed">버전 정보를 불러오지 못하였습니다. 네트워크 연결을 확인해주세요.</string>
     <string name="token_out_dated">인증 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
 
+    <!-- 로그인 -->
+    <string name="login_required_field_not_filled">아이디와 비밀번호를 입력해주세요</string>
+
 
     <!-- URL -->
+    <string name="koreatech_email_postfix">%1$s\u0040koreatech.ac.kr</string>
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
     <string name="koreatech_email_url">https://email.koreatech.ac.kr/</string>
-
-    <!--Sign Up-->
-    <string name="signup_term_check_message_ask">&quot;동의&quot; 체크 박스에 체크를 한 후 이메일 인증하기 버튼을 클릭하면 본 약관에 동의하는 것으로 간주합니다.</string>
-    <string name="signup_term_check_message_checked">모든 약관에 동의하셨습니다.</string>
 
     <!-- Required value in actionbardrawertoggle -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -81,11 +81,10 @@
     <string name="daesung_depature_place_university_to_yawoori">안동출발버스</string>
     <string name="daesung_depature_place_yawoori_to_university">야우리출발버스</string>
     <string name="bus_no_information">운행정보없음</string>
-    <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
 
 
     <!--Market-->
-    <string name="market_used_phone_check">잘못된 휴대폰 번호입니다.\n 010-1234-1234 양식을 지켜주세요.</string>
+    <string name="market_used_phone_check">잘못된 휴대폰 번호입니다.\n 010–1234–1234 양식을 지켜주세요.</string>
     <string name="market_used_title_check">제목을 입력해주세요</string>
     <string name="market_used_content_check">내용을 입력해주세요</string>
     <string name="market_used_title_content_check">제목과 내용을 입력해주세요</string>
@@ -95,8 +94,31 @@
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
 
     <!--Sign Up-->
-    <string name="email_sending">이메일 전송 중</string>
-    <string name="email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
+    <string name="signup_email_sending">이메일 전송 중</string>
+    <string name="signup_term_check_message_ask">&quot;동의&quot; 체크 박스에 체크를 한 후 이메일 인증하기 버튼을 클릭하면 본 약관에 동의하는 것으로 간주합니다.</string>
+    <string name="signup_error_email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
+    <string name="signup_term_check_message_checked">모든 약관에 동의하셨습니다.</string>
+    <string name="signup_error_check_email">이메일을 확인해 주세요.</string>
+    <string name="signup_error_check_koin_terms">코인 이용약관에 동의해 주세요</string>
+    <string name="signup_error_check_privacy_terms">개인정보 이용약관에 동의해 주세요</string>
+    <string name="signup_error_check_password">특수문자를 포함한 영어와 숫자 6~18 자리 비밀번호를 입력해주세요</string>
+    <string name="signup_error_check_password_match">비밀번호가 일치하지 않습니다</string>
+    <string name="signup_error_when_email_validation">이메일 인증 중 오류가 발생했습니다</string>
+    <string name="signup_privacy_terms">개인정보 이용약관</string>
+    <string name="signup_privacy_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
+    <string name="signup_koin_terms">코인 이용약관</string>
+    <string name="signup_koin_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
+
+    <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
+    <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
+
+    <!-- Forgot password -->
+    <string name="forgotpassword_title">FORGOT PASSWORD?</string>
+    <string name="forgotpassword_message">비밀번호 초기화가 필요합니다.\n계정을 찾으려면 KOREATECH 이메일을 입력해주세요.</string>
+    <string name="forgotpassword_reset_password_button">RESET PASSWORD</string>
+    <string name="forgotpassword_goto_login_button">비밀번호가 기억나시나요? 로그인하기</string>
+    <string name="forgotpassword_sent_email_title">KOREATECH E-mail 인증</string>
+    <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 
     <!--Timetable-->
     <string name="timetable_saved">저장되었습니다.</string>
@@ -159,10 +181,70 @@
     <!--store-->
     <string name="store_how_about_here">여기는 어떠세요?</string>
 
+    <!-- version update -->
+    <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
+    <string name="version_update_message_recommended">최신 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
+    <string name="version_update_current_version">현재 버전 : %1$s</string>
+    <string name="version_update_update_version">업데이트 버전 : %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="flyer_current_page_text">%d/%d</string>
     <string name="show_more_menu">메뉴 더보기</string>
     <string name="hide_menu">메뉴 접기</string>
     <string name="search">검색</string>
+
+    <!-- user info -->
+    <string name="user_info_no_nickname">닉네임을 설정해 주세요</string>
+    <string name="user_info_no_anonymous_nickname">익명 닉네임이 설정되지 않았습니다</string>
+    <string name="user_info_no_phone_number">휴대폰 번호를 설정해 주세요</string>
+    <string name="user_info_no_student_number">학번을 설정해 주세요</string>
+    <string name="user_info_no_major">전공을 설정해 주세요</string>
+    <string name="user_info_gender_male">남성</string>
+    <string name="user_info_gender_female">여성</string>
+    <string name="user_info_gender_unknown">지정되지 않음</string>
+    <string name="user_info_anonymous">익명 사용자입니다.</string>
+    <string name="user_info_user_remove_message">정말 탈퇴하시려구요? 한번 더 생각해보세요 :)</string>
+    <string name="user_info_no_name">이름을 설정해주세요</string>
+    <string name="user_info_id_hint">학번 입력시 자동 입력</string>
+    <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
+    <string name="nickname_available">사용 가능한 닉네임입니다</string>
+
+    <!-- Dining -->
+    <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
+    <string name="dining_breakfast">아침</string>
+    <string name="dining_lunch">점심</string>
+    <string name="dining_dinner">저녁</string>
+    <string name="dining_kcal">kcal</string>
+    <string name="dining_cashbee">캐쉬비</string>
+    <string name="dining_money_unit">원</string>
+    <string name="dining_cash">현금</string>
+    <string name="dining_korean">한식</string>
+    <string name="dining_onedish">일품식</string>
+    <string name="dining_western">양식</string>
+    <string name="dining_nungsu">능수관</string>
+    <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
+    <string name="bus_app_bar_title">버스 / 교통</string>
+    <string name="bus_tab_info">운행정보</string>
+    <string name="bus_tab_search_info">운행 정보 검색</string>
+    <string name="bus_tab_timetable">시간표</string>
+    <string name="bus_timetable_shuttle_ride">승차장소</string>
+    <string name="bus_timetable_ride_time">시간</string>
+    <string name="bus_node_koreatech">한기대</string>
+    <string name="bus_node_station">천안역</string>
+    <string name="bus_node_terminal">야우리</string>
+    <string name="bus_remain_time_format">H시간 mm분 ss초 남음</string>
+    <string name="bus_no_remain_time">운행정보없음</string>
+    <string name="bus_arrival_time_format">H:mm 출발</string>
+    <string name="city_bus_number_format">%1$d번 버스</string>
+    <string name="bus_timetable_daesung_departure">출발시간</string>
+    <string name="bus_timetable_daesung_arrival">도착시간</string>
+    <string name="bus_timetable_daesung_charge">요금</string>
+    <string name="bus_timetable_city_start_node">기점</string>
+    <string name="bus_timetable_city_ride_time">종합터미널 - 병천</string>
+    <string name="bus_timetable_shuttle_time_format">HH:mm</string>
+    <string name="bus_name_city">시내버스</string>
+    <string name="bus_name_commuting">통학버스</string>
+    <string name="bus_name_express">대성고속</string>
+    <string name="bus_name_shuttle">셔틀버스</string>
+    <string name="bus_timetable_search_result_dialog_close">닫기</string>
 </resources>

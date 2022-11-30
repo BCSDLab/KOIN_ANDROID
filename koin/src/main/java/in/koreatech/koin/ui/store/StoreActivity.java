@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,6 +34,7 @@ import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.data.Injection;
 import in.koreatech.koin.data.network.entity.Store;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter;
 import in.koreatech.koin.ui.store.presenter.StoreContract;
 import in.koreatech.koin.ui.store.presenter.StorePresenter;
@@ -47,14 +48,14 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
     private final String TAG = "StoreActivity";
     private final int ALL_CATEGORY = -1;
     private final int[] CATEGORY_ID = {
-            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
-            R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc
+            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_dosirak, R.id.store_category_sweet_pork_feet,
+            R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_cafe, R.id.store_category_hair, R.id.store_category_etc
     };
     private final int[] CATEGORY_TEXT_ID
             = {
-            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_sweet_pork_textview, R.id.store_category_dosirak_textview,
+            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_dosirak_textview,
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
-            R.id.store_category_hair_textview, R.id.store_category_etc_textview
+            R.id.store_category_cafe_textview, R.id.store_category_hair_textview, R.id.store_category_etc_textview
     };
 
     /* View Component */
@@ -185,11 +186,12 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         super.onStart();
     }
 
-    @OnClick({R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_sweet_pork, R.id.store_category_sweet_dosirak,
-            R.id.store_category_sweet_pork_feet, R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_hair, R.id.store_category_etc,
-            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_sweet_pork_textview, R.id.store_category_dosirak_textview,
+    @OnClick({
+            R.id.store_category_chicken, R.id.store_category_pizza, R.id.store_category_dosirak, R.id.store_category_sweet_pork_feet,
+            R.id.store_category_chinese, R.id.store_category_normal, R.id.store_category_cafe, R.id.store_category_hair, R.id.store_category_etc,
+            R.id.store_category_chicken_textview, R.id.store_category_pizza_textview, R.id.store_category_dosirak_textview,
             R.id.store_category_sweet_pork_feet_textview, R.id.store_category_chinese_textview, R.id.store_category_normal_textview,
-            R.id.store_category_hair_textview, R.id.store_category_etc_textview}
+            R.id.store_category_cafe_textview, R.id.store_category_hair_textview, R.id.store_category_etc_textview}
     )
     public void storeCategoryOnClicked(View view) {
         initCateGoryTextColor();
@@ -356,5 +358,11 @@ public class StoreActivity extends KoinNavigationDrawerActivity implements Store
         storePresenter.unSubscribe();
         compositeDisposable.dispose();
         super.onDestroy();
+    }
+
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Store.INSTANCE;
     }
 }
