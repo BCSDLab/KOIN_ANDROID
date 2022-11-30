@@ -6,7 +6,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
 import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
-import `in`.koreatech.koin.ui.main.MainActivity
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData

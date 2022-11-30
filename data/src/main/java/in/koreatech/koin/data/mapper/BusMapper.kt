@@ -51,8 +51,10 @@ fun List<CityBusRouteResponse>.toCityBusRoute(): BusRoute.CityBusRoute {
     )
 }
 
-fun BusResponse.toShuttleBusArrivalInfo() = nowTime.let { time ->
+fun BusResponse.toShuttleBusArrivalInfo(departure: BusNode, arrival: BusNode) = nowTime.let { time ->
     BusArrivalInfo.ShuttleBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
         nowBusRemainTime = nowBus?.remainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
         nowBusArrivalTime = nowBus?.let {
@@ -66,8 +68,10 @@ fun BusResponse.toShuttleBusArrivalInfo() = nowTime.let { time ->
 }
 
 
-fun BusResponse.toCommutingBusRemainTimePair() = nowTime.let { time ->
+fun BusResponse.toCommutingBusRemainTimePair(departure: BusNode, arrival: BusNode) = nowTime.let { time ->
     BusArrivalInfo.CommutingBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
         nowBusRemainTime = nowBus?.remainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
         nowBusArrivalTime = nowBus?.let {
@@ -80,8 +84,10 @@ fun BusResponse.toCommutingBusRemainTimePair() = nowTime.let { time ->
     )
 }
 
-fun BusResponse.toExpressBusRemainTimePair() = nowTime.let { time ->
+fun BusResponse.toExpressBusRemainTimePair(departure: BusNode, arrival: BusNode) = nowTime.let { time ->
     BusArrivalInfo.ExpressBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
         nowBusRemainTime = nowBus?.remainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
         nowBusArrivalTime = nowBus?.let {
@@ -94,8 +100,10 @@ fun BusResponse.toExpressBusRemainTimePair() = nowTime.let { time ->
     )
 }
 
-fun BusResponse.toCityBusRemainTimePair() = nowTime.let { time ->
+fun BusResponse.toCityBusRemainTimePair(departure: BusNode, arrival: BusNode) = nowTime.let { time ->
     BusArrivalInfo.CityBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
         nowBusRemainTime = nowBus?.remainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
         nowBusArrivalTime = nowBus?.let {
