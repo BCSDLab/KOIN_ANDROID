@@ -63,6 +63,12 @@ class DiningActivity : KoinNavigationDrawerActivity(),
                     ).show()
                 }
             }
+            isDateError.observe(this@DiningActivity) {
+                if(it) {
+                    Toast.makeText(this@DiningActivity, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
+                    dateErrorInit()
+                }
+            }
             when (selectedType) {
                 is DiningType.Breakfast -> setTextSelected(binding.diningBreakfastButton)
                 is DiningType.Lunch -> setTextSelected(binding.diningLunchButton)
@@ -140,15 +146,11 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     }
 
     private fun onPreviousDay() {
-        if (!diningViewModel.getPreviousDayDiningData()) {
-            Toast.makeText(this, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
-        }
+        diningViewModel.getPreviousDayDiningData()
     }
 
     private fun onNextDay() {
-        if (!diningViewModel.getNextDayDiningData()) {
-            Toast.makeText(this, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
-        }
+        diningViewModel.getNextDayDiningData()
     }
 
     private fun updateRecyclerData() {
