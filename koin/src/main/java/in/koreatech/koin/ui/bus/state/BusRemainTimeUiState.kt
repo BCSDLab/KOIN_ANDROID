@@ -1,6 +1,10 @@
 package `in`.koreatech.koin.ui.bus.state
 
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.data.util.busNumberFormatted
+import `in`.koreatech.koin.data.util.localized
+import `in`.koreatech.koin.data.util.toBusArrivalTimeFormatted
+import `in`.koreatech.koin.data.util.toBusRemainTimeFormatted
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.BusType
@@ -26,38 +30,12 @@ fun BusArrivalInfo.ShuttleBusArrivalInfo.toShuttleBusRemainTimeUiState(
 ) =
     BusRemainTimeUiState(
         type = BusType.Shuttle,
-        departure = when (departure) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        arrival = when (arrival) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        nowBusRemainTime = this.nowBusRemainTime?.let {
-            if(it >= 0) {
-                LocalTime.ofSecondOfDay(it)
-                    .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nowBusDepartureTime = this.nowBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        ),
-        nextBusRemainTime = this.nextBusRemainTime?.let {
-            if(it >= 0) {
-                LocalTime.ofSecondOfDay(it)
-                    .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nextBusDepartureTime = this.nextBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        )
+        departure = departure.localized(context),
+        arrival = arrival.localized(context),
+        nowBusRemainTime = nowBusRemainTime.toBusRemainTimeFormatted(context),
+        nowBusDepartureTime = nowBusArrivalTime?.toBusArrivalTimeFormatted(context),
+        nextBusRemainTime = nextBusRemainTime.toBusRemainTimeFormatted(context),
+        nextBusDepartureTime = nextBusArrivalTime?.toBusArrivalTimeFormatted(context),
     )
 
 fun BusArrivalInfo.ExpressBusArrivalInfo.toExpressBusRemainTimeUiState(
@@ -67,38 +45,12 @@ fun BusArrivalInfo.ExpressBusArrivalInfo.toExpressBusRemainTimeUiState(
 ) =
     BusRemainTimeUiState(
         type = BusType.Express,
-        departure = when (departure) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        arrival = when (arrival) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        nowBusRemainTime = this.nowBusRemainTime?.let {
-            if(it >= 0) {
-                LocalTime.ofSecondOfDay(it)
-                    .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nowBusDepartureTime = this.nowBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        ),
-        nextBusRemainTime = this.nextBusRemainTime?.let {
-            if(it >= 0) {
-                LocalTime.ofSecondOfDay(it)
-                    .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nextBusDepartureTime = this.nextBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        )
+        departure = departure.localized(context),
+        arrival = arrival.localized(context),
+        nowBusRemainTime = nowBusRemainTime.toBusRemainTimeFormatted(context),
+        nowBusDepartureTime = nowBusArrivalTime?.toBusArrivalTimeFormatted(context),
+        nextBusRemainTime = nextBusRemainTime.toBusRemainTimeFormatted(context),
+        nextBusDepartureTime = nextBusArrivalTime?.toBusArrivalTimeFormatted(context)
     )
 
 fun BusArrivalInfo.CityBusArrivalInfo.toCityBusRemainTimeUiState(
@@ -108,39 +60,11 @@ fun BusArrivalInfo.CityBusArrivalInfo.toCityBusRemainTimeUiState(
 ) =
     BusRemainTimeUiState(
         type = BusType.City,
-        departure = when (departure) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        arrival = when (arrival) {
-            BusNode.Koreatech -> context.getString(R.string.bus_node_koreatech)
-            BusNode.Station -> context.getString(R.string.bus_node_station)
-            BusNode.Terminal -> context.getString(R.string.bus_node_terminal)
-        },
-        nowBusRemainTime = this.nowBusRemainTime?.let {
-            if(it >= 0) {
-                LocalTime.ofSecondOfDay(it)
-                    .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nowBusDepartureTime = this.nowBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        ),
-        nextBusRemainTime = this.nextBusRemainTime?.let {
-            if(it >= 0) {
-            LocalTime.ofSecondOfDay(it)
-                .format(DateTimeFormatter.ofPattern(context.getString(R.string.bus_remain_time_format)))
-            } else {
-                null
-            }
-        } ?: context.getString(R.string.bus_no_remain_time),
-        nextBusDepartureTime = this.nextBusArrivalTime?.format(
-            DateTimeFormatter.ofPattern(context.getString(R.string.bus_arrival_time_format))
-        ),
-        busNumber = busNumber?.let {
-            context.getString(R.string.city_bus_number_format, it)
-        }
+        departure = departure.localized(context),
+        arrival = arrival.localized(context),
+        nowBusRemainTime = nowBusRemainTime.toBusRemainTimeFormatted(context),
+        nowBusDepartureTime = nowBusArrivalTime?.toBusArrivalTimeFormatted(context),
+        nextBusRemainTime = nextBusRemainTime.toBusRemainTimeFormatted(context),
+        nextBusDepartureTime = nextBusArrivalTime?.toBusArrivalTimeFormatted(context),
+        busNumber = busNumber?.busNumberFormatted(context)
     )

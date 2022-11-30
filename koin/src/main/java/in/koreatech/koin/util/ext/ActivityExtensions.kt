@@ -1,22 +1,18 @@
 package `in`.koreatech.koin.util.ext
 
-import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.ComponentActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModel
 import java.util.*
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
+import kotlin.math.roundToInt
 
 
 inline val Activity.windowHeight: Int
@@ -68,4 +64,9 @@ fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwn
 fun Activity.hideSoftKeyboard() {
     val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
     Objects.requireNonNull(imm).hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+}
+
+fun Int.toPx(context: Context): Int {
+    val density = context.resources.displayMetrics.density
+    return (this.toFloat() * density).roundToInt()
 }
