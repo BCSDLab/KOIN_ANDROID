@@ -49,7 +49,7 @@ class ShuttleBusTimetableViewModel @Inject constructor(
     fun setCoursePosition(position: Int) = viewModelScope.launchWithLoading {
         _selectedCoursesPosition.value = position
         updateShuttleBusRoute()
-        setRoutePosition(0)
+        if(!busRoutes.value.isNullOrEmpty()) setRoutePosition(0)
     }
 
     fun setRoutePosition(position: Int) = viewModelScope.launchWithLoading {
