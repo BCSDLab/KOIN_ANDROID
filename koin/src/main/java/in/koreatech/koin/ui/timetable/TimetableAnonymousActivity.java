@@ -45,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import in.koreatech.koin.KoinApplication;
 import in.koreatech.koin.R;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -56,6 +57,7 @@ import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.sharedpreference.TimeTableSharedPreferencesHelper;
 import in.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper;
 import in.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity;
+import in.koreatech.koin.ui.navigation.state.MenuState;
 import in.koreatech.koin.ui.timetable.adapter.TimetableRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.adapter.TimetableSemesterRecyclerAdapter;
 import in.koreatech.koin.ui.timetable.presenter.MajorDialogListener;
@@ -170,7 +172,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetableAnonymousPresenter(this));
+        setPresenter(new TimetableAnonymousPresenter(this, (KoinApplication) getApplication()));
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();
@@ -202,9 +204,6 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     @Override
     protected void onStart() {
         super.onStart();
-        if (!checkIsAnonoymous()) {
-            goToTimetableActivty();
-        }
         TimeTableSharedPreferencesHelper.getInstance().init(getApplicationContext());
         this.timetablePresenter.getTimeTableVersion();
         this.timetablePresenter.readSemesters();
@@ -963,4 +962,9 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
             timetableAddFloatingButton.show();
     }
 
+    @NonNull
+    @Override
+    protected MenuState getMenuState() {
+        return MenuState.Timetable.INSTANCE;
+    }
 }

@@ -81,108 +81,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/dining_widget_place_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/dining_widget_hansik_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_gravity="center"
-                android:background="@color/white"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="4sp"
-                android:text="한식"
-                android:textColor="@color/very_dark_gray"
-                android:textSize="13sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/dining_widget_ilpumsik_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:background="@color/white"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="4sp"
-                android:text="일품식"
-                android:textColor="@color/very_dark_gray"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/dining_widget_yangsik_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:background="@color/white"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="4sp"
-                android:text="양식"
-                android:textColor="@color/very_dark_gray"
-                android:textSize="13sp"
-                tools:text="양식" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/dining_widget_nungsu_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:background="@color/white"
-                android:letterSpacing="0.02"
-                android:lineSpacingExtra="4sp"
-                android:text="능수관"
-                android:textColor="@color/very_dark_gray"
-                android:textSize="13sp" />
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -204,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="학교에서 식단이 업로드 되지 않았습니다."
+            android:text="@string/dining_non_upload"
             android:textColor="@color/white"
             android:textSize="13sp" />
         <TextView

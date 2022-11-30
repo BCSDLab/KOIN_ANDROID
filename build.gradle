@@ -1,32 +1,46 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
         }
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        maven { url 'https://jitpack.io'}
     }
 
     ext {
+        kotlin_version = "1.6.21"
+        android_gradle_plugin_version = "7.2.1"
+
         /* Common */
-        compileSdkVersion = 30
+        compileSdkVersion = 31
         minSdkVersion = 21
-        targetSdkVersion = 30
+        targetSdkVersion = 31
+        versionName = "3.0.7"
+
+        kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
         /* Dependency - AndroidX Jetpack */
         def android_x_version = "1.0.0"
         androidxAppCompat = "androidx.appcompat:appcompat:$android_x_version"
         androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
         androidxCardView = "androidx.cardview:cardview:$android_x_version"
+
+        def lifecycle_version = "2.5.1"
+        androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+        def livedata_version = "2.5.1"
+        androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
+
+        def activity_version = "1.4.0"
+        androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
+
+        def fragment_version = "1.4.1"
+        androidXFragmentKtx = "androidx.fragment:fragment-ktx:$fragment_version"
 
         /* Dependency - AndroidX Material */
         def android_x_material_version = "1.2.0"
@@ -39,7 +53,7 @@ buildscript {
         firebasePerformance = "com.google.firebase:firebase-perf:$firebase_version"
 
         /* Dependency - Retrofit2 */
-        def retrofit_version = "2.3.0"
+        def retrofit_version = "2.9.0"
         retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
         retrofitGsonConvert = "com.squareup.retrofit2:converter-gson:$retrofit_version"
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
@@ -68,15 +82,41 @@ buildscript {
         /* Dependency - sticky scroll view */
         def sticky_scroll_view_version = "1.0.2"
         stickyScrollView = "com.github.amarjain07:StickyScrollView:$sticky_scroll_view_version"
+
+        /* Dependency - KTX */
+        def ktx_core_version = "1.8.0"
+        androidXKtx = "androidx.core:core-ktx:$ktx_core_version"
+
+        /* Dependency - Hilt */
+        hilt_version = "2.38.1"
+        hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
+        hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
+
+        /* Dependency - Coroutine */
+        def coroutine_version = "1.6.3"
+        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+
+        /* Dependency - AndroidX Security */
+        def security_version = "1.1.0-alpha03"
+        androidXSecurity = "androidx.security:security-crypto:$security_version"
     }
 
-
+    dependencies {
+        classpath "com.android.tools.build:gradle:$android_gradle_plugin_version"
+        classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'com.google.firebase:firebase-appdistribution-gradle:3.0.3'
+    }
 }
 
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
         }

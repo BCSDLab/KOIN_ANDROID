@@ -14,7 +14,6 @@ import android.widget.RemoteViews;
 import java.text.ParseException;
 
 import in.koreatech.koin.R;
-import in.koreatech.koin.constant.BusType;
 import in.koreatech.koin.data.network.entity.RegularSemesterBus;
 import in.koreatech.koin.data.network.entity.SeasonalSemesterBus;
 import in.koreatech.koin.data.network.entity.Term;
@@ -24,8 +23,8 @@ import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.data.sharedpreference.BusWidgetSharedPreferencesHelper;
 import in.koreatech.koin.core.network.ApiCallback;
 import in.koreatech.koin.data.network.entity.Bus;
-import in.koreatech.koin.data.network.interactor.CityBusInteractor;
-import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
+import in.koreatech.koin.data.network.interactor.BusInteractor;
+import in.koreatech.koin.data.network.interactor.BusRestInteractor;
 import in.koreatech.koin.data.network.response.BusResponse;
 import in.koreatech.koin.constant.BusDestinationEnum;
 
@@ -34,7 +33,7 @@ import in.koreatech.koin.constant.BusDestinationEnum;
  */
 public class BusWidget extends AppWidgetProvider {
     public static final String TAG = "BusWidget";
-    private CityBusInteractor busInteractor;
+    private BusInteractor busInteractor;
     private TermInteractor termInteractor;
     private Pair<String, String> currentBusPair;
     private Context context;
@@ -137,7 +136,7 @@ public class BusWidget extends AppWidgetProvider {
      */
     public void initBusWidgetSharedPreferenece(Context context) {
         BusWidgetSharedPreferencesHelper.getInstance().init(context.getApplicationContext());
-        busInteractor = new CityBusRestInteractor();
+        busInteractor = new BusRestInteractor();
         termInteractor = new TermRestInteractor();
     }
 
