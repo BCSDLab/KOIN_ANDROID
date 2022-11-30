@@ -5,10 +5,8 @@ import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.DiningActivityMainBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.toColorForHtml
 import `in`.koreatech.koin.domain.util.ext.toUnderlineForHtml
-import `in`.koreatech.koin.domain.util.ext.typeFilter
 import `in`.koreatech.koin.ui.dining.adapter.DiningRecyclerViewAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity

@@ -55,9 +55,8 @@ class DiningViewModel @Inject constructor(
         val currentDate = TimeUtil.stringToDateYYYYMMDD(
             selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
         )
-        return if (checkCorrectDateRangeUseCase(currentDate)) {
-            val nextDayDate =
-                TimeUtil.getNextDayDate(currentDate)
+        val nextDayDate = TimeUtil.getNextDayDate(currentDate)
+        return if (checkCorrectDateRangeUseCase(nextDayDate)) {
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(nextDayDate)
             updateDiningData(nextDayDate)
             true
@@ -68,9 +67,8 @@ class DiningViewModel @Inject constructor(
         val currentDate = TimeUtil.stringToDateYYYYMMDD(
             selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
         )
-        return if (checkCorrectDateRangeUseCase(currentDate)) {
-            val previousDay =
-                TimeUtil.getPreviousDayDate(currentDate)
+        val previousDay = TimeUtil.getPreviousDayDate(currentDate)
+        return if (checkCorrectDateRangeUseCase(previousDay)) {
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(previousDay)
             updateDiningData(previousDay)
             true
