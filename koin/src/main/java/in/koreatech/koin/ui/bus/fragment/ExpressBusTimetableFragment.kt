@@ -19,6 +19,7 @@ import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,12 +56,17 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
         withToastError(this@ExpressBusTimetableFragment, binding.root)
 
         observeLiveData(busCoursesString) { courses ->
-            binding.busTimetableCoursesSpinner.adapter =
-                ArrayAdapter(
-                    requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    courses
-                )
+            if(courses.isNullOrEmpty()) {
+                binding.busTimetableCoursesSpinner.isVisible = false
+            } else {
+                binding.busTimetableCoursesSpinner.isVisible = true
+                binding.busTimetableCoursesSpinner.adapter =
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        courses
+                    )
+            }
         }
 
         observeLiveData(selectedCoursesPosition) {

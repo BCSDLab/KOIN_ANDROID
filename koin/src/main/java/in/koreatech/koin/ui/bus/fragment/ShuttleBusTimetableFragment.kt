@@ -59,6 +59,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
             if(courses.isNullOrEmpty()) {
                 binding.busTimetableCoursesSpinner.isVisible = false
             } else {
+                binding.busTimetableCoursesSpinner.isVisible = true
                 binding.busTimetableCoursesSpinner.adapter =
                     ArrayAdapter(
                         requireContext(),
@@ -72,6 +73,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
             if(routes.isNullOrEmpty()) {
                 binding.busTimetableRoutesSpinner.isVisible = false
             } else {
+                binding.busTimetableRoutesSpinner.isVisible = true
                 binding.busTimetableRoutesSpinner.adapter =
                     ArrayAdapter(
                         requireContext(),
