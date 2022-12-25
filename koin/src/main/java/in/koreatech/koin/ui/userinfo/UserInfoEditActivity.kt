@@ -108,10 +108,10 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
 
                         when (user.gender) {
                             Gender.Man -> userinfoeditedRadiobuttonGenderMan.isChecked = true
-                            Gender.Woman -> userinfoeditedRadiobuttonGenderMan.isChecked = true
+                            Gender.Woman -> userinfoeditedRadiobuttonGenderWoman.isChecked = true
                             else -> {
                                 userinfoeditedRadiobuttonGenderMan.isChecked = false
-                                userinfoeditedRadiobuttonGenderMan.isChecked = false
+                                userinfoeditedRadiobuttonGenderWoman.isChecked = false
                             }
                         }
 
