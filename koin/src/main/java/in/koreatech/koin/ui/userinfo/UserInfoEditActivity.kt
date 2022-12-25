@@ -57,6 +57,10 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
         )
 
+        userinfoeditedEdittextName.addTextChangedListener {
+            userInfoEditViewModel
+        }
+
         userinfoeditedEdittextStudentId.addTextChangedListener {
             userInfoEditViewModel.getDept(it.toString())
         }
