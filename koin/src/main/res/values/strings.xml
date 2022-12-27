@@ -81,7 +81,6 @@
     <string name="daesung_depature_place_university_to_yawoori">안동출발버스</string>
     <string name="daesung_depature_place_yawoori_to_university">야우리출발버스</string>
     <string name="bus_no_information">운행정보없음</string>
-    <string name="bus_end_information">금일 운영 종료 되었습니다.</string>
 
 
     <!--Market-->
@@ -224,8 +223,32 @@
     <string name="dining_western">양식</string>
     <string name="dining_nungsu">능수관</string>
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
+    <string name="bus_app_bar_title">버스 / 교통</string>
+    <string name="bus_tab_info">운행정보</string>
+    <string name="bus_tab_search_info">운행 정보 검색</string>
+    <string name="bus_tab_timetable">시간표</string>
+    <string name="bus_timetable_shuttle_ride">승차장소</string>
+    <string name="bus_timetable_ride_time">시간</string>
+    <string name="bus_node_koreatech">한기대</string>
+    <string name="bus_node_station">천안역</string>
+    <string name="bus_node_terminal">야우리</string>
+    <string name="bus_remain_time_format">H시간 mm분 ss초 남음</string>
+    <string name="bus_no_remain_time">운행정보없음</string>
+    <string name="bus_arrival_time_format">H:mm 출발</string>
+    <string name="city_bus_number_format">%1$d번 버스</string>
+    <string name="bus_timetable_daesung_departure">출발시간</string>
+    <string name="bus_timetable_daesung_arrival">도착시간</string>
+    <string name="bus_timetable_daesung_charge">요금</string>
+    <string name="bus_timetable_city_start_node">기점</string>
+    <string name="bus_timetable_city_ride_time">종합터미널 - 병천</string>
+    <string name="bus_timetable_shuttle_time_format">HH:mm</string>
+    <string name="bus_name_city">시내버스</string>
+    <string name="bus_name_commuting">통학버스</string>
+    <string name="bus_name_express">대성고속</string>
+    <string name="bus_name_shuttle">셔틀버스</string>
+    <string name="bus_timetable_search_result_dialog_close">닫기</string>
 
-    <!-- Land -->
+	<!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
     <string name="land_monthly_fee">월세</string>
     <string name="land_charter">전세</string>

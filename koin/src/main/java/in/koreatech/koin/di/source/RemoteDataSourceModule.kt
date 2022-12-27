@@ -1,16 +1,8 @@
 package `in`.koreatech.koin.di.source
 
-import `in`.koreatech.koin.data.api.DeptApi
-import `in`.koreatech.koin.data.api.DiningApi
-import `in`.koreatech.koin.data.api.LandApi
-import `in`.koreatech.koin.data.api.UserApi
-import `in`.koreatech.koin.data.api.VersionApi
+import `in`.koreatech.koin.data.api.*
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
-import `in`.koreatech.koin.data.source.remote.DeptRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.DiningRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.LandRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
-import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
+import `in`.koreatech.koin.data.source.remote.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,6 +45,14 @@ object RemoteDataSourceModule {
         return DiningRemoteDataSource(diningApi)
     }
 
+    @Provides
+    @Singleton
+    fun provideBusRemoteDataSource(
+        busApi: BusApi
+    ): BusRemoteDataSource {
+        return BusRemoteDataSource(busApi)
+    }
+    
     @Provides
     @Singleton
     fun provideLandRemoteDataSource(

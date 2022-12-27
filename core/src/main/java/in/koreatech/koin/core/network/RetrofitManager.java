@@ -28,7 +28,7 @@ public class RetrofitManager {
     private static RetrofitManager instance = null;
 
     public static final String BASE_URL_PRODUCTION = "https://api.koreatech.in"; //release server
-    public static final String BASE_URL_STAGE = "https://api.koreatech.in"; //development server
+    public static final String BASE_URL_STAGE = "https://api.stage.koreatech.in"; //development server
 
     private Retrofit retrofit;
 

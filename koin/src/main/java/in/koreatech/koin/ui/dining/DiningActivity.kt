@@ -5,14 +5,13 @@ import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.DiningActivityMainBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.toColorForHtml
 import `in`.koreatech.koin.domain.util.ext.toUnderlineForHtml
-import `in`.koreatech.koin.domain.util.ext.typeFilter
 import `in`.koreatech.koin.ui.dining.adapter.DiningRecyclerViewAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.view.View
@@ -63,6 +62,12 @@ class DiningActivity : KoinNavigationDrawerActivity(),
                         R.string.error_network,
                         Toast.LENGTH_SHORT
                     ).show()
+                }
+            }
+            isDateError.observe(this@DiningActivity) {
+                if(it) {
+                    Toast.makeText(this@DiningActivity, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
+                    dateErrorInit()
                 }
             }
             when (selectedType) {
@@ -142,15 +147,11 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     }
 
     private fun onPreviousDay() {
-        if (!diningViewModel.getPreviousDayDiningData()) {
-            Toast.makeText(this, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
-        }
+        diningViewModel.getPreviousDayDiningData()
     }
 
     private fun onNextDay() {
-        if (!diningViewModel.getNextDayDiningData()) {
-            Toast.makeText(this, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
-        }
+        diningViewModel.getNextDayDiningData()
     }
 
     private fun updateRecyclerData() {
@@ -172,11 +173,16 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     }
 
     private fun setTextSelected(view: TextView) {
-        view.text = Html.fromHtml(
-            view.text.toString().toColorForHtml(getString(R.color.colorAccent))
-                .toUnderlineForHtml(),
-            Html.FROM_HTML_MODE_LEGACY
-        )
+        view.text = if (Build.VERSION_CODES.N > Build.VERSION.SDK_INT) {
+            Html.fromHtml(view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+                .toUnderlineForHtml())
+        } else {
+            Html.fromHtml(
+                view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+                    .toUnderlineForHtml(),
+                Html.FROM_HTML_MODE_LEGACY
+            )
+        }
     }
 
     private fun setSwipeRefreshingFalse() {

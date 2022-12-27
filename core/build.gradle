@@ -9,8 +9,6 @@ android {
     flavorDimensions "default"
 
     defaultConfig {
-        versionCode 10000
-        versionName "10000"
 
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
@@ -38,6 +36,8 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -71,6 +71,7 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
     api project.androidXLifecycle
+    api project.androidXLivedata
 
     /* Dependency - Firebase */
     api project.firebaseCore
@@ -85,7 +86,6 @@ dependencies {
     /* Dependency - leakcanary */
     debugImplementation project.leakcanaryDebug
     releaseImplementation project.leakcanaryRelease
-    debugImplementation project.leakcanrySupportFragment
 
     /* Dependency - glide */
     api project.glide
