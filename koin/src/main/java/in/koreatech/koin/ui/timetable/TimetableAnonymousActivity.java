@@ -45,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import in.koreatech.koin.KoinApplication;
 import in.koreatech.koin.R;
 import in.koreatech.koin.constant.AuthorizeConstant;
 import in.koreatech.koin.core.appbar.AppBarBase;
@@ -171,7 +172,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void init() {
         isLoading = false;
         this.selectedDepartmentCode = DepartmentCode.DEPARTMENT_CODE_0;
-        setPresenter(new TimetableAnonymousPresenter(this));
+        setPresenter(new TimetableAnonymousPresenter(this, (KoinApplication) getApplication()));
         this.categoryNumber = -1;
         select = -1;
         totalLectureArrayList = new ArrayList<>();

@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.di.source
 
-import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
+import `in`.koreatech.koin.data.source.local.*
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -36,5 +34,21 @@ object LocalDataSourceModule {
         @ApplicationContext applicationContext: Context
     ) : VersionLocalDataSource {
         return VersionLocalDataSource(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBusLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ) : BusLocalDataSource {
+        return BusLocalDataSource(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeptLocalDataSource(
+        @ApplicationContext applicationContext: Context
+    ) : DeptLocalDataSource {
+        return DeptLocalDataSource(applicationContext)
     }
 }

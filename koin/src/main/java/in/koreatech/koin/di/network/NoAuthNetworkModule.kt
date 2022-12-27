@@ -2,11 +2,7 @@ package `in`.koreatech.koin.di.network
 
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
-import `in`.koreatech.koin.data.api.DeptApi
-import `in`.koreatech.koin.data.api.DiningApi
-import `in`.koreatech.koin.data.api.LandApi
-import `in`.koreatech.koin.data.api.UserApi
-import `in`.koreatech.koin.data.api.VersionApi
+import `in`.koreatech.koin.data.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -83,6 +79,14 @@ object NoAuthNetworkModule {
         return retrofit.create(DiningApi::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideBusApi(
+        @NoAuth retrofit: Retrofit
+    ): BusApi{
+        return retrofit.create(BusApi::class.java)
+    }
+    
     @Provides
     @Singleton
     fun provideLandApi(

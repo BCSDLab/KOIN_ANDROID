@@ -29,7 +29,7 @@ import in.koreatech.koin.core.recyclerview.RecyclerViewClickListener;
 import in.koreatech.koin.core.toast.ToastUtil;
 import in.koreatech.koin.core.viewpager.ScaleViewPager;
 import in.koreatech.koin.data.network.entity.Dining;
-import in.koreatech.koin.data.network.interactor.CityBusRestInteractor;
+import in.koreatech.koin.data.network.interactor.BusRestInteractor;
 import in.koreatech.koin.data.network.interactor.DiningRestInteractor;
 import in.koreatech.koin.data.network.interactor.TermRestInteractor;
 import in.koreatech.koin.ui.main.presenter.MainActivityContact;
@@ -70,7 +70,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     @BindView(R.id.recycler_view_store_category)
     RecyclerView recyclerViewStoreCategory;
     //학식
-    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
+    @BindViews({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     List<TextView> textViewDiningPlaces;
     @BindView(R.id.view_empty_dining)
     View viewEmptyDining;
@@ -159,7 +159,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
     }
 
     public void setPresenter() {
-        this.presenter = new MainActivityPresenter(this, new CityBusRestInteractor(), new TermRestInteractor(), new DiningRestInteractor());
+        this.presenter = new MainActivityPresenter(this, new BusRestInteractor(), new TermRestInteractor(), new DiningRestInteractor());
     }
 
     private void gotoStoreActivity(int position) {
@@ -173,7 +173,7 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
         toggleNavigationDrawer();
     }
 
-    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_special, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
+    @OnClick({R.id.text_view_card_dining_korean, R.id.text_view_card_dining_onedish, R.id.text_view_card_dining_western, R.id.text_view_card_dining_neungsugwan, R.id.text_view_card_dining_subakyeo, R.id.text_view_card_dining_2campus})
     void selectDiningKind(View view) {
         for (int i = 0; i < textViewDiningPlaces.size(); i++) {
             TextView textView = textViewDiningPlaces.get(i);
@@ -215,8 +215,9 @@ public class MainActivity extends KoinNavigationDrawerActivity implements
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         unbinder.unbind();
+        presenter.dispose();
+        super.onDestroy();
     }
 
     @Override
