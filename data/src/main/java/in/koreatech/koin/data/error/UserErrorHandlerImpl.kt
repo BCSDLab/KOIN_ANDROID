@@ -23,10 +23,10 @@ class UserErrorHandlerImpl @Inject constructor(
                 is HttpException -> {
                     when(it.code()) {
                         401 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
-                        else -> null
+                        else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
-                else -> null
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
             }.withUnknown(context)
         }
     }
@@ -38,11 +38,11 @@ class UserErrorHandlerImpl @Inject constructor(
                     when(it.code()) {
                         404 -> ErrorHandler(context.getString(R.string.error_forgotpassword_no_user))
                         422 -> ErrorHandler(context.getString(R.string.error_forgotpassword_invalid_id))
-                        else -> null
+                        else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
                 is IllegalArgumentException -> ErrorHandler(context.getString(R.string.error_forgotpassword_no_input))
-                else -> null
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
             }.withUnknown(context)
         }
     }
