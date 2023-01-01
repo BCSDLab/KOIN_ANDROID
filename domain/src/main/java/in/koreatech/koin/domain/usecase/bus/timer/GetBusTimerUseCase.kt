@@ -24,95 +24,97 @@ class GetBusTimerUseCase @Inject constructor(
         var time = System.currentTimeMillis() - 1.second
         var list = getBusArrivalInfo(departure, arrival)
 
-        while (true) {
-            System.currentTimeMillis().let {
-                if (it - time >= period) {
+        if (departure != arrival) {
+            while (true) {
+                System.currentTimeMillis().let {
+                    if (it - time >= period) {
 
-                    if (count / 60 > 0 || count == 0L) {
-                        list = getBusArrivalInfo(departure, arrival)
-                        count = 0
-                    }
-
-                    val nowLocalTime = LocalTime.now(ZoneId.of("Asia/Seoul"))
-
-                    time += period
-                    count++
-
-                    val result = list.mapNotNull { busArrivalInfo ->
-                        when (busArrivalInfo) {
-                            is BusArrivalInfo.CityBusArrivalInfo -> BusArrivalInfo.CityBusArrivalInfo(
-                                departure = departure,
-                                arrival = arrival,
-                                nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
-                                    getDurationOrReset(
-                                        it,
-                                        busArrivalInfo.criteria,
-                                        nowLocalTime
-                                    ) { count = 0L }
-                                },
-                                nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
-                                    getDurationOrReset(
-                                        it,
-                                        busArrivalInfo.criteria,
-                                        nowLocalTime
-                                    ) { count = 0L }
-                                },
-                                nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                criteria = busArrivalInfo.criteria,
-                                busNumber = busArrivalInfo.busNumber
-                            )
-                            is BusArrivalInfo.ExpressBusArrivalInfo ->
-                                BusArrivalInfo.ExpressBusArrivalInfo(
-                                    departure = departure,
-                                    arrival = arrival,
-                                    nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
-                                        getDurationOrReset(
-                                            it,
-                                            busArrivalInfo.criteria,
-                                            nowLocalTime
-                                        ) { count = 0L }
-                                    },
-                                    nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
-                                        getDurationOrReset(
-                                            it,
-                                            busArrivalInfo.criteria,
-                                            nowLocalTime
-                                        ) { count = 0L }
-                                    },
-                                    nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                    nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                    criteria = busArrivalInfo.criteria
-                                )
-
-                            is BusArrivalInfo.ShuttleBusArrivalInfo ->
-                                BusArrivalInfo.ShuttleBusArrivalInfo(
-                                    departure = departure,
-                                    arrival = arrival,
-                                    nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
-                                        getDurationOrReset(
-                                            it,
-                                            busArrivalInfo.criteria,
-                                            nowLocalTime
-                                        ) { count = 0L }
-                                    },
-                                    nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
-                                        getDurationOrReset(
-                                            it,
-                                            busArrivalInfo.criteria,
-                                            nowLocalTime
-                                        ) { count = 0L }
-                                    },
-                                    nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                    nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
-                                    criteria = busArrivalInfo.criteria
-                                )
-                            is BusArrivalInfo.CommutingBusArrivalInfo -> null
+                        if (count / 60 > 0 || count == 0L) {
+                            list = getBusArrivalInfo(departure, arrival)
+                            count = 0
                         }
-                    }
 
-                    emit(result)
-                } else delay(period / 100)
+                        val nowLocalTime = LocalTime.now(ZoneId.of("Asia/Seoul"))
+
+                        time += period
+                        count++
+
+                        val result = list.mapNotNull { busArrivalInfo ->
+                            when (busArrivalInfo) {
+                                is BusArrivalInfo.CityBusArrivalInfo -> BusArrivalInfo.CityBusArrivalInfo(
+                                    departure = departure,
+                                    arrival = arrival,
+                                    nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
+                                        getDurationOrReset(
+                                            it,
+                                            busArrivalInfo.criteria,
+                                            nowLocalTime
+                                        ) { count = 0L }
+                                    },
+                                    nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
+                                        getDurationOrReset(
+                                            it,
+                                            busArrivalInfo.criteria,
+                                            nowLocalTime
+                                        ) { count = 0L }
+                                    },
+                                    nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                    nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                    criteria = busArrivalInfo.criteria,
+                                    busNumber = busArrivalInfo.busNumber
+                                )
+                                is BusArrivalInfo.ExpressBusArrivalInfo ->
+                                    BusArrivalInfo.ExpressBusArrivalInfo(
+                                        departure = departure,
+                                        arrival = arrival,
+                                        nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
+                                            getDurationOrReset(
+                                                it,
+                                                busArrivalInfo.criteria,
+                                                nowLocalTime
+                                            ) { count = 0L }
+                                        },
+                                        nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
+                                            getDurationOrReset(
+                                                it,
+                                                busArrivalInfo.criteria,
+                                                nowLocalTime
+                                            ) { count = 0L }
+                                        },
+                                        nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        criteria = busArrivalInfo.criteria
+                                    )
+
+                                is BusArrivalInfo.ShuttleBusArrivalInfo ->
+                                    BusArrivalInfo.ShuttleBusArrivalInfo(
+                                        departure = departure,
+                                        arrival = arrival,
+                                        nowBusRemainTime = busArrivalInfo.nowBusRemainTime?.let {
+                                            getDurationOrReset(
+                                                it,
+                                                busArrivalInfo.criteria,
+                                                nowLocalTime
+                                            ) { count = 0L }
+                                        },
+                                        nextBusRemainTime = busArrivalInfo.nextBusRemainTime?.let {
+                                            getDurationOrReset(
+                                                it,
+                                                busArrivalInfo.criteria,
+                                                nowLocalTime
+                                            ) { count = 0L }
+                                        },
+                                        nowBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        nextBusArrivalTime = busArrivalInfo.nowBusArrivalTime,
+                                        criteria = busArrivalInfo.criteria
+                                    )
+                                is BusArrivalInfo.CommutingBusArrivalInfo -> null
+                            }
+                        }
+
+                        emit(result)
+                    } else delay(period / 100)
+                }
             }
         }
     }
