@@ -30,26 +30,20 @@ class BusMainFragmentViewModel @Inject constructor(
     val arrival: LiveData<BusNode> get() = _arrival
 
     val busTimer = liveData {
-        departure.asFlow().combine(arrival.asFlow()) { departure: BusNode, arrival: BusNode ->
-            departure to arrival
-        }
-            .distinctUntilChanged()
-            .collectLatest { (departure, arrival) ->
-                _isLoading.value = false
-                try {
-                    if (departure != arrival) {
-                        getBusTimerUseCase(departure, arrival)
-                            .conflate()
-                            .collect { result ->
-                                emit(result)
-                            }
-                    }
-
-                } catch (_: CancellationException) {
-                } catch (e: Exception) {
-                    _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
-                }
+        try {
+            departure.asFlow().combine(arrival.asFlow()) { departure: BusNode, arrival: BusNode ->
+                departure to arrival
             }
+                .flatMapLatest { (departure, arrival) ->
+                    getBusTimerUseCase(departure, arrival)
+                }
+                .collect { result ->
+                    emit(result)
+                }
+        } catch (_: CancellationException) {
+        } catch (e: Exception) {
+            _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
+        }
     }
 
     fun setDeparture(departure: BusNode) {
@@ -65,5 +59,4 @@ class BusMainFragmentViewModel @Inject constructor(
         }
         _arrival.value = arrival
     }
-
 }

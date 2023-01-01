@@ -25,6 +25,8 @@ class DiningViewModel @Inject constructor(
     val selectedDate: LiveData<String> get() = _selectedDate
     private val _diningData = MutableLiveData<List<Dining>>(listOf())
     val diningData: LiveData<List<Dining>> get() = _diningData
+    private val _isDateError = MutableLiveData(false)
+    val isDateError: LiveData<Boolean> get() = _isDateError
     var selectedType: DiningType = DiningUtil.getCurrentType()
 
     init {
@@ -51,29 +53,27 @@ class DiningViewModel @Inject constructor(
         }
     }
 
-    fun getNextDayDiningData(): Boolean {
+    fun getNextDayDiningData() {
         val currentDate = TimeUtil.stringToDateYYYYMMDD(
             selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
         )
-        return if (checkCorrectDateRangeUseCase(currentDate)) {
-            val nextDayDate =
-                TimeUtil.getNextDayDate(currentDate)
+        val nextDayDate = TimeUtil.getNextDayDate(currentDate)
+        if (checkCorrectDateRangeUseCase(nextDayDate)) {
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(nextDayDate)
             updateDiningData(nextDayDate)
-            true
-        } else false
+        } else _isDateError.value = true
     }
 
-    fun getPreviousDayDiningData(): Boolean {
+    fun getPreviousDayDiningData() {
         val currentDate = TimeUtil.stringToDateYYYYMMDD(
             selectedDate.value ?: TimeUtil.dateFormatToYYYYMMDD(TimeUtil.getCurrentTime())
         )
-        return if (checkCorrectDateRangeUseCase(currentDate)) {
-            val previousDay =
-                TimeUtil.getPreviousDayDate(currentDate)
+        val previousDay = TimeUtil.getPreviousDayDate(currentDate)
+        if (checkCorrectDateRangeUseCase(previousDay)) {
             _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(previousDay)
             updateDiningData(previousDay)
-            true
-        } else false
+        } else _isDateError.value = true
     }
+
+    fun dateErrorInit() { _isDateError.value = false }
 }
