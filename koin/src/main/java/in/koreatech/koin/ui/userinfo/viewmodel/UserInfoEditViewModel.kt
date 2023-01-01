@@ -42,12 +42,17 @@ class UserInfoEditViewModel @Inject constructor(
     val toastErrorMessage: LiveData<String> get() = _toastErrorMessage
 
     private val _userInfoEditedEvent = SingleLiveEvent<Unit>()
-    val userInfoEditedEvent : LiveData<Unit> get() = _userInfoEditedEvent
+    val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
         getUserInfoUseCase().let { (user, error) ->
             if (error != null) _toastErrorMessage.value = error.message
-            else _user.value = user
+            else {
+                _user.value = user
+                _nicknameState.value = user?.nickname?.let {
+                    NicknameState(it, false)
+                } ?: NicknameState.newNickname("")
+            }
         }
     }
 
@@ -70,6 +75,10 @@ class UserInfoEditViewModel @Inject constructor(
         }
     }
 
+    fun setNickname(nickname: String) {
+        _nicknameState.value = NicknameState.newNickname(nickname)
+    }
+
     fun updateUserInfo(
         name: String,
         nickname: String,
@@ -77,7 +86,7 @@ class UserInfoEditViewModel @Inject constructor(
         gender: Gender?,
         studentId: String
     ) {
-        if(isLoading.value == false) {
+        if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 user.value?.let { user ->
                     updateUserInfoUseCase(

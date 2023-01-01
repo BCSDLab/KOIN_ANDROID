@@ -13,7 +13,7 @@ def applicationName = 'koin'
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 30005
+        versionCode 30007
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
@@ -56,7 +56,7 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="APK"
+                artifactType="AAB"
                 releaseNotes="${project.versionName} release"
                 groups="bcsd"
             }

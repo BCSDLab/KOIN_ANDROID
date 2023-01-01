@@ -29,7 +29,8 @@
                     app:leftButtonWidth="14dp"
                     app:rightButtonBackground="@drawable/ic_hamburger_button"
                     app:rightButtonHeight="18dp"
-                    app:rightButtonWidth="12dp" />
+                    app:rightButtonWidth="12dp"
+                    app:titleText="@string/navigation_item_dining"/>
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/dining_swiperefreshlayout"
@@ -47,7 +48,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="56dp"
-                            android:layout_marginBottom="56dp"
+                            android:layout_marginBottom="0dp"
                             android:fillViewport="true">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
