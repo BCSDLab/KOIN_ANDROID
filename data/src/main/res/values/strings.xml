@@ -30,6 +30,17 @@
     <string name="bus_course_commuting_from_koreatech">하교</string>
     <string name="bus_course_express_to_koreatech"><![CDATA[야우리->한기대]]></string>
     <string name="bus_course_express_from_koreatech"><![CDATA[한기대->야우리]]></string>
+    <string name="bus_remain_time_format">H시간 mm분 ss초 남음</string>
+    <string name="bus_no_remain_time">운행정보없음</string>
+    <string name="bus_arrival_time_format">H:mm 출발</string>
+    <string name="bus_node_koreatech">한기대</string>
+    <string name="bus_node_station">천안역</string>
+    <string name="bus_node_terminal">야우리</string>
+    <string name="bus_name_city">시내버스</string>
+    <string name="bus_name_commuting">통학버스</string>
+    <string name="bus_name_express">대성고속</string>
+    <string name="bus_name_shuttle">셔틀버스</string>
+    <string name="city_bus_number_format">%1$d번 버스</string>
     <!-- dept -->
     <string name="dept_mechanical_engineering">기계공학부</string>
     <string name="dept_mechatronics_engineering">메카트로닉스공학부</string>
@@ -45,4 +56,8 @@
     <string name="dept_liberal_arts">교양학부</string>
     <string name="error_login_incorrect">아이디 또는 비밀번호가 올바르지 않습니다.</string>
     <string name="error_network">서버 오류가 발생했습니다.</string>
+    <!-- dining -->
+    <string name="dining_breakfast">아침</string>
+    <string name="dining_lunch">점심</string>
+    <string name="dining_dinner">저녁</string>
 </resources>
