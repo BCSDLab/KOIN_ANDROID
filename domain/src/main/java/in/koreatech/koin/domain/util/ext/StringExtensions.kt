@@ -6,7 +6,7 @@ import java.util.*
 fun String.toSHA256() = PasswordUtil.generateSHA256(this)
 
 val String.isValidStudentId: Boolean get() {
-    if (this.trim().length < 10) {
+    if (this.trim().length != 10) {
         return false
     }
 
