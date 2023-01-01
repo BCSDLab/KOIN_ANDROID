@@ -44,4 +44,5 @@
     <string name="dept_department_of_future_technology">융합</string>
     <string name="dept_liberal_arts">교양학부</string>
     <string name="error_login_incorrect">아이디 또는 비밀번호가 올바르지 않습니다.</string>
+    <string name="error_network">서버 오류가 발생했습니다.</string>
 </resources>
