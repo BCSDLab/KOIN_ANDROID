@@ -4,8 +4,9 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
-public class ScaleCardPagerTransformer implements ViewPager.PageTransformer {
+public class ScaleCardPagerTransformer implements ViewPager2.PageTransformer {
     private float baseScale;
     private float smallScale;
     private float startOffset;
