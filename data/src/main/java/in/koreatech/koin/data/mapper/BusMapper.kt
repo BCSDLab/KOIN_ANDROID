@@ -1,19 +1,17 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.R
-import `in`.koreatech.koin.data.constant.BUS_RESPONSE_TIME_FORMAT
 import `in`.koreatech.koin.data.response.bus.*
 import `in`.koreatech.koin.data.util.nowTime
-import `in`.koreatech.koin.domain.model.bus.*
+import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import `in`.koreatech.koin.domain.model.bus.toBusDirection
+import `in`.koreatech.koin.domain.model.bus.toBusType
 import android.content.Context
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
     busType = busType.toBusType(),
@@ -112,7 +110,7 @@ fun BusResponse.toCityBusRemainTimePair(departure: BusNode, arrival: BusNode) = 
         nextBusArrivalTime = nextBus?.let {
             time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
         },
-        busNumber = nowBus?.busNumber,
+        busNumber = nowBus?.busNumber ?: 0,
         criteria = time
     )
 }

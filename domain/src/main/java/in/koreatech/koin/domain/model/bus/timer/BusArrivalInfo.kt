@@ -13,14 +13,14 @@ sealed class BusArrivalInfo(
     open val nextBusArrivalTime: LocalTime?,
     open val criteria: LocalTime
 ) {
-    data class ShuttleBusArrivalInfo(
-        override val departure: BusNode,
-        override val arrival: BusNode,
-        override val nowBusRemainTime: Long?,
-        override val nextBusRemainTime: Long?,
-        override val nowBusArrivalTime: LocalTime?,
-        override val nextBusArrivalTime: LocalTime?,
-        override val criteria: LocalTime
+    class ShuttleBusArrivalInfo(
+        departure: BusNode,
+        arrival: BusNode,
+        nowBusRemainTime: Long?,
+        nextBusRemainTime: Long?,
+        nowBusArrivalTime: LocalTime?,
+        nextBusArrivalTime: LocalTime?,
+        criteria: LocalTime
     ) : BusArrivalInfo(
         departure,
         arrival,
@@ -31,14 +31,14 @@ sealed class BusArrivalInfo(
         criteria
     )
 
-    data class CommutingBusArrivalInfo(
-        override val departure: BusNode,
-        override val arrival: BusNode,
-        override val nowBusRemainTime: Long?,
-        override val nextBusRemainTime: Long?,
-        override val nowBusArrivalTime: LocalTime?,
-        override val nextBusArrivalTime: LocalTime?,
-        override val criteria: LocalTime
+    class CommutingBusArrivalInfo(
+        departure: BusNode,
+        arrival: BusNode,
+        nowBusRemainTime: Long?,
+        nextBusRemainTime: Long?,
+        nowBusArrivalTime: LocalTime?,
+        nextBusArrivalTime: LocalTime?,
+        criteria: LocalTime
     ) : BusArrivalInfo(
         departure,
         arrival,
@@ -49,14 +49,14 @@ sealed class BusArrivalInfo(
         criteria
     )
 
-    data class ExpressBusArrivalInfo(
-        override val departure: BusNode,
-        override val arrival: BusNode,
-        override val nowBusRemainTime: Long?,
-        override val nextBusRemainTime: Long?,
-        override val nowBusArrivalTime: LocalTime?,
-        override val nextBusArrivalTime: LocalTime?,
-        override val criteria: LocalTime
+    class ExpressBusArrivalInfo(
+        departure: BusNode,
+        arrival: BusNode,
+        nowBusRemainTime: Long?,
+        nextBusRemainTime: Long?,
+        nowBusArrivalTime: LocalTime?,
+        nextBusArrivalTime: LocalTime?,
+        criteria: LocalTime
     ) : BusArrivalInfo(
         departure,
         arrival,
@@ -67,15 +67,15 @@ sealed class BusArrivalInfo(
         criteria
     )
 
-    data class CityBusArrivalInfo(
-        override val departure: BusNode,
-        override val arrival: BusNode,
-        override val nowBusRemainTime: Long?,
-        override val nextBusRemainTime: Long?,
-        override val nowBusArrivalTime: LocalTime?,
-        override val nextBusArrivalTime: LocalTime?,
-        override val criteria: LocalTime,
-        val busNumber: Int?
+    class CityBusArrivalInfo(
+        departure: BusNode,
+        arrival: BusNode,
+        nowBusRemainTime: Long?,
+        nextBusRemainTime: Long?,
+        nowBusArrivalTime: LocalTime?,
+        nextBusArrivalTime: LocalTime?,
+        criteria: LocalTime,
+        val busNumber: Int
     ) : BusArrivalInfo(
         departure,
         arrival,
