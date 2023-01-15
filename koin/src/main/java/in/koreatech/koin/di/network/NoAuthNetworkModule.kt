@@ -85,4 +85,12 @@ object NoAuthNetworkModule {
     ): BusApi{
         return retrofit.create(BusApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideStoreApi(
+        @NoAuth retrofit: Retrofit
+    ): StoreApi{
+        return retrofit.create(StoreApi::class.java)
+    }
 }

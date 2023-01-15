@@ -65,6 +65,11 @@ fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwn
     }
 }
 
+fun Activity.showSoftKeyboard() {
+    val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
+    Objects.requireNonNull(imm).showSoftInput(currentFocus, 0)
+}
+
 fun Activity.hideSoftKeyboard() {
     val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
     Objects.requireNonNull(imm).hideSoftInputFromWindow(currentFocus?.windowToken, 0)

@@ -232,7 +232,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
             return;
         }
 
-        StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<>(storeList));
+        //StoreRecyclerAdapter storeRecyclerAdapter = new StoreRecyclerAdapter(context, new ArrayList<>(storeList));
         storeRandomRecyclerView.setNestedScrollingEnabled(false);
         storeRandomRecyclerView.setHasFixedSize(false);
         storeRandomRecyclerView.addOnItemTouchListener(new RecyclerClickListener(null, null, new RecyclerViewClickListener() {
@@ -246,7 +246,7 @@ public class StoreDetailActivity extends KoinNavigationDrawerActivity implements
             }
         }));
         storeRandomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        storeRandomRecyclerView.setAdapter(storeRecyclerAdapter);
+        //storeRandomRecyclerView.setAdapter(storeRecyclerAdapter);
     }
 
     @Override
