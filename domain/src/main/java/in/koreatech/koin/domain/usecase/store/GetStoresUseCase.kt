@@ -23,6 +23,6 @@ class GetStoresUseCase @Inject constructor(
 
                 category == it.category
             }
-            .filter { if (search != null) it.name.contains(search) else true }
+            .filter { if (search != null) it.name.match(search) else true }
     }
 }
