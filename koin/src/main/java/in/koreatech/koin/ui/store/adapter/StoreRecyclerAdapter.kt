@@ -47,18 +47,13 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
         /**
          * @param active true -> colorAccent, false -> blue1
          */
-        fun TextView.setTextState(active: Boolean) {
+        private fun TextView.setTextState(active: Boolean) {
             setTextColor(
                 ContextCompat.getColor(
                     context,
                     if (active) R.color.colorAccent else R.color.blue1
                 )
             )
-        }
-
-        fun dpToPx(context: Context, dp: Int): Int {
-            val density: Float = context.resources.displayMetrics.density
-            return (dp.toFloat() * density).roundToInt()
         }
     }
 
