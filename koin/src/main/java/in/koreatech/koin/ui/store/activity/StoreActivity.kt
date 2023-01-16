@@ -23,6 +23,7 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
+import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
@@ -46,19 +47,44 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             field = value
         }
 
+    private var showRemoveQueryButton : Boolean = false
+    set(value) {
+        if (!value) {
+            binding.searchImageView.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_search
+            )
+            binding.searchImageView.layoutParams.apply {
+                width = dpToPx(24)
+                height = dpToPx(24)
+            }
+        } else {
+            binding.searchImageView.background = ContextCompat.getDrawable(
+                this,
+                R.drawable.ic_search_close
+            )
+            binding.searchImageView.layoutParams.apply {
+                width = dpToPx(16)
+                height = dpToPx(16)
+            }
+        }
+        field = value
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
+                AppBarBase.getLeftButtonId() -> onBackPressed()
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
 
         binding.searchEditText.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
+            showRemoveQueryButton = isSearchMode && !it.isNullOrEmpty()
         }
 
         binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
@@ -72,6 +98,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         binding.storeSwiperefreshlayout.setOnRefreshListener {
             viewModel.refreshStores()
+        }
+
+        binding.searchImageView.setOnClickListener {
+            if(showRemoveQueryButton) binding.searchEditText.setText("")
         }
 
         handleCategoryClickEvent()
