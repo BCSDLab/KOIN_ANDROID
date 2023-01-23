@@ -18,6 +18,7 @@ import kotlin.math.roundToInt
 class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>(
     diffCallback
 ) {
+    var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -33,7 +34,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
         holder.bind(getItem(position))
     }
 
-    class ViewHolder(private val binding: StoreListItemBinding) :
+    inner class ViewHolder(private val binding: StoreListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(store: Store) {
@@ -41,7 +42,11 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             binding.storeDeliveryTextview.setTextState(store.isDeliveryOk)
             binding.storeCardTextview.setTextState(store.isCardOk)
             binding.storeAccountTextview.setTextState(store.isBankOk)
-            binding.readyStoreFrameLayout.isVisible = store.isCurrentOpen
+            binding.readyStoreFrameLayout.isVisible = !store.isCurrentOpen
+
+            binding.root.setOnClickListener {
+                onItemClickListener?.onItemClick(store)
+            }
         }
 
         /**
@@ -55,6 +60,18 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
                 )
             )
         }
+    }
+
+    inline fun setOnItemClickListener(crossinline onItemClick: (store: Store) -> Unit) {
+        onItemClickListener = object : OnItemClickListener {
+            override fun onItemClick(store: Store) {
+                onItemClick(store)
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(store: Store)
     }
 
     companion object {

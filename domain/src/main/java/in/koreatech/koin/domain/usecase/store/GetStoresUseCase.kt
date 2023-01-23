@@ -16,7 +16,7 @@ class GetStoresUseCase @Inject constructor(
         return storeRepository.getStores()
             .filter {
                 if(category == StoreCategory.Etc) { // 기타 + 콜벤 카테고리
-                    it.category in arrayOf(null, StoreCategory.Etc, StoreCategory.Callvan)
+                    return@filter it.category in arrayOf(null, StoreCategory.Etc, StoreCategory.Callvan)
                 }
 
                 if(category == null) return@filter true
@@ -24,5 +24,6 @@ class GetStoresUseCase @Inject constructor(
                 category == it.category
             }
             .filter { if (search != null) it.name.match(search) else true }
+            .sorted()
     }
 }

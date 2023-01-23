@@ -247,4 +247,13 @@
     <string name="bus_name_express">대성고속</string>
     <string name="bus_name_shuttle">셔틀버스</string>
     <string name="bus_timetable_search_result_dialog_close">닫기</string>
+    <string name="store_empty_detail">-</string>
+    <string name="store_open_close_time_mark">" ~ "</string>
+    <string name="store_delivery_free">무료</string>
+    <string name="store_delivery_price">%1$d원</string>
+    <string name="store_menu_price_info">%1$s: %2$d원</string>
+    <string name="store_dialog_call">통화</string>
+    <string name="store_dialog_call_cancel">취소</string>
+    <string name="store_call_permission_denied_message">통화 권한을 허용해 주세요.</string>
+    <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
 </resources>
