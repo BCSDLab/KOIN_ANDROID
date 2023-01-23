@@ -22,6 +22,7 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
+import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
@@ -37,7 +38,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     private val viewModel by viewModels<StoreViewModel>()
 
-    private val storeAdapter = StoreRecyclerAdapter()
+    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
+
+    }
+
+    private val storeAdapter = StoreRecyclerAdapter().apply {
+        setOnItemClickListener {
+            storeDetailContract.launch(it.id)
+        }
+    }
 
     private var isSearchMode: Boolean = false
         set(value) {
