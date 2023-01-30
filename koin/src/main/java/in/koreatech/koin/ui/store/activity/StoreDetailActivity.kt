@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.Manifest
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -15,13 +13,11 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.data.constant.STORE_CLOSE_TIME_FORMAT
 import `in`.koreatech.koin.data.constant.STORE_OPEN_TIME_FORMAT
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
-import `in`.koreatech.koin.domain.util.ext.isCurrentOpen
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
-import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.fragment.StoreFlyerDialogFragment
@@ -54,14 +50,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             }
 
             binding.menuSpreadTextView.text = getString(
-                if(value) {
+                if (value) {
                     R.string.hide_menu
                 } else {
                     R.string.show_more_menu
                 }
             )
 
-            binding.arrowImageView.rotation = if(value) 0F else 180F
+            binding.arrowImageView.rotation = if (value) 0F else 180F
         }
 
     private val storeDetailActivityContract =
@@ -213,6 +209,12 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 if (!it.isBankOk) {
                     storeDetailIsBankTextview.isVisible = false
                 }
+
+                storeLastUpdatedTextView.text = it.updatedAt.format(
+                    DateTimeFormatter.ofPattern(
+                        getString(R.string.store_last_updated_format)
+                    )
+                )
 
                 storeDetailFlyerRecyclerAdapter.submitList(it.images)
             }

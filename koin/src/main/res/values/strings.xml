@@ -256,4 +256,6 @@
     <string name="store_dialog_call_cancel">취소</string>
     <string name="store_call_permission_denied_message">통화 권한을 허용해 주세요.</string>
     <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
+    <string name="store_last_updated_message">%1$s 업데이트됨</string>
+    <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
 </resources>
