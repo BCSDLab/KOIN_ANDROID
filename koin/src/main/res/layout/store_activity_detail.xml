@@ -433,6 +433,17 @@
                         app:layout_constraintTop_toBottomOf="@id/how_about_here_text_view"
                         tools:listitem="@layout/store_list_item" />
 
+                    <TextView
+                        android:id="@+id/store_last_updated_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        tools:text="2023년 1월 23일 오후 8:47 업데이트됨"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/store_random_recycler_view"
+                        android:padding="16dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>
 
