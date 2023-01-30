@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.domain.error.user
 
-import `in`.koreatech.koin.domain.model.error.ErrorHandler
+import `in`.koreatech.koin.domain.model.Result
 
 interface UserErrorHandler {
-    fun handleGetTokenError(throwable: Throwable): ErrorHandler
-    fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler
-    fun handleGetUserInfoError(throwable: Throwable): ErrorHandler
-    fun handleDeleteUserError(throwable: Throwable): ErrorHandler
-    fun handleUsernameDuplicatedError(throwable: Throwable): ErrorHandler
-    fun handleUpdateUserError(throwable: Throwable): ErrorHandler
+    fun handleGetTokenError(throwable: Throwable): Result.Error
+    fun handleRequestPasswordResetEmailError(throwable: Throwable): Result.Error
+    fun handleGetUserInfoError(throwable: Throwable): Result.Error
+    fun handleDeleteUserError(throwable: Throwable): Result.Error
+    fun handleUsernameDuplicatedError(throwable: Throwable): Result.Error
+    fun handleUpdateUserError(throwable: Throwable): Result.Error
 }

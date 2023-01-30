@@ -3,7 +3,10 @@
     <!-- Error -->
     <string name="error_internal_server_error">서버 오류가 발생했습니다.</string>
     <string name="error_network_connection">네트워크 연결을 확인해 주세요.</string>
-    <string name="error_network_unknown">알 수 없는 오류가 발생했습니다.</string>
+    <string name="error_network_unknown">네트워크 오류가 발생했습니다.</string>
+    <string name="error_unknown">알 수 없는 오류가 발생했습니다.</string>
+    <string name="error_login_incorrect">아이디 또는 비밀번호가 올바르지 않습니다.</string>
+    <string name="error_network">서버 오류가 발생했습니다.</string>
 
     <!-- Forgot password error-->
     <string name="error_forgotpassword_no_user">가입되지 않은 아이디입니다.</string>
@@ -54,8 +57,6 @@
     <string name="dept_hrd">HRD</string>
     <string name="dept_department_of_future_technology">융합</string>
     <string name="dept_liberal_arts">교양학부</string>
-    <string name="error_login_incorrect">아이디 또는 비밀번호가 올바르지 않습니다.</string>
-    <string name="error_network">서버 오류가 발생했습니다.</string>
     <!-- dining -->
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>

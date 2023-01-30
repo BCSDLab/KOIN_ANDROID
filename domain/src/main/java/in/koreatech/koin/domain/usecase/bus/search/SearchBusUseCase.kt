@@ -4,9 +4,11 @@ import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
+import `in`.koreatech.koin.domain.model.toResult
 import `in`.koreatech.koin.domain.repository.BusRepository
 import java.time.LocalDateTime
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
 
 class SearchBusUseCase @Inject constructor(
     private val busRepository: BusRepository,
@@ -16,11 +18,11 @@ class SearchBusUseCase @Inject constructor(
         dateTime: LocalDateTime,
         departure: BusNode,
         arrival: BusNode
-    ): Pair<List<BusSearchResult>?, ErrorHandler?> {
+    ): Result<List<BusSearchResult>> {
         return try {
-            busRepository.searchBus(dateTime, departure, arrival) to null
+            busRepository.searchBus(dateTime, departure, arrival).toResult()
         } catch (t: Throwable) {
-            null to busErrorHandler.handleSearchBusError(t)
+            busErrorHandler.handleSearchBusError(t)
         }
     }
 }

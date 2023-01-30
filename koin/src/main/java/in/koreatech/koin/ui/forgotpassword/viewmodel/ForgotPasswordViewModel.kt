@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.usecase.user.RequestFindPasswordEmailUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.util.ext.onFailureToast
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,9 +22,12 @@ class ForgotPasswordViewModel @Inject constructor(
     fun requestFindPasswordEmail(portalAccount: String) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
-                requestFindPasswordEmailUseCase(portalAccount)?.also {
-                    _passwordResetEmailRequestErrorMessage.value = it.message
-                } ?: _passwordResetEmailRequested.call()
+                requestFindPasswordEmailUseCase(portalAccount)
+                    .onSuccess {
+                        _passwordResetEmailRequested.call()
+                    }.onFailure {
+                        _passwordResetEmailRequestErrorMessage.value = it
+                    }
             }
         }
     }

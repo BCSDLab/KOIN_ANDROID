@@ -55,7 +55,7 @@ class MainActivityViewModel @Inject constructor(
 
                 } catch (_: CancellationException) {
                 } catch (e: Exception) {
-                    _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
+                    _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).errorMessage
                 }
             }
     }

@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.usecase.user
 
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
-import `in`.koreatech.koin.domain.model.error.ErrorHandler
+import `in`.koreatech.koin.domain.model.Result
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
 
@@ -9,10 +9,10 @@ class UserRemoveUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
-        return Unit to try {
+    suspend operator fun invoke(): Result<Unit> {
+        return try {
             userRepository.deleteUser()
-            null
+            Result.Success(Unit)
         } catch (t: Throwable) {
             userErrorHandler.handleDeleteUserError(t)
         }

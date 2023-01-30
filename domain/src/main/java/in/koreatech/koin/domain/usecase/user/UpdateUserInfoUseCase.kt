@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
 
 class UpdateUserInfoUseCase @Inject constructor(
     private val deptRepository: DeptRepository,
@@ -25,7 +26,7 @@ class UpdateUserInfoUseCase @Inject constructor(
         gender: Gender?,
         studentId: String,
         checkedEmailValidation: Boolean
-    ): ErrorHandler? {
+    ): Result<Unit> {
         return try {
             if (!checkedEmailValidation) {
                 throw IllegalStateException(ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK)
@@ -58,7 +59,7 @@ class UpdateUserInfoUseCase @Inject constructor(
             )
 
             userRepository.updateUser(newUser)
-            null
+            Result.Success(Unit)
         } catch (t: Throwable) {
             userErrorHandler.handleUpdateUserError(t)
         }

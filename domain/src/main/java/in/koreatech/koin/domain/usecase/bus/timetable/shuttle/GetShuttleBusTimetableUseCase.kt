@@ -7,6 +7,8 @@ import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.BusRepository
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
+import `in`.koreatech.koin.domain.model.toResult
 
 class GetShuttleBusTimetableUseCase @Inject constructor(
     private val busRepository: BusRepository,
@@ -15,14 +17,14 @@ class GetShuttleBusTimetableUseCase @Inject constructor(
     suspend operator fun invoke(
         busCourse: BusCourse,
         busRouteName: String
-    ): Pair<List<BusNodeInfo.ShuttleNodeInfo>?, ErrorHandler?> {
+    ): Result<List<BusNodeInfo.ShuttleNodeInfo>> {
         return try {
             val timetable = busRepository.getShuttleBusTimetable(busCourse)
                 .find { it.routeName == busRouteName }?.arrivalInfo
                 ?: throw NullPointerException("Not found bus timetable")
-            timetable to null
+            timetable.toResult()
         } catch (t: Throwable) {
-            null to busErrorHandler.handleGetBusTimetableError(t)
+            busErrorHandler.handleGetBusTimetableError(t)
         }
     }
 }

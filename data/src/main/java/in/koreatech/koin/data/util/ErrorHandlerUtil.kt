@@ -9,20 +9,29 @@ import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
-fun Throwable.handleCommonError(context: Context, handleRestError: (Throwable) -> ErrorHandler): ErrorHandler = when (this) {
+import `in`.koreatech.koin.domain.model.Result
+
+fun Throwable.handleCommonError(
+    context: Context,
+    handleRestError: ((Throwable) -> Result.Error?)? = null
+): Result.Error = when (this) {
     is HttpException -> {
         when (this.code()) {
-            500 -> ErrorHandler(context.getString(R.string.error_internal_server_error))
-            else -> handleRestError(this)
+            500 -> Result.Error(context.getString(R.string.error_internal_server_error))
+            else -> if (handleRestError == null) unknownError(context) else {
+                handleRestError(this)
+                    ?: unknownError(context)
+            }
         }
     }
-    is ConnectException -> ErrorHandler(context.getString(R.string.error_network_connection))
-    is SocketTimeoutException -> ErrorHandler(context.getString(R.string.error_network_connection))
-    is UnknownHostException -> ErrorHandler(context.getString(R.string.error_network_connection))
-    else -> handleRestError(this)
+    is ConnectException -> Result.Error(context.getString(R.string.error_network_connection))
+    is SocketTimeoutException -> Result.Error(context.getString(R.string.error_network_connection))
+    is UnknownHostException -> Result.Error(context.getString(R.string.error_network_connection))
+    else ->  if (handleRestError == null) unknownError(context) else {
+        handleRestError(this)
+            ?: unknownError(context)
+    }
 }.also {
     Log.e("ErrorHandler", stackTraceToString())
 }
-
-fun ErrorHandler?.withUnknown(context: Context): ErrorHandler = this ?: unknownErrorHandler(context)
-fun unknownErrorHandler(context: Context) = ErrorHandler(context.getString(R.string.error_network_unknown))
+fun unknownError(context: Context) = Result.Error(context.getString(R.string.error_unknown))

@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.toSHA256
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
 
 class UserLoginUseCase @Inject constructor(
     private val userRepository: UserRepository,
@@ -15,13 +16,13 @@ class UserLoginUseCase @Inject constructor(
     suspend operator fun invoke(
         portalAccount: String,
         password: String
-    ): Pair<Unit?, ErrorHandler?> {
+    ): Result<Unit> {
         return try {
             val authToken = userRepository.getToken(portalAccount, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
-            Unit to null
+            Result.Success(Unit)
         } catch (throwable: Throwable) {
-            null to userErrorHandler.handleGetTokenError(throwable)
+            userErrorHandler.handleGetTokenError(throwable)
         }
     }
 }

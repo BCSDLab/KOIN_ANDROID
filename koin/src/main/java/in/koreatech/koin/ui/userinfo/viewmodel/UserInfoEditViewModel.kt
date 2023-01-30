@@ -45,34 +45,35 @@ class UserInfoEditViewModel @Inject constructor(
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
-        getUserInfoUseCase().let { (user, error) ->
-            if (error != null) _toastErrorMessage.value = error.message
-            else {
+        getUserInfoUseCase()
+            .onSuccess { user ->
                 _user.value = user
                 _nicknameState.value = user?.nickname?.let {
                     NicknameState(it, false)
                 } ?: NicknameState.newNickname("")
+            }.onFailure {
+                _toastErrorMessage.value = it
             }
-        }
     }
 
     fun getDept(studentId: String) = viewModelScope.launchIgnoreCancellation {
-        deptNameFromStudentIdUseCase(studentId).let { (deptName, error) ->
-            deptName?.let { _dept.value = it }
-            error?.let { _getDeptErrorMessage.value = error.message }
+        deptNameFromStudentIdUseCase(studentId).onSuccess {
+            _dept.value = it
+        }.onFailure {
+            _getDeptErrorMessage.value = it
         }
     }
 
     fun checkNickname(nickname: String) = viewModelScope.launchWithLoading {
         _nicknameState.value = NicknameState.newNickname(nickname)
 
-        checkNicknameValidationUseCase(nickname).let { (isDuplicated, error) ->
-            isDuplicated?.let {
+        checkNicknameValidationUseCase(nickname)
+            .onSuccess {
                 _nicknameState.value = _nicknameState.value?.copy(isNicknameDuplicated = it)
                 _nicknameDuplicatedEvent.value = it
+            }.onFailure {
+                _toastErrorMessage.value = it
             }
-            error?.let { _toastErrorMessage.value = it.message }
-        }
     }
 
     fun setNickname(nickname: String) {
@@ -88,9 +89,9 @@ class UserInfoEditViewModel @Inject constructor(
     ) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
-                user.value?.let { user ->
+                if (user.value != null) {
                     updateUserInfoUseCase(
-                        beforeUser = user,
+                        beforeUser = user.value!!,
                         name = name,
                         nickname = nickname,
                         separatedPhoneNumber = separatedPhoneNumber,
@@ -99,9 +100,11 @@ class UserInfoEditViewModel @Inject constructor(
                         checkedEmailValidation = nicknameState.value?.let {
                             it.nickname == nickname && it.isNicknameDuplicated == false
                         } ?: false
-                    )?.let { errorHandler ->
-                        _toastErrorMessage.value = errorHandler.message
-                    } ?: _userInfoEditedEvent.call()
+                    ).onSuccess {
+                        _userInfoEditedEvent.call()
+                    }.onFailure {
+                        _toastErrorMessage.value = it
+                    }
                 }
             }
         }

@@ -5,15 +5,16 @@ import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
 
 class UserLogoutUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
     private val tokenErrorHandler: TokenErrorHandler
 ){
-    suspend operator fun invoke() : ErrorHandler? {
+    suspend operator fun invoke() : Result<Unit> {
         return try {
             tokenRepository.removeToken()
-            null
+            Result.Success(Unit)
         } catch (t: Throwable) {
             tokenErrorHandler.handleLogoutError(t)
         }

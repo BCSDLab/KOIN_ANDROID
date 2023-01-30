@@ -38,21 +38,27 @@ class UserInfoViewModel @Inject constructor(
     val userRemoveErrorMessage: LiveData<String> get() = _userRemoveErrorMessage
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
-        userInfoUseCase().let { (user, error) ->
-            if (error != null) _getUserErrorMessage.value = error.message
-            else _user.value = user
+        userInfoUseCase().onSuccess {
+            _user.value = it
+        }.onFailure {
+            _getUserErrorMessage.value = it
         }
     }
 
     fun logout() = viewModelScope.launchWithLoading {
-        userLogoutUseCase()?.let {
-            _logoutErrorMessage.value = it.message
-        } ?: _logoutEvent.call()
+        userLogoutUseCase().onSuccess {
+            _logoutEvent.call()
+        }.onFailure {
+            _logoutErrorMessage.value = it
+        }
     }
 
     fun removeUser() = viewModelScope.launchWithLoading {
-        userRemoveUseCase().second?.let { errorHandler ->
-            _userRemoveErrorMessage.value = errorHandler.message
-        } ?: _userRemoveEvent.call()
+        userRemoveUseCase()
+            .onSuccess {
+                _userRemoveEvent.call()
+            }.onFailure {
+                _userRemoveErrorMessage.value = it
+            }
     }
 }

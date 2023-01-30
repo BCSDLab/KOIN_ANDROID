@@ -1,13 +1,11 @@
 package `in`.koreatech.koin.ui.login.viewmodel
 
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
-import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,7 +28,7 @@ class LoginViewModel @Inject constructor(
                     .onSuccess {
                         _loginSuccessEvent.call()
                     }.onFailure {
-                        _loginErrorMessage.value = it.message
+                        _loginErrorMessage.value = it
                     }
             }
         }

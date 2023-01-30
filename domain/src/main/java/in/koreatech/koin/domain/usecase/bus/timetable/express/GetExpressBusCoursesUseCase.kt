@@ -5,16 +5,18 @@ import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.BusRepository
 import javax.inject.Inject
+import `in`.koreatech.koin.domain.model.Result
+import `in`.koreatech.koin.domain.model.toResult
 
 class GetExpressBusCoursesUseCase @Inject constructor(
     private val busRepository: BusRepository,
     private val busErrorHandler: BusErrorHandler
 ) {
-    suspend operator fun invoke(): Pair<List<Pair<BusCourse, String>>?, ErrorHandler?> {
+    suspend operator fun invoke(): Result<List<Pair<BusCourse, String>>> {
         return try {
-            busRepository.getExpressBusCourses() to null
+            busRepository.getExpressBusCourses().toResult()
         } catch (t: Throwable) {
-            null to busErrorHandler.handleGetBusTimetableError(t)
+            busErrorHandler.handleGetBusTimetableError(t)
         }
     }
 }

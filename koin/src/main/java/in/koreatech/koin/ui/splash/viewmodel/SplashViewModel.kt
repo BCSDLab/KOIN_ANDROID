@@ -30,22 +30,22 @@ class SplashViewModel @Inject constructor(
     val checkVersionError: LiveData<Throwable> get() = _checkVersionError
 
     private val _tokenState = SingleLiveEvent<TokenState>()
-    val tokenState : LiveData<TokenState> get() = _tokenState
+    val tokenState: LiveData<TokenState> get() = _tokenState
 
     fun checkUpdate() {
         viewModelScope.launchIgnoreCancellation {
-                getVersionInformationUseCase()
-                    .onSuccess {
-                        _version.value = it
-                        if (!(it.versionUpdatePriority is VersionUpdatePriority.High ||
-                                    it.versionUpdatePriority is VersionUpdatePriority.Medium)
-                        ) {
-                            checkToken()
-                        }
-                    }.onFailure {
-                        _checkVersionError.value = it
+            getVersionInformationUseCase()
+                .onSuccess {
+                    _version.value = it
+                    if (!(it.versionUpdatePriority is VersionUpdatePriority.High ||
+                                it.versionUpdatePriority is VersionUpdatePriority.Medium)
+                    ) {
                         checkToken()
                     }
+                }.onFailure {
+                    _checkVersionError.value = it
+                    checkToken()
+                }
 
         }
     }
@@ -53,12 +53,14 @@ class SplashViewModel @Inject constructor(
     fun checkToken() {
         viewModelScope.launchIgnoreCancellation {
             isTokenSavedInDeviceUseCase().also {
-                if (it) getUserInfoUseCase().let { (user, error) ->
-                    if (error != null) {
-                        _tokenState.value = TokenState.Invalid
-                    } else {
-                        _tokenState.value = TokenState.Valid
-                    }
+                if (it) {
+                    getUserInfoUseCase()
+                        .onSuccess {
+                            _tokenState.value = TokenState.Valid
+                        }
+                        .onFailure {
+                            _tokenState.value = TokenState.Invalid
+                        }
                 } else {
                     _tokenState.value = TokenState.Invalid
                 }

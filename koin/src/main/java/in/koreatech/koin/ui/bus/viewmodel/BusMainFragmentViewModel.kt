@@ -1,20 +1,17 @@
 package `in`.koreatech.koin.ui.bus.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.liveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
-import android.util.Log
-import androidx.lifecycle.*
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.plus
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +39,7 @@ class BusMainFragmentViewModel @Inject constructor(
                 }
         } catch (_: CancellationException) {
         } catch (e: Exception) {
-            _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).message
+            _errorToast.value = busErrorHandler.handleGetBusRemainTimeError(e).errorMessage
         }
     }
 
