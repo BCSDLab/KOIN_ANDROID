@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.model.bus
 
+
 sealed class BusNode(
     val busNodeString: String
 ) {
