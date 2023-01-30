@@ -49,10 +49,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun selectMenu(menuState: MenuState) {
-        if(_selectedMenu.value != menuState) {
+        if(_selectedMenu.value == MenuState.UserInfo || _selectedMenu.value != menuState) {
             _selectedMenu.value = menuState
             _menuEvent.value = menuState
         }
-
     }
 }

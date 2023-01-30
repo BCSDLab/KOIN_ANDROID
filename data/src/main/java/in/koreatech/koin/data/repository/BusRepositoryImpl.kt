@@ -66,7 +66,7 @@ class BusRepositoryImpl @Inject constructor(
             busType = BusType.Shuttle.busTypeString,
             departure = departure.busNodeString,
             arrival = arrival.busNodeString
-        ).toShuttleBusArrivalInfo()
+        ).toShuttleBusArrivalInfo(departure, arrival)
     }
 
     override suspend fun getExpressBusRemainTime(
@@ -77,7 +77,7 @@ class BusRepositoryImpl @Inject constructor(
             busType = BusType.Express.busTypeString,
             departure = departure.busNodeString,
             arrival = arrival.busNodeString
-        ).toExpressBusRemainTimePair()
+        ).toExpressBusRemainTimePair(departure, arrival)
     }
 
     override suspend fun getCommutingBusRemainTime(
@@ -88,7 +88,7 @@ class BusRepositoryImpl @Inject constructor(
             busType = BusType.Commuting.busTypeString,
             departure = departure.busNodeString,
             arrival = arrival.busNodeString
-        ).toCommutingBusRemainTimePair()
+        ).toCommutingBusRemainTimePair(departure, arrival)
     }
 
     override suspend fun getCityBusRemainTime(
@@ -99,7 +99,7 @@ class BusRepositoryImpl @Inject constructor(
             busType = BusType.City.busTypeString,
             departure = departure.busNodeString,
             arrival = arrival.busNodeString
-        ).toCityBusRemainTimePair()
+        ).toCityBusRemainTimePair(departure, arrival)
     }
 
     override suspend fun searchBus(
