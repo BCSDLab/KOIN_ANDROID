@@ -175,7 +175,7 @@
     <string name="error_guide_home">홈으로</string>
     <string name="error_contact">문의하기</string>
     <string name="error_guide_title">오류가 발생하였습니다.</string>
-    <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
+    <string name="error_guide">예상치 못한 오류가 발생되었습니다.\n다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
 
     <!--store-->
