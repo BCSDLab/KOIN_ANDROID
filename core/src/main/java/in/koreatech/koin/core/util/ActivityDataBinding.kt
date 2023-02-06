@@ -2,6 +2,7 @@ package `in`.koreatech.koin.core.util
 
 import android.app.Activity
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
@@ -16,27 +17,37 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 class ActivityDataBindingProperty<T : ViewDataBinding>(
-    @LayoutRes private val layoutId: Int,
+    @LayoutRes private val layoutId: Int? = null,
     private val rootView: ViewGroup? = null
 ) :
-    ReadOnlyProperty<AppCompatActivity, T> {
+    ReadOnlyProperty<ComponentActivity, T> {
 
     private var binding: T? = null
 
-    override fun getValue(thisRef: AppCompatActivity, property: KProperty<*>): T {
+    override fun getValue(thisRef: ComponentActivity, property: KProperty<*>): T {
         if (!isMainThread) {
             throw IllegalAccessException("You should call data binding property delegate only on main thread")
         }
 
-        binding?.let { return it }
+        if(binding != null) return binding!!
 
         thisRef.lifecycle.addObserver(BindingLifeCycleObserver())
-        return DataBindingUtil.inflate<T>(
-            thisRef.layoutInflater,
-            layoutId,
-            rootView ?: thisRef.findViewById(android.R.id.content),
-            false
-        ).also { binding = it }
+
+        if (layoutId != null) {
+            binding = DataBindingUtil.inflate(
+                thisRef.layoutInflater,
+                layoutId,
+                rootView ?: thisRef.findViewById(android.R.id.content),
+                false
+            )
+            return binding!!
+        }
+
+        binding = DataBindingUtil.bind(thisRef.getContentView())
+
+        return checkNotNull(binding) {
+            throw IllegalAccessException("You should call setContentView before using binding property or use Activity secondary constructor.")
+        }
     }
 
     private inner class BindingLifeCycleObserver : DefaultLifecycleObserver {
@@ -50,8 +61,13 @@ class ActivityDataBindingProperty<T : ViewDataBinding>(
     }
 }
 
+private fun Activity.getContentView() =
+    checkNotNull(findViewById<ViewGroup>(android.R.id.content).getChildAt(0)) {
+        throw IllegalAccessException("You should call setContentView before using binding property or use Activity secondary constructor.")
+    }
+
 @Suppress("unused")
-inline fun <reified T : ViewDataBinding> AppCompatActivity.dataBinding(@LayoutRes layoutId: Int):
+inline fun <reified T : ViewDataBinding> ComponentActivity.dataBinding(@LayoutRes layoutId: Int? = null):
         ReadOnlyProperty<AppCompatActivity, T> {
     return ActivityDataBindingProperty(layoutId)
 }
