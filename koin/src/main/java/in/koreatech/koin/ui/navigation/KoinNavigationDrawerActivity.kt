@@ -11,7 +11,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
-import `in`.koreatech.koin.ui.store.StoreActivity
+import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity

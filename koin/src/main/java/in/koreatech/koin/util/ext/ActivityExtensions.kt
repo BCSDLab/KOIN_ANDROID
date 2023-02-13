@@ -61,12 +61,17 @@ fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwn
     }
 }
 
+fun Activity.showSoftKeyboard() {
+    val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
+    Objects.requireNonNull(imm).showSoftInput(currentFocus, 0)
+}
+
 fun Activity.hideSoftKeyboard() {
     val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
     Objects.requireNonNull(imm).hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 }
 
-fun Int.toPx(context: Context): Int {
-    val density = context.resources.displayMetrics.density
-    return (this.toFloat() * density).roundToInt()
+fun Activity.dpToPx(dp: Int): Int {
+    val density: Float = resources.displayMetrics.density
+    return (dp.toFloat() * density).roundToInt()
 }

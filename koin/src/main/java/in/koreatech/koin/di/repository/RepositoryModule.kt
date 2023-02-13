@@ -86,6 +86,14 @@ object RepositoryModule {
     ): BusRepository {
         return BusRepositoryImpl(applicationContext, busLocalDataSource, busRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideStoreRepository(
+        storeRemoteDataSource: StoreRemoteDataSource
+    ): StoreRepository {
+        return StoreRepositoryImpl(storeRemoteDataSource)
+    }
     
     @Provides
     @Singleton
