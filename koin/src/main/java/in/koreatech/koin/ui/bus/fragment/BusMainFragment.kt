@@ -18,14 +18,17 @@ import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
 import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.util.dataBinding
 
 @AndroidEntryPoint
-class BusMainFragment : DataBindingFragment<BusMainFragmentBinding>() {
-    override val layoutId: Int = R.layout.bus_main_fragment
+class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
+    private val binding by dataBinding<BusMainFragmentBinding>()
 
     private val viewModel by viewModels<BusMainFragmentViewModel>()
 
