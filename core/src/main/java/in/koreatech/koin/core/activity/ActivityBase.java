@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,14 @@ import in.koreatech.koin.core.toast.ToastUtil;
 public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     private CustomProgressDialog customProgressDialog;
     private Context context;
+
+    public ActivityBase() {
+        super();
+    }
+
+    public ActivityBase(@LayoutRes int contentLayoutId) {
+        super(contentLayoutId);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

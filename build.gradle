@@ -19,8 +19,8 @@ buildscript {
         /* Common */
         compileSdkVersion = 31
         minSdkVersion = 21
-        targetSdkVersion = 31
-        versionName = "3.0.7"
+        targetSdkVersion = 30
+        versionName = "3.0.5"
 
         kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -32,9 +32,6 @@ buildscript {
 
         def lifecycle_version = "2.5.1"
         androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-        def livedata_version = "2.5.1"
-        androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
 
         def activity_version = "1.4.0"
         androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
@@ -59,9 +56,10 @@ buildscript {
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
         /* Dependency - leakcanary */
-        def leakcanary_version = "2.10"
+        def leakcanary_version = "1.6.3"
         leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
         leakcanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+        leakcanrySupportFragment = "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanary_version"
 
         /* Dependency - glide */
         def glide_version = "4.9.0"
@@ -93,8 +91,8 @@ buildscript {
 
         /* Dependency - Coroutine */
         def coroutine_version = "1.6.3"
-        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
+        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
 
         /* Dependency - AndroidX Security */
         def security_version = "1.1.0-alpha03"

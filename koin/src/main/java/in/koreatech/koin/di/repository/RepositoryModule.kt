@@ -3,6 +3,7 @@ package `in`.koreatech.koin.di.repository
 import `in`.koreatech.koin.data.repository.*
 import `in`.koreatech.koin.domain.repository.*
 import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
+import `in`.koreatech.koin.data.repository.LandRepositoryImpl
 import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
 import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
 import `in`.koreatech.koin.data.repository.UserRepositoryImpl
@@ -92,5 +93,13 @@ object RepositoryModule {
         storeRemoteDataSource: StoreRemoteDataSource
     ): StoreRepository {
         return StoreRepositoryImpl(storeRemoteDataSource)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideLandRepository(
+        landRemoteDataSource: LandRemoteDataSource
+    ): LandRepository {
+        return LandRepositoryImpl(landRemoteDataSource)
     }
 }

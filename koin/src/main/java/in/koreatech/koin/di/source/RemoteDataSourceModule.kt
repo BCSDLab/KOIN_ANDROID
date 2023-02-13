@@ -60,4 +60,12 @@ object RemoteDataSourceModule {
     ): StoreRemoteDataSource {
         return StoreRemoteDataSource(storeApi)
     }
+    
+    @Provides
+    @Singleton
+    fun provideLandRemoteDataSource(
+        landApi: LandApi
+    ): LandRemoteDataSource {
+        return LandRemoteDataSource(landApi)
+    }
 }
