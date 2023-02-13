@@ -9,8 +9,6 @@ android {
     flavorDimensions "default"
 
     defaultConfig {
-        versionCode 10000
-        versionName "10000"
 
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion

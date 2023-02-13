@@ -52,4 +52,12 @@ object RemoteDataSourceModule {
     ): BusRemoteDataSource {
         return BusRemoteDataSource(busApi)
     }
+    
+    @Provides
+    @Singleton
+    fun provideLandRemoteDataSource(
+        landApi: LandApi
+    ): LandRemoteDataSource {
+        return LandRemoteDataSource(landApi)
+    }
 }
