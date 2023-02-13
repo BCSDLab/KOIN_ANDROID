@@ -23,6 +23,7 @@ public class Store implements Comparable<Store> {
 
     //종류
     //기타(S000), 콜벤(S001), 정식(S002), 족발(S003), 중국집(S004), 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 미용실(S009)
+    // 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 족발(S003), 중국집(S004), 일반(S008), 미용실(S009), 기타(S000)
     @SerializedName("category")
     @Expose
     private String category;

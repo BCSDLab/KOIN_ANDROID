@@ -105,7 +105,7 @@
             android:exported="false"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.store.StoreActivity"
+            android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
@@ -130,7 +130,7 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
         <activity
-            android:name=".ui.store.StoreDetailActivity"
+            android:name=".ui.store.activity.StoreDetailActivity"
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
@@ -155,11 +155,6 @@
             android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
-            android:name=".ui.store.StoreFlyerViewActivity"
-            android:exported="false"
-            android:label="코인 커뮤니티"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.error.ErrorActivity"
             android:exported="false"

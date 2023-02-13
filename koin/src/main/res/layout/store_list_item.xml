@@ -1,107 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tool="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_marginStart="1dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="1dp"
-    android:layout_marginBottom="4dp"
-    app:cardBackgroundColor="@color/white"
-    tool:ignore="MissingPrefix">
+<layout>
 
-    <FrameLayout
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tool="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="60dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="@color/white"
+        tool:ignore="MissingPrefix">
 
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/store_name_textview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_weight="53.65"
-                android:gravity="center_vertical"
-                android:text="shop name"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:fontName="Custom5" />
+            android:background="?attr/selectableItemBackground">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="46.35"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/store_delivery_textview"
+                    android:id="@+id/store_name_textview"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:gravity="center"
-                    android:text="배달"
-                    android:textColor="@color/blue1"
-                    android:textSize="12sp"
-                    app:fontName="Custom6" />
-
-
-                <TextView
-                    android:id="@+id/store_card_textview"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="5"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="53.65"
                     android:gravity="center_vertical"
-                    android:text="카드결제"
-                    android:textColor="@color/blue1"
-                    android:textSize="12sp"
-                    app:fontName="Custom6" />
+                    android:text="shop name"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:fontName="Custom5" />
 
-
-                <TextView
-                    android:id="@+id/store_account_textview"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
-                    android:gravity="right|center_vertical"
-                    android:text="계좌이체"
-                    android:textColor="@color/blue1"
-                    android:textSize="12sp"
-                    app:fontName="Custom6" />
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="46.35"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/store_delivery_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="center"
+                        android:text="배달"
+                        android:textColor="@color/blue1"
+                        android:textSize="12sp"
+                        app:fontName="Custom6" />
+
+                    <TextView
+                        android:id="@+id/store_card_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:text="카드결제"
+                        android:textColor="@color/blue1"
+                        android:textSize="12sp"
+                        app:fontName="Custom6" />
+
+                    <TextView
+                        android:id="@+id/store_account_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="right|center_vertical"
+                        android:text="계좌이체"
+                        android:textColor="@color/blue1"
+                        android:textSize="12sp"
+                        app:fontName="Custom6" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/ready_store_frame_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible">
-
-            <ImageView
+            <FrameLayout
+                android:id="@+id/ready_store_frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:alpha="0.3"
-                android:background="@color/black" />
+                android:visibility="invisible">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="준비중"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.3"
+                    android:background="@color/black" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="준비중"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            </FrameLayout>
         </FrameLayout>
-    </FrameLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

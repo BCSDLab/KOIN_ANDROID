@@ -1,506 +1,509 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:ignore="MissingPrefix">
+<layout>
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingPrefix">
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/callvan_main_layout"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/callvan_main_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <in.koreatech.koin.core.appbar.AppBarBase
-                android:id="@+id/koin_base_appbar"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:leftButtonBackground="@drawable/ic_back_arrow"
-                app:leftButtonHeight="14dp"
-                app:leftButtonWidth="14dp"
-                app:rightButtonBackground="@drawable/ic_hamburger_button"
-                app:rightButtonHeight="18dp"
-                app:rightButtonWidth="12dp"
-                app:titleText="주변상점" />
+                android:layout_height="wrap_content">
 
-        </LinearLayout>
+                <in.koreatech.koin.core.appbar.AppBarBase
+                    android:id="@+id/koin_base_appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:leftButtonBackground="@drawable/ic_back_arrow"
+                    app:leftButtonHeight="14dp"
+                    app:leftButtonWidth="14dp"
+                    app:rightButtonBackground="@drawable/ic_hamburger_button"
+                    app:rightButtonHeight="18dp"
+                    app:rightButtonWidth="12dp"
+                    app:titleText="주변상점" />
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/store_swiperefreshlayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="56dp">
+            </LinearLayout>
 
-            <androidx.core.widget.NestedScrollView
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/store_swiperefreshlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
-                android:fillViewport="true">
+                android:layout_marginTop="56dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/container_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.044" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.953" />
+                    android:background="@color/white"
+                    android:fillViewport="true">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/category_constraint_layout"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline_category_start"
+                            android:id="@+id/guideline_start"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layout_constraintGuide_percent="0.044" />
 
                         <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline_category_end"
+                            android:id="@+id/guideline_end"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             app:layout_constraintGuide_percent="0.953" />
 
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/category_constraint_layout"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:letterSpacing="-0.04"
-                            android:lineSpacingExtra="7sp"
-                            android:text="카테고리"
-                            android:textColor="@color/black"
-                            android:textSize="15sp"
-                            app:fontName="Custom5"
-                            app:layout_constraintStart_toStartOf="@+id/guideline_category_start"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_goneMarginTop="24dp" />
-
-
-                        <ImageView
-                            android:id="@+id/store_category_chicken"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/ic_chicken"
-                            app:layout_constraintEnd_toStartOf="@+id/store_category_pizza"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintStart_toStartOf="@+id/guideline_category_start"
-                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                        <ImageView
-                            android:id="@+id/store_category_pizza"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/ic_pizza"
-                            app:layout_constraintLeft_toRightOf="@+id/store_category_chicken"
-                            app:layout_constraintRight_toLeftOf="@+id/store_category_dosirak"
-                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                        <ImageView
-                            android:id="@+id/store_category_dosirak"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/ic_dosirak"
-                            app:layout_constraintLeft_toRightOf="@+id/store_category_pizza"
-                            app:layout_constraintRight_toLeftOf="@+id/store_category_sweet_pork_feet"
-                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                        <ImageView
-                            android:id="@+id/store_category_sweet_pork_feet"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/ic_porkfeet"
-                            app:layout_constraintLeft_toRightOf="@+id/store_category_dosirak"
-                            app:layout_constraintRight_toLeftOf="@+id/store_category_chinese"
-                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                        <ImageView
-                            android:id="@+id/store_category_chinese"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/ic_chinese"
-                            app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
-                            app:layout_constraintStart_toEndOf="@id/store_category_sweet_pork_feet"
-                            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-
-                        <TextView
-                            android:id="@+id/store_category_chicken_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="치킨"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@id/store_category_chicken"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_chicken"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chicken" />
-
-                        <TextView
-                            android:id="@+id/store_category_pizza_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="피자"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_pizza"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_pizza"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_pizza" />
-
-                        <TextView
-                            android:id="@+id/store_category_dosirak_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="도시락"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_dosirak"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_dosirak"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_dosirak" />
-
-                        <TextView
-                            android:id="@+id/store_category_sweet_pork_feet_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="족발"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_sweet_pork_feet"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_sweet_pork_feet"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_sweet_pork_feet" />
-
-                        <TextView
-                            android:id="@+id/store_category_chinese_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="중국집"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_chinese"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_chinese"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chinese" />
-
-                        <ImageView
-                            android:id="@+id/store_category_normal"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginStart="21dp"
-                            android:layout_marginTop="11dp"
-                            android:background="@drawable/ic_normal"
-                            app:layout_constraintHorizontal_chainStyle="spread_inside"
-                            app:layout_constraintRight_toLeftOf="@id/store_category_cafe"
-                            app:layout_constraintStart_toStartOf="@id/guideline_category_start"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-                        <ImageView
-                            android:id="@+id/store_category_cafe"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="11dp"
-                            android:background="@drawable/ic_cafe"
-                            app:layout_constraintLeft_toRightOf="@+id/store_category_normal"
-                            app:layout_constraintRight_toLeftOf="@+id/store_category_hair"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-
-                        <ImageView
-                            android:id="@+id/store_category_hair"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="11dp"
-                            android:background="@drawable/ic_hair"
-                            app:layout_constraintLeft_toRightOf="@+id/store_category_cafe"
-                            app:layout_constraintRight_toLeftOf="@+id/store_category_etc"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-                        <ImageView
-                            android:id="@+id/store_category_etc"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="11dp"
-                            android:layout_marginEnd="21dp"
-                            android:background="@drawable/ic_etc"
-                            app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
-                            app:layout_constraintLeft_toRightOf="@id/store_category_hair"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-
-                        <TextView
-                            android:id="@+id/store_category_normal_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="일반음식점"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_normal"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_normal"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_normal" />
-
-
-                        <TextView
-                            android:id="@+id/store_category_cafe_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="카페"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_cafe"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_cafe"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_cafe" />
-
-
-                        <TextView
-                            android:id="@+id/store_category_hair_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="미용실"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_hair"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_hair"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_hair" />
-
-
-                        <TextView
-                            android:id="@+id/store_category_etc_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_horizontal"
-                            android:includeFontPadding="false"
-                            android:letterSpacing="-0.02"
-                            android:lineSpacingExtra="6sp"
-                            android:text="기타"
-                            android:textColor="@color/black"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintEnd_toEndOf="@+id/store_category_etc"
-                            app:layout_constraintStart_toStartOf="@+id/store_category_etc"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_etc" />
-
-
-                        <FrameLayout
-                            android:id="@+id/border_frameLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="31dp"
-                            android:layout_marginTop="24dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/store_category_normal_textview">
+                            app:layout_constraintTop_toTopOf="parent">
+
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline_category_start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.044" />
+
+                            <androidx.constraintlayout.widget.Guideline
+                                android:id="@+id/guideline_category_end"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                app:layout_constraintGuide_percent="0.953" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:letterSpacing="-0.04"
+                                android:lineSpacingExtra="7sp"
+                                android:text="카테고리"
+                                android:textColor="@color/black"
+                                android:textSize="15sp"
+                                app:fontName="Custom5"
+                                app:layout_constraintStart_toStartOf="@+id/guideline_category_start"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_goneMarginTop="24dp" />
+
 
                             <ImageView
+                                android:id="@+id/store_category_chicken"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/ic_chicken"
+                                app:layout_constraintEnd_toStartOf="@+id/store_category_pizza"
+                                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                                app:layout_constraintStart_toStartOf="@+id/guideline_category_start"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                            <ImageView
+                                android:id="@+id/store_category_pizza"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/ic_pizza"
+                                app:layout_constraintLeft_toRightOf="@+id/store_category_chicken"
+                                app:layout_constraintRight_toLeftOf="@+id/store_category_dosirak"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                            <ImageView
+                                android:id="@+id/store_category_dosirak"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/ic_dosirak"
+                                app:layout_constraintLeft_toRightOf="@+id/store_category_pizza"
+                                app:layout_constraintRight_toLeftOf="@+id/store_category_pork_feet"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                            <ImageView
+                                android:id="@+id/store_category_pork_feet"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/ic_porkfeet"
+                                app:layout_constraintLeft_toRightOf="@+id/store_category_dosirak"
+                                app:layout_constraintRight_toLeftOf="@+id/store_category_chinese"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                            <ImageView
+                                android:id="@+id/store_category_chinese"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/ic_chinese"
+                                app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
+                                app:layout_constraintStart_toEndOf="@id/store_category_pork_feet"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+
+                            <TextView
+                                android:id="@+id/store_category_chicken_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="치킨"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@id/store_category_chicken"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_chicken"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken" />
+
+                            <TextView
+                                android:id="@+id/store_category_pizza_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="피자"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_pizza"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_pizza"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_pizza" />
+
+                            <TextView
+                                android:id="@+id/store_category_dosirak_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="도시락"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_dosirak"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_dosirak"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_dosirak" />
+
+                            <TextView
+                                android:id="@+id/store_category_pork_feet_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="족발"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_pork_feet"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_pork_feet"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_pork_feet" />
+
+                            <TextView
+                                android:id="@+id/store_category_chinese_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="중국집"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_chinese"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_chinese"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chinese" />
+
+                            <ImageView
+                                android:id="@+id/store_category_normal"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="21dp"
+                                android:layout_marginTop="11dp"
+                                android:background="@drawable/ic_normal"
+                                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                                app:layout_constraintRight_toLeftOf="@id/store_category_cafe"
+                                app:layout_constraintStart_toStartOf="@id/guideline_category_start"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
+
+                            <ImageView
+                                android:id="@+id/store_category_cafe"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="11dp"
+                                android:background="@drawable/ic_cafe"
+                                app:layout_constraintLeft_toRightOf="@+id/store_category_normal"
+                                app:layout_constraintRight_toLeftOf="@+id/store_category_hair"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
+
+
+                            <ImageView
+                                android:id="@+id/store_category_hair"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="11dp"
+                                android:background="@drawable/ic_hair"
+                                app:layout_constraintLeft_toRightOf="@+id/store_category_cafe"
+                                app:layout_constraintRight_toLeftOf="@+id/store_category_etc"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
+
+                            <ImageView
+                                android:id="@+id/store_category_etc"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_marginTop="11dp"
+                                android:layout_marginEnd="21dp"
+                                android:background="@drawable/ic_etc"
+                                app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
+                                app:layout_constraintLeft_toRightOf="@id/store_category_hair"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
+
+
+                            <TextView
+                                android:id="@+id/store_category_normal_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="일반음식점"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_normal"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_normal"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_normal" />
+
+
+                            <TextView
+                                android:id="@+id/store_category_cafe_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="카페"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_cafe"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_cafe"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_cafe" />
+
+
+                            <TextView
+                                android:id="@+id/store_category_hair_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="미용실"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_hair"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_hair"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_hair" />
+
+
+                            <TextView
+                                android:id="@+id/store_category_etc_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:letterSpacing="-0.02"
+                                android:lineSpacingExtra="6sp"
+                                android:text="기타"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"
+                                app:fontName="Custom6"
+                                app:layout_constraintEnd_toEndOf="@+id/store_category_etc"
+                                app:layout_constraintStart_toStartOf="@+id/store_category_etc"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_etc" />
+
+
+                            <FrameLayout
+                                android:id="@+id/border_frameLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="31dp"
+                                android:layout_marginTop="24dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/store_category_normal_textview">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:alpha="0.2"
+                                    android:background="@color/blue1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center"
+                                    android:layout_marginStart="16dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="6sp"
+                                    android:text="상점 목록"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="13sp"
+                                    app:fontName="Custom6" />
+                            </FrameLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/search_constraint_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/category_constraint_layout">
+
+                            <ImageView
+                                android:id="@+id/imageView2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:alpha="0.2"
                                 android:background="@color/blue1" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                            <EditText
+                                android:id="@+id/search_editText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="start|center"
-                                android:layout_marginStart="16dp"
+                                android:background="@null"
+                                android:hint="상점 검색"
+                                android:imeOptions="actionDone"
                                 android:includeFontPadding="false"
                                 android:lineSpacingExtra="6sp"
-                                android:text="상점 목록"
+                                android:maxLines="1"
+                                android:padding="13dp"
+                                android:singleLine="true"
                                 android:textColor="@color/gray9"
                                 android:textSize="13sp"
-                                app:fontName="Custom6" />
-                        </FrameLayout>
+                                app:fontName="Custom6"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/search_image_view"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0" />
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            <ImageView
+                                android:id="@+id/search_image_view"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@drawable/ic_search"
+                                app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/search_constraint_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/category_constraint_layout">
-
-                        <ImageView
-                            android:id="@+id/imageView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:alpha="0.2"
-                            android:background="@color/blue1" />
-
-                        <EditText
-                            android:id="@+id/search_editText"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="start|center"
-                            android:background="@null"
-                            android:hint="상점 검색"
-                            android:imeOptions="actionDone"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="6sp"
-                            android:maxLines="1"
-                            android:padding="13dp"
-                            android:singleLine="true"
-                            android:textColor="@color/gray9"
-                            android:textSize="13sp"
-                            app:fontName="Custom6"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/search_image_view"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <ImageView
-                            android:id="@+id/search_image_view"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="12dp"
-                            android:background="@drawable/ic_search"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/not_found_constraint_layout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/search_constraint_layout">
-
-                        <ImageView
-                            android:id="@+id/no_search_image_view"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:background="@drawable/ic_no_search"
-                            app:layout_constraintBottom_toTopOf="@+id/no_search_text_view"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_chainStyle="packed" />
-
-                        <TextView
-                            android:id="@+id/no_search_text_view"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/not_found_constraint_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="검색 결과가 없습니다."
-                            android:textColor="@color/blue8"
-                            android:textSize="13sp"
+                            android:background="@color/white"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/no_search_image_view" />
+                            app:layout_constraintTop_toBottomOf="@+id/search_constraint_layout">
+
+                            <ImageView
+                                android:id="@+id/no_search_image_view"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:background="@drawable/ic_no_search"
+                                app:layout_constraintBottom_toTopOf="@+id/no_search_text_view"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_chainStyle="packed" />
+
+                            <TextView
+                                android:id="@+id/no_search_text_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="검색 결과가 없습니다."
+                                android:textColor="@color/blue8"
+                                android:textSize="13sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/no_search_image_view" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/store_recyclerview"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16.5dp"
+                            android:background="@color/background"
+                            android:clipToPadding="false"
+                            android:paddingBottom="12dp"
+                            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                            app:layout_constraintTop_toBottomOf="@+id/search_constraint_layout"
+                            tools:listitem="@layout/store_list_item" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.core.widget.NestedScrollView>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <!--navigation drawer-->
+        <include layout="@layout/base_navigation_drawer_right" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/store_recyclerview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16.5dp"
-                        android:background="@color/background"
-                        android:clipToPadding="false"
-                        android:paddingBottom="12dp"
-                        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/search_constraint_layout"
-                        tools:listitem="@layout/store_list_item" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <!--navigation drawer-->
-    <include layout="@layout/base_navigation_drawer_right" />
-
-</androidx.drawerlayout.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
