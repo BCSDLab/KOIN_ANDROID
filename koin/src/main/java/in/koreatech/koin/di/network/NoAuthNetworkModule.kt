@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -84,5 +85,13 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): BusApi{
         return retrofit.create(BusApi::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideLandApi(
+        @NoAuth retrofit: Retrofit
+    ): LandApi {
+        return retrofit.create(LandApi::class.java)
     }
 }
