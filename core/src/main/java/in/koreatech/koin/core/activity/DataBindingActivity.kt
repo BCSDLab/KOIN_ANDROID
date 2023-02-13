@@ -5,7 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-@Deprecated("Use AppCompatActivity.activityDataBinding instead.")
+@Deprecated("Use AppCompatActivity.dataBinding delegate property instead.")
 abstract class DataBindingActivity<T : ViewDataBinding> : ActivityBase() {
     @get:LayoutRes
     abstract val layoutId: Int

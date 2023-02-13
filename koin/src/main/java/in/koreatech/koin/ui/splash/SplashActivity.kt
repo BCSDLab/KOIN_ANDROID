@@ -39,9 +39,6 @@ class SplashActivity : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
-        findViewById<Button>(R.id.login_button).setOnClickListener {
-            Log.i("asdf", "asdf")
-        }
         WindowInsetsControllerCompat(window, window.decorView).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior =
