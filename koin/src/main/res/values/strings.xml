@@ -283,4 +283,5 @@
     <string name="land_detail_unable_id">원룸 정보를 불러오지 못했습니다.</string>
     <string name="land_detail_no_name">No Name</string>
     <string name="land_detail_floor_unit">층</string>
+    <string name="bcsd_webpage_name">BCSD 홈페이지</string>
 </resources>

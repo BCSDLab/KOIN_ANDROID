@@ -351,7 +351,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun goToNavigationDeveloper() {
         val intent = Intent(this, WebViewActivity::class.java)
-        intent.putExtra("title", "BCSD 홈페이지")
+        intent.putExtra("title", getString(R.string.bcsd_webpage_name))
         intent.putExtra("url", "https://bcsdlab.com/")
         startActivity(intent)
     }
