@@ -86,8 +86,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                AppBarBase.leftButtonId -> onBackPressed()
+                AppBarBase.rightButtonId -> toggleNavigationDrawer()
             }
         }
 

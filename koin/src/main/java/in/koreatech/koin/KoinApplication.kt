@@ -34,7 +34,7 @@ class KoinApplication : Application() {
 
     private fun init() {
         UserInfoSharedPreferencesHelper.getInstance().init(applicationContext)
-        ToastUtil.getInstance().init(applicationContext)
+        ToastUtil.instance.init(applicationContext)
         RecentSearchSharedPreference.getInstance().init(applicationContext)
         Thread.setDefaultUncaughtExceptionHandler(ExceptionHandlerUtil(applicationContext))
     }

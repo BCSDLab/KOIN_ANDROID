@@ -5,6 +5,7 @@ import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import android.app.Activity
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
@@ -62,12 +63,12 @@ fun <T : BaseViewModel> IProgressDialog.withLoading(lifecycleOwner: LifecycleOwn
 }
 
 fun Activity.showSoftKeyboard() {
-    val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     Objects.requireNonNull(imm).showSoftInput(currentFocus, 0)
 }
 
 fun Activity.hideSoftKeyboard() {
-    val imm = getSystemService(ActivityBase.INPUT_METHOD_SERVICE) as InputMethodManager
+    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
     Objects.requireNonNull(imm).hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 }
 

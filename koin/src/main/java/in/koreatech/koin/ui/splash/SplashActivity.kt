@@ -71,7 +71,7 @@ class SplashActivity : ActivityBase() {
         }
 
         observeLiveData(checkVersionError) {
-            ToastUtil.getInstance().makeShort(R.string.version_check_failed)
+            ToastUtil.instance.makeShort(R.string.version_check_failed)
         }
 
         observeLiveData(tokenState) {

@@ -133,7 +133,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
-            ToastUtil.getInstance()
+            ToastUtil.instance
                 .makeShort(getString(R.string.store_detail_wrong_store_id_message))
             finish()
         }

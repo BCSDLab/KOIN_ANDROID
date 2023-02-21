@@ -38,8 +38,8 @@ class BusActivity : KoinNavigationDrawerActivity() {
     private fun initView() = with(binding) {
         koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
-                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                AppBarBase.leftButtonId -> callDrawerItem(R.id.navi_item_home)
+                AppBarBase.rightButtonId -> toggleNavigationDrawer()
             }
         }
         busMainViewpager.apply {

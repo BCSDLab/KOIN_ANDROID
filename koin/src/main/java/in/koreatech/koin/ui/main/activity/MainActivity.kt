@@ -1,11 +1,15 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
-import `in`.koreatech.koin.core.viewpager.ScaleCardPagerTransformer
 import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.databinding.ActivityMainBinding
@@ -19,15 +23,6 @@ import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.observeLiveData
-import android.graphics.Point
-import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
-import androidx.activity.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {

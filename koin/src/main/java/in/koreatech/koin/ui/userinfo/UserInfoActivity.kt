@@ -77,13 +77,13 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
                 binding.userinfoTextviewStudentId.text = userState.studentNumber
                 binding.userinfoTextviewMajor.text = userState.major
             } else {
-                ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+                ToastUtil.instance.makeShort(getString(R.string.user_info_anonymous))
                 finish()
             }
         }
 
         observeLiveData(getUserErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
+            ToastUtil.instance.makeShort(it)
             finish()
         }
 
@@ -93,7 +93,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(logoutErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
+            ToastUtil.instance.makeShort(it)
         }
 
         observeLiveData(userRemoveEvent) {
@@ -104,7 +104,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(userRemoveErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
+            ToastUtil.instance.makeShort(it)
         }
     }
 }

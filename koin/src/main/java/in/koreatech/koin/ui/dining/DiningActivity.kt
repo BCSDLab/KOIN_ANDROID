@@ -136,8 +136,8 @@ class DiningActivity : KoinNavigationDrawerActivity(),
 
         binding.koinBaseAppBarDark.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
-                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                AppBarBase.leftButtonId -> callDrawerItem(R.id.navi_item_home)
+                AppBarBase.rightButtonId -> toggleNavigationDrawer()
             }
         }
     }

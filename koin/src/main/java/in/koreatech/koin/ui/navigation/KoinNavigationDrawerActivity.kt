@@ -138,7 +138,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             if (menuState == MenuState.Main) {
                 if (System.currentTimeMillis() > pressTime + 2000) {
                     pressTime = System.currentTimeMillis()
-                    ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+                    ToastUtil.instance.makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
                 } else {
                     finishAffinity()
                 }
@@ -221,7 +221,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Land)
             }
             else -> {
-                ToastUtil.getInstance().makeShort("서비스예정입니다")
+                ToastUtil.instance.makeShort("서비스예정입니다")
             }
         }
     }

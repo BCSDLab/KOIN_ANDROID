@@ -136,7 +136,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
 
 
                 } else {
-                    ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+                    ToastUtil.instance.makeShort(getString(R.string.user_info_anonymous))
                     finish()
                 }
             }
@@ -151,16 +151,16 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
 
             observeLiveData(toastErrorMessage) {
-                ToastUtil.getInstance().makeShort(it)
+                ToastUtil.instance.makeShort(it)
             }
 
             observeLiveData(nicknameDuplicatedEvent) {
-                if (it) ToastUtil.getInstance().makeShort(R.string.error_nickname_duplicated)
-                else ToastUtil.getInstance().makeShort(R.string.nickname_available)
+                if (it) ToastUtil.instance.makeShort(R.string.error_nickname_duplicated)
+                else ToastUtil.instance.makeShort(R.string.nickname_available)
             }
 
             observeLiveData(userInfoEditedEvent) {
-                ToastUtil.getInstance().makeShort(getString(R.string.user_info_edited))
+                ToastUtil.instance.makeShort(getString(R.string.user_info_edited))
                 setResult(UserInfoEditContract.RESULT_USER_INFO_EDITED)
                 finish()
             }
