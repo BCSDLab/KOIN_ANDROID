@@ -1,0 +1,141 @@
+[versions]
+# Kotlin
+kotlin = "1.7.20"
+
+#Gradle
+androidGradlePlugin = "7.4.1"
+
+# Coroutine
+coroutine = "1.6.3"
+
+# AndroidX
+androidXAppCompat = "1.4.2"
+androidXRecyclerView = "1.0.0"
+androidXCardView = "1.0.0"
+androidXLifecycle = "2.5.1"
+androidXLiveData = "2.5.1"
+androidXActivity = "1.4.0"
+androidXFragment = "1.5.2"
+androidXMaterial = "1.2.0"
+androidXKtxCore = "1.8.0"
+androidXSecurity = "1.1.0-alpha03"
+androidXJUnit = "1.1.3"
+androidXTestRunner = "1.2.0"
+
+# Firebase
+firebase = "17.0.0"
+firebaseCrashlytics = "17.3.1"
+firebaseCrashlyticsPlugin = "2.9.2"
+firebaseAnalytics = "18.0.2"
+firebaseAppDistributionPlugin = "3.0.3"
+
+# GMS
+gmsPlugin = "4.3.5"
+
+# DI
+hilt = "2.44.2"
+javaxInject = "1"
+
+# Network
+okhttp = "3.4.2"
+retrofit = "2.9.0"
+
+# Image
+glide = "4.9.0"
+photoView = "2.1.3"
+
+# LeakCanary
+leakCanary = "1.6.3"
+
+# Map
+naverMapSdk = "3.16.2"
+
+# Test
+jUnit = "4.13.2"
+
+# Obsolote
+butterknife = "10.1.0"
+stickyScrollView = "1.0.2"
+
+[libraries]
+# Kotlin
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+
+# Gradle
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Coroutine
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+
+# AndroidX
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidXRecyclerView" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "androidXCardView" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidXLifecycle" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidXLifecycle" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidXLifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidXLifecycle" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "androidXActivity" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidXFragment" }
+androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidXMaterial" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidXKtxCore" }
+androidx-security = { group = "androidx.security", name = "security-crypto", version.ref = "androidXSecurity" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidXJUnit" }
+
+# Firebase
+firebase-core = { group = "com.google.firebase", name = "firebase-core", version.ref = "firebase" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebase" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+firebase-appdistribution-gradle = { group = "com.google.firebase", name = "firebase-appdistribution-gradle", version.ref = "firebaseAppDistributionPlugin" }
+
+# GMS
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "gmsPlugin" }
+
+# DI
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android-gradle-plugin = { group = "com.google.dagger", name = "hilt-android-gradle-plugin", version.ref = "hilt" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
+
+# Nerwork
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+#Image
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
+photoview = { group = "com.github.chrisbanes", name = "PhotoView", version.ref = "photoView" }
+
+# LeakCanary
+leakcanary-debug = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakCanary" }
+leakcanary-release = { group = "com.squareup.leakcanary", name = "leakcanary-android-no-op", version.ref = "leakCanary" }
+leakcanary-support-fragment = { group = "com.squareup.leakcanary", name = "leakcanary-support-fragment", version.ref = "leakCanary" }
+
+# Map
+naver-map-sdk = { group = "com.naver.maps", name = "map-sdk", version.ref = "naverMapSdk" }
+
+# Test
+junit = { group = "junit", name = "junit", version.ref = "jUnit" }
+
+# Obsolote
+butterknife = { group = "com.jakewharton", name = "butterknife", version.ref = "butterknife" }
+butterknife-compiler = { group = "com.jakewharton", name = "butterknife-compiler", version.ref = "butterknife" }
+stickyscrollview = { group = "com.github.amarjain07", name = "StickyScrollView", version.ref = "stickyScrollView" }
+retrofit-rxjava2 = { group = "com.squareup.retrofit2", name = "adapter-rxjava2", version.ref = "retrofit" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-appdistribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseAppDistributionPlugin" }
+gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
