@@ -35,14 +35,11 @@ class UpdateUserInfoUseCase @Inject constructor(
                 throw IllegalStateException(ERROR_USERINFO_GENDER_NOT_SET)
             }
 
-            if(studentId.isNotEmpty()) {
-                when {
-                    !studentId.isValidStudentId -> {
-                        throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
-                    }
-                    else -> deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6))
-                }
+            if(!studentId.isValidStudentId) {
+                throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
+
+            val deptString = deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6))
 
             val newUser = beforeUser.copy(
                 name = name.trim(),
@@ -54,7 +51,8 @@ class UpdateUserInfoUseCase @Inject constructor(
                         .ifBlank { null }
                 },
                 gender = gender,
-                studentNumber = studentId.trim().ifBlank { null }
+                studentNumber = studentId.trim().ifBlank { null },
+                major = deptString
             )
 
             userRepository.updateUser(newUser)
