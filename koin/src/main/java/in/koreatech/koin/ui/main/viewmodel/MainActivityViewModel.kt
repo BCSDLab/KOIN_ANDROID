@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import androidx.lifecycle.*
 import com.naver.maps.map.style.light.Position
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.dining.toDiningType
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
@@ -78,6 +79,9 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launchWithLoading {
             diningUseCase(DiningUtil.getCurrentDate())
                 .onSuccess {
+                    if(it.isNotEmpty()) {
+                        _selectedType.value = it.first().type.toDiningType()
+                    }
                     _diningData.value = it
                     _selectedPosition.value = 0
                     _isLoading.value = false

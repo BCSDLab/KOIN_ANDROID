@@ -6,6 +6,6 @@ import android.content.Context
 
 fun DiningType.localized(context: Context) = when(this) {
     DiningType.Breakfast -> context.getString(R.string.dining_breakfast)
-    DiningType.Dinner -> context.getString(R.string.dining_lunch)
-    DiningType.Lunch -> context.getString(R.string.dining_dinner)
+    DiningType.Lunch -> context.getString(R.string.dining_lunch)
+    DiningType.Dinner -> context.getString(R.string.dining_dinner)
 }
