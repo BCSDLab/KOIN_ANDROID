@@ -5,7 +5,6 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
@@ -46,6 +45,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUser(user: User) {
-        userRemoteDataSource.updateUser(user.toUserRequest())
+        when(user) {
+            User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
+            is User.Student -> userRemoteDataSource.updateUser(user.toUserRequest())
+        }
     }
 }
