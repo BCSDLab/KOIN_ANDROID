@@ -18,24 +18,30 @@ class GetUserInfoUseCase @Inject constructor(
     private val deptErrorHandler: DeptErrorHandler
 ) {
     suspend operator fun invoke(): Pair<User?, ErrorHandler?> {
-        if(tokenRepository.getAccessToken() == null) return null to null //익명
+        return if (tokenRepository.getAccessToken() == null) {
+            //익명
+            User.Anonymous to null
+        } else {
+            try {
+                val user = userRepository.getUserInfo()
 
-        try {
-            val user = userRepository.getUserInfo()
-            if (user.studentNumber != null && user.major == null) {
-                return try {
-                    val deptName =
-                        deptRepository.getDeptNameFromDeptCode(user.studentNumber.deptCode)
+                if (user is User.Student && user.studentNumber != null && user.major == null) {
+                    return try {
+                        val deptName =
+                            deptRepository.getDeptNameFromDeptCode(user.studentNumber.deptCode)
 
-                    user.copy(major = deptName) to null
-                } catch (t: Throwable) {
-                    user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
+                        user.copy(major = deptName) to null
+                    } catch (t: Throwable) {
+                        user to deptErrorHandler.getDeptNameFromDeptCodeError(t)
+                    }
                 }
+
+
+            } catch (t: Throwable) {
+                null to userErrorHandler.handleGetUserInfoError(t)
             }
 
             return userRepository.getUserInfo() to null
-        } catch (t: Throwable) {
-            return null to userErrorHandler.handleGetUserInfoError(t)
         }
     }
 }
