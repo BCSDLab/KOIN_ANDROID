@@ -27,10 +27,10 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     val getUserInfoErrorMessage: LiveData<String> get() = _getUserInfoErrorMessage
 
     private val _selectedMenu = MutableLiveData<MenuState>(MenuState.Main)
-    val selectedMenu : LiveData<MenuState> get() = _selectedMenu
+    val selectedMenu: LiveData<MenuState> get() = _selectedMenu
 
     private val _menuEvent = SingleLiveEvent<MenuState>()
-    val menuEvent : LiveData<MenuState> get() = _menuEvent
+    val menuEvent: LiveData<MenuState> get() = _menuEvent
 
     fun getUser() {
         viewModelScope.launch {
@@ -48,9 +48,7 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun selectMenu(menuState: MenuState) {
-        if(_selectedMenu.value == MenuState.UserInfo || _selectedMenu.value != menuState) {
-            _selectedMenu.value = menuState
-            _menuEvent.value = menuState
-        }
+        _selectedMenu.value = menuState
+        _menuEvent.value = menuState
     }
 }
