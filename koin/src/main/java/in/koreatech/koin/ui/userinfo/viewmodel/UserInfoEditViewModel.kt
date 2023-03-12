@@ -7,12 +7,14 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNameFromStudentIdUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckNicknameValidationUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
-import `in`.koreatech.koin.domain.usecase.user.UpdateUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateStudentUserInfoUseCase
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,11 +22,11 @@ class UserInfoEditViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val deptNameFromStudentIdUseCase: GetDeptNameFromStudentIdUseCase,
     private val checkNicknameValidationUseCase: CheckNicknameValidationUseCase,
-    private val updateUserInfoUseCase: UpdateUserInfoUseCase
+    private val updateStudentUserInfoUseCase: UpdateStudentUserInfoUseCase
 ) : BaseViewModel() {
 
-    private val _user = MutableLiveData<User?>()
-    val user: LiveData<User?> get() = _user
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> get() = _user
 
     private val _dept = MutableLiveData<String>()
     val dept: LiveData<String> get() = _dept
@@ -45,15 +47,20 @@ class UserInfoEditViewModel @Inject constructor(
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
-        getUserInfoUseCase().let { (user, error) ->
-            if (error != null) _toastErrorMessage.value = error.message
-            else {
+        getUserInfoUseCase()
+            .onSuccess { user ->
                 _user.value = user
-                _nicknameState.value = user?.nickname?.let {
-                    NicknameState(it, false)
-                } ?: NicknameState.newNickname("")
+                _nicknameState.value = when(user) {
+                    User.Anonymous -> NicknameState.newNickname("")
+                    is User.Student -> {
+                        user.nickname?.let {
+                            NicknameState(it, false)
+                        } ?: NicknameState.newNickname("")
+                    }
+                }
+            }.onFailure {
+                _toastErrorMessage.value = it.message
             }
-        }
     }
 
     fun getDept(studentId: String) = viewModelScope.launchIgnoreCancellation {
@@ -89,7 +96,7 @@ class UserInfoEditViewModel @Inject constructor(
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 user.value?.let { user ->
-                    updateUserInfoUseCase(
+                    updateStudentUserInfoUseCase(
                         beforeUser = user,
                         name = name,
                         nickname = nickname,

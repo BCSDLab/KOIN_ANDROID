@@ -12,7 +12,7 @@ import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
 
-class UpdateUserInfoUseCase @Inject constructor(
+class UpdateStudentUserInfoUseCase @Inject constructor(
     private val deptRepository: DeptRepository,
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
@@ -39,21 +39,26 @@ class UpdateUserInfoUseCase @Inject constructor(
                 throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
 
-            val deptString = deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6))
+            val newUser: User = when(beforeUser) {
+                User.Anonymous -> throw IllegalAccessException()
+                is User.Student -> {
+                    val deptString = deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6))
 
-            val newUser = beforeUser.copy(
-                name = name.trim(),
-                nickname = nickname.trim(),
-                phoneNumber = separatedPhoneNumber?.let {
-                    it
-                        .filter { it.isNotEmpty() }
-                        .joinToString(separator = "-") { it.trim() }
-                        .ifBlank { null }
-                },
-                gender = gender,
-                studentNumber = studentId.trim().ifBlank { null },
-                major = deptString
-            )
+                    beforeUser.copy(
+                        name = name.trim(),
+                        nickname = nickname.trim(),
+                        phoneNumber = separatedPhoneNumber?.let {
+                            it
+                                .filter { it.isNotEmpty() }
+                                .joinToString(separator = "-") { it.trim() }
+                                .ifBlank { null }
+                        },
+                        gender = gender,
+                        studentNumber = studentId.trim().ifBlank { null },
+                        major = deptString
+                    )
+                }
+            }
 
             userRepository.updateUser(newUser)
             null
