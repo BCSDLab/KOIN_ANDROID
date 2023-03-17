@@ -8,11 +8,15 @@ buildscript {
             setUrl("https://naver.jfrog.io/artifactory/maven/")
         }
         maven {
-            setUrl( "https://jitpack.io")}
+            setUrl("https://jitpack.io")
+        }
+    }
+
+    dependencies {
+        classpath(libs.hilt.android.gradle.plugin)
     }
 }
 
 plugins {
-    alias(libs.plugins.firebase.appdistribution) apply false
     alias(libs.plugins.gms) apply false
 }

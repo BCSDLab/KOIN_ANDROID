@@ -1,7 +1,6 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
-    id("dagger.hilt.android.plugin")
+    id("koin.android.library")
+    id("koin.android.hilt")
     id("org.jetbrains.kotlin.kapt")
 }
 
@@ -56,9 +55,6 @@ dependencies {
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     implementation(libs.androidx.security)
 

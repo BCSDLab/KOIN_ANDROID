@@ -1,9 +1,8 @@
 import `in`.koreatech.buildsrc.AppConfig
 
 plugins {
-    id("com.android.library")
-    id("dagger.hilt.android.plugin")
-    id("kotlin-android")
+    id("koin.android.library")
+    id("koin.android.hilt")
     id("org.jetbrains.kotlin.kapt")
     id("com.google.gms.google-services")
 }
@@ -54,10 +53,6 @@ android {
     packagingOptions {
         resources.excludes += "DebugProbesKt.bin"
     }
-
-    hilt {
-        enableAggregatingTask = true
-    }
 }
 
 dependencies {
@@ -83,7 +78,6 @@ dependencies {
     api(libs.retrofit.rxjava2)
 
     debugImplementation(libs.leakcanary.debug)
-    releaseImplementation(libs.leakcanary.release)
 
     api(libs.glide)
     kapt(libs.glide.compiler)
@@ -97,9 +91,6 @@ dependencies {
     api(libs.stickyscrollview)
 
     api(libs.kotlinx.coroutines.android)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     api("androidx.constraintlayout:constraintlayout:1.1.3")
     api("io.reactivex.rxjava2:rxandroid:2.0.1")

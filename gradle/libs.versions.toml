@@ -8,6 +8,9 @@ androidGradlePlugin = "7.4.1"
 # Coroutine
 coroutine = "1.6.3"
 
+# Android
+androidDesugarJdkLibs = "1.2.2"
+
 # AndroidX
 androidXAppCompat = "1.4.2"
 androidXRecyclerView = "1.0.0"
@@ -68,6 +71,9 @@ kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin",
 # Coroutine
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutine" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+
+# Android
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 
 # AndroidX
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }

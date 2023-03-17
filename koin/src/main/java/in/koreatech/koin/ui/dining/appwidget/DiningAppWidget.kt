@@ -26,6 +26,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DiningAppWidget : AppWidgetProvider() {
+
     @Inject
     lateinit var diningUseCase: DiningUseCase
     private var currentDiningPlace: String? = null
