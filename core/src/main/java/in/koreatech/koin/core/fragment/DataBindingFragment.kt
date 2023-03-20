@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
+@Deprecated("Use Fragment.dataBinding delegate property instead.")
 abstract class DataBindingFragment<T : ViewDataBinding> : BaseFragment() {
     @get:LayoutRes
     abstract val layoutId: Int

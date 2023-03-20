@@ -13,7 +13,7 @@ def applicationName = 'koin'
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 30008
+        versionCode 30009
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
@@ -42,7 +42,7 @@ android {
     buildTypes {
         debug {
             debuggable true
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "IS_DEBUG", "true"
             firebaseCrashlytics {
@@ -56,7 +56,7 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="AAB"
+                artifactType="APK"
                 releaseNotes="${project.versionName} release"
                 groups="bcsd"
             }
@@ -76,8 +76,6 @@ android {
 //    }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
@@ -111,7 +109,6 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'

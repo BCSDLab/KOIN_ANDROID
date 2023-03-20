@@ -175,7 +175,7 @@
     <string name="error_guide_home">홈으로</string>
     <string name="error_contact">문의하기</string>
     <string name="error_guide_title">오류가 발생하였습니다.</string>
-    <string name="error_guide">다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
+    <string name="error_guide">예상치 못한 오류가 발생되었습니다.\n다음과 같은 상황이 지속되신다면 문의바랍니다.</string>
     <string name="error_info">예상치 못한 오류가 발생되었습니다.</string>
 
     <!--store-->
@@ -236,4 +236,52 @@
     <string name="bus_timetable_city_ride_time">종합터미널 - 병천</string>
     <string name="bus_timetable_shuttle_time_format">HH:mm</string>
     <string name="bus_timetable_search_result_dialog_close">닫기</string>
+    <string name="store_empty_detail">-</string>
+    <string name="store_open_close_time_mark">" ~ "</string>
+    <string name="store_delivery_free">무료</string>
+    <string name="store_delivery_price">%1$d원</string>
+    <string name="store_menu_price_info">%1$s: %2$d원</string>
+    <string name="store_dialog_call">통화</string>
+    <string name="store_dialog_call_cancel">취소</string>
+    <string name="store_call_permission_denied_message">통화 권한을 허용해 주세요.</string>
+    <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
+    <string name="store_last_updated_message">%1$s 업데이트됨</string>
+    <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
+
+	<!-- Land -->
+    <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
+    <string name="land_monthly_fee">월세</string>
+    <string name="land_charter">전세</string>
+    <string name="land_can_not_find_land">복덕방을 찾을수 없습니다</string>
+    <string name="land_detail_land_position">원룸 위치</string>
+    <string name="land_detail_elevator">엘리베이터</string>
+    <string name="land_detail_veranda">베란다</string>
+    <string name="land_detail_bidet">비데</string>
+    <string name="land_detail_door_lock">도어락</string>
+    <string name="land_detail_shoe_closet">신발장</string>
+    <string name="land_detail_desk">책상</string>
+    <string name="land_detail_bed">침대</string>
+    <string name="land_detail_laundry_machine">세탁기</string>
+    <string name="land_detail_water_purifier">정수기</string>
+    <string name="land_detail_induction">인덕션</string>
+    <string name="land_detail_gas_range">가스레인지</string>
+    <string name="land_detail_microwave">전자레인지</string>
+    <string name="land_detail_tv">TV</string>
+    <string name="land_detail_closet">옷장</string>
+    <string name="land_detail_refrigerator">냉장고</string>
+    <string name="land_detail_air_conditioner">에어컨</string>
+    <string name="land_detail_land_option">원룸 옵션</string>
+    <string name="land_detail_call_number">연락처</string>
+    <string name="land_detail_room_size">방 크기</string>
+    <string name="land_detail_management_fee">관리비</string>
+    <string name="land_detail_floor_number">층수</string>
+    <string name="land_detail_deposit">보증금</string>
+    <string name="land_detail_room_type">방 종류</string>
+    <string name="land_detail_land_info">원룸 정보</string>
+    <string name="land_detail_no_location_information">원룸 위치에 대한 정보가 없습니다.</string>
+    <string name="land_detail_no_image">이미지 준비 중입니다.</string>
+    <string name="land_detail_unable_id">원룸 정보를 불러오지 못했습니다.</string>
+    <string name="land_detail_no_name">No Name</string>
+    <string name="land_detail_floor_unit">층</string>
+    <string name="bcsd_webpage_name">BCSD 홈페이지</string>
 </resources>

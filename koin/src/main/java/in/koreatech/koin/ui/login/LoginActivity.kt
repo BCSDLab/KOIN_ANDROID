@@ -20,14 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 @AndroidEntryPoint
-class LoginActivity : ActivityBase() {
-    private val binding by dataBinding<ActivityLoginBinding>(R.layout.activity_login)
+class LoginActivity : ActivityBase(R.layout.activity_login) {
+    private val binding by dataBinding<ActivityLoginBinding>()
 
     private val loginViewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
 
         initView()
         initViewModel()
