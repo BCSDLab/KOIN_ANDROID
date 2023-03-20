@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AppBarBase">
+        <attr name="backgroundColor" format="reference|color" />
+        <attr name="titleTextColor" format="reference|color" />
+        <attr name="titleText" format="reference|string" />
+        <attr name="titleVisibility">
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="leftButtonTextColor" format="reference|color" />
+        <attr name="leftButtonBackground" format="reference" />
+        <attr name="leftButtonHeight" format="reference|dimension" />
+        <attr name="leftButtonWidth" format="reference|dimension" />
+        <attr name="leftButtonText" format="reference|string" />
+        <attr name="leftButtonVisibility">
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="rightButtonTextColor" format="reference|color" />
+        <attr name="rightButtonHeight" format="reference|dimension" />
+        <attr name="rightButtonWidth" format="reference|dimension" />
+        <attr name="rightButtonVisibility" >
+            <enum name="visible" value="0x00000000" />
+            <enum name="invisible" value="0x00000004" />
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="rightButtonBackground" format="reference" />
+        <attr name="rightButtonText" format="reference|string" />
+    </declare-styleable>
+
+    <declare-styleable name="Typekit">
+        <attr name="fontName" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="TimetableView">
+        <attr name="rowCount" format="integer"/>
+        <attr name="columnCount" format="integer"/>
+        <attr name="cellHeight" format="dimension"/>
+        <attr name="sideCellWidth" format="dimension"/>
+        <attr name="headerTitle" format="reference"/>
+        <attr name="stickerColors" format="reference"/>
+        <attr name="startTime" format="integer"/>
+        <attr name="headerHighlightColor" format="color"/>
+        <attr name="headerHeight" format="dimension"/>
+        <attr name="marginBottom" format="dimension"/>
+        <attr name="activateTimebar" format="boolean"/>
+    </declare-styleable>
+</resources>
