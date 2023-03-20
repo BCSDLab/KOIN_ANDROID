@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_out_dated">인증 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
+</resources>

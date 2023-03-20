@@ -27,6 +27,7 @@ class AndroidHiltPlugin : Plugin<Project> {
         }
 
         dependencies {
+            implementation(libs("javax.inject"))
             implementation(libs("hilt.android"))
             kapt(libs("hilt.compiler"))
         }

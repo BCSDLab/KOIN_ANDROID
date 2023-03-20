@@ -56,6 +56,9 @@ fun Project.configureKotlinAndroid(
 
     dependencies {
         add("coreLibraryDesugaring", libs("android.desugarJdkLibs"))
+
+        libs("androidx.core.ktx")
+        libs("kotlinx.coroutines.android")
     }
 }
 
