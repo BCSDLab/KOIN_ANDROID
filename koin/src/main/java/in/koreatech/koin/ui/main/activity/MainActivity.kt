@@ -28,6 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.ext.arrange
+import `in`.koreatech.koin.domain.util.ext.typeFilter
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -138,14 +141,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
     }
 
     fun updateDining(list: List<Dining>, position: Int) {
+        val diningType = DiningUtil.getCurrentType()
         if (list.isNotEmpty()) {
             diningTypeAdapter.submitList(
                 list
-                    .filter {
-                        it.type ==
-                                (mainActivityViewModel.selectedType.value
-                                    ?: DiningType.Breakfast).typeEnglish
-                    }
+                    .typeFilter(diningType)
+                    .arrange()
                     .mapIndexed { index, dining ->
                         DiningTypeUiState(
                             dining.place,
