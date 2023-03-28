@@ -15,5 +15,5 @@ fun List<Dining>.arrange() = this.let {
     campus1.sortedBy { it.place }
     diningList.addAll(campus1)
     diningList.addAll(campus2)
-    diningList
+    diningList.toList()
 }
