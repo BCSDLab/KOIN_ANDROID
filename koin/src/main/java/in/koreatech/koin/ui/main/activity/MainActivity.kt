@@ -142,11 +142,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     fun updateDining(list: List<Dining>, position: Int) {
         val diningType = DiningUtil.getCurrentType()
+        val diningArranged = list
+            .typeFilter(diningType)
+            .arrange()
         if (list.isNotEmpty()) {
             diningTypeAdapter.submitList(
-                list
-                    .typeFilter(diningType)
-                    .arrange()
+                diningArranged
                     .mapIndexed { index, dining ->
                         DiningTypeUiState(
                             dining.place,
@@ -166,7 +167,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 binding.textViewCardDiningMenu7,
                 binding.textViewCardDiningMenu8,
                 binding.textViewCardDiningMenu9
-            ).zip(list[position].menu).forEach { (textView, menu) ->
+            ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
                 textView.text = menu
             }
         }
