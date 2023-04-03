@@ -8,7 +8,7 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserIdentity
 
-fun UserResponse.toUser() = User(
+fun UserResponse.toUser() = User.Student(
     id = id,
     isGraduated = isGraduated,
     enabled = enabled,
@@ -37,7 +37,7 @@ fun UserResponse.toUser() = User(
     major = major
 )
 
-fun User.toUserRequest() = UserRequest(
+fun User.Student.toUserRequest() = UserRequest(
     id = id,
     portalAccount = portalAccount,
     nickname = nickname,
