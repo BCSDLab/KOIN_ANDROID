@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -86,7 +87,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
             val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
             val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
             setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
-            addItemDecoration(HorizontalMarginItemDecoration(this@MainActivity, R.dimen.view_pager_item_margin ))
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    this@MainActivity,
+                    R.dimen.view_pager_item_margin
+                )
+            )
         }
 
         recyclerViewStoreCategory.apply {
@@ -142,33 +148,40 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     fun updateDining(list: List<Dining>, position: Int) {
         val diningType = DiningUtil.getCurrentType()
-        if (list.isNotEmpty()) {
-            diningTypeAdapter.submitList(
-                list
-                    .typeFilter(diningType)
-                    .arrange()
-                    .mapIndexed { index, dining ->
-                        DiningTypeUiState(
-                            dining.place,
-                            index == position
-                        )
-                    }
-            )
+        val diningArranged = list
+            .typeFilter(diningType)
+            .arrange()
 
-            listOf(
-                binding.textViewCardDiningMenu0,
-                binding.textViewCardDiningMenu1,
-                binding.textViewCardDiningMenu2,
-                binding.textViewCardDiningMenu3,
-                binding.textViewCardDiningMenu4,
-                binding.textViewCardDiningMenu5,
-                binding.textViewCardDiningMenu6,
-                binding.textViewCardDiningMenu7,
-                binding.textViewCardDiningMenu8,
-                binding.textViewCardDiningMenu9
-            ).zip(list[position].menu).forEach { (textView, menu) ->
-                textView.text = menu
-            }
+        diningTypeAdapter.submitList(
+            diningArranged
+                .mapIndexed { index, dining ->
+                    DiningTypeUiState(
+                        dining.place,
+                        index == position
+                    )
+                }
+        )
+
+        if (list.isEmpty() || position >= diningArranged.size) {
+            binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
+            return
+        }
+
+        binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
+
+        listOf(
+            binding.textViewCardDiningMenu0,
+            binding.textViewCardDiningMenu1,
+            binding.textViewCardDiningMenu2,
+            binding.textViewCardDiningMenu3,
+            binding.textViewCardDiningMenu4,
+            binding.textViewCardDiningMenu5,
+            binding.textViewCardDiningMenu6,
+            binding.textViewCardDiningMenu7,
+            binding.textViewCardDiningMenu8,
+            binding.textViewCardDiningMenu9
+        ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
+            textView.text = menu
         }
     }
 }
