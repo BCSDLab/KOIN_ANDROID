@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -145,6 +146,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         val diningArranged = list
             .typeFilter(diningType)
             .arrange()
+
         if (list.isNotEmpty()) {
             diningTypeAdapter.submitList(
                 diningArranged
@@ -156,19 +158,27 @@ class MainActivity : KoinNavigationDrawerActivity() {
                     }
             )
 
-            listOf(
-                binding.textViewCardDiningMenu0,
-                binding.textViewCardDiningMenu1,
-                binding.textViewCardDiningMenu2,
-                binding.textViewCardDiningMenu3,
-                binding.textViewCardDiningMenu4,
-                binding.textViewCardDiningMenu5,
-                binding.textViewCardDiningMenu6,
-                binding.textViewCardDiningMenu7,
-                binding.textViewCardDiningMenu8,
-                binding.textViewCardDiningMenu9
-            ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
-                textView.text = menu
+            if(position < diningArranged.size) {
+                binding.diningContainer.isVisible = true
+                binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
+
+                listOf(
+                    binding.textViewCardDiningMenu0,
+                    binding.textViewCardDiningMenu1,
+                    binding.textViewCardDiningMenu2,
+                    binding.textViewCardDiningMenu3,
+                    binding.textViewCardDiningMenu4,
+                    binding.textViewCardDiningMenu5,
+                    binding.textViewCardDiningMenu6,
+                    binding.textViewCardDiningMenu7,
+                    binding.textViewCardDiningMenu8,
+                    binding.textViewCardDiningMenu9
+                ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
+                    textView.text = menu
+                }
+            } else {
+                binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
+                binding.diningContainer.isVisible = false
             }
         }
     }
