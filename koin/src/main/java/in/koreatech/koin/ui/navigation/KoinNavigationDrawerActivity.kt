@@ -21,6 +21,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -31,6 +32,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
@@ -41,6 +43,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
+
+    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
 
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(drawerLayoutId)
@@ -118,6 +122,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         val logoImageView = findViewById<View>(R.id.bcsd_logo)
         logoImageView.setOnClickListener {
             goToNavigationDeveloper()
+        }
+
+        val askButton = findViewById<Button>(R.id.button_ask)
+        askButton.setOnClickListener {
+            gotoAskForm.launch(Unit)
         }
 
         initDrawerViewModel()
