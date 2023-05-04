@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.044" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.953" />
+
+    <ImageView
+        android:id="@+id/my_store_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:src="@drawable/bus_widget_example"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/my_store_edit_main_photo"
+        android:layout_width="82dp"
+        android:layout_height="30dp"
+        android:background="@drawable/button_rect_black_alpha50"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="6sp"
+        android:text="사진변경"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:fontName="Custom6"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBottom_toBottomOf="@id/my_store_image_view"/>
+
+
+    <TextView
+        android:id="@+id/my_store_edit_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/my_store_image_view"
+        tools:text="가게명" />
+    <EditText
+        android:id="@+id/my_store_edit_title_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="가게명"
+        android:layout_marginStart="29dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/my_store_edit_title_textview"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_title_textview"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_title_textview, my_store_edit_title_edittext"/>
+
+    <TextView
+        android:id="@+id/my_store_edit_phone_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_title"
+        tools:text="전화번호" />
+    <EditText
+        android:id="@+id/my_store_edit_phone_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="전화번호"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toEndOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_phone_textview"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_phone_textview, my_store_edit_phone_edittext"/>
+
+
+    <TextView
+        android:id="@+id/my_store_edit_const_time_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_phone"
+        tools:text="운영시간" />
+    <EditText
+        android:id="@+id/my_store_edit_const_time_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="운영시간"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginEnd="13dp"
+        app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toStartOf="@id/my_store_edit_const_time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_const_time_textview"/>
+    <TextView
+        android:id="@+id/my_store_edit_const_time"
+        android:layout_width="58dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="13dp"
+        android:background="@drawable/button_rect_primary"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="6sp"
+        android:text="수정"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:fontName="Custom6"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_const_time_edittext" />
+
+    <EditText
+        android:id="@+id/my_store_edit_holiday_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:hint="매주 화요일 정기 휴일"
+        app:layout_constraintTop_toBottomOf="@id/my_store_edit_const_time_edittext"
+        app:layout_constraintStart_toStartOf="@+id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_title_edittext"/>
+    
+    
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_const_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_const_time_textview, my_store_edit_const_time_edittext, my_store_edit_holiday_edittext"/>
+
+    <TextView
+        android:id="@+id/my_store_edit_address_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_time"
+        tools:text="주소정보" />
+    <EditText
+        android:id="@+id/my_store_edit_address_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="청주시 흥덕구 가경동"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_address_textview"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_address_textview, my_store_edit_address_edittext"/>
+
+
+    <TextView
+        android:id="@+id/my_store_edit_const_deliver_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_address"
+        tools:text="배달금액" />
+    <EditText
+        android:id="@+id/my_store_edit_const_deliver_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="무료"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_deliver_textview"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_const_deliver"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_const_deliver_textview, my_store_edit_const_deliver_edittext"/>
+
+
+    <TextView
+        android:id="@+id/my_store_edit_const_etc_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="9sp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        app:fontName="Custom6"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_deliver"
+        tools:text="기타 정보" />
+    <EditText
+        android:id="@+id/my_store_edit_const_etc_edittext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="너무 맛있는 맛"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_etc_textview"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_edit_const_etc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="my_store_edit_const_etc_textview, my_store_edit_const_etc_edittext"/>
+
+    <CheckBox
+        android:id="@+id/is_delivery_check_box"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:button="@null"
+        android:background="@drawable/checkbox_button_checked_24dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc"/>
+    <TextView
+        android:id="@+id/is_delivery_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/is_delivery_check_box"
+        app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+        tools:text="배달 가능"/>
+
+    <CheckBox
+        android:id="@+id/is_card_check_box"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"
+        android:button="@null"
+        android:background="@drawable/checkbox_button_checked_24dp"
+        app:layout_constraintStart_toEndOf="@id/is_delivery_textview"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc"/>
+    <TextView
+        android:id="@+id/is_card_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/is_card_check_box"
+        app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+        tools:text="카드 가능"/>
+
+    <CheckBox
+        android:id="@+id/is_bank_check_box"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="12dp"
+        android:button="@null"
+        android:background="@drawable/checkbox_button_checked_24dp"
+        app:layout_constraintStart_toEndOf="@id/is_card_textview"
+        app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc"/>
+    <TextView
+        android:id="@+id/is_bank_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:includeFontPadding="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/is_bank_check_box"
+        app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+        tools:text="계좌이체 가능"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_checkbox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="is_delivery_check_box, is_card_check_box,is_bank_check_box"/>
+
+
+    <TextView
+        android:id="@+id/my_store_edit_success"
+        android:layout_width="105dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_rect_primary"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="6sp"
+        android:text="수정완료"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:fontName="Custom6"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@+id/barrier_checkbox"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

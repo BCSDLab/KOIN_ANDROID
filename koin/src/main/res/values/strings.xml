@@ -248,7 +248,7 @@
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
 
-	<!-- Land -->
+    <!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
     <string name="land_monthly_fee">월세</string>
     <string name="land_charter">전세</string>
@@ -284,4 +284,7 @@
     <string name="land_detail_no_name">No Name</string>
     <string name="land_detail_floor_unit">층</string>
     <string name="bcsd_webpage_name">BCSD 홈페이지</string>
+
+    <!-- 코인 사장님 -->
+    <string name="my_store">내 상점</string>
 </resources>
