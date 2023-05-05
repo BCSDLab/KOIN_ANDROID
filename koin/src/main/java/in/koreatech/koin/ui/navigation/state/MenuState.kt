@@ -8,4 +8,6 @@ sealed class MenuState {
     object Timetable: MenuState()
     object Land: MenuState()
     object UserInfo: MenuState()
+    object BusinessMain: MenuState()
+    object BusinessEditMenu: MenuState()
 }

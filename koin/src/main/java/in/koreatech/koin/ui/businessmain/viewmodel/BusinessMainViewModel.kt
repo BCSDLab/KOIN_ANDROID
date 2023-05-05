@@ -1,0 +1,37 @@
+package `in`.koreatech.koin.ui.businessmain.viewmodel
+
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.ui.businessmain.MenuItem
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import java.text.SimpleDateFormat
+import java.util.*
+
+class BusinessMainViewModel() : BaseViewModel() {
+    private val _selectedMenuItems = MutableLiveData<List<MenuItem>>()
+    val selectedMenuItems: LiveData<List<MenuItem>>
+            get() = _selectedMenuItems
+
+    private val _currentDateTime = MutableLiveData<String>()
+    val currentDateTime: LiveData<String> get() = _currentDateTime
+
+    init {
+        _currentDateTime.value = getCurrentDateTime()
+    }
+
+
+    fun updateSelectedItems(selectedItems: List<MenuItem>) {
+        _selectedMenuItems.value = selectedItems
+    }
+
+    fun getSelectedItems(): List<MenuItem> {
+        return selectedMenuItems.value?.filter { it.isSelected } ?: emptyList()
+    }
+
+    private fun getCurrentDateTime(): String {
+        val currentDate = Calendar.getInstance().time
+        val dateFormatter = SimpleDateFormat("yyyy-MM-dd a hh:mm", Locale.getDefault())
+        return dateFormatter.format(currentDate)
+    }
+
+}
