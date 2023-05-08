@@ -73,4 +73,17 @@
 
     <string name="fail_upload">업로드에 실패하였습니다.</string>
     <string name="uploading_image_now">이미지 업로드 중입니다.</string>
+
+    <!-- business navigation drawer right-->
+    <string name="text_view_navigation_hello">님, 안녕하세요!</string>
+    <string name="text_view_my_info">내 정보</string>
+    <string name="text_view_service">서비스</string>
+    <string name="text_view_near_store">주변 상점</string>
+    <string name="text_view_manual">메뉴얼 다시보기</string>
+    <string name="text_view_manage_store">매장관리</string>
+    <string name="text_view_modify_store_info">가게정보 수정</string>
+    <string name="text_view_order_management">주문관리</string>
+    <string name="text_view_sales_management">매출관리</string>
+    <string name="text_view_menu_management">메뉴관리</string>
+    <string name="text_view_add_store">가게추가</string>
 </resources>

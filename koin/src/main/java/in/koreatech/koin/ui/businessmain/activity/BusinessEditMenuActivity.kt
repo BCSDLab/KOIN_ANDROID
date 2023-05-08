@@ -6,7 +6,7 @@ import `in`.koreatech.koin.databinding.ActivityBusinessEditMenuBinding
 import `in`.koreatech.koin.ui.businessmain.adapter.BusinessEditMenuAdapter
 import `in`.koreatech.koin.ui.businessmain.viewmodel.BusinessMainViewModel
 import `in`.koreatech.koin.ui.businessmain.MenuItem
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinBusinessNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import android.app.Activity
 import android.content.Intent
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusinessEditMenuActivity : KoinNavigationDrawerActivity() {
+class BusinessEditMenuActivity : KoinBusinessNavigationDrawerActivity() {
     override val menuState = MenuState.BusinessEditMenu
     private val binding by dataBinding<ActivityBusinessEditMenuBinding>(R.layout.activity_business_edit_menu)
     val viewModel: BusinessMainViewModel by viewModels()
@@ -56,7 +56,7 @@ class BusinessEditMenuActivity : KoinNavigationDrawerActivity() {
                 finish()
             }
             buttonCategory.setOnClickListener {
-                toggleNavigationDrawer()
+                toggleBusinessNavigationDrawer()
             }
         }
 

@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.owner.GetOwnerNameUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class KoinNavigationDrawerViewModel @Inject constructor(
-    private val getUserInfoUseCase: GetUserInfoUseCase
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val getOwnerNameUseCase: GetOwnerNameUseCase
 ) : BaseViewModel() {
 
     private val _userState = MutableLiveData<User>()
@@ -31,6 +33,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
 
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
+
+    private val _ownerName = MutableLiveData<String>()
+    val ownerName: LiveData<String> get() = _ownerName
 
     fun getUser() {
         viewModelScope.launch {
@@ -50,5 +55,11 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     fun selectMenu(menuState: MenuState) {
         _selectedMenu.value = menuState
         _menuEvent.value = menuState
+    }
+
+    fun getOwnerName() {
+        viewModelScope.launch {
+            _ownerName.value = getOwnerNameUseCase()
+        }
     }
 }

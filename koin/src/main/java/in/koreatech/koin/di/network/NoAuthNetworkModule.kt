@@ -102,4 +102,12 @@ object NoAuthNetworkModule {
     ): LandApi {
         return retrofit.create(LandApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideOwnerApi(
+        @NoAuth retrofit: Retrofit
+    ): OwnerApi {
+        return retrofit.create(OwnerApi::class.java)
+    }
 }

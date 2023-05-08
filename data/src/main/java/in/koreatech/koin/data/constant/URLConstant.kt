@@ -20,6 +20,7 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+    const val OWNER = "owner"
 
     object BUS {
         const val BUS = "bus"

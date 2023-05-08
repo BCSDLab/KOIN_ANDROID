@@ -8,7 +8,7 @@ import `in`.koreatech.koin.ui.businessmain.BusinessMainStartBusinessDialog
 import `in`.koreatech.koin.ui.businessmain.adapter.BusinessMenuAdapter
 import `in`.koreatech.koin.ui.businessmain.viewmodel.BusinessMainViewModel
 import `in`.koreatech.koin.ui.businessmain.MenuItem
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinBusinessNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import android.app.Activity
 import android.content.Intent
@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BusinessMainActivity : KoinNavigationDrawerActivity() {
+class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
     override val menuState = MenuState.BusinessMain
     private val binding by dataBinding<ActivityBusinessMainBinding>(R.layout.activity_business_main)
     val viewModel: BusinessMainViewModel by viewModels()
@@ -57,7 +57,7 @@ class BusinessMainActivity : KoinNavigationDrawerActivity() {
                 goToBusinessEditMenuActivity()
             }
             buttonCategory.setOnClickListener {
-                toggleNavigationDrawer()
+                toggleBusinessNavigationDrawer()
             }
             switchStartStore.setOnCheckedChangeListener { p0, isChecked ->
                 if (isChecked) {
@@ -66,7 +66,9 @@ class BusinessMainActivity : KoinNavigationDrawerActivity() {
                 }
             }
             businessMainSwipeRefreshLayout.setOnRefreshListener {
-
+                 businessMainSwipeRefreshLayout.isRefreshing = false
+            }
+            imageViewBusinessStatusRefresh.setOnClickListener {
             }
         }
     }

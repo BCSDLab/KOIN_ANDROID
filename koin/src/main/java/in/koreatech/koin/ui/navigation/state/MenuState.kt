@@ -10,4 +10,10 @@ sealed class MenuState {
     object UserInfo: MenuState()
     object BusinessMain: MenuState()
     object BusinessEditMenu: MenuState()
+    object Manual: MenuState()
+    object StoreInfo: MenuState()
+    object Order: MenuState()
+    object Sales: MenuState()
+    object Menu: MenuState()
+    object AddStore: MenuState()
 }
