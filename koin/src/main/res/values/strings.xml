@@ -287,4 +287,8 @@
 
     <!-- 코인 사장님 -->
     <string name="my_store">내 상점</string>
+
+    <!-- 권한 알림창 -->
+    <string name="move_setting">설정으로 이동</string>
+    <string name="read_service_term_text">외부저장소 읽기 권한을 사용할 수 없습니다. 기기의 \'설정\'에서 원하는 외부저장소의 권한을 켜주세요.(필수권한)</string>
 </resources>

@@ -1,419 +1,439 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.044" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.953" />
-
-    <TextView
-        android:id="@+id/my_store_edit_const_time_title_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="9sp"
-        android:maxLines="1"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:fontName="Custom5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        tools:text="운영시간" />
-
-    <FrameLayout
-        android:id="@+id/my_store_edit_const_time_border_framelayout"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_store_edit_const_time_title_textview">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.2"
-            android:background="@color/blue1" />
-
-        <TextView
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.044" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.953" />
+
+        <TextView
+            android:id="@+id/my_store_edit_const_time_title_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="9sp"
+            android:maxLines="1"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:text="운영시간"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:fontName="Custom5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/my_store_edit_const_time_border_framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/my_store_edit_const_time_title_textview">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.2"
+                android:background="@color/blue1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:includeFontPadding="false"
+                android:lineSpacingExtra="6sp"
+                android:text="평일/주말 운영시간"
+                android:textColor="@color/gray7"
+                android:textSize="12sp"
+                app:fontName="Custom6" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/my_store_edit_const_time_day_of_week_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:includeFontPadding="false"
+            android:text="요일"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/my_store_edit_const_time_border_framelayout" />
+
+        <TextView
+            android:id="@+id/my_store_edit_const_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="시간"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintEnd_toStartOf="@id/my_store_edit_const_time_holiday_textview"
+            app:layout_constraintStart_toEndOf="@id/my_store_edit_const_time_day_of_week_textview" />
+
+        <TextView
+            android:id="@+id/my_store_edit_const_time_holiday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:includeFontPadding="false"
+            android:text="휴무"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="my_store_edit_const_time_day_of_week_textview, my_store_edit_const_time_textview, my_store_edit_const_time_holiday_textview" />
+
+
+        <TextView
+            android:id="@+id/monday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:includeFontPadding="false"
+            android:text="월"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_title"
+            tools:text="월" />
+
+        <TextView
+            android:id="@+id/monday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/monday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_monday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="monday_textview, monday_time_textview" />
+
+        <TextView
+            android:id="@+id/tuesday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="화"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_monday_content" />
+
+        <TextView
+            android:id="@+id/tuesday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tuesday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_tuesday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="tuesday_textview, tuesday_time_textview" />
+
+        <TextView
+            android:id="@+id/wednesday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="수"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_tuesday_content" />
+
+        <TextView
+            android:id="@+id/wednesday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wednesday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_wednesday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="wednesday_textview, wednesday_time_textview" />
+
+        <TextView
+            android:id="@+id/thursday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="목"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_wednesday_content" />
+
+        <TextView
+            android:id="@+id/thursday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/thursday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_thursday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="thursday_textview, thursday_time_textview" />
+
+        <TextView
+            android:id="@+id/friday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="금"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_thursday_content" />
+
+        <TextView
+            android:id="@+id/friday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/friday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_friday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="friday_textview, friday_time_textview" />
+
+        <TextView
+            android:id="@+id/saturday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="토"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_friday_content" />
+
+        <TextView
+            android:id="@+id/saturday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/saturday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_saturday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="saturday_textview, saturday_time_textview" />
+
+        <TextView
+            android:id="@+id/sunday_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:includeFontPadding="false"
+            android:text="일"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/barrier_saturday_content" />
+
+        <TextView
+            android:id="@+id/sunday_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="00:00 ~ 00:00"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/sunday_textview"
+            app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_sunday_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="sunday_textview, sunday_time_textview" />
+
+        <CheckBox
+            android:id="@+id/monday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/monday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/tuesday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/tuesday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/wednesday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/wednesday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/thursday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/thursday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/friday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/friday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/saturday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/saturday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <CheckBox
+            android:id="@+id/sunday_click_check_box"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:background="@drawable/radio_button_checked_19dp"
+            android:button="@null"
+            app:layout_constraintBaseline_toBaselineOf="@id/sunday_textview"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview" />
+
+        <TextView
+            android:id="@+id/my_store_edit_success"
+            android:layout_width="105dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="49dp"
+            android:background="@drawable/button_rect_primary"
+            android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="6sp"
-            android:text="평일/주말 운영시간"
-            android:textColor="@color/gray7"
-            android:textSize="12sp"
-            app:fontName="Custom6" />
-    </FrameLayout>
-
-    <TextView
-        android:id="@+id/my_store_edit_const_time_day_of_week_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="4dp"
-        android:includeFontPadding="false"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/my_store_edit_const_time_border_framelayout"
-        tools:text = "요일"/>
-
-    <TextView
-        android:id="@+id/my_store_edit_const_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
-        app:layout_constraintEnd_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
-        tools:text = "시간"/>
-    <TextView
-        android:id="@+id/my_store_edit_const_time_holiday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:includeFontPadding="false"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
-        tools:text = "휴무"/>
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="my_store_edit_const_time_day_of_week_textview, my_store_edit_const_time_textview, my_store_edit_const_time_holiday_textview"/>
+            android:text="수정완료"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:fontName="Custom6"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintTop_toBottomOf="@+id/barrier_sunday_content" />
 
 
-    <TextView
-        android:id="@+id/monday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="월"
-        app:layout_constraintTop_toBottomOf="@id/barrier_title"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/monday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/monday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_monday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="monday_textview, monday_time_textview"/>
-
-    <TextView
-        android:id="@+id/tuesday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="화"
-        app:layout_constraintTop_toBottomOf="@id/barrier_monday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/tuesday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/tuesday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_tuesday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="tuesday_textview, tuesday_time_textview"/>
-
-    <TextView
-        android:id="@+id/wednesday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="수"
-        app:layout_constraintTop_toBottomOf="@id/barrier_tuesday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/wednesday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/wednesday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_wednesday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="wednesday_textview, wednesday_time_textview"/>
-
-    <TextView
-        android:id="@+id/thursday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="목"
-        app:layout_constraintTop_toBottomOf="@id/barrier_wednesday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/thursday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/thursday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_thursday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="thursday_textview, thursday_time_textview"/>
-
-    <TextView
-        android:id="@+id/friday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="금"
-        app:layout_constraintTop_toBottomOf="@id/barrier_thursday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/friday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/friday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_friday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="friday_textview, friday_time_textview"/>
-
-    <TextView
-        android:id="@+id/saturday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="토"
-        app:layout_constraintTop_toBottomOf="@id/barrier_friday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/saturday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/saturday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_saturday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="saturday_textview, saturday_time_textview"/>
-
-    <TextView
-        android:id="@+id/sunday_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="일"
-        app:layout_constraintTop_toBottomOf="@id/barrier_saturday_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"/>
-
-    <TextView
-        android:id="@+id/sunday_time_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:includeFontPadding="false"
-        tools:text="00:00 ~ 00:00"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
-        app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-        app:layout_constraintBaseline_toBaselineOf="@id/sunday_textview"/>
-
-
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier_sunday_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="sunday_textview, sunday_time_textview"/>
-
-    <TextView
-        android:id="@+id/monday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/monday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/tuesday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tuesday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/wednesday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/wednesday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/thursday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/thursday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/friday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/friday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/saturday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/saturday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-    <TextView
-        android:id="@+id/sunday_click_textview"
-        android:layout_width="19dp"
-        android:layout_height="19dp"
-        app:layout_constraintBaseline_toBaselineOf="@id/sunday_textview"
-        app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_holiday_textview"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
-        android:background="@drawable/radio_button_checked_19dp"/>
-
-    <TextView
-        android:id="@+id/my_store_edit_success"
-        android:layout_width="105dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="49dp"
-        android:background="@drawable/button_rect_primary"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="6sp"
-        android:text="수정완료"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:fontName="Custom6"
-        app:layout_constraintEnd_toStartOf="@id/guideline_end"
-        app:layout_constraintTop_toBottomOf="@+id/barrier_sunday_content"/>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
