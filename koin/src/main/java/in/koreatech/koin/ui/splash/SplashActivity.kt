@@ -75,11 +75,7 @@ class SplashActivity : ActivityBase() {
         }
 
         observeLiveData(tokenState) {
-            when(it) {
-                TokenState.Invalid -> gotoLoginActivityOrDelay()
-                TokenState.NotFound -> gotoLoginActivityOrDelay()
-                TokenState.Valid -> gotoMainActivityOrDelay()
-            }
+            gotoMainActivityOrDelay()
         }
     }
 

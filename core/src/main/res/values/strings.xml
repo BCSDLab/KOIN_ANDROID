@@ -86,4 +86,7 @@
     <string name="text_view_sales_management">매출관리</string>
     <string name="text_view_menu_management">메뉴관리</string>
     <string name="text_view_add_store">가게추가</string>
+    <string name="navigation_drawer_right_button_ask">문의하기</string>
+    <string name="navigation_drawer_right_hello_message">님, 안녕하세요!</string>
+    <string name="navigation_drawer_right_myinfo">내 정보</string>
 </resources>
