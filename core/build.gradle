@@ -85,7 +85,6 @@ dependencies {
 
     /* Dependency - leakcanary */
     debugImplementation project.leakcanaryDebug
-    releaseImplementation project.leakcanaryRelease
 
     /* Dependency - glide */
     api project.glide
