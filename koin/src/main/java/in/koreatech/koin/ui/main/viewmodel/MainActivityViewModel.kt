@@ -80,7 +80,7 @@ class MainActivityViewModel @Inject constructor(
             diningUseCase(DiningUtil.getCurrentDate())
                 .onSuccess {
                     if(it.isNotEmpty()) {
-                        _selectedType.value = it.first().type.toDiningType()
+                        _selectedType.value = DiningUtil.getCurrentType()
                     }
                     _diningData.value = it
                     _selectedPosition.value = 0

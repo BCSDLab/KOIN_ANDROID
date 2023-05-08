@@ -19,7 +19,7 @@ buildscript {
         /* Common */
         compileSdkVersion = 31
         minSdkVersion = 21
-        targetSdkVersion = 30
+        targetSdkVersion = 31
         versionName = "3.0.10"
 
         kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -61,8 +61,6 @@ buildscript {
         /* Dependency - leakcanary */
         def leakcanary_version = "1.6.3"
         leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-        leakcanaryRelease = "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-        leakcanrySupportFragment = "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanary_version"
 
         /* Dependency - glide */
         def glide_version = "4.9.0"
