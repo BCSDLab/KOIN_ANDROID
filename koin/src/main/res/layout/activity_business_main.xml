@@ -132,7 +132,6 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/text_view_store_name">
 
-
                                 <androidx.appcompat.widget.SwitchCompat
                                     android:id="@+id/switch_start_store"
                                     android:layout_width="match_parent"
@@ -287,6 +286,50 @@
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toBottomOf="@id/text_view_waiting_reception" />
 
+
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/material_card_view_today_sales"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/store_open_container">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <TextView
+                                        android:id="@+id/text_view_today_sales"
+                                        android:layout_width="117.75dp"
+                                        android:layout_height="30dp"
+                                        android:textAlignment="center"
+                                        android:gravity="center"
+                                        android:text="@string/text_view_today_sales"
+                                        android:textColor="@color/white"
+                                        android:background="@drawable/bg_rect_175ce_radius_52dp"
+                                        android:textSize="15sp"
+                                        android:layout_margin="16dp"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        android:layout_marginEnd="15dp"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        android:textColor="#175C8E"
+                                        android:textSize="18sp"
+                                        tools:text="571,000원"
+                                        />
 
                                 </androidx.constraintlayout.widget.ConstraintLayout>
                             </com.google.android.material.card.MaterialCardView>

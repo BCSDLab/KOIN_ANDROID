@@ -10,9 +10,11 @@ import `in`.koreatech.koin.ui.businessmain.viewmodel.BusinessMainViewModel
 import `in`.koreatech.koin.ui.businessmain.MenuItem
 import `in`.koreatech.koin.ui.navigation.KoinBusinessNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.util.ext.observeLiveData
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -53,6 +55,10 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
             recyclerViewBusinessMenu.layoutManager = GridLayoutManager(this@BusinessMainActivity,3)
             recyclerViewBusinessMenu.adapter = businessMenuAdapter
 
+            if (switchStartStore.isChecked) {
+                materialCardViewTodaySales.visibility = View.VISIBLE
+            } else materialCardViewTodaySales.visibility = View.GONE
+
             buttonEdit.setOnClickListener {
                 goToBusinessEditMenuActivity()
             }
@@ -62,7 +68,9 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
             switchStartStore.setOnCheckedChangeListener { p0, isChecked ->
                 if (isChecked) {
                     BusinessMainStartBusinessDialog(this@BusinessMainActivity).show()
+                    materialCardViewTodaySales.visibility = View.VISIBLE
                 } else {
+                    materialCardViewTodaySales.visibility = View.GONE
                 }
             }
             businessMainSwipeRefreshLayout.setOnRefreshListener {
@@ -74,6 +82,12 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
     }
 
     private fun initViewModel() {
+        with(viewModel) {
+            observeLiveData(currentDateTime) {
+                binding.textViewCurrentDate.text = it
+            }
+        }
+
     }
 
     fun goToBusinessEditMenuActivity() {
