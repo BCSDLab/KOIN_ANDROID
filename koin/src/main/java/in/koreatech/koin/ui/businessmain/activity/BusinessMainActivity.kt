@@ -27,7 +27,9 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
     val viewModel: BusinessMainViewModel by viewModels()
     private val selectedMenuItemsPreferences by lazy{ BusinessMenuSharedPreferences(this)}
     private val businessMenuAdapter: BusinessMenuAdapter by lazy {
-        BusinessMenuAdapter(selectedMenuItemsPreferences.loadSelectedItems().toMutableList()) {
+        if (selectedMenuItemsPreferences.loadSelectedItems().isEmpty()) {
+            BusinessMenuAdapter(listOf(MenuItem(title = "가게정보", imageResource = R.drawable.ic_business_menu_store)).toMutableList()){}
+        } else BusinessMenuAdapter(selectedMenuItemsPreferences.loadSelectedItems().toMutableList()) {
         }
     }
 
@@ -54,10 +56,6 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
             vm = viewModel
             recyclerViewBusinessMenu.layoutManager = GridLayoutManager(this@BusinessMainActivity,3)
             recyclerViewBusinessMenu.adapter = businessMenuAdapter
-
-            if (switchStartStore.isChecked) {
-                materialCardViewTodaySales.visibility = View.VISIBLE
-            } else materialCardViewTodaySales.visibility = View.GONE
 
             buttonEdit.setOnClickListener {
                 goToBusinessEditMenuActivity()
