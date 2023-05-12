@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.owner.GetOwnerNameUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
+import android.util.Log
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,6 +38,9 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val _ownerName = MutableLiveData<String>()
     val ownerName: LiveData<String> get() = _ownerName
 
+    private val _getOwnerNameErrorMessage = SingleLiveEvent<String>()
+    val getOwnerNameErrorMessage: LiveData<String> get() = _getOwnerNameErrorMessage
+
     fun getUser() {
         viewModelScope.launch {
             getUserInfoUseCase()
@@ -59,7 +63,12 @@ class KoinNavigationDrawerViewModel @Inject constructor(
 
     fun getOwnerName() {
         viewModelScope.launch {
-            _ownerName.value = getOwnerNameUseCase()
+            getOwnerNameUseCase()
+                .onSuccess {
+                    _ownerName.value = it
+                }.onFailure {
+                    _getOwnerNameErrorMessage.value = it.message
+                }
         }
     }
 }

@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.di.error
 
-import `in`.koreatech.koin.data.error.BusErrorHandlerImpl
-import `in`.koreatech.koin.data.error.DeptErrorHandlerImpl
-import `in`.koreatech.koin.data.error.TokenErrorHandlerImpl
-import `in`.koreatech.koin.data.error.UserErrorHandlerImpl
+import `in`.koreatech.koin.data.error.*
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.error.dept.DeptErrorHandler
+import `in`.koreatech.koin.domain.error.owner.OwnerErrorHandler
 import `in`.koreatech.koin.domain.error.token.TokenErrorHandler
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import android.content.Context
@@ -43,4 +41,10 @@ object ErrorHandlerModule {
     fun provideBusErrorHandler(
         @ApplicationContext applicationContext: Context
     ): BusErrorHandler = BusErrorHandlerImpl(applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideOwnerErrorHandler(
+        @ApplicationContext applicationContext: Context
+    ): OwnerErrorHandler = OwnerErrorHandlerImpl(applicationContext)
 }
