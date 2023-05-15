@@ -17,7 +17,7 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
     override suspend fun getToken(portalAccount: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
-            LoginRequest(portalAccount, hashedPassword)
+            LoginRequest("$portalAccount@koreatech.ac.kr", hashedPassword)
         )
 
         return authResponse.toAuthToken()

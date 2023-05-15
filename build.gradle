@@ -98,6 +98,10 @@ buildscript {
         /* Dependency - AndroidX Security */
         def security_version = "1.1.0-alpha03"
         androidXSecurity = "androidx.security:security-crypto:$security_version"
+
+        /* Core Libaray desugaring */
+        def desugar_version = "1.1.5"
+        coreLibraryDesugaring = "com.android.tools:desugar_jdk_libs:$desugar_version"
     }
 
     dependencies {

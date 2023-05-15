@@ -27,7 +27,7 @@ class SignupRepositoryImpl @Inject constructor(
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 LoginRequest(
-                    portalAccount = portalAccount,
+                    email = "$portalAccount@koreatech.ac.kr",
                     passwordHashed = hashedPassword
                 )
             )

@@ -18,7 +18,7 @@ class UserLoginUseCase @Inject constructor(
     ): Pair<Unit?, ErrorHandler?> {
         return try {
             val authToken = userRepository.getToken(portalAccount, password.toSHA256())
-            tokenRepository.saveAccessToken(authToken.token)
+            tokenRepository.saveAccessToken(authToken.accessToken)
             Unit to null
         } catch (throwable: Throwable) {
             null to userErrorHandler.handleGetTokenError(throwable)

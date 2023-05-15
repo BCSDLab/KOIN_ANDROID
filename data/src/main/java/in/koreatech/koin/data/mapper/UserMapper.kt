@@ -13,7 +13,7 @@ fun UserResponse.toUser() = User.Student(
     isGraduated = isGraduated,
     enabled = enabled,
     anonymousNickname = anonymousNickname,
-    portalAccount = portalAccount,
+    portalAccount = email,
     identity = when (identity) {
         0 -> UserIdentity.Student
         1 -> UserIdentity.Professor
@@ -62,5 +62,5 @@ fun User.Student.toUserRequest() = UserRequest(
 )
 
 fun AuthResponse.toAuthToken() = AuthToken(
-    token, user.toUser()
+    accessToken, refreshToken
 )

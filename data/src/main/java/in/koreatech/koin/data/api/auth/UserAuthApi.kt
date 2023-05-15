@@ -11,13 +11,13 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 
 interface UserAuthApi {
-    @GET(URLConstant.USER.ME)
+    @GET(URLConstant.USER.STUDENT_ME)
     suspend fun getUser(): UserResponse
 
-    @PUT(URLConstant.USER.ME)
+    @PUT(URLConstant.USER.STUDENT_ME)
     suspend fun putUser(@Body userRequest: UserRequest): UserResponse
 
-    @DELETE(URLConstant.USER.ME)
+    @DELETE(URLConstant.USER.USER)
     suspend fun deleteUser(): DefaultResponse
 
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")

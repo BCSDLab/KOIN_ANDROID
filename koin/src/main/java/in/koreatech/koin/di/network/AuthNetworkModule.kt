@@ -5,13 +5,14 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.util.TokenAuthenticator
-import `in`.koreatech.koin.util.ext.isDebug
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.util.ext.newRequest
+import `in`.koreatech.koin.util.ext.putAccessToken
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -34,9 +35,9 @@ object AuthNetworkModule {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
                 val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
-                val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
-                    .build()
+                val newRequest: Request = chain.request().newRequest {
+                    putAccessToken(accessToken)
+                }
                 chain.proceed(newRequest)
             }
         }

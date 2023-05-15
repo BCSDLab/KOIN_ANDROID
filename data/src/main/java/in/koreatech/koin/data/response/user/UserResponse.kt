@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class UserResponse(
     @SerializedName("id") val id: Int,
-    @SerializedName("portal_account") val portalAccount: String,
+    @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,
     @SerializedName("nickname") val nickname: String?,
     @SerializedName("anonymous_nickname") val anonymousNickname: String?,
