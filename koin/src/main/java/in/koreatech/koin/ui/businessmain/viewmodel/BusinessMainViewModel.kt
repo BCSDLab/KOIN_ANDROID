@@ -5,6 +5,7 @@ import `in`.koreatech.koin.ui.businessmain.MenuItem
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -18,13 +19,23 @@ class BusinessMainViewModel() : BaseViewModel() {
     private val _currentDateTime = MutableLiveData<String>()
     val currentDateTime: LiveData<String> get() = _currentDateTime
 
+    var job: Job? = null
+
     init {
-        viewModelScope.launch {
+        startUpdatingDateTime()
+    }
+
+    fun startUpdatingDateTime() {
+        job = viewModelScope.launch {
             while (true) {
                 _currentDateTime.value = getCurrentDateTime()
                 delay(60_000)
             }
         }
+    }
+
+    fun stopUpdatingDateTime() {
+        job?.cancel()
     }
 
     fun updateSelectedItems(selectedItems: List<MenuItem>) {
@@ -40,5 +51,4 @@ class BusinessMainViewModel() : BaseViewModel() {
         val dateFormatter = SimpleDateFormat("yyyy-MM-dd a hh:mm", Locale.getDefault())
         return dateFormatter.format(currentDate)
     }
-
 }

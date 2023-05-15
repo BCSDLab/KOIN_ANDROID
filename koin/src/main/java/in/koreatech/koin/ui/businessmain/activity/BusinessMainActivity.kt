@@ -14,6 +14,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -92,5 +93,23 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
         val intent = Intent(this, BusinessEditMenuActivity::class.java)
         intent.putParcelableArrayListExtra("storedItems", ArrayList(selectedMenuItemsPreferences.loadSelectedItems()))
         businessEditMenuActivityLauncher.launch(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("test","onDestroy")
+        viewModel.stopUpdatingDateTime()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.e("test","onStop")
+        viewModel.stopUpdatingDateTime()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.e("test","onStart")
+        viewModel.startUpdatingDateTime()
     }
 }

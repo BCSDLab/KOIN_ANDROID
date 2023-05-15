@@ -66,16 +66,25 @@ class BusinessEditMenuActivity : KoinBusinessNavigationDrawerActivity() {
     }
 
     private fun updateMenuListFromIntent() {
+        val storedItems = getStoredItemsFromIntent()
+        updateMenuList(storedItems)
+    }
+
+    private fun getStoredItemsFromIntent(): List<MenuItem> {
         if (intent.hasExtra("storedItems")) {
-            val storedItems: List<MenuItem> =
-                intent.getParcelableArrayListExtra("storedItems") ?: emptyList()
-            for (storedItem in storedItems) {
-                val index = menuList.indexOfFirst { it.title == storedItem.title }
-                if (index != -1) {
-                    menuList[index].isSelected = true
-                }
+            return intent.getParcelableArrayListExtra<MenuItem>("storedItems") ?: emptyList()
+        }
+        return emptyList()
+    }
+
+    private fun updateMenuList(storedItems: List<MenuItem>) {
+        for (storedItem in storedItems) {
+            val index = menuList.indexOfFirst { it.title == storedItem.title }
+            if (index != -1) {
+                menuList[index].isSelected = true
             }
         }
     }
+
 
 }
