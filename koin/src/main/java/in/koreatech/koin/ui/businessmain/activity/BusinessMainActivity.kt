@@ -65,7 +65,7 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
             }
             switchStartStore.setOnCheckedChangeListener { p0, isChecked ->
                 if (isChecked) {
-                    BusinessMainStartBusinessDialog(this@BusinessMainActivity).show()
+                    BusinessMainStartBusinessDialog().show(supportFragmentManager, "BusinessMainStartBusinessDialog")
                     materialCardViewTodaySales.visibility = View.VISIBLE
                 } else {
                     materialCardViewTodaySales.visibility = View.GONE
