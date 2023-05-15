@@ -6,6 +6,7 @@ import `in`.koreatech.koin.ui.businessmain.MenuItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class BusinessEditMenuAdapter(
     private var menuList: MutableList<MenuItem>,
@@ -28,16 +29,19 @@ class BusinessEditMenuAdapter(
         fun bind(item: MenuItem) {
             with(binding) {
                 textViewMenuItem.text = item.title
-                imageViewMenuItem.setImageResource(item.imageResource)
+                Glide.with(itemView)
+                    .load(item.imageResource)
+                    .fitCenter()
+                    .into(imageViewMenuItem)
                 constraintLayoutMenu.background = if (item.isSelected) {
                     itemView.context.getDrawable(R.drawable.bg_f7941e_rectangle)
                 } else {
                     itemView.context.getDrawable(R.drawable.bg_dedede_rectangle)
                 }
-                imageViewCircle.setImageResource(
-                    if (item.isSelected) R.drawable.ic_circle_minus
-                    else R.drawable.ic_circle_plus
-                )
+                Glide.with(itemView)
+                    .load(if (item.isSelected) R.drawable.ic_circle_minus else R.drawable.ic_circle_plus)
+                    .fitCenter()
+                    .into(imageViewCircle)
             }
         }
 
@@ -47,14 +51,19 @@ class BusinessEditMenuAdapter(
             if (item.isSelected) {
                 with(binding) {
                     constraintLayoutMenu.background = itemView.context.getDrawable(R.drawable.bg_f7941e_rectangle)
-                    imageViewCircle.setImageResource(R.drawable.ic_circle_minus)
+                    Glide.with(itemView)
+                        .load(R.drawable.ic_circle_minus)
+                        .fitCenter()
+                        .into(imageViewCircle)
                 }
             } else {
                 with(binding) {
-                    binding.constraintLayoutMenu.background = itemView.context.getDrawable(R.drawable.bg_dedede_rectangle)
-                    imageViewCircle.setImageResource(R.drawable.ic_circle_plus)
+                    constraintLayoutMenu.background = itemView.context.getDrawable(R.drawable.bg_dedede_rectangle)
+                    Glide.with(itemView)
+                        .load(R.drawable.ic_circle_plus)
+                        .fitCenter()
+                        .into(imageViewCircle)
                 }
-
             }
         }
     }
