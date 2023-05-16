@@ -42,8 +42,8 @@ class BusinessMainViewModel() : BaseViewModel() {
         _selectedMenuItems.value = selectedItems
     }
 
-    fun getSelectedItems(): List<MenuItem> {
-        return selectedMenuItems.value?.filter { it.isSelected } ?: emptyList()
+    fun getSelectedItems(): List<Int> {
+        return selectedMenuItems.value?.filter { it.isSelected }?.map { it.imageResource } ?: emptyList()
     }
 
     private fun getCurrentDateTime(): String {

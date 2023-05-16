@@ -14,7 +14,6 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -26,11 +25,29 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
     override val menuState = MenuState.BusinessMain
     private val binding by dataBinding<ActivityBusinessMainBinding>(R.layout.activity_business_main)
     val viewModel: BusinessMainViewModel by viewModels()
-    private val selectedMenuItemsPreferences by lazy{ BusinessMenuSharedPreferences(this)}
+    private val selectedMenuItemsPreferences by lazy { BusinessMenuSharedPreferences(this) }
+    private val menuList = listOf(
+        MenuItem(title = "가게정보", imageResource = R.drawable.ic_business_menu_store),
+        MenuItem(title = "매출관리", imageResource = R.drawable.ic_business_menu_sales_management),
+        MenuItem(title = "메뉴관리", imageResource = R.drawable.ic_business_menu_management),
+        MenuItem(title = "주문관리", imageResource = R.drawable.ic_business_menu_order_management),
+        MenuItem(title = "주변상점", imageResource = R.drawable.ic_business_menu_near_store),
+        MenuItem(title = "버스/교통", imageResource = R.drawable.ic_business_menu_bus),
+        MenuItem(title = "메뉴얼 다시보기", imageResource = R.drawable.ic_business_menu_manual)
+    )
+
     private val businessMenuAdapter: BusinessMenuAdapter by lazy {
-        if (selectedMenuItemsPreferences.loadSelectedItems().isEmpty()) {
-            BusinessMenuAdapter(listOf(MenuItem(title = "가게정보", imageResource = R.drawable.ic_business_menu_store)).toMutableList()){}
-        } else BusinessMenuAdapter(selectedMenuItemsPreferences.loadSelectedItems().toMutableList()) {
+        val storedSelectedItems = selectedMenuItemsPreferences.loadSelectedItems()
+
+        if (storedSelectedItems.isEmpty()) {
+            BusinessMenuAdapter(listOf(
+                MenuItem(title = "가게정보", imageResource = R.drawable.ic_business_menu_store),
+                MenuItem(title = "매출관리", imageResource = R.drawable.ic_business_menu_sales_management),
+                MenuItem(title = "메뉴관리", imageResource = R.drawable.ic_business_menu_management)
+            ).toMutableList()) {}
+        } else {
+            val selectedMenuItems = getSelectedMenuItems(storedSelectedItems)
+            BusinessMenuAdapter(selectedMenuItems.toMutableList()) {}
         }
     }
 
@@ -38,10 +55,10 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
-                val selectedItems: List<MenuItem> =
-                    data?.getParcelableArrayListExtra("selectedItems") ?: emptyList()
+                val selectedItems: List<Int> =
+                    data?.getIntegerArrayListExtra("selectedItems") ?: emptyList()
                 selectedMenuItemsPreferences.saveSelectedItems(selectedItems)
-                businessMenuAdapter.setMenuList(selectedItems)
+                businessMenuAdapter.setMenuList(getSelectedMenuItems(selectedItems))
             }
         }
 
@@ -55,7 +72,7 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
     private fun initView() {
         with(binding) {
             vm = viewModel
-            recyclerViewBusinessMenu.layoutManager = GridLayoutManager(this@BusinessMainActivity,3)
+            recyclerViewBusinessMenu.layoutManager = GridLayoutManager(this@BusinessMainActivity, 3)
             recyclerViewBusinessMenu.adapter = businessMenuAdapter
 
             buttonEdit.setOnClickListener {
@@ -66,14 +83,15 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
             }
             switchStartStore.setOnCheckedChangeListener { p0, isChecked ->
                 if (isChecked) {
-                    BusinessMainStartBusinessDialog().show(supportFragmentManager, "BusinessMainStartBusinessDialog")
+                    BusinessMainStartBusinessDialog().show(supportFragmentManager,
+                        "BusinessMainStartBusinessDialog")
                     materialCardViewTodaySales.visibility = View.VISIBLE
                 } else {
                     materialCardViewTodaySales.visibility = View.GONE
                 }
             }
             businessMainSwipeRefreshLayout.setOnRefreshListener {
-                 businessMainSwipeRefreshLayout.isRefreshing = false
+                businessMainSwipeRefreshLayout.isRefreshing = false
             }
             imageViewBusinessStatusRefresh.setOnClickListener {
             }
@@ -91,25 +109,27 @@ class BusinessMainActivity : KoinBusinessNavigationDrawerActivity() {
 
     fun goToBusinessEditMenuActivity() {
         val intent = Intent(this, BusinessEditMenuActivity::class.java)
-        intent.putParcelableArrayListExtra("storedItems", ArrayList(selectedMenuItemsPreferences.loadSelectedItems()))
+        intent.putIntegerArrayListExtra("storedItems",
+            ArrayList(selectedMenuItemsPreferences.loadSelectedItems()))
         businessEditMenuActivityLauncher.launch(intent)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("test","onDestroy")
         viewModel.stopUpdatingDateTime()
     }
 
     override fun onStop() {
         super.onStop()
-        Log.e("test","onStop")
         viewModel.stopUpdatingDateTime()
     }
 
     override fun onStart() {
         super.onStart()
-        Log.e("test","onStart")
         viewModel.startUpdatingDateTime()
+    }
+
+    fun getSelectedMenuItems(selectedImageResources: List<Int>): List<MenuItem> {
+        return menuList.filter { it.imageResource in selectedImageResources }
     }
 }

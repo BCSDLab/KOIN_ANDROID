@@ -51,7 +51,7 @@ class BusinessEditMenuActivity : KoinBusinessNavigationDrawerActivity() {
             buttonEdit.setOnClickListener {
                 val selectedItems = viewModel.getSelectedItems()
                 val resultIntent = Intent()
-                resultIntent.putParcelableArrayListExtra("selectedItems", ArrayList(selectedItems))
+                resultIntent.putIntegerArrayListExtra("selectedItems", ArrayList(selectedItems))
                 setResult(Activity.RESULT_OK, resultIntent)
                 finish()
             }
@@ -70,16 +70,16 @@ class BusinessEditMenuActivity : KoinBusinessNavigationDrawerActivity() {
         updateMenuList(storedItems)
     }
 
-    private fun getStoredItemsFromIntent(): List<MenuItem> {
+    private fun getStoredItemsFromIntent(): List<Int> {
         if (intent.hasExtra("storedItems")) {
-            return intent.getParcelableArrayListExtra<MenuItem>("storedItems") ?: emptyList()
+            return (intent.getIntegerArrayListExtra("storedItems") ?: emptyList())
         }
         return emptyList()
     }
 
-    private fun updateMenuList(storedItems: List<MenuItem>) {
+    private fun updateMenuList(storedItems: List<Int>) {
         for (storedItem in storedItems) {
-            val index = menuList.indexOfFirst { it.title == storedItem.title }
+            val index = menuList.indexOfFirst { it.imageResource == storedItem }
             if (index != -1) {
                 menuList[index].isSelected = true
             }
