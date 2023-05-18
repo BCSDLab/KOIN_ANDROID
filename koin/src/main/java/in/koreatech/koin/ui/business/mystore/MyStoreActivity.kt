@@ -16,9 +16,6 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 
 class MyStoreActivity : ActivityBase() {
-//    override val menuState: MenuState
-//        get() = MenuState.BusinessMyStore
-
     private val binding by dataBinding<ActivityMyStoreBinding>(R.layout.activity_my_store)
     private val viewModel by viewModels<MyStoreViewModel>()
     private val myStoreEditFragment: MyStoreEditFragment by lazy {
@@ -33,54 +30,6 @@ class MyStoreActivity : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        initViewModel()
 
-        onClickStoreEditButton()
-    }
-
-    private fun initViewModel(){
-        withLoading(this@MyStoreActivity, viewModel)
-
-        observeLiveData(viewModel.myStoreState){ state ->
-            when (state){
-                MyStoreEnum.STORE_EDIT -> {
-                    createFragment(
-                        myStoreEditFragment,
-                        MyStoreTAG.MY_STORE_STORE_EDIT_TAG
-                    )
-                }
-                MyStoreEnum.CONST_TIME_EDIT -> {
-                    createFragment(
-                        myStoreConstTimeEditFragment,
-                        MyStoreTAG.MY_STORE_CONST_TIME_EDIT_TAG
-                    )
-                }
-
-                MyStoreEnum.TIME_EDIT -> {
-                    myStorePickerDialogFragment.show(supportFragmentManager, MyStoreTAG.MY_STORE_TIME_EDIT_TAG)
-                }
-            }
-        }
-    }
-
-    private fun createFragment(fragment: Fragment, tag:String){
-        supportFragmentManager.beginTransaction()
-            .add(R.id.container_frame_layout_edit_content, fragment, tag)
-            .commit()
-    }
-
-    private fun onClickStoreEditButton(){
-        binding.myStoreEditContent.setOnClickListener {
-            viewModel.changeMyStoreState(MyStoreEnum.STORE_EDIT)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-    object MyStoreTAG{
-        const val MY_STORE_STORE_EDIT_TAG ="MY_STORE_STORE_EDIT_TAG"
-        const val MY_STORE_CONST_TIME_EDIT_TAG = "MY_STORE_CONST_TIME_EDIT_TAG"
-        const val MY_STORE_TIME_EDIT_TAG = "MY_STORE_TIME_EDIT_TAG"
     }
 }
