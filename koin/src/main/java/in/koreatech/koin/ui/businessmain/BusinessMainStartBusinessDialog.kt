@@ -1,27 +1,37 @@
 package `in`.koreatech.koin.ui.businessmain
 
 import `in`.koreatech.koin.databinding.CustomAlertDialogBusinessStartBinding
-import android.app.Dialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 
 class BusinessMainStartBusinessDialog : DialogFragment() {
 
-    private lateinit var binding: CustomAlertDialogBusinessStartBinding
+    private var _binding: CustomAlertDialogBusinessStartBinding? = null
+    val binding get() = _binding!!
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = Dialog(requireContext())
-        binding = CustomAlertDialogBusinessStartBinding.inflate(requireActivity().layoutInflater)
-        builder.setContentView(binding.root)
-        initView()
-        return builder
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = CustomAlertDialogBusinessStartBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    private fun initView() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             textViewDialogCheck.setOnClickListener {
                 dismiss()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 }
