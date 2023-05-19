@@ -285,8 +285,45 @@
     <string name="land_detail_floor_unit">층</string>
     <string name="bcsd_webpage_name">BCSD 홈페이지</string>
 
-    <!-- 코인 사장님 -->
+    <!-- TODO: 코인 사장님 -->
+    <!-- 내 상점 -->
     <string name="my_store">내 상점</string>
+    <string name="store_name">가게명</string>
+    <string name="edit_store_info">가게정보 수정</string>
+    <string name="phone_number">전화번호</string>
+    <string name="const_time">운영시간</string>
+    <string name="holiday">휴무일</string>
+    <string name="address_info">주소정보</string>
+    <string name="delivery_pay">배달금액</string>
+    <string name="etc_info">기타정보</string>
+    <string name="able_delivery">배달 가능</string>
+    <string name="able_card">카드 가능</string>
+    <string name="able_bank">계좌이체 가능</string>
+    <string name="tag_able_delivery"># 배달가능</string>
+    <string name="tag_able_card"># 카드가능</string>
+    <string name="tag_able_bank"># 계좌이체 가능</string>
+    <string name="manage_menu">메뉴 관리</string>
+    <string name="add_menu">메뉴 추가</string>
+    <string name="menu_event">이벤트 메뉴</string>
+    <string name="modify_photo">사진변경</string>
+    <string name="modify_completed">수정 완료</string>
+    <string name="const_time_weekday_and_weekend">평일/주말 운영시간</string>
+    <string name="mystore_const_time_table_day_of_week">요일</string>
+    <string name="mystore_const_time_table_time">시간</string>
+    <string name="mystore_const_time_table_holiday">휴무</string>
+    <string name="mystore_const_time_table_monday">월</string>
+    <string name="mystore_const_time_table_tuesday">화</string>
+    <string name="mystore_const_time_table_wednesday">수</string>
+    <string name="mystore_const_time_table_thursday">목</string>
+    <string name="mystore_const_time_table_friday">금</string>
+    <string name="mystore_const_time_table_saturday">토</string>
+    <string name="mystore_const_time_table_sunday">일</string>
+    <string name="mystore_const_time_picker_cancel">닫기</string>
+    <string name="mystore_const_time_picker_check">확인</string>
+    <string name="mystore_const_time_picker_tilde">~</string>
+    <string name="mystore_const_time_picker_colon">:</string>
+
+
 
     <!-- 권한 알림창 -->
     <string name="move_setting">설정으로 이동</string>

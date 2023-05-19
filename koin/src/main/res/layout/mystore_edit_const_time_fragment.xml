@@ -32,7 +32,7 @@
             android:maxLines="1"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:text="운영시간"
+            android:text="@string/const_time"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -63,7 +63,7 @@
                 android:layout_marginStart="16dp"
                 android:includeFontPadding="false"
                 android:lineSpacingExtra="6sp"
-                android:text="평일/주말 운영시간"
+                android:text="@string/const_time_weekday_and_weekend"
                 android:textColor="@color/gray7"
                 android:textSize="12sp"
                 app:fontName="Custom6" />
@@ -76,7 +76,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="16dp"
             android:includeFontPadding="false"
-            android:text="요일"
+            android:text="@string/mystore_const_time_table_day_of_week"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="시간"
+            android:text="@string/mystore_const_time_table_time"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -100,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
             android:includeFontPadding="false"
-            android:text="휴무"
+            android:text="@string/mystore_const_time_table_holiday"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -120,7 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:includeFontPadding="false"
-            android:text="월"
+            android:text="@string/mystore_const_time_table_monday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -133,7 +133,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/monday_textview"
@@ -155,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="화"
+            android:text="@string/mystore_const_time_table_tuesday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -167,12 +166,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tuesday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
 
         <androidx.constraintlayout.widget.Barrier
@@ -188,7 +187,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="수"
+            android:text="@string/mystore_const_time_table_wednesday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -200,13 +199,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/wednesday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
-
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_wednesday_content"
@@ -221,7 +219,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="목"
+            android:text="@string/mystore_const_time_table_thursday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -233,13 +231,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/thursday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
-
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_thursday_content"
@@ -254,7 +251,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="금"
+            android:text="@string/mystore_const_time_table_friday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -266,13 +263,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/friday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
-
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_friday_content"
@@ -287,7 +283,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="토"
+            android:text="@string/mystore_const_time_table_saturday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -299,13 +295,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/saturday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
-
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_saturday_content"
@@ -320,7 +315,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:includeFontPadding="false"
-            android:text="일"
+            android:text="@string/mystore_const_time_table_sunday"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="@id/my_store_edit_const_time_day_of_week_textview"
@@ -332,13 +327,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:text="00:00 ~ 00:00"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@id/sunday_textview"
             app:layout_constraintEnd_toEndOf="@+id/my_store_edit_const_time_textview"
-            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview" />
-
+            app:layout_constraintStart_toStartOf="@id/my_store_edit_const_time_textview"
+            tools:text="00:00 ~ 00:00" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_sunday_content"
@@ -427,7 +421,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:lineSpacingExtra="6sp"
-            android:text="수정완료"
+            android:text="@string/modify_completed"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:fontName="Custom6"

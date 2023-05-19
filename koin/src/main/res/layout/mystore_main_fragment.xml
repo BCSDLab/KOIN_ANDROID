@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/my_store_main_container"
@@ -39,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="276dp"
                     android:src="@drawable/dining_widget_example"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -81,7 +82,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="가게정보 수정"
+                    android:text="@string/edit_store_info"
                     android:textColor="@color/colorAccent"
                     android:textSize="12sp"
                     app:fontName="Custom6"
@@ -96,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
-                    android:text="전화번호"
+                    android:text="@string/phone_number"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -132,7 +133,7 @@
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
-                    android:text="운영시간"
+                    android:text="@string/const_time"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -168,7 +169,7 @@
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
-                    android:text="휴무일"
+                    android:text="@string/holiday"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -206,7 +207,7 @@
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
-                    android:text="주소정보"
+                    android:text="@string/address_info"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -242,7 +243,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
-                    android:text="배달금액"
+                    android:text="@string/delivery_pay"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -279,7 +280,7 @@
                     android:layout_marginTop="4dp"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="7sp"
-                    android:text="기타정보"
+                    android:text="@string/etc_info"
                     android:textColor="@color/gray9"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -319,7 +320,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="# 배달가능"
+                    android:text="@string/tag_able_delivery"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:fontName="Custom6"
@@ -336,7 +337,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="# 카드가능"
+                    android:text="@string/tag_able_card"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:fontName="Custom6"
@@ -353,7 +354,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="# 계좌이체 가능"
+                    android:text="@string/tag_able_bank"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:fontName="Custom6"
@@ -378,7 +379,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="메뉴 관리"
+                    android:text="@string/manage_menu"
                     android:textColor="@color/colorPrimary"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -396,7 +397,7 @@
                     android:gravity="center"
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="6sp"
-                    android:text="메뉴 추가"
+                    android:text="@string/add_menu"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     app:fontName="Custom6"
@@ -433,7 +434,7 @@
                         android:layout_marginStart="16dp"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
-                        android:text="이벤트 메뉴"
+                        android:text="@string/menu_event"
                         android:textColor="@color/gray7"
                         android:textSize="12sp"
                         app:fontName="Custom6" />
@@ -451,7 +452,6 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                     app:layout_constraintTop_toBottomOf="@+id/my_store_event_menu_border_frameLayout"
                     tools:listitem="@layout/store_detail_menu_list_item" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
