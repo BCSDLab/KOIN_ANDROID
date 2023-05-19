@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mystore_nav_graph"
+    app:startDestination="@id/mystore_main_fragment">
+
+    <fragment
+        android:id="@+id/mystore_main_fragment"
+        android:name="in.koreatech.koin.ui.business.mystore.fragment.MyStoreMainFragment"
+        android:label="MyStoreMainFragment"
+        tools:layout="@layout/mystore_main_fragment">
+
+        <action
+            android:id="@+id/action_mystore_main_fragment_to_mystore_edit_fragment"
+            app:destination="@id/mystore_edit_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/mystore_edit_fragment"
+        android:name="in.koreatech.koin.ui.business.mystore.fragment.MyStoreEditFragment"
+        android:label="MyStoreEditFragment"
+        tools:layout="@layout/mystore_edit_fragment">
+        <action
+            android:id="@+id/action_mystore_edit_to_mystore_edit_const_time"
+            app:destination="@id/mystore_edit_const_time_fragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mystore_edit_const_time_fragment"
+        android:name="in.koreatech.koin.ui.business.mystore.fragment.MyStoreEditConstTimeFragment"
+        android:label="MyStoreEditConstTimeFragment"
+        tools:layout="@layout/mystore_edit_const_time_fragment" />
+
+</navigation>

@@ -4,15 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import `in`.koreatech.koin.constant.MyStoreEnum
 import `in`.koreatech.koin.databinding.MystoreEditConstTimeFragmentBinding
-import `in`.koreatech.koin.ui.business.mystore.MyStoreActivity
 import `in`.koreatech.koin.ui.business.mystore.viewmodel.MyStoreViewModel
 
-class MyStoreConstTimeEditFragment : Fragment() {
+class MyStoreEditConstTimeFragment : Fragment() {
     private var _binding: MystoreEditConstTimeFragmentBinding? = null
     private val binding: MystoreEditConstTimeFragmentBinding
         get() = _binding!!
@@ -32,33 +29,10 @@ class MyStoreConstTimeEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            mondayTimeTextview.setOnClickListener { onClickTime() }
+            mondayTimeTextview.setOnClickListener {  }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        onBackPressed()
-    }
-
-    private fun onClickTime() {
-        viewModel.changeMyStoreState(MyStoreEnum.TIME_EDIT)
-    }
-
-    private fun onBackPressed() {
-        requireActivity().onBackPressedDispatcher
-            .addCallback(this, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    val frag =
-                        parentFragmentManager.findFragmentByTag(MyStoreActivity.MyStoreTAG.MY_STORE_CONST_TIME_EDIT_TAG)
-                    if (frag != null) {
-                        parentFragmentManager.beginTransaction()
-                            .remove(frag)
-                            .commit()
-                    }
-                }
-            })
-    }
 
     override fun onDestroyView() {
         _binding = null
@@ -66,10 +40,10 @@ class MyStoreConstTimeEditFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): MyStoreConstTimeEditFragment {
+        fun newInstance(): MyStoreEditConstTimeFragment {
             val args = Bundle()
 
-            val fragment = MyStoreConstTimeEditFragment()
+            val fragment = MyStoreEditConstTimeFragment()
             fragment.arguments = args
             return fragment
         }

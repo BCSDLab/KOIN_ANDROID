@@ -128,6 +128,10 @@ dependencies {
     implementation project.butterknife
     kapt project.butterknifeAnnotation
 
+    /* Dependency - navigation */
+    implementation project.androidXNavigationKtx
+    implementation project.androidXNavigationUi
+
     //naver map
     implementation 'com.naver.maps:map-sdk:3.10.2'
 
