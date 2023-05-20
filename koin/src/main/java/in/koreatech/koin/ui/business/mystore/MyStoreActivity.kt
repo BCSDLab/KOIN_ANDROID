@@ -10,6 +10,7 @@ import `in`.koreatech.koin.databinding.ActivityMyStoreBinding
 import `in`.koreatech.koin.ui.business.mystore.fragment.MyStoreMainFragment
 import `in`.koreatech.koin.ui.business.mystore.viewmodel.MyStoreViewModel
 
+@AndroidEntryPoint
 class MyStoreActivity : ActivityBase() {
     private val binding by dataBinding<ActivityMyStoreBinding>(R.layout.activity_my_store)
     private val viewModel by viewModels<MyStoreViewModel>()
@@ -17,5 +18,7 @@ class MyStoreActivity : ActivityBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        viewModel.getStores()
     }
 }
