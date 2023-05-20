@@ -1,36 +1,26 @@
 package `in`.koreatech.koin.ui.business.mystore.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.NumberPicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ConstTimePickerDialogFragmentBinding
 import `in`.koreatech.koin.ui.business.mystore.dialog.dialogFragmentResize
 import `in`.koreatech.koin.ui.business.mystore.viewmodel.MyStoreViewModel
 import java.text.DecimalFormat
 
-class MyStorePickerDialogFragment : DialogFragment() {
-    private var _binding: ConstTimePickerDialogFragmentBinding? = null
-    private val binding: ConstTimePickerDialogFragmentBinding get() = _binding!!
+class MyStorePickerDialogFragment : DialogFragment(R.layout.const_time_picker_dialog_fragment) {
+    private val binding by dataBinding<ConstTimePickerDialogFragmentBinding>()
     private val viewModel by activityViewModels<MyStoreViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setStyle(STYLE_NO_TITLE, R.style.MyStorePickerDialogStyle)
         isCancelable = true
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return ConstTimePickerDialogFragmentBinding.inflate(inflater, container, false).also {
-            _binding = it
-        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,14 +33,15 @@ class MyStorePickerDialogFragment : DialogFragment() {
         for (i in 0..55 step 5) {
             numbersMinutes.add(DecimalFormat("00").format(i))
         }
-        setNumberPickerNum(binding.startTimeHour, numbersHours)
-        setNumberPickerNum(binding.startTimeMinutes, numbersMinutes)
-        setNumberPickerNum(binding.endTimeHour, numbersHours)
-        setNumberPickerNum(binding.endTimeMinutes, numbersMinutes)
+        val openTime = viewModel.stores.value[0].openTime.toString().split(":")
+        val closeTime = viewModel.stores.value[0].closeTime.toString().split(":")
 
-        binding.closeTextview.setOnClickListener {
-            dismiss()
-        }
+        setNumberPickerNum(binding.startTimeHour, numbersHours, openTime[0].toInt())
+        setNumberPickerNum(binding.startTimeMinutes, numbersMinutes, openTime[1].toInt() / 5)
+        setNumberPickerNum(binding.endTimeHour, numbersHours, closeTime[0].toInt())
+        setNumberPickerNum(binding.endTimeMinutes, numbersMinutes, closeTime[1].toInt() / 5)
+
+        binding.closeTextview.setOnClickListener { dismiss() }
         binding.confirmTextview.setOnClickListener { }
     }
 
@@ -63,27 +54,15 @@ class MyStorePickerDialogFragment : DialogFragment() {
         )
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
-    private fun setNumberPickerNum(numberPicker: NumberPicker, numbers: List<String>) {
+    private fun setNumberPickerNum(numberPicker: NumberPicker, numbers: List<String>, setVal:Int) {
         with(numberPicker) {
             minValue = 0
             maxValue = numbers.size - 1
             wrapSelectorWheel = true
             displayedValues = numbers.toTypedArray()
+            value = setVal
         }
     }
 
-    companion object {
-        fun newInstance(): MyStorePickerDialogFragment {
-            val args = Bundle()
 
-            val fragment = MyStorePickerDialogFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }
