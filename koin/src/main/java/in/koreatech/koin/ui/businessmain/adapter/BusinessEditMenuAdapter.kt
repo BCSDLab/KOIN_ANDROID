@@ -1,20 +1,20 @@
 package `in`.koreatech.koin.ui.businessmain.adapter
 
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.data.entity.MenuItemEntity
 import `in`.koreatech.koin.databinding.EditBusinessMenuItemBinding
-import `in`.koreatech.koin.ui.businessmain.MenuItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class BusinessEditMenuAdapter(
-    private var menuList: MutableList<MenuItem>,
-    private val onClick: (Int) -> Unit
+    private var menuList: MutableList<MenuItemEntity>,
+    private val onClick: (Int) -> Unit,
 ) : RecyclerView.Adapter<BusinessEditMenuAdapter.ViewHolder>() {
 
     inner class ViewHolder(
-        private val binding: EditBusinessMenuItemBinding
+        private val binding: EditBusinessMenuItemBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             itemView.setOnClickListener {
@@ -26,7 +26,7 @@ class BusinessEditMenuAdapter(
             }
         }
 
-        fun bind(item: MenuItem) {
+        fun bind(item: MenuItemEntity) {
             with(binding) {
                 textViewMenuItem.text = item.title
                 Glide.with(itemView)
@@ -45,12 +45,13 @@ class BusinessEditMenuAdapter(
             }
         }
 
-        private fun toggleBackground(item: MenuItem) {
+        private fun toggleBackground(item: MenuItemEntity) {
             item.isSelected = !item.isSelected
 
             if (item.isSelected) {
                 with(binding) {
-                    constraintLayoutMenu.background = itemView.context.getDrawable(R.drawable.bg_f7941e_rectangle)
+                    constraintLayoutMenu.background =
+                        itemView.context.getDrawable(R.drawable.bg_f7941e_rectangle)
                     Glide.with(itemView)
                         .load(R.drawable.ic_circle_minus)
                         .fitCenter()
@@ -58,7 +59,8 @@ class BusinessEditMenuAdapter(
                 }
             } else {
                 with(binding) {
-                    constraintLayoutMenu.background = itemView.context.getDrawable(R.drawable.bg_dedede_rectangle)
+                    constraintLayoutMenu.background =
+                        itemView.context.getDrawable(R.drawable.bg_dedede_rectangle)
                     Glide.with(itemView)
                         .load(R.drawable.ic_circle_plus)
                         .fitCenter()
@@ -83,12 +85,7 @@ class BusinessEditMenuAdapter(
         return menuList.size
     }
 
-    fun setMenuList(newMenuList: List<MenuItem>) {
-        menuList = newMenuList.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    fun getSelectedItems(): List<MenuItem> {
+    fun getSelectedItems(): List<MenuItemEntity> {
         return menuList.filter { it.isSelected }
     }
 
