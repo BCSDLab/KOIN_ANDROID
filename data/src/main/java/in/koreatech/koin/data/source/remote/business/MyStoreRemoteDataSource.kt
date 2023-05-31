@@ -13,7 +13,7 @@ class MyStoreRemoteDataSource @Inject constructor(
     // api 연결
 ) {
     // TestItems -> OwnerShopResponse
-    fun getMyStoreItems(): List<TestItems>{
+    fun getMyStoreItems(): TestItems{
         val id: Int = 1
         val name: String = "가장 맛있는 족발"
         val phoneNumber: String? = "041-523-5849"
@@ -28,12 +28,12 @@ class MyStoreRemoteDataSource @Inject constructor(
         val isBankOk: Boolean = true
         val images: List<String>? = null
         val categories: List<Map<String, Any>>? = null
-        return listOf(TestItems(
+        return TestItems(
             id,
             name,
             phoneNumber,
             openTime, closeTime, dayOfHoliday, address, deliveryPrice, description, isDeliveryOk, isCardOk, isBankOk, images, categories
-        ))
+        )
 
     }
 }

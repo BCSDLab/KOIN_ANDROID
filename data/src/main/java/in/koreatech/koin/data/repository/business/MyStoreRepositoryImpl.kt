@@ -9,9 +9,7 @@ import javax.inject.Inject
 class MyStoreRepositoryImpl @Inject constructor(
     private val myStoreRemoteDataSource: MyStoreRemoteDataSource
 ):MyStoreRepository {
-    override suspend fun getMyStores(): List<MyStore> {
-        return myStoreRemoteDataSource.getMyStoreItems().map {
-            it.toMyStore()
-        }
+    override suspend fun getMyStores(): MyStore {
+        return myStoreRemoteDataSource.getMyStoreItems().toMyStore()
     }
 }

@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetMyStoreUseCase @Inject constructor(
     private val myStoreRepository: MyStoreRepository
 ) {
-    suspend fun testUseCase(): List<MyStore>{
+    suspend fun testUseCase(): MyStore{
         return myStoreRepository.getMyStores()
     }
 }
