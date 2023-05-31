@@ -10,6 +10,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.MystoreEditConstTimeFragmentBinding
 import `in`.koreatech.koin.ui.business.mystore.viewmodel.MyStoreViewModel
+import `in`.koreatech.koin.util.ext.observeLiveData
 
 class MyStoreEditConstTimeFragment : Fragment(R.layout.mystore_edit_const_time_fragment) {
     private val binding by dataBinding<MystoreEditConstTimeFragmentBinding>()
@@ -18,12 +19,23 @@ class MyStoreEditConstTimeFragment : Fragment(R.layout.mystore_edit_const_time_f
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mondayTimeTextview.setOnClickListener { MyStorePickerDialogFragment().show(parentFragmentManager, CONST_TIME_DIALOG_TAG) }
+        observeData()
+        onClickCheckBox()
+    }
 
-        when(viewModel.stores.value[0].dayOfHoliday){
-            MONDAY -> {
-                binding.mondayClickCheckBox.isChecked = true
-                binding.mondayTimeTextview.text = "${viewModel.stores.value[0].openTime} ~ ${viewModel.stores.value[0].closeTime}"
+    private fun onClickCheckBox(){
+        binding.mondayTimeTextview.setOnClickListener { MyStorePickerDialogFragment().show(parentFragmentManager, CONST_TIME_DIALOG_TAG) }
+    }
+
+    private fun observeData(){
+        observeLiveData(viewModel.stores){
+            when (it.dayOfHoliday){
+                MONDAY -> {
+                    with(binding){
+                        mondayClickCheckBox.isChecked = true
+                        mondayTimeTextview.text = "${it.openTime} ~ ${it.closeTime}"
+                    }
+                }
             }
         }
     }

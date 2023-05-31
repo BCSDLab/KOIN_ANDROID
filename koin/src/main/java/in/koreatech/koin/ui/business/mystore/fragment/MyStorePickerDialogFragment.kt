@@ -33,8 +33,8 @@ class MyStorePickerDialogFragment : DialogFragment(R.layout.const_time_picker_di
         for (i in 0..55 step 5) {
             numbersMinutes.add(DecimalFormat("00").format(i))
         }
-        val openTime = viewModel.stores.value[0].openTime.toString().split(":")
-        val closeTime = viewModel.stores.value[0].closeTime.toString().split(":")
+        val openTime = viewModel.stores.value?.openTime.toString().split(":")
+        val closeTime = viewModel.stores.value?.closeTime.toString().split(":")
 
         setNumberPickerNum(binding.startTimeHour, numbersHours, openTime[0].toInt())
         setNumberPickerNum(binding.startTimeMinutes, numbersMinutes, openTime[1].toInt() / 5)
@@ -42,7 +42,7 @@ class MyStorePickerDialogFragment : DialogFragment(R.layout.const_time_picker_di
         setNumberPickerNum(binding.endTimeMinutes, numbersMinutes, closeTime[1].toInt() / 5)
 
         binding.closeTextview.setOnClickListener { dismiss() }
-        binding.confirmTextview.setOnClickListener { }
+        binding.confirmTextview.setOnClickListener {  }
     }
 
     override fun onResume() {

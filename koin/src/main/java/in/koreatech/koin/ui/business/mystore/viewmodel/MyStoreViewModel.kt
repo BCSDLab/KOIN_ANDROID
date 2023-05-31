@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.business.mystore.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
@@ -21,10 +23,13 @@ import javax.inject.Inject
 class MyStoreViewModel @Inject constructor(
     private val getMyStoreUseCase: GetMyStoreUseCase
 ): BaseViewModel() {
-    private val _stores = MutableStateFlow<List<MyStore>>(emptyList())
-    val stores: StateFlow<List<MyStore>> = _stores.asStateFlow()
+    private val _stores = MutableLiveData<MyStore>()
+    val stores: LiveData<MyStore> = _stores
 
-    fun getStores(){
+    init {
+        getStores()
+    }
+    private fun getStores(){
         viewModelScope.launch {
             _stores.value = getMyStoreUseCase.testUseCase()
         }

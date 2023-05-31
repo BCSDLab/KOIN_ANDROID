@@ -19,6 +19,6 @@ class MyStoreActivity : ActivityBase() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        viewModel.getStores()
+        viewModel
     }
 }
