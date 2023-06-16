@@ -3,7 +3,7 @@ package `in`.koreatech.koin.ui.bus.fragment
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
-import `in`.koreatech.koin.databinding.BusMainFragmentNewBinding
+import `in`.koreatech.koin.databinding.BusMainFragmentBinding
 import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.busNodeSelection
 import `in`.koreatech.koin.domain.model.bus.spinnerSelection
@@ -13,21 +13,22 @@ import `in`.koreatech.koin.ui.bus.state.toCityBusRemainTimeUiState
 import `in`.koreatech.koin.ui.bus.state.toExpressBusRemainTimeUiState
 import `in`.koreatech.koin.ui.bus.state.toShuttleBusRemainTimeUiState
 import `in`.koreatech.koin.ui.bus.viewmodel.BusMainFragmentViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
 import `in`.koreatech.koin.util.ext.withLoading
 import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.util.dataBinding
 
 @AndroidEntryPoint
-class BusMainFragment : DataBindingFragment<BusMainFragmentNewBinding>() {
-    override val layoutId: Int = R.layout.bus_main_fragment_new
+class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
+    private val binding by dataBinding<BusMainFragmentBinding>()
 
     private val viewModel by viewModels<BusMainFragmentViewModel>()
 

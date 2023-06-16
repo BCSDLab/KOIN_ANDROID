@@ -15,6 +15,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.domain.model.user.User
 
 @AndroidEntryPoint
 class UserInfoEditActivity : KoinNavigationDrawerActivity() {
@@ -57,6 +58,10 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
         )
 
+        userinfoeditedEdittextName.addTextChangedListener {
+            userInfoEditViewModel
+        }
+
         userinfoeditedEdittextStudentId.addTextChangedListener {
             userInfoEditViewModel.getDept(it.toString())
         }
@@ -71,69 +76,69 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             withLoading(this@UserInfoEditActivity, this)
 
             observeLiveData(user) { user ->
-                if (user != null) {
-                    with(binding) {
-                        userinfoeditedTextviewId.text =
-                            getString(R.string.koreatech_email_postfix, user.portalAccount)
-                        userinfoeditedTextviewAnonymousNickName.text = user.anonymousNickname
-
-                        userinfoeditedEdittextName.apply {
-                            setText(user.name)
-
-                            if (user.name.isNullOrEmpty()) {
-                                isEnabled = true
-                                setDefaultBackground()
-                            } else {
-                                isEnabled = false
-                                setTransparentBackground()
-                            }
-                        }
-
-                        userinfoeditedEdittextNickName.setText(user.nickname)
-
-                        if (user.phoneNumber.isNullOrEmpty()) {
-                            userinfoeditedEdittextPhoneNum1.setText("")
-                            userinfoeditedEdittextPhoneNum2.setText("")
-                            userinfoeditedEdittextPhoneNum3.setText("")
-                        } else {
-                            val (first, middle, end) = user.phoneNumber!!.splitPhoneNumber()
-                            userinfoeditedEdittextPhoneNum1.setText(first)
-                            userinfoeditedEdittextPhoneNum2.setText(middle)
-                            userinfoeditedEdittextPhoneNum3.setText(end)
-                        }
-
-                        when (user.gender) {
-                            Gender.Man -> userinfoeditedRadiobuttonGenderMan.isChecked = true
-                            Gender.Woman -> userinfoeditedRadiobuttonGenderMan.isChecked = true
-                            else -> {
-                                userinfoeditedRadiobuttonGenderMan.isChecked = false
-                                userinfoeditedRadiobuttonGenderMan.isChecked = false
-                            }
-                        }
-
-                        userinfoeditedEdittextStudentId.apply {
-                            setText(user.studentNumber)
-                            if (user.studentNumber == null || user.studentNumber?.isEmpty() == false) {
-                                isEnabled = true
-                                setDefaultBackground()
-                                userinfoeditedEdittextMajor.setText("")
-                            } else {
-                                isEnabled = false
-                                setTransparentBackground()
-                                userInfoEditViewModel.getDept(user.studentNumber!!)
-                            }
-                        }
-
-                        userinfoeditedEdittextMajor.apply {
-                            isEnabled = false
-                            hint = context.getString(R.string.user_info_id_hint)
-                        }
+                when(user) {
+                    User.Anonymous -> {
+                        ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
+                        finish()
                     }
+                    is User.Student ->
+                        with(binding) {
+                            userinfoeditedTextviewId.text =
+                                getString(R.string.koreatech_email_postfix, user.portalAccount)
+                            userinfoeditedTextviewAnonymousNickName.text = user.anonymousNickname
 
+                            userinfoeditedEdittextName.apply {
+                                setText(user.name)
 
-                } else {
-                    ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
-                    finish()
+                                if (user.name.isNullOrEmpty()) {
+                                    isEnabled = true
+                                    setDefaultBackground()
+                                } else {
+                                    isEnabled = false
+                                    setTransparentBackground()
+                                }
+                            }
+
+                            userinfoeditedEdittextNickName.setText(user.nickname)
+
+                            if (user.phoneNumber.isNullOrEmpty()) {
+                                userinfoeditedEdittextPhoneNum1.setText("")
+                                userinfoeditedEdittextPhoneNum2.setText("")
+                                userinfoeditedEdittextPhoneNum3.setText("")
+                            } else {
+                                val (first, middle, end) = user.phoneNumber!!.splitPhoneNumber()
+                                userinfoeditedEdittextPhoneNum1.setText(first)
+                                userinfoeditedEdittextPhoneNum2.setText(middle)
+                                userinfoeditedEdittextPhoneNum3.setText(end)
+                            }
+
+                            when (user.gender) {
+                                Gender.Man -> userinfoeditedRadiobuttonGenderMan.isChecked = true
+                                Gender.Woman -> userinfoeditedRadiobuttonGenderWoman.isChecked = true
+                                else -> {
+                                    userinfoeditedRadiobuttonGenderMan.isChecked = false
+                                    userinfoeditedRadiobuttonGenderWoman.isChecked = false
+                                }
+                            }
+
+                            userinfoeditedEdittextStudentId.apply {
+                                setText(user.studentNumber)
+                                if (user.studentNumber == null || user.studentNumber?.isEmpty() == false) {
+                                    isEnabled = true
+                                    setDefaultBackground()
+                                    userinfoeditedEdittextMajor.setText("")
+                                } else {
+                                    isEnabled = false
+                                    setTransparentBackground()
+                                    userInfoEditViewModel.getDept(user.studentNumber!!)
+                                }
+                            }
+
+                            userinfoeditedEdittextMajor.apply {
+                                isEnabled = false
+                                hint = context.getString(R.string.user_info_id_hint)
+                            }
+                        }
                 }
             }
 

@@ -9,6 +9,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,30 +20,26 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase
 ) : BaseViewModel() {
 
-    private val _userState = MutableLiveData<UserState>()
-    val userState: LiveData<UserState> get() = _userState
-    val isAnonymous get() = userState.value?.let { (user, isAnonymous) ->
-        isAnonymous || user == null
-    } ?: true
+    private val _userState = MutableLiveData<User>()
+    val userState: LiveData<User> get() = _userState
 
     private val _getUserInfoErrorMessage = SingleLiveEvent<String>()
     val getUserInfoErrorMessage: LiveData<String> get() = _getUserInfoErrorMessage
 
     private val _selectedMenu = MutableLiveData<MenuState>(MenuState.Main)
-    val selectedMenu : LiveData<MenuState> get() = _selectedMenu
+    val selectedMenu: LiveData<MenuState> get() = _selectedMenu
 
     private val _menuEvent = SingleLiveEvent<MenuState>()
-    val menuEvent : LiveData<MenuState> get() = _menuEvent
+    val menuEvent: LiveData<MenuState> get() = _menuEvent
 
     fun getUser() {
         viewModelScope.launch {
-            getUserInfoUseCase().let { (user, error) ->
-                if (error != null) {
-                    _getUserInfoErrorMessage.value = error.message
-                } else {
-                    _userState.value = user?.let { UserState.user(it) } ?: UserState.anonymous
+            getUserInfoUseCase()
+                .onSuccess {
+                    _userState.value = it
+                }.onFailure {
+                    _getUserInfoErrorMessage.value = it.message
                 }
-            }
         }
     }
 

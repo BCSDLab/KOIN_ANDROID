@@ -1,19 +1,17 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.R
-import `in`.koreatech.koin.data.constant.BUS_RESPONSE_TIME_FORMAT
 import `in`.koreatech.koin.data.response.bus.*
 import `in`.koreatech.koin.data.util.nowTime
-import `in`.koreatech.koin.domain.model.bus.*
+import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import `in`.koreatech.koin.domain.model.bus.toBusDirection
+import `in`.koreatech.koin.domain.model.bus.toBusType
 import android.content.Context
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
     busType = busType.toBusType(),
@@ -51,60 +49,80 @@ fun List<CityBusRouteResponse>.toCityBusRoute(): BusRoute.CityBusRoute {
     )
 }
 
-fun BusResponse.toShuttleBusArrivalInfo() = nowTime.let { time ->
-    BusArrivalInfo.ShuttleBusArrivalInfo(
-        nowBusRemainTime = nowBus?.remainTimeSecond,
+fun BusResponse.toShuttleBusArrivalInfo(
+    departure: BusNode,
+    arrival: BusNode
+): BusArrivalInfo.ShuttleBusArrivalInfo {
+    val time = nowTime
+    val nowBusRemainTimeSecond = nowBus?.remainTimeSecond
+    val nextBusRemainTimeSecond = nextBus?.remainTimeSecond
+
+    return BusArrivalInfo.ShuttleBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
+        nowBusRemainTime = nowBusRemainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
-        nowBusArrivalTime = nowBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
-        nextBusArrivalTime = nextBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
+        nowBusArrivalTime = nowBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
+        nextBusArrivalTime = nextBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
         criteria = time
     )
 }
 
 
-fun BusResponse.toCommutingBusRemainTimePair() = nowTime.let { time ->
-    BusArrivalInfo.CommutingBusArrivalInfo(
-        nowBusRemainTime = nowBus?.remainTimeSecond,
+fun BusResponse.toCommutingBusRemainTimePair(
+    departure: BusNode,
+    arrival: BusNode
+): BusArrivalInfo.CommutingBusArrivalInfo {
+    val time = nowTime
+    val nowBusRemainTimeSecond = nowBus?.remainTimeSecond
+    val nextBusRemainTimeSecond = nextBus?.remainTimeSecond
+
+    return BusArrivalInfo.CommutingBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
+        nowBusRemainTime = nowBusRemainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
-        nowBusArrivalTime = nowBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
-        nextBusArrivalTime = nextBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
+        nowBusArrivalTime = nowBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
+        nextBusArrivalTime = nextBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
         criteria = time
     )
 }
 
-fun BusResponse.toExpressBusRemainTimePair() = nowTime.let { time ->
-    BusArrivalInfo.ExpressBusArrivalInfo(
-        nowBusRemainTime = nowBus?.remainTimeSecond,
+fun BusResponse.toExpressBusRemainTimePair(
+    departure: BusNode,
+    arrival: BusNode
+): BusArrivalInfo.ExpressBusArrivalInfo {
+    val time = nowTime
+    val nowBusRemainTimeSecond = nowBus?.remainTimeSecond
+    val nextBusRemainTimeSecond = nextBus?.remainTimeSecond
+
+    return BusArrivalInfo.ExpressBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
+        nowBusRemainTime = nowBusRemainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
-        nowBusArrivalTime = nowBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
-        nextBusArrivalTime = nextBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
+        nowBusArrivalTime = nowBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
+        nextBusArrivalTime = nextBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
         criteria = time
     )
 }
 
-fun BusResponse.toCityBusRemainTimePair() = nowTime.let { time ->
-    BusArrivalInfo.CityBusArrivalInfo(
-        nowBusRemainTime = nowBus?.remainTimeSecond,
+fun BusResponse.toCityBusRemainTimePair(
+    departure: BusNode,
+    arrival: BusNode
+): BusArrivalInfo.CityBusArrivalInfo {
+    val time = nowTime
+    val nowBusRemainTimeSecond = nowBus?.remainTimeSecond
+    val nextBusRemainTimeSecond = nextBus?.remainTimeSecond
+
+    return BusArrivalInfo.CityBusArrivalInfo(
+        departure = departure,
+        arrival = arrival,
+        nowBusRemainTime = nowBusRemainTimeSecond,
         nextBusRemainTime = nextBus?.remainTimeSecond,
-        nowBusArrivalTime = nowBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
-        nextBusArrivalTime = nextBus?.let {
-            time.plusSeconds(it.remainTimeSecond).plusMinutes(1)
-        },
-        busNumber = nowBus?.busNumber,
+        nowBusArrivalTime = nowBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
+        nextBusArrivalTime = nextBusRemainTimeSecond?.let { time.plusSeconds(it).plusMinutes(1) },
+        busNumber = nowBus?.busNumber ?: 0,
         criteria = time
     )
 }

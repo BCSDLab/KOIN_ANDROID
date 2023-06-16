@@ -30,7 +30,6 @@ class ExpressBusTimetableViewModel @Inject constructor(
     private val _busCoursesString = MutableLiveData<List<String>>()
     private val _busTimetables = MutableLiveData<List<BusNodeInfo.ExpressNodeInfo>>()
     private val _selectedCoursesPosition = MutableLiveData(0)
-    private val _selectedRoutesPosition = MutableLiveData(0)
 
     val busCoursesString: LiveData<List<String>> get() = _busCoursesString
     val busTimetables: LiveData<List<BusNodeInfo.ExpressNodeInfo>> get() = _busTimetables

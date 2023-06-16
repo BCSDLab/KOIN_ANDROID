@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.error.dept.DeptErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
+import `in`.koreatech.koin.domain.util.deptCode
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
 
@@ -16,7 +17,7 @@ class GetDeptNameFromStudentIdUseCase @Inject constructor(
         if(!studentId.isValidStudentId) return "" to null
 
         return try {
-            deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6)) to null
+            deptRepository.getDeptNameFromDeptCode(studentId.deptCode) to null
         } catch (t: Throwable) {
             null to deptErrorHandler.getDeptNameFromDeptCodeError(t)
         }

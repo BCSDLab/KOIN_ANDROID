@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
+import javax.naming.Context
 
 object DiningUtil {
     private val diningEndTime = listOf("09:00", "13:30", "18:30")
