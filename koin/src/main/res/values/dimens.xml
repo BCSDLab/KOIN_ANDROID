@@ -8,4 +8,7 @@
 
     <dimen name="widget_margin_timetable">2dp</dimen>
     <dimen name="widget_margin">0dp</dimen>
+
+    <dimen name="view_pager_next_item_visible_dp">24dp</dimen>
+    <dimen name="view_pager_item_margin">40dp</dimen>
 </resources>
