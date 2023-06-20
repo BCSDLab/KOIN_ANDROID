@@ -7,17 +7,16 @@ import `in`.koreatech.koin.core.network.RetrofitManager
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.sharedpreference.UserInfoSharedPreferencesHelper
 import `in`.koreatech.koin.domain.state.version.VersionUpdatePriority
-import `in`.koreatech.koin.ui.main.MainActivity
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.splash.viewmodel.SplashViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.widget.Button
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
@@ -76,11 +75,7 @@ class SplashActivity : ActivityBase() {
         }
 
         observeLiveData(tokenState) {
-            when(it) {
-                TokenState.Invalid -> gotoLoginActivityOrDelay()
-                TokenState.NotFound -> gotoLoginActivityOrDelay()
-                TokenState.Valid -> gotoMainActivityOrDelay()
-            }
+            gotoMainActivityOrDelay()
         }
     }
 

@@ -2,12 +2,14 @@ package in.koreatech.koin.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import android.provider.Settings;
 import android.view.View;
 
 
@@ -27,6 +29,23 @@ public class SnackbarUtil {
 
     public static void makeLongSnackbar(View view, String message) {
         Snackbar.make(view, message, 5000).show();
+    }
+
+    public static void makePermissionSnackBar(View view, String message) {
+        snackbar = Snackbar.make(view, message, LENGTH_LONG);
+
+        snackbar.setAction("설정", v -> {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", view.getContext().getPackageName(), null);
+            intent.setData(uri);
+            view.getContext().startActivity(intent);
+        });
+
+        View snackbarView = snackbar.getView();
+        snackbar.setActionTextColor(ResourcesCompat.getColor(view.getResources(), R.color.white, null));
+        snackbarView.setBackgroundColor(ResourcesCompat.getColor(view.getResources(), R.color.colorAccent, null));
+
+        snackbar.show();
     }
 
     public static void makeLongSnackbarActionYes(View view, String message) {

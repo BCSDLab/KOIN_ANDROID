@@ -17,6 +17,20 @@ import javax.inject.Inject
 class UserErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserErrorHandler {
+    override fun handleGetTokenError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when(it) {
+                is HttpException -> {
+                    when(it.code()) {
+                        401 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
+                        else -> ErrorHandler(context.getString(R.string.error_network))
+                    }
+                }
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
+            }.withUnknown(context)
+        }
+    }
+
     override fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when(it) {
@@ -24,11 +38,11 @@ class UserErrorHandlerImpl @Inject constructor(
                     when(it.code()) {
                         404 -> ErrorHandler(context.getString(R.string.error_forgotpassword_no_user))
                         422 -> ErrorHandler(context.getString(R.string.error_forgotpassword_invalid_id))
-                        else -> null
+                        else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
                 is IllegalArgumentException -> ErrorHandler(context.getString(R.string.error_forgotpassword_no_input))
-                else -> null
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
             }.withUnknown(context)
         }
     }

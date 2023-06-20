@@ -8,10 +8,10 @@ import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
-import `in`.koreatech.koin.ui.main.MainActivity
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
-import `in`.koreatech.koin.ui.store.StoreActivity
+import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
@@ -21,16 +21,18 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
-import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
@@ -41,6 +43,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
+
+    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
 
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(drawerLayoutId)
@@ -120,6 +124,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToNavigationDeveloper()
         }
 
+        val askButton = findViewById<Button>(R.id.button_ask)
+        askButton.setOnClickListener {
+            gotoAskForm.launch(Unit)
+        }
+
         initDrawerViewModel()
         koinNavigationDrawerViewModel.getUser()
         koinNavigationDrawerViewModel.initMenu(menuState)
@@ -150,12 +159,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
-        observeLiveData(userState) { (user, _) ->
+        observeLiveData(userState) { user ->
             val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
-            if (isAnonymous) {
-                nameTextview.text = "익명"
-            } else {
-                nameTextview.text = user!!.name
+            when (user) {
+                User.Anonymous -> nameTextview.text = "익명"
+                is User.Student -> nameTextview.text = user.name
             }
         }
 
@@ -176,17 +184,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
-                MenuState.Timetable -> if (isAnonymous) {
-                    goToAnonymousTimeTableActivity()
-                } else {
-                    goToTimetableActivty()
+                MenuState.Timetable -> {
+                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                        goToAnonymousTimeTableActivity()
+                    } else {
+                        goToTimetableActivty()
+                    }
                 }
-                MenuState.UserInfo -> if (isAnonymous) {
-                    showLoginRequestDialog()
-                } else {
-                    goToUserInfoActivity()
+                MenuState.UserInfo -> {
+                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                        showLoginRequestDialog()
+                    } else {
+                        goToUserInfoActivity()
+                    }
                 }
-
             }
             drawerLayout.closeDrawer()
         }
@@ -246,7 +257,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToStoreActivity() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, StoreActivity::class.java))
         } else {
             startActivity(Intent(this, StoreActivity::class.java))
@@ -254,7 +265,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToDiningActivity() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, DiningActivity::class.java))
         } else {
             startActivity(Intent(this, DiningActivity::class.java))
@@ -262,7 +273,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToBusActivity() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, BusActivity::class.java))
         } else {
             startActivity(Intent(this, BusActivity::class.java))
@@ -273,7 +284,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         val intent = Intent(this, StoreActivity::class.java)
         intent.putExtras(bundle!!)
 
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(intent)
         } else {
             startActivity(intent)
@@ -284,7 +295,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         val intent = Intent(this, BusActivity::class.java)
         intent.putExtras(bundle!!)
 
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(intent)
         } else {
             startActivity(intent)
@@ -292,7 +303,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToTimetableActivty() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, TimetableActivity::class.java))
         } else {
             startActivity(Intent(this, TimetableActivity::class.java))
@@ -300,7 +311,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToLandActivity() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, LandActivity::class.java))
         } else {
             startActivity(Intent(this, LandActivity::class.java))
@@ -308,7 +319,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToAnonymousTimeTableActivity() {
-        if(menuState != MenuState.Main) {
+        if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, TimetableAnonymousActivity::class.java))
         } else {
             startActivity(Intent(this, TimetableAnonymousActivity::class.java))
@@ -352,7 +363,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun goToNavigationDeveloper() {
         val intent = Intent(this, WebViewActivity::class.java)
-        intent.putExtra("title", "BCSD 홈페이지")
+        intent.putExtra("title", getString(R.string.bcsd_webpage_name))
         intent.putExtra("url", "https://bcsdlab.com/")
         startActivity(intent)
     }

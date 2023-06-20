@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.error.user
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 
 interface UserErrorHandler {
+    fun handleGetTokenError(throwable: Throwable): ErrorHandler
     fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler
     fun handleGetUserInfoError(throwable: Throwable): ErrorHandler
     fun handleDeleteUserError(throwable: Throwable): ErrorHandler
