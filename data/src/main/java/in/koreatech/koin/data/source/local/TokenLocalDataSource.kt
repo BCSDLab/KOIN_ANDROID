@@ -28,31 +28,38 @@ class TokenLocalDataSource @Inject constructor(
         accessToken: String
     ) = withContext(Dispatchers.IO) {
         with(sharedPreferences.edit()) {
-            putString(SHARED_PREF_KEY, accessToken)
+            putString(SHARED_PREF_ACCESS_TOKEN, accessToken)
             apply()
         }
     }
 
     suspend fun saveRefreshToken(
-        accessToken: String
+        refreshToken: String?
     ) = withContext(Dispatchers.IO) {
         with(sharedPreferences.edit()) {
-            putString(SHARED_PREF_KEY, accessToken)
+            putString(SHARED_PREF_REFRESH_TOKEN, refreshToken)
             apply()
         }
     }
 
     suspend fun getAccessToken(): String? = withContext(Dispatchers.IO) {
-        sharedPreferences.getString(SHARED_PREF_KEY, null)
+        sharedPreferences.getString(SHARED_PREF_ACCESS_TOKEN, null)
     }
 
     suspend fun getRefreshToken(): String? = withContext(Dispatchers.IO) {
-        sharedPreferences.getString(SHARED_PREF_KEY, null)
+        sharedPreferences.getString(SHARED_PREF_REFRESH_TOKEN, null)
     }
 
     suspend fun removeAccessToken() = withContext(Dispatchers.IO) {
         with(sharedPreferences.edit()) {
-            remove(SHARED_PREF_KEY)
+            remove(SHARED_PREF_ACCESS_TOKEN)
+            apply()
+        }
+    }
+
+    suspend fun removeRefreshToken() = withContext(Dispatchers.IO) {
+        with(sharedPreferences.edit()) {
+            remove(SHARED_PREF_REFRESH_TOKEN)
             apply()
         }
     }
@@ -60,6 +67,7 @@ class TokenLocalDataSource @Inject constructor(
     companion object {
         private const val SHARED_PREF_FILENAME = "token"
 
-        private const val SHARED_PREF_KEY = "accessToken"
+        private const val SHARED_PREF_ACCESS_TOKEN = "accessToken"
+        private const val SHARED_PREF_REFRESH_TOKEN = "accessToken"
     }
 }

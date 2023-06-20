@@ -12,7 +12,8 @@ class UserLogoutUseCase @Inject constructor(
 ){
     suspend operator fun invoke() : ErrorHandler? {
         return try {
-            tokenRepository.removeToken()
+            tokenRepository.removeAccessToken()
+            tokenRepository.removeRefreshToken()
             null
         } catch (t: Throwable) {
             tokenErrorHandler.handleLogoutError(t)

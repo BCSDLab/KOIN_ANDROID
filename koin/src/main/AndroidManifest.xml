@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="in.koreatech.koin">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <meta-data
         android:name="firebase_crashlytics_collection_enabled"
         android:value="false" />
@@ -45,7 +52,8 @@
             android:name=".ui.bus.BusWidget"
             android:exported="false"
             android:label="@string/navigation_item_bus">
-            <intent-filter>
+            <intent-filter
+                android:exported="false">
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 

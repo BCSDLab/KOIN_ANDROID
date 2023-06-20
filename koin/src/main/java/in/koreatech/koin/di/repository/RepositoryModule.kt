@@ -24,9 +24,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideTokenRepository(
-        tokenLocalDataSource: TokenLocalDataSource
+        tokenLocalDataSource: TokenLocalDataSource,
+        userRemoteDataSource: UserRemoteDataSource
     ) : TokenRepository {
-        return TokenRepositoryImpl(tokenLocalDataSource)
+        return TokenRepositoryImpl(tokenLocalDataSource, userRemoteDataSource)
     }
 
     @Provides

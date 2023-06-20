@@ -3,6 +3,8 @@ package `in`.koreatech.koin.data.api
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.RefreshTokenRequest
+import `in`.koreatech.koin.data.response.AccessTokenResponse
 import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CheckNicknameResponse
 import `in`.koreatech.koin.data.response.user.DefaultResponse

@@ -1,22 +1,19 @@
 package `in`.koreatech.koin.di.network
 
-import `in`.koreatech.koin.core.qualifier.Auth
-import `in`.koreatech.koin.core.qualifier.ServerUrl
-import `in`.koreatech.koin.data.api.auth.UserAuthApi
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.util.TokenAuthenticator
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.core.qualifier.Refresh
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
-import `in`.koreatech.koin.domain.usecase.token.RefreshAccessTokenUseCase
+import `in`.koreatech.koin.core.qualifier.ServerUrl
+import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.util.TokenAuthenticator
 import `in`.koreatech.koin.util.ext.newRequest
 import `in`.koreatech.koin.util.ext.putAccessToken
-import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -25,11 +22,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthNetworkModule {
-    @Auth
+object RefreshNetworkModule {
+    @Refresh
     @Provides
     @Singleton
     fun provideAuthInterceptor(
@@ -46,22 +44,12 @@ object AuthNetworkModule {
         }
     }
 
-    @Auth
-    @Provides
-    @Singleton
-    fun provideTokenAuthenticator(
-        @ApplicationContext applicationContext: Context,
-        tokenLocalDataSource: TokenLocalDataSource,
-        @Refresh userAuthApi: UserAuthApi
-    ) = TokenAuthenticator(applicationContext, tokenLocalDataSource, userAuthApi)
-
-    @Auth
+    @Refresh
     @Provides
     @Singleton
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        @Auth authInterceptor: Interceptor,
-        @Auth tokenAuthenticator: TokenAuthenticator
+        @Refresh authInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
@@ -69,16 +57,15 @@ object AuthNetworkModule {
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
-            authenticator(tokenAuthenticator)
         }.build()
     }
 
-    @Auth
+    @Refresh
     @Provides
     @Singleton
     fun provideAuthRetrofit(
         @ServerUrl baseUrl: String,
-        @Auth okHttpClient: OkHttpClient
+        @Refresh okHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
@@ -87,11 +74,12 @@ object AuthNetworkModule {
             .build()
     }
 
-    /* Auth retrofit instances below */
+    /* Auth(for refresh) retrofit instances below */
+    @Refresh
     @Provides
     @Singleton
     fun provideUserAuthApi(
-        @Auth retrofit: Retrofit
+        @Refresh retrofit: Retrofit
     ) : UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
     }
