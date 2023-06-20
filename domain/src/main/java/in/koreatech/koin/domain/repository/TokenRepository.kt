@@ -9,6 +9,4 @@ interface TokenRepository {
     fun getAccessTokenBlocking(): String?
     suspend fun removeAccessToken()
     suspend fun removeRefreshToken()
-
-    suspend fun refreshAccessToken(): String
 }

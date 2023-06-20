@@ -25,7 +25,4 @@ interface UserAuthApi {
 
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     suspend fun checkNickName(): UserInfoEditResponse
-
-    @POST(URLConstant.USER.REFRESH)
-    suspend fun refreshAccessToken(@Body refreshTokenRequest: RefreshTokenRequest): AccessTokenResponse
 }

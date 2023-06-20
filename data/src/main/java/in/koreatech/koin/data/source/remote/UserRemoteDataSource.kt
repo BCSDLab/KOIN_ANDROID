@@ -46,9 +46,4 @@ class UserRemoteDataSource(
     suspend fun updateUser(userRequest: UserRequest): UserResponse {
         return userAuthApi.putUser(userRequest)
     }
-
-    suspend fun refreshAccessToken(refreshToken: String): String {
-        val request = RefreshTokenRequest(refreshToken)
-        return userAuthApi.refreshAccessToken(request).accessToken
-    }
 }

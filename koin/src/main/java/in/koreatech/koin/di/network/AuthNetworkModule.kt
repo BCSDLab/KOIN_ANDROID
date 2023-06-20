@@ -12,8 +12,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Refresh
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
-import `in`.koreatech.koin.domain.usecase.token.RefreshAccessTokenUseCase
+import `in`.koreatech.koin.data.api.refresh.UserRefreshApi
 import `in`.koreatech.koin.util.ext.newRequest
 import `in`.koreatech.koin.util.ext.putAccessToken
 import javax.inject.Singleton
@@ -52,8 +51,8 @@ object AuthNetworkModule {
     fun provideTokenAuthenticator(
         @ApplicationContext applicationContext: Context,
         tokenLocalDataSource: TokenLocalDataSource,
-        @Refresh userAuthApi: UserAuthApi
-    ) = TokenAuthenticator(applicationContext, tokenLocalDataSource, userAuthApi)
+        @Refresh userRefreshApi: UserRefreshApi
+    ) = TokenAuthenticator(applicationContext, tokenLocalDataSource, userRefreshApi)
 
     @Auth
     @Provides

@@ -1,65 +1,65 @@
 package `in`.koreatech.koin.util
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.ui.login.LoginActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
-import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.data.api.refresh.UserRefreshApi
 import `in`.koreatech.koin.data.request.user.RefreshTokenRequest
-import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
-import `in`.koreatech.koin.domain.usecase.token.RefreshAccessTokenUseCase
-import javax.inject.Inject
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.ui.login.LoginActivity
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import java.net.HttpURLConnection
+import javax.inject.Inject
 
 class TokenAuthenticator @Inject constructor(
     @ApplicationContext private val context: Context,
     private val tokenLocalDataSource: TokenLocalDataSource,
-    private val userAuthApi: UserAuthApi
+    private val userRefreshApi: UserRefreshApi
 ) : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
-        val request = try {
-            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) return@runBlocking null
+    override fun authenticate(route: Route?, response: Response): Request? {
+        try {
+            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) return null
 
-            val refreshToken = tokenLocalDataSource.getRefreshToken()
+            val refreshToken = runBlocking { tokenLocalDataSource.getRefreshToken() }
             if(refreshToken == null) {
                 goToLoginActivity()
-                return@runBlocking null
+                return null
             }
 
-            val newAccessToken = userAuthApi.refreshAccessToken(RefreshTokenRequest(refreshToken)).accessToken
-            tokenLocalDataSource.saveAccessToken(newAccessToken)
+            val newAccessToken = runBlocking {
+                userRefreshApi.refreshAccessToken(RefreshTokenRequest(refreshToken)).accessToken
+            }
+            runBlocking {
+                tokenLocalDataSource.saveAccessToken(newAccessToken)
+            }
 
             if ("Bearer $newAccessToken" == response.request().header("Authorization")) {
-                tokenLocalDataSource.removeAccessToken()
+                runBlocking {
+                    tokenLocalDataSource.removeAccessToken()
+                }
                 goToLoginActivity()
-                return@runBlocking null
+                return null
             }
 
-            getRequest(response, newAccessToken)
+            return getRequest(response, newAccessToken)
         } catch (e: Exception) {
             goToLoginActivity()
-            null
+            return null
         }
-
-        request
     }
 
     private fun getRequest(response: Response, token: String): Request {
         return response.request()
             .newBuilder()
-            .removeHeader("Authorization")
-            .addHeader("Authorization", "Bearer $token")
+            .header("Authorization", "Bearer $token")
             .build()
     }
 

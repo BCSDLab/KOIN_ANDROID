@@ -39,10 +39,4 @@ class TokenRepositoryImpl @Inject constructor(
     override suspend fun removeRefreshToken() {
         tokenLocalDataSource.removeRefreshToken()
     }
-
-    override suspend fun refreshAccessToken(): String {
-        return userRemoteDataSource.refreshAccessToken(
-            getRefreshToken() ?: throw NullPointerException("Refresh token is null")
-        )
-    }
 }
