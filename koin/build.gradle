@@ -139,7 +139,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
 
     implementation project.hiltAndroid
+    implementation project.hiltWork
     kapt project.hiltCompiler
+    kapt project.hiltWork
 
 }
 repositories {

@@ -89,8 +89,11 @@ buildscript {
 
         /* Dependency - Hilt */
         hilt_version = "2.38.1"
+        hilt_work_version = "1.0.0"
         hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
         hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
+        hiltWork = "androidx.hilt:hilt-work:$hilt_work_version"
+        hiltWorkKapt = "androidx.hilt:hilt-compiler:$hilt_work_version"
 
         /* Dependency - Coroutine */
         def coroutine_version = "1.6.3"
