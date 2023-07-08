@@ -20,9 +20,6 @@ class StoreRegistrationManualActivity : AppCompatActivity() {
         viewPager = binding.viewPager
         val viewPagerAdapter = ManualPagerAdapter(this)
         viewPager.adapter = viewPagerAdapter
-        binding.goRegisterButton.setOnClickListener {
-            //액티비티 이동
-        }
     }
 
     private inner class ManualPagerAdapter(activity: StoreRegistrationManualActivity) : FragmentStateAdapter(activity) {
@@ -32,28 +29,6 @@ class StoreRegistrationManualActivity : AppCompatActivity() {
             val fragment = StoreRegistrationManualFragment()
             fragment.arguments = Bundle().apply {
                 putInt(StoreRegistrationManual.FRAGMENT_PAGE_KEY, position + 1)
-            }
-
-            when (position) {
-                StoreRegistrationManual.PAGE_COUNT - 1 -> {
-                    binding.dotsImageView.visibility = View.GONE
-                    binding.goRegisterButton.visibility = View.VISIBLE
-                }
-                0 -> {
-                    binding.dotsImageView.visibility = View.VISIBLE
-                    binding.goRegisterButton.visibility = View.GONE
-                    binding.dotsImageView.setImageResource(R.drawable.store_registration_manual_page_1)
-                }
-                1 -> {
-                    binding.dotsImageView.visibility = View.VISIBLE
-                    binding.goRegisterButton.visibility = View.GONE
-                    binding.dotsImageView.setImageResource(R.drawable.store_registration_manual_page_2)
-                }
-                3 -> {
-                    binding.dotsImageView.visibility = View.VISIBLE
-                    binding.goRegisterButton.visibility = View.GONE
-                    binding.dotsImageView.setImageResource(R.drawable.store_registration_manual_page_3)
-                }
             }
             return fragment
         }

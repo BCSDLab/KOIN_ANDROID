@@ -59,7 +59,7 @@ buildscript {
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
         /* Dependency - leakcanary */
-        def leakcanary_version = "1.6.3"
+        def leakcanary_version = "2.6"
         leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
         /* Dependency - glide */

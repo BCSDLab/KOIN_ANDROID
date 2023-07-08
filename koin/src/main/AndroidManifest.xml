@@ -26,7 +26,9 @@
         tools:replace="android:name">
         <activity
             android:name=".ui.storeregistermanual.StoreRegistrationManualActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <activity
             android:name=".ui.main.activity.MainActivity"
             android:label="@string/app_name"
@@ -87,6 +89,7 @@
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

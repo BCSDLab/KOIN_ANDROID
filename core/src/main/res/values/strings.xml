@@ -38,15 +38,15 @@
     <string name="store_registration_manual_copyright">Copyright @ BCSD Lab All rights reserved.</string>
     <string name="store_registration_manual_go_register">가게 등록하러 가기</string>
     <string name="store_registration_manual_page_1_title">가게를 등록해주세요.</string>
-    <string name="store_registration_manual_page_1_content">코인은 한기대 학생들에게 주문 서비스를 제공합니다.
+    <string name="store_registration_manual_page_1_content">코인은 한기대 학생들에게 주문 서비스를 제공합니다.\n
 코인에 가게를 등록하여 주문을 받아보세요.</string>
     <string name="store_registration_manual_page_2_title">가게 정보를 기입해주세요.</string>
-    <string name="store_registration_manual_page_2_content">가게명, 전화번호, 운영시간 등 다양한 정보를 입력하여
+    <string name="store_registration_manual_page_2_content">가게명, 전화번호, 운영시간 등 다양한 정보를 입력하여\n
 학생들에게 가게 정보를 알려주세요.</string>
     <string name="store_registration_manual_page_3_title">메뉴를 등록해주세요.</string>
     <string name="store_registration_manual_page_3_content">메뉴를 등록하여 학생들에게 메뉴 정보를 알려주세요.</string>
     <string name="store_registration_manual_page_4_title">영업 준비 완료되었습니다.</string>
-    <string name="store_registration_manual_page_4_content">주변 상점에 등록되었습니다.
+    <string name="store_registration_manual_page_4_content">주변 상점에 등록되었습니다.\n
 코인을 통해 학생 주문이 시작됩니다.</string>
 
     <!--right drawer menu-->
