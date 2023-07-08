@@ -22,3 +22,8 @@ object LAND {
     const val LAND_DETAIL_IMAGE_VIEW_WIDTH = 400
     const val LAND_DETAIL_IMAGE_VIEW_HEIGHT = 400
 }
+
+object StoreRegistrationManual {
+    const val PAGE_COUNT = 4
+    const val FRAGMENT_PAGE_KEY = "fragment page key"
+}
