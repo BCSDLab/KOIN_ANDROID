@@ -34,11 +34,12 @@ class TokenAuthenticator @Inject constructor(
                 return null
             }
 
-            val newAccessToken = runBlocking {
-                userRefreshApi.refreshAccessToken(RefreshTokenRequest(refreshToken)).accessToken
+            val (newAccessToken, newRefreshToken) = runBlocking {
+                userRefreshApi.refreshAccessToken(RefreshTokenRequest(refreshToken))
             }
             runBlocking {
                 tokenLocalDataSource.saveAccessToken(newAccessToken)
+                tokenLocalDataSource.saveRefreshToken(newRefreshToken)
             }
 
             if ("Bearer $newAccessToken" == response.request().header("Authorization")) {
@@ -51,7 +52,7 @@ class TokenAuthenticator @Inject constructor(
 
             return getRequest(response, newAccessToken)
         } catch (e: Exception) {
-            goToLoginActivity()
+            //goToLoginActivity()
             return null
         }
     }
