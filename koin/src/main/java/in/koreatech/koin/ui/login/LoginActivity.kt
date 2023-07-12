@@ -4,6 +4,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
+import `in`.koreatech.koin.ui.businesssignup.BusinessLoginActivity
 import `in`.koreatech.koin.ui.forgotpassword.ForgotPasswordActivity
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
@@ -85,6 +86,10 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         anonymousLoginLinearLayout.setOnClickListener {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
+        }
+
+        isBusinessButton.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
         }
     }
 }
