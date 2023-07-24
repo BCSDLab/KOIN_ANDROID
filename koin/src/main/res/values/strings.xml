@@ -285,4 +285,17 @@
     <string name="land_detail_no_name">No Name</string>
     <string name="land_detail_floor_unit">층</string>
     <string name="bcsd_webpage_name">BCSD 홈페이지</string>
+    <string name="are_you_master">사장님이신가요?</string>
+
+    <!-- RegisterMystore -->
+    <string name="category_not_filled">카테고리를 입력해주세요</string>
+    <string name="detail_store_required_field_not_filled">전화번호, 배달요금과 기타정보를 입력해주세요</string>
+    <string name="basic_store_required_field_not_filled">가게명과 주소를 입력해주세요</string>
+    <string name="register_store_image_permission_denied_message">앨범 접근 권한을 허용해 주세요.</string>
+    <string name="valid_time_not_filled">오픈시간은 클로즈시간과 같거나 크면 안됩니다.</string>
+
+    <string name="mystore_const_time_picker_cancel">닫기</string>
+    <string name="mystore_const_time_picker_check">확인</string>
+    <string name="mystore_const_time_picker_tilde">~</string>
+    <string name="mystore_const_time_picker_colon">:</string>
 </resources>
