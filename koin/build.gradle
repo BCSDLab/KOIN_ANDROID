@@ -13,7 +13,7 @@ def applicationName = 'koin'
 android {
     defaultConfig {
         applicationId "in.koreatech.koin"
-        versionCode 30010
+        versionCode 30005
         minSdkVersion 21
         compileSdkVersion project.compileSdkVersion
         minSdkVersion project.minSdkVersion
@@ -56,7 +56,7 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="AAB"
+                artifactType="APK"
                 releaseNotes="${project.versionName} release"
                 groups="bcsd"
             }
@@ -127,6 +127,10 @@ dependencies {
     /* Dependency - butterknife */
     implementation project.butterknife
     kapt project.butterknifeAnnotation
+
+    /* Dependency - navigation */
+    implementation project.androidXNavigationKtx
+    implementation project.androidXNavigationUi
 
     //naver map
     implementation 'com.naver.maps:map-sdk:3.10.2'

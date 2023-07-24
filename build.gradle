@@ -42,6 +42,10 @@ buildscript {
         def fragment_version = "1.4.1"
         androidXFragmentKtx = "androidx.fragment:fragment-ktx:$fragment_version"
 
+        def nav_version = "2.5.3"
+        androidXNavigationKtx = "androidx.navigation:navigation-fragment-ktx:$nav_version"
+        androidXNavigationUi = "androidx.navigation:navigation-ui-ktx:$nav_version"
+
         /* Dependency - AndroidX Material */
         def android_x_material_version = "1.2.0"
         androidxMaterial = "com.google.android.material:material:$android_x_material_version"
@@ -59,7 +63,7 @@ buildscript {
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
         /* Dependency - leakcanary */
-        def leakcanary_version = "1.6.3"
+        def leakcanary_version = "2.10"
         leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
         /* Dependency - glide */

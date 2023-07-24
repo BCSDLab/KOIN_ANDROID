@@ -160,6 +160,12 @@
             android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.business.registerstore.activity.RegisterStoreActivity"
+            android:exported="false"
+            android:label="코인 커뮤니티"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>
