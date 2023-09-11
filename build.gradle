@@ -17,9 +17,9 @@ buildscript {
         android_gradle_plugin_version = "7.2.1"
 
         /* Common */
-        compileSdkVersion = 31
+        compileSdkVersion = 33
         minSdkVersion = 21
-        targetSdkVersion = 31
+        targetSdkVersion = 33
         versionName = "3.0.10"
 
         kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -59,7 +59,7 @@ buildscript {
         retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
 
         /* Dependency - leakcanary */
-        def leakcanary_version = "1.6.3"
+        def leakcanary_version = "2.12"
         leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
         /* Dependency - glide */
