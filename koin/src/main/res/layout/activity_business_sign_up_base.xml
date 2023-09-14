@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/activity_business_sign_up_base_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/signup_back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/arrow_back"
+                android:layout_marginStart="15.84dp"
+                android:layout_marginTop="58.1dp"
+                app:tint="?attr/colorPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/signup_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/sign_up_for_boss"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:layout_marginTop="34.1dp"
+                android:layout_marginStart="5dp"
+                app:fontName="Bold"
+                app:layout_constraintTop_toBottomOf="@id/signup_back_button"
+                app:layout_constraintStart_toEndOf="@id/signup_back_button"/>
+
+            <LinearLayout
+                android:id="@+id/is_all_agree_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="34dp"
+                android:orientation="horizontal"
+                android:layout_marginEnd="40dp"
+                app:layout_constraintStart_toStartOf="@+id/signup_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/signup_title">
+
+                <ImageView
+                    android:id="@+id/is_all_check_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/is_all_agree"
+                    android:textSize="15sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider_line"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/blue1"
+                android:layout_marginTop="17dp"
+                app:layout_constraintTop_toBottomOf="@+id/is_all_agree_layout"
+                app:layout_constraintStart_toStartOf="@+id/is_all_agree_layout"
+                app:layout_constraintEnd_toEndOf="@+id/is_all_agree_layout"/>
+
+            <LinearLayout
+                android:id="@+id/privacy_terms_conditions_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/divider_line"
+                app:layout_constraintStart_toStartOf="@+id/divider_line"
+                app:layout_constraintEnd_toEndOf="@+id/divider_line">
+
+                <ImageView
+                    android:id="@+id/circle_check_button1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_terms_and_conditions"
+                    android:textSize="15sp"
+                    android:textColor="@color/gray7"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/explain_layout1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:paddingStart="11dp"
+                android:paddingEnd="11dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/dotted_border"
+                app:layout_constraintTop_toBottomOf="@+id/privacy_terms_conditions_layout"
+                app:layout_constraintStart_toStartOf="@+id/privacy_terms_conditions_layout"
+                app:layout_constraintEnd_toEndOf="@+id/privacy_terms_conditions_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_terms_and_conditions_text"
+                    android:textColor="@color/black1"
+                    android:textSize="11sp"/>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/koin_terms_of_use_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/dotted_border"
+                app:layout_constraintTop_toBottomOf="@+id/explain_layout1"
+                app:layout_constraintStart_toStartOf="@+id/explain_layout1"
+                app:layout_constraintEnd_toEndOf="@+id/explain_layout1">
+
+                <ImageView
+                    android:id="@+id/circle_check_button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/check" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy_terms_and_conditions"
+                    android:textSize="15sp"
+                    android:textColor="@color/gray7"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/explain_layout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
+                android:paddingStart="12dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="10dp"
+                android:background="@drawable/dotted_border"
+                app:layout_constraintTop_toBottomOf="@+id/koin_terms_of_use_layout"
+                app:layout_constraintStart_toStartOf="@+id/koin_terms_of_use_layout"
+                app:layout_constraintEnd_toEndOf="@+id/koin_terms_of_use_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/koin_terms_of_use_text"
+                    android:textColor="@color/black1"
+                    android:textSize="11sp"/>
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/cancel_and_check_button_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                android:layout_marginTop="43dp"
+                android:layout_marginBottom="72dp"
+                app:layout_constraintTop_toBottomOf="@+id/explain_layout2"
+                app:layout_constraintStart_toStartOf="@+id/explain_layout2"
+                app:layout_constraintEnd_toEndOf="@+id/explain_layout2"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/cancel_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:background="@color/colorAccent"
+                    android:layout_weight="47"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"/>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/check_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:background="@color/gray5"
+                    android:layout_weight="47"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
