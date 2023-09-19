@@ -25,6 +25,7 @@
     <!-- Custom Palette -->
 
     <color name="red1">#ff3030</color>
+    <color name="red2">#f05d3d</color>
     <color name="red_alpha0">#00ff0000</color>
 
     <color name="white1">#f8f8f8</color>
@@ -109,4 +110,5 @@
     <color name="default_headerHighlightColor">#74a4f3</color>
     <color name="default_sticker_font_color">#ffffff</color>
     <color name="gray">#7c9fae</color>
+    <color name="black1">#222222</color>
 </resources>
