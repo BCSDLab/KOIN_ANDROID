@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:id="@+id/activity_business_sign_up_base_scroll_view"
@@ -87,7 +85,7 @@
                 app:layout_constraintStart_toStartOf="@+id/divider_line"
                 app:layout_constraintEnd_toEndOf="@+id/divider_line">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/circle_check_button1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -131,12 +129,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="18dp"
-                android:background="@drawable/dotted_border"
                 app:layout_constraintTop_toBottomOf="@+id/explain_layout1"
                 app:layout_constraintStart_toStartOf="@+id/explain_layout1"
                 app:layout_constraintEnd_toEndOf="@+id/explain_layout1">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/circle_check_button2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
