@@ -21,14 +21,31 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
+        <activity
+            android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.businesssignup.BusinessCertificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.businesssignup.BusinessVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.businesssignup.BusinessSignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.businesssignup.BusinessSignUpBaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.businesslogin.BusinessLoginActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar" />
-
 
         <receiver
             android:name=".ui.dining.appwidget.DiningAppWidget"
@@ -46,7 +63,7 @@
             android:exported="false"
             android:label="@string/navigation_item_bus">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
