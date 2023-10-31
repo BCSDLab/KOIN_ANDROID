@@ -5,7 +5,6 @@ interface OwnerSignupRepository {
     suspend fun getKoinTermText(): String
 
     suspend fun requestEmailVerification(
-        email: String,
-        hashedPassword: String
+        email: String
     ): Result<Unit>
 }
