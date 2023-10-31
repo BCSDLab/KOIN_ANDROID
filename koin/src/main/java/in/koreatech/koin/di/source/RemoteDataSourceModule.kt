@@ -23,6 +23,14 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
+    fun provideOwnerRemoteDataSource(
+        ownerApi: OwnerApi,
+    ): OwnerRemoteDataSource {
+        return OwnerRemoteDataSource(ownerApi)
+    }
+
+    @Provides
+    @Singleton
     fun provideVersionRemoteDataSource(
         versionApi: VersionApi
     ) : VersionRemoteDataSource {
