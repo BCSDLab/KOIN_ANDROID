@@ -57,6 +57,14 @@ object NoAuthNetworkModule {
 
     @Provides
     @Singleton
+    fun provideOwnerApi(
+        @NoAuth retrofit: Retrofit
+    ): OwnerApi {
+        return retrofit.create(OwnerApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideVersionApi(
         @NoAuth retrofit: Retrofit
     ): VersionApi {
