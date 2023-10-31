@@ -45,10 +45,11 @@ object URLConstant {
 
     object OWNER {
         const val OWNER = "owner"
+        const val OWNERS = "owners"
         const val VERIFICATION = "verification"
-        const val REGISTER: String = "$OWNER/register"
-        const val CODE = "$OWNER/$VERIFICATION/code"
-        const val EMAIL = "$OWNER/$VERIFICATION/email"
+        const val REGISTER: String = "$OWNERS/register"
+        const val CODE = "$OWNERS/$VERIFICATION/code"
+        const val EMAIL = "$OWNERS/$VERIFICATION/email"
         const val PW = "password"
     }
 
