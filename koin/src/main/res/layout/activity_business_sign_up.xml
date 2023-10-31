@@ -5,7 +5,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -44,17 +44,16 @@
                 android:text="@string/base_info_input"
                 android:textColor="@color/colorAccent"
                 android:layout_marginTop="40dp"
-                android:layout_marginStart="33dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_title"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/signup_title"/>
 
             <TextView
-                android:id="@+id/sign_up__page_one"
+                android:id="@+id/sign_up_page_one"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:text="@string/page_one"
                 android:textColor="@color/colorAccent"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="40dp"
                 app:layout_constraintTop_toTopOf="@+id/base_info_input_text_view"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -67,15 +66,13 @@
                 android:max="100"
                 android:progress="33"
                 android:progressTint="@color/colorAccent"
-                android:layout_marginStart="34dp"
-                android:layout_marginEnd="32dp"
                 app:layout_constraintTop_toBottomOf="@+id/base_info_input_text_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/base_info_input_text_view"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_page_one"/>
 
             <EditText
                 android:id="@+id/signup_edittext_id"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/email"
@@ -86,25 +83,21 @@
                 android:textColorHint="@color/blue1"
                 android:textSize="15sp"
                 android:layout_marginTop="48dp"
-                android:layout_marginStart="40.06dp"
-                android:layout_marginEnd="60dp"
-                android:background="null"
+                android:background="@null"
                 app:fontName="Regular"
                 app:layout_constraintTop_toBottomOf="@+id/business_sign_up_progress_bar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/business_sign_up_progress_bar"
+                app:layout_constraintEnd_toEndOf="@+id/business_sign_up_progress_bar"/>
 
             <View
                 android:id="@+id/divide_line1"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/blue1"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_edittext_id"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/signup_edittext_id"
+                app:layout_constraintEnd_toEndOf="@+id/signup_edittext_id"/>
 
             <TextView
                 android:id="@+id/already_signup_email_text"
@@ -120,8 +113,8 @@
 
             <EditText
                 android:id="@+id/signup_edittext_pw"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:hint="@string/login_password_hint"
                 android:imeOptions="actionGo"
                 android:inputType="textPassword"
@@ -130,26 +123,22 @@
                 android:textColor="@color/black"
                 android:textColorHint="@color/blue1"
                 android:textSize="15sp"
-                android:background="null"
-                android:layout_marginStart="40dp"
+                android:background="@null"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="60dp"
                 app:fontName="Regular"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/divide_line1"
+                app:layout_constraintEnd_toEndOf="@+id/divide_line1"
                 app:layout_constraintTop_toBottomOf="@+id/already_signup_email_text"/>
 
             <View
                 android:id="@+id/divide_line2"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/blue1"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_edittext_pw"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/signup_edittext_pw"
+                app:layout_constraintEnd_toEndOf="@+id/signup_edittext_pw"/>
 
             <TextView
                 android:id="@+id/business_password_rule_text"
@@ -159,14 +148,13 @@
                 android:textSize="11sp"
                 android:textColor="@color/gray7"
                 android:layout_marginTop="4dp"
-                android:layout_marginStart="42dp"
-                app:layout_constraintTop_toBottomOf="@id/divide_line2"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/divide_line2"
+                app:layout_constraintStart_toStartOf="@+id/divide_line2"/>
 
             <EditText
                 android:id="@+id/signup_edittext_pw_confirm"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/confirm_password"
                 android:imeOptions="actionGo"
@@ -177,24 +165,20 @@
                 android:textColorHint="@color/blue1"
                 android:textSize="15sp"
                 app:fontName="Regular"
-                android:layout_marginStart="40dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="60dp"
                 app:layout_constraintTop_toBottomOf="@+id/business_password_rule_text"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/divide_line2"
+                app:layout_constraintEnd_toEndOf="@+id/divide_line2"/>
 
             <View
                 android:id="@+id/divide_line3"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="@color/blue1"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/signup_edittext_pw_confirm"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintStart_toStartOf="@+id/signup_edittext_pw_confirm"
+                app:layout_constraintEnd_toEndOf="@+id/signup_edittext_pw_confirm"/>
 
             <TextView
                 android:id="@+id/business_password_same_check"
@@ -204,28 +188,25 @@
                 android:textSize="11sp"
                 android:textColor="@color/red2"
                 android:layout_marginTop="4dp"
-                android:layout_marginStart="42dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/divide_line3"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divide_line3"
+                app:layout_constraintStart_toStartOf="@+id/divide_line3"
                 app:drawableLeftCompat="@drawable/exclamation" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signup_send_verification_button"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:text="@string/email_certification"
                 android:textColor="@color/white"
                 android:textSize="15sp"
                 android:layout_marginTop="100dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 app:fontName="Regular"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divide_line3"/>
+                app:layout_constraintStart_toStartOf="@+id/divide_line3"
+                app:layout_constraintEnd_toEndOf="@+id/divide_line3"
+                app:layout_constraintTop_toBottomOf="@+id/divide_line3"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
