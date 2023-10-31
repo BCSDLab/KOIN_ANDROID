@@ -6,7 +6,4 @@ import com.google.gson.annotations.SerializedName
 data class OwnerLoginRequest(
     @SerializedName(URLConstant.OWNER.EMAIL)
     val email: String,
-
-    @SerializedName(URLConstant.OWNER.PW)
-    val passwordHashed: String
 )
