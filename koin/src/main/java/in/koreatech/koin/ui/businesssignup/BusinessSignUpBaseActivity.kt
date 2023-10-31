@@ -56,9 +56,13 @@ class BusinessSignUpBaseActivity : ActivityBase(R.layout.activity_business_sign_
     private fun isButtonClickCheck() = with(binding) {
         activateCheckButton = if(button1 && button2) {
             checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
+            isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+            isAllCheckButtonCheck = true
             true
         } else {
             checkButton.setBackgroundColor(getColor(R.color.gray5))
+            isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check))
+            isAllCheckButtonCheck = false
             false
         }
     }
