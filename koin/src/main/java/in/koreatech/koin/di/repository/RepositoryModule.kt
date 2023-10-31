@@ -48,6 +48,16 @@ object RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideOwnerSignupRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource,
+        signupTermsLocalDataSource: SignupTermsLocalDataSource
+    ): OwnerSignupRepository {
+        return OwnerSignupRepositoryImpl(ownerRemoteDataSource, signupTermsLocalDataSource)
+    }
+
+
+    @Provides
+    @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
         versionRemoteDataSource: VersionRemoteDataSource
