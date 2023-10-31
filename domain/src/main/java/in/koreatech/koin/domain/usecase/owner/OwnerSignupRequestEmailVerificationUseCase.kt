@@ -24,8 +24,7 @@ class OwnerSignupRequestEmailVerificationUseCase @Inject constructor(
             !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
             !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
             else -> ownerSignupRepository.requestEmailVerification(
-                email = email,
-                hashedPassword = password.toSHA256()
+                email = email
             ).map { SignupContinuationState.RequestedEmailValidation }
         }
     }
