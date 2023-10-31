@@ -14,6 +14,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,7 +49,6 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
                 isAgreedPrivacyTerms = isAgreedPrivacyTerms,
                 isAgreedKoinTerms = isAgreedKoinTerms
             )
-
         }
 
         signupBackButton.setOnClickListener {
@@ -79,7 +79,7 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
                     )
                 }
                 SignupContinuationState.RequestedEmailValidation -> {
-                    showRequestedEmailValidationDialog()
+                    startActivity(Intent(this@BusinessSignUpActivity, BusinessVerificationActivity::class.java))
                 }
                 SignupContinuationState.NotAgreedKoinTerms -> {
                     SnackbarUtil.makeShortSnackbar(
@@ -96,6 +96,7 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
             }
         }
         observeLiveData(businessSignupContinuationError) { t ->
+            Log.d("MyTag", t.toString())
             SnackbarUtil.makeShortSnackbar(
                 binding.root,
                 when(t) {
