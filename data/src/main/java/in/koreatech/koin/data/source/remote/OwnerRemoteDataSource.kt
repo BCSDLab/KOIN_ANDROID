@@ -1,11 +1,12 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.OwnerApi
-import `in`.koreatech.koin.data.request.owner.OwnerLoginRequest
+import `in`.koreatech.koin.data.request.owner.OwnerSignUpRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.user.RegisterResponse
+import retrofit2.Response
 
 class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
 
@@ -13,12 +14,12 @@ class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
         return ownerApi.postVerificationCode(ownerVerificationCode)
     }
 
-    suspend fun postVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest): OwnerResponse {
+    suspend fun postVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest): Response<Unit> {
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
     suspend fun sendRegisterEmail(
-        ownerLoginRequest: OwnerLoginRequest
+        ownerLoginRequest: OwnerSignUpRequest
     ): RegisterResponse {
         return ownerApi.postRegister(ownerLoginRequest)
     }
