@@ -5,6 +5,7 @@ import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityBusinessSignUpBinding
+import `in`.koreatech.koin.domain.error.signup.InCorrectEmailAddressException
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignupViewModel
@@ -101,21 +102,11 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
                 binding.root,
                 when(t) {
                     is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
+                    is InCorrectEmailAddressException -> getString(R.string.signup_error_incorrect_email_address)
                     else -> getString(R.string.signup_error_when_email_validation)
                 }
             )
         }
-    }
-
-    private fun showRequestedEmailValidationDialog() {
-        SnackbarUtil.makeSnackbarActionWebView(
-            this,
-            R.id.signup_box,
-            getString(R.string.signup_email_validation_completed_message),
-            getString(R.string.signup_email_validation_completed_title),
-            getString(R.string.koreatech_url),
-            GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
-        )
     }
 
     override fun onDestroy() {
