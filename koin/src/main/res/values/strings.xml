@@ -285,7 +285,7 @@
     <string name="land_detail_floor_unit">층</string>
     <string name="bcsd_webpage_name">BCSD 홈페이지</string>
 
-    <!-- Business Login -->
+    <!-- Business Signup -->
     <string name="are_you_boss"><u>사장님이신가요?</u></string>
     <string name="are_you_student"><u>학생인신가요?</u></string>
     <string name="for_business">For Business</string>
@@ -327,4 +327,5 @@
     <string name="complete_text">가입 신청이 오나료되었습니다.\n가입 허가가 승인되면 로그인이 가능합니다.</string>
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="is_not_all_check">모든 이용약관을 동의해야합니다.</string>
+    <string name="signup_error_incorrect_email_address">이메일 주소가 올바르지 않습니다.</string>
 </resources>
