@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <stroke
+                android:width="2dp"
+                android:color="#FFf7941e" />
+            <solid android:color="#FFf7941e" />
+        </shape>
+    </item>
+
+    <!-- 버튼이 안 눌렸을 때(디폴트) -->
+    <item android:state_selected="false">
+        <shape>
+            <stroke
+                android:width="2dp"
+                android:color="#FFf7941e" />
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+</selector>

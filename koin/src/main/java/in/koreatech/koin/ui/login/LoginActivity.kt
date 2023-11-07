@@ -18,6 +18,7 @@ import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.ui.business.insertmemu.activity.InsertMenuActivity
 import java.util.*
 
 @AndroidEntryPoint
@@ -89,7 +90,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         }
 
         isMaster.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterStoreActivity::class.java))
+            startActivity(Intent(this@LoginActivity, InsertMenuActivity::class.java))
         } /*임시로 사장님이신가요? 버튼을 누르면 넘어가도록 함*/
 
     }
