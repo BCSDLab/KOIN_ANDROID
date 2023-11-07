@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:id="@+id/init_menu_serving"
+        android:layout_width="170dp"
+        android:layout_height="39dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/edittext_border"
+        android:hint=" 예) 소 (1~2인분)"
+        android:maxLines="1"
+        android:textColorHint="@color/colorSecondaryText"
+        android:textColor="@color/black"
+        android:textSize="13dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/init_menu_price"
+        app:layout_constraintStart_toStartOf="parent"
+         />
+
+    <EditText
+        android:id="@+id/init_menu_price"
+        android:layout_width="170dp"
+        android:layout_height="39dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/edittext_border"
+        android:hint=" 예) 20000원"
+        android:maxLines="1"
+        android:textColorHint="@color/colorSecondaryText"
+        android:textColor="@color/black"
+        android:textSize="13dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/delete_serving_button"
+        app:layout_constraintStart_toEndOf="@id/init_menu_serving"
+         />
+
+    <ImageView
+        android:id="@+id/delete_serving_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="12dp"
+        android:background="@drawable/delete_circle_24"
+        android:rotation="45"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/init_menu_price"
+         />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

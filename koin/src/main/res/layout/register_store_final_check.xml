@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <data>
-                <variable name="viewModelCheck" type="in.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel"/>
+                <variable name="viewModelCheck"
+                    type="in.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel"/>
         </data>
 
     <androidx.core.widget.NestedScrollView
