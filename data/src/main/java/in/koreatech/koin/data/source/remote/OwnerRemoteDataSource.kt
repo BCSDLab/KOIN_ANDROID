@@ -9,7 +9,6 @@ import `in`.koreatech.koin.data.response.user.RegisterResponse
 import retrofit2.Response
 
 class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
-
     suspend fun postVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerResponse {
         return ownerApi.postVerificationCode(ownerVerificationCode)
     }
