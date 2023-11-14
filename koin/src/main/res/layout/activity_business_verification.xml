@@ -135,6 +135,7 @@
             android:text="@string/resend"
             android:textColor="@color/white"
             android:layout_marginTop="145dp"
+            android:backgroundTint="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="@id/not_equal_confirm_number_text"
             app:layout_constraintTop_toBottomOf="@id/time_limit_layout"
             app:layout_constraintEnd_toStartOf="@+id/next_button"/>
