@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.businesssignup
 
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityBusinessSignUpBinding
@@ -80,7 +79,12 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
                     )
                 }
                 SignupContinuationState.RequestedEmailValidation -> {
-                    startActivity(Intent(this@BusinessSignUpActivity, BusinessVerificationActivity::class.java))
+                    val intent = Intent(applicationContext, BusinessVerificationActivity::class.java)
+                    intent.putExtra("email", binding.signupEdittextId.text.toString())
+                    intent.putExtra("password", binding.signupEdittextPw.text.toString())
+                    intent.putExtra("password_confirm", binding.signupEdittextPwConfirm.text.toString())
+
+                    startActivity(intent)
                 }
                 SignupContinuationState.NotAgreedKoinTerms -> {
                     SnackbarUtil.makeShortSnackbar(
