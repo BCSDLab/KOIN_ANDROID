@@ -308,10 +308,10 @@
     <string name="email_certification">이메일 인증하기</string>
     <string name="is_not_same_password">\t비밀번호가 일치하지 않습니다.</string>
     <string name="account_verification">2. 계정 인증</string>
-    <string name="account_verification_info_text">%1$s으로\n발송된 인증번호 6자리를 입력해 주세요.</string>
+    <string name="account_verification_info_text">이메일로\n발송된 인증번호 6자리를 입력해 주세요.</string>
     <string name="input_certification_number">인증번호 입력</string>
     <string name="not_equal_confirm_number">\t인증번호가 일치하지 않습니다.</string>
-    <string name="time_limit_five_minute">제한시간 05:00</string>
+    <string name="time_limit_five_minute">05:00</string>
     <string name="resend">재발송</string>
     <string name="next">다음</string>
     <string name="business_certification">3. 사업자 인증</string>
@@ -328,4 +328,7 @@
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="is_not_all_check">모든 이용약관을 동의해야합니다.</string>
     <string name="signup_error_incorrect_email_address">이메일 주소가 올바르지 않습니다.</string>
+    <string name="overdue_time">인증 시간이 초과되었습니다.</string>
+    <string name="incorrect_verification_code">인증번호가 올바르지 않습니다.</string>
+    <string name="business_sign_up_error_when_verification_code">인증번호 절차 중 오류가 발생했습니다</string>
 </resources>
