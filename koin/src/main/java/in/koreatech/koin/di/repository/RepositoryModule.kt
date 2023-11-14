@@ -55,6 +55,14 @@ object RepositoryModule {
         return OwnerSignupRepositoryImpl(ownerRemoteDataSource, signupTermsLocalDataSource)
     }
 
+    @Provides
+    @Singleton
+    fun provideOwnerVerificationCodeRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerVerificationCodeRepository {
+        return OwnerVerificationCodeRepositoryImpl(ownerRemoteDataSource)
+    }
+
 
     @Provides
     @Singleton
