@@ -156,41 +156,42 @@
                 android:id="@+id/attach_file_button"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="32dp"
                 android:background="@drawable/dotted_border"
-                app:layout_constraintTop_toBottomOf="@+id/edit_personal_contact_text"
+                app:layout_constraintEnd_toEndOf="@+id/edit_personal_contact_text"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/edit_personal_contact_text"
-                app:layout_constraintEnd_toEndOf="@+id/edit_personal_contact_text">
+                app:layout_constraintTop_toBottomOf="@+id/edit_personal_contact_text">
 
                 <TextView
                     android:id="@+id/attach_file_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/attach_file"
-                    android:textSize="12sp"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="@+id/attach_file_button"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/attach_file_button"
                     app:layout_constraintEnd_toEndOf="@+id/attach_file_button"
-                    app:layout_constraintTop_toTopOf="@+id/attach_file_button"
-                    app:layout_constraintBottom_toBottomOf="@+id/attach_file_button"/>
+                    app:layout_constraintStart_toStartOf="@+id/attach_file_button"
+                    app:layout_constraintTop_toTopOf="@+id/attach_file_button" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/plus_square"
                     android:layout_marginBottom="2dp"
+                    android:src="@drawable/plus_square"
                     app:layout_constraintBottom_toTopOf="@+id/attach_file_text"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/attach_image"
                     android:textColor="@color/blue1"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/attach_file_text"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/attach_file_text" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
