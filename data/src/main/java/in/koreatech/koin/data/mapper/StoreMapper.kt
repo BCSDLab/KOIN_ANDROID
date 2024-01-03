@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter
 fun StoreItemResponse.toStore(): Store = Store(
     id = uid,
     name = name,
-    chosung = chosung,
+    chosung = chosung ?: "",
     category = category.toStoreCategory(),
     phoneNumber = phone,
     openTime = if (openTime == null) {
@@ -33,10 +33,14 @@ fun StoreItemResponse.toStore(): Store = Store(
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
     images = imageUrls ?: emptyList(),
-    updatedAt = LocalDateTime.parse(
-        updatedAt,
-        DateTimeFormatter.ofPattern(STORE_UPDATED_DATE_TIME_FORMAT)
-    )
+    updatedAt = if(updatedAt == null) {
+        LocalDateTime.MIN
+    } else {
+        LocalDateTime.parse(
+            updatedAt,
+            DateTimeFormatter.ofPattern(STORE_UPDATED_DATE_TIME_FORMAT)
+        )
+    }
 )
 
 fun StoreMenuResponse.toStoreMenu(): StoreMenu = StoreMenu(
