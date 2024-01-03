@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -13,7 +12,6 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreListItemBinding
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.util.ext.isCurrentOpen
-import kotlin.math.roundToInt
 
 class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>(
     diffCallback
