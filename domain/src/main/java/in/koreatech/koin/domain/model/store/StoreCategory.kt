@@ -15,7 +15,7 @@ sealed class StoreCategory(val code: String) {
     object Unknown : StoreCategory("unknown")
 }
 
-fun String.toStoreCategory() = when (this) {
+fun String?.toStoreCategory() = when (this) {
     "S000" -> StoreCategory.Etc
     "S001" -> StoreCategory.Callvan
     "S002" -> StoreCategory.Jeongsik
