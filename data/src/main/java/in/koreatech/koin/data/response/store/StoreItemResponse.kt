@@ -8,7 +8,7 @@ data class StoreItemResponse (
     //가게 이름
     @SerializedName("name") val name: String,
     //chosung, 가게 이름 앞자리 1글자의 초성
-    @SerializedName("chosung") val chosung: String,
+    @SerializedName("chosung") val chosung: String?,
     //종류
     //기타(S000), 콜벤(S001), 정식(S002), 족발(S003), 중국집(S004), 치킨(S005), 피자(S006), 탕수육(S007), 일반(S008), 미용실(S009), 카페(S010)
     @SerializedName("category") val category: String,
@@ -35,7 +35,7 @@ data class StoreItemResponse (
     //생성 날짜 example: 2018-03-21 16:40:57
     @SerializedName("created_at") val createdAt: String,
     //업데이트 날짜
-    @SerializedName("updated_at") val updatedAt: String,
+    @SerializedName("updated_at") val updatedAt: String?,
     @SerializedName("error") val error: String,
     @SerializedName("shopId") val shopId: Int,
     @SerializedName("size") val size: String,
