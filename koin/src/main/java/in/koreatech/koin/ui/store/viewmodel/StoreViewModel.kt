@@ -7,6 +7,8 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,9 +22,13 @@ class StoreViewModel @Inject constructor(
     private val refreshEvent = MutableSharedFlow<Unit>()
     private val _category = MutableStateFlow<StoreCategory?>(null)
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
+    private val _store = MutableStateFlow<Store?>(null)
+    private val _clickButtonState = MutableSharedFlow<Pair<Boolean, String>>(replay = 0)
 
     val category: StateFlow<StoreCategory?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
+    val store: StateFlow<Store?> = _store.asStateFlow()
+    val clickButtonState = _clickButtonState
 
     init {
         viewModelScope.launch {
@@ -62,5 +68,17 @@ class StoreViewModel @Inject constructor(
     fun refreshStores() = viewModelScope.launch {
         invalidateStoresUseCase()
         refreshEvent.emit(Unit)
+    }
+
+    fun clickStoreItem(item: Store) {
+        viewModelScope.launch {
+            _store.emit(item)
+        }
+    }
+
+    fun clickSelectButton(check: Boolean, storeName: String) {
+        viewModelScope.launch {
+            _clickButtonState.emit(Pair(check, storeName))
+        }
     }
 }
