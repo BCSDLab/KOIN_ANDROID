@@ -11,12 +11,20 @@ import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignupViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) {
@@ -37,6 +45,8 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
     }
 
     private fun initView() = with(binding) {
+        isBlankEditText()
+
         signupBackButton.setOnClickListener { finish() }
 
         val isAgreedPrivacyTerms = intent.getBooleanExtra("isAgreedPrivacyTerms", false)
@@ -54,6 +64,41 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
         signupBackButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun isBlankEditText() = with(binding) {
+        signupEdittextId.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(p0.isNullOrBlank()) divideLine1.setBackgroundColor(getColor(R.color.blue1))
+                else divideLine1.setBackgroundColor(getColor(R.color.black))
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        })
+
+        signupEdittextPw.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(p0.isNullOrBlank()) divideLine2.setBackgroundColor(getColor(R.color.blue1))
+                else divideLine2.setBackgroundColor(getColor(R.color.black))
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        })
+
+        signupEdittextPwConfirm.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if(p0.isNullOrBlank()) divideLine3.setBackgroundColor(getColor(R.color.blue1))
+                else divideLine3.setBackgroundColor(getColor(R.color.black))
+            }
+
+            override fun afterTextChanged(p0: Editable?) { }
+        })
     }
 
     private fun initViewModel() = with(businessSignupViewModel) {
