@@ -197,7 +197,7 @@
                 android:id="@+id/signup_send_verification_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/gray5"
                 android:gravity="center"
                 android:text="@string/email_certification"
                 android:textColor="@color/white"
