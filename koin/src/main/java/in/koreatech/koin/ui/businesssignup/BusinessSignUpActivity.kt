@@ -45,7 +45,7 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
     }
 
     private fun initView() = with(binding) {
-        isBlankEditText()
+        inputTextEffect()
 
         signupBackButton.setOnClickListener { finish() }
 
@@ -66,13 +66,14 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
         }
     }
 
-    private fun isBlankEditText() = with(binding) {
+    private fun inputTextEffect() = with(binding) {
         signupEdittextId.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(p0.isNullOrBlank()) divideLine1.setBackgroundColor(getColor(R.color.blue1))
                 else divideLine1.setBackgroundColor(getColor(R.color.black))
+                isAllWrite()
             }
 
             override fun afterTextChanged(p0: Editable?) { }
@@ -84,6 +85,7 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(p0.isNullOrBlank()) divideLine2.setBackgroundColor(getColor(R.color.blue1))
                 else divideLine2.setBackgroundColor(getColor(R.color.black))
+                isAllWrite()
             }
 
             override fun afterTextChanged(p0: Editable?) { }
@@ -95,10 +97,21 @@ class BusinessSignUpActivity : ActivityBase(R.layout.activity_business_sign_up) 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if(p0.isNullOrBlank()) divideLine3.setBackgroundColor(getColor(R.color.blue1))
                 else divideLine3.setBackgroundColor(getColor(R.color.black))
+                isAllWrite()
             }
 
             override fun afterTextChanged(p0: Editable?) { }
         })
+    }
+
+    private fun isAllWrite() {
+        var check = true
+        if(binding.signupEdittextId.text.toString().isBlank()) check = false
+        if(binding.signupEdittextPw.text.toString().isBlank()) check = false
+        if(binding.signupEdittextPwConfirm.text.toString().isBlank()) check = false
+
+        if(check) binding.signupSendVerificationButton.setBackgroundColor(getColor(R.color.colorPrimary))
+        else binding.signupSendVerificationButton.setBackgroundColor(getColor(R.color.gray5))
     }
 
     private fun initViewModel() = with(businessSignupViewModel) {
