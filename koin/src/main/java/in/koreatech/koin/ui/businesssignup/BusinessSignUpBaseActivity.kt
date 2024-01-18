@@ -28,6 +28,10 @@ class BusinessSignUpBaseActivity : ActivityBase(R.layout.activity_business_sign_
             isAllCheckButtonClickEvent()
         }
 
+        signupBackButton.setOnClickListener {
+            finish()
+        }
+
         circleCheckButton1.setOnClickListener {
             circleCheckButtonClickEvent(circleCheckButton1)
         }

@@ -33,7 +33,6 @@ class BusinessSearchStoreActivity : AppCompatActivity() {
 
     private val storeAdapter = StoreRecyclerAdapter()
 
-
     private var isSearchMode: Boolean = false
         set(value) {
             if (value) showSoftKeyboard()
@@ -91,6 +90,10 @@ class BusinessSearchStoreActivity : AppCompatActivity() {
 
         binding.searchStoreButton.setOnClickListener {
             if(showRemoveQueryButton) binding.storeNameEditTextView.setText("")
+        }
+
+        binding.signupBackButton.setOnClickListener {
+            finish()
         }
 
         initViewModel()
