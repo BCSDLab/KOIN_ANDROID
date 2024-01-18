@@ -7,8 +7,6 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
