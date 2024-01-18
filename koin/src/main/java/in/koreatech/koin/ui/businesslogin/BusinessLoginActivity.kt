@@ -14,7 +14,9 @@ import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
     private val binding by dataBinding<ActivityBusinessLoginBinding>()
 
