@@ -13,3 +13,7 @@ annotation class NoAuth
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ServerUrl
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OwnerAuth
