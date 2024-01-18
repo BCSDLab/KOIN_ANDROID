@@ -31,6 +31,14 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
+    fun provideUploadUrlRemoteDataSource(
+        uploadUrlApi: UploadUrlApi
+    ): UploadUrlRemoteDataSource {
+        return UploadUrlRemoteDataSource(uploadUrlApi)
+    }
+
+    @Provides
+    @Singleton
     fun provideVersionRemoteDataSource(
         versionApi: VersionApi
     ) : VersionRemoteDataSource {
