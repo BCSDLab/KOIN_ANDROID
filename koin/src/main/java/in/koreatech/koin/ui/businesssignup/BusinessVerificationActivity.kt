@@ -72,9 +72,11 @@ class BusinessVerificationActivity : ActivityBase(R.layout.activity_business_ver
 
     private fun initViewModel() = with(businessVerificationViewModel) {
         withLoading(this@BusinessVerificationActivity, this)
+
         observeLiveData(businessVerificationContinuationState) {
             startActivity(Intent(this@BusinessVerificationActivity, BusinessCertificationActivity::class.java))
         }
+
         observeLiveData(businessVerificationContinuationError) { t ->
             SnackbarUtil.makeShortSnackbar(
                 binding.root,
