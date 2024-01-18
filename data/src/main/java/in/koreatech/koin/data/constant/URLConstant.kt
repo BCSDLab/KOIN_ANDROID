@@ -35,7 +35,7 @@ object URLConstant {
         const val LOGOUT: String = "$USER/logout"
         const val REGISTER: String = "$USER/register"
         const val FINDPASSWORD: String = "$USER/find/password"
-        const val ME: String = "$USER/me"
+        const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
         const val CHECKNICKNAME: String = "$USER/check/nickname"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
@@ -104,5 +104,10 @@ object URLConstant {
     object DEPT {
         const val DEPT = "/dept"
         const val DEPTS = "/depts"
+    }
+
+    object UPLOAD {
+        const val url = "/{domain}/upload/url"
+        const val content_length = ""
     }
 }
