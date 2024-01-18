@@ -1,10 +1,12 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.error.owner.IncorrectVerificationCodeException
 import `in`.koreatech.koin.domain.error.owner.OverDueTimeException
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -15,23 +17,25 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
     override suspend fun compareVerificationCode(
         address: String,
         verificationCode: String
-    ): Result<Unit> {
+    ): Pair<OwnerAuthToken?, Result<Unit>> {
         return try {
-            ownerRemoteDataSource.postVerificationCode(
+            val tempToken = ownerRemoteDataSource.postVerificationCode(
                 OwnerVerificationCodeRequest(
                     address = address,
                     certificationCode = verificationCode
                 )
             )
 
-            Result.success(Unit)
+            return Pair(tempToken.toAuthToken(), Result.success(Unit))
         } catch (e: HttpException) {
-            if(e.code() == 409) Result.failure(SignupAlreadySentEmailException())
-            else if(e.code() == 410) Result.failure(OverDueTimeException())
-            else if(e.code() == 422) Result.failure(IncorrectVerificationCodeException())
-            else Result.failure(e)
+            when(e.code()) {
+                409 -> Pair(null, Result.failure(SignupAlreadySentEmailException()))
+                410 -> Pair(null, Result.failure(OverDueTimeException()))
+                422 -> Pair(null, Result.failure(IncorrectVerificationCodeException()))
+                else -> Pair(null, Result.failure(e))
+            }
         } catch (t: Throwable) {
-            Result.failure(t)
+            Pair(null, Result.failure(t))
         }
     }
 
