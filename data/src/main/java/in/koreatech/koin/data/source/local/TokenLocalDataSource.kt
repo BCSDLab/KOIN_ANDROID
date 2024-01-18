@@ -24,6 +24,14 @@ class TokenLocalDataSource @Inject constructor(
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
+    var sharedOwnerPreferences = EncryptedSharedPreferences.create(
+        applicationContext,
+        OWNER_SHARED_PREF_FILENAME,
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
     suspend fun saveAccessToken(
         accessToken: String
     ) = withContext(Dispatchers.IO) {
@@ -44,8 +52,29 @@ class TokenLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun saveOwnerAccessToken(
+        accessToken: String
+    ) = with(Dispatchers.IO) {
+        with(sharedOwnerPreferences.edit()) {
+            putString(OWNER_SHARED_PREF_FILENAME, accessToken)
+            apply()
+        }
+    }
+
+    suspend fun getOwnerAccessToken(): String? = withContext(Dispatchers.IO) {
+        sharedOwnerPreferences.getString(OWNER_SHARED_PREF_FILENAME, null)
+    }
+
+    suspend fun removeOwnerAccessToken() = withContext(Dispatchers.IO) {
+        with(sharedOwnerPreferences.edit()) {
+            remove(OWNER_SHARED_PREF_FILENAME)
+            apply()
+        }
+    }
+
     companion object {
         private const val SHARED_PREF_FILENAME = "token"
+        private const val OWNER_SHARED_PREF_FILENAME = "ownerToken"
 
         private const val SHARED_PREF_KEY = "accessToken"
     }
