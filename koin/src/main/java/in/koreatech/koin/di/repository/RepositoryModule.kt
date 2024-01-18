@@ -63,6 +63,14 @@ object RepositoryModule {
         return OwnerVerificationCodeRepositoryImpl(ownerRemoteDataSource)
     }
 
+    @Provides
+    @Singleton
+    fun provideUploadUrlRepository(
+        uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
+    ): UploadUrlRepository {
+        return UploadUrlRepositoryImpl(uploadUrlRemoteDataSource)
+    }
+
 
     @Provides
     @Singleton
