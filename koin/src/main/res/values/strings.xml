@@ -331,4 +331,13 @@
     <string name="overdue_time">인증 시간이 초과되었습니다.</string>
     <string name="incorrect_verification_code">인증번호가 올바르지 않습니다.</string>
     <string name="business_sign_up_error_when_verification_code">인증번호 절차 중 오류가 발생했습니다</string>
+    <string name="not_enter_all_items">모든 항목을 입력해주세요.</string>
+    <string name="is_not_input_store_name">상정명을 입력하세요.</string>
+    <string name="dialog_permission_title">권한 요청</string>
+    <string name="denied">거부</string>
+    <string name="allow">허용</string>
+    <string name="not_exist_domain">존재하지 않는 도메인입니다.</string>
+    <string name="bound_of_size_domain">파일의 크기가 너무 큽니다.</string>
+    <string name="not_allow_type_domain">허용되지 않는 타입입니다.</string>
+    <string name="is_not_valid_file">유효하지 않은 파일입니다.</string>
 </resources>
