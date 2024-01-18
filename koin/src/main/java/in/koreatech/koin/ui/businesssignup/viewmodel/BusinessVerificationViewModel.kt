@@ -3,6 +3,8 @@ package `in`.koreatech.koin.ui.businesssignup.viewmodel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.usecase.owner.OwnerVerificationCodeUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +30,7 @@ class BusinessVerificationViewModel @Inject constructor(
             viewModelScope.launchWithLoading {
                 ownerVerificationCodeUseCase(
                     email, verificationCode
-                ).onSuccess {
+                ).second.onSuccess {
                     _businessVerificationContinuationState.value = it
                 }.onFailure {
                     _businessVerificationContinuationError.value = it
