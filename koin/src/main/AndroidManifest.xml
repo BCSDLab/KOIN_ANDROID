@@ -39,13 +39,12 @@
             android:name=".ui.businesssignup.BusinessVerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.businesssignup.BusinessSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.businesssignup.BusinessSignUpBaseActivity"
+            android:name=".ui.businesssignup.BusinessSignUpCheckActivity"
             android:exported="false" />
         <activity
             android:name=".ui.businesslogin.BusinessLoginActivity"
+            android:exported="false" />
+        <activity android:name=".ui.businesssignup.BusinessSignupBaseActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.activity.MainActivity"
