@@ -4,7 +4,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityBusinessLoginBinding
 import `in`.koreatech.koin.ui.businesslogin.viewmodel.BusinessLoginViewModel
-import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheck
+import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCheckActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -45,7 +45,7 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
         }
 
         businessSignupButton.setOnClickListener {
-            startActivity(Intent(this@BusinessLoginActivity, BusinessSignUpCheck::class.java))
+            startActivity(Intent(this@BusinessLoginActivity, BusinessSignUpCheckActivity::class.java))
         }
 
         isStudentButton.setOnClickListener {
