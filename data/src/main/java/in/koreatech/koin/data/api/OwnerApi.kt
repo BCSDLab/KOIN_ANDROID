@@ -12,12 +12,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface OwnerApi {
-    @POST(URLConstant.OWNER.REGISTER)
-    suspend fun postRegister(@Body ownerLoginRequest: OwnerSignUpRequest): RegisterResponse
-
-//    @POST(URLConstant.OWNER.CODE)
-//    suspend fun postVerificationCode(@Body ownerVerificationCode: OwnerVerificationCodeRequest): OwnerResponse
-
     @POST(URLConstant.OWNER.CODE)
     suspend fun postVerificationCode(@Body ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse
 

@@ -6,28 +6,36 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivityBusinessSignupCheckBinding
+import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpCheckViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_signup_check) {
     private val binding by dataBinding<ActivityBusinessSignupCheckBinding>()
+    private val viewModel by viewModels<BusinessSignUpCheckViewModel>()
 
     private var isActivateCheckButton = false
-    private var isCheckAllCheckButton = false
+    private var isAllCheckButton = false
     private var isAgreedPrivacyTermsButton = false
     private var isAgreedKoinTerms = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_business_signup_check)
 
         initView()
+        initViewModel()
     }
 
     private fun initView() = with(binding) {
-        isAllCheckButton.setOnClickListener {
+        allCheckButton.setOnClickListener {
             isAllCheckButtonClickEvent()
         }
 
@@ -35,12 +43,12 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
             finish()
         }
 
-        circleCheckButton1.setOnClickListener {
-            circleCheckButtonClickEvent(circleCheckButton1)
+        agreedPrivacyTermsButton.setOnClickListener {
+            checkButtonClickEvent(agreedPrivacyTermsButton)
         }
 
-        circleCheckButton2.setOnClickListener {
-            circleCheckButtonClickEvent(circleCheckButton2)
+        agreedKoinTermsButton.setOnClickListener {
+            checkButtonClickEvent(agreedKoinTermsButton)
         }
 
         cancelButton.setOnClickListener {
@@ -58,35 +66,80 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
         }
     }
 
+    private fun initViewModel() = with(viewModel) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                allCheckButtonState.collectLatest {
+                    binding.allCheckButton.setImageDrawable(getDrawable(it))
+                    isAllCheckButton = it != R.drawable.check
+
+                    if(it == R.drawable.check_selected) {
+                        binding.checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                agreedPrivacyTermsButtonState.collectLatest {
+                    binding.agreedPrivacyTermsButton.setImageDrawable(getDrawable(it))
+                    isAgreedPrivacyTermsButton = it != R.drawable.check
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                agreedKoinTermsButtonState.collectLatest {
+                    binding.agreedKoinTermsButton.setImageDrawable(getDrawable(it))
+                    isAgreedKoinTerms = it != R.drawable.check
+                }
+            }
+        }
+    }
+
     private fun isButtonClickCheck() = with(binding) {
         isActivateCheckButton = if(isAgreedPrivacyTermsButton && isAgreedKoinTerms) {
             checkButton.setBackgroundColor(getColor(R.color.colorPrimary))
-            isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-            isCheckAllCheckButton = true
+            allCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+            viewModel.updateButtonState(R.drawable.check_selected, 1)
+            isAllCheckButton = true
             true
         } else {
             checkButton.setBackgroundColor(getColor(R.color.gray5))
-            isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check))
-            isCheckAllCheckButton = false
+            allCheckButton.setImageDrawable(getDrawable(R.drawable.check))
+            viewModel.updateButtonState(R.drawable.check, 1)
+            isAllCheckButton = false
             false
         }
     }
 
     private fun isAllCheckButtonClickEvent() = with(binding) {
-        when(isCheckAllCheckButton) {
+        when(isAllCheckButton) {
             true -> {
-                isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check))
-                circleCheckButton1.setImageDrawable(getDrawable(R.drawable.check))
-                circleCheckButton2.setImageDrawable(getDrawable(R.drawable.check))
-                isCheckAllCheckButton = false
+                allCheckButton.setImageDrawable(getDrawable(R.drawable.check))
+                agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+                agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+
+                viewModel.updateButtonState(R.drawable.check, 1)
+                viewModel.updateButtonState(R.drawable.check, 2)
+                viewModel.updateButtonState(R.drawable.check, 3)
+
+                isAllCheckButton = false
                 isAgreedPrivacyTermsButton = false
                 isAgreedKoinTerms = false
             }
             false -> {
-                isAllCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
-                circleCheckButton1.setImageDrawable(getDrawable(R.drawable.check_selected))
-                circleCheckButton2.setImageDrawable(getDrawable(R.drawable.check_selected))
-                isCheckAllCheckButton = true
+                allCheckButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+
+                viewModel.updateButtonState(R.drawable.check_selected, 1)
+                viewModel.updateButtonState(R.drawable.check_selected, 2)
+                viewModel.updateButtonState(R.drawable.check_selected, 3)
+
+                isAllCheckButton = true
                 isAgreedPrivacyTermsButton = true
                 isAgreedKoinTerms = true
             }
@@ -94,23 +147,27 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
         isButtonClickCheck()
     }
 
-    private fun circleCheckButtonClickEvent(button: ImageView) = with(binding) {
+    private fun checkButtonClickEvent(button: ImageView) = with(binding) {
         when(button) {
-            circleCheckButton1 -> {
+            agreedPrivacyTermsButton -> {
                 isAgreedPrivacyTermsButton = if(isAgreedPrivacyTermsButton) {
-                    circleCheckButton1.setImageDrawable(getDrawable(R.drawable.check))
+                    agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+                    viewModel.updateButtonState(R.drawable.check, 2)
                     false
                 } else {
-                    circleCheckButton1.setImageDrawable(getDrawable(R.drawable.check_selected))
+                    agreedPrivacyTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                    viewModel.updateButtonState(R.drawable.check_selected, 2)
                     true
                 }
             }
-            circleCheckButton2 -> {
+            agreedKoinTermsButton -> {
                 isAgreedKoinTerms = if(isAgreedKoinTerms) {
-                    circleCheckButton2.setImageDrawable(getDrawable(R.drawable.check))
+                    agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check))
+                    viewModel.updateButtonState(R.drawable.check, 3)
                     false
                 } else {
-                    circleCheckButton2.setImageDrawable(getDrawable(R.drawable.check_selected))
+                    agreedKoinTermsButton.setImageDrawable(getDrawable(R.drawable.check_selected))
+                    viewModel.updateButtonState(R.drawable.check_selected, 3)
                     true
                 }
             }

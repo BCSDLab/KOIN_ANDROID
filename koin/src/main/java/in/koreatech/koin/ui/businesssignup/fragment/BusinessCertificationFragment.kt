@@ -15,10 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
 import `in`.koreatech.koin.databinding.FragmentBusinessCertificationBinding
-import `in`.koreatech.koin.domain.error.upload.BoundOfSizeException
-import `in`.koreatech.koin.domain.error.upload.NotAllowedDomainException
-import `in`.koreatech.koin.domain.error.upload.NotExistDomainException
-import `in`.koreatech.koin.domain.error.upload.NotValidFileException
+import `in`.koreatech.koin.domain.error.upload.UploadError
 import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCompleteActivity
 import `in`.koreatech.koin.ui.businesssignup.adapter.AttachStoreImageAdapter
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessCertificationViewModel
@@ -46,7 +43,7 @@ class BusinessCertificationFragment: BaseFragment() {
         _binding = FragmentBusinessCertificationBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("certificationFragment")
+        businessSignupBaseViewModel.setFragmentTag("CERTIFICATION_FRAGMENT")
 
         initView()
         initViewModel()
@@ -108,25 +105,25 @@ class BusinessCertificationFragment: BaseFragment() {
     private fun initViewModel() = with(businessCertificationViewModel) {
         observeLiveData(businessCertificationContinuationError) { state ->
             when(state) {
-                NotExistDomainException() -> {
+                UploadError.NotExistDomainException -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.not_exist_domain)
                     )
                 }
-                BoundOfSizeException() -> {
+                UploadError.BoundOfSizeException -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.bound_of_size_domain)
                     )
                 }
-                NotAllowedDomainException() -> {
+                UploadError.NotAllowedDomainException -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.not_allow_type_domain)
                     )
                 }
-                NotValidFileException() -> {
+                UploadError.NotValidFileException -> {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.is_not_valid_file)
@@ -157,15 +154,11 @@ class BusinessCertificationFragment: BaseFragment() {
     }
 
     private fun hiddenInitView() = with(binding) {
-        attachFileText.visibility = View.GONE
-        attachFileImageView.visibility = View.GONE
-        attachFileInfoText.visibility = View.GONE
+        recyclerviewInitGroup.visibility = View.GONE
     }
 
     private fun hiddenRecyclerView() = with(binding) {
-        attachFileText.visibility = View.VISIBLE
-        attachFileImageView.visibility = View.VISIBLE
-        attachFileInfoText.visibility = View.VISIBLE
+        recyclerviewInitGroup.visibility = View.VISIBLE
     }
 
     private fun isAllWrite(): Boolean {
