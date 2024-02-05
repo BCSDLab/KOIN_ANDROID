@@ -4,7 +4,6 @@ import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.util.ext.isNotValidEmail
 import `in`.koreatech.koin.domain.util.ext.isNotValidPassword
-import `in`.koreatech.koin.domain.util.ext.toSHA256
 import javax.inject.Inject
 
 class OwnerSignupRequestEmailVerificationUseCase @Inject constructor(

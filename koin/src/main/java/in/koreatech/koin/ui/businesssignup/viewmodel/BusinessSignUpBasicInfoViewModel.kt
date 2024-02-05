@@ -28,7 +28,6 @@ class BusinessSignUpBasicInfoViewModel @Inject constructor(
     val businessSignupContinuationError: LiveData<Throwable>
         get() = _businessSignUpContinuationError
 
-
     fun continueBusinessSignup(
         email: String,
         password: String,

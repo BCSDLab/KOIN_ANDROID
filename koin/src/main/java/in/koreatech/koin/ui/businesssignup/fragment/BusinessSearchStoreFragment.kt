@@ -37,8 +37,8 @@ class BusinessSearchStoreFragment: BaseFragment() {
     private val storeAdapter = StoreRecyclerAdapter()
     private var isSearchMode: Boolean = false
         set(value) {
-            if (value) activity!!.showSoftKeyboard()
-            else activity!!.hideSoftKeyboard()
+            if (value) activity?.showSoftKeyboard()
+            else activity?.hideSoftKeyboard()
             field = value
         }
 
@@ -46,21 +46,21 @@ class BusinessSearchStoreFragment: BaseFragment() {
         set(value) {
             if (!value) {
                 binding.searchStoreButton.background = ContextCompat.getDrawable(
-                    this.context!!,
+                    this.requireContext(),
                     R.drawable.ic_search
                 )
                 binding.searchStoreButton.layoutParams.apply {
-                    width = activity!!.dpToPx(24)
-                    height = activity!!.dpToPx(24)
+                    width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(24)
+                    height = this@BusinessSearchStoreFragment.requireActivity().dpToPx(24)
                 }
             } else {
                 binding.searchStoreButton.background = ContextCompat.getDrawable(
-                    this.context!!,
+                    this.requireContext(),
                     R.drawable.ic_search_close
                 )
                 binding.searchStoreButton.layoutParams.apply {
-                    width = activity!!.dpToPx(16)
-                    height = activity!!.dpToPx(16)
+                    width = this@BusinessSearchStoreFragment.requireActivity().dpToPx(16)
+                    height = this@BusinessSearchStoreFragment.requireActivity().dpToPx(16)
                 }
             }
             field = value
@@ -73,7 +73,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
         _binding = FragmentBusinessSearchStoreBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("searchStoreFragment")
+        businessSignupBaseViewModel.setFragmentTag("SEARCH_STORE_FRAGMENT")
 
         binding.storeNameEditTextView.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
@@ -92,7 +92,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
         storeAdapter.setOnItemClickListener {
             viewModel.clickStoreItem(it)
             val bottomSheetView = StoreBottomSheetFragment()
-            bottomSheetView.show(activity!!.supportFragmentManager, bottomSheetView.tag)
+            bottomSheetView.show(this.requireActivity().supportFragmentManager, bottomSheetView.tag)
         }
 
         binding.searchStoreButton.setOnClickListener {

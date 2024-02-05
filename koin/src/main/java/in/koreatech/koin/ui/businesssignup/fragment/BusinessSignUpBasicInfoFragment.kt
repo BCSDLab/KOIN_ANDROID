@@ -3,9 +3,11 @@ package `in`.koreatech.koin.ui.businesssignup.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -16,9 +18,11 @@ import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBasicInfoViewModel
+import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessVerificationViewModel
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
@@ -27,6 +31,7 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
     private val binding get() = _binding!!
     private val viewModel by activityViewModels<BusinessSignUpBasicInfoViewModel>()
     private val businessSignupBaseViewModel by activityViewModels<BusinessSignUpBaseViewModel>()
+    private val businessVerificationViewModel by activityViewModels<BusinessVerificationViewModel>()
 
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil("business_signup_activity")
@@ -39,7 +44,7 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
         _binding = FragmentBusinessSignupBasicInfoBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("basicInfoFragment")
+//        businessSignupBaseViewModel.setFragmentTag("BASIC_INFO_FRAGMENT")
 
         firebasePerformanceUtil.start()
         initView()
@@ -63,41 +68,23 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
     }
 
     private fun inputTextEffect() = with(binding) {
-        signupEdittextId.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+        signupEdittextId.doOnTextChanged { text, _, _, _ ->
+            if(text.isNullOrBlank()) divideLine1.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
+            else divideLine1.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            isAllWrite()
+        }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(p0.isNullOrBlank()) divideLine1.setBackgroundColor(context!!.getColor(R.color.blue1))
-                else divideLine1.setBackgroundColor(context!!.getColor(R.color.black))
-                isAllWrite()
-            }
+        signupEdittextPw.doOnTextChanged { text, _, _, _ ->
+            if(text.isNullOrBlank()) divideLine2.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
+            else divideLine2.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            isAllWrite()
+        }
 
-            override fun afterTextChanged(p0: Editable?) { }
-        })
-
-        signupEdittextPw.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(p0.isNullOrBlank()) divideLine2.setBackgroundColor(context!!.getColor(R.color.blue1))
-                else divideLine2.setBackgroundColor(context!!.getColor(R.color.black))
-                isAllWrite()
-            }
-
-            override fun afterTextChanged(p0: Editable?) { }
-        })
-
-        signupEdittextPwConfirm.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if(p0.isNullOrBlank()) divideLine3.setBackgroundColor(context!!.getColor(R.color.blue1))
-                else divideLine3.setBackgroundColor(context!!.getColor(R.color.black))
-                isAllWrite()
-            }
-
-            override fun afterTextChanged(p0: Editable?) { }
-        })
+        signupEdittextPwConfirm.doOnTextChanged { text, _, _, _ ->
+            if(text.isNullOrBlank()) divideLine3.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.blue1))
+            else divideLine3.setBackgroundColor(this@BusinessSignUpBasicInfoFragment.requireContext().getColor(R.color.black))
+            isAllWrite()
+        }
     }
 
     private fun isAllWrite() {
@@ -106,8 +93,8 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
         if(binding.signupEdittextPw.text.toString().isBlank()) check = false
         if(binding.signupEdittextPwConfirm.text.toString().isBlank()) check = false
 
-        if(check) binding.signupSendVerificationButton.setBackgroundColor(context!!.getColor(R.color.colorPrimary))
-        else binding.signupSendVerificationButton.setBackgroundColor(context!!.getColor(R.color.gray5))
+        if(check) binding.signupSendVerificationButton.setBackgroundColor(this.requireContext().getColor(R.color.colorPrimary))
+        else binding.signupSendVerificationButton.setBackgroundColor(this.requireContext().getColor(R.color.gray5))
     }
 
     private fun initViewModel() = with(viewModel) {
@@ -134,14 +121,14 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
                     )
                 }
                 SignupContinuationState.RequestedEmailValidation -> {
-                    val bundle = Bundle()
-                    bundle.putString("email", binding.signupEdittextId.text.toString())
-                    bundle.putString("password", binding.signupEdittextPw.text.toString())
-                    bundle.putString("password_confirm", binding.signupEdittextPwConfirm.text.toString())
+                    val email = binding.signupEdittextId.text.toString()
+                    Log.d("myEmail", email)
+                    val password = binding.signupEdittextPw.text.toString()
+                    val passwordConfirm = binding.signupEdittextPwConfirm.text.toString()
 
-                    val nextFragment = BusinessVerificationFragment()
-                    nextFragment.arguments = bundle
-                    parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, nextFragment).commit()
+                    businessVerificationViewModel.setSignUpInfo(email, password, passwordConfirm)
+
+                    businessSignupBaseViewModel.setFragmentTag("VERIFICATION_FRAGMENT")
                 }
                 SignupContinuationState.NotAgreedKoinTerms -> {
                     SnackbarUtil.makeShortSnackbar(

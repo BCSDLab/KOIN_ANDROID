@@ -1,11 +1,10 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
-import `in`.koreatech.koin.domain.error.owner.IncorrectVerificationCodeException
-import `in`.koreatech.koin.domain.error.owner.OverDueTimeException
-import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
 import retrofit2.HttpException
@@ -28,12 +27,7 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
 
             return Pair(tempToken.toAuthToken(), Result.success(Unit))
         } catch (e: HttpException) {
-            when(e.code()) {
-                409 -> Pair(null, Result.failure(SignupAlreadySentEmailException()))
-                410 -> Pair(null, Result.failure(OverDueTimeException()))
-                422 -> Pair(null, Result.failure(IncorrectVerificationCodeException()))
-                else -> Pair(null, Result.failure(e))
-            }
+            null to e.httpExceptionMapper()
         } catch (t: Throwable) {
             Pair(null, Result.failure(t))
         }

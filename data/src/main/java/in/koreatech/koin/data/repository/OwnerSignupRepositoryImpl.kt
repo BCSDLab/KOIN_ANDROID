@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
@@ -33,9 +34,7 @@ class OwnerSignupRepositoryImpl @Inject constructor(
 
             Result.success(Unit)
         } catch (e: HttpException) {
-            if(e.code() == 409) Result.failure(SignupAlreadySentEmailException())
-            else if(e.code() == 422) Result.failure(InCorrectEmailAddressException())
-            else Result.failure(e)
+            e.httpExceptionMapper()
         } catch (t: Throwable) {
             Result.failure(t)
         }

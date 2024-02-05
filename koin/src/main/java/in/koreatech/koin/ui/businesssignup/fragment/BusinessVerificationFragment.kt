@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
 import `in`.koreatech.koin.databinding.FragmentBusinessVerificationBinding
-import `in`.koreatech.koin.domain.error.owner.IncorrectVerificationCodeException
-import `in`.koreatech.koin.domain.error.owner.OverDueTimeException
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBasicInfoViewModel
@@ -21,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -30,8 +33,9 @@ class BusinessVerificationFragment: BaseFragment() {
     private val businessVerificationViewModel by activityViewModels<BusinessVerificationViewModel>()
     private val businessSignupBasicInfoViewModel by activityViewModels<BusinessSignUpBasicInfoViewModel>()
     private val businessSignupBaseViewModel by activityViewModels<BusinessSignUpBaseViewModel>()
-
-    private var timer: Job? = null
+    private lateinit var email: String
+    private lateinit var password: String
+    private lateinit var passwordConfirm: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +45,10 @@ class BusinessVerificationFragment: BaseFragment() {
         _binding = FragmentBusinessVerificationBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("verificationFragment")
+        binding.lifecycleOwner = this
 
-        startTimer()
+        businessSignupBaseViewModel.setFragmentTag("VERIFICATION_FRAGMENT")
+
         initView()
         initViewModel()
 
@@ -51,15 +56,7 @@ class BusinessVerificationFragment: BaseFragment() {
     }
 
     private fun initView() = with(binding) {
-        val email = arguments?.getString("email") ?: "error"
-        accountVerificationInfoText.text = "${email}로\n 발송된 인증번호 6자리를 입력해 주세요."
-
         resendButton.setOnClickListener {
-            timer!!.cancel()
-
-            val password = arguments?.getString("password") ?: ""
-            val passwordConfirm = arguments?.getString("password_confirm") ?: "error"
-
             businessSignupBasicInfoViewModel.continueBusinessSignup(
                 email = email,
                 password = password,
@@ -70,8 +67,7 @@ class BusinessVerificationFragment: BaseFragment() {
 
             SnackbarUtil.makeShortSnackbar(binding.root, "재전송되었습니다.")
 
-            binding.limitTimeTextView.text = getString(R.string.time_limit_five_minute)
-            startTimer()
+            businessVerificationViewModel.startTimer()
         }
 
         nextButton.setOnClickListener {
@@ -95,30 +91,29 @@ class BusinessVerificationFragment: BaseFragment() {
                 binding.root,
                 when(t) {
                     is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
-                    is OverDueTimeException -> getString(R.string.overdue_time)
-                    is IncorrectVerificationCodeException -> getString(R.string.incorrect_verification_code)
+                    is OwnerError.OverDueTimeException -> getString(R.string.overdue_time)
+                    is OwnerError.IncorrectVerificationCodeException -> getString(R.string.incorrect_verification_code)
                     else -> getString(R.string.business_sign_up_error_when_verification_code)
                 }
             )
         }
-    }
 
-    private fun startTimer() {
-        val delayTime = 1000L
-        var timeRemaining = TimeUnit.MINUTES.toMillis(5)
-
-        timer = CoroutineScope(Dispatchers.Main).launch {
-            while (timeRemaining > 0) {
-                delay(delayTime)
-
-                val curMinutes = TimeUnit.MILLISECONDS.toMinutes(timeRemaining)
-                val curSeconds = TimeUnit.MILLISECONDS.toSeconds(timeRemaining) - TimeUnit.MINUTES.toSeconds(curMinutes)
-
-                val limitTimeTextView = binding.limitTimeTextView
-                limitTimeTextView.text = String.format("%02d:%02d", curMinutes, curSeconds)
-
-                timeRemaining -= delayTime
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                startTimer()
             }
+        }
+
+        observeLiveData(signUpInfo) { info ->
+            email = info.first
+            password = info.second
+            passwordConfirm = info.third
+
+            binding.accountVerificationInfoText.text = "${email}로\n 발송된 인증번호 6자리를 입력해주세요."
+        }
+
+        observeLiveData(curTime) {
+            binding.limitTimeTextView.text = it
         }
     }
 }

@@ -193,6 +193,13 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/attach_file_text" />
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/recyclerview_init_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="attach_file_text, attach_file_image_view, attach_file_info_text"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatButton

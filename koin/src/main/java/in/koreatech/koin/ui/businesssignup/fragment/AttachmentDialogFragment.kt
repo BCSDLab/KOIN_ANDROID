@@ -26,7 +26,6 @@ class AttachmentDialogFragment : DialogFragment() {
     private lateinit var imageResultLauncher: ActivityResultLauncher<Intent>
     private val viewModel: BusinessCertificationViewModel by activityViewModels()
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         when(isGranted) {
             true -> getImageFile()
@@ -75,12 +74,10 @@ class AttachmentDialogFragment : DialogFragment() {
         return view
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun checkPermission() {
         requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun permissionDialog(isDeniedOnce: Boolean) {
         when(isDeniedOnce) {
             true -> {
@@ -110,7 +107,7 @@ class AttachmentDialogFragment : DialogFragment() {
         var fileName = ""
         var fileSize = 0L
         if(uri.scheme.equals("content")) {
-            val cursor = activity!!.contentResolver.query(uri, null, null, null, null)
+            val cursor = this.requireContext().contentResolver.query(uri, null, null, null, null)
             cursor.use {
                 if(cursor != null && cursor.moveToFirst()) {
                     fileName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))

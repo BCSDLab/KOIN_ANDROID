@@ -7,10 +7,10 @@ class AttachStoreFileUseCase @Inject constructor(
     private val uploadUrlRepository: UploadUrlRepository
 ) {
     suspend operator fun invoke(
-        content_length: Long,
-        content_type: String,
-        file_name: String
+        contentLength: Long,
+        contentType: String,
+        fileName: String
     ): Result<Unit> {
-        return uploadUrlRepository.getUploadUrlResult(content_length, content_type, file_name)
+        return uploadUrlRepository.getUploadUrlResult(contentLength, contentType, fileName)
     }
 }
