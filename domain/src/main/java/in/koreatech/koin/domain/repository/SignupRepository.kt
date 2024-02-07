@@ -5,7 +5,7 @@ interface SignupRepository {
     suspend fun getKoinTermText() : String
 
     suspend fun requestEmailVerification(
-        portalAccount: String,
-        hashedPassword: String
+        email: String,
+        password: String
     ): Result<Unit>
 }

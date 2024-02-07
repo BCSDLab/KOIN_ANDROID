@@ -13,11 +13,11 @@ class UserLoginUseCase @Inject constructor(
     private val userErrorHandler: UserErrorHandler,
 ) {
     suspend operator fun invoke(
-        portalAccount: String,
-        password: String
+        email: String,
+        password: String,
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = userRepository.getToken(portalAccount, password.toSHA256())
+            val authToken = userRepository.getToken(email, password)
             tokenRepository.saveAccessToken(authToken.token)
             Unit to null
         } catch (throwable: Throwable) {
