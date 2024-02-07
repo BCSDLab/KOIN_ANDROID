@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerSignUpRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
@@ -17,4 +18,7 @@ interface OwnerApi {
 
     @POST(URLConstant.OWNER.EMAIL)
     suspend fun postVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest): Response<Unit>
+
+    @POST(URLConstant.OWNER.REGISTER)
+    suspend fun postOwnerRegister(@Body ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse
 }
