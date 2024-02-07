@@ -35,11 +35,12 @@ object URLConstant {
         const val LOGOUT: String = "$USER/logout"
         const val REGISTER: String = "$USER/register"
         const val FINDPASSWORD: String = "$USER/find/password"
-        const val ME: String = "$USER/me"
+        const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
         const val CHECKNICKNAME: String = "$USER/check/nickname"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val ID = "portal_account"
+        const val EMAIL = "email"
         const val PW = "password"
     }
 
