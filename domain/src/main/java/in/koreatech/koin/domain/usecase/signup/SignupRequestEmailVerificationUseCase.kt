@@ -24,8 +24,8 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
             !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
             !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
             else -> signupRepository.requestEmailVerification(
-                portalAccount = portalAccount,
-                hashedPassword = password.toSHA256()
+                email = portalAccount,
+                password = password.toSHA256()
             ).map {
                 SignupContinuationState.RequestedEmailValidation
             }
