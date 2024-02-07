@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -15,12 +14,12 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource
 ) : UserRepository {
-    override suspend fun getToken(portalAccount: String, hashedPassword: String): AuthToken {
+    override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
-            LoginRequest(portalAccount, hashedPassword)
+            LoginRequest(email, hashedPassword)
         )
 
-        return authResponse.toAuthToken()
+        return AuthToken(authResponse.token, authResponse.userType)
     }
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser()

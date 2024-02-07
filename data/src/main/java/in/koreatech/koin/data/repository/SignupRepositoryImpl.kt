@@ -21,14 +21,14 @@ class SignupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestEmailVerification(
-        portalAccount: String,
-        hashedPassword: String
+        email: String,
+        password: String
     ): Result<Unit> {
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 LoginRequest(
-                    portalAccount = portalAccount,
-                    passwordHashed = hashedPassword
+                    email = email,
+                    password = password
                 )
             )
             Result.success(Unit)
