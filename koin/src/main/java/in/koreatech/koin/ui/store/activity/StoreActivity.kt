@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -28,7 +29,6 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -44,7 +44,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailContract.launch(it.id)
+            storeDetailContract.launch(it.uid)
         }
     }
 
@@ -117,7 +117,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         initViewModel()
 
         val initStoreCategory =
-            intent.extras?.getString(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
         viewModel.setCategory(initStoreCategory)
     }
 
@@ -160,8 +160,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.storeCategoryPizza.setCategoryOnClick(StoreCategory.Pizza)
         binding.storeCategoryPizzaTextview.setCategoryOnClick(StoreCategory.Pizza)
 
-        binding.storeCategoryDosirak.setCategoryOnClick(StoreCategory.Jeongsik)
-        binding.storeCategoryDosirakTextview.setCategoryOnClick(StoreCategory.Jeongsik)
+        binding.storeCategoryDosirak.setCategoryOnClick(StoreCategory.DOSIRAK)
+        binding.storeCategoryDosirakTextview.setCategoryOnClick(StoreCategory.DOSIRAK)
 
         binding.storeCategoryPorkFeet.setCategoryOnClick(StoreCategory.PorkFeet)
         binding.storeCategoryPorkFeetTextview.setCategoryOnClick(StoreCategory.PorkFeet)
@@ -185,7 +185,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private fun handleCategorySelection(category: StoreCategory?) {
         binding.storeCategoryChickenTextview.setCategorySelected(category == StoreCategory.Chicken)
         binding.storeCategoryPizzaTextview.setCategorySelected(category == StoreCategory.Pizza)
-        binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.Jeongsik)
+        binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.DOSIRAK)
         binding.storeCategoryPorkFeetTextview.setCategorySelected(category == StoreCategory.PorkFeet)
         binding.storeCategoryChineseTextview.setCategorySelected(category == StoreCategory.Chinese)
         binding.storeCategoryNormalTextview.setCategorySelected(category == StoreCategory.NormalFood)
