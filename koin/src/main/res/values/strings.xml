@@ -194,6 +194,7 @@
     <string name="search">검색</string>
 
     <!-- user info -->
+    <string name="user_info_no_email">이메일을 설정해 주세요</string>
     <string name="user_info_no_nickname">닉네임을 설정해 주세요</string>
     <string name="user_info_no_anonymous_nickname">익명 닉네임이 설정되지 않았습니다</string>
     <string name="user_info_no_phone_number">휴대폰 번호를 설정해 주세요</string>
