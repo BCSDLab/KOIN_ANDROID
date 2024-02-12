@@ -1,23 +1,22 @@
 package `in`.koreatech.koin.util
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.ui.login.LoginActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.request.user.RefreshRequest
-import javax.inject.Inject
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.ui.login.LoginActivity
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import java.net.HttpURLConnection
+import javax.inject.Inject
 
 class RefreshTokenInterceptor @Inject constructor(
     @ApplicationContext private val context: Context,
