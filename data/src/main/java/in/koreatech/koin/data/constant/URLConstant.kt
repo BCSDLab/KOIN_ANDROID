@@ -6,8 +6,8 @@ package `in`.koreatech.koin.data.constant
 object URLConstant {
 
     const val BASE_URL_PRODUCTION = "https://api.koreatech.in" //release server
-    //const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
-    const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
+    const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
+    //const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
 
     const val ADMIN = "admin/"
     const val VERSION = "versions"
@@ -41,6 +41,17 @@ object URLConstant {
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val ID = "portal_account"
         const val PW = "password"
+    }
+
+    object OWNER {
+        const val OWNER = "owner"
+        const val OWNERS = "owners"
+        const val VERIFICATION = "verification"
+        const val REGISTER: String = "$OWNERS/register"
+        const val CODE = "$OWNERS/$VERIFICATION/code"
+        const val EMAIL = "$OWNERS/$VERIFICATION/email"
+        const val PW = "password"
+        const val SHOPS = "$OWNER/shops"
     }
 
     object CALLVANS {

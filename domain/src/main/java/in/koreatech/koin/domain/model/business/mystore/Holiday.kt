@@ -1,11 +1,11 @@
 package `in`.koreatech.koin.domain.model.business.mystore
 
-enum class Holiday(var isHoliday: Boolean, val day: String){
-    Mon(false, "월"),
-    Tues(false, "화"),
-    Wed(false,"수"),
-    Thurs(false,"목"),
-    Fri(false,"금"),
-    Sat(false, "토"),
-    Sun(false,"일")
+enum class Holiday(var isHoliday: Boolean, val day: String, val dayEng: String){
+    Mon(false, "월", "MONDAY"),
+    Tues(false, "화", "TUESDAY"),
+    Wed(false,"수","WEDNESDAY"),
+    Thurs(false,"목", "THURSDAY"),
+    Fri(false,"금", "FRIDAY"),
+    Sat(false, "토", "SATURDAY"),
+    Sun(false,"일", "SUNDAY")
 }

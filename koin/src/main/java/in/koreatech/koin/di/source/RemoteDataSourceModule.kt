@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.api.business.MyStoreRegisterApi
+import `in`.koreatech.koin.data.source.remote.business.MyStoreRegisterDataSource
 import javax.inject.Singleton
 
 @Module
@@ -67,5 +69,13 @@ object RemoteDataSourceModule {
         landApi: LandApi
     ): LandRemoteDataSource {
         return LandRemoteDataSource(landApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMyStoreRegisterDataSource(
+        myStoreRegisterApi: MyStoreRegisterApi
+    ): MyStoreRegisterDataSource {
+        return MyStoreRegisterDataSource(myStoreRegisterApi)
     }
 }

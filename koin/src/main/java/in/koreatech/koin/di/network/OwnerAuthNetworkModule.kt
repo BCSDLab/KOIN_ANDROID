@@ -7,13 +7,16 @@ import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.util.TokenAuthenticator
 import `in`.koreatech.koin.util.ext.isDebug
 import android.content.Context
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.NoAuth
+import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.data.api.business.MyStoreRegisterApi
+import `in`.koreatech.koin.util.OwnerTokenAuthenticator
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -26,71 +29,69 @@ import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthNetworkModule {
-    @Auth
+object OwnerAuthNetworkModule {
+    @OwnerAuth
     @Provides
     @Singleton
-    fun provideAuthInterceptor(
+    fun provideOwnerAuthInterceptor(
         tokenLocalDataSource: TokenLocalDataSource
     ): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
-                val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
+                val ownerAccessToken = tokenLocalDataSource.getOwnerAccessToken() ?: ""
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $accessToken")
+                    .addHeader("Authorization", "Bearer $ownerAccessToken")
                     .build()
+                Log.d("로그", newRequest.headers().toString())
+                Log.d("로그", newRequest.toString())
                 chain.proceed(newRequest)
             }
         }
     }
-
-    @Auth
+    @OwnerAuth
     @Provides
     @Singleton
     fun provideTokenAuthenticator(
         @ApplicationContext applicationContext: Context,
         tokenLocalDataSource: TokenLocalDataSource
-    ) = TokenAuthenticator(applicationContext, tokenLocalDataSource)
-
-    @Auth
+    ) = OwnerTokenAuthenticator(applicationContext, tokenLocalDataSource)
+    @OwnerAuth
     @Provides
     @Singleton
-    fun provideAuthOkHttpClient(
+    fun provideOwnerAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
-        @Auth authInterceptor: Interceptor,
-        @Auth tokenAuthenticator: TokenAuthenticator
+        @OwnerAuth ownerAuthInterceptor: Interceptor,
+        @OwnerAuth tokenAuthenticator: OwnerTokenAuthenticator
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
             readTimeout(30, TimeUnit.SECONDS)
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
-            addInterceptor(authInterceptor)
+            addInterceptor(ownerAuthInterceptor)
             authenticator(tokenAuthenticator)
         }.build()
     }
-
-    @Auth
+    @OwnerAuth
     @Provides
     @Singleton
-    fun provideAuthRetrofit(
+    fun provideOwnerAuthRetrofit(
         @ServerUrl baseUrl: String,
-        @Auth okHttpClient: OkHttpClient
+        @OwnerAuth ownerOkHttpClient: OkHttpClient
     ): Retrofit {
         return Retrofit.Builder()
-            .client(okHttpClient)
+            .client(ownerOkHttpClient)
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
-    /* Auth retrofit instances below */
     @Provides
     @Singleton
-    fun provideUserAuthApi(
-        @Auth retrofit: Retrofit
-    ): UserAuthApi {
-        return retrofit.create(UserAuthApi::class.java)
+    fun provideMyStoreRegisterApi(
+        @OwnerAuth retrofit: Retrofit
+    ): MyStoreRegisterApi {
+        return retrofit.create(MyStoreRegisterApi::class.java)
     }
-}
 
+}

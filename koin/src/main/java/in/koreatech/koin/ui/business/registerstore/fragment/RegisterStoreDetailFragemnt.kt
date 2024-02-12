@@ -3,14 +3,12 @@ package `in`.koreatech.koin.ui.business.registerstore.fragment
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.RegisterStoreDetailInfoBinding
-import `in`.koreatech.koin.domain.model.business.mystore.RegisterStoreBasic
 import `in`.koreatech.koin.domain.model.business.mystore.RegisterStoreDetail
 import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.textString
 import android.os.Bundle
 import android.view.View
-import android.widget.CompoundButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -56,7 +54,7 @@ class RegisterStoreDetailFragemnt : Fragment(R.layout.register_store_detail_info
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.detail_store_required_field_not_filled))
             } else {
                 detailInfo = RegisterStoreDetail(binding.initPhoneNumber.textString,binding.initDeliveryAmount.textString,
-                                                    binding.initOtherInfo.textString, isDeliveryOk, isCardOk, isAccountOk)
+                    binding.initOtherInfo.textString, isDeliveryOk, isCardOk, isAccountOk)
                 viewModel.setDetailInfo(detailInfo)
                 findNavController().navigate(R.id.register_detail_info_fragment_to_register_final_check_fragment)
             }

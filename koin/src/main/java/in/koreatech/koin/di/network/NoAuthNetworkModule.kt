@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.Auth
+import `in`.koreatech.koin.data.api.business.MyStoreRegisterApi
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -102,4 +104,12 @@ object NoAuthNetworkModule {
     ): LandApi {
         return retrofit.create(LandApi::class.java)
     }
+
+    /*@Provides
+    @Singleton
+    fun provideMyStoreRegisterApi(
+        @NoAuth retrofit: Retrofit
+    ): MyStoreRegisterApi {
+        return retrofit.create(MyStoreRegisterApi::class.java)
+    }*/
 }

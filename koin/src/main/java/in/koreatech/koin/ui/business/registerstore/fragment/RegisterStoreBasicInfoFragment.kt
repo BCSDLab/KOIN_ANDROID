@@ -8,15 +8,21 @@ import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreView
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.textString
 import android.Manifest
-import android.graphics.ImageDecoder
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import dagger.hilt.internal.processedrootsentinel.codegen._in_koreatech_koin_KoinApplication
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
 
 class RegisterStoreBasicInfoFragment: Fragment(R.layout.register_store_basic_info){
     private val binding by dataBinding<RegisterStoreBasicInfoBinding>()
@@ -27,7 +33,7 @@ class RegisterStoreBasicInfoFragment: Fragment(R.layout.register_store_basic_inf
     private val selectImageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()){ uri: Uri? ->
         uri?.let {
             binding.imageRegister.setImageURI(uri)
-            imageUri = uri.toString()
+            imageUri = convertUriToBase64(requireContext(), uri)
         }
     }
 
@@ -62,10 +68,25 @@ class RegisterStoreBasicInfoFragment: Fragment(R.layout.register_store_basic_inf
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.basic_store_required_field_not_filled))
             }
             else {
+                Log.d("로그", imageUri.toString())
                 basicInfo = RegisterStoreBasic(binding.initStoreName.textString,binding.initStoreAddress.textString, imageUri)
                 viewModel.setBasicInfo(basicInfo)
                 findNavController().navigate(R.id.register_basic_info_fragment_to_register_detail_info_fragment)
             }
         }
+    }
+
+    private fun convertUriToBase64(context: Context, imageUri: Uri): String {
+        val inputStream: InputStream? = context.contentResolver.openInputStream(imageUri)
+        val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+        inputStream?.close()
+
+        // 비트맵을 바이트 배열로 변환
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+
+        // 바이트 배열을 Base64로 인코딩하여 문자열로 변환
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 }
