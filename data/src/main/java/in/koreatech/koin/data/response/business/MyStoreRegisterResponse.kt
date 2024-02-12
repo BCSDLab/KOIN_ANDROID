@@ -7,6 +7,7 @@ data class MyStoreRegisterResponse(
     @SerializedName("category_ids") val categoryIds: List<Int>, // 현재는 String으로 되어있음
     @SerializedName("delivery") val delivery: Boolean, // 배달가능
     @SerializedName("delivery_price") val delivery_price: Int,
+    @SerializedName("description") val description: String,
     @SerializedName("image_urls") val imageUrls: List<String>, // 이미지
     @SerializedName("name") val name: String, // 가게이름
 

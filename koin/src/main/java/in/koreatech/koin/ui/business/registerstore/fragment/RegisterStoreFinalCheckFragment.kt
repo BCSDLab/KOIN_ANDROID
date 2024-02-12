@@ -44,7 +44,7 @@ class RegisterStoreFinalCheckFragment : Fragment(R.layout.register_store_final_c
         }
 
         binding.nextButton.setOnClickListener {
-            inserStoreViewmodel.registerOwnerStore(viewModel.setRegisterStore())
+            viewModel.setRegisterStore()
             //findNavController().navigate(R.id.register_final_check_fragment_to_register_finish_fragment)
         }
     }
