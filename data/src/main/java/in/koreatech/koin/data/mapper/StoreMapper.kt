@@ -17,7 +17,7 @@ import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 fun StoreItemResponse.toStore(): Store = Store(
     uid = uid,
     name = name,
-    phone = phone ?: "000-0000-0000",
+    phone = phone ?: "",
     isDeliveryOk = isDeliveryOk ?: false,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
@@ -25,8 +25,8 @@ fun StoreItemResponse.toStore(): Store = Store(
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,
             closed = it.closed,
-            openTime = it.openTime ?: "00:00",
-            closeTime = it.closeTime ?: "00:00"
+            openTime = it.openTime ?: "",
+            closeTime = it.closeTime ?: ""
         )
     }.first(),
     categoryIds = categoryIds.map { it.toStoreCategory() }
@@ -35,7 +35,7 @@ fun StoreItemResponse.toStore(): Store = Store(
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     uid = uid,
     name = name,
-    phone = phone ?: "000-0000-0000",
+    phone = phone ?: "",
     address = address ?: "",
     description = description?.replace("\\n", System.getProperty("line.separator") ?: "\n"),
     isDeliveryOk = isDeliveryOk ?: false,
@@ -46,8 +46,8 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,
             closed = it.closed,
-            openTime = it.openTime ?: "00:00",
-            closeTime = it.closeTime ?: "00:00"
+            openTime = it.openTime ?: "",
+            closeTime = it.closeTime ?: ""
         )
     }.orEmpty().first(),
     imageUrls = imageUrls ?: emptyList(),
