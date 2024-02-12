@@ -17,3 +17,7 @@ annotation class REFRESH
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ServerUrl
+
+@Qualifier
+@Retention(AnnotationRetention.RUNTIME)
+annotation class IoDispatcher
