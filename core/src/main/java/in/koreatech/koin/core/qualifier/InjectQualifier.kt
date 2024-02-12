@@ -12,4 +12,8 @@ annotation class NoAuth
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
+annotation class REFRESH
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
 annotation class ServerUrl

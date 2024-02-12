@@ -10,44 +10,51 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.request.user.RefreshRequest
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
-import okhttp3.Authenticator
+import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.Route
 import java.net.HttpURLConnection
 
-class TokenAuthenticator @Inject constructor(
+class RefreshTokenInterceptor @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val tokenLocalDataSource: TokenLocalDataSource
-) : Authenticator {
-    override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
-        val request = try {
-            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) null
-            else {
-                val accessToken = tokenLocalDataSource.getAccessToken()
-                if("Bearer $accessToken" == response.request().header("Authorization")) {
-                    tokenLocalDataSource.removeAccessToken()
-                    goToLoginActivity()
-                    null
-                } else {
-                    if (accessToken.isNullOrEmpty()) {
-                        goToLoginActivity()
-                        null
-                    } else {
-                        getRequest(response, accessToken)
+    private val tokenLocalDataSource: TokenLocalDataSource,
+    private val userApi: UserApi,
+): Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response = runBlocking {
+        val request = chain.request().newBuilder().build()
+        var response = chain.proceed(request)
+
+        try {
+            when (response.code()) {
+                HttpURLConnection.HTTP_UNAUTHORIZED -> {
+                    val refreshToken = tokenLocalDataSource.getRefreshToken()
+                    refreshToken?.let {
+                        val result = userApi.postUserRefresh(RefreshRequest(it))
+                        if (result.isSuccessful) {
+                            result.body()?.let { resultBody ->
+                                tokenLocalDataSource.saveAccessToken(resultBody.token)
+                                tokenLocalDataSource.saveRefreshToken(resultBody.refreshToken)
+                                response = chain.proceed(getRequest(response, resultBody.token))
+                            }
+                        } else {
+                            tokenLocalDataSource.removeAccessToken()
+                            tokenLocalDataSource.removeRefreshToken()
+                            goToLoginActivity()
+                        }
                     }
                 }
+                else -> Unit
             }
         } catch (e: Exception) {
             goToLoginActivity()
-            null
         }
 
-        request
+        response
     }
-
     private fun getRequest(response: Response, token: String): Request {
         return response.request()
             .newBuilder()
@@ -69,9 +76,5 @@ class TokenAuthenticator @Inject constructor(
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(this)
         }
-    }
-
-    companion object {
-        const val TAG = "TokenAuthenticator"
     }
 }
