@@ -7,12 +7,11 @@ import `in`.koreatech.koin.databinding.ActivityRegisterMyStoreBinding
 import `in`.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreCategoryFragment
 import `in`.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreFragment
 import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel
-import `in`.koreatech.koin.ui.main.activity.MainActivity
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import java.util.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterStoreActivity : ActivityBase() {
     private val binding by dataBinding<ActivityRegisterMyStoreBinding>(R.layout.activity_register_my_store)
     private val viewModel by viewModels<RegisterStoreViewModel>()

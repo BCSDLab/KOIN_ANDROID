@@ -13,10 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterOwnerStoreViewModel
 
 class RegisterStoreFinalCheckFragment : Fragment(R.layout.register_store_final_check){
     private val binding by dataBinding<RegisterStoreFinalCheckBinding>()
     private val viewModel by activityViewModels<RegisterStoreViewModel>()
+    private val inserStoreViewmodel by activityViewModels<RegisterOwnerStoreViewModel>()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
@@ -42,8 +44,8 @@ class RegisterStoreFinalCheckFragment : Fragment(R.layout.register_store_final_c
         }
 
         binding.nextButton.setOnClickListener {
-            viewModel.setRegisterStore()
-            findNavController().navigate(R.id.register_final_check_fragment_to_register_finish_fragment)
+            inserStoreViewmodel.registerOwnerStore(viewModel.setRegisterStore())
+            //findNavController().navigate(R.id.register_final_check_fragment_to_register_finish_fragment)
         }
     }
 

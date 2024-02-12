@@ -2,11 +2,9 @@ package `in`.koreatech.koin.ui.business.registerstore.fragment
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.databinding.RegisterMyStoreFragmentBinding
 import `in`.koreatech.koin.databinding.RegisterStoreTimeTableBinding
 import `in`.koreatech.koin.domain.model.business.mystore.Holiday
 import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import android.os.Bundle
 import android.view.View
@@ -14,7 +12,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 
 class RegisterStoreTimeTableFragment : Fragment(R.layout.register_store_time_table){
     private val binding by dataBinding<RegisterStoreTimeTableBinding>()

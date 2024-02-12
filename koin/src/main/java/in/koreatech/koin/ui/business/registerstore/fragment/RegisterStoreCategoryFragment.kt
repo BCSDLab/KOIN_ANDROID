@@ -2,22 +2,18 @@ package `in`.koreatech.koin.ui.business.registerstore.fragment
 
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.databinding.RegisterMyStoreFragmentBinding
 import `in`.koreatech.koin.databinding.RegisterStoreCategoryBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
-import `in`.koreatech.koin.ui.business.registerstore.activity.RegisterStoreActivity
 import `in`.koreatech.koin.ui.business.registerstore.viewmodel.RegisterStoreViewModel
-import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.textString
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
 class RegisterStoreCategoryFragment: Fragment(R.layout.register_store_category){
     private val binding by dataBinding<RegisterStoreCategoryBinding>()

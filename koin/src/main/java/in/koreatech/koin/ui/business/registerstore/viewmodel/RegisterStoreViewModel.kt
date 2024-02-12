@@ -3,14 +3,28 @@ package `in`.koreatech.koin.ui.business.registerstore.viewmodel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.business.mystore.*
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import java.time.LocalTime
+import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
+import `in`.koreatech.koin.domain.usecase.business.mystore.MyStoreRegisterUseCase
 import javax.inject.Inject
 
-class RegisterStoreViewModel @Inject constructor(): BaseViewModel() {
+@HiltViewModel
+class RegisterStoreViewModel @Inject constructor(
+    private val myStoreRegisterUseCase: MyStoreRegisterUseCase
+): BaseViewModel() {
 
+
+    private val _businessRegisterMyStoreState = SingleLiveEvent<Unit>()
+    val businessRegisterMyStoreState: LiveData<Unit>
+        get() = _businessRegisterMyStoreState
+
+    private val _businessRegisterMyStoreError = SingleLiveEvent<Throwable>()
+    val businessRegisterMyStoreError: LiveData<Throwable>
+        get() = _businessRegisterMyStoreError
 
     private val _basicInfo = MutableLiveData<RegisterStoreBasic?>(null)
     val basicInfo: LiveData<RegisterStoreBasic?> get() = _basicInfo
@@ -34,7 +48,6 @@ class RegisterStoreViewModel @Inject constructor(): BaseViewModel() {
     fun setCategory(storeCategory: String?) {
       _category.value = storeCategory
     }
-
     // 카테고리
 
     fun setBasicInfo(basicInfo: RegisterStoreBasic){
@@ -75,10 +88,34 @@ class RegisterStoreViewModel @Inject constructor(): BaseViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setRegisterStore(){
+    fun setRegisterStore(): RegisterStore{
+
+        val dayOff = ArrayList<MyStoreDayOff>()
+        for (status in Holiday.values()) {
+            if(status.isHoliday){
+                dayOff.add(MyStoreDayOff(
+                    closeTime = null,
+                    dayOfWeek = status.dayEng,
+                    closed = true,
+                    openTime = null
+                ))
+            }
+            else{
+                dayOff.add(MyStoreDayOff(
+                    closeTime = _storeTime.value!!.closeTime.toString(),
+                    dayOfWeek = status.dayEng,
+                    closed = false,
+                    openTime = _storeTime.value!!.openTime.toString()
+                ))
+            }
+        }
+
         _registerStore.value = RegisterStore(_basicInfo.value!!.name, _category.value, _basicInfo.value!!.address, _basicInfo.value!!.imageUri,
-        _detailInfo.value!!.phoneNumber, _detailInfo.value!!.deliveryPrice, _detailInfo.value!!.description, getHoliday(),
-            LocalTime.parse(_storeTime.value!!.openTime), LocalTime.parse(_storeTime.value!!.closeTime),
+        _detailInfo.value!!.phoneNumber, _detailInfo.value!!.deliveryPrice, _detailInfo.value!!.description, dayOff,
+            _storeTime.value!!.openTime, _storeTime.value!!.closeTime,
             _detailInfo.value!!.isDeliveryOk, _detailInfo.value!!.isCardOk, _detailInfo.value!!.isBankOk)
+
+        return _registerStore.value!!
     }
+
 }

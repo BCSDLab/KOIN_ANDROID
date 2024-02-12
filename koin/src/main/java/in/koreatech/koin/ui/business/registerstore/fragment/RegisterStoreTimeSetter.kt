@@ -10,7 +10,6 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import android.os.Bundle
 import android.view.View
 import android.widget.NumberPicker
-import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import java.text.DecimalFormat
