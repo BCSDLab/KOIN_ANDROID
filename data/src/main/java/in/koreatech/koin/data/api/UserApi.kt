@@ -25,6 +25,6 @@ interface UserApi {
     @GET(URLConstant.USER.CHECKNICKNAME + "/{nickname}")
     suspend fun checkNickname(@Path("nickname") nickname: String): CheckNicknameResponse
 
-    @PUT(URLConstant.USER.REFRESH)
+    @POST(URLConstant.USER.REFRESH)
     suspend fun postUserRefresh(@Body refreshRequest: RefreshRequest): Response<RefreshResponse>
 }
