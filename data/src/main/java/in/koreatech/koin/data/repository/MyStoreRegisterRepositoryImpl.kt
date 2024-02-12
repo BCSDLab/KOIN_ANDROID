@@ -41,6 +41,7 @@ class MyStoreRegisterRepositoryImpl @Inject constructor(
                     categoryIds = category.toCategory(),
                     delivery = isDeliveryOk,
                     delivery_price = deliveryPrice.toInt(),
+                    description = description,
                     imageUrls = imageUri.toImageUri(),
                     name = name,
                     open = dayOff.toMyStoreDayOffReponse(),

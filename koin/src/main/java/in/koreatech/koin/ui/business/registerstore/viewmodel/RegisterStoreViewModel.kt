@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.usecase.business.mystore.MyStoreRegisterUseCase
@@ -88,7 +89,7 @@ class RegisterStoreViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun setRegisterStore(): RegisterStore{
+    fun setRegisterStore(){
 
         val dayOff = ArrayList<MyStoreDayOff>()
         for (status in Holiday.values()) {
@@ -110,12 +111,21 @@ class RegisterStoreViewModel @Inject constructor(
             }
         }
 
-        _registerStore.value = RegisterStore(_basicInfo.value!!.name, _category.value, _basicInfo.value!!.address, _basicInfo.value!!.imageUri,
+        /*_registerStore.value = RegisterStore(_basicInfo.value!!.name, _category.value, _basicInfo.value!!.address, _basicInfo.value!!.imageUri,
         _detailInfo.value!!.phoneNumber, _detailInfo.value!!.deliveryPrice, _detailInfo.value!!.description, dayOff,
             _storeTime.value!!.openTime, _storeTime.value!!.closeTime,
-            _detailInfo.value!!.isDeliveryOk, _detailInfo.value!!.isCardOk, _detailInfo.value!!.isBankOk)
+            _detailInfo.value!!.isDeliveryOk, _detailInfo.value!!.isCardOk, _detailInfo.value!!.isBankOk)*/
 
-        return _registerStore.value!!
+        if(isLoading.value == false) {
+            viewModelScope.launchWithLoading {
+                myStoreRegisterUseCase(_basicInfo.value!!.name, _category.value.toString(), _basicInfo.value!!.address, _basicInfo.value!!.imageUri.toString(),
+                    _detailInfo.value!!.phoneNumber.toString(), _detailInfo.value!!.deliveryPrice.toString(), _detailInfo.value!!.description.toString(), dayOff,
+                    _storeTime.value!!.openTime.toString(), _storeTime.value!!.closeTime.toString(),
+                    _detailInfo.value!!.isDeliveryOk, _detailInfo.value!!.isCardOk, _detailInfo.value!!.isBankOk)
+            }
+        }
+
+        //return _registerStore.value!!
     }
 
 }
