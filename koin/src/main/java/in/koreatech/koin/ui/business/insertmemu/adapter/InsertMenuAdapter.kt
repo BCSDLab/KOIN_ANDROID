@@ -52,9 +52,6 @@ class InsertMenuAdapter() : RecyclerView.Adapter<InsertMenuAdapter.ViewHolder>()
                 menuServing.text = null
             }
 
-
-            Log.d("어떻게 저장되지", dataSet.toString())
-
             menuPirce.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 }
@@ -62,7 +59,6 @@ class InsertMenuAdapter() : RecyclerView.Adapter<InsertMenuAdapter.ViewHolder>()
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     if(position != dataSet.size) {
                         dataSet[position].price = p0.toString()
-                        Log.d(dataSet[position].serving + "의 가격", dataSet[position].price + "원")
                     }
                 }
 
@@ -77,7 +73,6 @@ class InsertMenuAdapter() : RecyclerView.Adapter<InsertMenuAdapter.ViewHolder>()
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     if(position != dataSet.size) {
                         dataSet[position].serving = p0.toString()
-                        Log.d(dataSet[position].serving + "의 가격", dataSet[position].price + "원")
                     }
                 }
                 override fun afterTextChanged(p0: Editable?) {
@@ -100,7 +95,6 @@ class InsertMenuAdapter() : RecyclerView.Adapter<InsertMenuAdapter.ViewHolder>()
 
     fun initDataInViewModel(viewModel: InsertMenuViewModel){
         viewModel.getData(dataSet)
-        Log.d("어댑터", dataSet.toString())
     }
 
     override fun getItemViewType(position: Int): Int {

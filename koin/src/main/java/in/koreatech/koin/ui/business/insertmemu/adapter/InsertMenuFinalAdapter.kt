@@ -39,7 +39,6 @@ class InsertMenuFinalAdapter : RecyclerView.Adapter<InsertMenuFinalAdapter.ViewH
 
     fun setData(data : ArrayList<MenuInfo>){
         dataSet = data
-        Log.d("뷰모델이 다른가?",  data.toString())
         notifyDataSetChanged()
     }
 

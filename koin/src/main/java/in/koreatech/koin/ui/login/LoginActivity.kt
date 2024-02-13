@@ -90,7 +90,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         }
 
         isMaster.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegisterStoreActivity::class.java))
+            //startActivity(Intent(this@LoginActivity, RegisterStoreActivity::class.java))
         } /*임시로 사장님이신가요? 버튼을 누르면 넘어가도록 함*/
 
     }

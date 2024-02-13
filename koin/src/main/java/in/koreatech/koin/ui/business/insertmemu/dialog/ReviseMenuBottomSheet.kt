@@ -17,7 +17,6 @@ class ReviseMenuBottomSheet(position: Int) : BottomSheetDialogFragment()  {
     private val viewModel: InsertMenuViewModel by activityViewModels()
     private val selectImageFromGallery = registerForActivityResult(ActivityResultContracts.GetContent()){ uri: Uri? ->
         uri?.let {
-            Log.d("갤러리", position.toString())
             viewModel.reviseUri(uri, position)
             dismiss()
         }
