@@ -41,16 +41,11 @@ class RegisterStoreTimeSetter: DialogFragment(R.layout.const_time_picker_dialog_
 
         binding.closeTextview.setOnClickListener { dismiss() }
         binding.confirmTextview.setOnClickListener {
-            if(checkValidTime(binding.startTimeHour.value,binding.endTimeHour.value, binding.startTimeMinutes.value, binding.endTimeMinutes.value)){
                 openTimeModify = numbersHours[binding.startTimeHour.value] + ":" + numbersMinutes[binding.startTimeMinutes.value]
                 closeTimeModify = numbersHours[binding.endTimeHour.value] + ":" + numbersMinutes[binding.endTimeMinutes.value]
                 timeSet = RegisterStoreTime(openTimeModify, closeTimeModify)
                 viewModel.setTimeInfo(timeSet)
-            dismiss()
-            }
-            else{
-                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.valid_time_not_filled))
-            }
+                dismiss()
         }
     }
 
