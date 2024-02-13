@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.store.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreListItemBinding
 import `in`.koreatech.koin.domain.model.store.Store
-import `in`.koreatech.koin.domain.util.ext.isCurrentOpen
-import kotlin.math.roundToInt
 
 class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>(
     diffCallback
@@ -42,7 +39,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             binding.storeDeliveryTextview.setTextState(store.isDeliveryOk)
             binding.storeCardTextview.setTextState(store.isCardOk)
             binding.storeAccountTextview.setTextState(store.isBankOk)
-            binding.readyStoreFrameLayout.isVisible = !store.isCurrentOpen
+            binding.readyStoreFrameLayout.isVisible = store.open.closed
 
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(store)
@@ -77,7 +74,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Store>() {
             override fun areItemsTheSame(oldItem: Store, newItem: Store): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.uid == newItem.uid
             }
 
             override fun areContentsTheSame(oldItem: Store, newItem: Store): Boolean {
