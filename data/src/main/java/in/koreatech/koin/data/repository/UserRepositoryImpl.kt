@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
@@ -13,7 +14,8 @@ import java.lang.RuntimeException
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userRemoteDataSource: UserRemoteDataSource
+    private val userRemoteDataSource: UserRemoteDataSource,
+    private val tokenLocalDataSource: TokenLocalDataSource
 ) : UserRepository {
     override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
@@ -31,7 +33,12 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteUser() {
-        userRemoteDataSource.deleteUser()
+        runCatching {
+            userRemoteDataSource.deleteUser()
+        }.onSuccess {
+            tokenLocalDataSource.removeAccessToken()
+            tokenLocalDataSource.removeRefreshToken()
+        }
     }
 
     override suspend fun isUsernameDuplicated(nickname: String): Boolean {
