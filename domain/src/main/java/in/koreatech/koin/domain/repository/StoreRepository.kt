@@ -7,5 +7,6 @@ import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 interface StoreRepository {
     suspend fun getStores(): List<Store>
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
+    suspend fun getShopMenus(storeId: Int): StoreMenu
     suspend fun invalidateStores()
 }
