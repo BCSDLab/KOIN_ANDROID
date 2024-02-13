@@ -101,6 +101,20 @@
             app:layout_constraintGuide_percent="0.758" />
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizental_0.800"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.800" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_horizental_0.840"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.830" />
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_vertical_0.889"
             android:layout_width="1dp"
             android:layout_height="wrap_content"
@@ -328,6 +342,28 @@
                     android:textSize="13sp"
                     app:fontName="Normal" />
             </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/login_is_master"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.840"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizental_0.800">
+
+            <TextView
+                android:id="@+id/is_master"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/are_you_master"
+                android:textColor="@color/orange2"
+                android:textSize="15sp"
+                />
 
         </LinearLayout>
 

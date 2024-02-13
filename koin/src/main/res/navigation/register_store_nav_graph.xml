@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/register_store_nav_graph"
+    app:startDestination="@id/registerStoreFragment">
+
+    <fragment
+        android:id="@+id/registerStoreFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreFragment"
+        android:label="RegisterStoreFragment"
+        tools:layout="@layout/register_my_store_fragment">
+        <action
+            android:id="@+id/register_store_fragment_to_register_category_fragment"
+            app:destination="@id/registerStoreCategoryFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerStoreCategoryFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreCategoryFragment"
+        android:label="RegisterStoreCategoryFragment"
+        tools:layout="@layout/register_store_category">
+        <action
+            android:id="@+id/register_category_fragment_to_register_basic_info_fragment"
+            app:destination="@id/registerStoreBasicInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerStoreBasicInfoFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreBasicInfoFragment"
+        android:label="RegisterStoreBasicFragment"
+        tools:layout="@layout/register_store_basic_info">
+        <action
+            android:id="@+id/register_basic_info_fragment_to_register_detail_info_fragment"
+            app:destination="@id/registerStoreDetailInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerStoreDetailInfoFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreDetailFragemnt"
+        android:label="RegisterStoreDetailFragment"
+        tools:layout="@layout/register_store_detail_info">
+        <action
+            android:id="@+id/register_detail_info_fragment_to_register_final_check_fragment"
+            app:destination="@id/registerStoreFinalCheckFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+        <action
+            android:id="@+id/register_detail_info_fragment_to_time_table_fragment"
+            app:destination="@id/timeTableFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/timeTableFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreTimeTableFragment"
+        android:label="RegisterStoreFinalCheckFragment"
+        tools:layout="@layout/register_store_time_table">
+        <action
+            android:id="@+id/time_table_fragment_to_register_detail_info_fragment"
+            app:destination="@id/registerStoreDetailInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/registerStoreFinalCheckFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreFinalCheckFragment"
+        android:label="RegisterStoreFinalCheckFragment"
+        tools:layout="@layout/register_store_final_check">
+        <action
+            android:id="@+id/register_final_check_fragment_to_register_finish_fragment"
+            app:destination="@id/registerStoreFinishFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerStoreFinishFragment"
+        android:name="in.koreatech.koin.ui.business.registerstore.fragment.RegisterStoreFinishFragment"
+        android:label="MyStoreEditFragment"
+        tools:layout="@layout/register_store_finish">
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="menuViewiewModel"
+            type="in.koreatech.koin.ui.business.insertmemu.viewmodel.InsertMenuViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:ignore="MissingPrefix">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <in.koreatech.koin.core.appbar.AppBarBase
+                    android:id="@+id/koin_base_app_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    app:leftButtonBackground="@drawable/ic_back_arrow"
+                    app:titleText="메뉴 추가" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="56dp"
+                    android:orientation="vertical">
+
+
+                    <ScrollView
+                        android:id="@+id/insert_menu_scrollview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <FrameLayout
+                                android:id="@+id/menu_base_info_framlayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="31dp"
+                                android:layout_marginTop="20dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:alpha="0.2"
+                                    android:background="@color/blue1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center"
+                                    android:layout_marginStart="16dp"
+                                    android:includeFontPadding="false"
+                                    android:text="메뉴 정보"
+                                    android:textColor="@color/gray7"
+                                    android:textSize="13dp"
+                                    app:fontName="Custom6" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/menu_name_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:includeFontPadding="false"
+                                android:text="메뉴명"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/menu_base_info_framlayout" />
+
+                            <EditText
+                                android:id="@+id/init_menu_name"
+                                android:layout_width="370dp"
+                                android:layout_height="39dp"
+                                android:layout_marginLeft="29dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="32dp"
+                                android:background="@drawable/edittext_border"
+                                android:maxLines="1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_name_textview" />
+
+                            <TextView
+                                android:id="@+id/menu_price_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="40dp"
+                                android:includeFontPadding="false"
+                                android:text="가격"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/init_menu_name"
+                                app:layout_constraintBottom_toTopOf="@id/menu_item_recycler_view"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/menu_item_recycler_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_price_textview"
+                                />
+
+                            <TextView
+                                android:id="@+id/increase_price_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:includeFontPadding="false"
+                                android:text="+ 가격 추가"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/menu_item_recycler_view" />
+
+                            <TextView
+                                android:id="@+id/menu_category_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="40dp"
+                                android:includeFontPadding="false"
+                                android:text="메뉴 카테고리"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/increase_price_button" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/event_menu_btn"
+                                android:layout_width="160dp"
+                                android:layout_height="39dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/menu_category_is_checked_selector"
+                                android:gravity="center"
+                                android:text="이벤트 메뉴"
+                                android:textColor="@drawable/menu_category_is_checked_text_selector"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@id/side_menu_btn"
+                                app:layout_constraintEnd_toStartOf="@id/representative_menu_btn"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_category_textview" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/representative_menu_btn"
+                                android:layout_width="160dp"
+                                android:layout_height="39dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/menu_category_is_checked_selector"
+                                android:gravity="center"
+                                android:text="대표 메뉴"
+                                android:textColor="@drawable/menu_category_is_checked_text_selector"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@id/set_menu_btn"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/event_menu_btn"
+                                app:layout_constraintTop_toBottomOf="@id/menu_category_textview" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/side_menu_btn"
+                                android:layout_width="160dp"
+                                android:layout_height="39dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/menu_category_is_checked_selector"
+                                android:gravity="center"
+                                android:text="사이드 메뉴"
+                                android:textColor="@drawable/menu_category_is_checked_text_selector"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toTopOf="@id/menu_detail_info_framlayout"
+                                app:layout_constraintEnd_toStartOf="@id/set_menu_btn"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/event_menu_btn" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/set_menu_btn"
+                                android:layout_width="160dp"
+                                android:layout_height="39dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/menu_category_is_checked_selector"
+                                android:gravity="center"
+                                android:text="세트 메뉴"
+                                android:textColor="@drawable/menu_category_is_checked_text_selector"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/side_menu_btn"
+                                app:layout_constraintTop_toBottomOf="@id/representative_menu_btn" />
+
+                            <FrameLayout
+                                android:id="@+id/menu_detail_info_framlayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="31dp"
+                                android:layout_marginTop="31dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/side_menu_btn">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:alpha="0.2"
+                                    android:background="@color/blue1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center"
+                                    android:layout_marginStart="16dp"
+                                    android:includeFontPadding="false"
+                                    android:text="메뉴 세부"
+                                    android:textColor="@color/gray7"
+                                    android:textSize="13dp"
+                                    app:fontName="Custom6" />
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/menu_combo_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="22dp"
+                                android:includeFontPadding="false"
+                                android:text="메뉴 구성"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/menu_detail_info_framlayout" />
+
+                            <EditText
+                                android:id="@+id/init_menu_combo"
+                                android:layout_width="370dp"
+                                android:layout_height="100dp"
+                                android:layout_marginLeft="29dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginRight="32dp"
+                                android:background="@drawable/edittext_border"
+                                android:gravity="top"
+                                android:hint="예) 불족발(소,중,대) + 막국수 + 랜덤 서비스 음료 (500ml)"
+                                android:maxLines="5"
+                                android:textSize="15dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_combo_textview" />
+
+                            <TextView
+                                android:id="@+id/menu_image_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="22dp"
+                                android:includeFontPadding="false"
+                                android:text="메뉴 사진"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                app:fontName="Custom6"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/init_menu_combo" />
+
+                            <HorizontalScrollView
+                                android:id="@+id/menu_image_scrollview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_image_textview">
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/first_menu_image"
+                                        android:layout_width="137dp"
+                                        android:layout_height="137dp"
+                                        android:layout_marginLeft="16dp"
+                                        android:background="@drawable/choose_image"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/second_menu_image"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/delete_first_menu_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/delete_circle_24"
+                                        android:rotation="45"
+                                        app:layout_constraintEnd_toStartOf="@id/second_menu_image"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/second_menu_image"
+                                        android:layout_width="137dp"
+                                        android:layout_height="137dp"
+                                        android:layout_marginLeft="24dp"
+                                        android:background="@drawable/choose_image"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toStartOf="@id/third_menu_image"
+                                        app:layout_constraintStart_toEndOf="@id/first_menu_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/delete_second_menu_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/delete_circle_24"
+                                        android:rotation="45"
+                                        app:layout_constraintEnd_toStartOf="@id/third_menu_image"
+                                        app:layout_constraintStart_toEndOf="@id/first_menu_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/third_menu_image"
+                                        android:layout_width="137dp"
+                                        android:layout_height="137dp"
+                                        android:layout_marginLeft="24dp"
+                                        android:layout_marginRight="16dp"
+                                        android:background="@drawable/choose_image"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/second_menu_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <ImageView
+                                        android:id="@+id/delete_third_menu_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/delete_circle_24"
+                                        android:rotation="45"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/second_menu_image"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                            </HorizontalScrollView>
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/cancle_button"
+                                android:layout_width="105dp"
+                                android:layout_height="38dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginBottom="43dp"
+                                android:background="@drawable/menu_insert_cancle_button"
+                                android:text="취소"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="20dp"
+                                app:fontName="Normal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@id/confirm_button"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_image_scrollview" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/confirm_button"
+                                android:layout_width="265dp"
+                                android:layout_height="38dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginBottom="43dp"
+                                android:background="@color/colorPrimary"
+                                android:text="확인"
+                                android:textColor="@color/white"
+                                android:textSize="20dp"
+                                app:fontName="Normal"
+                                app:layout_constraintStart_toEndOf="@id/cancle_button"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/menu_image_scrollview" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </ScrollView>
+
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include layout="@layout/base_navigation_drawer_right" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>

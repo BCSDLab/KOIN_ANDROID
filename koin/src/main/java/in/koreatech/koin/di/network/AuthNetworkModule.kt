@@ -12,6 +12,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.NoAuth
+import `in`.koreatech.koin.data.api.business.MyStoreRegisterApi
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -87,7 +89,8 @@ object AuthNetworkModule {
     @Singleton
     fun provideUserAuthApi(
         @Auth retrofit: Retrofit
-    ) : UserAuthApi {
+    ): UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
     }
 }
+

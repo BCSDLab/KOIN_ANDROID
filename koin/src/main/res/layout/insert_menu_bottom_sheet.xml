@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="32dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="40dp">
+
+    <ImageView
+        android:id="@+id/cancel_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/fi_x"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="이미지 추가"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="메뉴 사진을 추가할 수 있습니다."
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="13dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_gallery"
+        android:layout_width="218dp"
+        android:layout_height="48dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center"
+        android:background="@drawable/bottom_sheet_radius_25dp"
+        android:textStyle="bold"
+        android:text="사진 앨범"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_camera"
+        android:layout_width="218dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center"
+        android:background="@drawable/bottom_sheet_radius_25dp"
+        android:textStyle="bold"
+        android:text="카메라 촬영"
+        />
+</LinearLayout>
+</layout>

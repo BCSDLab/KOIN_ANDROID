@@ -119,6 +119,13 @@ Koreatech Community Project (ver. Android)
 
 - 3.0.4
   - 복덕방 서비스 디자인 개선
+  
+- 3.0.7
+  - Target SDK 31 업데이트
+  - 버스 서비스 업데이트
+  - 식당 서비스 업데이트
+  - Kotlin 도입
+  - clean architecture 모듈 분리 진행
 
 ## Technology stack
   - Java 8
