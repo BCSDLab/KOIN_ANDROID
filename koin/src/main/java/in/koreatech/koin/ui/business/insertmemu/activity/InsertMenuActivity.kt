@@ -45,7 +45,6 @@ class InsertMenuActivity: ActivityBase() {
         menuCategorySelector()
 
         binding.increasePriceButton.setOnClickListener {
-            //viewModel.addData(MenuInfo("예) 소(1~2인분)", "예) 20000"))
             viewModel.addData(MenuInfo("tmp", "tmp"))
         }
 
@@ -57,7 +56,6 @@ class InsertMenuActivity: ActivityBase() {
 
         myAdapter.setItemClickListener(object: InsertMenuAdapter.OnItemClickListener{
             override fun onClick(v: View, position: Int) {
-                Log.d("아이템포지션", position.toString())
                 viewModel.removeData(position)
             }
         })
@@ -121,31 +119,25 @@ class InsertMenuActivity: ActivityBase() {
             //modalBottomSheet()
             if(binding.firstMenuImage.drawable == null){
                 modalBottomSheet()
-                Log.d("이미지가 없습니다", "이미지가 없습니다")
             }
             else {
                 reviseModalBottomSheet(0)
-                Log.d("이미지가 있습니다", "이미지가 있습니다.")
             }
         }
         binding.secondMenuImage.setOnClickListener {
             if(binding.secondMenuImage.drawable == null){
                 modalBottomSheet()
-                Log.d("이미지가 없습니다", "이미지가 없습니다")
             }
             else {
                 reviseModalBottomSheet(1)
-                Log.d("이미지가 있습니다", "이미지가 있습니다.")
             }
         }
         binding.thirdMenuImage.setOnClickListener {
             if(binding.thirdMenuImage.drawable == null){
                 modalBottomSheet()
-                Log.d("이미지가 없습니다", "이미지가 없습니다")
             }
             else {
                 reviseModalBottomSheet(2)
-                Log.d("이미지가 있습니다", "이미지가 있습니다.")
             }
         }
     }
@@ -176,25 +168,25 @@ class InsertMenuActivity: ActivityBase() {
         binding.eventMenuBtn.setOnClickListener {
             binding.eventMenuBtn.isSelected = !binding.eventMenuBtn.isSelected
             MenuCategory.Option1.isCheck = binding.eventMenuBtn.isSelected
-            Log.d("이벤트 메뉴 버튼이 눌렸나요?", binding.eventMenuBtn.isSelected.toString())
+
         }
 
         binding.representativeMenuBtn.setOnClickListener {
             binding.representativeMenuBtn.isSelected = !binding.representativeMenuBtn.isSelected
             MenuCategory.Option2.isCheck = binding.representativeMenuBtn.isSelected
-            Log.d("대표 메뉴 버튼이 눌렸나요?", binding.representativeMenuBtn.isSelected.toString())
+
         }
 
         binding.sideMenuBtn.setOnClickListener {
             binding.sideMenuBtn.isSelected = !binding.sideMenuBtn.isSelected
             MenuCategory.Option3.isCheck = binding.sideMenuBtn.isSelected
-            Log.d("사이드 메뉴 버튼이 눌렸나요?", binding.sideMenuBtn.isSelected.toString())
+
         }
 
         binding.setMenuBtn.setOnClickListener {
             binding.setMenuBtn.isSelected = !binding.setMenuBtn.isSelected
             MenuCategory.Option4.isCheck = binding.setMenuBtn.isSelected
-            Log.d("세트 메뉴 버튼이 눌렸나요?", binding.setMenuBtn.isSelected.toString())
+
         }
     }
 
