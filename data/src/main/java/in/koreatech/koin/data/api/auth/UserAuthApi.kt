@@ -2,9 +2,8 @@ package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.user.UserRequest
-import `in`.koreatech.koin.data.response.user.UserResponse
-import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
+import `in`.koreatech.koin.data.response.user.UserResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
