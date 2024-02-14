@@ -21,7 +21,7 @@ import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.activity.WebViewActivity;
 
 public class SnackbarUtil {
-    static Snackbar snackbar = null;
+    public static Snackbar snackbar = null;
 
     public static void makeShortSnackbar(View view, String message) {
         Snackbar.make(view, message, LENGTH_SHORT).show();
