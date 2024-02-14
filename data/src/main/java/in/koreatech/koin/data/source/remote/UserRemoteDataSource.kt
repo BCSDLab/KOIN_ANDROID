@@ -30,7 +30,7 @@ class UserRemoteDataSource(
 
     suspend fun sendPasswordResetEmail(
         idRequest: IdRequest
-    ): DefaultResponse {
+    ) {
         return userApi.postPasswordReset(idRequest)
     }
 
