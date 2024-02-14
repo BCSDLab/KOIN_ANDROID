@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.signup
 
+import android.content.Intent
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
 import `in`.koreatech.koin.contract.SignupContract
@@ -77,8 +78,11 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                         getString(R.string.signup_error_check_password_match)
                     )
                 }
-                SignupContinuationState.RequestedEmailValidation -> {
-                    showRequestedEmailValidationDialog()
+                SignupContinuationState.CheckComplete -> {
+                    val intent = Intent(this@SignupActivity, SignUpWithDetailInfoActivity::class.java)
+                    intent.putExtra("email", binding.signupEdittextId.textString)
+                    intent.putExtra("password", binding.signupEdittextPw.textString)
+                    startActivity(intent)
                 }
             }
         }
@@ -91,17 +95,6 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                 }
             )
         }
-    }
-
-    private fun showRequestedEmailValidationDialog() {
-        SnackbarUtil.makeSnackbarActionWebView(
-            this,
-            R.id.signup_box,
-            getString(R.string.signup_email_validation_completed_message),
-            getString(R.string.signup_email_validation_completed_title),
-            getString(R.string.koreatech_url),
-            GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
-        )
     }
 
     private fun initView() = with(binding) {
@@ -121,7 +114,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
             SignupKoinTermsDialog().show(supportFragmentManager, SIGNUP_PERSONAL_INFO_TERMS_DIALOG)
         }
 
-        signupSendVerificationButton.setOnClickListener {
+        signupNextButton.setOnClickListener {
             signupViewModel.continueSignup(
                 portalAccount = signupEdittextId.textString,
                 password = signupEdittextPw.textString,

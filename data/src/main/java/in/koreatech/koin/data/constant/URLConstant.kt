@@ -42,6 +42,11 @@ object URLConstant {
         const val ID = "portal_account"
         const val EMAIL = "email"
         const val PW = "password"
+
+        object STUDENT{
+            const val STUDENT = "student"
+            const val REGISTER: String = "$USER/$STUDENT/register"
+        }
     }
 
     object OWNER {

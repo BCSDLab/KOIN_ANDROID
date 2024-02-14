@@ -189,6 +189,12 @@
             android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.signup.SignUpWithDetailInfoActivity"
+            android:exported="false"
+            android:label="회원가입 디테일 정보"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>
