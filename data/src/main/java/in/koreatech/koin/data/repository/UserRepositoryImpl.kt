@@ -10,7 +10,6 @@ import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
 import retrofit2.HttpException
-import java.lang.RuntimeException
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -33,11 +32,12 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteUser() {
-        runCatching {
+        try {
             userRemoteDataSource.deleteUser()
-        }.onSuccess {
             tokenLocalDataSource.removeAccessToken()
             tokenLocalDataSource.removeRefreshToken()
+        } catch (e: HttpException) {
+            throw e
         }
     }
 
