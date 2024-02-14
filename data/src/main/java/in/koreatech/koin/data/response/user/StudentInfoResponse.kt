@@ -13,11 +13,14 @@ data class StudentInfoResponse(
     @SerializedName("is_graduated")
     val isGraduated: Boolean,
 
+    @SerializedName("major")
+    val major: String,
+
     @SerializedName("name")
     val name: String,
 
     @SerializedName("nickname")
-    val nickname: String,
+    val nickName: String,
 
     @SerializedName("password")
     val password: String,
@@ -26,5 +29,5 @@ data class StudentInfoResponse(
     val phoneNumber: String,
 
     @SerializedName("student_number")
-    val studentNumber: String,
+    val studentNumber: String
 )

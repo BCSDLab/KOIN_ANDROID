@@ -37,3 +37,23 @@ fun User.Student.toUserRequest() = UserRequest(
     identity = 0,
     isGraduated = isStudent
 )
+
+fun AuthResponse.toAuthToken() = AuthToken(
+    token, user.toUser()
+)
+
+fun Int.toGraduate(): Boolean{
+    return this == 0
+}
+
+fun String.toPhoneNumber() : String{
+    val digitsOnly = this.filter { it.isDigit() }
+
+    return when (digitsOnly.length) {
+        11 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 7)}-${digitsOnly.substring(7)}"
+        10 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 6)}-${digitsOnly.substring(6)}"
+        else -> digitsOnly
+    }
+}
+
+fun String.toShcoolEamil() = "$this@koreatech.ac.kr"

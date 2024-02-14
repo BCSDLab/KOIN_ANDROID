@@ -23,9 +23,9 @@ class UserRemoteDataSource(
     }
 
     suspend fun sendRegisterEmail(
-        loginRequest: LoginRequest
+        studentInfoResponse: StudentInfoResponse
     ): RegisterResponse {
-        return userApi.postRegister(loginRequest)
+        return userApi.postRegister(studentInfoResponse)
     }
 
     suspend fun sendPasswordResetEmail(

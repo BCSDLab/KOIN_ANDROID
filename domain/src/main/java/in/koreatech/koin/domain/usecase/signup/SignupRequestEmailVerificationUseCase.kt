@@ -30,8 +30,15 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
             studentNumber == "" -> Result.success(SignupContinuationState.InitStudentId)
             isGraduated == 2 -> Result.success(SignupContinuationState.CheckGraduate)
             else -> signupRepository.requestEmailVerification(
-                email = portalAccount,
-                password = password.toSHA256()
+                portalAccount = portalAccount,
+                gender = gender,
+                isGraduated = isGraduated,
+                major = major,
+                name = name,
+                nickName = nickName,
+                password = password,
+                phoneNumber = phoneNumber,
+                studentNumber = studentNumber,
             ).map {
                 SignupContinuationState.RequestedEmailValidation
             }

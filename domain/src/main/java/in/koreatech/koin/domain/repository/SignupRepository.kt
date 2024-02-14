@@ -5,7 +5,16 @@ interface SignupRepository {
     suspend fun getKoinTermText() : String
 
     suspend fun requestEmailVerification(
-        email: String,
-        password: String
+
+        portalAccount: String,
+        gender: Int,
+        isGraduated: Int,
+        major: String,
+        name:String,
+        nickName: String,
+        password: String,
+        phoneNumber: String,
+        studentNumber: String,
     ): Result<Unit>
+
 }
