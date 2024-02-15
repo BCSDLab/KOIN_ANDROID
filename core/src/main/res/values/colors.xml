@@ -54,6 +54,7 @@
     <color name="black_alpha12">#1f252525</color>
     <color name="black_alpha20">#33000000</color>
     <color name="black_alpha80">#cc000000</color>
+    <color name="black_alpha50">#50000000</color>
 
     <color name="orange1">#fdf3e8</color>
     <color name="orange2">#c76e2f</color>
@@ -71,6 +72,7 @@
     <color name="blue6">#165c8f</color>
     <color name="blue7">#0a2335</color>
     <color name="blue8">#9fa9b3</color>
+    <color name="blue9">#238bfe</color>
     <color name="blue_alpha30">#4d7c9fae</color>
     <color name="blue_alpha51">#33d2dae2</color>
 

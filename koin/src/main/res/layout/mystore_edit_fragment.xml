@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/container_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="-69dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.044" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.953" />
+
+                <ImageView
+                    android:id="@+id/my_store_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="276dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dining_widget_example"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/my_store_edit_main_photo"
+                    android:layout_width="82dp"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@drawable/button_rect_black_alpha50"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/modify_photo"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintBottom_toBottomOf="@id/my_store_image_view"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+
+                <TextView
+                    android:id="@+id/my_store_edit_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/store_name"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/my_store_image_view" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_title_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="29dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_title_textview"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/my_store_edit_title_textview"/>
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_title_textview, my_store_edit_title_edittext" />
+
+                <TextView
+                    android:id="@+id/my_store_edit_phone_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/phone_number"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_title" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_phone_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_phone_textview"
+                    app:layout_constraintEnd_toEndOf="@id/my_store_edit_title_edittext"
+                    app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_phone_textview, my_store_edit_phone_edittext" />
+
+
+                <TextView
+                    android:id="@+id/my_store_edit_const_time_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/const_time"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_phone" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_const_time_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="13dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_const_time_textview"
+                    app:layout_constraintEnd_toStartOf="@id/my_store_edit_const_time"
+                    app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext" />
+
+                <TextView
+                    android:id="@+id/my_store_edit_const_time"
+                    android:layout_width="58dp"
+                    android:layout_height="29dp"
+                    android:layout_marginStart="13dp"
+                    android:background="@drawable/button_rect_primary"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/board_edit"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/my_store_edit_const_time_edittext"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_holiday_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/my_store_edit_title_edittext"
+                    app:layout_constraintStart_toStartOf="@+id/my_store_edit_title_edittext"
+                    app:layout_constraintTop_toBottomOf="@id/my_store_edit_const_time_edittext" />
+
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_const_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_const_time_textview, my_store_edit_const_time_edittext, my_store_edit_holiday_edittext" />
+
+                <TextView
+                    android:id="@+id/my_store_edit_address_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/address_info"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_time" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_address_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_address_textview"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_address_textview, my_store_edit_address_edittext" />
+
+
+                <TextView
+                    android:id="@+id/my_store_edit_const_deliver_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/delivery_pay"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_address" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_const_deliver_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_deliver_textview"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_const_deliver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_const_deliver_textview, my_store_edit_const_deliver_edittext" />
+
+
+                <TextView
+                    android:id="@+id/my_store_edit_const_etc_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="9sp"
+                    android:maxLines="1"
+                    android:text="@string/etc_info"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_deliver" />
+
+                <EditText
+                    android:id="@+id/my_store_edit_const_etc_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/my_store_edit_const_etc_textview"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/my_store_edit_title_edittext" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_edit_const_etc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="my_store_edit_const_etc_textview, my_store_edit_const_etc_edittext" />
+
+                <CheckBox
+                    android:id="@+id/is_delivery_check_box"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/checkbox_button_checked_24dp"
+                    android:button="@null"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc" />
+
+                <TextView
+                    android:id="@+id/is_delivery_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/able_delivery"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+                    app:layout_constraintStart_toEndOf="@+id/is_delivery_check_box" />
+
+                <CheckBox
+                    android:id="@+id/is_card_check_box"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/checkbox_button_checked_24dp"
+                    android:button="@null"
+                    app:layout_constraintStart_toEndOf="@id/is_delivery_textview"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc" />
+
+                <TextView
+                    android:id="@+id/is_card_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/able_card"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+                    app:layout_constraintStart_toEndOf="@+id/is_card_check_box" />
+
+                <CheckBox
+                    android:id="@+id/is_bank_check_box"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/checkbox_button_checked_24dp"
+                    android:button="@null"
+                    app:layout_constraintStart_toEndOf="@id/is_card_textview"
+                    app:layout_constraintTop_toBottomOf="@id/barrier_edit_const_etc" />
+
+                <TextView
+                    android:id="@+id/is_bank_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/able_bank"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/is_delivery_check_box"
+                    app:layout_constraintStart_toEndOf="@+id/is_bank_check_box" />
+
+                <androidx.constraintlayout.widget.Barrier
+                    android:id="@+id/barrier_checkbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:barrierDirection="bottom"
+                    app:constraint_referenced_ids="is_delivery_check_box, is_card_check_box,is_bank_check_box" />
+
+
+                <TextView
+                    android:id="@+id/my_store_edit_success"
+                    android:layout_width="105dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/button_rect_primary"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/modify_completed"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:fontName="Custom6"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_end"
+                    app:layout_constraintTop_toBottomOf="@+id/barrier_checkbox" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+</layout>

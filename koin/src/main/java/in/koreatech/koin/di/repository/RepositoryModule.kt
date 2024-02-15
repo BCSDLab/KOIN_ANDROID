@@ -16,6 +16,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.repository.business.MyStoreRepositoryImpl
+import `in`.koreatech.koin.data.source.remote.business.MyStoreRemoteDataSource
+import `in`.koreatech.koin.domain.repository.business.MyStoreRepository
 import javax.inject.Singleton
 
 @Module
@@ -101,5 +104,13 @@ object RepositoryModule {
         landRemoteDataSource: LandRemoteDataSource
     ): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMyStoreRepository(
+        myStoreRemoteDataSource: MyStoreRemoteDataSource
+    ): MyStoreRepository {
+        return MyStoreRepositoryImpl(myStoreRemoteDataSource)
     }
 }
