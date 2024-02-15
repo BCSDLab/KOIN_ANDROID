@@ -102,4 +102,12 @@ object RepositoryModule {
     ): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideOwnerRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerRepository {
+        return OwnerRepoitoryImpl(ownerRemoteDataSource)
+    }
 }
