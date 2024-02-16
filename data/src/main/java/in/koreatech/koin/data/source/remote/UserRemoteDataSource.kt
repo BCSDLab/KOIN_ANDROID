@@ -24,8 +24,8 @@ class UserRemoteDataSource(
 
     suspend fun sendRegisterEmail(
         studentInfoResponse: StudentInfoResponse
-    ): RegisterResponse {
-        return userApi.postRegister(studentInfoResponse)
+    ) {
+        userApi.postRegister(studentInfoResponse)
     }
 
     suspend fun sendPasswordResetEmail(
@@ -40,6 +40,10 @@ class UserRemoteDataSource(
 
     suspend fun checkNickname(nickname: String): CheckNicknameResponse {
         return userApi.checkNickname(nickname)
+    }
+
+    suspend fun checkEmail(email: String): CheckEmailResponse {
+        return userApi.checkEmail(email)
     }
 
     suspend fun updateUser(userRequest: UserRequest): UserResponse {

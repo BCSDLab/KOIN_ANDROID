@@ -195,6 +195,12 @@
             android:exported="false"
             android:label="회원가입 디테일 정보"
             android:theme="@style/KAPTheme.NoActionBar" />
+
+        <activity
+            android:name=".ui.signup.SignUpCompleteActivity"
+            android:exported="false"
+            android:label="회원가입 완료"
+            android:theme="@style/KAPTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNameFromStudentIdUseCase
 import `in`.koreatech.koin.domain.usecase.signup.SignUpCheckingUseCase
+import `in`.koreatech.koin.domain.usecase.user.CheckEmailValidationUseCase
 import `in`.koreatech.koin.domain.usecase.user.CheckNicknameValidationUseCase
+import `in`.koreatech.koin.ui.userinfo.state.EmailState
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -21,6 +23,7 @@ class SignupViewModel @Inject constructor(
     private val signUpCheckingUseCase: SignUpCheckingUseCase,
     private val signupRequestEmailVerificationUseCase: SignupRequestEmailVerificationUseCase,
     private val checkNicknameValidationUseCase: CheckNicknameValidationUseCase,
+    private val checkEmailValidationUseCase: CheckEmailValidationUseCase,
     private val deptNameFromStudentIdUseCase: GetDeptNameFromStudentIdUseCase,
 ): BaseViewModel() {
 
@@ -40,6 +43,12 @@ class SignupViewModel @Inject constructor(
 
     private val _nicknameDuplicatedEvent = SingleLiveEvent<Boolean>()
     val nicknameDuplicatedEvent: LiveData<Boolean> get() = _nicknameDuplicatedEvent
+
+    private val _emailState = MutableLiveData<EmailState>()
+    val emailState: LiveData<EmailState> get() = _emailState
+
+    private val _emailDuplicatedEvent = SingleLiveEvent<Boolean>()
+    val emailDuplicatedEvent: LiveData<Boolean> get() = _emailDuplicatedEvent
 
     private val _toastErrorMessage = SingleLiveEvent<String>()
     val toastErrorMessage: LiveData<String> get() = _toastErrorMessage
@@ -103,11 +112,29 @@ class SignupViewModel @Inject constructor(
                 _nicknameState.value = _nicknameState.value?.copy(isNicknameDuplicated = it)
                 _nicknameDuplicatedEvent.value = it
             }
-            error?.let { _toastErrorMessage.value = it.message
+            error?.let {
+                _toastErrorMessage.value = it.message
                 _nicknameDuplicatedEvent.value = false
             }
         }
     }
+
+    fun checkEmailDuplicated(email: String) = viewModelScope.launchWithLoading {
+        _emailState.value = EmailState.newEmail(email)
+
+        checkEmailValidationUseCase(email).let { (isDuplicated, error) ->
+            isDuplicated?.let {
+                _emailState.value = _emailState.value?.copy(isemailDuplicated = it)
+                _emailDuplicatedEvent.value = it
+            }
+            error?.let {
+                _toastErrorMessage.value = it.message
+                _emailDuplicatedEvent.value = false
+            }
+        }
+    }
+
+
 
     fun getDept(studentId: String) = viewModelScope.launchIgnoreCancellation {
         deptNameFromStudentIdUseCase(studentId).let { (deptName, error) ->

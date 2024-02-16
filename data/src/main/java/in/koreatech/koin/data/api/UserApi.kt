@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.CheckEmailResponse
 import `in`.koreatech.koin.data.response.user.CheckNicknameResponse
 import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
@@ -32,4 +33,6 @@ interface UserApi {
     @GET(URLConstant.USER.CHECKNICKNAME)
     suspend fun checkNickname(@Query("nickname") nickname: String): CheckNicknameResponse
 
+    @GET(URLConstant.USER.CHECKEMAIL)
+    suspend fun checkEmail(@Query("address") email: String): CheckEmailResponse
 }

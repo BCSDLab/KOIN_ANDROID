@@ -38,6 +38,7 @@ object URLConstant {
         const val ME: String = "$USER/student/me"
         const val REFRESH: String = "$USER/refresh"
         const val CHECKNICKNAME: String = "$USER/check/nickname"
+        const val CHECKEMAIL: String = "$USER/check/email"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val ID = "portal_account"
         const val EMAIL = "email"

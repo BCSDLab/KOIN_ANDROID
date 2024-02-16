@@ -18,8 +18,11 @@ import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.toast.ToastUtil
 
 @AndroidEntryPoint
 class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
@@ -86,19 +89,24 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                 }
             }
         }
-        observeLiveData(signupContinuationError) { t ->
-            SnackbarUtil.makeShortSnackbar(
-                binding.root,
-                when (t) {
-                    is SignupAlreadySentEmailException -> getString(R.string.signup_error_email_already_send_or_email_requested)
-                    else -> getString(R.string.signup_error_when_email_validation)
-                }
-            )
+
+        observeLiveData(emailDuplicatedEvent) {
+            if (it) {
+                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_email_duplicated))
+            }
+            else {
+                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_email_check))
+                binding.signupNextButton.visibility = View.VISIBLE
+                binding.checkEmailDuplicatedButton.visibility = View.GONE
+            }
         }
     }
 
     private fun initView() = with(binding) {
         signupBackButton.setOnClickListener { finish() }
+
+        checkEmailDuplicatedButton.visibility = View.GONE
+        //signupNextButton.visibility = View.GONE
 
         signupEdittextId.setText(portalAccount ?: "")
 
@@ -114,15 +122,25 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
             SignupKoinTermsDialog().show(supportFragmentManager, SIGNUP_PERSONAL_INFO_TERMS_DIALOG)
         }
 
+        checkEmailDuplicatedButton.setOnClickListener {
+            signupViewModel.checkEmailDuplicated(binding.signupEdittextId.textString)
+        }
+
         signupNextButton.setOnClickListener {
             signupViewModel.continueSignup(
-                portalAccount = signupEdittextId.textString,
-                password = signupEdittextPw.textString,
-                passwordConfirm = signupEdittextPwConfirm.textString,
-                isAgreedPrivacyTerms = signupCheckBoxPrivacyTerms.isChecked,
-                isAgreedKoinTerms = signupCheckBoxKoinTerms.isChecked
+                portalAccount = binding.signupEdittextId.textString,
+                password = binding.signupEdittextPw.textString,
+                passwordConfirm = binding.signupEdittextPwConfirm.textString,
+                isAgreedPrivacyTerms = binding.signupCheckBoxPrivacyTerms.isChecked,
+                isAgreedKoinTerms = binding.signupCheckBoxKoinTerms.isChecked
             )
         }
+    }
+
+    override fun onRestart() {
+        binding.signupNextButton.visibility = View.GONE
+        binding.checkEmailDuplicatedButton.visibility = View.VISIBLE
+        super.onRestart()
     }
 
     override fun onDestroy() {

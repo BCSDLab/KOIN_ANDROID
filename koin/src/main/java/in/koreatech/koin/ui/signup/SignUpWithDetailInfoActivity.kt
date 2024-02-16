@@ -40,9 +40,6 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
 
         initView()
         initViewModel()
-
-        Log.d("로그", intent.getStringExtra("email").toString())
-        Log.d("로그", intent.getStringExtra("password").toString())
     }
 
     private fun initView() = with(binding){
@@ -76,7 +73,8 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                 password = intent.getStringExtra("password").toString(),
                 phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
                 studentNumber = signupUserEdittextStudentId.text.toString(),
-                isCheckNickname = checkNickName
+                //isCheckNickname = checkNickName
+                isCheckNickname = true
             )
         }
 
@@ -137,7 +135,9 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                 }
 
                 SignupContinuationState.RequestedEmailValidation -> {
-                    showRequestedEmailValidationDialog()
+                    Log.d("로그", "안넘어가나")
+                    val intent = Intent(this@SignUpWithDetailInfoActivity, SignUpCompleteActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }
@@ -172,16 +172,4 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
         }
 
     }
-
-    private fun showRequestedEmailValidationDialog() {
-        SnackbarUtil.makeSnackbarActionWebView(
-            this,
-            R.id.signup_box,
-            getString(R.string.signup_email_validation_completed_message),
-            getString(R.string.signup_email_validation_completed_title),
-            getString(R.string.koreatech_url),
-            GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME
-        )
-    }
-
 }

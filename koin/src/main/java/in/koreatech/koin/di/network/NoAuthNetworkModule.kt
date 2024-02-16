@@ -11,10 +11,13 @@ import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.data.api.business.MyStoreRegisterApi
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 @Module
