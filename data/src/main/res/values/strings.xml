@@ -10,7 +10,7 @@
     <string name="error_forgotpassword_no_input">KOREATECH 이메일을 입력해 주세요.</string>
     <string name="error_forgotpassword_invalid_id">아이디 형식이 올바르지 않습니다.</string>
     <string name="error_invalid_student_number">학번 형식이 잘못되었습니다.</string>
-    <string name="error_nickname_duplicated">사용할 수 없는 닉네임입니다.</string>
+    <string name="error_nickname_duplicated">이미 존재하는 닉네임입니다.</string>
     <string name="error_nickname_error">올바른 닉네임을 입력해 주세요</string>
     <string name="error_nickname_validation_not_performed">닉네임 중복체크를 해주세요</string>
     <string name="error_email_duplicated">이미 회원가입된 이메일 입니다.</string>

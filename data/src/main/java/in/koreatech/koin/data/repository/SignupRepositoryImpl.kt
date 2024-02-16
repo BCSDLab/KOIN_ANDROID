@@ -1,11 +1,9 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.toGraduate
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toShcoolEamil
-import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.response.user.StudentInfoResponse
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
@@ -37,9 +35,8 @@ class SignupRepositoryImpl @Inject constructor(
         studentNumber: String,
     ): Result<Unit> {
         return try {
-            Log.d("로그", "성공")
             userRemoteDataSource.sendRegisterEmail(
-                StudentInfoResponse(
+                StudentInfoRequest(
                     email = portalAccount.toShcoolEamil(),
                     gender = gender,
                     isGraduated = isGraduated.toGraduate(),
@@ -53,12 +50,9 @@ class SignupRepositoryImpl @Inject constructor(
             )
             Result.success(Unit)
         } catch (e: HttpException) {
-            Log.d("로그 e", e.toString())
             if (e.code() == 409) Result.failure(SignupAlreadySentEmailException())
-            else if (e.code() == 201) Result.success(Unit)
             else Result.failure(e)
         } catch (t: Throwable) {
-            Log.d("로그 t", t.toString())
             Result.failure(t)
         }
     }

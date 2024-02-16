@@ -105,8 +105,8 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
     private fun initView() = with(binding) {
         signupBackButton.setOnClickListener { finish() }
 
-        checkEmailDuplicatedButton.visibility = View.GONE
-        //signupNextButton.visibility = View.GONE
+
+        signupNextButton.visibility = View.GONE
 
         signupEdittextId.setText(portalAccount ?: "")
 

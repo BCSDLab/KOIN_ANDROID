@@ -489,7 +489,7 @@
             android:id="@+id/check_email_duplicated_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/colorAccent"
+            android:background="@color/gray"
             android:gravity="center"
             android:text="이메일 중복 확인"
             android:textColor="@color/white"

@@ -5,16 +5,11 @@ import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.CheckEmailResponse
-import `in`.koreatech.koin.data.response.user.CheckNicknameResponse
 import `in`.koreatech.koin.data.response.user.DefaultResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.RegisterResponse
-
 import retrofit2.Response
-
-import `in`.koreatech.koin.data.response.user.StudentInfoResponse
-
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import retrofit2.http.*
 
 interface UserApi {
@@ -22,7 +17,7 @@ interface UserApi {
     suspend fun getToken(@Body loginRequest: LoginRequest): AuthResponse
 
     @POST(URLConstant.USER.STUDENT.REGISTER)
-    suspend fun postRegister(@Body StudentInfoResponse: StudentInfoResponse): RegisterResponse
+    suspend fun postRegister(@Body studentInfoRequest: StudentInfoRequest)
 
     @POST(URLConstant.USER.FINDPASSWORD)
     suspend fun postPasswordReset(@Body idRequest: IdRequest): DefaultResponse
@@ -31,8 +26,8 @@ interface UserApi {
     suspend fun postUserRefresh(@Body refreshRequest: RefreshRequest): Response<RefreshResponse>
 
     @GET(URLConstant.USER.CHECKNICKNAME)
-    suspend fun checkNickname(@Query("nickname") nickname: String): CheckNicknameResponse
+    suspend fun checkNickname(@Query("nickname") nickname: String)
 
     @GET(URLConstant.USER.CHECKEMAIL)
-    suspend fun checkEmail(@Query("address") email: String): CheckEmailResponse
+    suspend fun checkEmail(@Query("address") email: String)
 }

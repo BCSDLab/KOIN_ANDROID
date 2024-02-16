@@ -73,8 +73,7 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                 password = intent.getStringExtra("password").toString(),
                 phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
                 studentNumber = signupUserEdittextStudentId.text.toString(),
-                //isCheckNickname = checkNickName
-                isCheckNickname = true
+                isCheckNickname = checkNickName
             )
         }
 
@@ -135,7 +134,6 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                 }
 
                 SignupContinuationState.RequestedEmailValidation -> {
-                    Log.d("로그", "안넘어가나")
                     val intent = Intent(this@SignUpWithDetailInfoActivity, SignUpCompleteActivity::class.java)
                     startActivity(intent)
                 }
