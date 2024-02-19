@@ -42,8 +42,6 @@ object OwnerAuthNetworkModule {
                 val newRequest: Request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $ownerAccessToken")
                     .build()
-                Log.d("로그", newRequest.headers().toString())
-                Log.d("로그", newRequest.toString())
                 chain.proceed(newRequest)
             }
         }
