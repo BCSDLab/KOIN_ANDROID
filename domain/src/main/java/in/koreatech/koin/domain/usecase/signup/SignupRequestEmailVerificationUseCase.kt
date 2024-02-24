@@ -12,20 +12,33 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         portalAccount: String,
+        gender: Int,
+        isGraduated: Int,
+        major: String,
+        name:String,
+        nickName: String,
         password: String,
-        passwordConfirm: String,
-        isAgreedPrivacyTerms: Boolean,
-        isAgreedKoinTerms: Boolean
+        phoneNumber: String,
+        studentNumber: String,
+        isCheckNickname: Boolean
     ): Result<SignupContinuationState> {
         return when {
-            portalAccount.isNotValidEmail() -> Result.success(SignupContinuationState.EmailIsNotValidate)
-            password.isNotValidPassword() -> Result.success(SignupContinuationState.PasswordIsNotValidate)
-            password != passwordConfirm -> Result.success(SignupContinuationState.PasswordNotMatching)
-            !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
-            !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
+            name == "" -> Result.success(SignupContinuationState.InitName)
+            !isCheckNickname -> Result.success(SignupContinuationState.CheckNickName)
+            gender == 2 -> Result.success(SignupContinuationState.CheckGender)
+            phoneNumber == "" -> Result.success(SignupContinuationState.InitPhoneNumber)
+            studentNumber == "" -> Result.success(SignupContinuationState.InitStudentId)
+            isGraduated == 2 -> Result.success(SignupContinuationState.CheckGraduate)
             else -> signupRepository.requestEmailVerification(
-                email = portalAccount,
-                password = password.toSHA256()
+                portalAccount = portalAccount,
+                gender = gender,
+                isGraduated = isGraduated,
+                major = major,
+                name = name,
+                nickName = nickName,
+                password = password,
+                phoneNumber = phoneNumber,
+                studentNumber = studentNumber,
             ).map {
                 SignupContinuationState.RequestedEmailValidation
             }

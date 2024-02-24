@@ -1,6 +1,10 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.mapper.toGraduate
+import `in`.koreatech.koin.data.mapper.toPhoneNumber
+import `in`.koreatech.koin.data.mapper.toShcoolEamil
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
@@ -21,14 +25,28 @@ class SignupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestEmailVerification(
-        email: String,
-        password: String
+        portalAccount: String,
+        gender: Int,
+        isGraduated: Int,
+        major: String,
+        name:String,
+        nickName: String,
+        password: String,
+        phoneNumber: String,
+        studentNumber: String,
     ): Result<Unit> {
         return try {
             userRemoteDataSource.sendRegisterEmail(
-                LoginRequest(
-                    email = email,
-                    password = password
+                StudentInfoRequest(
+                    email = portalAccount.toShcoolEamil(),
+                    gender = gender,
+                    isGraduated = isGraduated.toGraduate(),
+                    major = major,
+                    name = name,
+                    nickName = nickName,
+                    password = password,
+                    phoneNumber = phoneNumber.toPhoneNumber(),
+                    studentNumber = studentNumber
                 )
             )
             Result.success(Unit)
