@@ -71,7 +71,7 @@ class StoreFlyerDialogFragment : DialogFragment() {
 
     private fun initViewModel() {
         observeLiveData(viewModel.store) {
-            flyerAdapter.submitList(it.images)
+            flyerAdapter.submitList(it.imageUrls)
             binding.storeFlyerViewPager.setCurrentItem(initialPosition, false)
             updateIndicatorText(initialPosition + 1, flyerAdapter.itemCount)
         }

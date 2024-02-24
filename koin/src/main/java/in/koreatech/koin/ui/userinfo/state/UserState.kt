@@ -6,14 +6,14 @@ import `in`.koreatech.koin.domain.model.user.User
 import android.content.Context
 
 data class UserState(
-    val portalAccount: String,
+    val email: String,
     val username: String,
     val userNickname: String,
     val userAnonymousNickname: String,
     val phoneNumber: String,
     val gender: String,
     val studentNumber: String,
-    val major: String
+    val major: String,
 )
 
 fun User.toUserState(context: Context): UserState {
@@ -21,7 +21,7 @@ fun User.toUserState(context: Context): UserState {
         User.Anonymous -> throw IllegalStateException()
         is User.Student -> with(context) {
             UserState(
-                portalAccount = getString(R.string.koreatech_email_postfix, portalAccount),
+                email = email ?: getString(R.string.user_info_no_email),
                 username = name ?: getString(R.string.user_info_no_name),
                 userNickname = nickname ?: getString(R.string.user_info_no_nickname),
                 userAnonymousNickname = anonymousNickname
