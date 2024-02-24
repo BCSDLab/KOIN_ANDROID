@@ -32,6 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
+import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -142,7 +143,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private fun gotoStoreActivity(position: Int) {
         val bundle = Bundle()
-        bundle.putInt("store_category", position)
+        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
         callDrawerItem(R.id.navi_item_store, bundle)
     }
 
