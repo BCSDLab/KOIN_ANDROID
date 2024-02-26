@@ -107,4 +107,9 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
             ToastUtil.getInstance().makeShort(it)
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SnackbarUtil.snackbar = null
+    }
 }

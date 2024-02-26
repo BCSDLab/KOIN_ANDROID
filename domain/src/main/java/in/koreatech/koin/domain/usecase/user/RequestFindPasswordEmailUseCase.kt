@@ -10,14 +10,14 @@ class RequestFindPasswordEmailUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
-    suspend operator fun invoke(portalAccount: String): ErrorHandler? {
-        if (portalAccount.isBlank()){
+    suspend operator fun invoke(email: String): ErrorHandler? {
+        if (email.isBlank()){
             return userErrorHandler.handleRequestPasswordResetEmailError(
                 IllegalArgumentException(ERROR_FORGOTPASSWORD_BLANK_ACCOUNT)
             )
         }
         return try {
-            userRepository.requestPasswordResetEmail(portalAccount)
+            userRepository.requestPasswordResetEmail(email)
             null
         } catch (t: Throwable) {
             userErrorHandler.handleRequestPasswordResetEmailError(t)
