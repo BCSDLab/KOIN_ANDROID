@@ -2,8 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toGraduate
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
-import `in`.koreatech.koin.data.mapper.toShcoolEamil
-import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -38,7 +37,7 @@ class SignupRepositoryImpl @Inject constructor(
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
-                    email = portalAccount.toShcoolEamil(),
+                    email = portalAccount.toSchoolEamil(),
                     gender = gender,
                     isGraduated = isGraduated.toGraduate(),
                     major = major,

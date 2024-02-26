@@ -43,13 +43,13 @@ fun Int.toGraduate(): Boolean{
 }
 
 fun String.toPhoneNumber() : String{
-    val digitsOnly = this.filter { it.isDigit() }
+    val phoneNumberDigitsOnly = this.filter { it.isDigit() }
 
-    return when (digitsOnly.length) {
-        11 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 7)}-${digitsOnly.substring(7)}"
-        10 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 6)}-${digitsOnly.substring(6)}"
-        else -> digitsOnly
+    return when (phoneNumberDigitsOnly.length) {
+        11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 7)}-${phoneNumberDigitsOnly.substring(7)}"
+        10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 6)}-${phoneNumberDigitsOnly.substring(6)}"
+        else -> phoneNumberDigitsOnly
     }
 }
 
-fun String.toShcoolEamil() = "$this@koreatech.ac.kr"
+fun String.toSchoolEamil() = "$this@koreatech.ac.kr"
