@@ -46,7 +46,7 @@ jobs:
             echo $FIREBASE > ./koin/google-services.json
             
      - name: Setup Android SDK
-       uses: android-actions/setup-android@v3
+       uses: android-actions/setup-android@v2
        
      - name: Build
        env:
