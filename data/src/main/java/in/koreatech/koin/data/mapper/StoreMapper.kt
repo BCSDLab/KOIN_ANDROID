@@ -1,83 +1,86 @@
 package `in`.koreatech.koin.data.mapper
 
-import `in`.koreatech.koin.data.constant.STORE_OPEN_TIME_FORMAT
-import `in`.koreatech.koin.data.constant.STORE_UPDATED_DATE_TIME_FORMAT
+import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
+import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.domain.model.store.*
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreMenu
+import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
+import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.model.store.toStoreCategory
+import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 
 fun StoreItemResponse.toStore(): Store = Store(
-    id = uid,
+    uid = uid,
     name = name,
-    chosung = chosung ?: "",
-    category = category.toStoreCategory(),
-    phoneNumber = phone,
-    openTime = if (openTime == null) {
-        LocalTime.MIN
-    } else {
-        LocalTime.parse(openTime, DateTimeFormatter.ofPattern(STORE_OPEN_TIME_FORMAT))
-    },
-    closeTime = if (closeTime == null) {
-        LocalTime.MAX
-    } else {
-        LocalTime.parse(closeTime, DateTimeFormatter.ofPattern(STORE_OPEN_TIME_FORMAT))
-    },
-    address = address,
-    description = description,
+    phone = phone ?: "",
+    isDeliveryOk = isDeliveryOk ?: false,
+    isCardOk = isCardOk ?: false,
+    isBankOk = isBankOk ?: false,
+    open = open.filter { it.dayOfWeek == localDayOfWeekName }.map {
+        Store.OpenData(
+            dayOfWeek = it.dayOfWeek,
+            closed = it.closed,
+            openTime = it.openTime ?: "",
+            closeTime = it.closeTime ?: ""
+        )
+    }.first(),
+    categoryIds = categoryIds.map { it.toStoreCategory() }
+)
+
+fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
+    uid = uid,
+    name = name,
+    phone = phone ?: "",
+    address = address ?: "",
+    description = description?.replace("\\n", System.getProperty("line.separator") ?: "\n"),
     isDeliveryOk = isDeliveryOk ?: false,
     deliveryPrice = deliveryPrice ?: 0,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
-    images = imageUrls ?: emptyList(),
-    updatedAt = if(updatedAt == null) {
-        LocalDateTime.MIN
-    } else {
-        LocalDateTime.parse(
-            updatedAt,
-            DateTimeFormatter.ofPattern(STORE_UPDATED_DATE_TIME_FORMAT)
+    open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
+        Store.OpenData(
+            dayOfWeek = it.dayOfWeek,
+            closed = it.closed,
+            openTime = it.openTime ?: "",
+            closeTime = it.closeTime ?: ""
         )
-    }
+    }.orEmpty().first(),
+    imageUrls = imageUrls ?: emptyList(),
+    shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
+    menuCategories = menuCategories?.map { it.toCategory() }.orEmpty()
 )
 
-fun StoreMenuResponse.toStoreMenu(): StoreMenu = StoreMenu(
+fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() = StoreWithMenu.Category(
     id = id,
-    shopId = shopId,
-    name = name,
-    priceType = priceType.map { StoreMenuPrice(sizeName = it.size, price = it.price.toInt()) }
+    name = name
 )
 
-fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
-    store = Store(
-        id = uid,
-        name = name,
-        chosung = chosung,
-        category = category.toStoreCategory(),
-        phoneNumber = phone,
-        openTime = if (openTime == null) {
-            LocalTime.MIN
-        } else {
-            LocalTime.parse(openTime, DateTimeFormatter.ofPattern(STORE_OPEN_TIME_FORMAT))
-        },
-        closeTime = if (closeTime == null) {
-            LocalTime.MAX
-        } else {
-            LocalTime.parse(closeTime, DateTimeFormatter.ofPattern(STORE_OPEN_TIME_FORMAT))
-        },
-        address = address,
-        description = description?.replace("\\n", System.getProperty("line.separator") ?: "\n"),
-        isDeliveryOk = isDeliveryOk ?: false,
-        deliveryPrice = deliveryPrice ?: 0,
-        isCardOk = isCardOk ?: false,
-        isBankOk = isBankOk ?: false,
-        images = imageUrls ?: emptyList(),
-        updatedAt = LocalDateTime.parse(
-            updatedAt,
-            DateTimeFormatter.ofPattern(STORE_UPDATED_DATE_TIME_FORMAT)
-        )
-    ),
-    storeMenus = menus.map { it.toStoreMenu() }
+fun StoreMenuResponse.toStoreMenu() = StoreMenu(
+    menuCategories = menuCategories?.map { it.toStoreMenuCategories() }.orEmpty()
+)
+
+fun StoreMenuCategoriesResponse.toStoreMenuCategories() = StoreMenuCategories(
+    id = id,
+    name = name,
+    menus = menus?.map { it.toShopMenus() }.orEmpty()
+)
+fun ShopMenusResponse.toShopMenus() = ShopMenus(
+    id = id,
+    name = name,
+    isHidden = isHidden,
+    isSingle = isSingle,
+    singlePrice = singlePrice,
+    optionPrices =  optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
+    description = description,
+    imageUrls = imageUrls.orEmpty()
+)
+
+fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
+    option = option,
+    price = price
 )

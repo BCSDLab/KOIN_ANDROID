@@ -68,7 +68,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         observeLiveData(user) { user ->
             if(user != null) {
                 val userState = user.toUserState(this@UserInfoActivity)
-                binding.userinfoTextviewId.text = userState.portalAccount
+                binding.userinfoTextviewId.text = userState.email
                 binding.userinfoTextviewName.text = userState.username
                 binding.userinfoTextviewNickName.text = userState.userNickname
                 binding.userinfoTextviewAnonymousNickName.text = userState.userAnonymousNickname
@@ -106,5 +106,10 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         observeLiveData(userRemoveErrorMessage) {
             ToastUtil.getInstance().makeShort(it)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SnackbarUtil.snackbar = null
     }
 }

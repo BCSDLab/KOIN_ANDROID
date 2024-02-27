@@ -69,7 +69,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
             } else {
                 loginViewModel.login(
-                    portalAccount = loginEdittextId.text.toString(),
+                    email =  getString(R.string.koreatech_email_postfix, loginEdittextId.text),
                     password = loginEdittextPw.text.toString()
                 )
             }

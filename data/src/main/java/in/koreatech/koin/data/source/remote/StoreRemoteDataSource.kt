@@ -4,7 +4,6 @@ import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.data.response.store.StoreResponse
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(
@@ -16,5 +15,8 @@ class StoreRemoteDataSource @Inject constructor(
 
     suspend fun getStoreMenu(storeUid: Int) : StoreItemWithMenusResponse {
         return storeApi.getStore(storeUid)
+    }
+    suspend fun getShopMenus(storeUid: Int): StoreMenuResponse {
+        return storeApi.getShopMenus(storeUid)
     }
 }

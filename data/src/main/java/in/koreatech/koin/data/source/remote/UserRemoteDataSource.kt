@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.user.*
 import retrofit2.HttpException
@@ -23,23 +24,27 @@ class UserRemoteDataSource(
     }
 
     suspend fun sendRegisterEmail(
-        loginRequest: LoginRequest
-    ): RegisterResponse {
-        return userApi.postRegister(loginRequest)
+        studentInfoRequest: StudentInfoRequest
+    ) {
+        userApi.postRegister(studentInfoRequest)
     }
 
     suspend fun sendPasswordResetEmail(
         idRequest: IdRequest
-    ): DefaultResponse {
+    ) {
         return userApi.postPasswordReset(idRequest)
     }
 
-    suspend fun deleteUser(): DefaultResponse {
+    suspend fun deleteUser() {
         return userAuthApi.deleteUser()
     }
 
-    suspend fun checkNickname(nickname: String): CheckNicknameResponse {
-        return userApi.checkNickname(nickname)
+    suspend fun checkNickname(nickname: String){
+        userApi.checkNickname(nickname)
+    }
+
+    suspend fun checkEmail(email: String){
+        userApi.checkEmail(email)
     }
 
     suspend fun updateUser(userRequest: UserRequest): UserResponse {

@@ -161,7 +161,7 @@
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.188" />
+            app:layout_constraintGuide_percent="0.19" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_horizontal_0.319"
@@ -471,12 +471,29 @@
             app:layout_constraintTop_toTopOf="@+id/guideline_horizontal_0.659" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/signup_send_verification_button"
+            android:id="@+id/signup_next_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:text="이메일 인증하기"
+            android:text="다음"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:fontName="Regular"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.789"
+            app:layout_constraintEnd_toEndOf="@id/guideline_vertical_0.889"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/guideline_vertical_0.111"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.719"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/check_email_duplicated_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/gray"
+            android:gravity="center"
+            android:text="이메일 중복 확인"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:fontName="Regular"
