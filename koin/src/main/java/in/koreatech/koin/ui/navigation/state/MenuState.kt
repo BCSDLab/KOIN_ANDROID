@@ -7,5 +7,6 @@ sealed class MenuState {
     object Dining: MenuState()
     object Timetable: MenuState()
     object Land: MenuState()
+    object Owner: MenuState()
     object UserInfo: MenuState()
 }

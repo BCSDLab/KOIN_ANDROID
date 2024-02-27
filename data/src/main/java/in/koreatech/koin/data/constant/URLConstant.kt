@@ -9,6 +9,9 @@ object URLConstant {
     const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
     //const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
 
+    const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
+    const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
+
     const val ADMIN = "admin/"
     const val VERSION = "versions"
     const val DINING = "dinings"
