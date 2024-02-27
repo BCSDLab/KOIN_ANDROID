@@ -44,7 +44,10 @@ jobs:
        run: |
             echo $FIREBASE > ./core/google-services.json
             echo $FIREBASE > ./koin/google-services.json
-
+            
+     - name: Setup Android SDK
+       uses: android-actions/setup-android@v3
+       
      - name: Build
        env:
           GOOGLE_APPLICATION_CREDENTIALS: $({ secrets.FIREBASE})
