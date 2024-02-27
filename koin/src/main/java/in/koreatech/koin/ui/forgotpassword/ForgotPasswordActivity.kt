@@ -49,7 +49,7 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
     private fun initView() = with(binding) {
         resetPasswordButton.setOnClickListener {
             hideSoftKeyboard()
-            forgotPasswordViewModel.requestFindPasswordEmail(forgotPasswordIdEdittext.textString.trim())
+            forgotPasswordViewModel.requestFindPasswordEmail(getString(R.string.koreatech_email_postfix, forgotPasswordIdEdittext.textString.trim()))
         }
 
         forgotPasswordIdEdittext.setOnEditorActionListener { v, actionId, event ->
