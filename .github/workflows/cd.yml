@@ -33,7 +33,10 @@ jobs:
        env:
           KOIN_STORE_PASSWORD: $({ secrets.KOIN_STORE_PASSWORD})
           NAVER_MAP_KEY: $({ secrets.NAVER_MAP_KEY})
-       run: echo "koin_store_password=$KOIN_STORE_PASSWORD\nnavermap_key=$NAVER_MAP_KEY" > ./local.properties
+          SECRET_KEY : $({ secrets.SECRET_KEY })
+       run: |
+            echo "koin_store_password=$KOIN_STORE_PASSWORD\nnavermap_key=$NAVER_MAP_KEY" > ./local.properties
+            echo $SECRET_KEY | base64 -d > ./koin/team_kap_android.jks
           
      - name: Update Firebase
        env:
