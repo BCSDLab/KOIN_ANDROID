@@ -10,6 +10,8 @@ import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySignUpWithDetailInfoBinding
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.signup.viewmodel.SignupViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
@@ -49,14 +51,14 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
             signupViewModel.continueDetailSignup(
                 portalAccount = intent.getStringExtra("email").toString(),
                 gender = when{
-                    signupUserRadiobuttonGenderMan.isChecked -> 0
-                    signupUserRadiobuttonGenderWoman.isChecked -> 1
-                    else -> 2
+                    signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
+                    signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
+                    else -> null
                 },
                 isGraduated = when{
-                    signupUserRadiobuttonGraduate.isChecked -> 0
-                    signupUserRadiobuttonStudent.isChecked -> 1
-                    else -> 2
+                    signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
+                    signupUserRadiobuttonStudent.isChecked -> Graduated.Student
+                    else -> null
                 },
                 major = signupUserEdittextMajor.text.toString(),
                 name = signupUserEdittextName.text.toString(),

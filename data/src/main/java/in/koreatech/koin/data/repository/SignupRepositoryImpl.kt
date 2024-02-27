@@ -1,12 +1,15 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toGraduate
+import `in`.koreatech.koin.data.mapper.toBoolean
+import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -24,22 +27,22 @@ class SignupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestEmailVerification(
-        portalAccount: String,
-        gender: Int,
-        isGraduated: Int,
-        major: String,
-        name:String,
-        nickName: String,
-        password: String,
-        phoneNumber: String,
-        studentNumber: String,
+            portalAccount: String,
+            gender: Gender,
+            isGraduated: Graduated,
+            major: String,
+            name:String,
+            nickName: String,
+            password: String,
+            phoneNumber: String,
+            studentNumber: String,
     ): Result<Unit> {
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
                     email = portalAccount.toSchoolEamil(),
-                    gender = gender,
-                    isGraduated = isGraduated.toGraduate(),
+                    gender = gender.toInt(),
+                    isGraduated = isGraduated.toBoolean(),
                     major = major,
                     name = name,
                     nickName = nickName,
