@@ -24,19 +24,19 @@ jobs:
        env:
           KOIN_STORE_PASSWORD: $({ secrets.KOIN_STORE_PASSWORD})
           NAVER_MAP_KEY: $({ secrets.NAVER_MAP_KEY})
-          run: echo "koin_store_password=$KOIN_STORE_PASSWORD\nnavermap_key=$NAVER_MAP_KEY" > ./local.properties
+       run: echo "koin_store_password=$KOIN_STORE_PASSWORD\nnavermap_key=$NAVER_MAP_KEY" > ./local.properties
           
      - name: Update Firebase
        env:
           FIREBASE: $({ secrets.FIREBASE})
-          run: |
-              echo $FIREBASE > ./core/google-services.json
-              echo $FIREBASE > ./koin/google-services.json
+       run: |
+            echo $FIREBASE > ./core/google-services.json
+            echo $FIREBASE > ./koin/google-services.json
 
      - name: Build
        env:
           GOOGLE_APPLICATION_CREDENTIALS: $({ secrets.FIREBASE})
-          run: |
-               ./gradlew clean
-               ./gradlew bundleRelease
-               
+       run: |
+             ./gradlew clean
+             ./gradlew bundleRelease
+           
