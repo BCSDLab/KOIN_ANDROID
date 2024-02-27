@@ -47,5 +47,5 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: $({ secrets.FIREBASE})
        run: |
              ./gradlew clean
-             ./gradlew bundleRelease
+             ./gradlew koin:bundleRelease
            
