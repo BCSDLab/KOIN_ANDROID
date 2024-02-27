@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserIdentity
 
@@ -38,8 +39,15 @@ fun User.Student.toUserRequest() = UserRequest(
     isGraduated = isStudent
 )
 
-fun Int.toGraduate(): Boolean{
-    return this == 0
+fun Graduated.toBoolean(): Boolean{
+    return this == Graduated.Graduate
+}
+
+fun Gender.toInt(): Int{
+    return when (this){
+        Gender.Man -> 0
+        else -> 1
+    }
 }
 
 fun String.toPhoneNumber() : String{

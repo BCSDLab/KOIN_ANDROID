@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.usecase.dept.GetDeptNameFromStudentIdUseCase
 import `in`.koreatech.koin.domain.usecase.signup.CheckEmailValidationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.SignUpCheckingUseCase
@@ -15,8 +17,6 @@ import `in`.koreatech.koin.domain.usecase.user.CheckNicknameValidationUseCase
 import `in`.koreatech.koin.ui.userinfo.state.EmailState
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
 import javax.inject.Inject
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
@@ -80,16 +80,16 @@ class SignupViewModel @Inject constructor(
     }
 
     fun continueDetailSignup(
-        portalAccount: String,
-        gender: Int,
-        isGraduated: Int,
-        major: String,
-        name:String,
-        nickName: String,
-        password: String,
-        phoneNumber: String,
-        studentNumber: String,
-        isCheckNickname: Boolean
+            portalAccount: String,
+            gender: Gender?,
+            isGraduated: Graduated?,
+            major: String,
+            name:String,
+            nickName: String,
+            password: String,
+            phoneNumber: String,
+            studentNumber: String,
+            isCheckNickname: Boolean
     ) {
         if(isLoading.value == false) {
             viewModelScope.launchWithLoading {
