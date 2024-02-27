@@ -5,24 +5,15 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserIdentity
 
 fun UserResponse.toUser() = User.Student(
-    id = id,
-    isGraduated = isGraduated,
-    enabled = enabled,
     anonymousNickname = anonymousNickname,
-    portalAccount = portalAccount,
-    identity = when (identity) {
-        0 -> UserIdentity.Student
-        1 -> UserIdentity.Professor
-        2 -> UserIdentity.Staff
-        else -> UserIdentity.Unknown
-    },
+    email = email,
     name = name,
     studentNumber = studentNumber,
-    profileImageUrl = profileImageUrl,
     gender = when (gender) {
         0 -> Gender.Man
         1 -> Gender.Woman
@@ -30,37 +21,43 @@ fun UserResponse.toUser() = User.Student(
     },
     nickname = nickname,
     phoneNumber = phoneNumber,
-    accountNonExpired = accountNonExpired,
-    accountNonLocked = accountNonLocked,
-    credentialsNonExpired = credentialsNonExpired,
-    username = username,
     major = major
 )
 
 fun User.Student.toUserRequest() = UserRequest(
-    id = id,
-    portalAccount = portalAccount,
     nickname = nickname,
-    anonymousNickname = anonymousNickname,
     name = name,
     studentNumber = studentNumber,
     major = major,
-    identity = when (identity) {
-        UserIdentity.Student -> 0
-        UserIdentity.Professor -> 1
-        UserIdentity.Staff -> 2
-        UserIdentity.Unknown -> 0
-    },
-    isGraduated = isGraduated,
     phoneNumber = phoneNumber,
     gender = when (gender) {
         Gender.Man -> 0
         Gender.Woman -> 1
         else -> null
     },
-    profileImageUrl = profileImageUrl
+    identity = 0,
+    isGraduated = isStudent
 )
 
-fun AuthResponse.toAuthToken() = AuthToken(
-    token, user.toUser()
-)
+fun Graduated.toBoolean(): Boolean{
+    return this == Graduated.Graduate
+}
+
+fun Gender.toInt(): Int{
+    return when (this){
+        Gender.Man -> 0
+        else -> 1
+    }
+}
+
+fun String.toPhoneNumber() : String{
+    val phoneNumberDigitsOnly = this.filter { it.isDigit() }
+
+    return when (phoneNumberDigitsOnly.length) {
+        11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 7)}-${phoneNumberDigitsOnly.substring(7)}"
+        10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 6)}-${phoneNumberDigitsOnly.substring(6)}"
+        else -> phoneNumberDigitsOnly
+    }
+}
+
+fun String.toSchoolEamil() = "$this@koreatech.ac.kr"

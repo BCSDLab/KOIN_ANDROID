@@ -1,36 +1,25 @@
 package `in`.koreatech.koin.ui.store.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import butterknife.BindView
-import butterknife.ButterKnife
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreDetailMenuListItemBinding
-import `in`.koreatech.koin.domain.model.store.StoreMenu
-import `in`.koreatech.koin.domain.model.store.StoreMenuPrice
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 
 class StoreDetailMenuRecyclerAdapter :
-    ListAdapter<StoreMenu, StoreDetailMenuRecyclerAdapter.ViewHolder>(diffCallback) {
+    ListAdapter<ShopMenus, StoreDetailMenuRecyclerAdapter.ViewHolder>(diffCallback) {
 
     class ViewHolder(private val binding: StoreDetailMenuListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(storeMenu: StoreMenu) {
-            binding.storeDetailMenuNameTextview.text = storeMenu.name
-            binding.storeDetailMenuPriceTextview.text = generatePriceText(storeMenu.priceType)
-        }
-
-        private fun generatePriceText(storeMenuPrices: List<StoreMenuPrice>): String {
-            return storeMenuPrices.joinToString("\n") {
-                binding.root.context.getString(
-                    R.string.store_menu_price_info,
-                    it.sizeName,
-                    it.price
+        fun bind(shopMenu: ShopMenus) {
+            binding.storeDetailMenuNameTextview.text = shopMenu.name
+            if (shopMenu.singlePrice != null) {
+                binding.storeDetailMenuPriceTextview.text = binding.root.context.getString(
+                    R.string.store_delivery_price,
+                    shopMenu.singlePrice
                 )
             }
         }
@@ -51,12 +40,12 @@ class StoreDetailMenuRecyclerAdapter :
     }
 
     companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<StoreMenu>() {
-            override fun areItemsTheSame(oldItem: StoreMenu, newItem: StoreMenu): Boolean {
+        private val diffCallback = object : DiffUtil.ItemCallback<ShopMenus>() {
+            override fun areItemsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: StoreMenu, newItem: StoreMenu): Boolean {
+            override fun areContentsTheSame(oldItem: ShopMenus, newItem: ShopMenus): Boolean {
                 return oldItem == newItem
             }
         }

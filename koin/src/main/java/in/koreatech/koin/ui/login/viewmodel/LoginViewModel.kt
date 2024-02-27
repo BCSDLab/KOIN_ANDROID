@@ -21,12 +21,12 @@ class LoginViewModel @Inject constructor(
     val loginErrorMessage: LiveData<String> get() = _loginErrorMessage
 
     fun login(
-        portalAccount: String,
+        email: String,
         password: String
     ) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
-                userLoginUseCase(portalAccount, password)
+                userLoginUseCase(email, password)
                     .onSuccess {
                         _loginSuccessEvent.call()
                     }.onFailure {

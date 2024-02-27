@@ -18,10 +18,11 @@ class StoreViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
-    private val _category = MutableStateFlow<StoreCategory?>(null)
-    private val _stores = MutableStateFlow<List<Store>>(emptyList())
 
+    private val _category = MutableStateFlow<StoreCategory?>(null)
     val category: StateFlow<StoreCategory?> = _category.asStateFlow()
+
+    private val _stores = MutableStateFlow<List<Store>>(emptyList())
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
 
     init {

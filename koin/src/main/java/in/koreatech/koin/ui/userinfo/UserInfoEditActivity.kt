@@ -83,8 +83,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                     }
                     is User.Student ->
                         with(binding) {
-                            userinfoeditedTextviewId.text =
-                                getString(R.string.koreatech_email_postfix, user.portalAccount)
+                            userinfoeditedTextviewId.text = user.email
                             userinfoeditedTextviewAnonymousNickName.text = user.anonymousNickname
 
                             userinfoeditedEdittextName.apply {

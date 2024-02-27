@@ -39,7 +39,7 @@ public class StoreCategoryRecyclerAdapter extends RecyclerView.Adapter<StoreCate
         holder.imageView.setImageResource(CATEGORY_IMAGE_ID[position]);
         holder.container.setOnClickListener(v -> {
             if (recyclerViewClickListener != null)
-                recyclerViewClickListener.onClick(v, position);
+                recyclerViewClickListener.onClick(v, position + 2);
         });
     }
 
