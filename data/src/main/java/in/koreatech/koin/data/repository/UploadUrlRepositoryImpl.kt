@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.upload.UploadUrlRequest
 import `in`.koreatech.koin.data.source.remote.UploadUrlRemoteDataSource
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
@@ -14,14 +13,19 @@ class UploadUrlRepositoryImpl @Inject constructor(
         contentLength: Long,
         contentType: String,
         fileName: String
-    ): Result<Unit> {
+    ): Result<Pair<String, String>> {
         return try {
-            uploadUrlRemoteDataSource.postUploadUrl(
+            val fileUrl = uploadUrlRemoteDataSource.postUploadUrl(
                 UploadUrlRequest(contentLength, contentType, fileName)
-            )
-            Result.success(Unit)
+            ).fileUrl
+
+            val preSignedUrl = uploadUrlRemoteDataSource.postUploadUrl(
+                UploadUrlRequest(contentLength, contentType, fileName)
+            ).preSignedUrl
+
+            Result.success(Pair(fileUrl, preSignedUrl))
         } catch (e: HttpException) {
-            e.httpExceptionMapper()
+            Result.failure(e)
         } catch (t: Throwable) {
             Result.failure(t)
         }

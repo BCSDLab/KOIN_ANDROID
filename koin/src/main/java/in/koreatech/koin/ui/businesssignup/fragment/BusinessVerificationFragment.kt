@@ -45,9 +45,7 @@ class BusinessVerificationFragment: BaseFragment() {
         _binding = FragmentBusinessVerificationBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.lifecycleOwner = this
-
-        businessSignupBaseViewModel.setFragmentTag("VERIFICATION_FRAGMENT")
+        businessSignupBaseViewModel.setFragmentTag("verificationFragment")
 
         initView()
         initViewModel()

@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import `in`.koreatech.koin.databinding.SelectStoreBottomSheetBinding
 import `in`.koreatech.koin.ui.store.viewmodel.StoreViewModel
-import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +19,10 @@ import kotlinx.coroutines.launch
 class StoreBottomSheetFragment : BottomSheetDialogFragment() {
     private var _binding: SelectStoreBottomSheetBinding? = null
     private val binding: SelectStoreBottomSheetBinding get() = _binding!!
-    private val viewModel: StoreViewModel by activityViewModels()
+    private val viewModel by activityViewModels<StoreViewModel>()
+
+    private var storeId = -1
+    private var storePhoneNumber = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,17 +38,19 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.clickSelectButton(false, "")
+                viewModel.setNeedToProceedStoreInfo(false, "", -1, "")
 
                 viewModel.store.collectLatest {
                     binding.storeNameText.text = it?.name ?: ""
                     binding.storePhoneText.text = it?.phoneNumber ?: ""
+                    storeId = it?.id ?: -1
+                    storePhoneNumber = it?.phoneNumber ?: ""
                 }
             }
         }
 
         binding.storeSelectButton.setOnClickListener {
-            viewModel.clickSelectButton(true, binding.storeNameText.text.toString())
+            viewModel.setNeedToProceedStoreInfo(true, binding.storeNameText.text.toString(), storeId, storePhoneNumber)
             dismiss()
         }
     }

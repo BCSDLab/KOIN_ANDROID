@@ -12,8 +12,10 @@ import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.ui.businesslogin.viewmodel.BusinessLoginViewModel
 import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 
 @AndroidEntryPoint
@@ -21,6 +23,7 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
     private val binding by dataBinding<ActivityBusinessLoginBinding>()
 
     private val loginViewModel by viewModels<LoginViewModel>()
+    private val businessLoginViewModel by viewModels<BusinessLoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +35,7 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
 
     private fun initView() = with(binding) {
         businessLoginButton.setOnClickListener {
-            if(
-                loginEdittextId.textString.isBlank() ||
-                loginEdittextPw.textString.isBlank()
-            ) {
+            if(businessLoginViewModel.isEmptyIdText.value == true) {
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
             } else {
                 loginViewModel.login(
@@ -43,6 +43,11 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
                     loginEdittextPw.text.toString()
                 )
             }
+        }
+        
+        loginEdittextId.doOnTextChanged { text, _, _, _ ->
+            if(text.isNullOrBlank()) businessLoginViewModel.setIdTextState(true)
+            else businessLoginViewModel.setIdTextState(false)
         }
 
         businessSignupButton.setOnClickListener {

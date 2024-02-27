@@ -340,4 +340,11 @@
     <string name="bound_of_size_domain">파일의 크기가 너무 큽니다.</string>
     <string name="not_allow_type_domain">허용되지 않는 타입입니다.</string>
     <string name="is_not_valid_file">유효하지 않은 파일입니다.</string>
+    <string name="is_not_valid_email">인증되지 않은 이메일입니다.</string>
+    <string name="is_already_using_email">이미 사용 중인 이메일입니다.</string>
+    <string name="is_already_registration_number">이미 사용 중인 사업자등록번호입니다.</string>
+    <string name="is_already_using_id">이미 존재하는 아이디입니다.</string>
+    <string name="failed_signup">회원가입에 실패하였습니다.</string>
+    <string name="set_form">%1$s-</string>
+    <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
 </resources>

@@ -84,4 +84,12 @@ object RemoteDataSourceModule {
     ): LandRemoteDataSource {
         return LandRemoteDataSource(landApi)
     }
+
+    @Provides
+    @Singleton
+    fun providePreSignedUrlRemoteDataSource(
+        preSignedUrlApi: PreSignedUrlApi
+    ): PreSignedUrlRemoteDataSource {
+        return PreSignedUrlRemoteDataSource(preSignedUrlApi)
+    }
 }

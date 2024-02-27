@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle
@@ -14,9 +16,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
+import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.databinding.FragmentBusinessCertificationBinding
 import `in`.koreatech.koin.domain.error.upload.UploadError
-import `in`.koreatech.koin.ui.businesssignup.BusinessSignUpCompleteActivity
 import `in`.koreatech.koin.ui.businesssignup.adapter.AttachStoreImageAdapter
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessCertificationViewModel
 import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewModel
@@ -24,6 +26,10 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import java.io.File
+import java.io.InputStream
 
 class BusinessCertificationFragment: BaseFragment() {
     private var _binding: FragmentBusinessCertificationBinding? = null
@@ -43,7 +49,7 @@ class BusinessCertificationFragment: BaseFragment() {
         _binding = FragmentBusinessCertificationBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("CERTIFICATION_FRAGMENT")
+        businessSignupBaseViewModel.setFragmentTag("certificationFragment")
 
         initView()
         initViewModel()
@@ -57,14 +63,36 @@ class BusinessCertificationFragment: BaseFragment() {
             val result = bundle.getString("storeName")
             editStoreNameText.setText(result)
         }
+
+        editPersonalContactText.doOnTextChanged { text, start, before, count ->
+            if(text?.length == 3 || text?.length == 8) {
+                editPersonalContactText.setText(getString(R.string.set_form, text))
+                editPersonalContactText.setSelection(editPersonalContactText.text.length)
+            }
+        }
+
+        editRegistrationNumberText.doOnTextChanged { text, start, before, count ->
+            if(text?.length == 3 || text?.length == 6) {
+                editRegistrationNumberText.setText(getString(R.string.set_form, text))
+                editRegistrationNumberText.setSelection(editRegistrationNumberText.text.length)
+            }
+        }
+
         searchStoreButton.setOnClickListener {
             val nextFragment = BusinessSearchStoreFragment()
             parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, nextFragment).commit()
         }
 
         businessCertificationNextButton.setOnClickListener {
-            if(allWriteCheck) startActivity(Intent(this@BusinessCertificationFragment.context, BusinessSignUpCompleteActivity::class.java))
-            else SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.not_enter_all_items))
+            if(allWriteCheck) {
+                businessSignupBaseViewModel.setName(editBusinessmanNameText.text.toString())
+                businessSignupBaseViewModel.setShopName(editStoreNameText.text.toString())
+                businessSignupBaseViewModel.setPhoneNumber(editPersonalContactText.text.toString())
+                businessSignupBaseViewModel.setCompanyNumber(editRegistrationNumberText.text.toString())
+
+                businessSignupBaseViewModel.setFragmentTag("completeActivity")
+            }
+            else SnackbarUtil.makeShortSnackbar(root, getString(R.string.not_enter_all_items))
         }
 
         transparentButton.setOnClickListener {
@@ -131,9 +159,32 @@ class BusinessCertificationFragment: BaseFragment() {
                 }
             }
         }
-        observeLiveData(businessCertificationContinuationState) {
-            /* 아무 일도 일어나지 않는다. */
+
+        observeLiveData(shopImageUrlAndSize) {
+            val fileUrl = "https://${it.resultUrl}/${it.fileName}"
+            businessSignupBaseViewModel.setFileUrls(fileUrl)
+
+            val inputStream = requireActivity().contentResolver.openInputStream(it.uri.toUri())
+
+            if(inputStream == null) {
+                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.failed_file_upload))
+            } else {
+                uploadPreSignedUrl(
+                    it.preSignedUrl,
+                    inputStream,
+                    it.mediaType,
+                    it.fileSize
+                )
+            }
         }
+
+        observeLiveData(failUploadPreSignedUrl) {
+            SnackbarUtil.makeShortSnackbar(
+                binding.root,
+                getString(R.string.failed_file_upload)
+            )
+        }
+
         observeLiveData(saveImageList) {
             attachStoreAdapter.updateList(it)
 

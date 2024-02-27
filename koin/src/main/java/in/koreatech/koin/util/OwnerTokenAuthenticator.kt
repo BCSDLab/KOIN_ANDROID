@@ -23,10 +23,10 @@ class OwnerTokenAuthenticator @Inject constructor(
 ): Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         val request = try {
-            if(response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) null
+            if(response.code != HttpURLConnection.HTTP_UNAUTHORIZED) null
             else {
                 val accessToken = tokenLocalDataSource.getOwnerAccessToken()
-                if(accessToken == response.request().header("OwnerAuthorization")) {
+                if(accessToken == response.request.header("OwnerAuthorization")) {
                     tokenLocalDataSource.removeAccessToken()
                     goToLoginActivity()
                     null
@@ -48,7 +48,7 @@ class OwnerTokenAuthenticator @Inject constructor(
     }
 
     private fun getRequest(response: Response, token: String): Request {
-        return response.request()
+        return response.request
             .newBuilder()
             .removeHeader("OwnerAuthorization")
             .addHeader("OwnerAuthorization", "Bearer $token")

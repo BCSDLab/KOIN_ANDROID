@@ -24,10 +24,10 @@ class TokenAuthenticator @Inject constructor(
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         val request = try {
-            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) null
+            if (response.code != HttpURLConnection.HTTP_UNAUTHORIZED) null
             else {
                 val accessToken = tokenLocalDataSource.getAccessToken()
-                if("Bearer $accessToken" == response.request().header("Authorization")) {
+                if("Bearer $accessToken" == response.request.header("Authorization")) {
                     tokenLocalDataSource.removeAccessToken()
                     goToLoginActivity()
                     null
@@ -49,7 +49,7 @@ class TokenAuthenticator @Inject constructor(
     }
 
     private fun getRequest(response: Response, token: String): Request {
-        return response.request()
+        return response.request
             .newBuilder()
             .removeHeader("Authorization")
             .addHeader("Authorization", "Bearer $token")

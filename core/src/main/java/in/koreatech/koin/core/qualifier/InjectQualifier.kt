@@ -17,3 +17,7 @@ annotation class ServerUrl
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class OwnerAuth
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PreSignedUrl

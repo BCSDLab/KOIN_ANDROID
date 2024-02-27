@@ -9,8 +9,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -47,7 +45,7 @@ class BusinessVerificationViewModel @Inject constructor(
             viewModelScope.launchWithLoading {
                 ownerVerificationCodeUseCase(
                     email, verificationCode
-                ).second.onSuccess {
+                ).onSuccess {
                     _businessVerificationContinuationState.value = it
                 }.onFailure {
                     _businessVerificationContinuationError.value = it

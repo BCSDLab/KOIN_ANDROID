@@ -71,6 +71,14 @@ object RepositoryModule {
         return UploadUrlRepositoryImpl(uploadUrlRemoteDataSource)
     }
 
+    @Provides
+    @Singleton
+    fun provideRegisterRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerRegisterRepository {
+        return OwnerRegisterRepositoryImpl(ownerRemoteDataSource)
+    }
+
 
     @Provides
     @Singleton
@@ -127,5 +135,13 @@ object RepositoryModule {
         landRemoteDataSource: LandRemoteDataSource
     ): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreSignedUrlRepository(
+        preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource
+    ): PreSignedUrlRepository {
+        return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource)
     }
 }
