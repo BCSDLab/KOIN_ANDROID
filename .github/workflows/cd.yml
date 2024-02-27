@@ -14,9 +14,20 @@ jobs:
        with:
           distribution: 'temurin'
           java-version: 11
+          cache: gradle
           
      - name: Make gradlew executable
        run: chmod +x ./gradlew
+
+     - name: Gradle cache
+       uses: actions/cache@v2
+       with:
+         path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+         restore-keys: |
+          ${{ runner.os }}-gradle-
        
      - name: Update Secrets
        env:
@@ -26,7 +37,7 @@ jobs:
           
      - name: Update Firebase
        env:
-          FIREBASE: $({ secrets.FIREBASE})
+          FIREBASE: $({ secrets.FIREBASE })
        run: |
             echo $FIREBASE > ./core/google-services.json
             echo $FIREBASE > ./koin/google-services.json
