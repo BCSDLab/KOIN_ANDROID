@@ -7,6 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
@@ -23,9 +25,10 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun provideTokenLocalDataSource(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
+        @IoDispatcher dispatcherIO: CoroutineDispatcher
     ) : TokenLocalDataSource {
-        return TokenLocalDataSource(applicationContext)
+        return TokenLocalDataSource(applicationContext, dispatcherIO)
     }
 
     @Provides

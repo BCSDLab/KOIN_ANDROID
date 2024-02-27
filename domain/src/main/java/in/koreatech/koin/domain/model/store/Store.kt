@@ -1,36 +1,43 @@
 package `in`.koreatech.koin.domain.model.store
 
-import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.domain.util.ext.isCurrentOpen
-import java.time.LocalDateTime
+import `in`.koreatech.koin.domain.util.ext.HHMM
+import `in`.koreatech.koin.domain.util.ext.isEqualOrBigger
+import `in`.koreatech.koin.domain.util.ext.isEqualOrSmaller
+import `in`.koreatech.koin.domain.util.ext.localTimeNow
 import java.time.LocalTime
 
 data class Store(
-    val id: Int,
+    val uid: Int,
     val name: String,
-    val chosung: String,
-    val category: StoreCategory?,
-    val phoneNumber: String?,
-    val openTime: LocalTime,
-    val closeTime: LocalTime,
-    val address: String?,
-    val description: String?,
-    val isDeliveryOk: Boolean,  //배달 가능 여부
-    val deliveryPrice: Int,     //배달비
-    val isCardOk: Boolean,      //카드결제 여부
-    val isBankOk: Boolean,       //계좌이체 여부
-    val images: List<String>,
-    val updatedAt: LocalDateTime
-) : Comparable<Store> {
-    override fun compareTo(other: Store): Int {
-        val isThisCurrentOpen = this.isCurrentOpen
-        val isOtherCurrentOpen = other.isCurrentOpen
+    val phone: String,
+    val isDeliveryOk: Boolean,
+    val isCardOk: Boolean,
+    val isBankOk: Boolean,
+    val open: OpenData,
+    val categoryIds: List<StoreCategory?>,
+) {
+    data class OpenData(
+        val dayOfWeek: String,
+        val closed: Boolean,
+        val openTime: String,
+        val closeTime: String,
+    ) {
+        fun openStore(): Boolean {
+            return if(openTime.isNotEmpty() && closeTime.isNotEmpty()) {
+                val openTime = LocalTime.parse(if(openTime == "24:00") "00:00" else openTime)
+                val closeTime = LocalTime.parse(if(closeTime == "24:00") "00:00" else closeTime)
+                val currentTime = LocalTime.parse(localTimeNow.HHMM)
 
-        return when {
-            isThisCurrentOpen && isOtherCurrentOpen -> this.name.compareTo(other.name)
-            !isThisCurrentOpen && isOtherCurrentOpen -> 1
-            isThisCurrentOpen && !isOtherCurrentOpen -> -1
-            else -> this.name.compareTo(other.name)
+                if (openTime.isBefore(closeTime)) { // 17:00(오픈 시간) < 23:00(종료 시간)
+                    currentTime.isEqualOrBigger(openTime) && currentTime.isEqualOrSmaller(closeTime)
+                } else if (openTime.isAfter(closeTime)) { // 17:00(오픈 시간) > 02:00(종료 시간)
+                    currentTime.isEqualOrBigger(openTime) || currentTime.isEqualOrSmaller(closeTime)
+                } else { // 00:00 ~ 00:00 (하루종일 영업)
+                    true
+                }
+            } else {
+                false
+            }
         }
     }
 }

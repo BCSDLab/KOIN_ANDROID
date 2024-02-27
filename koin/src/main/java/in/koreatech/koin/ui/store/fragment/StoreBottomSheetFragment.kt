@@ -42,9 +42,9 @@ class StoreBottomSheetFragment : BottomSheetDialogFragment() {
 
                 viewModel.store.collectLatest {
                     binding.storeNameText.text = it?.name ?: ""
-                    binding.storePhoneText.text = it?.phoneNumber ?: ""
-                    storeId = it?.id ?: -1
-                    storePhoneNumber = it?.phoneNumber ?: ""
+                    binding.storePhoneText.text = it?.phone ?: ""
+                    storeId = it?.uid ?: -1
+                    storePhoneNumber = it?.phone ?: ""
                 }
             }
         }

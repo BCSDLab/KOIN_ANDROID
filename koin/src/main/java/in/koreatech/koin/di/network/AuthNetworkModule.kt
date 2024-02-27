@@ -6,7 +6,6 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.util.TokenAuthenticator
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -15,9 +14,11 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
-import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
 import javax.inject.Singleton
+import `in`.koreatech.koin.core.qualifier.REFRESH
+import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.util.RefreshTokenInterceptor
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -47,13 +48,15 @@ object AuthNetworkModule {
         }
     }
 
-    @Auth
+    @REFRESH
     @Provides
     @Singleton
-    fun provideTokenAuthenticator(
+    fun provideRefreshInterceptor(
         @ApplicationContext applicationContext: Context,
-        tokenLocalDataSource: TokenLocalDataSource
-    ) = TokenAuthenticator(applicationContext, tokenLocalDataSource)
+        tokenLocalDataSource: TokenLocalDataSource,
+        userApi: UserApi
+    ): Interceptor = RefreshTokenInterceptor(applicationContext, tokenLocalDataSource, userApi)
+
 
     @Auth
     @Provides
@@ -61,7 +64,7 @@ object AuthNetworkModule {
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @Auth authInterceptor: Interceptor,
-        @Auth tokenAuthenticator: TokenAuthenticator
+        @REFRESH refreshInterceptor: Interceptor
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)
@@ -69,7 +72,7 @@ object AuthNetworkModule {
             writeTimeout(15, TimeUnit.SECONDS)
             addInterceptor(httpLoggingInterceptor)
             addInterceptor(authInterceptor)
-            authenticator(tokenAuthenticator)
+            addInterceptor(refreshInterceptor)
         }.build()
     }
 
