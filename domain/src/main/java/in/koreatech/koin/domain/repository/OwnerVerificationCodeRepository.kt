@@ -7,5 +7,5 @@ interface OwnerVerificationCodeRepository {
     suspend fun compareVerificationCode(
         address: String,
         verificationCode: String
-    ): Pair<OwnerAuthToken?, Result<Unit>>
+    ): Result<OwnerAuthToken?>
 }

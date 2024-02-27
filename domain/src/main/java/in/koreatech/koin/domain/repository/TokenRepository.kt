@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
+
 interface TokenRepository {
     suspend fun saveAccessToken(token: String)
     suspend fun getAccessToken(): String?

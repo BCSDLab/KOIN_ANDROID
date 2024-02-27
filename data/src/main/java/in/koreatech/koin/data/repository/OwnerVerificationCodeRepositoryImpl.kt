@@ -16,7 +16,7 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
     override suspend fun compareVerificationCode(
         address: String,
         verificationCode: String
-    ): Pair<OwnerAuthToken?, Result<Unit>> {
+    ): Result<OwnerAuthToken?> {
         return try {
             val tempToken = ownerRemoteDataSource.postVerificationCode(
                 OwnerVerificationCodeRequest(
@@ -25,11 +25,11 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
                 )
             )
 
-            return Pair(tempToken.toAuthToken(), Result.success(Unit))
+            Result.success(tempToken.toAuthToken())// Pair(tempToken.toAuthToken(), Result.success(Unit))
         } catch (e: HttpException) {
-            null to e.httpExceptionMapper()
+            Result.failure(e)
         } catch (t: Throwable) {
-            Pair(null, Result.failure(t))
+            Result.failure(t)
         }
     }
 

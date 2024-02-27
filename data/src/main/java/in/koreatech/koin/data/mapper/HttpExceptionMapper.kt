@@ -7,7 +7,15 @@ import retrofit2.HttpException
 fun HttpException.httpExceptionMapper(): Result<Unit> {
     return when(this.code()) {
         404 -> Result.failure(UploadError.NotExistDomainException)
-        409 -> Result.failure(OwnerError.SignupAlreadySentEmailException)
+        409 -> {
+            when(this.response()?.code() ?: -1) {
+                101012 -> Result.failure(OwnerError.NotValidEmailException)
+                101013 -> Result.failure(OwnerError.AlreadyUsingEmailException)
+                101021 -> Result.failure(OwnerError.AlreadyUsingRegistrationNumberException)
+                101023 -> Result.failure(OwnerError.AlreadyValidIdException)
+                else -> Result.failure(OwnerError.SignupAlreadySentEmailException)
+            }
+        }
         410 -> Result.failure(OwnerError.OverDueTimeException)
         413 -> Result.failure(UploadError.BoundOfSizeException)
         415 -> Result.failure(UploadError.NotValidFileException)

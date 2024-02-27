@@ -22,7 +22,6 @@ import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessVerificationViewM
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
@@ -43,8 +42,6 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
     ): View {
         _binding = FragmentBusinessSignupBasicInfoBinding.inflate(inflater, container, false)
         val view = binding.root
-
-//        businessSignupBaseViewModel.setFragmentTag("BASIC_INFO_FRAGMENT")
 
         firebasePerformanceUtil.start()
         initView()
@@ -126,9 +123,11 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
                     val password = binding.signupEdittextPw.text.toString()
                     val passwordConfirm = binding.signupEdittextPwConfirm.text.toString()
 
+                    businessSignupBaseViewModel.setEmail(email)
+                    businessSignupBaseViewModel.setPassword(password)
                     businessVerificationViewModel.setSignUpInfo(email, password, passwordConfirm)
 
-                    businessSignupBaseViewModel.setFragmentTag("VERIFICATION_FRAGMENT")
+                    businessSignupBaseViewModel.setFragmentTag("verificationFragment")
                 }
                 SignupContinuationState.NotAgreedKoinTerms -> {
                     SnackbarUtil.makeShortSnackbar(

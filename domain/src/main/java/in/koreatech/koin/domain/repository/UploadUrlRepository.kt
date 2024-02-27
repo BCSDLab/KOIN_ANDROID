@@ -5,5 +5,5 @@ interface UploadUrlRepository {
         contentLength: Long,
         contentType: String,
         fileName: String
-    ): Result<Unit>
+    ): Result<Pair<String, String>>
 }

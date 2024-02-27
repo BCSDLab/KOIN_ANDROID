@@ -73,7 +73,8 @@ buildscript {
         butterknifeAnnotation = "com.jakewharton:butterknife-compiler:$butterknife_version"
 
         /* Dependency - okhttp */
-        def okhttp_version = "3.4.2"
+        //def okhttp_version = "3.4.2"
+        def okhttp_version = "4.7.2"
         okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
         okhttpLogging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 

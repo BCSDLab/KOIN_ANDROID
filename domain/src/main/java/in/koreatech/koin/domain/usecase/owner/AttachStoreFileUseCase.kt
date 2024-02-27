@@ -10,7 +10,7 @@ class AttachStoreFileUseCase @Inject constructor(
         contentLength: Long,
         contentType: String,
         fileName: String
-    ): Result<Unit> {
+    ): Result<Pair<String, String>> {
         return uploadUrlRepository.getUploadUrlResult(contentLength, contentType, fileName)
     }
 }

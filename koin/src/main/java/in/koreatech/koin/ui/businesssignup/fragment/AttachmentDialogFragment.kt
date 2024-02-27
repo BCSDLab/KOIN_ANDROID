@@ -12,6 +12,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,7 +25,7 @@ class AttachmentDialogFragment : DialogFragment() {
     private var _binding: FragmentAttachmentDialogBinding? = null
     private val binding get() = _binding!!
     private lateinit var imageResultLauncher: ActivityResultLauncher<Intent>
-    private val viewModel: BusinessCertificationViewModel by activityViewModels()
+    private val viewModel by activityViewModels<BusinessCertificationViewModel>()
 
     private val requestPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         when(isGranted) {
@@ -44,7 +45,7 @@ class AttachmentDialogFragment : DialogFragment() {
     ): View {
         _binding = FragmentAttachmentDialogBinding.inflate(inflater, container, false)
         val view = binding.root
-
+        
         binding.cancleButton.setOnClickListener {
             dismiss()
         }
@@ -58,10 +59,11 @@ class AttachmentDialogFragment : DialogFragment() {
                 val fileType = "image/" + fileName.split(".")[1]
 
                 viewModel.addImageItem(uri.toString(), fileName)
-                viewModel.continueVCertification(fileSize, fileType, fileName)
+                viewModel.continueVCertification(uri, fileSize, fileType, fileName)
                 dismiss()
             }
         }
+
         binding.attachFileButton.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 checkPermission()
@@ -106,6 +108,7 @@ class AttachmentDialogFragment : DialogFragment() {
     private fun getFileInfo(uri: Uri): Pair<String, Long> {
         var fileName = ""
         var fileSize = 0L
+
         if(uri.scheme.equals("content")) {
             val cursor = this.requireContext().contentResolver.query(uri, null, null, null, null)
             cursor.use {

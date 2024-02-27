@@ -8,12 +8,14 @@ import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.util.TokenAuthenticator
 import android.content.Context
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.core.qualifier.PreSignedUrl
+import `in`.koreatech.koin.data.api.PreSignedUrlApi
+import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
 import javax.inject.Singleton
 import kotlinx.coroutines.runBlocking
@@ -108,7 +110,7 @@ object OwnerAuthNetworkModule {
             runBlocking {
                 val ownerAccessToken = tokenLocalDataSource.getOwnerAccessToken() ?: ""
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("OwnerAuthorization", "Bearer $ownerAccessToken")
+                    .addHeader("Authorization", "Bearer $ownerAccessToken")
                     .build()
                 chain.proceed(newRequest)
             }
@@ -161,5 +163,46 @@ object OwnerAuthNetworkModule {
         @OwnerAuth retrofit: Retrofit
     ): UploadUrlApi {
         return retrofit.create(UploadUrlApi::class.java)
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object PreSignedUrlNetworkModule {
+    @PreSignedUrl
+    @Provides
+    @Singleton
+    fun provideOwnerAuthOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            connectTimeout(10, TimeUnit.SECONDS)
+            readTimeout(30, TimeUnit.SECONDS)
+            writeTimeout(15, TimeUnit.SECONDS)
+            addInterceptor(httpLoggingInterceptor)
+        }.build()
+    }
+
+    @Provides
+    @Singleton
+    @PreSignedUrl
+    fun providePreSignedUrlRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://kap-test.s3.ap-northeast-2.amazonaws.com/")
+            .client(
+                OkHttpClient.Builder().addInterceptor(
+                    HttpLoggingInterceptor().apply {
+                        level = HttpLoggingInterceptor.Level.HEADERS
+                    }
+                ).build()
+            ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUploadUrlApi(
+        @PreSignedUrl retrofit: Retrofit
+    ): PreSignedUrlApi {
+        return retrofit.create(PreSignedUrlApi::class.java)
     }
 }

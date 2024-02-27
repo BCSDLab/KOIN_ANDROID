@@ -35,6 +35,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
     private val businessSignupBaseViewModel by activityViewModels<BusinessSignUpBaseViewModel>()
 
     private val storeAdapter = StoreRecyclerAdapter()
+
     private var isSearchMode: Boolean = false
         set(value) {
             if (value) activity?.showSoftKeyboard()
@@ -73,7 +74,7 @@ class BusinessSearchStoreFragment: BaseFragment() {
         _binding = FragmentBusinessSearchStoreBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        businessSignupBaseViewModel.setFragmentTag("SEARCH_STORE_FRAGMENT")
+        businessSignupBaseViewModel.setFragmentTag("searchSToreFragment")
 
         binding.storeNameEditTextView.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
@@ -118,12 +119,12 @@ class BusinessSearchStoreFragment: BaseFragment() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                clickButtonState.collectLatest {
-                    val check = it.first
-                    val storeName = it.second
-                    if(check) {
-                        setFragmentResult("requestKey", bundleOf("storeName" to storeName))
-                        parentFragmentManager.beginTransaction().replace(R.id.fragment_container_view, BusinessCertificationFragment()).commit()
+                needToProceedStoreInfo.collectLatest {
+                    businessSignupBaseViewModel.setShopId(it.shopId)
+
+                    if(it.checkState) {
+                        setFragmentResult("requestKey", bundleOf("storeName" to it.shopName))
+                        businessSignupBaseViewModel.setFragmentTag("certificationFragment")
                     }
                 }
             }

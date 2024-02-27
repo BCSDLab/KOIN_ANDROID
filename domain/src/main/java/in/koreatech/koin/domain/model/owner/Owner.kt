@@ -16,8 +16,6 @@ sealed class Owner {
 
     data class Attachments(val fileName: String, val fileUrl: String, val id: Int)
 
-    data class AttachmentUrls(val fileUrl: String)
-
     object Anonymous: Owner()
 
     val isOwner get() = this is Businessman

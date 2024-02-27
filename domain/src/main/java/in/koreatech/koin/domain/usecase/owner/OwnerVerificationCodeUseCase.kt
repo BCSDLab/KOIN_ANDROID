@@ -11,13 +11,13 @@ class OwnerVerificationCodeUseCase @Inject constructor(
     suspend operator fun invoke(
         address: String,
         verificationCode: String
-    ): Pair<Unit?, Result<Unit>> {
+    ): Result<Unit> {
         return try {
-            val authToken = ownerVerificationCodeRepository.compareVerificationCode(address, verificationCode).first
-            tokenRepository.saveOwnerAccessToken(authToken!!.token)
-            Unit to Result.success(Unit)
-        } catch (throwable: Throwable) {
-            null to Result.failure(throwable)
+            val authToken = ownerVerificationCodeRepository.compareVerificationCode(address, verificationCode)
+            tokenRepository.saveOwnerAccessToken(authToken.getOrDefault(defaultValue = null)!!.token)
+            Result.success(Unit)
+        } catch (t: Throwable) {
+            Result.failure(t)
         }
     }
 }
