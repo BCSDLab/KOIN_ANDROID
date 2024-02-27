@@ -17,7 +17,7 @@ class UserLoginUseCase @Inject constructor(
         password: String,
     ): Pair<Unit?, ErrorHandler?> {
         return try {
-            val authToken = userRepository.getToken(email, password)
+            val authToken = userRepository.getToken(email, password.toSHA256())
             tokenRepository.saveAccessToken(authToken.token)
             tokenRepository.saveRefreshToken(authToken.refreshToken)
             Unit to null
