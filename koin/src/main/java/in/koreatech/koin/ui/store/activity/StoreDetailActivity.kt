@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.data.constant.STORE_CLOSE_TIME_FORMAT
-import `in`.koreatech.koin.data.constant.STORE_OPEN_TIME_FORMAT
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -25,8 +23,6 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 
 class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
@@ -68,7 +64,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
-                viewModel.store.value?.phoneNumber?.let { phoneNumber ->
+                viewModel.store.value?.phone?.let { phoneNumber ->
                     callContract.launch(phoneNumber)
                 }
             } else {
@@ -92,7 +88,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     private val storeRecyclerAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailActivityContract.launch(it.id)
+            storeDetailActivityContract.launch(it.uid)
             finish()
         }
     }
@@ -138,6 +134,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             finish()
         }
         viewModel.getStoreWithMenu(storeId!!)
+        viewModel.getShopMenus(storeId)
     }
 
     override fun onBackPressed() {
@@ -159,17 +156,11 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 storeDetailTitleTextview.text = it.name
 
                 //전화번호
-                if (it.phoneNumber == null) {
-                    storeDetailConstPhoneNum.isVisible = false
-                    storeDetailPhoneTextview.isVisible = false
-                    storeDetailCallButton.isVisible = false
-                } else {
-                    storeDetailPhoneTextview.text = it.phoneNumber
-                }
+                storeDetailPhoneTextview.text = it.phone
 
                 //운영시간
                 storeDetailTimeTextview.text =
-                    generateOpenCloseTimeString(it.openTime, it.closeTime)
+                    generateOpenCloseTimeString(it.open.openTime, it.open.closeTime)
 
                 //주소
                 if (it.address == null) {
@@ -210,13 +201,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailIsBankTextview.isVisible = false
                 }
 
-                storeLastUpdatedTextView.text = it.updatedAt.format(
-                    DateTimeFormatter.ofPattern(
-                        getString(R.string.store_last_updated_format)
-                    )
-                )
-
-                storeDetailFlyerRecyclerAdapter.submitList(it.images)
+                storeDetailFlyerRecyclerAdapter.submitList(it.imageUrls)
             }
         }
 
@@ -243,13 +228,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun showCallDialog() {
-        if (viewModel.store.value?.phoneNumber != null) {
+        if (viewModel.store.value?.phone != null) {
             val builder = AlertDialog.Builder(this)
             val message = StringBuilder().apply {
                 append(viewModel.store.value?.name)
                 appendLine()
                 appendLine()
-                append(viewModel.store.value?.phoneNumber)
+                append(viewModel.store.value?.phone)
             }
             builder.setMessage(message)
 
@@ -263,11 +248,11 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private fun generateOpenCloseTimeString(openTime: LocalTime, closeTime: LocalTime): String {
+    private fun generateOpenCloseTimeString(openTime: String, closeTime: String): String {
         val stringBuilder = StringBuilder()
-        stringBuilder.append(openTime.format(DateTimeFormatter.ofPattern(STORE_OPEN_TIME_FORMAT)))
+        stringBuilder.append(openTime)
         stringBuilder.append(getString(R.string.store_open_close_time_mark))
-        stringBuilder.append(closeTime.format(DateTimeFormatter.ofPattern(STORE_CLOSE_TIME_FORMAT)))
+        stringBuilder.append(closeTime)
         return stringBuilder.toString()
     }
 

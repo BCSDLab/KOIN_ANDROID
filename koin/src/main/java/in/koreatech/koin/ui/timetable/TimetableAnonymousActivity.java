@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -150,6 +153,17 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     private String semester = "";
 
+    private final ActivityResultLauncher<String> saveImagePermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            result -> {
+                if(result) {
+                    saveTimeTableViewInBMP(semester);
+                } else {
+                    ToastUtil.getInstance().makeShort(R.string.need_permission);
+                }
+            }
+    );
+
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = activity.getCurrentFocus();
@@ -223,50 +237,25 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         return UserInfoSharedPreferencesHelper.getInstance().checkAuthorize() == AuthorizeConstant.ANONYMOUS;
     }
 
-    public void askSaveToImagePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED))
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_REQUEST_CODE);
-        }
-
-    }
-
-    public boolean checkStoragePermisson() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED)
-                    || (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED))
-                return false;
-            else
-                return true;
-        } else
-            return true;
-    }
-
     public void saveTimeTableViewInBMP(String semester) {
-        File saveImageFile;
         removeAllCheckSticker();
 //        this.timeTableScrollview.smoothScrollBy(0, 0);
         Bitmap bitmap = ScreenshotUtil.getInstance().takeTimeTableScreenShot(this.timeTableScrollview, this.timeTableHeader);
-        try {
-            if (bitmap != null) {
-                String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-                String path = Environment.getExternalStorageDirectory().toString() + "/Pictures/" + semester + "_" + timeStamp + ".png";
-                File myDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Pictures/");
-                myDir.mkdirs();
-                saveImageFile = FileUtil.getInstance().storeBitmap(bitmap, path);
-                if (saveImageFile != null) {
-                    Intent mediaIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                    mediaIntent.setData(Uri.fromFile(saveImageFile));
-                    sendBroadcast(mediaIntent);
-                    ToastUtil.getInstance().makeShort(R.string.timetable_saved);
-                } else {
-                    ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
-                }
-            }
-        } catch (NullPointerException e) {
+
+        if (bitmap == null) {
             ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
+            return;
         }
+
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String fileName = semester + "_" + timeStamp + ".png";
+
+        if (FileUtil.getInstance().storeBitmap(getApplicationContext(), bitmap, fileName)) {
+            ToastUtil.getInstance().makeShort(R.string.timetable_saved);
+            return;
+        }
+
+        ToastUtil.getInstance().makeShort(R.string.timetable_saved_fail);
     }
 
     public void initSearchEditText() {
@@ -292,22 +281,12 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
 
     @OnClick(R.id.timetable_save_timetable_image_linearlayout)
     public void clickedSaveTimetable() {
-        Handler handler = new Handler();
-        Runnable runnable;
-        if (checkStoragePermisson()) {
-            runnable = () -> {
-                showProgressDialog(R.string.saving);
-            };
-            handler.post(runnable);
-            handler.postDelayed(() -> {
-                saveTimeTableViewInBMP(semester);
-                hideProgressDialog();
-            }, 2000);
+        String permission;
 
-        } else {
-            ToastUtil.getInstance().makeShort(R.string.need_permission);
-            askSaveToImagePermission();
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) permission = Manifest.permission.READ_MEDIA_IMAGES;
+        else permission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+        saveImagePermissionLauncher.launch(permission);
     }
 
     public void initSearchRecyclerview() {

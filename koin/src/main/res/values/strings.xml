@@ -104,10 +104,17 @@
     <string name="signup_error_check_password">특수문자를 포함한 영어와 숫자 6~18 자리 비밀번호를 입력해주세요</string>
     <string name="signup_error_check_password_match">비밀번호가 일치하지 않습니다</string>
     <string name="signup_error_when_email_validation">이메일 인증 중 오류가 발생했습니다</string>
+    <string name="signup_init_name">이름을 입력해주세요</string>
+    <string name="signup_init_phone_number">전화번호를 입력해주세요</string>
+    <string name="signup_init_student_id">학번을 입력해주세요</string>
+    <string name="signup_check_nickname">닉네임중복버튼을 눌러주세요</string>
+    <string name="signup_check_gender">성별을 선택해주세요</string>
+    <string name="signup_check_graduate">졸업유무를 선택해주세요</string>
     <string name="signup_privacy_terms">개인정보 이용약관</string>
     <string name="signup_privacy_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
     <string name="signup_koin_terms">코인 이용약관</string>
     <string name="signup_koin_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
+    <string name="signup_email_check">회원가입이 가능한 이메일입니다\n다음 버튼을 눌러 회원가입을 진행해주세요</string>
 
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
@@ -194,6 +201,7 @@
     <string name="search">검색</string>
 
     <!-- user info -->
+    <string name="user_info_no_email">이메일을 설정해 주세요</string>
     <string name="user_info_no_nickname">닉네임을 설정해 주세요</string>
     <string name="user_info_no_anonymous_nickname">익명 닉네임이 설정되지 않았습니다</string>
     <string name="user_info_no_phone_number">휴대폰 번호를 설정해 주세요</string>
