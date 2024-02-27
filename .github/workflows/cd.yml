@@ -1,0 +1,39 @@
+name: Android CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+     
+     - name: set up JDK 11
+       uses: actions/setup-java@v4
+       with:
+          java-version: 11
+          
+     - name: Make gradlew executable
+       run: chmod +x ./gradlew
+       
+     - name: Update Secrets
+       env:
+          KOIN_STORE_PASSWORD: $({ secrets.KOIN_STORE_PASSWORD})
+          NAVER_MAP_KEY: $({ secrets.NAVER_MAP_KEY})
+       run: echo "koin_store_password=$KOIN_STORE_PASSWORD\nnavermap_key=$NAVER_MAP_KEY" > ./local.properties
+          
+     - name: Update Firebase
+       env:
+          FIREBASE: $({ secrets.FIREBASE})
+       run: |
+            echo $FIREBASE > ./core/google-services.json
+            echo $FIREBASE > ./koin/google-services.json
+
+     - name: Build
+       env:
+          GOOGLE_APPLICATION_CREDENTIALS: $({ secrets.FIREBASE})
+       run: |
+             ./gradlew clean
+             ./gradlew bundleRelease
+           
