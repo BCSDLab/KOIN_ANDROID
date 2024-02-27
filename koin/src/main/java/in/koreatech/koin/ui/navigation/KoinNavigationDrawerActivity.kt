@@ -18,6 +18,7 @@ import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
 import `in`.koreatech.koin.util.ext.*
 import android.content.Intent
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -31,12 +32,14 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.BuildConfig
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
-    NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener {
     protected abstract val menuState: MenuState
 
     val drawerLayoutId get() = R.id.drawer_layout
@@ -56,19 +59,21 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
-            R.id.navi_item_store,
-            R.id.navi_item_bus, R.id.navi_item_dining,
-            R.id.navi_item_timetable, R.id.navi_item_land
+                R.id.navi_item_store,
+                R.id.navi_item_bus, R.id.navi_item_dining,
+                R.id.navi_item_timetable, R.id.navi_item_land,
+                R.id.navi_item_owner
         ).map {
             findViewById<View>(it)
         }.zip(
-            listOf(
-                MenuState.Store,
-                MenuState.Bus,
-                MenuState.Dining,
-                MenuState.Timetable,
-                MenuState.Land
-            )
+                listOf(
+                        MenuState.Store,
+                        MenuState.Bus,
+                        MenuState.Dining,
+                        MenuState.Timetable,
+                        MenuState.Land,
+                        MenuState.Owner
+                )
         ) { view, state ->
             state to view
         }.toMap()
@@ -76,21 +81,21 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menuTextViews by lazy {
         listOf(
-            R.id.navi_item_store_textview,
-            R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
-            R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
+                R.id.navi_item_store_textview,
+                R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
+                R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
         ).map {
             findViewById<TextView>(it).apply {
                 changeMenuFont(this)
             }
         }.zip(
-            listOf(
-                MenuState.Store,
-                MenuState.Bus,
-                MenuState.Dining,
-                MenuState.Timetable,
-                MenuState.Land
-            )
+                listOf(
+                        MenuState.Store,
+                        MenuState.Bus,
+                        MenuState.Dining,
+                        MenuState.Timetable,
+                        MenuState.Land
+                )
         ) { view, state ->
             state to view
         }.toMap()
@@ -106,7 +111,16 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         menus.forEach { (state, view) ->
             view.setOnClickListener {
-                koinNavigationDrawerViewModel.selectMenu(state)
+                when (state) {
+                    MenuState.Owner -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+                            if (BuildConfig.IS_DEBUG) URLConstant.OWNER_URL_STAGE
+                            else URLConstant.OWNER_URL_PRODUCTION
+                    )))
+
+                    else -> {
+                        koinNavigationDrawerViewModel.selectMenu(state)
+                    }
+                }
             }
         }
 
@@ -138,7 +152,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         super.onAttachedToWindow()
 
         leftNavigationView.layoutParams =
-            leftNavigationView.layoutParams.apply { width = windowWidth }
+                leftNavigationView.layoutParams.apply { width = windowWidth }
     }
 
     override fun onBackPressed() {
@@ -191,6 +205,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         goToTimetableActivty()
                     }
                 }
+
                 MenuState.UserInfo -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
                         showLoginRequestDialog()
@@ -220,18 +235,23 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_home -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Main)
             }
+
             R.id.navi_item_store -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Store)
             }
+
             R.id.navi_item_dining -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Dining)
             }
+
             R.id.navi_item_bus -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Bus)
             }
+
             R.id.navi_item_land -> {
                 koinNavigationDrawerViewModel.selectMenu(MenuState.Land)
             }
+
             else -> {
                 ToastUtil.getInstance().makeShort("서비스예정입니다")
             }
@@ -337,20 +357,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     fun showLoginRequestDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("회원 전용 서비스")
-            .setMessage("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")
-            .setCancelable(false)
-            .setPositiveButton("확인") { dialog, _ ->
-                val intent = Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-                intent.putExtra("FIRST_LOGIN", false)
-                startActivity(intent)
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
-            }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.cancel()
-            }
+                .setMessage("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("확인") { dialog, _ ->
+                    val intent = Intent(
+                            this,
+                            LoginActivity::class.java
+                    )
+                    intent.putExtra("FIRST_LOGIN", false)
+                    startActivity(intent)
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
+                }
+                .setNegativeButton("취소") { dialog, _ ->
+                    dialog.cancel()
+                }
         val dialog = builder.create() // 알림창 객체 생성
         dialog.show() // 알림창 띄우기
     }
@@ -376,8 +396,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         get() {
             val s = text.toString()
             val styledText = HtmlCompat.fromHtml(
-                "<font color='#f7941e'>$s</font>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY
+                    "<font color='#f7941e'>$s</font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
             )
             setText(styledText, TextView.BufferType.SPANNABLE) //#f7941e
             return this
