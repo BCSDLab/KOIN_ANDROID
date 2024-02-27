@@ -142,6 +142,3 @@ dependencies {
     kapt project.hiltCompiler
 
 }
-repositories {
-    mavenCentral()
-}
