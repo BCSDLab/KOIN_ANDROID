@@ -7,24 +7,8 @@ import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 
 fun OwnerVerificationCodeResponse.toAuthToken() = OwnerAuthToken(token = token)
 
-fun List<OwnerRegisterUrl>.toFileUrlList(): List<AttachmentUrlRequest> {
-    val list = mutableListOf<AttachmentUrlRequest>()
-
-    this.forEach {
-        list.add(it.toFileUrl())
-    }
-
-    return list
-}
+fun List<OwnerRegisterUrl>.toFileUrlList(): List<AttachmentUrlRequest> = this.map { it.toFileUrl() }
 
 fun OwnerRegisterUrl.toFileUrl(): AttachmentUrlRequest = AttachmentUrlRequest(fileUrl = fileUrl)
 
-fun List<String>.strToOwnerRegisterUrl(): List<OwnerRegisterUrl> {
-    val list = mutableListOf<OwnerRegisterUrl>()
-
-    this.forEach {
-        list.add(OwnerRegisterUrl(it))
-    }
-
-    return list
-}
+fun List<String>.strToOwnerRegisterUrl(): List<OwnerRegisterUrl> = this.map { OwnerRegisterUrl(it) }

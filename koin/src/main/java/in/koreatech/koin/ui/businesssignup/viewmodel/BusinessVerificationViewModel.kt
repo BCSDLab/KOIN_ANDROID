@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,21 +62,30 @@ class BusinessVerificationViewModel @Inject constructor(
     }
 
     fun startTimer() {
-        if(::timer.isInitialized) timer.cancel()
+        if(::timer.isInitialized && !timer.isCancelled) timer.cancel()
 
-        val delayTime = 1000L
+        var delayTime = 10L
+        var prevSystemMillis: Long
+        var curSystemMillis: Long
+        var timeError: Long
         var timeRemaining = TimeUnit.MINUTES.toMillis(5)
 
         timer = viewModelScope.launch {
-            while (timeRemaining > 0) {
+            prevSystemMillis = System.currentTimeMillis()
+
+            while(timeRemaining > 0L) {
                 delay(delayTime)
+
+                curSystemMillis = System.currentTimeMillis()
+                timeError = curSystemMillis - 10L - prevSystemMillis
+                delayTime -= timeError
+                prevSystemMillis = curSystemMillis
 
                 val curMinutes = TimeUnit.MILLISECONDS.toMinutes(timeRemaining)
                 val curSeconds = TimeUnit.MILLISECONDS.toSeconds(timeRemaining) - TimeUnit.MINUTES.toSeconds(curMinutes)
-
                 _curTime.value = String.format("%02d:%02d", curMinutes, curSeconds)
 
-                timeRemaining -= delayTime
+                timeRemaining -= 10
             }
         }
     }

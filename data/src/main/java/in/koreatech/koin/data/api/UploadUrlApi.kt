@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UploadUrlApi {
-    @POST(URLConstant.UPLOAD.owner_url)
+    @POST(URLConstant.UPLOAD.OWNERURL)
     suspend fun postUploadUrl(@Body uploadUrlRequest: UploadUrlRequest): UploadUrlResponse
 }

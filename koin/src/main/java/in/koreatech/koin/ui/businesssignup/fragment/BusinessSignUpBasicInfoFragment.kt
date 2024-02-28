@@ -1,9 +1,6 @@
 package `in`.koreatech.koin.ui.businesssignup.fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,7 +116,7 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
                 }
                 SignupContinuationState.RequestedEmailValidation -> {
                     val email = binding.signupEdittextId.text.toString()
-                    Log.d("myEmail", email)
+
                     val password = binding.signupEdittextPw.text.toString()
                     val passwordConfirm = binding.signupEdittextPwConfirm.text.toString()
 

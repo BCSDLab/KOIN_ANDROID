@@ -15,7 +15,7 @@ interface OwnerApi {
     suspend fun postVerificationCode(@Body ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse
 
     @POST(URLConstant.OWNER.EMAIL)
-    suspend fun postVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest): Response<Unit>
+    suspend fun postVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest)
 
     @POST(URLConstant.OWNER.REGISTER)
     suspend fun postOwnerRegister(@Body ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse
