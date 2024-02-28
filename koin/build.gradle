@@ -15,7 +15,7 @@ android {
         applicationId "in.koreatech.koin"
         versionCode 30011
         minSdkVersion 21
-        compileSdkVersion project.compileSdkVersion
+        compileSdk project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionName project.versionName
@@ -56,9 +56,9 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="AAB"
-                releaseNotes="${project.versionName} release"
-                groups="bcsd"
+                artifactType = "AAB"
+                releaseNotes = "${project.versionName} release"
+                groups = "bcsd"
             }
         }
     }
@@ -76,8 +76,12 @@ android {
 //    }
 
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility 11
+        targetCompatibility 11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
     }
 
 //    applicationVariants.all { variant ->
