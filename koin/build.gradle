@@ -12,6 +12,7 @@ def applicationName = 'koin'
 
 android {
     defaultConfig {
+        namespace "in.koreatech.koin"
         applicationId "in.koreatech.koin"
         versionCode 30011
         minSdkVersion 21
