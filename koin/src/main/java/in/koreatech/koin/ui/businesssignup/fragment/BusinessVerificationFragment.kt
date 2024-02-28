@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
 import `in`.koreatech.koin.databinding.FragmentBusinessVerificationBinding
@@ -19,14 +20,9 @@ import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessVerificationViewM
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 class BusinessVerificationFragment: BaseFragment() {
     private var _binding: FragmentBusinessVerificationBinding? = null
     private val binding get() = _binding!!

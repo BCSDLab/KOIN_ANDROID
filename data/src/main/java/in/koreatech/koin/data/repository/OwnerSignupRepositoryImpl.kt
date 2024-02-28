@@ -4,8 +4,6 @@ import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
-import `in`.koreatech.koin.domain.error.signup.InCorrectEmailAddressException
-import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
 import retrofit2.HttpException
 import javax.inject.Inject

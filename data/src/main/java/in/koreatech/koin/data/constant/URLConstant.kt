@@ -115,7 +115,6 @@ object URLConstant {
 
     object UPLOAD {
         const val url = "/{domain}/upload/url"
-        const val owner_url = "/owners/upload/url"
-        const val content_length = ""
+        const val OWNERURL = "/owners/upload/url"
     }
 }

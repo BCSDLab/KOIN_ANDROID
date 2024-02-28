@@ -68,7 +68,7 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
 
     private fun initViewModel() = with(viewModel) {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 allCheckButtonState.collectLatest {
                     binding.allCheckButton.setImageDrawable(getDrawable(it))
                     isAllCheckButton = it != R.drawable.check
@@ -81,7 +81,7 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 agreedPrivacyTermsButtonState.collectLatest {
                     binding.agreedPrivacyTermsButton.setImageDrawable(getDrawable(it))
                     isAgreedPrivacyTermsButton = it != R.drawable.check
@@ -90,7 +90,7 @@ class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_sign
         }
 
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 agreedKoinTermsButtonState.collectLatest {
                     binding.agreedKoinTermsButton.setImageDrawable(getDrawable(it))
                     isAgreedKoinTerms = it != R.drawable.check

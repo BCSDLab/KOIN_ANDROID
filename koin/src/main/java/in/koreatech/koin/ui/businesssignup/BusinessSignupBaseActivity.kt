@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup_base) {
-    companion object FragmentKind{
+    companion object {
         private const val BASIC_INFO_FRAGMENT = "basicInfoFragment"
         private const val VERIFICATION_FRAGMENT = "verificationFragment"
         private const val CERTIFICATION_FRAGMENT = "certificationFragment"

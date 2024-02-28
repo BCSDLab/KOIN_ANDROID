@@ -22,7 +22,7 @@ class StoreViewModel @Inject constructor(
     private val _category = MutableStateFlow<StoreCategory?>(null)
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
     private val _store = MutableStateFlow<Store?>(null)
-    private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>(replay = 0)
+    private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>()
 
     val category: StateFlow<StoreCategory?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
@@ -71,7 +71,7 @@ class StoreViewModel @Inject constructor(
 
     fun clickStoreItem(item: Store) {
         viewModelScope.launch {
-            _store.emit(item)
+            _store.update { item }
         }
     }
 

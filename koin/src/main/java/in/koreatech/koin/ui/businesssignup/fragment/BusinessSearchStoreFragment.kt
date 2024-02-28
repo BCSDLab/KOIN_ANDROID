@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
 import `in`.koreatech.koin.databinding.FragmentBusinessSearchStoreBinding
@@ -27,6 +28,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class BusinessSearchStoreFragment: BaseFragment() {
     private var _binding: FragmentBusinessSearchStoreBinding? = null
     private val binding get() = _binding!!

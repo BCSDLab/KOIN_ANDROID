@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.businesssignup.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +13,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.fragment.BaseFragment
-import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.databinding.FragmentBusinessCertificationBinding
 import `in`.koreatech.koin.domain.error.upload.UploadError
 import `in`.koreatech.koin.ui.businesssignup.adapter.AttachStoreImageAdapter
@@ -25,12 +24,10 @@ import `in`.koreatech.koin.ui.businesssignup.viewmodel.BusinessSignUpBaseViewMod
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaType
-import java.io.File
-import java.io.InputStream
 
+@AndroidEntryPoint
 class BusinessCertificationFragment: BaseFragment() {
     private var _binding: FragmentBusinessCertificationBinding? = null
     private val binding get() = _binding!!
@@ -188,16 +185,20 @@ class BusinessCertificationFragment: BaseFragment() {
         observeLiveData(saveImageList) {
             attachStoreAdapter.updateList(it)
 
+
+
             viewModelScope.launch {
                 repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                    if(isMinOneInfo.value) {
-                        isMinOneStoreImage = true
-                        hiddenInitView()
-                        check()
-                    }
-                    else {
-                        hiddenRecyclerView()
-                        check()
+                    isMinOneInfo.collectLatest { check ->
+                        if(check) {
+                            isMinOneStoreImage = true
+                            hiddenInitView()
+                            check()
+                        }
+                        else {
+                            hiddenRecyclerView()
+                            check()
+                        }
                     }
                 }
             }

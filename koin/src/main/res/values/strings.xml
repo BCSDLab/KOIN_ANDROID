@@ -332,7 +332,7 @@
     <string name="attach_image">사업자등록증, 영업신고증, 통장사본 이미지 첨부</string>
     <string name="search_store2">상점 검색</string>
     <string name="complete_signup">가입 신청 완료</string>
-    <string name="complete_text">가입 신청이 오나료되었습니다.\n가입 허가가 승인되면 로그인이 가능합니다.</string>
+    <string name="complete_text">가입 신청이 완료되었습니다.\n가입 허가가 승인되면 로그인이 가능합니다.</string>
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="is_not_all_check">모든 이용약관을 동의해야합니다.</string>
     <string name="signup_error_incorrect_email_address">이메일 주소가 올바르지 않습니다.</string>
