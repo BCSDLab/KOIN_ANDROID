@@ -15,6 +15,9 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
           
+     - name: Setup Android SDK
+       uses: android-actions/setup-android@v2
+       
      - name: Make gradlew executable
        run: chmod +x ./gradlew
 
