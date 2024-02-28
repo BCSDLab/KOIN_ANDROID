@@ -61,5 +61,5 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: $({ secrets.FIREBASE})
        run: |
              ./gradlew clean
-             ./gradlew build --stacktrace --debug
+             ./gradlew build
            
