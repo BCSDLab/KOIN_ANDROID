@@ -15,6 +15,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +64,7 @@ class DiningAppWidget : AppWidgetProvider() {
                 setDiningWidget(context, remoteViews)
                 appWidgetManager.updateAppWidget(componentName, remoteViews)
             }
+
             else -> {
                 if (action.contains(DINING.WIDGET_ACTION_CLICKED)) {
                     currentDiningPlace =
@@ -122,12 +124,14 @@ class DiningAppWidget : AppWidgetProvider() {
         with(DiningUtil.typeFiltering(diningList, currentType)) {
             var isCurrentPlaceInDining = false
             forEachIndexed { index, dining ->
-                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) isCurrentPlaceInDining = true
+                if (index < DINING.WIDGET_PLACE_NUMBERS && dining.place == currentDiningPlace) isCurrentPlaceInDining =
+                    true
             }
             if (!isCurrentPlaceInDining) currentDiningPlace = null
             forEachIndexed { index, dining ->
                 if (index < DINING.WIDGET_PLACE_NUMBERS) {
-                    val placeRemoteViews = RemoteViews(context.packageName, R.layout.dining_widget_place)
+                    val placeRemoteViews =
+                        RemoteViews(context.packageName, R.layout.dining_widget_place)
                     remoteViews.addView(
                         R.id.dining_widget_place_layout,
                         placeRemoteViews
@@ -150,7 +154,10 @@ class DiningAppWidget : AppWidgetProvider() {
                             )
                         }
                     }
-                    placeRemoteViews.setTextViewText(R.id.dining_widget_place_name_textview, dining.place)
+                    placeRemoteViews.setTextViewText(
+                        R.id.dining_widget_place_name_textview,
+                        dining.place
+                    )
                     setButtonEventName(
                         placeRemoteViews,
                         context,
@@ -221,12 +228,12 @@ class DiningAppWidget : AppWidgetProvider() {
     }
 
     private fun makePlaceViewSelected(context: Context, id: Int, remoteViews: RemoteViews) {
-        remoteViews.setTextColor(id, context.getColor(R.color.vivid_orange))
+        remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.vivid_orange))
         remoteViews.setInt(id, "setBackgroundResource", R.drawable.bg_rect_vividorange_radius_10dp)
     }
 
     private fun makePlaceViewNonSelected(context: Context, id: Int, remoteViews: RemoteViews) {
-        remoteViews.setTextColor(id, context.getColor(R.color.very_dark_gray))
+        remoteViews.setTextColor(id, ContextCompat.getColor(context, R.color.very_dark_gray))
         remoteViews.setInt(id, "setBackgroundResource", R.color.white)
     }
 }
