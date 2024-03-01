@@ -48,10 +48,6 @@ dependencies {
 
     implementation project(':domain')
 
-    /* Dependency - okhttp */
-    implementation project.okhttp
-    implementation project.okhttpLogging
-
     /* Dependency - Retrofit2 */
     implementation project.retrofit
     implementation project.retrofitGsonConvert
