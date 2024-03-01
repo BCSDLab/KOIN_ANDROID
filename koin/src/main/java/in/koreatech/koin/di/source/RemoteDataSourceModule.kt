@@ -23,6 +23,22 @@ object RemoteDataSourceModule {
 
     @Provides
     @Singleton
+    fun provideOwnerRemoteDataSource(
+        ownerApi: OwnerApi,
+    ): OwnerRemoteDataSource {
+        return OwnerRemoteDataSource(ownerApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUploadUrlRemoteDataSource(
+        uploadUrlApi: UploadUrlApi
+    ): UploadUrlRemoteDataSource {
+        return UploadUrlRemoteDataSource(uploadUrlApi)
+    }
+
+    @Provides
+    @Singleton
     fun provideVersionRemoteDataSource(
         versionApi: VersionApi
     ) : VersionRemoteDataSource {
@@ -67,5 +83,13 @@ object RemoteDataSourceModule {
         landApi: LandApi
     ): LandRemoteDataSource {
         return LandRemoteDataSource(landApi)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreSignedUrlRemoteDataSource(
+        preSignedUrlApi: PreSignedUrlApi
+    ): PreSignedUrlRemoteDataSource {
+        return PreSignedUrlRemoteDataSource(preSignedUrlApi)
     }
 }
