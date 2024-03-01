@@ -69,6 +69,7 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
     api project.androidXLifecycle
+    api project.androidXViewModel
     api project.androidXLivedata
 
     /* Dependency - Firebase */

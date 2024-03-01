@@ -33,6 +33,9 @@ buildscript {
         def lifecycle_version = "2.5.1"
         androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
+        def view_model_version = "2.5.1"
+        androidXViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$view_model_version"
+
         def livedata_version = "2.5.1"
         androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
 
@@ -87,7 +90,7 @@ buildscript {
         androidXKtx = "androidx.core:core-ktx:$ktx_core_version"
 
         /* Dependency - Hilt */
-        hilt_version = "2.38.1"
+        hilt_version = "2.44"
         hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
         hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
 
