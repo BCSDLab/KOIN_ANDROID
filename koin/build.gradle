@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.appdistribution'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
 
 def applicationName = 'koin'
@@ -21,7 +21,6 @@ android {
         versionName project.versionName
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        multiDexEnabled true
         manifestPlaceholders = [naverMapKey: getNaverMapKey()]
     }
 
@@ -135,10 +134,13 @@ dependencies {
     implementation 'com.github.irshulx:laser-native-editor:3.0.4'
     implementation 'com.github.duanhong169:colorpicker:1.1.1'
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.1'
-    implementation 'com.google.firebase:firebase-analytics:18.0.2'
 
     implementation project.hiltAndroid
     kapt project.hiltCompiler
 
+    implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-perf")
 }

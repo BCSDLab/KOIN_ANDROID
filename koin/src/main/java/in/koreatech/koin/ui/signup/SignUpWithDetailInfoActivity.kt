@@ -130,6 +130,8 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                     val intent = Intent(this@SignUpWithDetailInfoActivity, SignUpCompleteActivity::class.java)
                     startActivity(intent)
                 }
+
+                else -> Unit
             }
         }
         observeLiveData(signupContinuationError) { t ->
