@@ -9,7 +9,7 @@ buildscript {
 
     ext {
         kotlin_version = "1.8.21"
-        android_gradle_plugin_version = "7.2.1"
+        android_gradle_plugin_version = "3.5.0"
 
         /* Common */
         compileSdkVersion = 33
