@@ -1,12 +1,7 @@
 pluginManagement {
     repositories {
         google()
-        jcenter()
         mavenCentral()
-        maven {
-            url 'https://naver.jfrog.io/artifactory/maven/'
-        }
-        maven { url 'https://jitpack.io'}
         gradlePluginPortal()
     }
 }
