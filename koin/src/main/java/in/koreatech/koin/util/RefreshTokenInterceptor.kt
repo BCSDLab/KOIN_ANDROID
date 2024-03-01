@@ -28,7 +28,7 @@ class RefreshTokenInterceptor @Inject constructor(
         var response = chain.proceed(request)
 
         try {
-            when (response.code()) {
+            when (response.code) {
                 HttpURLConnection.HTTP_UNAUTHORIZED -> {
                     val refreshToken = tokenLocalDataSource.getRefreshToken()
                     refreshToken?.let {
@@ -54,8 +54,9 @@ class RefreshTokenInterceptor @Inject constructor(
 
         response
     }
+
     private fun getRequest(response: Response, token: String): Request {
-        return response.request()
+        return response.request
             .newBuilder()
             .removeHeader("Authorization")
             .addHeader("Authorization", "Bearer $token")

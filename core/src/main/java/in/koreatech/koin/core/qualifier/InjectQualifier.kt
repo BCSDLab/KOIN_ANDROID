@@ -12,11 +12,16 @@ annotation class NoAuth
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class REFRESH
+annotation class ServerUrl
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class ServerUrl
+annotation class OwnerAuth
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PreSignedUrl
+annotation class REFRESH
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
