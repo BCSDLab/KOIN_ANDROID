@@ -49,7 +49,7 @@ jobs:
        env:
           FIREBASE: $({ secrets.FIREBASE })
        run: |
-            echo $FIREBASE | base64 -di > ./koin/google-services.json          
+            echo "$FIREBASE" | base64 -di > ./koin/google-services.json          
             for file in $(find . -name 'google-services.json')
             do
              echo $file
