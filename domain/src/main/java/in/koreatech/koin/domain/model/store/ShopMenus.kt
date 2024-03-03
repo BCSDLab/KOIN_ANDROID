@@ -12,6 +12,6 @@ data class ShopMenus(
 ) {
     data class ShopMenuOptions(
         val option: String,
-        val price: Int
+        val price: Int?
     )
 }
