@@ -14,10 +14,9 @@ android {
     defaultConfig {
         namespace "in.koreatech.koin"
         applicationId "in.koreatech.koin"
-        versionCode 30011
-        minSdkVersion 21
-        compileSdk project.compileSdkVersion
+        versionCode project.minVersionCode
         minSdkVersion project.minSdkVersion
+        compileSdk project.compileSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionName project.versionName
         vectorDrawables.useSupportLibrary = true
