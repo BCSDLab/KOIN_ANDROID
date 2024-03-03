@@ -1,18 +1,18 @@
 pluginManagement {
     repositories {
+        google()
         gradlePluginPortal()
         mavenCentral()
-        google()
     }
 }
 dependencyResolutionManagement {
     repositories {
+        google()
         mavenCentral()
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
         }
         maven { url 'https://jitpack.io'}
-        google()
     }
 }
 
