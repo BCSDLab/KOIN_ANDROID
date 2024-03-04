@@ -157,4 +157,4 @@ jobs:
            releaseFiles: koin/build/outputs/bundle/release/koin-release.aab
            track: internal
            status: completed
-           mappingFile: koin/build/outputs/mapping/mapping.txt
+           mappingFile: koin/build/outputs/mapping/release/mapping.txt
