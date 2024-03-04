@@ -5,8 +5,8 @@ import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.repository.OwnerRegisterRepository
-import okio.EOFException
 import retrofit2.HttpException
+import java.io.EOFException
 
 class OwnerRegisterRepositoryImpl(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
