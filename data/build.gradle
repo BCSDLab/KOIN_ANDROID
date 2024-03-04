@@ -42,15 +42,16 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     implementation project.androidXKtx
     implementation project.coroutineAndroid
 
-    implementation project(':domain')
 
     /* Dependency - Retrofit2 */
     implementation project.retrofit
     implementation project.retrofitGsonConvert
+    implementation project.okhttp
 
     implementation project.hiltAndroid
     kapt project.hiltCompiler
