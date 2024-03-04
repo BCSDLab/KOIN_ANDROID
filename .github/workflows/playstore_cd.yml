@@ -76,7 +76,6 @@ jobs:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
        uses: r0adkll/upload-google-play@v1
-       run: |
        with:
            serviceAccountJsonPlainText: ${{ env.$GOOGLE_CREDENTIALS_TEXT }}
            packageName: com.wanted.android.wanted
