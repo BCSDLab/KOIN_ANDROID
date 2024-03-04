@@ -154,7 +154,7 @@ jobs:
        with:
            serviceAccountJsonPlainText: ${{ env.GOOGLE_CREDENTIALS_TEXT }}
            packageName: in.koreatech.koin
-           releaseFiles: koin/build/outputs/apk/release/koin-release.apk
+           releaseFiles: koin/build/outputs/bundle/release/koin-release.aab
            track: internal
            status: completed
            mappingFile: koin/build/outputs/mapping/mapping.txt
