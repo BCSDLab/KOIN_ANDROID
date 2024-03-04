@@ -62,7 +62,10 @@ jobs:
             do
              echo $file
             done
-
+            for file in $(find . -name 'google-credentials.json  ')
+            do
+             echo $file
+            done
 
        
      # - name: Build
@@ -76,6 +79,7 @@ jobs:
      - name: Upload to Firebase
        env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
        run: |
         apk_path="./koin/build/outputs/apk/release/koin-release.apk"
         firebase \
