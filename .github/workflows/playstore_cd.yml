@@ -133,7 +133,6 @@ jobs:
        run: |
             echo $FIREBASE | base64 -di > ./koin/google-services.json  
             echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json 
-            echo "GOOGLE_CREDENTIALS_TEXT=$(echo $(cat ./google-credentials.json ))" >> $GITHUB_ENV
             for file in $(find . -name 'google-services.json')
             do
              echo $file
@@ -149,10 +148,10 @@ jobs:
      - name: Upload AAB to Internal testing
        env:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-          GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
+          SERVICE_ACCOUNT_JSON : ${{ secrets.SERVICE_ACCOUNT_JSON }}
        uses: r0adkll/upload-google-play@v1
        with:
-           serviceAccountJsonPlainText: ${{ env.GOOGLE_CREDENTIALS_TEXT }}
+           serviceAccountJsonPlainText: $SERVICE_ACCOUNT_JSON
            packageName: in.koreatech.koin
            releaseFiles: koin/build/outputs/bundle/release/koin-release.aab
            track: internal
