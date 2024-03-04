@@ -6,11 +6,9 @@ plugins {
 }
 
 android {
-    flavorDimensions "default"
-
     defaultConfig {
-
-        compileSdkVersion project.compileSdkVersion
+        namespace "in.koreatech.koin.core"
+        compileSdk project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -125,7 +123,3 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
-
-repositories {
-    mavenCentral()
-}
