@@ -67,33 +67,18 @@ jobs:
              echo $file
             done
 
-#     - name: Build with Gradle
-#       run: ./gradlew assembleRelease
-#
-#     - name: Upload to Firebase
-#       env:
-#          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-#          GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
-#       run: |
-#        apk_path="./koin/build/outputs/apk/release/koin-release.apk"
-#        firebase \
-#            appdistribution:distribute \
-#            "$apk_path" \
-#            --app "$FIREBASE_PROJECT_ID" \
-#            --groups "bcsd" \
-#            --debug
      - name: Build with Gradle
-       run: ./gradlew bundleRelease
+       run: ./gradlew assembleRelease
 
-     - name: Upload AAB to Internal testing
+     - name: Upload to Firebase
        env:
-         FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-         GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
-       uses: r0adkll/upload-google-play@v1
-       with:
-         serviceAccountJsonPlainText: ${{ env.$GOOGLE_CREDENTIALS_TEXT }}
-         packageName: in.koreatech.koin
-         releaseFiles: koin/build/outputs/apk/release/koin-release.apk
-         track: internal
-         status: completed
-         mappingFile: koin/build/outputs/mapping/mapping.txt
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
+       run: |
+        apk_path="./koin/build/outputs/apk/release/koin-release.apk"
+        firebase \
+            appdistribution:distribute \
+            "$apk_path" \
+            --app "$FIREBASE_PROJECT_ID" \
+            --groups "bcsd" \
+            --debug
