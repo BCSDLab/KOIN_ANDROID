@@ -2,7 +2,7 @@ name: PlayStore CD
 
 on:
   workflow_dispatch:
-
+  push:
 jobs:
   deploy:
     runs-on: ubuntu-latest
