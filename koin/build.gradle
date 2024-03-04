@@ -12,11 +12,11 @@ def applicationName = 'koin'
 
 android {
     defaultConfig {
+        namespace "in.koreatech.koin"
         applicationId "in.koreatech.koin"
-        versionCode 30010
-        minSdkVersion 21
-        compileSdkVersion project.compileSdkVersion
+        versionCode project.minVersionCode
         minSdkVersion project.minSdkVersion
+        compileSdk project.compileSdkVersion
         targetSdkVersion project.targetSdkVersion
         versionName project.versionName
         vectorDrawables.useSupportLibrary = true
@@ -56,9 +56,9 @@ android {
             buildConfigField "boolean", "IS_DEBUG", "false"
             signingConfig signingConfigs.release
             firebaseAppDistribution {
-                artifactType="AAB"
-                releaseNotes="${project.versionName} release"
-                groups="bcsd"
+                artifactType = "AAB"
+                releaseNotes = "${project.versionName} release"
+                groups = "bcsd"
             }
         }
     }
@@ -76,8 +76,12 @@ android {
 //    }
 
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility 11
+        targetCompatibility 11
+    }
+
+    kotlinOptions {
+        jvmTarget = '11'
     }
 
 //    applicationVariants.all { variant ->
@@ -141,7 +145,4 @@ dependencies {
     implementation project.hiltAndroid
     kapt project.hiltCompiler
 
-}
-repositories {
-    mavenCentral()
 }
