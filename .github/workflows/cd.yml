@@ -45,16 +45,25 @@ jobs:
             do
              echo $file
             done
-          
+            
+     - uses: actions/setup-node@v4
+       with:
+          node-version: 20
+     - run: npm install -g firebase-tools
+      
      - name: Update Firebase
        env:
           FIREBASE: ${{ secrets.FIREBASE }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
        run: |
-            echo $FIREBASE | base64 -di > ./koin/google-services.json          
+            echo $FIREBASE | base64 -di > ./koin/google-services.json  
+            echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json  
             for file in $(find . -name 'google-services.json')
             do
              echo $file
             done
+
+
        
      # - name: Build
      #   env:
@@ -62,4 +71,16 @@ jobs:
      #   run: |
      #         ./gradlew build
      - name: Build with Gradle
-       run: ./gradlew build
+       run: ./gradlew assembleRelease
+
+     - name: Upload to Firebase
+       env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+       run: |
+        apk_path="./koin/build/outputs/apk/release/koin-release.apk"
+        firebase \
+            appdistribution:distribute \
+            "$apk_path" \
+            --app "$FIREBASE_PROJECT_ID" \
+            --groups "bcsd" \
+            --debug
