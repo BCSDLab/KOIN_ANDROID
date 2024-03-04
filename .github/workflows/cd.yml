@@ -1,10 +1,10 @@
-name: Android CD
+name: Firebase CD
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v4
@@ -67,12 +67,6 @@ jobs:
              echo $file
             done
 
-       
-     # - name: Build
-     #   env:
-     #      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE }}
-     #   run: |
-     #         ./gradlew build
      - name: Build with Gradle
        run: ./gradlew assembleRelease
 
