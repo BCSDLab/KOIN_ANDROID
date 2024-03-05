@@ -94,10 +94,18 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
             if (it) {
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_email_duplicated))
             }
+            else if(it == null){
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.signup_error_check_email)
+                )
+            }
             else {
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_email_check))
                 binding.signupNextButton.visibility = View.VISIBLE
                 binding.checkEmailDuplicatedButton.visibility = View.GONE
+                binding.signupEdittextId.isClickable = false
+                binding.signupEdittextId.isFocusable = false
             }
         }
     }
@@ -140,6 +148,8 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
     override fun onRestart() {
         binding.signupNextButton.visibility = View.GONE
         binding.checkEmailDuplicatedButton.visibility = View.VISIBLE
+        binding.signupEdittextId.isClickable = true
+        binding.signupEdittextId.isFocusable = true
         super.onRestart()
     }
 

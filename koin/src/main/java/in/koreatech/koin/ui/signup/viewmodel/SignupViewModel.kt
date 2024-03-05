@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.signup.viewmodel
 
+import android.util.Log
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
@@ -125,14 +126,13 @@ class SignupViewModel @Inject constructor(
     fun checkEmailDuplicated(email: String) = viewModelScope.launchWithLoading {
         _emailState.value = EmailState.newEmail(email)
 
-        checkEmailValidationUseCase(email).let { (isDuplicated, error) ->
+        checkEmailValidationUseCase(email).let { (isDuplicated, signupContinuationState) ->
             isDuplicated?.let {
                 _emailState.value = _emailState.value?.copy(isemailDuplicated = it)
                 _emailDuplicatedEvent.value = it
             }
-            error?.let {
-                _toastErrorMessage.value = it.message
-                _emailDuplicatedEvent.value = false
+            signupContinuationState?.let {
+                _signupContinuationState.value = it
             }
         }
     }
