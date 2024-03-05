@@ -2,7 +2,13 @@ package `in`.koreatech.koin.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -31,6 +37,7 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
 
         initView()
         initViewModel()
+        initSpinner()
     }
 
     private fun initView() = with(binding){
@@ -72,10 +79,6 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
             signupViewModel.getDept(it.toString())
         }
 
-        signupUserEdittextMajor.apply {
-            isEnabled = false
-            hint = context.getString(R.string.user_info_id_hint)
-        }
     }
 
     private fun initViewModel() = with(signupViewModel){
@@ -86,6 +89,13 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_init_name)
+                    )
+                }
+
+                SignupContinuationState.InitNickName -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_init_nickname)
                     )
                 }
 
@@ -100,6 +110,13 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
                     SnackbarUtil.makeShortSnackbar(
                         binding.root,
                         getString(R.string.signup_init_student_id)
+                    )
+                }
+
+                SignupContinuationState.InitMajor -> {
+                    SnackbarUtil.makeShortSnackbar(
+                        binding.root,
+                        getString(R.string.signup_init_major)
                     )
                 }
 
@@ -151,14 +168,30 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
             }
         }
 
-        observeLiveData(dept) {
-            binding.signupUserEdittextMajor.setText(it)
-            binding.signupUserEdittextMajorError.text = ""
+    }
+
+    private fun initSpinner() {
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.major_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.signupUserSpinnerMajor.adapter = adapter
         }
 
-        observeLiveData(getDeptErrorMessage) {
-            binding.signupUserEdittextMajorError.text = it
-        }
+        binding.signupUserSpinnerMajor.onItemSelectedListener =
+            object: AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (p0 != null) {
+                        binding.signupUserEdittextMajor.text = p0.getItemAtPosition(p2).toString()
+                    }
+                }
 
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                    binding.signupUserEdittextMajor.text =""
+                    return
+                }
+            }
     }
 }

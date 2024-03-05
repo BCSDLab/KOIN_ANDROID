@@ -105,8 +105,10 @@
     <string name="signup_error_check_password_match">비밀번호가 일치하지 않습니다</string>
     <string name="signup_error_when_email_validation">이메일 인증 중 오류가 발생했습니다</string>
     <string name="signup_init_name">이름을 입력해주세요</string>
+    <string name="signup_init_nickname">사용하실 닉네임을 입력해주세요</string>
     <string name="signup_init_phone_number">전화번호를 입력해주세요</string>
     <string name="signup_init_student_id">학번을 입력해주세요</string>
+    <string name="signup_init_major">전공을 선택해주세요</string>
     <string name="signup_check_nickname">닉네임중복버튼을 눌러주세요</string>
     <string name="signup_check_gender">성별을 선택해주세요</string>
     <string name="signup_check_graduate">졸업유무를 선택해주세요</string>
@@ -118,6 +120,17 @@
 
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
+
+    <string-array name="major_array">
+        <item>전공 선택</item>
+        <item>기계공학부</item>
+        <item>컴퓨터공학부</item>
+        <item>메카트로닉스공학부</item>
+        <item>전기전자통신공학부</item>
+        <item>디자인건축공학부</item>
+        <item>에너지신소재화학공학부</item>
+        <item>산업경영학부</item>
+    </string-array>
 
     <!-- Forgot password -->
     <string name="forgotpassword_title">FORGOT PASSWORD?</string>

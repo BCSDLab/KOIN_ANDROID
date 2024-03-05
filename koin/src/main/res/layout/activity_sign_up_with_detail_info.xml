@@ -376,12 +376,32 @@
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
-            app:layout_constraintBottom_toTopOf="@id/signup_user_student_id_textview"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signup_user_student_id_textview"
             app:layout_constraintVertical_bias="0" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/signup_user_spinner_major"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="61dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:enabled="false"
+            android:includeFontPadding="false"
+            android:lineSpacingExtra="7sp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:fontName="Custom6"
+            app:layout_constraintBottom_toBottomOf="@+id/signup_user_major_textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/signup_user_major_textview"
+            app:layout_constraintTop_toTopOf="@id/signup_user_major_textview"
+            tools:text="메카트로닉스공학과" />
+
+        <TextView
+            android:visibility="gone"
             android:id="@+id/signup_user_edittext_major"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
@@ -400,20 +420,6 @@
             app:layout_constraintStart_toEndOf="@id/signup_user_major_textview"
             app:layout_constraintTop_toBottomOf="@id/signup_user_major_textview"
             tools:text="메카트로닉스공학과" />
-
-        <TextView
-            android:id="@+id/signup_user_edittext_major_error"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            tools:text="올바른 학번을 입력해 주세요"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            app:fontName="Custom6"
-            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_major"
-            app:layout_constraintEnd_toEndOf="@id/signup_user_edittext_major"
-            app:layout_constraintTop_toBottomOf="@id/signup_user_edittext_major"
-            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/signup_user_graduate_textview"
