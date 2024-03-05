@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toShcoolEamil
+import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -47,7 +47,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isUserEmailDuplicated(email: String): Boolean {
         return try {
-            userRemoteDataSource.checkEmail(email.toShcoolEamil())
+            userRemoteDataSource.checkEmail(email.toSchoolEamil())
             false
         } catch (e: HttpException) {
             if(e.code() == 409) true

@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.model.user.UserIdentity
 
@@ -38,18 +39,25 @@ fun User.Student.toUserRequest() = UserRequest(
     isGraduated = isStudent
 )
 
-fun Int.toGraduate(): Boolean{
-    return this == 0
+fun Graduated.toBoolean(): Boolean{
+    return this == Graduated.Graduate
 }
 
-fun String.toPhoneNumber() : String{
-    val digitsOnly = this.filter { it.isDigit() }
-
-    return when (digitsOnly.length) {
-        11 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 7)}-${digitsOnly.substring(7)}"
-        10 -> "${digitsOnly.substring(0, 3)}-${digitsOnly.substring(3, 6)}-${digitsOnly.substring(6)}"
-        else -> digitsOnly
+fun Gender.toInt(): Int{
+    return when (this){
+        Gender.Man -> 0
+        else -> 1
     }
 }
 
-fun String.toShcoolEamil() = "$this@koreatech.ac.kr"
+fun String.toPhoneNumber() : String{
+    val phoneNumberDigitsOnly = this.filter { it.isDigit() }
+
+    return when (phoneNumberDigitsOnly.length) {
+        11 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 7)}-${phoneNumberDigitsOnly.substring(7)}"
+        10 -> "${phoneNumberDigitsOnly.substring(0, 3)}-${phoneNumberDigitsOnly.substring(3, 6)}-${phoneNumberDigitsOnly.substring(6)}"
+        else -> phoneNumberDigitsOnly
+    }
+}
+
+fun String.toSchoolEamil() = "$this@koreatech.ac.kr"
