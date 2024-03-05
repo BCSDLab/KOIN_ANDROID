@@ -40,7 +40,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
                 major = major,
                 name = name,
                 nickName = nickName,
-                password = password,
+                password = password.toSHA256(),
                 phoneNumber = phoneNumber,
                 studentNumber = studentNumber,
             ).map {
