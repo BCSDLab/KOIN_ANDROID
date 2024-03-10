@@ -1,12 +1,16 @@
 name: Firebase CD
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 1'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
      - uses: actions/checkout@v4
+       with:
+        ref: 'develop'
 
      - name: set up JDK 11
        uses: actions/setup-java@v4
@@ -16,6 +20,10 @@ jobs:
 
      - name: Make gradlew executable
        run: chmod +x ./gradlew
+
+       uses: Kaven-Universe/github-action-current-date-time@v1
+       with:
+          format: "YYYY-MM-DD"
 
      - name: Gradle cache
        uses: actions/cache@v4
@@ -80,13 +88,14 @@ jobs:
             "$apk_path" \
             --app "$FIREBASE_PROJECT_ID" \
             --groups "bcsd" \
+            --release-notes "${{ steps.date.outputs.time }} develop" \
             --debug
 
      - name: Upload to Slack
        uses: 8398a7/action-slack@v3
        with:
          status: ${{ job.status }}
-         author_name: Android Firebase Deploy
+         author_name: Android Weekly Dev Deploy
          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
        env:
          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
