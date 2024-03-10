@@ -3,7 +3,6 @@ name: Weekly CD
 on:
   schedule:
     - cron: '0 15 * * 0'
-  push:
 
 jobs:
   deploy:
