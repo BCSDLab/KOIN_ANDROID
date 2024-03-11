@@ -29,6 +29,7 @@ hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", 
 laser-native-editor = { module = "com.github.irshulx:laser-native-editor", version.ref = "laserNativeEditorVersion" }
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

@@ -54,6 +54,7 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.5.2'
 
     api androidXKtx
+    api libs.kotlin.stdlib
 
     /* Dependency - AndroidX Jetpack */
     api project.androidxAppCompat
