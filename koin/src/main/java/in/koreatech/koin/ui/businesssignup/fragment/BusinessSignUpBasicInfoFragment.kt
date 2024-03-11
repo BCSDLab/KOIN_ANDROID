@@ -138,6 +138,8 @@ class BusinessSignUpBasicInfoFragment: BaseFragment() {
                         getString(R.string.signup_error_check_privacy_terms)
                     )
                 }
+
+                else -> Unit
             }
         }
         observeLiveData(businessSignupContinuationError) { t ->

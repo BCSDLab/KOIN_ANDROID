@@ -5,15 +5,11 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {
-            url 'https://naver.jfrog.io/artifactory/maven/'
-        }
-        maven { url 'https://jitpack.io'}
     }
 
     ext {
-        kotlin_version = "1.6.21"
-        android_gradle_plugin_version = "7.2.1"
+        kotlin_version = "1.8.21"
+        android_gradle_plugin_version = "7.4.1"
 
         /* Common */
         compileSdkVersion = 33
@@ -33,13 +29,16 @@ buildscript {
         def lifecycle_version = "2.5.1"
         androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
+        def view_model_version = "2.5.1"
+        androidXViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$view_model_version"
+
         def livedata_version = "2.5.1"
         androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
 
-        def activity_version = "1.4.0"
+        def activity_version = "1.5.0"
         androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
 
-        def fragment_version = "1.4.1"
+        def fragment_version = "1.5.0"
         androidXFragmentKtx = "androidx.fragment:fragment-ktx:$fragment_version"
 
         /* Dependency - AndroidX Material */
@@ -73,8 +72,7 @@ buildscript {
         butterknifeAnnotation = "com.jakewharton:butterknife-compiler:$butterknife_version"
 
         /* Dependency - okhttp */
-        //def okhttp_version = "3.4.2"
-        def okhttp_version = "4.7.2"
+        def okhttp_version = "4.11.0"
         okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
         okhttpLogging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
@@ -87,7 +85,7 @@ buildscript {
         androidXKtx = "androidx.core:core-ktx:$ktx_core_version"
 
         /* Dependency - Hilt */
-        hilt_version = "2.38.1"
+        hilt_version = "2.44"
         hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
         hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
 
@@ -100,23 +98,17 @@ buildscript {
         def security_version = "1.1.0-alpha03"
         androidXSecurity = "androidx.security:security-crypto:$security_version"
     }
-
-    dependencies {
-        classpath "com.android.tools.build:gradle:$android_gradle_plugin_version"
-        classpath 'com.google.gms:google-services:4.3.5'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath 'com.google.firebase:firebase-appdistribution-gradle:3.0.3'
-    }
 }
 
 plugins {
-    id "com.android.application" version "7.2.1" apply false
-    id "com.android.library" version "7.2.1" apply false
-    id "org.jetbrains.kotlin.android" version "1.6.21" apply false
-    id "org.jetbrains.kotlin.jvm" version "1.6.21" apply false
-    id "com.google.gms.google-services" version "4.3.13" apply false
+    id "com.android.application" version "7.4.1" apply false
+    id "com.android.library" version "7.4.1" apply false
+    id "org.jetbrains.kotlin.android" version "1.8.21" apply false
+    id "org.jetbrains.kotlin.jvm" version "1.8.21" apply false
+    id 'com.google.firebase.crashlytics' version '2.9.9' apply false
+    id 'com.google.gms.google-services' version '4.3.14' apply false
+    id 'com.google.firebase.appdistribution' version '4.2.0' apply false
+    id 'com.google.dagger.hilt.android' version '2.44' apply false
 }
 
 task clean(type: Delete) {

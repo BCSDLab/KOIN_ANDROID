@@ -17,7 +17,6 @@ import in.koreatech.koin.core.toast.ToastUtil;
 
 public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     private CustomProgressDialog customProgressDialog;
-    private Context context;
 
     public ActivityBase() {
         super();
@@ -30,7 +29,6 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         try {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         } catch (IllegalStateException ignore) {
@@ -41,7 +39,7 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     @Override
     public void showProgressDialog(@Nullable String message) {
         if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(context, message);
+            customProgressDialog = new CustomProgressDialog(this, message);
             customProgressDialog.execute();
         }
     }
@@ -49,7 +47,7 @@ public class ActivityBase extends AppCompatActivity implements IProgressDialog {
     @Override
     public void showProgressDialog(@StringRes int resId) {
         if (customProgressDialog == null) {
-            customProgressDialog = new CustomProgressDialog(context, context.getResources().getString(resId));
+            customProgressDialog = new CustomProgressDialog(this, this.getResources().getString(resId));
             customProgressDialog.execute();
         }
     }
