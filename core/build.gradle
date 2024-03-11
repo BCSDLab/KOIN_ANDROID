@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -28,19 +28,14 @@ android {
         }
     }
 
-    /* guava */
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }
-
     compileOptions {
         coreLibraryDesugaringEnabled true
 
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     buildFeatures {
@@ -58,7 +53,7 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
 
-    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
 
     api kotlinStdlib
     api androidXKtx
@@ -69,12 +64,8 @@ dependencies {
     api project.androidxCardView
     api project.androidxMaterial
     api project.androidXLifecycle
+    api project.androidXViewModel
     api project.androidXLivedata
-
-    /* Dependency - Firebase */
-    api project.firebaseCore
-    api project.firebaseDatabase
-    api project.firebasePerformance
 
     /* Dependency - Retrofit2 */
     api project.retrofit
@@ -101,7 +92,7 @@ dependencies {
 
     api project.coroutineAndroid
 
-    api 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     api 'io.reactivex.rxjava2:rxandroid:2.0.1'
     api 'io.reactivex.rxjava2:rxjava:2.1.2'
@@ -110,10 +101,9 @@ dependencies {
 
     api 'com.jpardogo.materialtabstrip:library:1.1.1'
 
-    testImplementation 'junit:junit:4.12'
-    api 'org.jetbrains:annotations:15.0'
-    api 'com.google.firebase:firebase-crashlytics:17.3.1'
-    api 'com.google.firebase:firebase-analytics:18.0.2'
+    testImplementation 'junit:junit:4.13.2'
+    api 'org.jetbrains:annotations:23.0.0'
+
 
     implementation project.hiltAndroid
     kapt project.hiltCompiler
@@ -121,5 +111,3 @@ dependencies {
     api project.androidXActivityKtx
     api project.androidXFragmentKtx
 }
-
-apply plugin: 'com.google.gms.google-services'

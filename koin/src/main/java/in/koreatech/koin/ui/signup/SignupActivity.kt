@@ -87,6 +87,8 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
                     intent.putExtra("password", binding.signupEdittextPw.textString)
                     startActivity(intent)
                 }
+
+                else -> Unit
             }
         }
 
