@@ -1,0 +1,37 @@
+[versions]
+colorpickerVersion = "1.1.1"
+composeBomVersion = "2024.02.02"
+desugarJdkLibsVersion = "2.0.3"
+firebaseAnalyticsVersion = "21.5.1"
+firebaseAppdistributionGradleVersion = "4.2.0"
+firebaseCrashlyticsVersion = "18.6.2"
+kotlinVersion = "1.9.22"
+androidGradleVersion = "7.2.1"
+firebaseGradleVersion = "2.4.1"
+hiltVersion = "2.50"
+laserNativeEditorVersion = "3.0.4"
+mapSdkVersion = "3.17.0"
+photoviewVersion = "2.3.0"
+
+[libraries]
+android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
+android-gradle-crashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseGradleVersion" }
+colorpicker = { module = "com.github.duanhong169:colorpicker", version.ref = "colorpickerVersion" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibsVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalyticsVersion" }
+firebase-appdistribution-gradle = { module = "com.google.firebase:firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradleVersion" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlyticsVersion" }
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltVersion" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltVersion" }
+hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltVersion" }
+laser-native-editor = { module = "com.github.irshulx:laser-native-editor", version.ref = "laserNativeEditorVersion" }
+map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
+photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
