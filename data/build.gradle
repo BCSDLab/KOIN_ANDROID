@@ -31,8 +31,6 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -43,7 +41,6 @@ android {
 
 dependencies {
     implementation project(':domain')
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     implementation project.androidXKtx
     implementation project.coroutineAndroid
 
@@ -53,8 +50,8 @@ dependencies {
     implementation project.retrofitGsonConvert
     implementation project.okhttp
 
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     implementation project.androidXSecurity
 

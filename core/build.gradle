@@ -29,8 +29,6 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -55,7 +53,6 @@ dependencies {
 
     androidTestImplementation 'androidx.test:runner:1.5.2'
 
-    api kotlinStdlib
     api androidXKtx
 
     /* Dependency - AndroidX Jetpack */
@@ -66,6 +63,14 @@ dependencies {
     api project.androidXLifecycle
     api project.androidXViewModel
     api project.androidXLivedata
+
+    /* Dependency - Firebase */
+    api project.firebaseCore
+    api project.firebaseDatabase
+    api project.firebasePerformance
+    api 'com.google.firebase:firebase-crashlytics:17.3.1'
+    api 'com.google.firebase:firebase-analytics:18.0.2'
+
 
     /* Dependency - Retrofit2 */
     api project.retrofit
@@ -105,8 +110,8 @@ dependencies {
     api 'org.jetbrains:annotations:23.0.0'
 
 
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     api project.androidXActivityKtx
     api project.androidXFragmentKtx

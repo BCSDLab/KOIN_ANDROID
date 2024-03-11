@@ -70,8 +70,6 @@ android {
 //    }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -109,7 +107,6 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -128,15 +125,14 @@ dependencies {
     kapt project.butterknifeAnnotation
 
     //naver map
-    implementation 'com.naver.maps:map-sdk:3.17.0'
+    implementation libs.map.sdk
 
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
-    implementation 'com.github.irshulx:laser-native-editor:3.0.4'
-    implementation 'com.github.duanhong169:colorpicker:1.1.1'
-    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
-
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
+    implementation libs.laser.native.editor
+    implementation libs.colorpicker
+    implementation libs.photoview
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     implementation(platform("com.google.firebase:firebase-bom:30.1.0"))
     implementation("com.google.firebase:firebase-crashlytics")
