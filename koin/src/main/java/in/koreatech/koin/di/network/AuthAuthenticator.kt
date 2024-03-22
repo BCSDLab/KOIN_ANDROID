@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.di.network
 
-import `in`.koreatech.koin.core.qualifier.IoDispatcher
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import kotlinx.coroutines.CoroutineDispatcher
+import `in`.koreatech.koin.domain.usecase.user.GetUserRefreshTokenUseCase
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
     private val tokenLocalDataSource: TokenLocalDataSource,
+    private val getUserRefreshTokenUseCase: GetUserRefreshTokenUseCase,
     private val userApi: UserApi,
 ) : Authenticator {
     private val mutex = Mutex()
@@ -27,16 +28,11 @@ class AuthAuthenticator @Inject constructor(
                 userApi.postUserRefresh(RefreshRequest(currentToken))
             }.getOrNull()
 
-            val token = if (newResponse?.isSuccessful == true) {
-                newResponse.body()?.let { responseBody ->
-                    tokenLocalDataSource.saveAccessToken(responseBody.token)
-                    tokenLocalDataSource.saveRefreshToken(responseBody.refreshToken)
-                    responseBody.token
-                }
-            } else {
-                tokenLocalDataSource.removeAccessToken()
-                tokenLocalDataSource.removeRefreshToken()
-                null
+            val token = newResponse?.body()?.toAuthToken()?.let {
+                getUserRefreshTokenUseCase.invoke(
+                    isResponseSuccess = newResponse.isSuccessful,
+                    refreshBody = it
+                )
             }
 
             if (token != null) {
