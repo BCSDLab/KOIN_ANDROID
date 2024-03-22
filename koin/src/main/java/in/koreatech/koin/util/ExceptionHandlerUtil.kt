@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.os.HandlerCompat
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.HttpStatusCode
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import retrofit2.HttpException
@@ -25,7 +26,7 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         val stringWriter = StringWriter()
         if (throwable is HttpException) {
-            if (throwable.code() == 401) {
+            if (throwable.code() == HttpStatusCode.UNAUTHORIZED) {
                 goToLoginActivity()
             } else {
                 createErrorMessage(throwable, stringWriter)
