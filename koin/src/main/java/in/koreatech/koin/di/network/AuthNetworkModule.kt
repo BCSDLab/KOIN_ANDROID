@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.core.qualifier.OwnerAuth
 import `in`.koreatech.koin.core.qualifier.PreSignedUrl
-import `in`.koreatech.koin.core.qualifier.REFRESH
+import `in`.koreatech.koin.core.qualifier.Refresh
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
@@ -48,7 +48,7 @@ object AuthNetworkModule {
         }
     }
 
-    @REFRESH
+    @Refresh
     @Provides
     @Singleton
     fun provideRefreshInterceptor(
@@ -63,7 +63,7 @@ object AuthNetworkModule {
     fun provideAuthOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         @Auth authInterceptor: Interceptor,
-        @REFRESH refreshInterceptor: Authenticator,
+        @Refresh refreshInterceptor: Authenticator,
     ): OkHttpClient {
         return OkHttpClient.Builder().apply {
             connectTimeout(10, TimeUnit.SECONDS)

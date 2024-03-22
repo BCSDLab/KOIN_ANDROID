@@ -24,7 +24,7 @@ annotation class PreSignedUrl
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class REFRESH
+annotation class Refresh
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
