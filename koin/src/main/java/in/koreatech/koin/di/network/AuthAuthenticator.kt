@@ -23,11 +23,9 @@ class AuthAuthenticator @Inject constructor(
         mutex.withLock {
             val currentToken = tokenLocalDataSource.getRefreshToken() ?: ""
 
-            val newResponse = try {
+            val newResponse = runCatching {
                 userApi.postUserRefresh(RefreshRequest(currentToken))
-            } catch (e: Exception) {
-                null
-            }
+            }.getOrNull()
 
             val token = if (newResponse?.isSuccessful == true) {
                 newResponse.body()?.let { responseBody ->
