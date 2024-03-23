@@ -14,8 +14,8 @@ class SignupCheckingUseCase @Inject constructor() {
         isAgreedKoinTerms: Boolean,
     ): SignupContinuationState {
         return when {
-            portalAccount.isNotValidEmail() -> SignupContinuationState.EmailIsNotValidate
-            password.isNotValidPassword() -> SignupContinuationState.PasswordIsNotValidate
+            (portalAccount.isNotValidEmail() || portalAccount.contains(" ")) -> SignupContinuationState.EmailIsNotValidate
+            (password.isNotValidPassword() || password.contains(" ")) -> SignupContinuationState.PasswordIsNotValidate
             password != passwordConfirm -> SignupContinuationState.PasswordNotMatching
             !isAgreedPrivacyTerms -> SignupContinuationState.NotAgreedPrivacyTerms
             !isAgreedKoinTerms -> SignupContinuationState.NotAgreedKoinTerms

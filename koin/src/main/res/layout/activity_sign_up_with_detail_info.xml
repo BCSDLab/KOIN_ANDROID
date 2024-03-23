@@ -327,6 +327,7 @@
             android:textColorHint="@color/blue1"
             android:textSize="13sp"
             android:maxLines="1"
+            android:maxLength="11"
             android:imeOptions="actionGo"
             android:inputType="number"
             app:fontName="Custom6"
