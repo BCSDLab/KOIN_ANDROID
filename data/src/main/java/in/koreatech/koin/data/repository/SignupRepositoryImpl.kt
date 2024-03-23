@@ -41,7 +41,7 @@ class SignupRepositoryImpl @Inject constructor(
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
-                    email = portalAccount.toSchoolEamil(),
+                    email = portalAccount,
                     gender = gender.toInt(),
                     isGraduated = isGraduated.toBoolean(),
                     major = major,
