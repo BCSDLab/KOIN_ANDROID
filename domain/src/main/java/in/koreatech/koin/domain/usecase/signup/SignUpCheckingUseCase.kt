@@ -5,23 +5,21 @@ import `in`.koreatech.koin.domain.util.ext.isNotValidEmail
 import `in`.koreatech.koin.domain.util.ext.isNotValidPassword
 import javax.inject.Inject
 
-class SignUpCheckingUseCase @Inject constructor(
-
-){
-    suspend operator fun invoke(
+class SignupCheckingUseCase @Inject constructor() {
+    operator fun invoke(
         portalAccount: String,
         password: String,
         passwordConfirm: String,
         isAgreedPrivacyTerms: Boolean,
-        isAgreedKoinTerms: Boolean
-    ): Result<SignupContinuationState> {
+        isAgreedKoinTerms: Boolean,
+    ): SignupContinuationState {
         return when {
-            portalAccount.isNotValidEmail() -> Result.success(SignupContinuationState.EmailIsNotValidate)
-            password.isNotValidPassword() -> Result.success(SignupContinuationState.PasswordIsNotValidate)
-            password != passwordConfirm -> Result.success(SignupContinuationState.PasswordNotMatching)
-            !isAgreedPrivacyTerms -> Result.success(SignupContinuationState.NotAgreedPrivacyTerms)
-            !isAgreedKoinTerms -> Result.success(SignupContinuationState.NotAgreedKoinTerms)
-            else -> {Result.success(SignupContinuationState.CheckComplete)}
+            portalAccount.isNotValidEmail() -> SignupContinuationState.EmailIsNotValidate
+            password.isNotValidPassword() -> SignupContinuationState.PasswordIsNotValidate
+            password != passwordConfirm -> SignupContinuationState.PasswordNotMatching
+            !isAgreedPrivacyTerms -> SignupContinuationState.NotAgreedPrivacyTerms
+            !isAgreedKoinTerms -> SignupContinuationState.NotAgreedKoinTerms
+            else -> SignupContinuationState.CheckComplete
         }
     }
 }
