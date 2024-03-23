@@ -1,5 +1,13 @@
 package `in`.koreatech.koin.ui.login
 
+import android.content.Intent
+import android.os.Bundle
+import android.view.MotionEvent
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
@@ -10,17 +18,10 @@ import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.signup.SignupActivity
 import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
-import android.content.Intent
-import android.os.Bundle
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
-import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.util.ext.hideKeyboard
-import java.util.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
@@ -37,13 +38,17 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
 
     private fun initViewModel() = with(loginViewModel) {
         withLoading(this@LoginActivity, this)
-        
-        observeLiveData(loginSuccessEvent) {
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-        }
 
-        observeLiveData(loginErrorMessage) {
-            SnackbarUtil.makeShortSnackbar(binding.root, it)
+        lifecycleScope.launch {
+            loginState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+                when (it) {
+                    LoginState.Init -> Unit
+                    LoginState.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    is LoginState.Failed -> {
+                        SnackbarUtil.makeShortSnackbar(binding.root, it.message)
+                    }
+                }
+            }
         }
     }
 
@@ -67,11 +72,17 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                 loginEdittextId.textString.isBlank() ||
                 loginEdittextPw.textString.isBlank()
             ) {
-                SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
+                SnackbarUtil.makeShortSnackbar(
+                    binding.root,
+                    getString(R.string.login_required_field_not_filled)
+                )
             } else {
                 loginViewModel.login(
-                    email =  getString(R.string.koreatech_email_postfix, loginEdittextId.text),
-                    password = loginEdittextPw.text.toString()
+                    email = getString(
+                        R.string.koreatech_email_postfix,
+                        loginEdittextId.text.trim()
+                    ),
+                    password = loginEdittextPw.text.toString().trim()
                 )
             }
         }
