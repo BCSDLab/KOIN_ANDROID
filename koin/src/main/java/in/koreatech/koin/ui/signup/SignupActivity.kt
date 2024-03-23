@@ -71,17 +71,15 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
         }
 
         binding.checkEmailDuplicatedButton.setOnClickListener {
-            if (binding.signupEdittextId.textString.isNotEmpty()) {
-                signupViewModel.checkEmailDuplicated(
+            when {
+                binding.signupEdittextId.textString.isNotEmpty() -> signupViewModel.checkEmailDuplicated(
                     getString(
                         R.string.koreatech_email_postfix,
                         binding.signupEdittextId.textString.trim()
                     )
                 )
-            } else SnackbarUtil.makeShortSnackbar(
-                binding.root,
-                getString(R.string.error_forgotpassword_no_input)
-            )
+                else -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_forgotpassword_no_input))
+            }
         }
     }
 
@@ -90,7 +88,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
             signupViewModel.continueSignup(
                 portalAccount = getString(
                     R.string.koreatech_email_postfix,
-                    binding.signupEdittextId.textString
+                    binding.signupEdittextId.textString.trim()
                 ),
                 password = binding.signupEdittextPw.textString,
                 passwordConfirm = binding.signupEdittextPwConfirm.textString,
@@ -120,7 +118,6 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
 
                     SignupContinuationState.NotAgreedPrivacyTerms -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_privacy_terms))
 
-
                     SignupContinuationState.PasswordIsNotValidate -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_password))
 
                     SignupContinuationState.PasswordNotMatching -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_error_check_password_match))
@@ -138,7 +135,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
 
     private fun startSignupWithDetailActivity() {
         val intent = Intent(this@SignupActivity, SignupWithDetailInfoActivity::class.java).apply {
-            putExtra(SIGN_UP_EMAIL, binding.signupEdittextId.textString)
+            putExtra(SIGN_UP_EMAIL, getString(R.string.koreatech_email_postfix, binding.signupEdittextId.textString.trim()))
             putExtra(SIGN_UP_PASSWORD, binding.signupEdittextPw.textString)
         }
         startActivity(intent)

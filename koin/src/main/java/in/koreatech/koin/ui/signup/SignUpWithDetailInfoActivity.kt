@@ -31,7 +31,6 @@ class SignupWithDetailInfoActivity : ActivityBase() {
 
     private lateinit var binding: ActivitySignUpWithDetailInfoBinding
     private val signupViewModel by viewModels<SignupViewModel>()
-    private var checkNickName = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +51,13 @@ class SignupWithDetailInfoActivity : ActivityBase() {
 
         signupUserButtonNicknameCheck.setOnClickListener {
             if (signupUserEdittextNickName.text.toString() != "") {
-                signupViewModel.checkNickname(signupUserEdittextNickName.textString)
+                signupViewModel.checkNickname(signupUserEdittextNickName.textString.trim())
             }
         }
 
         signupSendVerificationButton.setOnClickListener {
             signupViewModel.continueDetailSignup(
-                portalAccount = signupViewModel.portalEmail.trim(),
+                portalAccount = signupViewModel.portalEmail,
                 gender = when {
                     signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
                     signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
@@ -70,8 +69,8 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     else -> null
                 },
                 major = signupUserEdittextMajor.text.toString(),
-                name = signupUserEdittextName.text.toString(),
-                nickName = signupUserEdittextNickName.text.toString(),
+                name = signupUserEdittextName.text.toString().trim(),
+                nickName = signupUserEdittextNickName.text.toString().trim(),
                 password = signupViewModel.password.trim(),
                 phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
                 studentNumber = signupUserEdittextStudentId.text.toString(),
