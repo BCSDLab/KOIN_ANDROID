@@ -52,16 +52,15 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
             loginEdittextPw.requestFocus()
         }
         loginEdittextPw.setOnEditorActionListener { v, actionId, event ->
-            currentFocus?.let { view ->
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                Objects.requireNonNull(imm).hideSoftInputFromWindow(view.windowToken, 0)
-            } ?: false
+            currentFocus?.also { view ->
+                hideKeyboard(view)
+            }
+            false
         }
 
         loginButton.setOnClickListener {
             currentFocus?.let { view ->
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                Objects.requireNonNull(imm).hideSoftInputFromWindow(view.windowToken, 0)
+                hideKeyboard(view)
             }
 
             if (
