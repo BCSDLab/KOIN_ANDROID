@@ -11,7 +11,6 @@ class CheckEmailValidationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(email: String) : Pair<Boolean?, ErrorHandler?> {
         return try {
-            if(email.isBlank()) throw IllegalArgumentException()
             userRepository.isUserEmailDuplicated(email) to null
         } catch (t: Throwable) {
             null to userErrorHandler.handleUsernameDuplicatedError(t)
