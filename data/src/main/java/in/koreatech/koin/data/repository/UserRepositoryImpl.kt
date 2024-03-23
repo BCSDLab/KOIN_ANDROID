@@ -54,7 +54,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun isUserEmailDuplicated(email: String): Boolean {
         return try {
-            userRemoteDataSource.checkEmail(email.toSchoolEamil())
+            userRemoteDataSource.checkEmail(email)
             false
         } catch (e: HttpException) {
             if(e.code() == 409) true

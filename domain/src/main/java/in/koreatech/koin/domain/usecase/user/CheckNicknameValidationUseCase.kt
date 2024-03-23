@@ -11,7 +11,6 @@ class CheckNicknameValidationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(nickname: String) : Pair<Boolean?, ErrorHandler?> {
         return try {
-            if(nickname.isBlank()) throw IllegalArgumentException()
             userRepository.isUsernameDuplicated(nickname) to null
         } catch (t: Throwable) {
             null to userErrorHandler.handleUsernameDuplicatedError(t)

@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
+import `in`.koreatech.koin.domain.util.ext.toSHA256
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -40,13 +41,13 @@ class SignupRepositoryImpl @Inject constructor(
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
-                    email = portalAccount.toSchoolEamil(),
+                    email = portalAccount,
                     gender = gender.toInt(),
                     isGraduated = isGraduated.toBoolean(),
                     major = major,
                     name = name,
                     nickName = nickName,
-                    password = password,
+                    password = password.toSHA256(),
                     phoneNumber = phoneNumber.toPhoneNumber(),
                     studentNumber = studentNumber
                 )
