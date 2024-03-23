@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.ui.signup.viewmodel.SignupViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
+import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
@@ -164,5 +166,10 @@ class SignUpWithDetailInfoActivity : ActivityBase() {
             binding.signupUserEdittextMajorError.text = it
         }
 
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard(currentFocus ?: binding.root)
+        return super.dispatchTouchEvent(ev)
     }
 }

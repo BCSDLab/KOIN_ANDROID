@@ -19,10 +19,12 @@ import `in`.koreatech.koin.util.ext.withLoading
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.util.ext.hideKeyboard
 
 @AndroidEntryPoint
 class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
@@ -150,6 +152,10 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
         super.onDestroy()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard(currentFocus ?: binding.root)
+        return super.dispatchTouchEvent(ev)
+    }
     companion object {
         private const val SIGNUP_PRIVACY_TERMS_DIALOG = "SIGNUP_PRIVACY_TERMS_DIALOG"
         private const val SIGNUP_PERSONAL_INFO_TERMS_DIALOG = "SIGNUP_PERSONAL_INFO_TERMS_DIALOG"

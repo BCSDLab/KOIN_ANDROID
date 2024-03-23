@@ -15,9 +15,11 @@ import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.util.ext.hideKeyboard
 import java.util.*
 
 @AndroidEntryPoint
@@ -91,5 +93,10 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         isBusinessButton.setOnClickListener {
             startActivity(Intent(this@LoginActivity, BusinessLoginActivity::class.java))
         }
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard(currentFocus ?: binding.root)
+        return super.dispatchTouchEvent(ev)
     }
 }
