@@ -44,54 +44,71 @@ class SignupWithDetailInfoActivity : ActivityBase() {
     private fun initView() = with(binding) {
         signupBackButton.setOnClickListener { finish() }
 
+        getUserDataFromSignupActivity()
+        checkNickname()
+        continueSignup()
+        addTextChangedListenerWithNicknameAndDept()
+        autoInputMajor()
+    }
+
+    private fun autoInputMajor() {
+        binding.signupUserEdittextMajor.apply {
+            isEnabled = false
+            hint = context.getString(R.string.user_info_id_hint)
+        }
+    }
+
+    private fun addTextChangedListenerWithNicknameAndDept() {
+        binding.signupUserEdittextNickName.addTextChangedListener {
+            if (signupViewModel.isCheckedNickname) signupViewModel.isCheckedNickname = false
+        }
+
+        binding.signupUserEdittextStudentId.addTextChangedListener {
+            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
+            signupViewModel.getDept(it.toString())
+        }
+    }
+
+    private fun continueSignup() {
+        with(binding) {
+            signupSendVerificationButton.setOnClickListener {
+                signupViewModel.continueDetailSignup(
+                    portalAccount = signupViewModel.portalEmail,
+                    gender = when {
+                        signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
+                        signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
+                        else -> null
+                    },
+                    isGraduated = when {
+                        signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
+                        signupUserRadiobuttonStudent.isChecked -> Graduated.Student
+                        else -> null
+                    },
+                    major = signupUserEdittextMajor.text.toString(),
+                    name = signupUserEdittextName.text.toString().trim(),
+                    nickName = signupUserEdittextNickName.text.toString().trim(),
+                    password = signupViewModel.password.trim(),
+                    phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
+                    studentNumber = signupUserEdittextStudentId.text.toString(),
+                    isCheckNickname = signupViewModel.isCheckedNickname
+                )
+            }
+        }
+    }
+
+    private fun checkNickname() {
+        binding.signupUserButtonNicknameCheck.setOnClickListener {
+            if (binding.signupUserEdittextNickName.text.toString() != "") {
+                signupViewModel.checkNickname(binding.signupUserEdittextNickName.textString.trim())
+            }
+        }
+    }
+
+    private fun getUserDataFromSignupActivity() {
         signupViewModel.setAccount(
             intent.getStringExtra(SIGN_UP_EMAIL) ?: "",
             intent.getStringExtra(SIGN_UP_PASSWORD) ?: ""
         )
-
-        signupUserButtonNicknameCheck.setOnClickListener {
-            if (signupUserEdittextNickName.text.toString() != "") {
-                signupViewModel.checkNickname(signupUserEdittextNickName.textString.trim())
-            }
-        }
-
-        signupSendVerificationButton.setOnClickListener {
-            signupViewModel.continueDetailSignup(
-                portalAccount = signupViewModel.portalEmail,
-                gender = when {
-                    signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
-                    signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
-                    else -> null
-                },
-                isGraduated = when {
-                    signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate
-                    signupUserRadiobuttonStudent.isChecked -> Graduated.Student
-                    else -> null
-                },
-                major = signupUserEdittextMajor.text.toString(),
-                name = signupUserEdittextName.text.toString().trim(),
-                nickName = signupUserEdittextNickName.text.toString().trim(),
-                password = signupViewModel.password.trim(),
-                phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
-                studentNumber = signupUserEdittextStudentId.text.toString(),
-                isCheckNickname = signupViewModel.isCheckedNickname
-            )
-        }
-
-
-        signupUserEdittextNickName.addTextChangedListener {
-            if (signupViewModel.isCheckedNickname) signupViewModel.isCheckedNickname = false
-        }
-
-        signupUserEdittextStudentId.addTextChangedListener {
-            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
-            signupViewModel.getDept(it.toString())
-        }
-
-        signupUserEdittextMajor.apply {
-            isEnabled = false
-            hint = context.getString(R.string.user_info_id_hint)
-        }
     }
 
     private fun observeData() = with(signupViewModel) {
