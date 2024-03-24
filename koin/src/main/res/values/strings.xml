@@ -134,6 +134,7 @@
     <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
     <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
     <string name="timetable_update_message">업데이트</string>
+    <string name="timetable_select_success">완료</string>
 
     <!--lost and found-->
     <string name="lost_and_found_created">생성되었습니다.</string>
