@@ -26,10 +26,12 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
     ): Result<SignupContinuationState> {
         return when {
             name == "" -> Result.success(SignupContinuationState.InitName)
+            nickName == "" -> Result.success(SignupContinuationState.InitNickName)
             !isCheckNickname -> Result.success(SignupContinuationState.CheckNickName)
             gender == null -> Result.success(SignupContinuationState.CheckGender)
             phoneNumber == "" -> Result.success(SignupContinuationState.InitPhoneNumber)
             studentNumber == "" -> Result.success(SignupContinuationState.InitStudentId)
+            major == "전공 선택" -> Result.success(SignupContinuationState.InitMajor)
             isGraduated == null -> Result.success(SignupContinuationState.CheckGraduate)
             else -> signupRepository.requestEmailVerification(
                 portalAccount = portalAccount,
@@ -38,7 +40,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
                 major = major,
                 name = name,
                 nickName = nickName,
-                password = password,
+                password = password.toSHA256(),
                 phoneNumber = phoneNumber,
                 studentNumber = studentNumber,
             ).map {
