@@ -9,90 +9,11 @@ buildscript {
 
     ext {
         /* Common */
-        compileSdkVersion = 33
+        compileSdkVersion = 34
         minSdkVersion = 21
-        targetSdkVersion = 33
+        targetSdkVersion = 34
         versionName = "3.1.0"
         minVersionCode = 30100
-
-
-        /* Dependency - AndroidX Jetpack */
-        def android_x_version = "1.0.0"
-        androidxAppCompat = "androidx.appcompat:appcompat:$android_x_version"
-        androidxRecyclerView = "androidx.recyclerview:recyclerview:$android_x_version"
-        androidxCardView = "androidx.cardview:cardview:$android_x_version"
-
-        def lifecycle_version = "2.5.1"
-        androidXLifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-
-        def view_model_version = "2.5.1"
-        androidXViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$view_model_version"
-
-        def livedata_version = "2.5.1"
-        androidXLivedata = "androidx.lifecycle:lifecycle-livedata-ktx:$livedata_version"
-
-        def activity_version = "1.5.0"
-        androidXActivityKtx = "androidx.activity:activity-ktx:$activity_version"
-
-        def fragment_version = "1.5.0"
-        androidXFragmentKtx = "androidx.fragment:fragment-ktx:$fragment_version"
-
-        /* Dependency - AndroidX Material */
-        def android_x_material_version = "1.2.0"
-        androidxMaterial = "com.google.android.material:material:$android_x_material_version"
-
-        /* Dependency - Firebase */
-        def firebase_version = "17.0.0"
-        firebaseCore = "com.google.firebase:firebase-core:$firebase_version"
-        firebaseDatabase = "com.google.firebase:firebase-database:$firebase_version"
-        firebasePerformance = "com.google.firebase:firebase-perf:$firebase_version"
-
-        /* Dependency - Retrofit2 */
-        def retrofit_version = "2.9.0"
-        retrofit = "com.squareup.retrofit2:retrofit:$retrofit_version"
-        retrofitGsonConvert = "com.squareup.retrofit2:converter-gson:$retrofit_version"
-        retrofitRxJava = "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-
-        /* Dependency - leakcanary */
-        def leakcanary_version = "2.12"
-        leakcanaryDebug = "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-
-        /* Dependency - glide */
-        def glide_version = "4.9.0"
-        glide = "com.github.bumptech.glide:glide:$glide_version"
-        glideAnnotation = "com.github.bumptech.glide:compiler:$glide_version"
-
-        /* Dependency - butterknife */
-        def butterknife_version = "10.1.0"
-        butterknife = "com.jakewharton:butterknife:$butterknife_version"
-        butterknifeAnnotation = "com.jakewharton:butterknife-compiler:$butterknife_version"
-
-        /* Dependency - okhttp */
-        def okhttp_version = "4.11.0"
-        okhttp = "com.squareup.okhttp3:okhttp:$okhttp_version"
-        okhttpLogging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-
-        /* Dependency - sticky scroll view */
-        def sticky_scroll_view_version = "1.0.2"
-        stickyScrollView = "com.github.amarjain07:StickyScrollView:$sticky_scroll_view_version"
-
-        /* Dependency - KTX */
-        def ktx_core_version = "1.8.0"
-        androidXKtx = "androidx.core:core-ktx:$ktx_core_version"
-
-        /* Dependency - Hilt */
-        hilt_version = "2.44"
-        hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
-        hiltCompiler = "com.google.dagger:hilt-compiler:$hilt_version"
-
-        /* Dependency - Coroutine */
-        def coroutine_version = "1.6.3"
-        coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
-        coroutineCore = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3"
-
-        /* Dependency - AndroidX Security */
-        def security_version = "1.1.0-alpha03"
-        androidXSecurity = "androidx.security:security-crypto:$security_version"
     }
 
     dependencies {
@@ -109,11 +30,10 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.kotlin.jvm) apply false
-    id "com.google.gms.google-services" version "4.3.14" apply false
-    id 'com.google.firebase.crashlytics' version '2.9.9' apply false
-    id 'com.google.firebase.appdistribution' version '4.2.0' apply false
+    alias(libs.plugins.google.service) apply false
+    alias(libs.plugins.androidLibrary) apply false
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

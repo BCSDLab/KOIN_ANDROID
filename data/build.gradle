@@ -41,20 +41,23 @@ android {
 
 dependencies {
     implementation project(':domain')
-    implementation project.androidXKtx
-    implementation project.coroutineAndroid
+    implementation libs.core.ktx
+    implementation libs.kotlinx.coroutines.android
 
 
     /* Dependency - Retrofit2 */
-    implementation project.retrofit
-    implementation project.retrofitGsonConvert
-    implementation project.okhttp
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.retrofit.rxjava2
+
+    implementation libs.okhttp
+    implementation libs.okhttp.logging.interceptor
 
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
-    implementation project.androidXSecurity
+    implementation libs.androidx.security.crypto
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
 }
