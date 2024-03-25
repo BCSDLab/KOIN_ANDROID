@@ -76,7 +76,7 @@ jobs:
             done
 
      - name: Build with Gradle
-       run: ./gradlew assembleRelease
+       run: ./gradlew koin:assembleRelease
 
      - name: Upload to Firebase
        env:
