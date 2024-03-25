@@ -1,0 +1,4 @@
+feature: feature/*
+fix: fix/*
+chore: chore/*
+refactor: refactor/*
