@@ -14,7 +14,7 @@ interface BusApi {
         @Query("bus_type") busType: String, //shuttle, commuting
         @Query("direction") busDirection: String, //to(등교), from(하교)
         @Query("region") region: String //courses의 region
-    ) : List<BusTimetableResponse>
+    ) : List<ShuttleBusRouteResponse>
 
     @GET(URLConstant.BUS.TIMETABLE + "?bus_type=express")
     suspend fun getExpressBusTimetable(
