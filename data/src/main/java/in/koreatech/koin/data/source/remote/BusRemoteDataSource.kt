@@ -15,14 +15,14 @@ class BusRemoteDataSource @Inject constructor(
         busDirection: String,
         region: String
     ): List<ShuttleBusRouteResponse> {
-        return busApi.getBusTimetable("shuttle", busDirection, region)
+        return busApi.getShuttleBusTimetable("shuttle", busDirection, region)
     }
 
     suspend fun getCommutingBusTimetable(
         busDirection: String,
         region: String
     ): List<ShuttleBusRouteResponse> {
-        return busApi.getBusTimetable("commuting", busDirection, region)
+        return busApi.getShuttleBusTimetable("commuting", busDirection, region)
     }
 
     suspend fun getExpressBusTimetable(
