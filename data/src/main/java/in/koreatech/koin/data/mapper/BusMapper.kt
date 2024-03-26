@@ -19,7 +19,7 @@ fun BusCourseResponse.toBusCourse() = BusCourse(
     region = region
 )
 
-fun BusTimetableResponse.toShuttleBusRoute(): BusRoute.ShuttleBusRoute {
+fun ShuttleBusRouteResponse.toShuttleBusRoute(): BusRoute.ShuttleBusRoute {
     return BusRoute.ShuttleBusRoute(
         routeName = routeName,
         arrivalInfo = arrivalInfo.map { route ->
