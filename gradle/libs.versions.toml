@@ -45,6 +45,7 @@ composeCompilerVersion = "1.5.10"
 glideVersion = "4.9.0"
 butterknifeVersion = "10.1.0"
 googleServiceVersion = "4.3.14"
+composeNavigationVersion = "2.7.7"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -67,6 +68,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion"}
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
 android-gradle-crashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseGradleVersion" }
