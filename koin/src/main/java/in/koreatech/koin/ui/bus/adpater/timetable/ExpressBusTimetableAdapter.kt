@@ -12,6 +12,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
+import `in`.koreatech.koin.databinding.BusTimetableExpressFooterBinding
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableFooterViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.ExpressBusTimetableFooterViewHolder
 
 class ExpressBusTimetableAdapter : BusTimetableAdapter<ExpressBusTimetableUiItem>(itemCallback) {
 
@@ -31,6 +34,12 @@ class ExpressBusTimetableAdapter : BusTimetableAdapter<ExpressBusTimetableUiItem
                     ConstraintLayout.LayoutParams.WRAP_CONTENT
                 )
             }
+        )
+    }
+
+    override fun onCreateFooterViewHolder(parent: ViewGroup): BusTimetableFooterViewHolder {
+        return ExpressBusTimetableFooterViewHolder(
+            BusTimetableExpressFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
