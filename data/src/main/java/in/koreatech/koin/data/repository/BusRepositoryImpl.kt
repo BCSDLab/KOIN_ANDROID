@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.repository.BusRepository
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class BusRepositoryImpl @Inject constructor(
             .map { it to it.toCourseNameString(context) }
     }
 
-    override suspend fun getShuttleBusTimetable(busCourse: BusCourse): List<BusRoute.ShuttleBusRoute> {
+    override suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable {
         return if (busCourse.busType == BusType.Shuttle) {
             busRemoteDataSource.getShuttleBusTimetable(
                 busDirection = busCourse.direction.busDirectionString,
@@ -44,14 +45,13 @@ class BusRepositoryImpl @Inject constructor(
                 busDirection = busCourse.direction.busDirectionString,
                 region = busCourse.region
             )
-        }
-            .map { it.toShuttleBusRoute() }
+        }.toShuttleBusTimetable()
     }
 
-    override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusRoute.ExpressBusRoute {
+    override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable {
         return busRemoteDataSource.getExpressBusTimetable(
             busDirection = busCourse.direction.busDirectionString
-        ).toExpressBusRoute()
+        ).toExpressBusTimetable()
     }
 
     override suspend fun getCityBusTimetable(): BusRoute.CityBusRoute {

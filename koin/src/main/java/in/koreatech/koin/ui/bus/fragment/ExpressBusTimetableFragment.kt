@@ -79,5 +79,9 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
             )
             binding.recyclerView.smoothScrollToPosition(0)
         }
+
+        observeLiveData(updatedAt) {
+            expressBusTimetableAdapter.setUpdatedAt(it)
+        }
     }
 }
