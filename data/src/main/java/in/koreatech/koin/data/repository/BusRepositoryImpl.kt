@@ -34,22 +34,7 @@ class BusRepositoryImpl @Inject constructor(
             .map { it to it.toCourseNameString(context) }
     }
 
-    override suspend fun getShuttleBusTimetable(busCourse: BusCourse): List<BusRoute.ShuttleBusRoute> {
-        return if (busCourse.busType == BusType.Shuttle) {
-            busRemoteDataSource.getShuttleBusTimetable(
-                busDirection = busCourse.direction.busDirectionString,
-                region = busCourse.region
-            )
-        } else {
-            busRemoteDataSource.getCommutingBusTimetable(
-                busDirection = busCourse.direction.busDirectionString,
-                region = busCourse.region
-            )
-        }
-            .map { it.toShuttleBusRoute() }
-    }
-
-    override suspend fun getShuttleBusTimetableV2(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable {
+    override suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable {
         return if (busCourse.busType == BusType.Shuttle) {
             busRemoteDataSource.getShuttleBusTimetableV2(
                 busDirection = busCourse.direction.busDirectionString,

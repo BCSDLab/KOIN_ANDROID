@@ -1,94 +1,89 @@
 package `in`.koreatech.koin.ui.bus.viewmodel
 
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
-import `in`.koreatech.koin.domain.model.bus.course.BusCourse
-import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
-import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusCoursesUseCase
-import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusRoutesUseCase
-import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusTimetableUseCase
-import `in`.koreatech.koin.domain.util.onSuccess
-import `in`.koreatech.koin.ui.bus.state.ShuttleBusTimetableUiItem
-import `in`.koreatech.koin.util.ext.onFailureToast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.naver.maps.map.style.light.Position
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.bus.course.BusCourse
+import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
+import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
+import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusCoursesUseCase
+import `in`.koreatech.koin.domain.usecase.bus.timetable.shuttle.GetShuttleBusTimetableUseCase
+import `in`.koreatech.koin.domain.util.onSuccess
+import `in`.koreatech.koin.util.ext.onFailureToast
 import javax.inject.Inject
 
 @HiltViewModel
 class ShuttleBusTimetableViewModel @Inject constructor(
     private val getShuttleBusTimetableUseCase: GetShuttleBusTimetableUseCase,
     private val getShuttleBusCoursesUseCase: GetShuttleBusCoursesUseCase,
-    private val getShuttleBusRoutesUseCase: GetShuttleBusRoutesUseCase
 ) : BaseViewModel() {
     private val busCourses = mutableListOf<Pair<BusCourse, String>>()
 
     private val _busCoursesString = MutableLiveData<List<String>>()
-    private val _busRoutes = MutableLiveData<List<String>>()
-    private val _busTimetables = MutableLiveData<List<BusNodeInfo.ShuttleNodeInfo>>()
     private val _selectedCoursesPosition = MutableLiveData(0)
     private val _selectedRoutesPosition = MutableLiveData(0)
+    private val _updatedAt = MutableLiveData<String>()
+    private val _busRoutes = MutableLiveData<List<String>>()
+    private val _busTimetables = MutableLiveData<Map<Int, List<BusNodeInfo.ShuttleNodeInfo>>>()
 
     val busCoursesString: LiveData<List<String>> get() = _busCoursesString
-    val busRoutes: LiveData<List<String>> get() = _busRoutes
-    val busTimetables: LiveData<List<BusNodeInfo.ShuttleNodeInfo>> get() = _busTimetables
 
     val selectedCoursesPosition: LiveData<Int> get() = _selectedCoursesPosition
     val selectedRoutesPosition: LiveData<Int> get() = _selectedRoutesPosition
+    val updatedAt: LiveData<String> get() = _updatedAt
+    val busRoutes: LiveData<List<String>> get() = _busRoutes
+    val busTimetables: LiveData<Map<Int, List<BusNodeInfo.ShuttleNodeInfo>>> get() = _busTimetables
 
     init {
         viewModelScope.launchWithLoading {
-            updateShuttleBusCourse()
-            updateShuttleBusRoute()
-            updateShuttleBusTimetable()
+            getShuttleBusCourse()
+            updateShuttleBusRoutes()
         }
     }
 
     fun setCoursePosition(position: Int) = viewModelScope.launchWithLoading {
         _selectedCoursesPosition.value = position
-        updateShuttleBusRoute()
+        updateShuttleBusRoutes()
         if(!busRoutes.value.isNullOrEmpty()) setRoutePosition(0)
     }
 
     fun setRoutePosition(position: Int) = viewModelScope.launchWithLoading {
         _selectedRoutesPosition.value = position
-        updateShuttleBusTimetable()
     }
 
-    private suspend fun updateShuttleBusCourse() {
+    private suspend fun getShuttleBusCourse() {
         getShuttleBusCoursesUseCase()
             .onSuccess { courses ->
                 busCourses.clear()
-                busCourses.addAll(courses)
-                _busCoursesString.value = courses.map { (_, name) -> name }
+                busCourses.addAll(courses.filter { !it.second.contains("te") })
+                _busCoursesString.value = courses.filter { !it.second.contains("te") }.map { (_, name) -> name }
             }
             .onFailureToast(this)
     }
 
-    private suspend fun updateShuttleBusRoute() {
+    private suspend fun updateShuttleBusRoutes() {
         if (busCourses.isNotEmpty()) {
-            getShuttleBusRoutesUseCase(
-                busCourses[selectedCoursesPosition.value ?: 0].first
+            getShuttleBusTimetableUseCase(
+                busCourses[selectedCoursesPosition.value ?: 0].first,
             )
                 .onSuccess {
-                    _busRoutes.value = it
+                    _updatedAt.value = it.updatedAt
+                    _busRoutes.value = it.routes.map { route -> route.routeName }
+                    updateShuttleBusTimetable(it)
                 }
                 .onFailureToast(this)
         }
     }
 
-    private suspend fun updateShuttleBusTimetable() {
-        if (busCourses.isNotEmpty() && !busRoutes.value.isNullOrEmpty()) {
-            getShuttleBusTimetableUseCase(
-                busCourses[selectedCoursesPosition.value ?: 0].first,
-                busRoutes.value!![selectedRoutesPosition.value ?: 0]
-            )
-                .onSuccess {
-                    _busTimetables.value = it
+    private fun updateShuttleBusTimetable(timetable: BusTimetable.ShuttleBusTimetable) {
+        _busTimetables.value =
+            mutableMapOf<Int, List<BusNodeInfo.ShuttleNodeInfo>>()
+                .apply {
+                    timetable.routes.forEachIndexed { idx, route ->
+                        set(idx, route.arrivalInfo)
+                    }
                 }
-                .onFailureToast(this)
-        }
     }
 }
