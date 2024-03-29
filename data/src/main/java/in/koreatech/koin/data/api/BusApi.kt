@@ -9,28 +9,15 @@ interface BusApi {
     @GET(URLConstant.BUS.COURSES)
     suspend fun getBusCourses(): List<BusCourseResponse>
 
-    @GET(URLConstant.BUS.TIMETABLE)
-    suspend fun getShuttleBusTimetable(
-        @Query("bus_type") busType: String, //shuttle, commuting
-        @Query("direction") busDirection: String, //to(등교), from(하교)
-        @Query("region") region: String //courses의 region
-    ) : List<ShuttleBusRouteResponse>
-
     @GET(URLConstant.BUS.TIMETABLE_V2)
-    suspend fun getShuttleBusTimetableV2(
+    suspend fun getShuttleBusTimetable(
         @Query("bus_type") busType: String, //shuttle, commuting
         @Query("direction") busDirection: String, //to(등교), from(하교)
         @Query("region") region: String //courses의 region
     ) : ShuttleBusTimetableResponse
 
-    @GET(URLConstant.BUS.TIMETABLE + "?bus_type=express")
-    suspend fun getExpressBusTimetable(
-        @Query("direction") busDirection: String, //to(등교), from(하교)
-        @Query("region") region: String //courses의 region
-    ) : List<ExpressBusRouteResponse>
-
     @GET(URLConstant.BUS.TIMETABLE_V2 + "?bus_type=express")
-    suspend fun getExpressBusTimetableV2(
+    suspend fun getExpressBusTimetable(
         @Query("direction") busDirection: String, //to(등교), from(하교)
         @Query("region") region: String //courses의 region
     ) : ExpressBusTimetableResponse

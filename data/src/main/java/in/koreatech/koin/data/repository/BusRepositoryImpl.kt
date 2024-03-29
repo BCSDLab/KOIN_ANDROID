@@ -36,12 +36,12 @@ class BusRepositoryImpl @Inject constructor(
 
     override suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable {
         return if (busCourse.busType == BusType.Shuttle) {
-            busRemoteDataSource.getShuttleBusTimetableV2(
+            busRemoteDataSource.getShuttleBusTimetable(
                 busDirection = busCourse.direction.busDirectionString,
                 region = busCourse.region
             )
         } else {
-            busRemoteDataSource.getCommutingBusTimetableV2(
+            busRemoteDataSource.getCommutingBusTimetable(
                 busDirection = busCourse.direction.busDirectionString,
                 region = busCourse.region
             )
@@ -49,7 +49,7 @@ class BusRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable {
-        return busRemoteDataSource.getExpressBusTimetableV2(
+        return busRemoteDataSource.getExpressBusTimetable(
             busDirection = busCourse.direction.busDirectionString
         ).toExpressBusTimetable()
     }
