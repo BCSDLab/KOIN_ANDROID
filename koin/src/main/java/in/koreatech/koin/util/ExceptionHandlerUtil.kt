@@ -8,7 +8,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.HttpStatusCode
 import `in`.koreatech.koin.ui.error.ErrorActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
-import `in`.koreatech.koin.util.ext.shortToast
+import `in`.koreatech.koin.util.ext.showToast
 import retrofit2.HttpException
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -58,7 +58,7 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
     private fun goToLoginActivity() {
         val handler = HandlerCompat.createAsync(Looper.getMainLooper())
         Intent(context.applicationContext, LoginActivity::class.java).run {
-            handler.post { context.applicationContext.shortToast(context.getString(R.string.token_out_dated)) }
+            handler.post { context.applicationContext.showToast(context.getString(R.string.token_out_dated)) }
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(this)
         }
