@@ -48,13 +48,7 @@ class BusRepositoryImpl @Inject constructor(
         }.toShuttleBusTimetable()
     }
 
-    override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusRoute.ExpressBusRoute {
-        return busRemoteDataSource.getExpressBusTimetable(
-            busDirection = busCourse.direction.busDirectionString
-        ).toExpressBusRoute()
-    }
-
-    override suspend fun getExpressBusTimetableV2(busCourse: BusCourse): BusTimetable.ExpressBusTimetable {
+    override suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable {
         return busRemoteDataSource.getExpressBusTimetableV2(
             busDirection = busCourse.direction.busDirectionString
         ).toExpressBusTimetable()

@@ -12,8 +12,7 @@ interface BusRepository {
     suspend fun getShuttleBusCourses(): List<Pair<BusCourse, String>>
     suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>>
     suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable
-    suspend fun getExpressBusTimetable(busCourse: BusCourse): BusRoute.ExpressBusRoute
-    suspend fun getExpressBusTimetableV2(busCourse: BusCourse): BusTimetable.ExpressBusTimetable
+    suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable
     suspend fun getCityBusTimetable(): BusRoute.CityBusRoute
 
     suspend fun getShuttleBusRemainTime(
