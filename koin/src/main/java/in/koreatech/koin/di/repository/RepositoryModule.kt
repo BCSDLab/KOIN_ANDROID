@@ -49,6 +49,40 @@ object RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideOwnerSignupRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource,
+        signupTermsLocalDataSource: SignupTermsLocalDataSource
+    ): OwnerSignupRepository {
+        return OwnerSignupRepositoryImpl(ownerRemoteDataSource, signupTermsLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnerVerificationCodeRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerVerificationCodeRepository {
+        return OwnerVerificationCodeRepositoryImpl(ownerRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUploadUrlRepository(
+        uploadUrlRemoteDataSource: UploadUrlRemoteDataSource
+    ): UploadUrlRepository {
+        return UploadUrlRepositoryImpl(uploadUrlRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRegisterRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerRegisterRepository {
+        return OwnerRegisterRepositoryImpl(ownerRemoteDataSource)
+    }
+
+
+    @Provides
+    @Singleton
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
         versionRemoteDataSource: VersionRemoteDataSource
@@ -102,5 +136,13 @@ object RepositoryModule {
         landRemoteDataSource: LandRemoteDataSource
     ): LandRepository {
         return LandRepositoryImpl(landRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun providePreSignedUrlRepository(
+        preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource
+    ): PreSignedUrlRepository {
+        return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource)
     }
 }

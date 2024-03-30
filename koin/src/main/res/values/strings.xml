@@ -107,15 +107,15 @@
     <string name="signup_init_name">이름을 입력해주세요</string>
     <string name="signup_init_phone_number">전화번호를 입력해주세요</string>
     <string name="signup_init_student_id">학번을 입력해주세요</string>
-    <string name="signup_check_nickname">닉네임중복버튼을 눌러주세요</string>
+    <string name="signup_check_nickname">닉네임을 확인해주세요.</string>
     <string name="signup_check_gender">성별을 선택해주세요</string>
     <string name="signup_check_graduate">졸업유무를 선택해주세요</string>
     <string name="signup_privacy_terms">개인정보 이용약관</string>
     <string name="signup_privacy_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
     <string name="signup_koin_terms">코인 이용약관</string>
     <string name="signup_koin_terms_error">약관을 가져오는 중 오류가 발생했습니다.\n%1$s</string>
-    <string name="signup_email_check">회원가입이 가능한 이메일입니다\n다음 버튼을 눌러 회원가입을 진행해주세요</string>
-
+    <string name="signup_email_check">사용할 수 있는 이메일입니다.</string>
+    <string name="signup_nickname_available">사용할 수 있는 닉네임입니다.</string>
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
 
@@ -134,6 +134,7 @@
     <string name="timetable_duplicate_warning_message">과목 중복 / 시간 중복</string>
     <string name="timetable_want_to_change_message">바꾸시겠습니까?</string>
     <string name="timetable_update_message">업데이트</string>
+    <string name="timetable_select_success">완료</string>
 
     <!--lost and found-->
     <string name="lost_and_found_created">생성되었습니다.</string>
@@ -256,7 +257,7 @@
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
 
-	<!-- Land -->
+    <!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
     <string name="land_monthly_fee">월세</string>
     <string name="land_charter">전세</string>
@@ -292,4 +293,68 @@
     <string name="land_detail_no_name">No Name</string>
     <string name="land_detail_floor_unit">층</string>
     <string name="bcsd_webpage_name">BCSD 홈페이지</string>
+
+    <!-- Business Signup -->
+    <string name="are_you_boss"><u>사장님이신가요?</u></string>
+    <string name="are_you_student"><u>학생인신가요?</u></string>
+    <string name="for_business">For Business</string>
+    <string name="sign_up_for_boss">사장님용\n회원가입</string>
+    <string name="is_all_agree">모두 동의합니다.</string>
+    <string name="privacy_terms_and_conditions">개인정보 이용약관(필수)</string>
+    <string name="privacy_terms_and_conditions_text">제1조 (목적)\n코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다.\n\n제2조 (약관의 효력 및 변경)\n① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다.\n② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="koin_terms_of_use_text">제1조 (목적)\n코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다.\n\n제2조 (약관의 효력 및 변경)\n① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다.\n② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="cancel">취소</string>
+    <string name="check">확인</string>
+    <string name="base_info_input">1. 기본 정보 입력</string>
+    <string name="page_one">1 / 3</string>
+    <string name="page_two">2 / 3</string>
+    <string name="page_three">3 / 3</string>
+    <string name="email">이메일</string>
+    <string name="already_signup_email">\t이미 가입된 이메일입니다.</string>
+    <string name="login_password_hint">비밀번호</string>
+    <string name="business_password_rule_text">* 특수문자 포함 영어와 숫자 6~18 자리</string>
+    <string name="confirm_password">비밀번호 확인</string>
+    <string name="email_certification">이메일 인증하기</string>
+    <string name="is_not_same_password">\t비밀번호가 일치하지 않습니다.</string>
+    <string name="account_verification">2. 계정 인증</string>
+    <string name="account_verification_info_text">이메일로\n발송된 인증번호 6자리를 입력해 주세요.</string>
+    <string name="input_certification_number">인증번호 입력</string>
+    <string name="not_equal_confirm_number">\t인증번호가 일치하지 않습니다.</string>
+    <string name="time_limit_five_minute">05:00</string>
+    <string name="resend">재발송</string>
+    <string name="next">다음</string>
+    <string name="business_certification">3. 사업자 인증</string>
+    <string name="businessman_name">대표자명(실명)</string>
+    <string name="input_store_name">가게명 직접 입력하기</string>
+    <string name="search_store">가게검색</string>
+    <string name="registration_number">사업자등록번호</string>
+    <string name="personal_contact">개인 연락처</string>
+    <string name="attach_file">파일을 첨부해주세요.</string>
+    <string name="attach_image">사업자등록증, 영업신고증, 통장사본 이미지 첨부</string>
+    <string name="search_store2">상점 검색</string>
+    <string name="complete_signup">가입 신청 완료</string>
+    <string name="complete_text">가입 신청이 완료되었습니다.\n가입 허가가 승인되면 로그인이 가능합니다.</string>
+    <string name="go_login_activity">로그인 화면 바로가기</string>
+    <string name="is_not_all_check">모든 이용약관을 동의해야합니다.</string>
+    <string name="signup_error_incorrect_email_address">이메일 주소가 올바르지 않습니다.</string>
+    <string name="overdue_time">인증 시간이 초과되었습니다.</string>
+    <string name="incorrect_verification_code">인증번호가 올바르지 않습니다.</string>
+    <string name="business_sign_up_error_when_verification_code">인증번호 절차 중 오류가 발생했습니다</string>
+    <string name="not_enter_all_items">모든 항목을 입력해주세요.</string>
+    <string name="is_not_input_store_name">상정명을 입력하세요.</string>
+    <string name="dialog_permission_title">권한 요청</string>
+    <string name="denied">거부</string>
+    <string name="allow">허용</string>
+    <string name="not_exist_domain">존재하지 않는 도메인입니다.</string>
+    <string name="bound_of_size_domain">파일의 크기가 너무 큽니다.</string>
+    <string name="not_allow_type_domain">허용되지 않는 타입입니다.</string>
+    <string name="is_not_valid_file">유효하지 않은 파일입니다.</string>
+    <string name="is_not_valid_email">인증되지 않은 이메일입니다.</string>
+    <string name="is_already_using_email">이미 사용 중인 이메일입니다.</string>
+    <string name="is_already_registration_number">이미 사용 중인 사업자등록번호입니다.</string>
+    <string name="is_already_using_id">이미 존재하는 아이디입니다.</string>
+    <string name="failed_signup">회원가입에 실패하였습니다.</string>
+    <string name="set_form">%1$s-</string>
+    <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
+    <string name="last_update">마지막 업데이트 : </string>
 </resources>

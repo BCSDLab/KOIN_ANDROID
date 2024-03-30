@@ -3,18 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="in.koreatech.koin">
 
-    <meta-data
-        android:name="firebase_crashlytics_collection_enabled"
-        android:value="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.DIAL_PHONE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" android:minSdkVersion="33"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"
+        android:minSdkVersion="33"/>
 
     <application
         android:name=".KoinApplication"
@@ -25,25 +32,36 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
+
+        <activity
+            android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.businesssignup.BusinessSignUpCheckActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.businesslogin.BusinessLoginActivity"
+            android:exported="false"/>
+        <activity android:name=".ui.businesssignup.BusinessSignupBaseActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.main.activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
-
+            android:theme="@style/KAPTheme.NoActionBar"/>
 
         <receiver
             android:name=".ui.dining.appwidget.DiningAppWidget"
             android:exported="false">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/dining_widget_info" />
+                android:resource="@xml/dining_widget_info"/>
         </receiver>
         <receiver
             android:name=".ui.bus.BusWidget"
@@ -55,24 +73,28 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/bus_widget_info" />
+                android:resource="@xml/bus_widget_info"/>
         </receiver>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="${naverMapKey}" />
+            android:value="${naverMapKey}"/>
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
 
         <receiver
             android:name=".ui.timetable.TimetableWidget"
             android:exported="false"
             android:label="@string/navigation_item_timetable">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/timetable_widget_info" />
+                android:resource="@xml/timetable_widget_info"/>
         </receiver>
 
         <provider
@@ -82,7 +104,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/filepaths"/>
         </provider>
 
         <activity
@@ -90,83 +112,83 @@
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus" />
+            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus"/>
         <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.forgotpassword.ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.dining.DiningActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.bus.BusActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.userinfo.UserInfoActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.userinfo.UserInfoEditActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.store.activity.StoreDetailActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.timetable.TimetableActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.timetable.TimetableAnonymousActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.land.LandActivity"
             android:exported="false"
             android:label="코인 커뮤니티"
             android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".ui.land.LandDetailActivity"
             android:exported="false"
             android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.error.ErrorActivity"
             android:exported="false"
             android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
+            android:theme="@style/KAPTheme.NoActionBar"/>
 
         <activity
-            android:name=".ui.signup.SignUpWithDetailInfoActivity"
+            android:name=".ui.signup.SignupWithDetailInfoActivity"
             android:exported="false"
             android:label="회원가입 디테일 정보"
             android:theme="@style/KAPTheme.NoActionBar" />

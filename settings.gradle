@@ -1,20 +1,14 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
-        jcenter()
-        mavenCentral()
-        maven {
-            url 'https://naver.jfrog.io/artifactory/maven/'
-        }
-        maven { url 'https://jitpack.io'}
         gradlePluginPortal()
+        mavenCentral()
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven {
             url 'https://naver.jfrog.io/artifactory/maven/'
@@ -26,3 +20,4 @@ dependencyResolutionManagement {
 include ':koin', ':core'
 include ':data'
 include ':domain'
+include ':business'

@@ -3,6 +3,11 @@ package `in`.koreatech.koin.data.response.bus
 import com.google.gson.annotations.SerializedName
 
 data class ShuttleBusRouteResponse(
+    @SerializedName("route_name") val routeName: String,
+    @SerializedName("arrival_info") val arrivalInfo: List<ShuttleBusNodeInfoResponse>
+)
+
+data class ShuttleBusNodeInfoResponse(
     @SerializedName("node_name") val nodeName: String,
     @SerializedName("arrival_time") val arrivalTime: String
 )

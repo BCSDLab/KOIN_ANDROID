@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableFooterViewHolder
 
 abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
     ListAdapter<T, ViewHolder>(itemCallback) {
+
+    private var updatedAt: String? = null
 
     override fun getItemViewType(position: Int) = when (position) {
         0 -> HEADER
@@ -25,7 +28,7 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
         return when (viewType) {
             HEADER -> onCreateHeaderViewHolder(parent)
             ITEM -> onCreateItemViewHolder(parent)
-            FOOTER -> FooterViewHolder(LayoutInflater.from(parent.context))
+            FOOTER -> onCreateFooterViewHolder(parent)
             else -> throw IllegalArgumentException("Wrong viewtype")
         }
     }
@@ -33,11 +36,17 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
     final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             ITEM -> (holder as BusTimetableItemViewHolder<T>).bind(getItem(position))
+            FOOTER -> (holder as BusTimetableFooterViewHolder).setUpdatedAt(updatedAt)
         }
     }
 
     abstract fun onCreateHeaderViewHolder(parent: ViewGroup): BusTimetableHeaderViewHolder
     abstract fun onCreateItemViewHolder(parent: ViewGroup): BusTimetableItemViewHolder<T>
+    abstract fun onCreateFooterViewHolder(parent: ViewGroup): BusTimetableFooterViewHolder
+
+    fun setUpdatedAt(date: String?) {
+        updatedAt = date
+    }
 
     final override fun submitList(list: List<T>?) {
         super.submitList(
@@ -61,9 +70,6 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
                 }
             } else null, commitCallback)
     }
-
-    private inner class FooterViewHolder(layoutInflater: LayoutInflater) :
-        ViewHolder(layoutInflater.inflate(R.layout.bus_timetable_footer, null, false))
 
     companion object {
         private const val ITEM = 1000

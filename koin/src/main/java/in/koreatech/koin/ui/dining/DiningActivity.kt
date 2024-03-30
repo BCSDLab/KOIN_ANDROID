@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -173,12 +174,15 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     }
 
     private fun setTextSelected(view: TextView) {
+        val color = "#" + Integer.toHexString(
+            ContextCompat.getColor(this, R.color.colorAccent))
+
         view.text = if (Build.VERSION_CODES.N > Build.VERSION.SDK_INT) {
-            Html.fromHtml(view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+            Html.fromHtml(view.text.toString().toColorForHtml(color)
                 .toUnderlineForHtml())
         } else {
             Html.fromHtml(
-                view.text.toString().toColorForHtml(getString(R.color.colorAccent))
+                view.text.toString().toColorForHtml(color)
                     .toUnderlineForHtml(),
                 Html.FROM_HTML_MODE_LEGACY
             )

@@ -53,7 +53,7 @@ public class TimetableWidget extends AppWidgetProvider {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         intent.setComponent(new ComponentName(context, SplashActivity.class));
-        PendingIntent pi = PendingIntent.getActivity(context, 1, intent, 0);
+        PendingIntent pi = PendingIntent.getActivity(context, 1, intent, PendingIntent.FLAG_IMMUTABLE);
         views.setOnClickPendingIntent(R.id.timetable_timetableview, pi);
         views.setOnClickPendingIntent(R.id.timetable_widget_need_to_add_textview, pi);
 

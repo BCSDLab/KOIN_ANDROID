@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.store.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.store.NeedSignUpStoreInfo
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
@@ -18,12 +19,15 @@ class StoreViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
-
     private val _category = MutableStateFlow<StoreCategory?>(null)
-    val category: StateFlow<StoreCategory?> = _category.asStateFlow()
-
     private val _stores = MutableStateFlow<List<Store>>(emptyList())
+    private val _store = MutableStateFlow<Store?>(null)
+    private val _needToProceedStoreInfo = MutableSharedFlow<NeedSignUpStoreInfo>()
+
+    val category: StateFlow<StoreCategory?> = _category.asStateFlow()
     val stores: StateFlow<List<Store>> = _stores.asStateFlow()
+    val store: StateFlow<Store?> = _store.asStateFlow()
+    val needToProceedStoreInfo = _needToProceedStoreInfo.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -63,5 +67,17 @@ class StoreViewModel @Inject constructor(
     fun refreshStores() = viewModelScope.launch {
         invalidateStoresUseCase()
         refreshEvent.emit(Unit)
+    }
+
+    fun clickStoreItem(item: Store) {
+        viewModelScope.launch {
+            _store.update { item }
+        }
+    }
+
+    fun setNeedToProceedStoreInfo(check: Boolean, storeName: String, storeId: Int, storeNumber: String) {
+        viewModelScope.launch {
+            _needToProceedStoreInfo.emit(NeedSignUpStoreInfo(check,  storeName, storeId))
+        }
     }
 }
