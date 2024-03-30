@@ -65,7 +65,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = "Add icon",
+                contentDescription = stringResource(id = R.string.back_icon),
             )
         }
         Column(
@@ -143,7 +143,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
             LinedTextField(
                 value = phoneNumber,
                 onValueChange = { phoneNumber = it },
-                label = stringResource(id = R.string.phone_number)
+                label = stringResource(id = R.string.personal_contact)
             )
 
 
@@ -167,7 +167,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                         Icon(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(id = R.drawable.plus_square),
-                            contentDescription = "Add icon",
+                            contentDescription = stringResource(id = R.string.upload_file_icon),
                             tint = Orange
                         )
                         Text(
@@ -240,7 +240,7 @@ fun UploadFileList(item: MutableList<String>) {
                         .size(24.dp)
                         .padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.file_icon),
-                    contentDescription = "Add icon",
+                    contentDescription = stringResource(id = R.string.file_icon),
                     tint = Gray3,
                 )
                 Text(text = "", fontSize = 15.sp, color = Gray3)
