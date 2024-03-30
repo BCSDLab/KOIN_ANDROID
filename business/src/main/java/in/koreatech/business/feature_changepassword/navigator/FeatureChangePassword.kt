@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreen
 import `in`.koreatech.business.feature_changepassword.finishchangepassword.FinishChangePasswordScreen
 import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreen
