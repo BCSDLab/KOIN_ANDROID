@@ -31,8 +31,6 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
@@ -43,21 +41,23 @@ android {
 
 dependencies {
     implementation project(':domain')
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-    implementation project.androidXKtx
-    implementation project.coroutineAndroid
+    implementation libs.core.ktx
+    implementation libs.kotlinx.coroutines.android
 
 
     /* Dependency - Retrofit2 */
-    implementation project.retrofit
-    implementation project.retrofitGsonConvert
-    implementation project.okhttp
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.retrofit.rxjava2
 
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
+    implementation libs.okhttp
+    implementation libs.okhttp.logging.interceptor
 
-    implementation project.androidXSecurity
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    implementation libs.androidx.security.crypto
+
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
 }
