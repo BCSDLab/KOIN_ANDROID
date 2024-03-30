@@ -165,7 +165,7 @@ fun PasswordAuthenticationScreen(
             )
 
             Button(
-                onClick = { viewModel.sendAuthCode(state.email) },
+                onClick = { /*viewModel.sendAuthCode(state.email)*/ },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(ColorPrimary),
                 contentPadding = PaddingValues(1.dp),
