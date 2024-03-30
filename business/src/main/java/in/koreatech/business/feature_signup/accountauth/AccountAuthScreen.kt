@@ -30,9 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature_signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature_signup.textfield.AuthTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
@@ -151,7 +153,7 @@ fun AccountAuthScreen(
             ) {
 
                 Button(modifier = Modifier
-                    .width(155.dp)
+                    .width(141.dp)
                     .height(44.dp),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
@@ -164,9 +166,10 @@ fun AccountAuthScreen(
                 ) {
                     Text(text = stringResource(id = R.string.resend))
                 }
+                Spacer(modifier = Modifier.width(14.dp))
 
                 Button(modifier = Modifier
-                    .width(155.dp)
+                    .width(141.dp)
                     .height(44.dp),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
