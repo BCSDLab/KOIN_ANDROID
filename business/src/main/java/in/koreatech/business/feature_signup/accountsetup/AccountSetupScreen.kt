@@ -58,7 +58,7 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = "Add icon",
+                contentDescription = stringResource(id = R.string.back_icon),
             )
         }
         Column(

@@ -122,7 +122,7 @@ fun SearchStoreScreen(modifier: Modifier = Modifier) {
                         Icon(
                             modifier = Modifier.size(17.dp),
                             painter = painterResource(id = R.drawable.search),
-                            contentDescription = "search"
+                            contentDescription = stringResource(id = R.string.search_icon)
                         )
                     }
                 }
