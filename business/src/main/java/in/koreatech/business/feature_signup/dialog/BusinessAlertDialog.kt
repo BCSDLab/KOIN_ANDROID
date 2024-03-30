@@ -28,7 +28,7 @@ import androidx.compose.ui.window.Dialog
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.Gray3
+import `in`.koreatech.business.ui.theme.ColorMinor
 
 
 @Composable
@@ -88,7 +88,7 @@ fun BusinessAlertDialog(
                         Text(
                             textAlign = TextAlign.Center,
                             text = stringResource(id = R.string.cancel),
-                            color = Gray3,
+                            color = ColorMinor,
                         )
                     }
 
@@ -115,12 +115,8 @@ fun BusinessAlertDialog(
                             text = positiveButtonText
                         )
                     }
-
                 }
-
             }
         }
-
-
     }
 }

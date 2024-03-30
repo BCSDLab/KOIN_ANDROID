@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,15 +31,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.textfield.AuthTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.Gray1
-import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Orange
+import `in`.koreatech.business.ui.theme.ColorUnachieved
+import `in`.koreatech.business.ui.theme.ColorDescription
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 import kotlinx.coroutines.delay
 
 @Composable
@@ -78,7 +81,7 @@ fun AccountAuthScreen(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     modifier = Modifier,
-                    color = Orange,
+                    color = ColorEmphasis,
                     text = stringResource(id = R.string.account_authentication)
                 )
                 Text(text = stringResource(id = R.string.two_third))
@@ -89,14 +92,14 @@ fun AccountAuthScreen(modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 drawLine(
-                    color = Gray1,
+                    color = ColorUnachieved,
                     start = Offset(0f - 40, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = Orange,
+                    color = ColorEmphasis,
                     start = Offset(0f - 40, 0f),
                     end = Offset((size.width + 40) * 2 / 3, size.height),
                     strokeWidth = 4.dp.toPx(),
@@ -120,7 +123,7 @@ fun AccountAuthScreen(modifier: Modifier = Modifier) {
             Text(
                 text = stringResource(id = R.string.verification_code_prompt),
                 fontSize = 15.sp,
-                color = Gray2,
+                color = ColorDescription,
             )
 
             Spacer(modifier = Modifier.height(38.dp))

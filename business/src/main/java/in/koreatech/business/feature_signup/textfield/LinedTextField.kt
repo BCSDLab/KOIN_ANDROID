@@ -84,10 +84,7 @@ fun LinedTextField(
                     if (isError) Text(text = errorText, fontSize = 11.sp, color = ColorError)
 
                 }
-
             }
-
-
         }
     )
 }

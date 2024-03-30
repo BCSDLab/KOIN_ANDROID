@@ -36,9 +36,9 @@ import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.ColorUnachieved
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.business.ui.theme.Orange
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 
 @Composable
@@ -80,10 +80,10 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
             ) {
                 Text(
                     modifier = Modifier,
-                    color = Orange,
+                    color = ColorEmphasis,
                     text = stringResource(id = R.string.input_basic_information),
                 )
-                Text(text = stringResource(id = R.string.one_third), color = Orange,)
+                Text(text = stringResource(id = R.string.one_third), color = ColorEmphasis,)
             }
             Canvas(
                 modifier = Modifier
@@ -91,14 +91,14 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 drawLine(
-                    color = Gray1,
+                    color = ColorUnachieved,
                     start = Offset(0f - 40, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = Orange,
+                    color = ColorEmphasis,
                     start = Offset(0f - 40, 0f),
                     end = Offset((size.width + 40) / 3, size.height),
                     strokeWidth = 4.dp.toPx(),

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.Orange
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 
 @Composable
@@ -64,7 +64,7 @@ fun AuthTextField(
                     ) {
                         drawLine(
                             color = if (value.isEmpty()) ColorHelper else if (isError) ColorError
-                            else Orange,
+                            else ColorEmphasis,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx(),
@@ -79,10 +79,7 @@ fun AuthTextField(
                     fontSize = 11.sp,
                     color = ColorError
                 )
-
             }
-
-
         }
     )
 }
