@@ -68,7 +68,7 @@ jobs:
           done
 
       - name: Build with Gradle
-        run: ./gradlew assembleRelease
+        run: ./gradlew koin:assembleRelease
 
       - name: Upload to Firebase
         env:
@@ -142,7 +142,7 @@ jobs:
             done
 
      - name: Build with Gradle
-       run: ./gradlew bundleRelease
+       run: ./gradlew koin:bundleRelease
 
      - name: Upload AAB to Internal testing
        uses: r0adkll/upload-google-play@v1
