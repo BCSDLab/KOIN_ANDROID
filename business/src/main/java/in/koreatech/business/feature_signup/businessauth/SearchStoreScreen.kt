@@ -43,18 +43,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
-import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorDescription
+import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorSearch
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @Composable
-fun SearchStoreScreen(modifier: Modifier = Modifier) {
+fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
     var search by remember { mutableStateOf("") }
     val storeItems = mutableListOf<String>()
 
@@ -63,7 +61,7 @@ fun SearchStoreScreen(modifier: Modifier = Modifier) {
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { }
+            onClick = { onBackClicked() }
         ) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
@@ -128,14 +126,14 @@ fun SearchStoreScreen(modifier: Modifier = Modifier) {
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            StoreList(storeItems)
+            StoreList(storeItems, onSelectClicked = onBackClicked)
         }
     }
 }
 
 
 @Composable
-fun StoreList(item: MutableList<String>) {
+fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
 
     var showBottomSheet by remember { mutableStateOf(false) }
     var isButtonClicked by remember { mutableStateOf(false) }
@@ -249,7 +247,7 @@ fun StoreList(item: MutableList<String>) {
                             .width(195.dp)
                             .height(85.dp)
                             .padding(16.dp),
-                        onClick = { },
+                        onClick = { onSelectClicked() },
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF175C8E))
                     ) {
@@ -260,5 +258,4 @@ fun StoreList(item: MutableList<String>) {
             }
         }
     }
-
 }

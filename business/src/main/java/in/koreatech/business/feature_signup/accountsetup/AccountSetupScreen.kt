@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature_signup.accountsetup
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,32 +29,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorUnachieved
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 
 @Composable
-fun AccountSetupScreen(modifier: Modifier = Modifier) {
+fun AccountSetupScreen(
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit = {},
+    onNextClicked: (String) -> Unit = {},
+) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordConfirm by remember { mutableStateOf("") }
     var emailConfirm by remember { mutableStateOf("") }
-
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .background(Color.White)
+            .fillMaxSize(),
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { }
+            onClick = { onBackClicked() }
         ) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
@@ -83,7 +87,7 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
                     color = ColorEmphasis,
                     text = stringResource(id = R.string.input_basic_information),
                 )
-                Text(text = stringResource(id = R.string.one_third), color = ColorEmphasis,)
+                Text(text = stringResource(id = R.string.one_third), color = ColorEmphasis)
             }
             Canvas(
                 modifier = Modifier
@@ -160,7 +164,7 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
                     disabledContainerColor = ColorDisabledButton,
                     disabledContentColor = Color.White,
                 ),
-                onClick = { }) {
+                onClick = { onNextClicked(emailConfirm) }) {
                 Text(
                     text = stringResource(id = R.string.email_authentication),
                     fontSize = 15.sp,
@@ -170,5 +174,4 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
             }
         }
     }
-
 }
