@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature_changepassword.passwordauthentication
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,26 +39,32 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+import org.orbitmvi.orbit.viewmodel.observe
 
 @Composable
 fun PasswordAuthenticationScreen(
     modifier: Modifier = Modifier,
     onAuthenticationButtonClicked: () -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    viewModel: PasswordAuthenticationViewModel = viewModel()
 ) {
-    var email  by remember { mutableStateOf("") }
-    var authenticationCode  by remember { mutableStateOf("") }
-    var authenticationBtnIsClicked by remember { mutableStateOf(false) }
+    val state = viewModel.collectAsState().value
+    val context = LocalContext.current
+
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         Box(
             modifier = modifier
-                .padding(top = 56.dp, start = 10.dp , bottom = 18.dp)
+                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
                 .clickable { onBackPressed() }
@@ -79,9 +86,9 @@ fun PasswordAuthenticationScreen(
         )
 
         BasicTextField(
-            value = email,
+            value = state.email,
             onValueChange = {
-                email = it
+                viewModel.insertEmail(it)
             },
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
@@ -94,7 +101,7 @@ fun PasswordAuthenticationScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (email.isEmpty()) {
+                        if (state.email.isEmpty()) {
                             Text(
                                 text = stringResource(R.string.input_email),
                                 color = Blue1,
@@ -106,7 +113,7 @@ fun PasswordAuthenticationScreen(
                     HorizontalDivider(
                         modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        color = if (email.isEmpty()) Blue1 else Color.Black
+                        color = if (state.email.isEmpty()) Blue1 else Color.Black
                     )
                 }
             },
@@ -123,9 +130,9 @@ fun PasswordAuthenticationScreen(
             .height(30.dp)
         ) {
             BasicTextField(
-                value = authenticationCode,
+                value = state.authenticationCode,
                 onValueChange = {
-                    authenticationCode = it
+                    viewModel.insertAuthCode(it)
                 },
                 maxLines = 1,
                 textStyle = TextStyle(fontSize = 15.sp),
@@ -135,7 +142,7 @@ fun PasswordAuthenticationScreen(
                             contentAlignment = Alignment.CenterStart,
                             modifier = modifier.padding(bottom = 7.dp)
                         ){
-                            if (authenticationCode.isEmpty()) {
+                            if (state.authenticationCode.isEmpty()) {
                                 Text(
                                     text = stringResource(R.string.input_authentication_code),
                                     color = Blue1,
@@ -147,7 +154,7 @@ fun PasswordAuthenticationScreen(
                         HorizontalDivider(
                             modifier = modifier.width(220.dp),
                             thickness = 1.dp,
-                            color = if (authenticationCode.isEmpty()) Blue1 else Color.Black
+                            color = if (state.authenticationCode.isEmpty()) Blue1 else Color.Black
                         )
                     }
 
@@ -158,7 +165,7 @@ fun PasswordAuthenticationScreen(
             )
 
             Button(
-                onClick = { authenticationBtnIsClicked = true },
+                onClick = { viewModel.sendAuthCode(state.email) },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(ColorPrimary),
                 contentPadding = PaddingValues(1.dp),
@@ -166,7 +173,7 @@ fun PasswordAuthenticationScreen(
                     .fillMaxSize()
                     .padding(end = 32.dp)
             ) {
-                Text(text = if(authenticationBtnIsClicked)stringResource(R.string.resend) else stringResource(R.string.send_authentication_code),
+                Text(text = if(state.authenticationBtnIsClicked)stringResource(R.string.resend) else stringResource(R.string.send_authentication_code),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -174,10 +181,10 @@ fun PasswordAuthenticationScreen(
         }
         Button(
             onClick =  {
-                onAuthenticationButtonClicked()
+                viewModel.goToPasswordChangeScreen()
             } ,
             shape = RectangleShape,
-            colors = if(authenticationCode.isBlank()) ButtonDefaults.buttonColors(Gray5)
+            colors = if(state.authenticationCode.isBlank()) ButtonDefaults.buttonColors(Gray5)
             else ButtonDefaults.buttonColors(ColorPrimary),
             modifier = modifier
                 .padding(horizontal = 32.dp)
@@ -189,6 +196,16 @@ fun PasswordAuthenticationScreen(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
             )
+        }
+    }
+
+    viewModel.collectSideEffect{
+        when(it){
+            is PasswordAuthenticationSideEffect.AuthenticationBtnIsClicked -> viewModel.authenticationBtnClicked()
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> viewModel.goToPasswordChangeScreen()
+            else -> {
+                Toast.makeText(context, "안녕", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
