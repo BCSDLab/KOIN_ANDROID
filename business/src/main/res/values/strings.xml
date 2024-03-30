@@ -44,10 +44,13 @@
     <string name="account_transfer">계좌이체</string>
     <string name="phone_number">전화번호</string>
     <string name="select">선택</string>
-    <string name="back_icon">BackArrow</string>
-    <string name="check_icon">check</string>
     <string name="signup_request_complete">가입 신청 완료</string>
     <string name="signup_request_complete_description">가입 신청이 완료되었습니다.\\n가입 허가가 승인되면 로그인이 가능합니다.</string>
     <string name="navigate_to_login_screen">로그인 화면으로 가기</string>
+    <string name="back_icon">BackArrow</string>
+    <string name="check_icon">check</string>
+    <string name="upload_file_icon">upload file</string>
+    <string name="file_icon">upload item image</string>
+    <string name="search_icon">search</string>
 
 </resources>
