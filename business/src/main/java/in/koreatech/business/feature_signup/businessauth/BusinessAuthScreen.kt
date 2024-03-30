@@ -35,22 +35,25 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
-import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorDescription
-import `in`.koreatech.business.ui.theme.ColorMinor
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorEmphasis
+import `in`.koreatech.business.ui.theme.ColorHelper
+import `in`.koreatech.business.ui.theme.ColorMinor
 
 @Composable
-fun BusinessAuthScreen(modifier: Modifier = Modifier) {
+fun BusinessAuthScreen(
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit = {},
+    onSearchClicked: () -> Unit = {},
+    onNextClicked: () -> Unit = {},
+) {
     var name by remember { mutableStateOf("") }
     var storeName by remember { mutableStateOf("") }
     var storeNumber by remember { mutableStateOf("") }
@@ -61,7 +64,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
-        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { }) {
+        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { onBackClicked() }) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -125,7 +128,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                 )
                 Button(
                     modifier = Modifier,
-                    onClick = { },
+                    onClick = { onSearchClicked() },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF175C8E),
@@ -196,7 +199,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),
-                onClick = { }) {
+                onClick = { onNextClicked() }) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
@@ -247,6 +250,5 @@ fun UploadFileList(item: MutableList<String>) {
             }
             Spacer(modifier = Modifier.width(12.dp))
         }
-
     }
 }

@@ -33,13 +33,13 @@ import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 @Composable
-fun CompleteSignupScreen(modifier: Modifier = Modifier) {
+fun CompleteSignupScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
     Column(
         modifier = modifier,
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { }
+            onClick = {onBackClicked()}
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -89,7 +89,7 @@ fun CompleteSignupScreen(modifier: Modifier = Modifier) {
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),
-                onClick = { }) {
+                onClick = {onBackClicked()}) {
                 Text(
                     text = stringResource(id = R.string.navigate_to_login_screen),
                     fontSize = 15.sp,
