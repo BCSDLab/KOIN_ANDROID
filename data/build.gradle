@@ -2,7 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -31,35 +31,33 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
     }
 }
 
 dependencies {
-    implementation project.androidXKtx
-    implementation project.coroutineAndroid
-
     implementation project(':domain')
+    implementation libs.core.ktx
+    implementation libs.kotlinx.coroutines.android
 
-    /* Dependency - okhttp */
-    implementation project.okhttp
-    implementation project.okhttpLogging
 
     /* Dependency - Retrofit2 */
-    implementation project.retrofit
-    implementation project.retrofitGsonConvert
+    implementation libs.retrofit
+    implementation libs.retrofit.converter.gson
+    implementation libs.retrofit.rxjava2
 
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
+    implementation libs.okhttp
+    implementation libs.okhttp.logging.interceptor
 
-    implementation project.androidXSecurity
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    implementation libs.androidx.security.crypto
+
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
 }

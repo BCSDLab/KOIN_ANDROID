@@ -1,6 +1,7 @@
 
 package in.koreatech.koin.util.font_change;
 
+import android.annotation.SuppressLint;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Parcel;
@@ -45,6 +46,7 @@ public class TypekitSpan extends StyleSpan {
             oldStyle = old.getStyle();
         }
 
+        @SuppressLint("WrongConstant")
         int want = oldStyle | style;
 
 

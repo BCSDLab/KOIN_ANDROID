@@ -54,6 +54,7 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
                 BusType.City -> switchCityBusTimetable()
                 BusType.Express -> switchExpressBusTimetable()
                 BusType.Shuttle -> switchShuttleBusTimetable()
+                else -> Unit
             }
         }
     }

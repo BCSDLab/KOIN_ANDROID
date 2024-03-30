@@ -4,11 +4,11 @@ plugins {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
-    implementation project.coroutineCore
-    implementation 'javax.inject:javax.inject:1'
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.javax.inject
 }
