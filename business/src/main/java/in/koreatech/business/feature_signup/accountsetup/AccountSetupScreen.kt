@@ -64,7 +64,7 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
         Column(
             modifier = Modifier
                 .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center, // 중앙 정렬
+            verticalArrangement = Arrangement.Center,
         ) {
 
             Text(
@@ -91,18 +91,18 @@ fun AccountSetupScreen(modifier: Modifier = Modifier) {
                     .padding(16.dp)
             ) {
                 drawLine(
-                    color = Gray1, // 선의 색상
-                    start = Offset(0f - 40, 0f), // 시작점 좌표
-                    end = Offset(size.width + 35, size.height), // 끝점 좌표
-                    strokeWidth = 4.dp.toPx(), // 선의 두께
-                    cap = StrokeCap.Round// 선의 끝 모양
+                    color = Gray1,
+                    start = Offset(0f - 40, 0f),
+                    end = Offset(size.width + 35, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = Orange, // 선의 색상
-                    start = Offset(0f - 40, 0f), // 시작점 좌표
-                    end = Offset((size.width + 40) / 3, size.height), // 끝점 좌표
-                    strokeWidth = 4.dp.toPx(), // 선의 두께
-                    cap = StrokeCap.Round// 선의 끝 모양
+                    color = Orange,
+                    start = Offset(0f - 40, 0f),
+                    end = Offset((size.width + 40) / 3, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
                 )
             }
 

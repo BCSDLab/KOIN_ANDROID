@@ -61,7 +61,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
-        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { /* 클릭 이벤트 처리 */ }) {
+        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { }) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
