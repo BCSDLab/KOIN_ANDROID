@@ -81,6 +81,6 @@ fun ShopMenusResponse.toShopMenus() = ShopMenus(
 )
 
 fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
-    option = option,
+    option = option ?: "",
     price = price
 )

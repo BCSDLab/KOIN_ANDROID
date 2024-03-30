@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.di.network
 
+import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.core.qualifier.NoAuth
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.*
@@ -53,6 +54,14 @@ object NoAuthNetworkModule {
         @NoAuth retrofit: Retrofit
     ): UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnerApi(
+        @NoAuth retrofit: Retrofit
+    ): OwnerApi {
+        return retrofit.create(OwnerApi::class.java)
     }
 
     @Provides

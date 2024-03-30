@@ -2,15 +2,13 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
-    flavorDimensions "default"
-
     defaultConfig {
-
-        compileSdkVersion project.compileSdkVersion
+        namespace "in.koreatech.koin.core"
+        compileSdk project.compileSdkVersion
         minSdkVersion project.minSdkVersion
         targetSdkVersion project.targetSdkVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,19 +28,12 @@ android {
         }
     }
 
-    /* guava */
-    configurations.all {
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }
-
     compileOptions {
-        coreLibraryDesugaringEnabled true
-
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     buildFeatures {
@@ -60,72 +51,61 @@ dependencies {
         exclude group: 'com.google.code.findbugs'
     })
 
-    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation libs.androidx.runner
 
-    api kotlinStdlib
-    api androidXKtx
+    api libs.kotlin.stdlib
 
     /* Dependency - AndroidX Jetpack */
-    api project.androidxAppCompat
-    api project.androidxRecyclerView
-    api project.androidxCardView
-    api project.androidxMaterial
-    api project.androidXLifecycle
-    api project.androidXLivedata
-
-    /* Dependency - Firebase */
-    api project.firebaseCore
-    api project.firebaseDatabase
-    api project.firebasePerformance
+    api libs.appcompat
+    api libs.androidx.recyclerview
+    api libs.androidx.cardview
+    api libs.material
+    api libs.lifecycle.runtime.ktx
+    api libs.androidx.lifecycle.viewmodel.ktx
+    api libs.androidx.lifecycle.livedata.ktx
 
     /* Dependency - Retrofit2 */
-    api project.retrofit
-    api project.retrofitGsonConvert
-    api project.retrofitRxJava
+    api libs.retrofit
+    api libs.retrofit.converter.gson
+    api libs.retrofit.rxjava2
 
     /* Dependency - leakcanary */
-    debugImplementation project.leakcanaryDebug
+    debugImplementation libs.leakcanary.android
 
     /* Dependency - glide */
-    api project.glide
-    kapt project.glideAnnotation
+    api libs.glide
+    kapt libs.glide.compiler
 
     /* Dependency - butterknife */
-    api project.butterknife
-    kapt project.butterknifeAnnotation
+    api libs.butterknife
+    kapt libs.butterknife.compiler
+
 
     /* Dependency - okhttp */
-    api project.okhttp
-    api project.okhttpLogging
+    api libs.okhttp
+    api libs.okhttp.logging.interceptor
 
     /* Dependency - sticky scroll view */
-    api project.stickyScrollView
+    api libs.stickyScrollView
 
-    api project.coroutineAndroid
+    api libs.kotlinx.coroutines.android
 
-    api 'androidx.constraintlayout:constraintlayout:1.1.3'
+    api libs.androidx.constraintlayout
 
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    api 'io.reactivex.rxjava2:rxjava:2.1.2'
-    api 'javax.inject:javax.inject:1'
-    api 'javax.annotation:jsr250-api:1.0'
+    api libs.rxjava.android
+    api libs.rxjava
+    api libs.javax.inject
+    api libs.jsr250.api
 
-    api 'com.jpardogo.materialtabstrip:library:1.1.1'
+    api libs.materialtabstrip.library
 
-    testImplementation 'junit:junit:4.12'
-    api 'org.jetbrains:annotations:15.0'
-    api 'com.google.firebase:firebase-crashlytics:17.3.1'
-    api 'com.google.firebase:firebase-analytics:18.0.2'
+    testImplementation libs.junit
+    api libs.jetbrains.annotations
 
-    implementation project.hiltAndroid
-    kapt project.hiltCompiler
 
-    api project.androidXActivityKtx
-    api project.androidXFragmentKtx
-}
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-apply plugin: 'com.google.gms.google-services'
-
-repositories {
-    mavenCentral()
+    api libs.androidx.activity.ktx
+    api libs.androidx.fragment.ktx
 }

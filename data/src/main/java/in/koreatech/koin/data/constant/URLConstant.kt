@@ -7,7 +7,7 @@ object URLConstant {
 
     const val BASE_URL_PRODUCTION = "https://api.koreatech.in" //release server
     const val BASE_URL_STAGE = "https://api.stage.koreatech.in" //development server
-    //const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
+    // const val BASE_URL_STAGE = "https://api.koreatech.in" //development server
 
     const val OWNER_URL_STAGE = "https://owner.stage.koreatech.in/"
     const val OWNER_URL_PRODUCTION = "https://owner.koreatech.in/"
@@ -28,6 +28,7 @@ object URLConstant {
         const val BUS = "bus"
         const val COURSES = "$BUS/courses"
         const val TIMETABLE = "$BUS/timetable"
+        const val TIMETABLE_V2 = "$BUS/timetable/v2"
         const val SEARCH = "$BUS/search"
         const val BUSES = "/buses"
     }
@@ -51,6 +52,16 @@ object URLConstant {
             const val STUDENT = "student"
             const val REGISTER: String = "$USER/$STUDENT/register"
         }
+    }
+
+    object OWNER {
+        const val OWNER = "owner"
+        const val OWNERS = "owners"
+        const val VERIFICATION = "verification"
+        const val REGISTER: String = "$OWNERS/register"
+        const val CODE = "$OWNERS/$VERIFICATION/code"
+        const val EMAIL = "$OWNERS/$VERIFICATION/email"
+        const val PW = "password"
     }
 
     object CALLVANS {
@@ -104,5 +115,10 @@ object URLConstant {
     object DEPT {
         const val DEPT = "/dept"
         const val DEPTS = "/depts"
+    }
+
+    object UPLOAD {
+        const val url = "/{domain}/upload/url"
+        const val OWNERURL = "/owners/upload/url"
     }
 }

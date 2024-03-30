@@ -32,6 +32,22 @@ class TokenRepositoryImpl @Inject constructor(
         tokenLocalDataSource.removeAccessToken()
     }
 
+    override suspend fun saveOwnerAccessToken(token: String) {
+        tokenLocalDataSource.saveOwnerAccessToken(token)
+    }
+
+    override suspend fun getOwnerAccessToken(): String? {
+        return tokenLocalDataSource.getOwnerAccessToken()
+    }
+
+    override fun getAccessOwnerTokenBlocking(): String? {
+        return runBlocking { tokenLocalDataSource.getOwnerAccessToken() }
+    }
+
+    override suspend fun removeOwnerAccessToken() {
+        tokenLocalDataSource.removeOwnerAccessToken()
+    }
+
     override suspend fun removeRefreshToken() {
         tokenLocalDataSource.removeRefreshToken()
     }
