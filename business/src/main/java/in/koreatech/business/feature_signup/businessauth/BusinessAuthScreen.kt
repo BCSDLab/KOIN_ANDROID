@@ -44,10 +44,10 @@ import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Gray3
+import `in`.koreatech.business.ui.theme.ColorDescription
+import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.business.ui.theme.Orange
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 @Composable
 fun BusinessAuthScreen(modifier: Modifier = Modifier) {
@@ -85,10 +85,10 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    color = Orange, text = stringResource(id = R.string.business_auth)
+                    color = ColorEmphasis, text = stringResource(id = R.string.business_auth)
                 )
                 Text(
-                    color = Orange, text = stringResource(id = R.string.three_third)
+                    color = ColorEmphasis, text = stringResource(id = R.string.three_third)
                 )
             }
             Canvas(
@@ -98,7 +98,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
             ) {
 
                 drawLine(
-                    color = Orange,
+                    color = ColorEmphasis,
                     start = Offset(0f - 35, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
@@ -168,7 +168,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(id = R.drawable.plus_square),
                             contentDescription = stringResource(id = R.string.upload_file_icon),
-                            tint = Orange
+                            tint = ColorEmphasis
                         )
                         Text(
                             text = stringResource(id = R.string.file_upload_prompt),
@@ -179,7 +179,7 @@ fun BusinessAuthScreen(modifier: Modifier = Modifier) {
                         Text(
                             text = stringResource(id = R.string.file_upload_instruction),
                             fontSize = 11.sp,
-                            color = Gray2,
+                            color = ColorDescription,
                         )
                     }
 
@@ -241,9 +241,9 @@ fun UploadFileList(item: MutableList<String>) {
                         .padding(end = 8.dp),
                     painter = painterResource(id = R.drawable.file_icon),
                     contentDescription = stringResource(id = R.string.file_icon),
-                    tint = Gray3,
+                    tint = ColorMinor,
                 )
-                Text(text = "", fontSize = 15.sp, color = Gray3)
+                Text(text = "", fontSize = 15.sp, color = ColorMinor)
             }
             Spacer(modifier = Modifier.width(12.dp))
         }

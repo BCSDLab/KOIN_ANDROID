@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature_signup.completesignup
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,13 +22,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Orange
+import `in`.koreatech.business.ui.theme.ColorDescription
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 @Composable
 fun CompleteSignupScreen(modifier: Modifier = Modifier) {
@@ -55,7 +58,7 @@ fun CompleteSignupScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.size(55.dp),
                 painter = painterResource(id = R.drawable.signup_check),
                 contentDescription = stringResource(id = R.string.check_icon),
-                tint = Orange
+                tint = ColorEmphasis
             )
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -72,7 +75,7 @@ fun CompleteSignupScreen(modifier: Modifier = Modifier) {
                 textAlign = TextAlign.Center,
                 text = stringResource(id = R.string.signup_request_complete_description),
                 fontSize = 16.sp,
-                color = Gray2,
+                color = ColorDescription,
             )
 
             Spacer(modifier = Modifier.height(51.dp))

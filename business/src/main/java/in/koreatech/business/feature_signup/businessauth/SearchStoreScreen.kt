@@ -49,8 +49,8 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.Gray2
-import `in`.koreatech.business.ui.theme.Gray4
+import `in`.koreatech.business.ui.theme.ColorDescription
+import `in`.koreatech.business.ui.theme.ColorSearch
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @Composable
@@ -107,13 +107,13 @@ fun SearchStoreScreen(modifier: Modifier = Modifier) {
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    unfocusedContainerColor = Gray4,
-                    focusedLabelColor = Gray4,
+                    unfocusedContainerColor = ColorSearch,
+                    focusedLabelColor = ColorSearch,
                 ),
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.search_shop),
-                        color = Gray2,
+                        color = ColorDescription,
                         fontSize = 13.sp
                     )
                 },
