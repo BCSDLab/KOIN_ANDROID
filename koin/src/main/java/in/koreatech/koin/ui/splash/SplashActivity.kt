@@ -67,6 +67,8 @@ class SplashActivity : ActivityBase() {
                         versionUpdatePriority
                     )
                 }
+
+                else -> Unit
             }
         }
 

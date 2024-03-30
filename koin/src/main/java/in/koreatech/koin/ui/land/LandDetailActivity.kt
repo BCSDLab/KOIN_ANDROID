@@ -18,6 +18,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager2.widget.ViewPager2
 import com.naver.maps.geometry.LatLng
@@ -44,9 +45,11 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
                 if (it.imageUrls.isNotEmpty()) {
                     setRoomImage(it)
                 } else {
-                    binding.landDetailNoImageTextview.text = getString(R.string.land_detail_no_image)
+                    binding.landDetailNoImageTextview.text =
+                        getString(R.string.land_detail_no_image)
                 }
-                binding.landDetailRoomAddressTextview.text = it.address.ifEmpty { getString(R.string.land_detail_no_location_information) }
+                binding.landDetailRoomAddressTextview.text =
+                    it.address.ifEmpty { getString(R.string.land_detail_no_location_information) }
                 setRoomOption(it)
                 setRoomInformation(it)
                 naverMapSetMarker(it)
@@ -84,33 +87,65 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
 
     private fun setRoomOption(landDetail: LandDetail) {
         with(binding) {
-            if (!landDetail.optAirConditioner) setGray(landDetailAirconditionerImageview, landDetailAirconditionerTextview)
-            if (!landDetail.optRefrigerator) setGray(landDetailRefrigeratorImageview, landDetailRefrigeratorTextview)
+            if (!landDetail.optAirConditioner) setGray(
+                landDetailAirconditionerImageview,
+                landDetailAirconditionerTextview
+            )
+            if (!landDetail.optRefrigerator) setGray(
+                landDetailRefrigeratorImageview,
+                landDetailRefrigeratorTextview
+            )
             if (!landDetail.optCloset) setGray(landDetailClosetImageview, landDetailClosetTextview)
             if (!landDetail.optTv) setGray(landDetailTvImageview, landDetailTvTextview)
-            if (!landDetail.optElectronicDoorLock) setGray(landDetailDoorlockImageview, landDetailDoorlockTextview)
-            if (!landDetail.optMicrowave) setGray(landDetailMicrowaveImageview, landDetailMicrowaveTextview)
-            if (!landDetail.optGasRange) setGray(landDetailGasRangeImageview, landDetailGasRangeTextview)
-            if (!landDetail.optInduction) setGray(landDetailInductionImageview, landDetailInductionTextview)
-            if (!landDetail.optWaterPurifier) setGray(landDetailWaterPurifierImageview, landDetailWaterPurifierTextview)
+            if (!landDetail.optElectronicDoorLock) setGray(
+                landDetailDoorlockImageview,
+                landDetailDoorlockTextview
+            )
+            if (!landDetail.optMicrowave) setGray(
+                landDetailMicrowaveImageview,
+                landDetailMicrowaveTextview
+            )
+            if (!landDetail.optGasRange) setGray(
+                landDetailGasRangeImageview,
+                landDetailGasRangeTextview
+            )
+            if (!landDetail.optInduction) setGray(
+                landDetailInductionImageview,
+                landDetailInductionTextview
+            )
+            if (!landDetail.optWaterPurifier) setGray(
+                landDetailWaterPurifierImageview,
+                landDetailWaterPurifierTextview
+            )
             if (!landDetail.optBidet) setGray(landDetailBidetImageview, landDetailBidetTextview)
             if (!landDetail.optWasher) setGray(landDetailWasherImageview, landDetailWasherTextview)
             if (!landDetail.optBed) setGray(landDetailBedImageview, landDetailBedTextview)
             if (!landDetail.optDesk) setGray(landDetailDeskImageview, landDetailDeskTextview)
-            if (!landDetail.optShoeCloset) setGray(landDetailShoeClosetImageview, landDetailShoeClosetTextview)
-            if (!landDetail.optVeranda) setGray(landDetailVerandaImageview, landDetailVerandaTextview)
-            if (!landDetail.optElevator) setGray(landDetailElevatorImageview,landDetailElevatorTextview)
+            if (!landDetail.optShoeCloset) setGray(
+                landDetailShoeClosetImageview,
+                landDetailShoeClosetTextview
+            )
+            if (!landDetail.optVeranda) setGray(
+                landDetailVerandaImageview,
+                landDetailVerandaTextview
+            )
+            if (!landDetail.optElevator) setGray(
+                landDetailElevatorImageview,
+                landDetailElevatorTextview
+            )
         }
     }
 
     private fun setRoomInformation(landDetail: LandDetail) {
         with(binding) {
-            landDetailNameTextview.text = landDetail.name.ifEmpty { getString(R.string.land_detail_no_name) }
+            landDetailNameTextview.text =
+                landDetail.name.ifEmpty { getString(R.string.land_detail_no_name) }
             landDetailCharterFee.text = landDetail.charterFee.ifEmpty { "-" }
             landDetailRoomType.text = landDetail.roomType.ifEmpty { "-" }
             landDetailMonthlyFee.text = landDetail.monthlyFee.ifEmpty { "-" }
             landDetailDeposit.text = landDetail.deposit.ifEmpty { "-" }
-            landDetailFloor.text = if (landDetail.floor.isEmpty()) "-" else "${landDetail.floor} ${getString(R.string.land_detail_floor_unit)}"
+            landDetailFloor.text =
+                if (landDetail.floor.isEmpty()) "-" else "${landDetail.floor} ${getString(R.string.land_detail_floor_unit)}"
             landDetailManagementFee.text = landDetail.managementFee.ifEmpty { "-" }
             landDetailRoomSize.text = landDetail.size.ifEmpty { "-" }
             landDetailPhone.text = landDetail.phone.ifEmpty { "-" }
@@ -122,13 +157,15 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
         with(binding) {
             landDetailNoImageTextview.visibility = View.GONE
             if (landDetail.imageUrls.size > 1) landDetailIcRightImageview.visibility = View.VISIBLE
-            landDetailImageViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            landDetailImageViewpager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     with(binding) {
                         if (position == 0) landDetailIcLeftImageview.visibility = View.INVISIBLE
                         else landDetailIcLeftImageview.visibility = View.VISIBLE
-                        if (position == landDetail.imageUrls.size - 1) landDetailIcRightImageview.visibility = View.INVISIBLE
+                        if (position == landDetail.imageUrls.size - 1) landDetailIcRightImageview.visibility =
+                            View.INVISIBLE
                         else landDetailIcRightImageview.visibility = View.VISIBLE
                     }
                 }
@@ -137,8 +174,10 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     }
 
     private fun setGray(landDetailImageview: ImageView, landDetailTextview: TextView) {
-        landDetailImageview.colorFilter = PorterDuffColorFilter(resources.getColor(R.color.gray4, null), PorterDuff.Mode.SRC_ATOP)
-        landDetailTextview.setTextColor(resources.getColor(R.color.gray4, null))
+        landDetailImageview.colorFilter = PorterDuffColorFilter(
+            ContextCompat.getColor(this, R.color.gray4), PorterDuff.Mode.SRC_ATOP
+        )
+        landDetailTextview.setTextColor(ContextCompat.getColor(this, R.color.gray4))
     }
 
     override fun onMapReady(naverMap: NaverMap) {
@@ -159,11 +198,13 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
                 ), LAND.INITIAL_ZOOM
             )
         )
-        var mapFragment = supportFragmentManager.findFragmentById(R.id.activity_land_detail_navermap) as NaverMapFragment?
+        var mapFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_land_detail_navermap) as NaverMapFragment?
         if (mapFragment == null) {
             mapFragment = NaverMapFragment().newInstance(options)
         }
-        supportFragmentManager.beginTransaction().add(R.id.activity_land_detail_navermap, mapFragment!!).commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.activity_land_detail_navermap, mapFragment!!).commit()
         mapFragment.getMapAsync(this)
     }
 
@@ -177,7 +218,15 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
             map = landDetailViewModel.naverMap
         }
     }
+
     private fun naverMapCameraMove(landDetail: LandDetail) {
-        landDetailViewModel.naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(landDetail.latitude, landDetail.longitude)))
+        landDetailViewModel.naverMap.moveCamera(
+            CameraUpdate.scrollTo(
+                LatLng(
+                    landDetail.latitude,
+                    landDetail.longitude
+                )
+            )
+        )
     }
 }

@@ -1,0 +1,103 @@
+name: Weekly CD
+
+on:
+  schedule:
+    - cron: '0 15 * * 0'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+     - uses: actions/checkout@v4
+       with:
+        ref: 'develop'
+
+     - name: set up JDK 11
+       uses: actions/setup-java@v4
+       with:
+          distribution: 'zulu'
+          java-version: '11'
+
+     - name: Make gradlew executable
+       run: chmod +x ./gradlew
+
+     - name: Set current date
+       uses: Kaven-Universe/github-action-current-date-time@v1
+       with:
+          format: "YYYY-MM-DD"
+
+     - name: Gradle cache
+       uses: actions/cache@v4
+       with:
+         path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+         restore-keys: |
+          ${{ runner.os }}-gradle-
+
+     - name: Update Secrets
+       env:
+          KOIN_STORE_PASSWORD: ${{ secrets.KOIN_STORE_PASSWORD}}
+          NAVER_MAP_KEY: ${{ secrets.NAVER_MAP_KEY}}
+          SECRET_KEY : ${{ secrets.SECRET_KEY }}
+          PROPERTIES : ${{ secrets.PROPERTIES }}
+       run: |
+            echo $PROPERTIES | base64 -di > ./local.properties
+            echo $SECRET_KEY | base64 -di > ./koin/team_kap_android.jks
+            for file in $(find . -name 'local.properties')
+            do
+             echo $file
+            done
+            for file in $(find . -name 'team_kap_android.jks')
+            do
+             echo $file
+            done
+
+     - uses: actions/setup-node@v4
+       with:
+          node-version: 20
+     - run: npm install -g firebase-tools
+
+     - name: Update Firebase
+       env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+       run: |
+            echo $FIREBASE | base64 -di > ./koin/google-services.json  
+            echo $GOOGLE_CREDENTIALS | base64 -di > ./google-credentials.json  
+            for file in $(find . -name 'google-services.json')
+            do
+             echo $file
+            done
+            for file in $(find . -name 'google-credentials.json  ')
+            do
+             echo $file
+            done
+
+     - name: Build with Gradle
+       run: ./gradlew koin:assembleRelease
+
+     - name: Upload to Firebase
+       env:
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          GOOGLE_APPLICATION_CREDENTIALS : "./google-credentials.json"
+       run: |
+        apk_path="./koin/build/outputs/apk/release/koin-release.apk"
+        firebase \
+            appdistribution:distribute \
+            "$apk_path" \
+            --app "$FIREBASE_PROJECT_ID" \
+            --groups "bcsd" \
+            --release-notes "${{ steps.date.outputs.time }} develop" \
+            --debug
+
+     - name: Upload to Slack
+       uses: 8398a7/action-slack@v3
+       with:
+         status: ${{ job.status }}
+         author_name: Android Weekly Dev Deploy
+         fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+       env:
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+       if: always()

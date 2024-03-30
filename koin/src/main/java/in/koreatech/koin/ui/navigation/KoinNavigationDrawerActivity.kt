@@ -213,6 +213,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         goToUserInfoActivity()
                     }
                 }
+
+                else -> Unit
             }
             drawerLayout.closeDrawer()
         }
