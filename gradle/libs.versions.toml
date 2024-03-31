@@ -45,6 +45,9 @@ composeCompilerVersion = "1.5.10"
 glideVersion = "4.9.0"
 butterknifeVersion = "10.1.0"
 googleServiceVersion = "4.3.14"
+navigationComposeVersion = "2.7.7"
+orbitVersion="7.0.1"
+hiltNavigationVersion="1.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -113,6 +116,12 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersio
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
 butterknife = { module = "com.jakewharton:butterknife", version.ref = "butterknifeVersion" }
 butterknife-compiler = { module = "com.jakewharton:butterknife-compiler", version.ref = "butterknifeVersion" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationComposeVersion" }
+orbit-core = {module= "org.orbit-mvi:orbit-core", version.ref = "orbitVersion"}
+orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitVersion"}
+orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
+hilt-navigation = {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationVersion"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
