@@ -7,8 +7,11 @@ import `in`.koreatech.koin.domain.usecase.user.UserLoginUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.login.LoginState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
@@ -16,8 +19,8 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val userLoginUseCase: UserLoginUseCase,
 ) : BaseViewModel() {
-    private val _loginState = MutableStateFlow<LoginState>(LoginState.Init)
-    val loginState: StateFlow<LoginState> = _loginState.asStateFlow()
+    private val _loginState = MutableSharedFlow<LoginState>()
+    val loginState: SharedFlow<LoginState> = _loginState.asSharedFlow()
 
     fun login(
         email: String,
