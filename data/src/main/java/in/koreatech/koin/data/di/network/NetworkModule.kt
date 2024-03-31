@@ -1,8 +1,7 @@
-package `in`.koreatech.koin.di.network
+package `in`.koreatech.koin.data.di.network
 
 import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.util.ext.isDebug
 import android.content.Context
 import android.util.Log
 import dagger.Module
@@ -10,6 +9,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.BuildConfig
+//import `in`.koreatech.koin.domain.util.ext.isDebug
 import javax.inject.Singleton
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -19,9 +20,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideHttpLoggingInterceptor(
-        @ApplicationContext applicationContext: Context
+
     ) = HttpLoggingInterceptor().apply {
-        level = if (applicationContext.isDebug) {
+        level = if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor.Level.BODY
         } else {
             HttpLoggingInterceptor.Level.HEADERS
@@ -32,9 +33,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideServerUrl(
-        @ApplicationContext applicationContext: Context
+
     ): String {
-        return if (applicationContext.isDebug) {
+        return if (BuildConfig.DEBUG) {
             URLConstant.BASE_URL_STAGE
         } else {
             URLConstant.BASE_URL_PRODUCTION

@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="in.koreatech.business"
     >
-
-    <application>
+    <application
+        android:name=".KoinBusinessApplication">
         <activity
             android:name=".SplashActivity"
             android:exported="true"
