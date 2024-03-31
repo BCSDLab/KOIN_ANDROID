@@ -1,3 +1,5 @@
+import `in`.koreatech.convention.kapt
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.koin.compose)
@@ -34,7 +36,8 @@ dependencies {
     implementation(libs.orbit.core)
     implementation(libs.orbit.viewmodel)
     implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+    implementation(libs.hilt.compose)
+    kapt(libs.hilt.compiler)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))

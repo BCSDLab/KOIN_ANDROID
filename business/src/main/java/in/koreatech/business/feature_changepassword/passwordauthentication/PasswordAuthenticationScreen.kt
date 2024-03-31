@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.R
@@ -54,7 +55,7 @@ fun PasswordAuthenticationScreen(
     modifier: Modifier = Modifier,
     onAuthenticationButtonClicked: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: PasswordAuthenticationViewModel = viewModel()
+    viewModel: PasswordAuthenticationViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
     val context = LocalContext.current
@@ -165,7 +166,7 @@ fun PasswordAuthenticationScreen(
             )
 
             Button(
-                onClick = { /*viewModel.sendAuthCode(state.email)*/ },
+                onClick = { viewModel.sendAuthCode(state.email) },
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(ColorPrimary),
                 contentPadding = PaddingValues(1.dp),

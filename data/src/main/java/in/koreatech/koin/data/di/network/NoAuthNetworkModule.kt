@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.di.network
+package `in`.koreatech.koin.data.di.network
 
 import `in`.koreatech.koin.core.qualifier.Auth
 import `in`.koreatech.koin.core.qualifier.NoAuth
