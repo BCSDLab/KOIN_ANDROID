@@ -1,5 +1,12 @@
 package `in`.koreatech.koin.ui.userinfo
 
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
@@ -14,10 +21,7 @@ import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.viewModels
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserInfoActivity : KoinNavigationDrawerActivity() {
@@ -82,30 +86,19 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        observeLiveData(getUserErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-            finish()
+        lifecycleScope.launch {
+            userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
+                when (it) {
+                    UserInfoState.Logout -> goToLoginActivity()
+                    UserInfoState.Remove -> goToLoginActivity()
+                    is UserInfoState.Failed -> ToastUtil.getInstance().makeShort(it.message)
+                }
+            }
         }
-
-        observeLiveData(logoutEvent) {
-            finishAffinity()
-            startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
-        }
-
-        observeLiveData(logoutErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-        }
-
-        observeLiveData(userRemoveEvent) {
-            val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            finish()
-        }
-
-        observeLiveData(userRemoveErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-        }
+    }
+    private fun goToLoginActivity() {
+        finishAffinity()
+        startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
     }
 
     override fun onDestroy() {
