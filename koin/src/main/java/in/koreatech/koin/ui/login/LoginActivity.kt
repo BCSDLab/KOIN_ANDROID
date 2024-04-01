@@ -44,7 +44,6 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         withLoading(this@LoginActivity, this)
 
         loginState.flowWithLifecycle(lifecycle).onEach {
-            Log.e("aaa", "status : ${it.status}")
             when (it.status) {
                 is UiStatus.Init -> Unit
                 is UiStatus.Loading -> Unit
