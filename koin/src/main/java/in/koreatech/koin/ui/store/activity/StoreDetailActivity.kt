@@ -28,6 +28,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
 
     private val binding by dataBinding<StoreActivityDetailBinding>(R.layout.store_activity_detail)
+    override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
     private var isMenuExpanded: Boolean
