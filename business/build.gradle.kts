@@ -31,4 +31,7 @@ dependencies {
     implementation(libs.orbit.viewmodel)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
+    implementation(project(":domain"))
+    implementation(project(":koin"))
+    implementation(project(":data"))
 }
