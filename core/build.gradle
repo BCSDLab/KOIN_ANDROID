@@ -108,4 +108,7 @@ dependencies {
 
     api libs.androidx.activity.ktx
     api libs.androidx.fragment.ktx
+
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.analytics.ktx
 }
