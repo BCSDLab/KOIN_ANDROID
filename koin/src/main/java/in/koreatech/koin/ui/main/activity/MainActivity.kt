@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.content.pm.PackageManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
@@ -20,14 +21,19 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.observeLiveData
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
@@ -62,12 +68,17 @@ class MainActivity : KoinNavigationDrawerActivity() {
         })
     }
 
+    private val requestNotificationPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        // handle POST_NOTIFICATION permission
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initView()
         initViewModel()
+        getToken()
     }
 
     override fun onResume() {
@@ -138,6 +149,26 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
+        }
+    }
+
+    private fun getToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {}
+            val token = task.result
+            Log.e("device_token", "token : $token")
+        }
+    }
+
+    private fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                getToken()
+            } else {
+                requestNotificationPermissionResult.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            getToken()
         }
     }
 
