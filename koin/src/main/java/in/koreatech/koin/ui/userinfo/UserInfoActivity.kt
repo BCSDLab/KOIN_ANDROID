@@ -8,6 +8,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -21,6 +22,9 @@ import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -86,15 +90,14 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        lifecycleScope.launch {
-            userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                when (it) {
-                    UserInfoState.Logout -> goToLoginActivity()
-                    UserInfoState.Remove -> goToLoginActivity()
-                    is UserInfoState.Failed -> ToastUtil.getInstance().makeShort(it.message)
-                }
+        userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it.status) {
+                UiStatus.Init -> Unit
+                UiStatus.Loading -> Unit
+                UiStatus.Success -> goToLoginActivity()
+                is UiStatus.Failed -> ToastUtil.getInstance().makeShort(it.status.message)
             }
-        }
+        }.launchIn(lifecycleScope)
     }
     private fun goToLoginActivity() {
         finishAffinity()
