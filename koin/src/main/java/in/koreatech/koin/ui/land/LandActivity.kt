@@ -28,6 +28,7 @@ import com.naver.maps.map.overlay.OverlayImage
 class LandActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     override val menuState = MenuState.Land
     lateinit var binding: LandActivityMainBinding
+    override val screenTitle = "복덕방"
     private val landViewModel by viewModels<LandViewModel>()
     private val landAdapter = LandRecyclerViewAdapter(this)
 

@@ -14,6 +14,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 class WebViewActivity : ActivityBase(R.layout.activity_webview) {
 
     private val binding by dataBinding<ActivityWebviewBinding>()
+    override val screenTitle: String = "웹뷰"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

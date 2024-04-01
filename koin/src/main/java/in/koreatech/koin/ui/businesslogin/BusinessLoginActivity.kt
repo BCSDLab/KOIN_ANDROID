@@ -21,6 +21,7 @@ import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 @AndroidEntryPoint
 class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
     private val binding by dataBinding<ActivityBusinessLoginBinding>()
+    override val screenTitle = "로그인 For Business"
 
     private val loginViewModel by viewModels<LoginViewModel>()
     private val businessLoginViewModel by viewModels<BusinessLoginViewModel>()

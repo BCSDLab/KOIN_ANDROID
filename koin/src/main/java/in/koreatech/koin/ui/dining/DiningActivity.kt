@@ -29,6 +29,7 @@ class DiningActivity : KoinNavigationDrawerActivity(),
     SwipeRefreshLayout.OnRefreshListener {
     override val menuState: MenuState = MenuState.Dining
     lateinit var binding: DiningActivityMainBinding
+    override val screenTitle = "식단"
     private val diningViewModel by viewModels<DiningViewModel>()
     private val diningAdapter = DiningRecyclerViewAdapter(this)
 

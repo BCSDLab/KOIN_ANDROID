@@ -23,6 +23,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 class SignUpWithDetailInfoActivity : ActivityBase() {
 
     private lateinit var binding: ActivitySignUpWithDetailInfoBinding
+    override val screenTitle = "회원가입 상세"
     private val signupViewModel by viewModels<SignupViewModel>()
     private var checkNickName = false
 
