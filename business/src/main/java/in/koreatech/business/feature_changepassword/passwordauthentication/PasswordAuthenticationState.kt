@@ -7,6 +7,6 @@ import androidx.compose.runtime.setValue
 
 data class PasswordAuthenticationState (
     val authenticationBtnIsClicked: Boolean = false,
-    var email: String = "",
+    val email: String = "",
     val authenticationCode: String = "",
 )

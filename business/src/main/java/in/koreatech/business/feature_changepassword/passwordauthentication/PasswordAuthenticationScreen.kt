@@ -204,9 +204,7 @@ fun PasswordAuthenticationScreen(
         when(it){
             is PasswordAuthenticationSideEffect.AuthenticationBtnIsClicked -> viewModel.authenticationBtnClicked()
             is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> viewModel.goToPasswordChangeScreen()
-            else -> {
-                Toast.makeText(context, "안녕", Toast.LENGTH_SHORT).show()
-            }
+            else -> {}
         }
     }
 
