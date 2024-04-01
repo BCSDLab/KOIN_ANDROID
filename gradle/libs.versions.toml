@@ -45,9 +45,9 @@ composeCompilerVersion = "1.5.10"
 glideVersion = "4.9.0"
 butterknifeVersion = "10.1.0"
 googleServiceVersion = "4.3.14"
-navigationComposeVersion = "2.7.7"
+composeNavigationVersion = "2.7.7"
 orbitVersion="7.0.1"
-hiltNavigationVersion="1.0.0"
+hiltComposeVersion="1.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -70,6 +70,7 @@ compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion"}
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
 android-gradle-crashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseGradleVersion" }
@@ -116,12 +117,12 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersio
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
 butterknife = { module = "com.jakewharton:butterknife", version.ref = "butterknifeVersion" }
 butterknife-compiler = { module = "com.jakewharton:butterknife-compiler", version.ref = "butterknifeVersion" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationComposeVersion" }
+
 orbit-core = {module= "org.orbit-mvi:orbit-core", version.ref = "orbitVersion"}
 orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitVersion"}
 orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
-hilt-navigation = {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationVersion"}
 
+hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
