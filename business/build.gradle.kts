@@ -4,7 +4,8 @@ import `in`.koreatech.convention.kapt
 plugins {
     alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
-    alias(libs.plugins.hilt)
+    alias(libs.plugins.koin.hilt)
+    alias(libs.plugins.koin.orbit)
 }
 
 android {
@@ -32,12 +33,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.compose.navigation)
-    implementation(libs.orbit.compose)
-    implementation(libs.orbit.core)
-    implementation(libs.orbit.viewmodel)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.compose)
-    kapt(libs.hilt.compiler)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))
