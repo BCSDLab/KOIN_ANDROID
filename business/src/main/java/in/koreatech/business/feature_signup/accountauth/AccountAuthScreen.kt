@@ -54,7 +54,6 @@ fun AccountAuthScreen(
     Column(
         modifier = modifier,
     ) {
-
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
             onClick = { onBackClicked() }
@@ -70,7 +69,6 @@ fun AccountAuthScreen(
                 .padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Text(
                 text = stringResource(id = R.string.master_sign_up),
                 fontSize = 24.sp,
@@ -109,7 +107,6 @@ fun AccountAuthScreen(
                     cap = StrokeCap.Round
                 )
             }
-
             Spacer(modifier = Modifier.height(32.dp))
             Row {
                 Text(
@@ -128,9 +125,7 @@ fun AccountAuthScreen(
                 fontSize = 15.sp,
                 color = ColorDescription,
             )
-
             Spacer(modifier = Modifier.height(38.dp))
-
             AuthTextField(
                 value = authCode,
                 onValueChange = { authCode = it },
@@ -140,13 +135,9 @@ fun AccountAuthScreen(
                 isPassword = true,
                 isError = false,
             )
-
             Spacer(modifier = Modifier.height(8.dp))
-
             CountdownTimer()
-
             Spacer(modifier = Modifier.height(183.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
