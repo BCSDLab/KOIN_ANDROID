@@ -112,12 +112,12 @@ fun AccountAuthScreen(
                 Text(
                     text = email,
                     fontSize = 15.sp,
-                    color = Color(0xFFF7941E),
+                    color = ColorEmphasis,
                 )
                 Text(
                     text = stringResource(id = R.string.by),
                     fontSize = 15.sp,
-                    color = Color(0xFFA1A1A1),
+                    color = ColorDescription,
                 )
             }
             Text(
