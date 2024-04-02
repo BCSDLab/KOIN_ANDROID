@@ -1,5 +1,5 @@
 <resources>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_business_main">BusinessMainActivity</string>
 
     <!--change_password-->
     <string name="master_sign_up">사장님용\n회원가입</string>

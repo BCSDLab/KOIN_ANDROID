@@ -108,7 +108,7 @@
         </provider>
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.splash.BusinessMainActivity"
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
             <intent-filter>

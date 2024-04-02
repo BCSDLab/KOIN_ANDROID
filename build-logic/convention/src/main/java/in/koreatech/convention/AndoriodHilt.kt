@@ -9,5 +9,6 @@ internal fun Project.configureAndroidHilt(
 ){
     dependencies {
         implementation(libs.findBundle("hilt").get())
+        kapt(libs.findLibrary("hilt-compiler").get())
     }
 }
