@@ -140,5 +140,5 @@ koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
-hilt = ["hilt-compose", "hilt-android", "hilt-compiler"]
+hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

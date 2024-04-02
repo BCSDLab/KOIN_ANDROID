@@ -5,9 +5,9 @@
     <application
         android:name=".KoinBusinessApplication">
         <activity
-            android:name=".SplashActivity"
+            android:name=".BusinessMainActivity"
             android:exported="true"
-            android:label="@string/title_activity_splash"
+            android:label="@string/title_activity_business_main"
             android:theme="@style/Theme.KOIN_ANDROID">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -15,7 +15,7 @@ import `in`.koreatech.business.feature_changepassword.navigator.ChangePassword
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @AndroidEntryPoint
-class SplashActivity : ComponentActivity() {
+class BusinessMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
