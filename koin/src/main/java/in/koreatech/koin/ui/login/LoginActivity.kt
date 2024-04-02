@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
@@ -43,14 +44,21 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
     private fun initViewModel() = with(loginViewModel) {
         withLoading(this@LoginActivity, this)
 
-        loginState.flowWithLifecycle(lifecycle).onEach {
-            when (it.status) {
-                is UiStatus.Init -> Unit
-                is UiStatus.Loading -> Unit
-                is UiStatus.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                is UiStatus.Failed -> SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginState.collect {
+                    when (it.status) {
+                        is UiStatus.Init -> Unit
+                        is UiStatus.Loading -> Unit
+                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        is UiStatus.Failed -> {
+                            SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
+                            loginViewModel.onFailedLogin()
+                        }
+                    }
+                }
             }
-        }.launchIn(lifecycleScope)
+        }
     }
 
     private fun initView() = with(binding) {
