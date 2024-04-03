@@ -1,6 +1,5 @@
-package `in`.koreatech.koin.di.source
+package `in`.koreatech.koin.data.di.source
 
-import `in`.koreatech.koin.data.source.local.*
 import android.content.Context
 import dagger.Module
 import dagger.Provides
@@ -8,6 +7,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.core.qualifier.IoDispatcher
+import `in`.koreatech.koin.data.source.local.BusLocalDataSource
+import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
+import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 

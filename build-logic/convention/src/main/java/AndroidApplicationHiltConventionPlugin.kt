@@ -1,19 +1,17 @@
 import com.android.build.api.dsl.ApplicationExtension
-import `in`.koreatech.convention.configureAndroidCompose
+import `in`.koreatech.convention.configureAndroidHilt
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-internal class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
+internal class AndroidApplicationHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("com.android.application")
-                apply("org.jetbrains.kotlin.android")
-                apply("kotlin-kapt")
+                apply("com.google.dagger.hilt.android")
             }
             extensions.configure<ApplicationExtension> {
-                configureAndroidCompose(this)
+                configureAndroidHilt(this)
             }
         }
     }
