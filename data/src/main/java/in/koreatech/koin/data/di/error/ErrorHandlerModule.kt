@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.di.error
+package `in`.koreatech.koin.data.di.error
 
 import `in`.koreatech.koin.data.error.BusErrorHandlerImpl
 import `in`.koreatech.koin.data.error.DeptErrorHandlerImpl

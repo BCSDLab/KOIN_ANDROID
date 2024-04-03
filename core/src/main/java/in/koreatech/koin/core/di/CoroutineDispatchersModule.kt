@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.di
+package `in`.koreatech.koin.core.di
 
 import dagger.Module
 import dagger.Provides

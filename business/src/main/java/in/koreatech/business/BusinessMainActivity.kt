@@ -10,9 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.business.feature_changepassword.navigator.ChangePassword
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
-class SplashActivity : ComponentActivity() {
+@AndroidEntryPoint
+class BusinessMainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +25,7 @@ class SplashActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    ChangePassword()
                 }
             }
         }
