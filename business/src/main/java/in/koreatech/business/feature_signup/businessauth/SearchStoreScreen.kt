@@ -55,6 +55,8 @@ import `in`.koreatech.business.ui.theme.ColorSearch
 fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
     var search by remember { mutableStateOf("") }
     val storeItems = mutableListOf<String>()
+    val onSelected by remember { mutableStateOf(false) }
+    val onItemClicked by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier,
@@ -126,17 +128,16 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            StoreList(storeItems, onSelectClicked = onBackClicked)
+            StoreList(storeItems, onSelected = {})
         }
     }
 }
 
 
 @Composable
-fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
-
+fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
+    var selectedItemIndex by remember { mutableStateOf(-1) }
     var showBottomSheet by remember { mutableStateOf(false) }
-    var isButtonClicked by remember { mutableStateOf(false) }
 
     Scaffold() { contentPadding ->
         LazyColumn(
@@ -144,26 +145,22 @@ fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             items(item.size) { index ->
-
                 Row(
                     modifier = Modifier
                         .padding(top = 8.dp, bottom = 8.dp)
                         .fillMaxWidth()
                         .height(59.dp)
                         .clickable {
+                            selectedItemIndex = index
                             showBottomSheet = true
-                            isButtonClicked = true
                         }
                         .border(
                             BorderStroke(
-                                width = if (isButtonClicked) 1.5.dp else 1.dp,
-                                color = if (isButtonClicked) ColorActiveButton else ColorHelper
+                                width = if (selectedItemIndex == index) 1.5.dp else 1.dp,
+                                color = if (selectedItemIndex == index) ColorActiveButton else ColorHelper
                             )
                         ),
-
-
                     ) {
                     Row(
                         modifier = Modifier
@@ -181,7 +178,6 @@ fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
                         )
                         Spacer(modifier = Modifier.width(74.dp))
                         Text(
-
                             buildAnnotatedString {
                                 withStyle(style = SpanStyle(color = Color(0xFFF7941E))) {
                                     append(text = stringResource(id = R.string.delivery))
@@ -230,7 +226,7 @@ fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
                             Text(
                                 text = stringResource(id = R.string.phone_number),
                                 fontSize = 14.sp,
-                                color = Color(0xFF175C8E),
+                                color = ColorActiveButton,
                                 fontWeight = Bold
                             )
                             Spacer(modifier = Modifier.width(8.dp))
@@ -247,9 +243,9 @@ fun StoreList(item: MutableList<String>, onSelectClicked: () -> Unit = {}) {
                             .width(195.dp)
                             .height(85.dp)
                             .padding(16.dp),
-                        onClick = { onSelectClicked() },
+                        onClick = { onSelected() },
                         shape = RectangleShape,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF175C8E))
+                        colors = ButtonDefaults.buttonColors(containerColor = ColorActiveButton)
                     ) {
                         Text(text = stringResource(id = R.string.select), fontWeight = Bold)
                     }
