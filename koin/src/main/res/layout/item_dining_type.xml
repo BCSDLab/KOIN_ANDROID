@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp">
+
+        <TextView
+            android:id="@+id/text_view_dining_corner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="A코너" />
+
+        <TextView
+            android:id="@+id/text_view_kcal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner"
+            app:layout_constraintStart_toEndOf="@id/text_view_dining_corner"
+            tools:text="786kcal" />
+
+        <TextView
+            android:id="@+id/divider_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="•"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/text_view_kcal"
+            app:layout_constraintTop_toTopOf="@id/text_view_kcal"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_kcal" />
+
+        <TextView
+            android:id="@+id/text_view_card_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner"
+            app:layout_constraintStart_toEndOf="@id/divider_dot"
+            tools:text="1000원" />
+
+        <TextView
+            android:id="@+id/divider_slash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            app:layout_constraintTop_toTopOf="@id/text_view_card_price"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_card_price"
+            app:layout_constraintStart_toEndOf="@id/text_view_card_price" />
+
+        <TextView
+            android:id="@+id/text_view_cash_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner"
+            app:layout_constraintStart_toEndOf="@id/divider_slash"
+            tools:text="1000원" />
+
+        <ImageView
+            android:id="@+id/image_view_dining"
+            android:layout_width="202dp"
+            android:layout_height="132dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/no_photo"
+            app:layout_constraintTop_toBottomOf="@id/text_view_dining_corner"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_dining_menu_items"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/image_view_dining"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/image_view_dining"
+            tools:text="혼합잡곡밥&amp;흰밥\n호박고추장국\n닭살두반장볶음(chicken)
+                \n옥수수콘김치전\n미역줄기무침\n깍두기" />
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
