@@ -20,8 +20,6 @@
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="title_activity_splash">SplashActivity</string>
 
-    <string name="master_sign_up">사장님용\n회원가입</string>
-    <string name="input_email">이메일 입력</string>
     <string name="input_basic_information">1.기본 정보 입력</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
@@ -39,7 +37,6 @@
     <string name="one_third">1/3</string>
     <string name="two_third">2/3</string>
     <string name="three_third">3/3</string>
-    <string name="resend">재발송</string>
     <string name="next">다음</string>
     <string name="verification_code_error">인증번호가 일치하지 않습니다.</string>
     <string name="by">으로</string>
