@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.di.source
+package `in`.koreatech.koin.data.di.source
 
 import `in`.koreatech.koin.data.api.*
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
@@ -76,7 +76,7 @@ object RemoteDataSourceModule {
     ): StoreRemoteDataSource {
         return StoreRemoteDataSource(storeApi)
     }
-    
+
     @Provides
     @Singleton
     fun provideLandRemoteDataSource(

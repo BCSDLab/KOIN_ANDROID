@@ -22,5 +22,14 @@ gradlePlugin {
             id = "in.koreatech.plugin.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
+        register("AndroidApplicationHiltPlugin"){
+            id = "in.koreatech.plugin.hilt"
+            implementationClass = "AndroidApplicationHiltConventionPlugin"
+        }
+
+        register("AndroidApplicationOrbitPlugin"){
+            id = "in.koreatech.plugin.orbit"
+            implementationClass = "AndroidApplicationOrbitConventionPlugin"
+        }
     }
 }
