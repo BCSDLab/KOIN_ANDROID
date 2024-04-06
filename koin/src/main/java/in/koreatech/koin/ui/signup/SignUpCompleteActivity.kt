@@ -11,6 +11,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 class SignUpCompleteActivity : ActivityBase() {
 
     private lateinit var binding: ActivitySignupCompleteBinding
+    override val screenTitle = "회원가입 완료"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

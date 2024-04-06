@@ -20,6 +20,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class BusinessSignUpCheckActivity : ActivityBase(R.layout.activity_business_signup_check) {
     private val binding by dataBinding<ActivityBusinessSignupCheckBinding>()
+    override val screenTitle = "회원가입 약관 For Business"
+
     private val viewModel by viewModels<BusinessSignUpCheckViewModel>()
 
     private var isActivateCheckButton = false

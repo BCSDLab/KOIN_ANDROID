@@ -87,6 +87,7 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
 firebase-appdistribution-gradle = { module = "com.google.firebase:firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradleVersion" }
@@ -134,7 +135,11 @@ google-service = { id = "com.google.gms.google-services", version.ref = "googleS
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
+koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
+koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
+hilt = ["hilt-compose", "hilt-android"]
+orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

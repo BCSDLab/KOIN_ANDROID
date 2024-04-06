@@ -1,4 +1,4 @@
-package `in`.koreatech.koin.di.repository
+package `in`.koreatech.koin.data.di.repository
 
 import `in`.koreatech.koin.data.repository.*
 import `in`.koreatech.koin.domain.repository.*
@@ -129,7 +129,7 @@ object RepositoryModule {
     ): StoreRepository {
         return StoreRepositoryImpl(storeRemoteDataSource)
     }
-    
+
     @Provides
     @Singleton
     fun provideLandRepository(

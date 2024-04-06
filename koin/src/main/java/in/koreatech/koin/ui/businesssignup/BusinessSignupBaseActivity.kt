@@ -33,6 +33,7 @@ class BusinessSignupBaseActivity: ActivityBase(R.layout.activity_business_signup
     }
 
     private val binding by dataBinding<ActivityBusinessSignupBaseBinding>()
+    override val screenTitle = "회원가입 For Business"
     private val viewModel by viewModels<BusinessSignUpBaseViewModel>()
     private var curFragmentTag = BASIC_INFO_FRAGMENT
 

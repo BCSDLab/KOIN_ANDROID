@@ -946,4 +946,10 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     protected MenuState getMenuState() {
         return MenuState.Timetable.INSTANCE;
     }
+
+    @NonNull
+    @Override
+    protected String getScreenTitle() {
+        return "시간표 - 익명";
+    }
 }

@@ -38,6 +38,7 @@ import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 class MainActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Main
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
+    override val screenTitle = "코인 - 메인"
     private val mainActivityViewModel by viewModels<MainActivityViewModel>()
 
     private val busPagerAdapter = BusPagerAdapter().apply {

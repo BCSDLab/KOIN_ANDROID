@@ -108,7 +108,7 @@
         </provider>
 
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".ui.splash.BusinessMainActivity"
             android:exported="true"
             android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
             <intent-filter>
@@ -188,7 +188,7 @@
             android:theme="@style/KAPTheme.NoActionBar"/>
 
         <activity
-            android:name=".ui.signup.SignUpWithDetailInfoActivity"
+            android:name=".ui.signup.SignupWithDetailInfoActivity"
             android:exported="false"
             android:label="회원가입 디테일 정보"
             android:theme="@style/KAPTheme.NoActionBar" />
