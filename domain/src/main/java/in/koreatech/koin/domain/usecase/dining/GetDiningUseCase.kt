@@ -6,12 +6,12 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import java.util.Date
 import javax.inject.Inject
 
-class DiningUseCase @Inject constructor(
+class GetDiningUseCase @Inject constructor(
     private val diningRepository: DiningRepository
 ) {
-    suspend operator fun invoke(date: Date): Result<List<Dining>> {
+    suspend operator fun invoke(date: String): Result<List<Dining>> {
         return kotlin.runCatching {
-            diningRepository.getDining(TimeUtil.dateFormatToYYMMDD(date))
+            diningRepository.getDining(date)
         }
     }
 }
