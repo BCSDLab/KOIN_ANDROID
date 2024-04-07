@@ -33,7 +33,10 @@ import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.business.ui.theme.ColorEmphasis
 
 @Composable
-fun CompleteSignupScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
+fun CompleteSignupScreen(
+     modifier: Modifier = Modifier, 
+     onBackClicked: () -> Unit = {}
+) {
     Column(
         modifier = modifier,
     ) {
