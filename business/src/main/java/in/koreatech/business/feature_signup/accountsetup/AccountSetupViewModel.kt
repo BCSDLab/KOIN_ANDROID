@@ -58,7 +58,6 @@ class AccountSetupViewModel @Inject constructor(
             sendSignupEmailUseCase(email, password, passwordConfirm)
                 .onSuccess {
                     intent { reduce { state.copy(signupContinuationState = it) } }
-                    Log.e("으아", "postEmailVerification: $it")
                 }
                 .onFailure {
                     intent { reduce { state.copy(signUpContinuationError = it) } }
