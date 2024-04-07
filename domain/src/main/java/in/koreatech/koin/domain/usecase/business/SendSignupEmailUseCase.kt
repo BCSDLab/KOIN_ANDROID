@@ -20,7 +20,7 @@ class SendSignupEmailUseCase @Inject constructor(
             email.isNotBusinessValidEmail() -> Result.success(SignupContinuationState.EmailIsNotValidate)
             else -> ownerSignupRepository.requestEmailVerification(
                 email = email
-            ).map { SignupContinuationState.RequestedEmailValidation }
+            ).map { SignupContinuationState.CheckComplete }
         }
     }
 
