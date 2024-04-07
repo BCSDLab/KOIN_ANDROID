@@ -68,5 +68,6 @@
     <string name="upload_file_icon">upload file</string>
     <string name="file_icon">upload item image</string>
     <string name="search_icon">search</string>
+    <string name="email_not_validate">존재하지 않는 도메인입니다.</string>
 
 </resources>
