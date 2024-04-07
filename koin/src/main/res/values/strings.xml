@@ -357,4 +357,6 @@
     <string name="set_form">%1$s-</string>
     <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
     <string name="last_update">마지막 업데이트 : </string>
+    <string name="sold_out_menu">품절된 메뉴입니다.</string>
+    <string name="no_photo">사진 없음</string>
 </resources>
