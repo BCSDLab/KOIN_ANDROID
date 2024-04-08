@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -19,6 +20,7 @@ import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -49,6 +51,13 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 viewModel.selectedDate.collect {
                     viewModel.getDining(it)
                 }
+            }
+        }
+
+        binding.koinBaseAppBarDark.setOnClickListener {
+            when(it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getRightButtonId() -> binding.drawerLayout.toggleDrawer()
             }
         }
     }
