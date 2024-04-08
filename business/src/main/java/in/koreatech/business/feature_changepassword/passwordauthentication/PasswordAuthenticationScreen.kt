@@ -1,10 +1,6 @@
 package `in`.koreatech.business.feature_changepassword.passwordauthentication
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,15 +19,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -40,26 +31,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.util.showMessage
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import org.orbitmvi.orbit.viewmodel.observe
 
 @Composable
 fun PasswordAuthenticationScreen(
     modifier: Modifier = Modifier,
-    onAuthenticationButtonClicked: () -> Unit,
+    navigateToChangePassword: (email: String) -> Unit = {},
     onBackPressed: () -> Unit,
     viewModel: PasswordAuthenticationViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    val context = LocalContext.current
-
+    
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -72,8 +60,8 @@ fun PasswordAuthenticationScreen(
 
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_arrow_back),
-                contentDescription = "backArrow",
+                painter = painterResource(R.drawable.back_ic),
+                contentDescription = stringResource(id = R.string.back_arrow),
                 modifier = modifier
                     .width(24.dp)
                     .height(24.dp)
@@ -180,9 +168,10 @@ fun PasswordAuthenticationScreen(
                 )
             }
         }
+
         Button(
             onClick =  {
-                viewModel.goToPasswordChangeScreen()
+                viewModel.authenticateCode(state.email, state.authenticationCode)
             } ,
             shape = RectangleShape,
             colors = if(state.authenticationCode.isBlank()) ButtonDefaults.buttonColors(Gray5)
@@ -202,20 +191,24 @@ fun PasswordAuthenticationScreen(
 
     viewModel.collectSideEffect{
         when(it){
-            is PasswordAuthenticationSideEffect.AuthenticationBtnIsClicked -> viewModel.authenticationBtnClicked()
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> viewModel.goToPasswordChangeScreen()
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(state.email)
+            is PasswordAuthenticationSideEffect.ToastIsNotEmail -> showMessage("이메일 주소가 올바르지 않습니다")
+            is PasswordAuthenticationSideEffect.ToastNoEmail -> showMessage("이메일을 입력해주세요")
+            is PasswordAuthenticationSideEffect.SendAuthCode -> showMessage("이메일로 발송된 인증번호 6자리를 입력해 주세요.")
+            is PasswordAuthenticationSideEffect.ToastNotCoincideAuthCode -> showMessage("인증번호가 일치하지 않습니다.")
             else -> {}
         }
     }
+    //여기 부분이 livedata 부분
 
 }
 
 @Preview
 @Composable
-fun previewPasswordAuthenticationScreen() {
+fun PreviewPasswordAuthenticationScreen() {
     Surface {
         PasswordAuthenticationScreen(
-            onAuthenticationButtonClicked = {},
+            navigateToChangePassword = {},
             onBackPressed = {}
         )
     }

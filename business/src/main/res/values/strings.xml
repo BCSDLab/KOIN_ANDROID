@@ -18,4 +18,10 @@
     <string name="new_password">새 비밀번호</string>
     <string name="changing_password">비밀번호 변경하기</string>
     <string name="go_login_activity">로그인 화면 바로가기</string>
+    <string name="back_arrow">backArrow</string>
+    <string name="incorrect_email_address">이메일 주소가 올바르지 않습니다.</string>
+    <string name="account_verification_info_text">이메일로 발송된\n인증번호 6자리를 입력해 주세요.</string>
+    <string name="not_equal_confirm_number">인증번호가 일치하지 않습니다.</string>
+    <string name="insert_email_address">이메일 주소를 입력해주세요</string>
+    <string name="insert_auth_code">인증번호를 입력해주세요</string>
 </resources>

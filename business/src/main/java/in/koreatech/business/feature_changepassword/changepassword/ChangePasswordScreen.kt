@@ -1,7 +1,7 @@
 package `in`.koreatech.business.feature_changepassword.changepassword
 
+
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,19 +14,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -34,35 +29,40 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.ui.theme.Red2
+import `in`.koreatech.business.util.showMessage
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+
 
 @Composable
 fun ChangePasswordScreen(
     modifier: Modifier = Modifier,
-    onChangePwButtonClicked: () -> Unit,
-    onBackPressed: () -> Unit
+    navigateToFinish: () -> Unit,
+    onBackPressed: () -> Unit,
+    viewModel: ChangePasswordViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-    var password  by remember { mutableStateOf("") }
-    var passwordChecked  by remember { mutableStateOf("") }
+
+    val state = viewModel.collectAsState().value
     Column(
         modifier = modifier.fillMaxSize()
     ) {
         Box(
             modifier = modifier
-                .padding(top = 56.dp, start = 10.dp , bottom = 18.dp)
+                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
                 .clickable { onBackPressed() }
 
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_arrow_back),
-                contentDescription = "backArrow",
+                painter = painterResource(R.drawable.back_ic),
+                contentDescription = stringResource(id = R.string.back_arrow),
                 modifier = modifier
                     .width(24.dp)
                     .height(24.dp)
@@ -77,9 +77,9 @@ fun ChangePasswordScreen(
         )
 
         BasicTextField(
-            value = password,
+            value = state.password,
             onValueChange = {
-                password = it
+                viewModel.insertPassword(it)
             },
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
@@ -92,7 +92,7 @@ fun ChangePasswordScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (password.isEmpty()) {
+                        if (state.password.isEmpty()) {
                             Text(
                                 text = stringResource(id = R.string.new_password),
                                 color = Blue1,
@@ -101,10 +101,10 @@ fun ChangePasswordScreen(
                         }
                         innerTextField()
                     }
-                    Divider(
-                        color = if (password.isEmpty()) Blue1 else Color.Black,
+                    HorizontalDivider(
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        modifier = modifier.fillMaxWidth()
+                        color = if (state.password.isEmpty()) Blue1 else Color.Black
                     )
                 }
             },
@@ -116,7 +116,7 @@ fun ChangePasswordScreen(
         )
 
         Text(
-            text = context.getString(R.string.password_condition),
+            text = stringResource(R.string.password_condition),
             fontSize = 11.sp,
             color = Blue1,
             modifier = modifier
@@ -124,9 +124,9 @@ fun ChangePasswordScreen(
         )
 
         BasicTextField(
-            value = passwordChecked,
+            value = state.passwordChecked,
             onValueChange = {
-                passwordChecked = it
+                viewModel.insertPasswordChecked(it)
             },
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
@@ -139,7 +139,7 @@ fun ChangePasswordScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (passwordChecked.isEmpty()) {
+                        if (state.passwordChecked.isEmpty()) {
                             Text(
                                 text = stringResource(id = R.string.confirm_password),
                                 color = Blue1,
@@ -148,10 +148,10 @@ fun ChangePasswordScreen(
                         }
                         innerTextField()
                     }
-                    Divider(
-                        color = if (passwordChecked.isEmpty()) Blue1 else Color.Black,
+                    HorizontalDivider(
+                        modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        modifier = modifier.fillMaxWidth()
+                        color = if (state.passwordChecked.isEmpty()) Blue1 else Color.Black
                     )
                 }
             },
@@ -177,16 +177,16 @@ fun ChangePasswordScreen(
             )
 
             Text(
-                text = context.getString(R.string.not_coincide_password),
+                text = stringResource(R.string.not_coincide_password),
                 fontSize = 11.sp,
                 color = Red2,
             )
         }
 
         Button(
-            onClick = { onChangePwButtonClicked() },
+            onClick = { viewModel.changePassword(state.email, state.password, state.passwordChecked) },
             shape = RectangleShape,
-            colors = if(password.isBlank() || passwordChecked.isBlank()) ButtonDefaults.buttonColors(Gray5)
+            colors = if(state.password.isBlank() || state.passwordChecked.isBlank()) ButtonDefaults.buttonColors(Gray5)
             else ButtonDefaults.buttonColors(ColorPrimary),
             modifier = modifier
                 .padding(horizontal = 32.dp)
@@ -200,16 +200,23 @@ fun ChangePasswordScreen(
                 fontWeight = FontWeight.Bold
             )
         }
-
-
-
+    }
+    viewModel.collectSideEffect{
+        when(it){
+            is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
+            is ChangePasswordSideEffect.NotCoincidePassword -> showMessage("비밀번호가 일치하지 않습니다.")
+            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> showMessage("비밀번호는 특수문자 포함 영어와 숫자 조합 6~18 자리입니다.")
+            is ChangePasswordSideEffect.ToastNullPassword -> showMessage("비밀번호를 입력해 주세요.")
+            is ChangePasswordSideEffect.ToastNullPasswordChecked -> showMessage("확인 비밀번호를 입력해주세요.")
+            else -> {}
+        }
     }
 }
 
 @Preview
 @Composable
-fun previewChangePassswordScreen() {
+fun PreviewChangePassswordScreen() {
     Surface {
-        ChangePasswordScreen(onChangePwButtonClicked = {}, onBackPressed = {})
+        ChangePasswordScreen(navigateToFinish = {}, onBackPressed = {})
     }
 }
