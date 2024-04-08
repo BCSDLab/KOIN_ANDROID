@@ -12,12 +12,12 @@ object DiningUtil {
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
 
-    fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
-        DiningType.Breakfast
+    fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
+        DiningType.Dinner
     } else if (TimeUtil.compareWithCurrentTime(diningEndTime[1]) >= 0) {
         DiningType.Lunch
-    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
-        DiningType.Dinner
+    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
+        DiningType.Breakfast
     } else {
         DiningType.Breakfast
     }

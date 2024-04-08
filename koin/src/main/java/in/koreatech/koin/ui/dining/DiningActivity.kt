@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
+import `in`.koreatech.koin.domain.model.dining.DiningType
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.adapter.DiningDateAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
@@ -65,6 +67,11 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
                 }
             }.attach()
+            when(DiningUtil.getCurrentType()) {
+                DiningType.Breakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
+                DiningType.Lunch -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(1))
+                DiningType.Dinner -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(2))
+            }
         }
     }
 
