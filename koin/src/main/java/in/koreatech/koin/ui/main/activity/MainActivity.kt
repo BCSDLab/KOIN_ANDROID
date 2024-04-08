@@ -174,14 +174,14 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         listOf(
             binding.textViewCardDiningMenu0,
-            binding.textViewCardDiningMenu1,
             binding.textViewCardDiningMenu2,
-            binding.textViewCardDiningMenu3,
             binding.textViewCardDiningMenu4,
-            binding.textViewCardDiningMenu5,
             binding.textViewCardDiningMenu6,
-            binding.textViewCardDiningMenu7,
             binding.textViewCardDiningMenu8,
+            binding.textViewCardDiningMenu1,
+            binding.textViewCardDiningMenu3,
+            binding.textViewCardDiningMenu5,
+            binding.textViewCardDiningMenu7,
             binding.textViewCardDiningMenu9
         ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
             textView.text = menu
