@@ -1,13 +1,18 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 
@@ -35,6 +40,22 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     Glide.with(root.context)
                         .load(dining.imageUrl)
                         .into(imageViewDining)
+
+                    cardViewDining.setOnClickListener {
+                        val dialog = Dialog(root.context).apply {
+                            setContentView(R.layout.dialog_dining_image)
+                            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        }
+                        val closeButton = dialog.findViewById<ImageView>(R.id.image_view_close)
+                        closeButton.setOnClickListener {
+                            dialog.dismiss()
+                        }
+                        val imageView = dialog.findViewById<ImageView>(R.id.image_view_dining)
+                        Glide.with(root.context)
+                            .load(dining.imageUrl)
+                            .into(imageView)
+                        dialog.show()
+                    }
                 }
 
                 if(dining.isSoldOut) {
