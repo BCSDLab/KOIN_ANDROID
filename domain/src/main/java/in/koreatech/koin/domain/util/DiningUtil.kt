@@ -6,7 +6,7 @@ import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
 
 object DiningUtil {
-    private val diningEndTime = listOf("09:00", "13:30", "18:30")
+    private val diningEndTime = listOf("09:00", "13:30", "18:30", "00:00")
 
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
@@ -17,6 +17,8 @@ object DiningUtil {
         DiningType.Lunch
     } else if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
         DiningType.Dinner
+    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[3]) >= 0) {
+        DiningType.NextBreakfast
     } else {
         DiningType.Breakfast
     }
