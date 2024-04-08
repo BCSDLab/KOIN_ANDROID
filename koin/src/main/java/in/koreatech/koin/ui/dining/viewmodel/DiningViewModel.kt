@@ -53,9 +53,9 @@ class DiningViewModel @Inject constructor(
                             }
                         }
                         _dining.value = mutableMapOf<String, List<Dining>>().apply {
-                            this[BREAKFAST] = breakfast
-                            this[LUNCH] = lunch
-                            this[DINNER] = dinner
+                            this[BREAKFAST] = DiningUtil.sortDiningByPlace(breakfast)
+                            this[LUNCH] = DiningUtil.sortDiningByPlace(lunch)
+                            this[DINNER] = DiningUtil.sortDiningByPlace(dinner)
                         }
                     }
                     .onFailure {
