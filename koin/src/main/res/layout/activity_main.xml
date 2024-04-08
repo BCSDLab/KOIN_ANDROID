@@ -124,29 +124,16 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/text_view_dining_tomorrow"
+                                    android:id="@+id/text_view_dining_time"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="20dp"
                                     android:layout_marginTop="32dp"
-                                    android:text="내일"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    tools:visibility="visible" />
-
-                                <TextView
-                                    android:id="@+id/text_view_dining_time"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="4dp"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="15sp"
-                                    android:textStyle="bold"
-                                    app:layout_constraintStart_toEndOf="@id/text_view_dining_tomorrow"
-                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_tomorrow"
                                     tools:text="아침" />
 
                                 <TextView
