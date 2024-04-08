@@ -107,6 +107,7 @@
             android:outlineProvider="none"
             app:strokeWidth="1dp"
             app:strokeColor="#CACACA"
+            app:rippleColor="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_dining_corner">
 
