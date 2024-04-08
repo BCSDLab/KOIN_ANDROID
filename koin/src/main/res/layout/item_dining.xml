@@ -65,6 +65,38 @@
             app:layout_constraintStart_toEndOf="@id/divider_slash"
             tools:text="1000원" />
 
+        <TextView
+            android:id="@+id/text_view_dining_sold_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="50dp"
+            android:minHeight="26dp"
+            android:textStyle="bold"
+            android:text="@string/sold_out"
+            android:textColor="#FFAD0D"
+            android:visibility="invisible"
+            android:background="@drawable/background_dining_sold_out_text"
+            app:layout_constraintEnd_toEndOf="@id/card_view_dining"
+            app:layout_constraintTop_toTopOf="@id/text_view_dining_corner"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner" />
+
+        <TextView
+            android:id="@+id/text_view_dining_changed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="58dp"
+            android:minHeight="26dp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/changed"
+            android:visibility="invisible"
+            android:textColor="#4B4B4B"
+            android:background="@drawable/background_dining_changed_text"
+            app:layout_constraintEnd_toEndOf="@id/card_view_dining"
+            app:layout_constraintTop_toTopOf="@id/text_view_dining_corner"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_dining_corner" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_view_dining"
             android:layout_width="202dp"

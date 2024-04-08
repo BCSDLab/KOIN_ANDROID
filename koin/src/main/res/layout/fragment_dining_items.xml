@@ -14,7 +14,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/white"
             tools:itemCount="4"
-            tools:listitem="@layout/item_dining_type"
+            tools:listitem="@layout/item_dining"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

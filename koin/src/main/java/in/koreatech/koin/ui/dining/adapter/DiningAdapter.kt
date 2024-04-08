@@ -2,12 +2,13 @@ package `in`.koreatech.koin.ui.dining.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import `in`.koreatech.koin.databinding.ItemDiningTypeBinding
+import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 
 class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
@@ -17,10 +18,10 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return DiningViewHolder(ItemDiningTypeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return DiningViewHolder(ItemDiningBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    class DiningViewHolder(private val binding: ItemDiningTypeBinding) : RecyclerView.ViewHolder(binding.root) {
+    class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(dining: Dining) {
             with(binding) {
@@ -37,9 +38,17 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 }
 
                 if(dining.isSoldOut) {
-                    groupSoldOut.visibility = android.view.View.VISIBLE
+                    groupSoldOut.visibility = View.VISIBLE
+                    textViewDiningSoldOut.visibility = View.VISIBLE
                 } else {
-                    groupSoldOut.visibility = android.view.View.INVISIBLE
+                    groupSoldOut.visibility = View.INVISIBLE
+                    textViewDiningSoldOut.visibility = View.INVISIBLE
+                }
+
+                if(dining.isChanged) {
+                    textViewDiningChanged.visibility = View.VISIBLE
+                } else {
+                    textViewDiningChanged.visibility = View.INVISIBLE
                 }
             }
         }
