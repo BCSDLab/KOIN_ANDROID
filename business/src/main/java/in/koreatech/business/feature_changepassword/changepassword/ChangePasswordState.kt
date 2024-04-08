@@ -1,0 +1,11 @@
+package `in`.koreatech.business.feature_changepassword.changepassword
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class ChangePasswordState(
+    val password: String = "",
+    val passwordChecked: String = "",
+    val email: String = ""
+): Parcelable

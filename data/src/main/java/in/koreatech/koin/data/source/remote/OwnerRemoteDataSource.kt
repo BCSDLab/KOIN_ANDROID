@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.OwnerApi
+import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
@@ -16,7 +17,19 @@ class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
+    suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
+        return ownerApi.postVerificationCode(ownerVerificationCode)
+    }
+
+    suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
+        return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
+    }
+
     suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerRegister(ownerRegisterRequest)
+    }
+
+    suspend fun ownerChangePassword(ownerChangePasswordRequest: OwnerChangePasswordRequest) {
+        return ownerApi.changePassword(ownerChangePasswordRequest)
     }
 }

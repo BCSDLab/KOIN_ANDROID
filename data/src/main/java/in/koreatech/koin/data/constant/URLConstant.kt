@@ -60,7 +60,11 @@ object URLConstant {
         const val REGISTER: String = "$OWNERS/register"
         const val CODE = "$OWNERS/$VERIFICATION/code"
         const val EMAIL = "$OWNERS/$VERIFICATION/email"
-        const val PW = "password"
+        const val PASSWORD = "password"
+        const val RESET = "reset"
+        const val CHANGEPASSWORDEMAIL = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION"
+        const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
+        const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
     }
 
     object CALLVANS {
