@@ -201,7 +201,7 @@
                                         app:layout_constraintStart_toStartOf="parent"
                                         app:layout_constraintTop_toTopOf="parent">
 
-                                        <TableRow android:paddingBottom="8dp">
+                                        <TableRow android:paddingBottom="4dp">
 
                                             <TextView
                                                 android:id="@+id/text_view_card_dining_menu_0"
@@ -229,7 +229,7 @@
 
                                         </TableRow>
 
-                                        <TableRow android:paddingBottom="8dp">
+                                        <TableRow android:paddingBottom="4dp">
 
                                             <TextView
                                                 android:id="@+id/text_view_card_dining_menu_2"
@@ -257,7 +257,7 @@
 
                                         </TableRow>
 
-                                        <TableRow android:paddingBottom="8dp">
+                                        <TableRow android:paddingBottom="4dp">
 
                                             <TextView
                                                 android:id="@+id/text_view_card_dining_menu_4"
@@ -285,7 +285,7 @@
 
                                         </TableRow>
 
-                                        <TableRow android:paddingBottom="8dp">
+                                        <TableRow android:paddingBottom="4dp">
 
                                             <TextView
                                                 android:id="@+id/text_view_card_dining_menu_6"
@@ -316,7 +316,7 @@
                                         <TableRow
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:paddingBottom="8dp">
+                                            android:paddingBottom="4dp">
 
                                             <TextView
                                                 android:id="@+id/text_view_card_dining_menu_8"
