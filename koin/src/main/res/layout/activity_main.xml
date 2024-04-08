@@ -182,21 +182,25 @@
                                         android:layout_height="52dp"
                                         android:paddingStart="16dp"
                                         android:paddingEnd="48dp"
+                                        app:layout_constraintEnd_toStartOf="@id/text_view_dining_status"
                                         app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintEnd_toStartOf="@id/text_view_card_dining_time"
                                         app:layout_constraintTop_toTopOf="parent" />
 
                                     <TextView
-                                        android:id="@+id/text_view_card_dining_time"
+                                        android:id="@+id/text_view_dining_status"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="18dp"
+                                        android:layout_marginTop="17dp"
                                         android:layout_marginEnd="16dp"
-                                        android:text="아침"
-                                        android:textColor="@color/black"
-                                        android:textSize="13sp"
+                                        android:includeFontPadding="false"
+                                        android:paddingHorizontal="8dp"
+                                        android:paddingVertical="4dp"
+                                        android:textSize="12sp"
                                         app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        tools:background="@drawable/dining_soldout_fill_radius_4"
+                                        tools:text="@string/dining_soldout"
+                                        tools:textColor="@color/dining_soldout_text" />
 
                                     <TableLayout
                                         android:layout_width="0dp"
