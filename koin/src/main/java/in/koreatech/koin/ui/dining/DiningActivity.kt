@@ -2,16 +2,24 @@ package `in`.koreatech.koin.ui.dining
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
+import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.ui.dining.adapter.DiningDateAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.launch
+import java.util.Date
 
 @AndroidEntryPoint
 class DiningActivity : KoinNavigationDrawerActivity() {
@@ -19,15 +27,28 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     val binding: ActivityDiningBinding by dataBinding<ActivityDiningBinding>(R.layout.activity_dining)
     override val screenTitle = "식단"
     private val viewModel by viewModels<DiningViewModel>()
+    private val dates = mutableListOf<Date>()
+    private val diningDateAdapter by lazy { DiningDateAdapter {
+        viewModel.setSelectedDate(it)
+    } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initCalendar()
         initViewPager()
 
         withLoading(this, viewModel)
         viewModel.getDining()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedDate.collect {
+                    viewModel.getDining(it)
+                }
+            }
+        }
     }
 
     private fun initViewPager() {
@@ -44,6 +65,35 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
                 }
             }.attach()
+        }
+    }
+
+    private fun initCalendar() {
+        with(binding) {
+            recyclerViewCalendar.adapter = diningDateAdapter
+            val current = TimeUtil.getCurrentTime()
+            dates.add(current)
+            for (i in 0 until 7) {
+                dates.add(0, TimeUtil.getPreviousDayDate(dates.first()))
+            }
+            for (i in 0 until 7) {
+                dates.add(TimeUtil.getNextDayDate(dates.last()))
+            }
+            diningDateAdapter.submitList(dates)
+
+            val todayPos = dates.size / 2
+            diningDateAdapter.setSelectedPosition(todayPos)
+            scrollDateTodayToCenter(todayPos)
+        }
+    }
+
+    private fun scrollDateTodayToCenter(todayPosition: Int) {
+        val layoutManager = binding.recyclerViewCalendar.layoutManager as? LinearLayoutManager
+        val screenWidthPx = resources.displayMetrics.widthPixels
+        binding.recyclerViewCalendar.post {
+            val itemWidthPx = binding.recyclerViewCalendar.getChildAt(0).width
+            val offset = (screenWidthPx / 2 - itemWidthPx / 2)
+            layoutManager?.scrollToPositionWithOffset(todayPosition, offset)
         }
     }
 }

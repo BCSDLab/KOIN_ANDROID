@@ -26,7 +26,7 @@ class DiningViewModel @Inject constructor(
     private val checkCorrectDateRangeUseCase: CheckCorrectDateRangeUseCase
 ) : BaseViewModel() {
 
-    private val _selectedDate = MutableStateFlow<String>(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
+    private val _selectedDate = MutableStateFlow(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
     val selectedDate: StateFlow<String> get() = _selectedDate
 
     private val _dining =
@@ -34,7 +34,11 @@ class DiningViewModel @Inject constructor(
     val dining: StateFlow<Map<String, List<Dining>>> get() = _dining
 
     init {
-        _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(DiningUtil.getCurrentDate())
+        setSelectedDate(DiningUtil.getCurrentDate())
+    }
+
+    fun setSelectedDate(date: Date) {
+        _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(date)
     }
 
     fun getDining(

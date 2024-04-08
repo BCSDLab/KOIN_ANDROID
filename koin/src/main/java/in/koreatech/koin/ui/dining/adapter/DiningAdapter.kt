@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import `in`.koreatech.koin.databinding.ItemDiningTypeBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 
-class DiningTypeAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
+class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningViewHolder).bind(getItem(position))
