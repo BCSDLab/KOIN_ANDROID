@@ -14,9 +14,7 @@ data class DiningResponse(
     @SerializedName("image_url") val imageUrl: String?,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String,
-    @SerializedName("sold_out") val isSoldOut: Boolean,
-    // TODO: sold_out 품절 시각으로 변경시 대응
-//    @SerializedName("sold_out") val soldOutAt: String?,
-    @SerializedName("is_changed") val isChanged: Boolean,
+    @SerializedName("soldout_at") val soldoutAt: String?,
+    @SerializedName("changed_at") val changedAt: String?,
     @SerializedName("error") val error: String?
 )

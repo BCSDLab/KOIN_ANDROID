@@ -15,10 +15,8 @@ fun DiningResponse.toDining() = Dining(
     this.imageUrl ?: "",
     this.createdAt,
     this.updatedAt,
-    this.isSoldOut,
-    // TODO: sold_out 품절 시각으로 변경시 대응
-//    this.soldOutAt ?: ""
-    this.isChanged,
+    this.soldoutAt ?: "",
+    this.changedAt ?: "",
     this.error ?: ""
 )
 
