@@ -50,6 +50,8 @@
     <color name="gray11">#707070</color>
     <color name="gray12">#555555</color>
     <color name="gray13">#757575</color>
+    <color name="gray14">#e1e1e1</color>
+    <color name="gray15">#cacaca</color>
 
 
     <color name="black_alpha12">#1f252525</color>
@@ -74,6 +76,7 @@
     <color name="blue8">#9fa9b3</color>
     <color name="blue_alpha30">#4d7c9fae</color>
     <color name="blue_alpha51">#33d2dae2</color>
+    <color name="blue_alpha20">#6DBBDD</color>
 
     <!-- BusWidget -->
     <color name="deep_light_navy">@color/blue5</color>
