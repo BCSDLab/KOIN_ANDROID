@@ -201,6 +201,11 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 //계좌이체
                 setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
 
+                Glide.with(this@StoreDetailActivity)
+                    .load(it.imageUrls?.getOrNull(0) ?: R.drawable.defualt_image)
+                    .error(R.drawable.arrow_back)
+                    .into(storeDetailImageview)
+
             }
         }
 

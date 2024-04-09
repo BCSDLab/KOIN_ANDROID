@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreDetailMenuListItemBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -32,6 +33,9 @@ class StoreDetailMenuRecyclerAdapter :
                     binding.storeDetailMenuPriceTextview.text = menus
                 }
             }
+            Glide.with(binding.root.context)
+                .load(shopMenu.imageUrls?.getOrNull(0)?: R.drawable.defualt_image)
+                .into(binding.storeDetailMenuImageview)
         }
 
         private fun getOptionPriceText(menu: ShopMenus.ShopMenuOptions) = when {
