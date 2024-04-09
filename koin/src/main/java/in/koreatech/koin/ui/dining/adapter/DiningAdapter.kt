@@ -27,31 +27,35 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
     }
 
     class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
-        @SuppressLint("SetTextI18n")
+        
         fun bind(dining: Dining) {
             with(binding) {
+                val context = root.context
                 textViewDiningCorner.text = dining.place
-                textViewKcal.text = dining.kcal + "kcal"
-                textViewCashPrice.text = dining.priceCash + "원"
-                textViewCardPrice.text = dining.priceCard + "원"
+                textViewKcal.text =
+                    context.getString(R.string.dining_kcal, dining.kcal)
+                textViewCashPrice.text =
+                    context.getString(R.string.price, dining.priceCash)
+                textViewCardPrice.text =
+                    context.getString(R.string.price, dining.priceCard)
                 textViewDiningMenuItems.text = dining.menu.joinToString("\n")
 
                 if(dining.imageUrl.isNotEmpty()) {
-                    Glide.with(root.context)
+                    Glide.with(context)
                         .load(dining.imageUrl)
                         .into(imageViewDining)
 
+                    val dialog = Dialog(context).apply {
+                        setContentView(R.layout.dialog_dining_image)
+                        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    }
+                    val closeButton = dialog.findViewById<ImageView>(R.id.image_view_close)
+                    closeButton.setOnClickListener {
+                        dialog.dismiss()
+                    }
                     cardViewDining.setOnClickListener {
-                        val dialog = Dialog(root.context).apply {
-                            setContentView(R.layout.dialog_dining_image)
-                            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                        }
-                        val closeButton = dialog.findViewById<ImageView>(R.id.image_view_close)
-                        closeButton.setOnClickListener {
-                            dialog.dismiss()
-                        }
                         val imageView = dialog.findViewById<ImageView>(R.id.image_view_dining)
-                        Glide.with(root.context)
+                        Glide.with(context)
                             .load(dining.imageUrl)
                             .into(imageView)
                         dialog.show()
