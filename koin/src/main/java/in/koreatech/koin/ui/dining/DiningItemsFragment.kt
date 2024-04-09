@@ -11,6 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentDiningItemsBinding
+import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dining.collect {
-                    diningAdapter.submitList(it[type])
+                    diningAdapter.submitList(it.filter { dining -> dining.type == type}.arrange() )
                 }
             }
         }

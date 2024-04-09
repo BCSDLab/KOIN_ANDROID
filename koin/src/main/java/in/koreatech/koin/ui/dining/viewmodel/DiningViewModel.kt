@@ -24,8 +24,8 @@ class DiningViewModel @Inject constructor(
     val selectedDate: StateFlow<String> get() = _selectedDate
 
     private val _dining =
-        MutableStateFlow<MutableMap<String, List<Dining>>>(mutableMapOf(BREAKFAST to listOf(), LUNCH to listOf(), DINNER to listOf()))
-    val dining: StateFlow<Map<String, List<Dining>>> get() = _dining
+        MutableStateFlow<List<Dining>>(emptyList())
+    val dining: StateFlow<List<Dining>> get() = _dining
 
     init {
         setSelectedDate(DiningUtil.getCurrentDate())
@@ -42,21 +42,7 @@ class DiningViewModel @Inject constructor(
             viewModelScope.launchWithLoading {
                 getDiningUseCase(date)
                     .onSuccess {
-                        val breakfast = mutableListOf<Dining>()
-                        val lunch = mutableListOf<Dining>()
-                        val dinner = mutableListOf<Dining>()
-                        it.forEach { dining ->
-                            when (dining.type) {
-                                BREAKFAST -> breakfast.add(dining)
-                                LUNCH -> lunch.add(dining)
-                                DINNER -> dinner.add(dining)
-                            }
-                        }
-                        _dining.value = mutableMapOf<String, List<Dining>>().apply {
-                            this[BREAKFAST] = DiningUtil.sortDiningByPlace(breakfast)
-                            this[LUNCH] = DiningUtil.sortDiningByPlace(lunch)
-                            this[DINNER] = DiningUtil.sortDiningByPlace(dinner)
-                        }
+                        _dining.value = it
                     }
                     .onFailure {
 
