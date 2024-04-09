@@ -22,7 +22,7 @@ class DiningItemsViewPager2Adapter(
             0 -> DiningItemsFragment.newInstance(BREAKFAST)
             1 -> DiningItemsFragment.newInstance(LUNCH)
             2 -> DiningItemsFragment.newInstance(DINNER)
-            else -> DiningItemsFragment()
+            else -> Fragment()
         }.also { fragments[position] = it }
     }
 }
