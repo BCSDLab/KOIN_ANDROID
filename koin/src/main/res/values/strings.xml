@@ -223,7 +223,7 @@
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>
     <string name="dining_dinner">저녁</string>
-    <string name="dining_kcal">kcal</string>
+    <string name="dining_kcal">%1$skcal</string>
     <string name="dining_cashbee">캐쉬비</string>
     <string name="dining_money_unit">원</string>
     <string name="dining_cash">현금</string>
@@ -361,4 +361,5 @@
     <string name="no_photo">사진 없음</string>
     <string name="sold_out">품절</string>
     <string name="changed">변경됨</string>
+    <string name="price">%1$s원</string>
 </resources>
