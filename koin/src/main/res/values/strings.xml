@@ -357,4 +357,19 @@
     <string name="set_form">%1$s-</string>
     <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
     <string name="last_update">마지막 업데이트 : </string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
+    <string name="best_menu">대표 메뉴</string>
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="event">이벤트</string>
+    <string name="telephone">전화번호</string>
+    <string name="operating_time">운영시간</string>
+    <string name="address">주소정보</string>
+    <string name="delivery_fee">배달금액</string>
+    <string name="other_info">기타정보</string>
+    <string name="delivery_available">#배달가능</string>
+    <string name="card_available">#카드가능</string>
+    <string name="account_transfer_avilable">#계좌이체가능</string>
+    <string name="menu_info">메뉴 소개</string>
+    <string name="nearby_store">주변 상점</string>
 </resources>
