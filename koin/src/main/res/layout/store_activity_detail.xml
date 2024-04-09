@@ -30,7 +30,7 @@
                     app:rightButtonBackground="@drawable/ic_hamburger_button"
                     app:rightButtonHeight="18dp"
                     app:rightButtonWidth="12dp"
-                    app:titleText="주변상점" />
+                    app:titleText="@string/nearby_store" />
 
             </LinearLayout>
 
@@ -69,6 +69,13 @@
                         android:orientation="horizontal"
                         app:layout_constraintGuide_percent="0.288" />
 
+                    <ImageView
+                        android:id="@+id/store_detail_imageview"
+                        android:layout_width="match_parent"
+                        android:layout_height="255dp"
+                        android:alpha="0.2"
+                        android:background="@color/blue1"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/store_detail_title_textview"
@@ -85,7 +92,7 @@
                         app:fontName="Custom5"
                         app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                         app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/store_detail_imageview"
                         tools:text="상점명" />
 
 
@@ -95,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="7sp"
-                        android:text="전화번호"
+                        android:text="@string/telephone"
                         android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6"
@@ -131,7 +138,7 @@
                         android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="7sp"
-                        android:text="운영시간"
+                        android:text="@string/operating_time"
                         android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6"
@@ -167,7 +174,7 @@
                         android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="7sp"
-                        android:text="주소정보"
+                        android:text="@string/address"
                         android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6"
@@ -203,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
-                        android:text="배달금액"
+                        android:text="@string/delivery_fee"
                         android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6"
@@ -240,7 +247,7 @@
                         android:layout_marginTop="4dp"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="7sp"
-                        android:text="기타정보"
+                        android:text="@string/other_info"
                         android:textColor="@color/gray9"
                         android:textSize="15sp"
                         app:fontName="Custom6"
@@ -280,8 +287,8 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
-                        android:text="#배달가능"
-                        android:textColor="@color/white"
+                        android:text="@string/delivery_available"
+                        android:textColor="@color/blue_alpha20"
                         android:textSize="12sp"
                         app:fontName="Custom6"
                         app:layout_constraintStart_toStartOf="@+id/guideline_start"
@@ -297,9 +304,8 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
-
-                        android:text="#카드가능"
-                        android:textColor="@color/white"
+                        android:text="@string/card_available"
+                        android:textColor="@color/blue_alpha20"
                         android:textSize="12sp"
                         app:fontName="Custom6"
                         app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
@@ -315,8 +321,8 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:lineSpacingExtra="6sp"
-                        android:text="#계좌이체가능"
-                        android:textColor="@color/white"
+                        android:text="@string/account_transfer_avilable"
+                        android:textColor="@color/blue_alpha20"
                         android:textSize="12sp"
                         app:fontName="Custom6"
                         app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
@@ -345,27 +351,99 @@
                             android:layout_marginStart="16dp"
                             android:includeFontPadding="false"
                             android:lineSpacingExtra="6sp"
-                            android:text="메뉴 소개"
+                            android:text="@string/menu_info"
                             android:textColor="@color/gray9"
                             android:textSize="13sp"
                             app:fontName="Custom6" />
                     </FrameLayout>
 
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/store_detail_flyer_recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:background="@color/background"
-                        android:clipToPadding="false"
-                        android:minHeight="159dp"
-                        android:paddingBottom="12dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                    <android.widget.Button
+                        android:id="@+id/store_detail_recommend_menu_button"
+                        android:layout_width="73dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/button_rect_gray_radius_4dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/recommend_menu"
+                        android:textColor="@color/gray15"
+                        android:textSize="13sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintStart_toEndOf="@+id/guideline_start"
                         app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
+
+                    <android.widget.Button
+                        android:id="@+id/store_detail_best_menu_button"
+                        android:layout_width="73dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/button_rect_gray_radius_4dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/best_menu"
+                        android:textColor="@color/gray15"
+                        android:textSize="13sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintEnd_toStartOf="@+id/store_detail_set_menu_button"
+                        app:layout_constraintStart_toEndOf="@+id/store_detail_recommend_menu_button"
+                        app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
+
+                    <android.widget.Button
+                        android:id="@+id/store_detail_set_menu_button"
+                        android:layout_width="73dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/button_rect_gray_radius_4dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/set_menu"
+                        android:textColor="@color/gray15"
+                        android:textSize="13sp"
+                        app:fontName="Custom6"
+                        android:layout_marginEnd="22dp"
+                        app:layout_constraintEnd_toStartOf="@+id/store_detail_side_menu_button"
+                        app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
+
+                    <android.widget.Button
+                        android:id="@+id/store_detail_side_menu_button"
+                        android:layout_width="84dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/button_rect_gray_radius_4dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/side_menu"
+                        android:textColor="@color/gray15"
+                        android:textSize="13sp"
+                        app:fontName="Custom6"
+                        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                        app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
+
+                    <!--        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/store_detail_flyer_recyclerview"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="24dp"
+                                android:background="@color/background"
+                                android:clipToPadding="false"
+                                android:minHeight="159dp"
+                                android:paddingBottom="12dp"
+                                android:paddingStart="16dp"
+                                android:paddingEnd="16dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/store_detail_recommend_menu_button" />
+        -->
+                    <androidx.constraintlayout.widget.Barrier
+                        android:id="@+id/barrier_best_menu"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:barrierDirection="bottom"
+                        app:constraint_referenced_ids="store_detail_const_phone_num, store_detail_phone_textview" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/store_detail_recyclerview"
@@ -377,7 +455,7 @@
                         android:paddingBottom="12dp"
                         app:layout_constraintEnd_toEndOf="@+id/guideline_end"
                         app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/store_detail_flyer_recyclerview"
+                        app:layout_constraintTop_toBottomOf="@+id/store_detail_recommend_menu_button"
                         tools:listitem="@layout/store_detail_menu_list_item" />
 
                     <TextView
@@ -385,10 +463,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12sp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:text="@string/show_more_menu"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         app:layout_constraintEnd_toStartOf="@+id/arrow_image_view"
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="@+id/guideline_start"
