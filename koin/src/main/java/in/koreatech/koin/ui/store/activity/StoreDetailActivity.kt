@@ -2,11 +2,14 @@ package `in`.koreatech.koin.ui.store.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
@@ -98,7 +101,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.storeDetailFlyerRecyclerview.apply {
+        /*binding.storeDetailFlyerRecyclerview.apply {
             layoutManager = LinearLayoutManager(
                 this@StoreDetailActivity,
                 LinearLayoutManager.HORIZONTAL,
@@ -106,7 +109,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             )
             setHasFixedSize(true)
             adapter = storeDetailFlyerRecyclerAdapter
-        }
+        }*/
 
         binding.storeDetailRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreDetailActivity)
@@ -175,7 +178,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 if (!it.isDeliveryOk) {
                     storeDetailConstDeliverTextview.isVisible = false
                     storeDetailDeliverTextview.isVisible = false
-                    storeDetailIsDeliveryTextview.isVisible = false
+                    storeDetailIsDeliveryTextview . setTextColor (ContextCompat.getColor(
+                        this@StoreDetailActivity,
+                        R.color.gray2
+                    ))
+                    storeDetailIsDeliveryTextview.background = ContextCompat.getDrawable(
+                        this@StoreDetailActivity,
+                        R.drawable.button_rect_gray_radius_5dp
+                    )
                 } else {
                     storeDetailDeliverTextview.text = if (it.deliveryPrice <= 0) {
                         getString(R.string.store_delivery_free)
@@ -185,24 +195,12 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 }
 
                 //기타정보
-                if (it.description == null) {
-                    storeDetailConstEtcTextview.isVisible = false
-                    storeDetailEtcTextview.isVisible = false
-                } else {
-                    storeDetailEtcTextview.text = it.description
-                }
-
+                setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
-                if (!it.isCardOk) {
-                    storeDetailIsCardTextview.isVisible = false
-                }
-
+                setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //계좌이체
-                if (!it.isBankOk) {
-                    storeDetailIsBankTextview.isVisible = false
-                }
+                setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
 
-                storeDetailFlyerRecyclerAdapter.submitList(it.imageUrls)
             }
         }
 
@@ -257,6 +255,15 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         return stringBuilder.toString()
     }
 
+    private fun setEtcInfo(textView: TextView, isAvailable: Boolean) {
+        if (!isAvailable) {
+            textView.setTextColor(ContextCompat.getColor(this@StoreDetailActivity, R.color.gray2))
+            textView.background = ContextCompat.getDrawable(
+                this@StoreDetailActivity,
+                R.drawable.button_rect_gray_radius_5dp
+            )
+        }
+    }
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
         private const val MAX_MENUS_FOLDED = 6
