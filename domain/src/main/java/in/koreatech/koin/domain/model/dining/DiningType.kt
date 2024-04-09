@@ -4,23 +4,11 @@ import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.constant.DINNER
 import `in`.koreatech.koin.domain.constant.LUNCH
 
-sealed class DiningType(
-    val typeCode: Int,
+enum class DiningType(
     val typeEnglish: String,
     val typeKorean: String
-) : Comparable<DiningType> {
-    object Breakfast : DiningType(0, BREAKFAST, "아침")
-    object Lunch : DiningType(1, LUNCH, "점심")
-    object Dinner : DiningType(2, DINNER, "저녁")
-
-    override fun compareTo(other: DiningType): Int {
-        return typeCode.compareTo(other.typeCode)
-    }
-}
-
-fun String.toDiningType() = when(this) {
-    BREAKFAST -> DiningType.Breakfast
-    LUNCH -> DiningType.Lunch
-    DINNER -> DiningType.Dinner
-    else -> throw IllegalArgumentException("Invalid dining type string")
+) {
+    Breakfast (BREAKFAST, "아침"),
+    Lunch (LUNCH, "점심"),
+    Dinner (DINNER, "저녁");
 }
