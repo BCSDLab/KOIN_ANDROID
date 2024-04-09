@@ -89,10 +89,10 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             recyclerViewCalendar.adapter = diningDateAdapter
             val current = TimeUtil.getCurrentTime()
             dates.add(current)
-            for (i in 0 until 7) {
+            repeat(7) {
                 dates.add(0, TimeUtil.getPreviousDayDate(dates.first()))
             }
-            for (i in 0 until 7) {
+            repeat(7) {
                 dates.add(TimeUtil.getNextDayDate(dates.last()))
             }
             diningDateAdapter.submitList(dates)
