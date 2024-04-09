@@ -11,12 +11,12 @@ object DiningUtil {
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
 
-    fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
-        DiningType.Dinner
+    fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
+        DiningType.Breakfast
     } else if (TimeUtil.compareWithCurrentTime(diningEndTime[1]) >= 0) {
         DiningType.Lunch
-    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
-        DiningType.Breakfast
+    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
+        DiningType.Dinner
     } else {
         DiningType.Breakfast
     }
@@ -32,22 +32,5 @@ object DiningUtil {
             if (it.place == place) return it
         }
         return null
-    }
-
-    fun sortDiningByPlace(diningList: List<Dining>): List<Dining> {
-        val priority = mutableListOf<Int>()
-        for(dining in diningList) {
-            priority.add(
-                when (dining.place) {
-                    "A코너" -> 0
-                    "B코너" -> 1
-                    "C코너" -> 2
-                    "능수관" -> 3
-                    "2캠퍼스" -> 4
-                    else -> 5
-                }
-            )
-        }
-        return diningList.sortedWith(compareBy { priority[diningList.indexOf(it)] })
     }
 }
