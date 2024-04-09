@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemDiningDateBinding
+import `in`.koreatech.koin.domain.util.DateFormatUtil
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -42,21 +43,32 @@ class DiningDateAdapter(
     inner class DiningDateViewHolder(val binding: ItemDiningDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(date: Date, position: Int) {
-
             with(binding) {
-                val calendar = Calendar.getInstance()
-                calendar.time = date
-                textViewDayOfTheWeek.text =
-                    calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN)
-                        ?.toString() ?: ""
+                val context = root.context
+                textViewDayOfTheWeek.text = DateFormatUtil.getDayOfWeek(date)
                 textViewDay.text = date.date.toString()
 
                 if (position < selectedPosition) {
-                    textViewDay.setTextColor(Color.parseColor("#8E8E8E"))
-                    textViewDayOfTheWeek.setTextColor(Color.parseColor("#8E8E8E"))
+                    textViewDay.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.gray9
+                        )
+                    )
+                    textViewDayOfTheWeek.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.gray9
+                        )
+                    )
                 } else {
                     textViewDay.setTextColor(Color.BLACK)
-                    textViewDayOfTheWeek.setTextColor(Color.parseColor("#4B4B4B"))
+                    textViewDayOfTheWeek.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.gray14
+                        )
+                    )
                 }
 
                 backgroundSelectedDate.visibility = View.INVISIBLE
@@ -68,7 +80,7 @@ class DiningDateAdapter(
                     } else {
                         textViewDay.setTextColor(
                             ContextCompat.getColor(
-                                root.context,
+                                context,
                                 R.color.colorPrimary
                             )
                         )
