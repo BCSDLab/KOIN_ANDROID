@@ -3,7 +3,7 @@ package `in`.koreatech.koin.ui.dining.appwidget
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.constant.DINING
 import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.usecase.dining.DiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import android.app.PendingIntent
@@ -28,7 +28,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DiningAppWidget : AppWidgetProvider() {
     @Inject
-    lateinit var diningUseCase: DiningUseCase
+    lateinit var getDiningUseCase: GetDiningUseCase
     private var currentDiningPlace: String? = null
     private var job: Job? = null
 
@@ -92,7 +92,7 @@ class DiningAppWidget : AppWidgetProvider() {
             R.id.dining_widget_refresh_imageview
         )
         job = CoroutineScope(Dispatchers.IO).launch {
-            diningUseCase(targetDay)
+            getDiningUseCase(TimeUtil.dateFormatToYYMMDD(targetDay))
                 .onSuccess {
                     withContext(Dispatchers.Main) {
                         setDiningList(it, context)
