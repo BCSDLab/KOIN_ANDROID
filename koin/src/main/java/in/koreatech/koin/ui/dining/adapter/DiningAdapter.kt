@@ -62,7 +62,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     }
                 }
 
-                if(dining.isSoldOut) {
+                if(dining.soldoutAt.isNotEmpty()) {
                     groupSoldOut.visibility = View.VISIBLE
                     textViewDiningSoldOut.visibility = View.VISIBLE
                 } else {
@@ -70,7 +70,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     textViewDiningSoldOut.visibility = View.INVISIBLE
                 }
 
-                if(dining.isChanged) {
+                if(dining.changedAt.isNotEmpty()) {
                     textViewDiningChanged.visibility = View.VISIBLE
                 } else {
                     textViewDiningChanged.visibility = View.INVISIBLE
