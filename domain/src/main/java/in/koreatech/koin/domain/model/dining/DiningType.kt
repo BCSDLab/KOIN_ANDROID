@@ -10,5 +10,6 @@ enum class DiningType(
 ) {
     Breakfast (BREAKFAST, "아침"),
     Lunch (LUNCH, "점심"),
-    Dinner (DINNER, "저녁");
+    Dinner (DINNER, "저녁"),
+    NextBreakfast (BREAKFAST, "내일 아침");
 }
