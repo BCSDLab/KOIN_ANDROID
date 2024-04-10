@@ -80,6 +80,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 DiningType.Breakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
                 DiningType.Lunch -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(1))
                 DiningType.Dinner -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(2))
+                DiningType.NextBreakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
             }
         }
     }
