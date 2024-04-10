@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.navigation
 
 import android.content.Intent
 import android.graphics.Typeface
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -174,7 +173,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             if (menuState == MenuState.Main) {
                 if (System.currentTimeMillis() > pressTime + 2000) {
                     pressTime = System.currentTimeMillis()
-                    ToastUtil.getInstance().makeShort("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+                    ToastUtil.getInstance().makeShort(getString(R.string.press_again_to_exit))
                 } else {
                     finishAffinity()
                 }
@@ -188,7 +187,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         observeLiveData(userState) { user ->
             val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
             when (user) {
-                User.Anonymous -> nameTextview.text = "익명"
+                User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
                 is User.Student -> nameTextview.text = user.name
             }
         }
@@ -267,7 +266,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }
 
             else -> {
-                ToastUtil.getInstance().makeShort("서비스예정입니다")
+                ToastUtil.getInstance().makeShort(getString(R.string.to_be_opened))
             }
         }
     }
@@ -370,10 +369,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     fun showLoginRequestDialog() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("회원 전용 서비스")
-            .setMessage("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")
+        builder.setTitle(getString(R.string.user_only))
+            .setMessage(getString(R.string.login_request))
             .setCancelable(false)
-            .setPositiveButton("확인") { dialog, _ ->
+            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
                 val intent = Intent(
                     this,
                     LoginActivity::class.java
@@ -382,7 +381,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 startActivity(intent)
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
             }
-            .setNegativeButton("취소") { dialog, _ ->
+            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
                 dialog.cancel()
             }
         val dialog = builder.create() // 알림창 객체 생성
