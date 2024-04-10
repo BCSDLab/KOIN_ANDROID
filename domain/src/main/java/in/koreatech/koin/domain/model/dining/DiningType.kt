@@ -10,6 +10,6 @@ enum class DiningType(
 ) {
     Breakfast (BREAKFAST, "아침"),
     Lunch (LUNCH, "점심"),
-    Dinner (DINNER, "저녁");
-    object NextBreakfast : DiningType(3, "BREAKFAST", "내일 아침")
+    Dinner (DINNER, "저녁"),
+    NextBreakfast (BREAKFAST, "내일 아침");
 }
