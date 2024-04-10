@@ -36,6 +36,13 @@
     <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_cancel">취소</string>
+    <string name="login_request">로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?</string>
+    <string name="navigation_ok">확인</string>
+    <string name="user_only">회원 전용 서비스</string>
+    <string name="to_be_opened">서비스예정입니다</string>
+    <string name="press_again_to_exit">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="user_anon">익명</string>
 
 
     <!-- Server Messages -->
