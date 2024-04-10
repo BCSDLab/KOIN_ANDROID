@@ -38,50 +38,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.dining_activity_main)
-        init()
-        with(diningViewModel) {
-            updateDiningData()
-            selectedDate.observe(this@DiningActivity) {
-                binding.diningDateTextView.text = it
-            }
-            diningData.observe(this@DiningActivity) {
-                setSwipeRefreshingFalse()
-                updateRecyclerData()
-            }
-            isLoading.observe(this@DiningActivity) {
-                if (it) {
-                    showProgressDialog(R.string.loading)
-                    //NavigationDrawer Refactoring 할 시 변경
-                } else {
-                    hideProgressDialog()
-                    //NavigationDrawer Refactoring 할 시 변경
-                }
-            }
-            isDataLoaded.observe(this@DiningActivity) {
-                setSwipeRefreshingFalse()
-                if (!it) {
-                    updateRecyclerData()
-                    Toast.makeText(
-                        this@DiningActivity,
-                        R.string.error_network,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-            isDateError.observe(this@DiningActivity) {
-                if(it) {
-                    Toast.makeText(this@DiningActivity, R.string.dining_no_more_data_load, Toast.LENGTH_SHORT).show()
-                    dateErrorInit()
-                }
-            }
-            when (selectedType) {
-                is DiningType.Breakfast -> setTextSelected(binding.diningBreakfastButton)
-                is DiningType.Lunch -> setTextSelected(binding.diningLunchButton)
-                is DiningType.Dinner -> setTextSelected(binding.diningDinnerButton)
-                is DiningType.NextBreakfast -> setTextSelected(binding.diningBreakfastButton)
-            }
-        }
+        setContentView(binding.root)
 
         initCalendar()
         initViewPager()
