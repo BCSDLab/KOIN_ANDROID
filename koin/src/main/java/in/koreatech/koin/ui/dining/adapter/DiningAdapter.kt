@@ -45,6 +45,9 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                         .load(dining.imageUrl)
                         .into(imageViewDining)
 
+                    textViewNoPhoto.visibility = View.INVISIBLE
+                    imageViewNoPhoto.visibility = View.INVISIBLE
+
                     val dialog = Dialog(context).apply {
                         setContentView(R.layout.dialog_dining_image)
                         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
