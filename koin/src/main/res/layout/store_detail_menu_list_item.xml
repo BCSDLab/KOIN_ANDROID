@@ -31,7 +31,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="68dp"
                 android:layout_height="16dp"
-                android:background="@drawable/button_rect_blue_radius_5dp"
+                android:background="@drawable/button_rect_blue_line_radius_5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
