@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -16,11 +18,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -42,11 +47,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     }
 
+    private val viewPagerHandler = Handler(Looper.getMainLooper())
+    private val viewPagerDelayTime = 5000L // 10초 간격으로 슬라이드
+
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
         }
     }
+    val tmpData:ArrayList<String> = ArrayList<String>()
 
     private var isSearchMode: Boolean = false
         set(value) {
@@ -84,6 +93,26 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        handleCategoryClickEvent()
+        initViewModel()
+        initView()
+        startAutoScroll()
+
+        val initStoreCategory =
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
+        viewModel.setCategory(initStoreCategory)
+    }
+
+    override fun onBackPressed() {
+        if (binding.searchEditText.hasFocus()) {
+            binding.searchEditText.clearFocus()
+            return
+        }
+        super.onBackPressed()
+    }
+
+    private fun initView(){
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
@@ -113,20 +142,44 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             if(showRemoveQueryButton) binding.searchEditText.setText("")
         }
 
-        handleCategoryClickEvent()
-        initViewModel()
+        binding.eventViewPager.apply {
+            tmpData.add("기분좋은뷔페")
+            tmpData.add("거성한식식당")
+            tmpData.add("한솥")
+            tmpData.add("소주방울")
+            tmpData.add("멕시카나")
 
-        val initStoreCategory =
-            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
-        viewModel.setCategory(initStoreCategory)
+            currentItem = Int.MAX_VALUE / 2
+            offscreenPageLimit = 3
+            adapter = StoreEventPagerAdapter(tmpData)
+            val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
+            val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
+            setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    this@StoreActivity,
+                    R.dimen.view_pager_item_margin
+                )
+            )
+        }
+
     }
 
-    override fun onBackPressed() {
-        if (binding.searchEditText.hasFocus()) {
-            binding.searchEditText.clearFocus()
-            return
+    private val runnable = object : Runnable {
+        override fun run() {
+            var currentPosition = binding.eventViewPager.currentItem
+            val itemCount = binding.eventViewPager.adapter?.itemCount ?: 0
+
+            // 마지막 페이지면 첫 페이지로, 아니면 다음 페이지로
+            currentPosition += 1
+
+            binding.eventViewPager.setCurrentItem(currentPosition, true) // 스무스한 페이지 전환
+            viewPagerHandler.postDelayed(this, viewPagerDelayTime)
         }
-        super.onBackPressed()
+    }
+    private fun startAutoScroll() {
+        viewPagerHandler.removeCallbacks(runnable)
+        viewPagerHandler.postDelayed(runnable, viewPagerDelayTime)
     }
 
     private fun initViewModel() {
@@ -208,6 +261,16 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 if (isSelected) R.color.colorAccent else R.color.black
             )
         )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewPagerHandler.removeCallbacks(runnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startAutoScroll()
     }
 }
 
