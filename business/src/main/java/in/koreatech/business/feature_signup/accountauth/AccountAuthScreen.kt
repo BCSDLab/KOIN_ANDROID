@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,17 +30,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature_signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature_signup.textfield.AuthTextField
-import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
-import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorEmphasis
-import `in`.koreatech.business.ui.theme.ColorUnachieved
+import `in`.koreatech.business.ui.theme.ColorSecondary
+import `in`.koreatech.business.ui.theme.ColorUnarchived
 import kotlinx.coroutines.delay
 
 @Composable
@@ -82,7 +78,7 @@ fun AccountAuthScreen(
             ) {
                 Text(
                     modifier = Modifier,
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                     text = stringResource(id = R.string.account_authentication)
                 )
                 Text(text = stringResource(id = R.string.two_third))
@@ -93,14 +89,14 @@ fun AccountAuthScreen(
                     .padding(16.dp)
             ) {
                 drawLine(
-                    color = ColorUnachieved,
+                    color = ColorUnarchived,
                     start = Offset(0f - 40, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                     start = Offset(0f - 40, 0f),
                     end = Offset((size.width + 40) * 2 / 3, size.height),
                     strokeWidth = 4.dp.toPx(),
@@ -112,7 +108,7 @@ fun AccountAuthScreen(
                 Text(
                     text = email,
                     fontSize = 15.sp,
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                 )
                 Text(
                     text = stringResource(id = R.string.by),
@@ -148,8 +144,6 @@ fun AccountAuthScreen(
                     .height(44.dp),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ColorActiveButton,
-                        disabledContainerColor = ColorDisabledButton,
                         contentColor = Color.White,
                         disabledContentColor = Color.White,
                     ),
@@ -164,9 +158,7 @@ fun AccountAuthScreen(
                     .height(44.dp),
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = ColorActiveButton,
                         contentColor = Color.White,
-                        disabledContainerColor = ColorDisabledButton,
                         disabledContentColor = Color.White,
                     ),
                     onClick = { onNextClicked() }) {

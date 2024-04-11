@@ -16,11 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,9 +43,10 @@ import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorEmphasis
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorMinor
+import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
 fun BusinessAuthScreen(
@@ -88,10 +89,10 @@ fun BusinessAuthScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    color = ColorEmphasis, text = stringResource(id = R.string.business_auth)
+                    color = ColorSecondary, text = stringResource(id = R.string.business_auth)
                 )
                 Text(
-                    color = ColorEmphasis, text = stringResource(id = R.string.three_third)
+                    color = ColorSecondary, text = stringResource(id = R.string.three_third)
                 )
             }
             Canvas(
@@ -101,7 +102,7 @@ fun BusinessAuthScreen(
             ) {
 
                 drawLine(
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                     start = Offset(0f - 35, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
@@ -131,7 +132,7 @@ fun BusinessAuthScreen(
                     onClick = { onSearchClicked() },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF175C8E),
+                        backgroundColor = ColorPrimary,
                         contentColor = Color.White,
                     ),
                 ) {
@@ -171,7 +172,7 @@ fun BusinessAuthScreen(
                             modifier = Modifier.size(24.dp),
                             painter = painterResource(id = R.drawable.plus_square),
                             contentDescription = stringResource(id = R.string.upload_file_icon),
-                            tint = ColorEmphasis
+                            tint = ColorSecondary
                         )
                         Text(
                             text = stringResource(id = R.string.file_upload_prompt),
@@ -194,8 +195,8 @@ fun BusinessAuthScreen(
                 .height(44.dp),
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ColorActiveButton,
-                    disabledContainerColor = ColorDisabledButton,
+                    backgroundColor = ColorActiveButton,
+                    disabledBackgroundColor = ColorDisabledButton,
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),

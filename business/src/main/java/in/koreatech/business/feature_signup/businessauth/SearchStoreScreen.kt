@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package `in`.koreatech.business.feature_signup.businessauth
 
 import androidx.compose.foundation.BorderStroke
@@ -17,16 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
@@ -50,6 +48,7 @@ import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorSearch
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @Composable
 fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
@@ -104,11 +103,16 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
                 value = search, onValueChange = { search = it },
                 textStyle = TextStyle(fontSize = 14.sp),
 
-                colors = TextFieldDefaults.colors(
+                colors = TextFieldDefaults.textFieldColors(
                     focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedLabelColor = ColorSearch,
+                    /*
+                    *    focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     unfocusedContainerColor = ColorSearch,
                     focusedLabelColor = ColorSearch,
+                    * */
                 ),
                 placeholder = {
                     Text(
@@ -142,7 +146,8 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
     Scaffold() { contentPadding ->
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(contentPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             items(item.size) { index ->
@@ -161,7 +166,7 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
                                 color = if (selectedItemIndex == index) ColorActiveButton else ColorHelper
                             )
                         ),
-                    ) {
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxSize()
@@ -198,15 +203,16 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
             }
         }
         if (showBottomSheet) {
-            ModalBottomSheet(
-                dragHandle = null,
-                onDismissRequest = {
-                    showBottomSheet = false
+            /*BottomSheetScaffold(
+                modifier = Modifier.fillMaxSize(),
+                sheetContent = {
+                    StoreBottomSheet(
+                        onSelected = {
+                            onSelected()
+                            showBottomSheet = false
+                        }
+                    )
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(138.dp)
-                    .padding(contentPadding),
             ) {
                 Row(
                     modifier = Modifier
@@ -245,13 +251,34 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
                             .padding(16.dp),
                         onClick = { onSelected() },
                         shape = RectangleShape,
-                        colors = ButtonDefaults.buttonColors(containerColor = ColorActiveButton)
+                        colors = ButtonDefaults.buttonColors(backgroundColor = ColorActiveButton)
                     ) {
                         Text(text = stringResource(id = R.string.select), fontWeight = Bold)
                     }
                 }
+            }*/
+          /*  ModalBottomSheet(
+                dragHandle = null,
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(138.dp)
+                    .padding(contentPadding),
+            ) {
 
-            }
+
+            }*/
         }
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewSearchStoreScreen() {
+    KOIN_ANDROIDTheme {
+        SearchStoreScreen()
     }
 }
