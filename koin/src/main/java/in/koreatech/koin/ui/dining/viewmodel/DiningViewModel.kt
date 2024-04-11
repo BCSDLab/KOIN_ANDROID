@@ -27,10 +27,6 @@ class DiningViewModel @Inject constructor(
         MutableStateFlow<List<Dining>>(emptyList())
     val dining: StateFlow<List<Dining>> get() = _dining
 
-    init {
-        setSelectedDate(DiningUtil.getCurrentDate())
-    }
-
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYYYMMDD(date)
     }
