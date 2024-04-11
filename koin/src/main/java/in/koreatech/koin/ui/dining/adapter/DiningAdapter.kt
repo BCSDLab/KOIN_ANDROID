@@ -65,18 +65,19 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     }
                 }
 
-                if(dining.soldoutAt.isNotEmpty()) {
-                    groupSoldOut.visibility = View.VISIBLE
-                    textViewDiningSoldOut.visibility = View.VISIBLE
-                } else {
-                    groupSoldOut.visibility = View.INVISIBLE
-                    textViewDiningSoldOut.visibility = View.INVISIBLE
-                }
-
                 if(dining.changedAt.isNotEmpty()) {
                     textViewDiningChanged.visibility = View.VISIBLE
                 } else {
                     textViewDiningChanged.visibility = View.INVISIBLE
+                }
+
+                if(dining.soldoutAt.isNotEmpty()) {
+                    groupSoldOut.visibility = View.VISIBLE
+                    textViewDiningSoldOut.visibility = View.VISIBLE
+                    textViewDiningChanged.visibility = View.INVISIBLE
+                } else {
+                    groupSoldOut.visibility = View.INVISIBLE
+                    textViewDiningSoldOut.visibility = View.INVISIBLE
                 }
             }
         }
