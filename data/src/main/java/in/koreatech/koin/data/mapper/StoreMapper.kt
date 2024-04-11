@@ -21,6 +21,7 @@ fun StoreItemResponse.toStore(): Store = Store(
     isDeliveryOk = isDeliveryOk ?: false,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
+    isEvent = isEvent ?: false,
     open = open.filter { it.dayOfWeek == localDayOfWeekName }.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,

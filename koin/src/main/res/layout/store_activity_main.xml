@@ -386,9 +386,24 @@
                                     android:textColor="@color/gray9"
                                     android:textSize="13sp"
                                     app:fontName="Custom6" />
+
+
                             </FrameLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/event_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="64dp"
+                            android:layout_marginTop="4dp"
+                            android:clipToPadding="false"
+                            app:layout_constraintTop_toBottomOf="@id/category_constraint_layout"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/search_constraint_layout"
+                            tools:listitem="@layout/store_event_card"
+                            />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/search_constraint_layout"
@@ -400,7 +415,8 @@
                             android:background="@color/white"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/category_constraint_layout">
+                            app:layout_constraintTop_toBottomOf="@+id/event_view_pager">
+
 
                             <ImageView
                                 android:id="@+id/imageView2"

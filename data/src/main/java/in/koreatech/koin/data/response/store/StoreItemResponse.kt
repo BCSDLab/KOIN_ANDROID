@@ -11,6 +11,7 @@ data class StoreItemResponse(
     @SerializedName("pay_bank") val isBankOk: Boolean?,
     @SerializedName("open") val open: List<OpenResponseDTO>,
     @SerializedName("category_ids") val categoryIds: List<Int>,
+    @SerializedName("is_event") val  isEvent: Boolean?,
 ) {
     data class OpenResponseDTO(
         @SerializedName("day_of_week")

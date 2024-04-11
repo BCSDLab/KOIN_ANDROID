@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -36,14 +37,24 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
 
         fun bind(store: Store) {
             binding.storeNameTextview.text = store.name
+            binding.storeNameTextview.setStoreNameState(store.open.closed)
             binding.storeDeliveryTextview.setTextState(store.isDeliveryOk)
             binding.storeCardTextview.setTextState(store.isCardOk)
             binding.storeAccountTextview.setTextState(store.isBankOk)
-            binding.readyStoreFrameLayout.isVisible = if (store.open.closed) {
+            if(store.open.closed){
+                binding.readyStoreFrameLayout.isVisible = true
+                binding.storeDoesNotOpenTextView.text = store.name + "은/는 준비 중 입니다."
+            }
+            else{
+                !store.open.openStore()
+            }
+
+            binding.evnetStoreFrameLayout.isVisible = store.isEvent
+           /* binding.readyStoreFrameLayout.isVisible = if (store.open.closed) {
                 true
             } else {
                 !store.open.openStore()
-            }
+            }*/
 
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(store)
@@ -57,7 +68,16 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             setTextColor(
                 ContextCompat.getColor(
                     context,
-                    if (active) R.color.colorAccent else R.color.blue1
+                    if (active) R.color.colorPrimary else R.color.blue1
+                )
+            )
+        }
+
+        private fun TextView.setStoreNameState(active: Boolean) {
+            setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    if (active) R.color.blue1 else R.color.black
                 )
             )
         }
