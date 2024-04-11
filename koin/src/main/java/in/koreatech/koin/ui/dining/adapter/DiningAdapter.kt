@@ -45,6 +45,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                         .load(dining.imageUrl)
                         .into(imageViewDining)
 
+                    cardViewDining.strokeWidth = 0
                     textViewNoPhoto.visibility = View.INVISIBLE
                     imageViewNoPhoto.visibility = View.INVISIBLE
 
