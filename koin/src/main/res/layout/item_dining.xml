@@ -106,6 +106,7 @@
             android:layout_marginEnd="24dp"
             app:strokeWidth="1dp"
             app:strokeColor="#CACACA"
+            app:cardElevation="0dp"
             app:rippleColor="@android:color/transparent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_view_dining_corner">
@@ -119,6 +120,7 @@
                     android:id="@+id/image_view_dining"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
