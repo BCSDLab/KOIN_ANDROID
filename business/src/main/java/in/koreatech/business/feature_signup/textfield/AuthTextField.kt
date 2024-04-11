@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Text
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.ColorEmphasis
+import `in`.koreatech.business.ui.theme.ColorSecondary
 
 
 @Composable
@@ -42,7 +42,6 @@ fun AuthTextField(
     var focused by remember { mutableStateOf(false) }
 
     BasicTextField(
-
         value = value,
         onValueChange = onValueChange,
         textStyle = textStyle,
@@ -64,7 +63,7 @@ fun AuthTextField(
                     ) {
                         drawLine(
                             color = if (value.isEmpty()) ColorHelper else if (isError) ColorError
-                            else ColorEmphasis,
+                            else ColorSecondary,
                             start = Offset(0f, size.height),
                             end = Offset(size.width, size.height),
                             strokeWidth = 1.dp.toPx(),

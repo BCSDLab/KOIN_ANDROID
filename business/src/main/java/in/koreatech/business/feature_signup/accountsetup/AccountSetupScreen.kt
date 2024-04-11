@@ -9,11 +9,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,6 +24,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,9 +32,10 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorEmphasis
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
-import `in`.koreatech.business.ui.theme.ColorUnachieved
+import `in`.koreatech.business.ui.theme.ColorUnarchived
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -65,7 +67,6 @@ fun AccountSetupScreen(
                 .padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center,
         ) {
-
             Text(
                 text = stringResource(id = R.string.master_sign_up),
                 fontSize = 24.sp,
@@ -79,10 +80,24 @@ fun AccountSetupScreen(
             ) {
                 Text(
                     modifier = Modifier,
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                     text = stringResource(id = R.string.input_basic_information),
                 )
-                Text(text = stringResource(id = R.string.one_third), color = ColorEmphasis)
+                Text(text = stringResource(id = R.string.one_third), color = ColorSecondary)
+            }
+
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                drawLine(
+                    color = ColorUnarchived,
+                    start = Offset(0f - 40, 0f),
+                    end = Offset(size.width + 35, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
             }
             Canvas(
                 modifier = Modifier
@@ -90,14 +105,14 @@ fun AccountSetupScreen(
                     .padding(16.dp)
             ) {
                 drawLine(
-                    color = ColorUnachieved,
+                    color = ColorUnarchived,
                     start = Offset(0f - 40, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = ColorEmphasis,
+                    color = ColorSecondary,
                     start = Offset(0f - 40, 0f),
                     end = Offset((size.width + 40) / 3, size.height),
                     strokeWidth = 4.dp.toPx(),
@@ -158,9 +173,9 @@ fun AccountSetupScreen(
                 shape = RectangleShape,
                 enabled = state.id.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty() && state.email.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ColorActiveButton,
+                    backgroundColor = ColorActiveButton,
                     contentColor = Color.White,
-                    disabledContainerColor = ColorDisabledButton,
+                    disabledBackgroundColor = ColorDisabledButton,
                     disabledContentColor = Color.White,
                 ),
                 onClick = {
@@ -187,4 +202,15 @@ fun AccountSetupScreen(
             AccountAuthSideEffect.NavigateToBackScreen -> onBackClicked()
         }
     }
+}
+
+@Preview
+@Composable
+fun AccountSetupScreenPreview() {
+    KOIN_ANDROIDTheme {
+        AccountSetupScreen(
+            onNextClicked = {},
+            onBackClicked = {}
+        )
+ }
 }

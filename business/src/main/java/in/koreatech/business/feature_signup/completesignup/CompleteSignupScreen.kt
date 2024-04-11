@@ -3,16 +3,15 @@ package `in`.koreatech.business.feature_signup.completesignup
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,27 +21,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.ColorActiveButton
-import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorDescription
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.business.ui.theme.ColorEmphasis
+import `in`.koreatech.business.ui.theme.ColorDisabledButton
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 
 @Composable
 fun CompleteSignupScreen(
-     modifier: Modifier = Modifier, 
-     onBackClicked: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onBackClicked: () -> Unit = {}
 ) {
     Column(
         modifier = modifier,
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = {onBackClicked()}
+            onClick = { onBackClicked() }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -61,7 +58,7 @@ fun CompleteSignupScreen(
                 modifier = Modifier.size(55.dp),
                 painter = painterResource(id = R.drawable.signup_check),
                 contentDescription = stringResource(id = R.string.check_icon),
-                tint = ColorEmphasis
+                tint = ColorSecondary
             )
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -69,7 +66,7 @@ fun CompleteSignupScreen(
                 textAlign = TextAlign.Center,
                 text = stringResource(id = R.string.signup_request_complete),
                 fontSize = 24.sp,
-                color = ColorActiveButton,
+                color = ColorPrimary,
                 fontWeight = Bold,
             )
             Spacer(modifier = Modifier.height(18.dp))
@@ -87,12 +84,12 @@ fun CompleteSignupScreen(
                 .height(44.dp),
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = ColorActiveButton,
-                    disabledContainerColor = ColorDisabledButton,
+                    backgroundColor = ColorPrimary,
+                    disabledBackgroundColor = ColorDisabledButton,
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),
-                onClick = {onBackClicked()}) {
+                onClick = { onBackClicked() }) {
                 Text(
                     text = stringResource(id = R.string.navigate_to_login_screen),
                     fontSize = 15.sp,
