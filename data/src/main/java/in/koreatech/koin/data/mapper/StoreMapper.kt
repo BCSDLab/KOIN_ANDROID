@@ -1,13 +1,16 @@
 package `in`.koreatech.koin.data.mapper
 
+import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
@@ -31,6 +34,17 @@ fun StoreItemResponse.toStore(): Store = Store(
         )
     }.first(),
     categoryIds = categoryIds.map { it.toStoreCategory() }
+)
+
+fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
+    shop_id = shop_id,
+    shop_name = shop_name ?: "",
+    event_id = event_id,
+    title = title ?: "",
+    content = content ?: "",
+    thumbnail_images = thumbnail_images ?: ArrayList<String>(),
+    start_date = start_date ?: "",
+    end_date = end_date ?: ""
 )
 
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(

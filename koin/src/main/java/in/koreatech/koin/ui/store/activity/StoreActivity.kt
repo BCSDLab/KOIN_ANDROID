@@ -48,14 +48,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
-    private val viewPagerDelayTime = 5000L // 10초 간격으로 슬라이드
+    private val viewPagerDelayTime = 3000L
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
         }
     }
-    val tmpData:ArrayList<String> = ArrayList<String>()
+
+    private val storeEventPagerAdapter = StoreEventPagerAdapter()
 
     private var isSearchMode: Boolean = false
         set(value) {
@@ -143,15 +144,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         binding.eventViewPager.apply {
-            tmpData.add("기분좋은뷔페")
+            /*tmpData.add("기분좋은뷔페")
             tmpData.add("거성한식식당")
             tmpData.add("한솥")
             tmpData.add("소주방울")
-            tmpData.add("멕시카나")
+            tmpData.add("멕시카나")*/
 
             currentItem = Int.MAX_VALUE / 2
             offscreenPageLimit = 3
-            adapter = StoreEventPagerAdapter(tmpData)
+            adapter = StoreEventPagerAdapter()
             val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
             val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
             setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
@@ -170,10 +171,9 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             var currentPosition = binding.eventViewPager.currentItem
             val itemCount = binding.eventViewPager.adapter?.itemCount ?: 0
 
-            // 마지막 페이지면 첫 페이지로, 아니면 다음 페이지로
             currentPosition += 1
 
-            binding.eventViewPager.setCurrentItem(currentPosition, true) // 스무스한 페이지 전환
+            binding.eventViewPager.setCurrentItem(currentPosition, true)
             viewPagerHandler.postDelayed(this, viewPagerDelayTime)
         }
     }
@@ -184,9 +184,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private fun initViewModel() {
         viewModel.refreshStores()
+        viewModel.getStoreEvents()
 
         observeLiveData(viewModel.isLoading) {
             binding.storeSwiperefreshlayout.isRefreshing = it
+        }
+
+        observeLiveData(viewModel.storeEvents){
+            storeEventPagerAdapter.setStoreEvents(it)
+            Log.d("로그", it.toString())
         }
 
         lifecycleScope.launch {
@@ -196,6 +202,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
+
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
