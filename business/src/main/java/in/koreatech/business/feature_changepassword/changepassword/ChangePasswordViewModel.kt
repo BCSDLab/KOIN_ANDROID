@@ -26,14 +26,21 @@ class ChangePasswordViewModel  @Inject constructor(
             checkNotNull(email)
             getEmail(email)
         }
+    fun viewNotCoincidePassword() = intent {
+        reduce{
+            state.copy(notCoincidePW = true)
+        }
+    }
 
-    private fun getEmail(email: String){
-        intent {
-            reduce {
-                state.copy(
-                    email = email
-                )
-            }
+    fun fillAllPasswords() = intent {
+        reduce{
+            state.copy(fillAllPasswords = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
+        }
+    }
+
+    fun coincidePasswordReset() = intent {
+        reduce{
+            state.copy(notCoincidePW = false)
         }
     }
 
@@ -43,30 +50,6 @@ class ChangePasswordViewModel  @Inject constructor(
 
     fun insertPasswordChecked(passwordChecked: String) = intent{
         reduce { state.copy(passwordChecked = passwordChecked) }
-    }
-
-    private fun toastNullEmail() = intent {
-       postSideEffect(ChangePasswordSideEffect.ToastNullEmail)
-    }
-
-    private fun toastNullPassword() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastNullPassword)
-    }
-
-    private fun toastIsNotPasswordForm() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastIsNotPasswordForm)
-    }
-
-    private fun toastNullPasswordChecked() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastNullPasswordChecked)
-    }
-
-    private fun notCoincidePassword() = intent {
-        postSideEffect(ChangePasswordSideEffect.NotCoincidePassword)
-    }
-
-    private fun goToFinishScreen() = intent {
-        postSideEffect(ChangePasswordSideEffect.GotoFinishScreen)
     }
 
     fun changePassword(
@@ -92,5 +75,39 @@ class ChangePasswordViewModel  @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun getEmail(email: String){
+        intent {
+            reduce {
+                state.copy(
+                    email = email
+                )
+            }
+        }
+    }
+
+    private fun toastNullEmail() = intent {
+       postSideEffect(ChangePasswordSideEffect.ToastNullEmail)
+    }
+
+    private fun toastNullPassword() = intent {
+        postSideEffect(ChangePasswordSideEffect.ToastNullPassword)
+    }
+
+    private fun toastIsNotPasswordForm() = intent {
+        postSideEffect(ChangePasswordSideEffect.ToastIsNotPasswordForm)
+    }
+
+    private fun toastNullPasswordChecked() = intent {
+        postSideEffect(ChangePasswordSideEffect.ToastNullPasswordChecked)
+    }
+
+    private fun notCoincidePassword() = intent {
+        postSideEffect(ChangePasswordSideEffect.NotCoincidePassword)
+    }
+
+    private fun goToFinishScreen() = intent {
+        postSideEffect(ChangePasswordSideEffect.GotoFinishScreen)
     }
 }

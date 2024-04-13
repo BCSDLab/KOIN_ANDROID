@@ -13,11 +13,3 @@ fun String.isValidEmail(): Boolean {
 fun String.isValidPassword() = PasswordUtil.isPasswordValidate(this)
 fun String.isNotValidEmail() = !isValidEmail()
 fun String.isNotValidPassword() = !isValidPassword()
-
-
-fun String.isOwnerEmailValid(): Boolean {
-    val emailRegex = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
-    return this.matches(emailRegex.toRegex())
-}
-
-fun String.isOwnerNotEmailValid() = !isOwnerEmailValid()

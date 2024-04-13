@@ -2,7 +2,6 @@ package `in`.koreatech.business.feature_changepassword.navigator
 
 import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -11,11 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreen
+import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreenImpl
 import `in`.koreatech.business.feature_changepassword.finishchangepassword.FinishChangePasswordScreen
 import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreen
-import java.net.PasswordAuthentication
 
 
 @Composable
@@ -48,8 +45,8 @@ fun ChangePassword(
                 }
             )
         ){
-            ChangePasswordScreen(
-                onChangePwButtonClicked = {
+            ChangePasswordScreenImpl(
+                navigateToFinish = {
                     navController.navigate(ChangePasswordRoute.Finish.name)
                 },
                 onBackPressed = {
