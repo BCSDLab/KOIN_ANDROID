@@ -1,10 +1,9 @@
 package `in`.koreatech.business.feature_signup.accountsetup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.owner.SendSignupEmailUseCase
+import `in`.koreatech.koin.domain.usecase.business.SendSignupEmailUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -49,16 +48,27 @@ class AccountSetupViewModel @Inject constructor(
     }
 
     fun onBackButtonClicked() = intent {
-        postSideEffect(AccountAuthSideEffect.NavigateToNextScreen(state.email))
+        postSideEffect(AccountAuthSideEffect.NavigateToBackScreen)
     }
 
-    fun postEmailVerification(email: String, password: String, passwordConfirm: String) {
+    fun checkInfo(email: String, password: String, passwordConfirm: String) {
         intent { reduce { state.copy(isLoading = true) } }
         viewModelScope.launch(Dispatchers.IO) {
             sendSignupEmailUseCase(email, password, passwordConfirm)
                 .onSuccess {
                     intent { reduce { state.copy(signupContinuationState = it) } }
                 }
+                .onFailure {
+                    intent { reduce { state.copy(signUpContinuationError = it) } }
+                }
+            intent { reduce { state.copy(isLoading = false) } }
+        }
+    }
+    fun postEmailVerification(email: String) {
+        intent { reduce { state.copy(isLoading = true) } }
+        viewModelScope.launch(Dispatchers.IO) {
+            sendSignupEmailUseCase.sendEmail(email)
+                .onSuccess {}
                 .onFailure {
                     intent { reduce { state.copy(signUpContinuationError = it) } }
                 }
