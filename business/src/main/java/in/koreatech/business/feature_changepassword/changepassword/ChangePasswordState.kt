@@ -7,5 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class ChangePasswordState(
     val password: String = "",
     val passwordChecked: String = "",
-    val email: String = ""
+    val email: String = "",
+    val notCoincidePW: Boolean = false,
+    val fillAllPasswords: Boolean = false
 ): Parcelable

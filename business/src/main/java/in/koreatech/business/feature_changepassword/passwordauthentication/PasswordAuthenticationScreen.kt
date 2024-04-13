@@ -13,16 +13,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -35,6 +36,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.util.ext.clickableOnce
 import `in`.koreatech.business.util.showMessage
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -68,8 +70,9 @@ fun PasswordAuthenticationScreen(
             )
         }
         Text(
-            text = stringResource(R.string.find_password),
+            text = stringResource(R.string.password_find),
             fontSize = 24.sp,
+            color = Color.White,
             fontWeight = FontWeight.Bold,
             modifier = modifier.padding(top = 32.dp, start = 32.dp, bottom = 32.dp)
         )
@@ -92,14 +95,14 @@ fun PasswordAuthenticationScreen(
                     ){
                         if (state.email.isEmpty()) {
                             Text(
-                                text = stringResource(R.string.input_email),
+                                text = stringResource(R.string.email_input),
                                 color = Blue1,
                                 fontSize = 15.sp
                             )
                         }
                         innerTextField()
                     }
-                    HorizontalDivider(
+                    Divider(
                         modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = if (state.email.isEmpty()) Blue1 else Color.Black
@@ -133,14 +136,14 @@ fun PasswordAuthenticationScreen(
                         ){
                             if (state.authenticationCode.isEmpty()) {
                                 Text(
-                                    text = stringResource(R.string.input_authentication_code),
+                                    text = stringResource(R.string.auth_code_input),
                                     color = Blue1,
                                     fontSize = 15.sp
                                 )
                             }
                             innerTextField()
                         }
-                        HorizontalDivider(
+                        Divider(
                             modifier = modifier.width(220.dp),
                             thickness = 1.dp,
                             color = if (state.authenticationCode.isEmpty()) Blue1 else Color.Black
@@ -161,9 +164,11 @@ fun PasswordAuthenticationScreen(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(end = 32.dp)
+                    .clickableOnce {  }
             ) {
-                Text(text = if(state.authenticationBtnIsClicked)stringResource(R.string.resend) else stringResource(R.string.send_authentication_code),
+                Text(text = if(state.authenticationBtnIsClicked)stringResource(R.string.auth_code_resend) else stringResource(R.string.auth_code_send),
                     fontSize = 14.sp,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -184,23 +189,29 @@ fun PasswordAuthenticationScreen(
         ) {
             Text(text = stringResource(R.string.email_certification),
                 fontSize = 15.sp,
+                color = Color.White,
                 fontWeight = FontWeight.Bold
             )
         }
     }
 
-    viewModel.collectSideEffect{
-        when(it){
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(state.email)
-            is PasswordAuthenticationSideEffect.ToastIsNotEmail -> showMessage("이메일 주소가 올바르지 않습니다")
-            is PasswordAuthenticationSideEffect.ToastNoEmail -> showMessage("이메일을 입력해주세요")
-            is PasswordAuthenticationSideEffect.SendAuthCode -> showMessage("이메일로 발송된 인증번호 6자리를 입력해 주세요.")
-            is PasswordAuthenticationSideEffect.ToastNotCoincideAuthCode -> showMessage("인증번호가 일치하지 않습니다.")
-            else -> {}
+    HandleSideEffects(viewModel, state.email, navigateToChangePassword)
+}
+
+@Composable
+fun HandleSideEffects(viewModel: PasswordAuthenticationViewModel, email: String, navigateToChangePassword: (email: String) -> Unit) {
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect{ sideEffect ->
+        when(sideEffect){
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(email)
+            is PasswordAuthenticationSideEffect.ToastIsNotEmail -> showMessage(context.getString(R.string.email_address_incorrect))
+            is PasswordAuthenticationSideEffect.ToastNoEmail -> showMessage(context.getString(R.string.email_address_insert))
+            is PasswordAuthenticationSideEffect.SendAuthCode -> showMessage(context.getString(R.string.auth_code_input_from_email))
+            is PasswordAuthenticationSideEffect.ToastNotCoincideAuthCode -> showMessage(context.getString(R.string.auth_code_not_equal))
+            else -> {showMessage(context.getString(R.string.error))}
         }
     }
-    //여기 부분이 livedata 부분
-
 }
 
 @Preview
