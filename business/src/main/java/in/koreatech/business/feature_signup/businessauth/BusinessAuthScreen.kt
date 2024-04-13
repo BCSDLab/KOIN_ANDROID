@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature_signup.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorActiveButton
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorSecondary
@@ -195,7 +195,7 @@ fun BusinessAuthScreen(
                 .height(44.dp),
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorActiveButton,
+                    backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
