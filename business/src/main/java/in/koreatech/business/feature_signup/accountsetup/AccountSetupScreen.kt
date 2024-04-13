@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature_signup.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorActiveButton
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
@@ -86,19 +86,6 @@ fun AccountSetupScreen(
                 Text(text = stringResource(id = R.string.one_third), color = ColorSecondary)
             }
 
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                drawLine(
-                    color = ColorUnarchived,
-                    start = Offset(0f - 40, 0f),
-                    end = Offset(size.width + 35, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-            }
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -173,7 +160,7 @@ fun AccountSetupScreen(
                 shape = RectangleShape,
                 enabled = state.id.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty() && state.email.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorActiveButton,
+                    backgroundColor = ColorPrimary,
                     contentColor = Color.White,
                     disabledBackgroundColor = ColorDisabledButton,
                     disabledContentColor = Color.White,
