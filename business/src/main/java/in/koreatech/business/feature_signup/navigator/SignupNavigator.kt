@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import `in`.koreatech.business.feature_signup.accountauth.AccountAuthScreen
+import `in`.koreatech.business.feature_signup.accountauth.EmailAuthScreen
 import `in`.koreatech.business.feature_signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature_signup.businessauth.BusinessAuthScreen
 import `in`.koreatech.business.feature_signup.businessauth.SearchStoreScreen
@@ -47,7 +47,7 @@ fun SignupNavigator(modifier: Modifier) {
             )
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            AccountAuthScreen(
+            EmailAuthScreen(
                 email = email,
                 onBackClicked = { navController.popBackStack() },
                 onNextClicked = {
