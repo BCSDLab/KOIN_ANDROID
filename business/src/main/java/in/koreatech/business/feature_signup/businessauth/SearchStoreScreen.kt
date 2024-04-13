@@ -44,7 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.ColorActiveButton
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorSearch
@@ -163,7 +163,7 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
                         .border(
                             BorderStroke(
                                 width = if (selectedItemIndex == index) 1.5.dp else 1.dp,
-                                color = if (selectedItemIndex == index) ColorActiveButton else ColorHelper
+                                color = if (selectedItemIndex == index) ColorPrimary else ColorHelper
                             )
                         ),
                 ) {
