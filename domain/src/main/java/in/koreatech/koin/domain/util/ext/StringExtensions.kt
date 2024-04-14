@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.domain.util.ext
 
-import `in`.koreatech.koin.domain.util.PasswordUtil
-import java.util.*
+import `in`.koreatech.koin.domain.util.regex.PasswordUtil
+import java.util.Calendar
 
-fun String.toSHA256() = PasswordUtil.generateSHA256(this)
+fun String.toSHA256() = PasswordUtil().generateSHA256(this)
 
 val String.isValidStudentId: Boolean get() {
     if (this.trim().length != 10) {
@@ -16,3 +16,6 @@ val String.isValidStudentId: Boolean get() {
 
 fun String.toUnderlineForHtml() = "<u>$this</u>"
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" //color = #ff000000 형태
+
+fun String.formatPhoneNumber(): String =
+    this.replace(Regex("(\\d{3})(\\d{4})(\\d{4})"), "$1-$2-$3")

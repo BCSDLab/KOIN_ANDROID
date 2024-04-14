@@ -21,3 +21,4 @@ fun String.isOwnerEmailValid(): Boolean {
 }
 
 fun String.isOwnerNotEmailValid() = !isOwnerEmailValid()
+

@@ -21,8 +21,8 @@ import `in`.koreatech.koin.ui.login.viewmodel.LoginViewModel
 @AndroidEntryPoint
 class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
     private val binding by dataBinding<ActivityBusinessLoginBinding>()
+    override val screenTitle = "로그인 For Business"
 
-    private val loginViewModel by viewModels<LoginViewModel>()
     private val businessLoginViewModel by viewModels<BusinessLoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
             if(businessLoginViewModel.isEmptyIdText.value == true) {
                 SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.login_required_field_not_filled))
             } else {
-                loginViewModel.login(
+                businessLoginViewModel.login(
                     loginEdittextId.text.toString(),
                     loginEdittextPw.text.toString()
                 )
@@ -63,7 +63,7 @@ class BusinessLoginActivity : ActivityBase(R.layout.activity_business_login) {
         }
     }
 
-    private fun initViewModel() = with(loginViewModel) {
+    private fun initViewModel() = with(businessLoginViewModel) {
         withLoading(this@BusinessLoginActivity, this)
 
         observeLiveData(loginSuccessEvent) {

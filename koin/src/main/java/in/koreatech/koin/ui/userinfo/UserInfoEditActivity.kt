@@ -22,6 +22,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
     override val menuState: MenuState = MenuState.UserInfo
 
     private val binding by dataBinding<ActivityUserInfoEditedBinding>(R.layout.activity_user_info_edited)
+    override val screenTitle = "내 정보 수정"
     private val userInfoEditViewModel by viewModels<UserInfoEditViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

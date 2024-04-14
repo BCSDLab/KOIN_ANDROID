@@ -34,6 +34,7 @@ class LandDetailActivity : KoinNavigationDrawerActivity(), OnMapReadyCallback {
     override val menuState = MenuState.Land
     lateinit var binding: LandActivityDetailBinding
     private val landDetailViewModel by viewModels<LandDetailViewModel>()
+    override val screenTitle = "복덕방 상세"
     private val landDetailViewPagerAdapter = LandDetailViewPagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {

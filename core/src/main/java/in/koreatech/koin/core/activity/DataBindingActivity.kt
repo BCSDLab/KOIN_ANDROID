@@ -17,4 +17,9 @@ abstract class DataBindingActivity<T : ViewDataBinding> : ActivityBase() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, layoutId)
     }
+
+    override fun onDestroy() {
+        binding.unbind()
+        super.onDestroy()
+    }
 }
