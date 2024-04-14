@@ -17,8 +17,8 @@ class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
-    suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
-        return ownerApi.postVerificationCode(ownerVerificationCode)
+    suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest) {
+        return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
     }
 
     suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {

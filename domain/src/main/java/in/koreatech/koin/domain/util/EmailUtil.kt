@@ -10,11 +10,11 @@ object EmailUtil {
         val matcher = Pattern.compile(FILTER_EMAIL).matcher(email)
         return matcher.matches()
     }
-
-    fun String.isOwnerEmailValid(): Boolean {
-        val emailRegex = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
-        return this.matches(emailRegex.toRegex())
-    }
-
-    fun String.isOwnerNotEmailValid() = !isOwnerEmailValid()
 }
+
+fun String.isOwnerEmailValid(): Boolean {
+    val emailRegex = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
+    return this.matches(emailRegex.toRegex())
+}
+
+fun String.isOwnerNotEmailValid() = !isOwnerEmailValid()
