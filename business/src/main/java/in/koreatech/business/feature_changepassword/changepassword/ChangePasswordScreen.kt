@@ -36,8 +36,7 @@ import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.ui.theme.Red2
-import `in`.koreatech.business.util.ext.clickableOnce
-import `in`.koreatech.business.util.showMessage
+import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -69,7 +68,7 @@ fun ChangePasswordScreenImpl(
                                   },
         onBackPressed = onBackPressed,
         onChangePasswordClick = {
-            viewModel.changePassword(state.email, state.password, state.passwordChecked)
+            viewModel.changePassword(state.email.trim(), state.password.trim(), state.passwordChecked.trim())
         },
         modifier = modifier
     )
@@ -231,10 +230,10 @@ fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -
         when(it){
             is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
             is ChangePasswordSideEffect.NotCoincidePassword -> viewModel.viewNotCoincidePassword()
-            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> showMessage(context.getString(R.string.password_condition))
-            is ChangePasswordSideEffect.ToastNullPassword -> showMessage(context.getString(R.string.password_input))
-            is ChangePasswordSideEffect.ToastNullPasswordChecked -> showMessage(context.getString(R.string.password_confirm_input))
-            else -> {}
+            is ChangePasswordSideEffect.ToastNullEmail -> ToastUtil.getInstance().makeShort(context.getString(R.string.email_address_insert))
+            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_condition))
+            is ChangePasswordSideEffect.ToastNullPassword -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_input))
+            is ChangePasswordSideEffect.ToastNullPasswordChecked -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_confirm_input))
         }
     }
 }
