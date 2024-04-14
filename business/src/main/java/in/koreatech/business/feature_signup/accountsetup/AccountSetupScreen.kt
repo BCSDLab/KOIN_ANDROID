@@ -37,6 +37,7 @@ import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.util.regex.InputValidationUtils
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -48,7 +49,6 @@ fun AccountSetupScreen(
     onNextClicked: (String) -> Unit = {},
 ) {
     val state = viewModel.collectAsState().value
-
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -152,13 +152,13 @@ fun AccountSetupScreen(
                 isError = state.signupContinuationState == SignupContinuationState.EmailIsNotValidate,
             )
 
-            Spacer(modifier = Modifier.height(78.dp))
 
+            Spacer(modifier = Modifier.height(78.dp))
             Button(modifier = Modifier
                 .fillMaxWidth()
                 .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.id.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty() && state.email.isNotEmpty(),
+                enabled = state.isPasswordEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,

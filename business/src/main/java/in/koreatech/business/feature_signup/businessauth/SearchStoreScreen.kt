@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,19 +16,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,20 +47,21 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSearch
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
     var search by remember { mutableStateOf("") }
-    val storeItems = mutableListOf<String>()
-    val onSelected by remember { mutableStateOf(false) }
-    val onItemClicked by remember { mutableStateOf(false) }
-
+    val storeItems = ImmutableList.of("")
     Column(
         modifier = modifier,
     ) {
@@ -107,12 +112,6 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     focusedLabelColor = ColorSearch,
-                    /*
-                    *    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    unfocusedContainerColor = ColorSearch,
-                    focusedLabelColor = ColorSearch,
-                    * */
                 ),
                 placeholder = {
                     Text(
@@ -138,10 +137,14 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
+fun StoreList(item: ImmutableList<String>, onSelected: () -> Unit = {}) {
     var selectedItemIndex by remember { mutableStateOf(-1) }
-    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden
+    )
+    val scope = rememberCoroutineScope()
 
     Scaffold() { contentPadding ->
         LazyColumn(
@@ -153,12 +156,14 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
             items(item.size) { index ->
                 Row(
                     modifier = Modifier
-                        .padding(top = 8.dp, bottom = 8.dp)
+                        .padding(vertical = 8.dp)
                         .fillMaxWidth()
                         .height(59.dp)
                         .clickable {
                             selectedItemIndex = index
-                            showBottomSheet = true
+                            scope.launch {
+                                sheetState.show()
+                            }
                         }
                         .border(
                             BorderStroke(
@@ -184,15 +189,15 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
                         Spacer(modifier = Modifier.width(74.dp))
                         Text(
                             buildAnnotatedString {
-                                withStyle(style = SpanStyle(color = Color(0xFFF7941E))) {
+                                withStyle(style = SpanStyle(color = ColorSecondary)) {
                                     append(text = stringResource(id = R.string.delivery))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = Color(0xFFF7941E))) {
+                                withStyle(style = SpanStyle(color = ColorSecondary)) {
                                     append(text = stringResource(id = R.string.card_payment))
                                 }
                                 append(" ")
-                                withStyle(style = SpanStyle(color = Color(0xFFF7941E))) {
+                                withStyle(style = SpanStyle(color = ColorSecondary)) {
                                     append(text = stringResource(id = R.string.account_transfer))
                                 }
                             },
@@ -202,76 +207,68 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
                 }
             }
         }
-        if (showBottomSheet) {
-            /*BottomSheetScaffold(
-                modifier = Modifier.fillMaxSize(),
-                sheetContent = {
-                    StoreBottomSheet(
-                        onSelected = {
-                            onSelected()
-                            showBottomSheet = false
-                        }
-                    )
-                },
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 23.dp),
 
-                    ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            modifier = Modifier.padding(bottom = 8.dp),
-                            text = stringResource(id = R.string.store_name),
-                            fontSize = 18.sp,
-                            color = Color.Black,
-                            fontWeight = Bold,
-                        )
-                        Row {
-                            Text(
-                                text = stringResource(id = R.string.phone_number),
-                                fontSize = 14.sp,
-                                color = ColorActiveButton,
-                                fontWeight = Bold
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "", fontSize = 14.sp, color = Color.Black,
-                                fontWeight = Bold
-                            )
+        ModalBottomSheetLayout(
+            modifier = Modifier,
+            sheetState = sheetState,
+            sheetElevation = 8.dp,
+            sheetContent = {
+            StoreBottomSheet {
+                onSelected()
+            }
+        }) {
+        }
 
-                        }
+    }
+}
 
-                    }
-                    Button(
-                        modifier = Modifier
-                            .width(195.dp)
-                            .height(85.dp)
-                            .padding(16.dp),
-                        onClick = { onSelected() },
-                        shape = RectangleShape,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = ColorActiveButton)
-                    ) {
-                        Text(text = stringResource(id = R.string.select), fontWeight = Bold)
-                    }
-                }
-            }*/
-          /*  ModalBottomSheet(
-                dragHandle = null,
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(138.dp)
-                    .padding(contentPadding),
-            ) {
+@Composable
+fun StoreBottomSheet(onSelected: () -> Unit) {
+    Row(
+        modifier = Modifier.background(Color.White)
+            .fillMaxWidth().height(118.dp)
+            .padding(20.dp),
 
+        ) {
+        Column(modifier = Modifier,) {
+            Text(
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = stringResource(id = R.string.store_name),
+                fontSize = 18.sp,
+                color = Color.Black,
+                fontWeight = Bold,
+            )
+            Row(  modifier=Modifier,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(id = R.string.phone_number),
+                    fontSize = 14.sp,
+                    color = ColorActiveButton,
+                    fontWeight = Bold
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "", fontSize = 14.sp, color = Color.Black,
+                    fontWeight = Bold
+                )
 
-            }*/
+            }
+
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 100.dp)
+                .height(55.dp)
+            ,
+            onClick = { onSelected() },
+            shape = RectangleShape,
+        ) {
+            Text(text = stringResource(id = R.string.select), fontWeight = Bold)
         }
     }
+
 }
 
 
@@ -279,6 +276,8 @@ fun StoreList(item: MutableList<String>, onSelected: () -> Unit = {}) {
 @Composable
 fun PreviewSearchStoreScreen() {
     KOIN_ANDROIDTheme {
-        SearchStoreScreen()
+     //   StoreList(ImmutableList.of(""))
+        StoreBottomSheet(onSelected = {})
     }
+
 }

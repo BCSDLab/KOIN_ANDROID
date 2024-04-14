@@ -41,13 +41,11 @@ fun LinedTextField(
     errorText: String = "",
     isError: Boolean = false,
 ) {
-    var focused by remember { mutableStateOf(false) }
-
     BasicTextField(
         value = value,
         onValueChange = onValueChange,
         textStyle = textStyle,
-        modifier = modifier.onFocusChanged { focused = it.isFocused },
+        modifier = modifier,
         maxLines = 1,
 
         visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
