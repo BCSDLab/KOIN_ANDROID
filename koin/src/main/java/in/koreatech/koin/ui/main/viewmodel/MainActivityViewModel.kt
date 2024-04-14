@@ -6,16 +6,13 @@ import `in`.koreatech.koin.domain.model.bus.BusNode
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.usecase.bus.timer.GetBusTimerUseCase
-import `in`.koreatech.koin.domain.usecase.dining.DiningUseCase
+import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
-import `in`.koreatech.koin.domain.util.TimeUtil
 import androidx.lifecycle.*
-import com.naver.maps.map.style.light.Position
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.dining.toDiningType
+import `in`.koreatech.koin.domain.util.TimeUtil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
@@ -24,7 +21,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val getBusTimerUseCase: GetBusTimerUseCase,
     private val busErrorHandler: BusErrorHandler,
-    private val diningUseCase: DiningUseCase
+    private val getDiningUseCase: GetDiningUseCase
 ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
@@ -77,7 +74,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun updateDining() {
         viewModelScope.launchWithLoading {
-            diningUseCase(DiningUtil.getCurrentDate())
+            getDiningUseCase(TimeUtil.dateFormatToYYMMDD(DiningUtil.getCurrentDate()))
                 .onSuccess {
                     if(it.isNotEmpty()) {
                         _selectedType.value = DiningUtil.getCurrentType()

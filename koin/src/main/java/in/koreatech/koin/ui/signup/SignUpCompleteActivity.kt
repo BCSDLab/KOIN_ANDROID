@@ -11,6 +11,7 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 class SignUpCompleteActivity : ActivityBase() {
 
     private lateinit var binding: ActivitySignupCompleteBinding
+    override val screenTitle = "회원가입 완료"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +27,8 @@ class SignUpCompleteActivity : ActivityBase() {
 
     private fun initView() = with(binding){
         goToLoginButton.setOnClickListener{
-            val intent = Intent(this@SignUpCompleteActivity, LoginActivity::class.java)
-            startActivity(intent)
+            finishAffinity()
+            startActivity(Intent(this@SignUpCompleteActivity, LoginActivity::class.java))
         }
 
         goToShcoolHomePageButton.setOnClickListener {
