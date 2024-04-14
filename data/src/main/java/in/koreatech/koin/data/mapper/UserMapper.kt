@@ -1,13 +1,12 @@
 package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.request.user.UserRequest
-import `in`.koreatech.koin.data.response.user.AuthResponse
+import `in`.koreatech.koin.data.response.user.RefreshResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.model.user.UserIdentity
 
 fun UserResponse.toUser() = User.Student(
     anonymousNickname = anonymousNickname,
@@ -61,3 +60,9 @@ fun String.toPhoneNumber() : String{
 }
 
 fun String.toSchoolEamil() = "$this@koreatech.ac.kr"
+
+fun RefreshResponse.toAuthToken() = AuthToken(
+    token = this.token,
+    refreshToken = this.refreshToken,
+    userType = null
+)

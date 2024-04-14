@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
 import `in`.koreatech.koin.domain.repository.SignupRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isNotValidEmail
 import `in`.koreatech.koin.domain.util.ext.isNotValidPassword
 import `in`.koreatech.koin.domain.util.ext.toSHA256
@@ -25,11 +26,12 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
             isCheckNickname: Boolean
     ): Result<SignupContinuationState> {
         return when {
-            name == "" -> Result.success(SignupContinuationState.InitName)
+            name.isEmpty() -> Result.success(SignupContinuationState.InitName)
             !isCheckNickname -> Result.success(SignupContinuationState.CheckNickName)
             gender == null -> Result.success(SignupContinuationState.CheckGender)
-            phoneNumber == "" -> Result.success(SignupContinuationState.InitPhoneNumber)
-            studentNumber == "" -> Result.success(SignupContinuationState.InitStudentId)
+            phoneNumber.isEmpty() || (phoneNumber.length != 11) -> Result.success(SignupContinuationState.InitPhoneNumber)
+            studentNumber.isEmpty() -> Result.success(SignupContinuationState.InitStudentId)
+            major.isEmpty() -> Result.success(SignupContinuationState.CheckDept)
             isGraduated == null -> Result.success(SignupContinuationState.CheckGraduate)
             else -> signupRepository.requestEmailVerification(
                 portalAccount = portalAccount,
@@ -39,7 +41,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
                 name = name,
                 nickName = nickName,
                 password = password,
-                phoneNumber = phoneNumber,
+                phoneNumber = phoneNumber.formatPhoneNumber(),
                 studentNumber = studentNumber,
             ).map {
                 SignupContinuationState.RequestedEmailValidation

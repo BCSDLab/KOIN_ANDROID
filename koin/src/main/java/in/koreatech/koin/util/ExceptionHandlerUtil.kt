@@ -2,7 +2,14 @@ package `in`.koreatech.koin.util
 
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
+import androidx.core.os.HandlerCompat
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.constant.HttpStatusCode
 import `in`.koreatech.koin.ui.error.ErrorActivity
+import `in`.koreatech.koin.ui.login.LoginActivity
+import `in`.koreatech.koin.util.ext.showToast
+import retrofit2.HttpException
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
@@ -17,6 +24,18 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
      */
     override fun uncaughtException(thread: Thread, throwable: Throwable) {
         val stringWriter = StringWriter()
+        if (throwable is HttpException) {
+            if (throwable.code() == HttpStatusCode.UNAUTHORIZED) {
+                goToLoginActivity()
+            } else {
+                createErrorMessage(throwable, stringWriter)
+            }
+        } else {
+            createErrorMessage(throwable, stringWriter)
+        }
+    }
+
+    private fun createErrorMessage(throwable: Throwable, stringWriter: StringWriter) {
         throwable.printStackTrace(PrintWriter(stringWriter as Writer)) //오류 메시지를 얻는다.
         val errorMessage = stringWriter.toString()
         startErrorActivity(context, errorMessage)
@@ -34,6 +53,15 @@ class ExceptionHandlerUtil(private val context: Context) : Thread.UncaughtExcept
         goToErrorActivityIntent.putExtra(EXTRA_ERROR_TEXT, ErrorMessage)
         goToErrorActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(goToErrorActivityIntent)
+    }
+
+    private fun goToLoginActivity() {
+        val handler = HandlerCompat.createAsync(Looper.getMainLooper())
+        Intent(context.applicationContext, LoginActivity::class.java).run {
+            handler.post { context.applicationContext.showToast(context.getString(R.string.token_out_dated)) }
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(this)
+        }
     }
 
     companion object {

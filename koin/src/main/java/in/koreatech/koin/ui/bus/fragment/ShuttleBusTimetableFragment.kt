@@ -1,17 +1,5 @@
 package `in`.koreatech.koin.ui.bus.fragment
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.fragment.DataBindingFragment
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.databinding.LayoutShuttleBusTimetableBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.ShuttleBusTimetableAdapter
-import `in`.koreatech.koin.ui.bus.state.toShuttleBusTimetableUiItem
-import `in`.koreatech.koin.ui.bus.viewmodel.ShuttleBusTimetableViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
-import `in`.koreatech.koin.util.ext.withLoading
-import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -19,6 +7,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.fragment.DataBindingFragment
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.databinding.LayoutShuttleBusTimetableBinding
+import `in`.koreatech.koin.ui.bus.adpater.timetable.ShuttleBusTimetableAdapter
+import `in`.koreatech.koin.ui.bus.state.toShuttleBusTimetableUiItem
+import `in`.koreatech.koin.ui.bus.viewmodel.ShuttleBusTimetableViewModel
+import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
+import `in`.koreatech.koin.util.ext.withLoading
+import `in`.koreatech.koin.util.ext.withToastError
 
 @AndroidEntryPoint
 class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetableBinding>() {
@@ -69,21 +68,6 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
             }
         }
 
-        observeLiveData(busRoutes) { routes ->
-            if(routes.isNullOrEmpty()) {
-                binding.busTimetableRoutesSpinner.isVisible = false
-            } else {
-                binding.busTimetableRoutesSpinner.isVisible = true
-                binding.busTimetableRoutesSpinner.adapter =
-                    ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        routes
-                    )
-            }
-
-        }
-
         observeLiveData(selectedCoursesPosition) {
             binding.busTimetableCoursesSpinner.setSelection(it, true)
         }
@@ -92,11 +76,29 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
             binding.busTimetableRoutesSpinner.setSelection(it, true)
         }
 
-        observeLiveData(busTimetables) { list ->
+        observeLiveData(updatedAt) {
+            shuttleBusTimetableAdapter.setUpdatedAt(it)
+        }
+
+        observeLiveData(busRoutes) {
+            if(it.isNullOrEmpty()) {
+                binding.busTimetableRoutesSpinner.isVisible = false
+            } else {
+                binding.busTimetableRoutesSpinner.isVisible = true
+                binding.busTimetableRoutesSpinner.adapter =
+                    ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        it
+                    )
+            }
+        }
+
+        observeLiveData(selectedRoutesPosition) {
             shuttleBusTimetableAdapter.submitList(
-                list.map { it.toShuttleBusTimetableUiItem() }
+                busTimetables.value?.get(
+                    selectedRoutesPosition.value ?: 0)?.map { it.toShuttleBusTimetableUiItem() }
             )
-            binding.recyclerView.smoothScrollToPosition(0)
         }
     }
 }
