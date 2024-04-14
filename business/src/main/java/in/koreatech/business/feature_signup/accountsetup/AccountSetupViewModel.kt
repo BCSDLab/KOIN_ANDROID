@@ -56,7 +56,10 @@ class AccountSetupViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             sendSignupEmailUseCase(email, password, passwordConfirm)
                 .onSuccess {
-                    intent { reduce { state.copy(signupContinuationState = it) } }
+                    intent {
+                        reduce { state.copy(signupContinuationState = it)}
+                        reduce { state.copy(signUpContinuationError = null)}
+                    }
                 }
                 .onFailure {
                     intent { reduce { state.copy(signUpContinuationError = it) } }
