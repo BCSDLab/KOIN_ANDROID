@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.navigator
+package `in`.koreatech.business.feature.signup.navigator
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -9,11 +9,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import `in`.koreatech.business.feature_signup.accountauth.AccountAuthScreen
-import `in`.koreatech.business.feature_signup.accountsetup.AccountSetupScreen
-import `in`.koreatech.business.feature_signup.businessauth.BusinessAuthScreen
-import `in`.koreatech.business.feature_signup.businessauth.SearchStoreScreen
-import `in`.koreatech.business.feature_signup.completesignup.CompleteSignupScreen
+//import `in`.koreatech.business.feature_signup.accountauth.AccountAuthScreen
+import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
+import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
+import `in`.koreatech.business.feature.signup.businessauth.SearchStoreScreen
+import `in`.koreatech.business.feature.signup.completesignup.CompleteSignupScreen
 
 
 @Composable
@@ -47,13 +47,13 @@ fun SignupNavigator(modifier: Modifier) {
             )
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            AccountAuthScreen(
+         /*   AccountAuthScreen(
                 email = email,
                 onBackClicked = { navController.popBackStack() },
                 onNextClicked = {
                     navController.navigate(SignupRoute.BUSINESS_AUTH.name)
                 },
-            )
+            )*/
         }
 
         composable(

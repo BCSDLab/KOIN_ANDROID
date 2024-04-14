@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.textfield
+package `in`.koreatech.business.feature.textfield
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box

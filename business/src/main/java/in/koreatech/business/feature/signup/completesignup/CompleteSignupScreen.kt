@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.completesignup
+package `in`.koreatech.business.feature.signup.completesignup
 
 import androidx.compose.foundation.layout.Arrangement.Center
 import androidx.compose.foundation.layout.Column

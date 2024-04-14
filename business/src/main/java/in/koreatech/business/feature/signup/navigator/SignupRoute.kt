@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.navigator
+package `in`.koreatech.business.feature.signup.navigator
 
 enum class SignupRoute(){
     LOGIN,

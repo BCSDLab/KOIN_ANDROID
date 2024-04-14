@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.businessauth
+package `in`.koreatech.business.feature.signup.businessauth
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
@@ -38,15 +38,14 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature_signup.dialog.BusinessAlertDialog
-import `in`.koreatech.business.feature_signup.textfield.LinedTextField
+import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
+import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorMinor
-import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
 fun BusinessAuthScreen(

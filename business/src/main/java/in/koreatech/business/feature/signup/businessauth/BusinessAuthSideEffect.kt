@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.businessauth
+package `in`.koreatech.business.feature.signup.businessauth
 
 sealed class BusinessAuthSideEffect {
     object ShowDialog : BusinessAuthSideEffect()

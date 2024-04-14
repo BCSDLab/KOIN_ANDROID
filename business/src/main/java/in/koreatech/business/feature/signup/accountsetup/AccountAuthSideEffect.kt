@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.accountsetup
+package `in`.koreatech.business.feature.signup.accountsetup
 
 sealed class AccountAuthSideEffect {
     data object NavigateToBackScreen : AccountAuthSideEffect()

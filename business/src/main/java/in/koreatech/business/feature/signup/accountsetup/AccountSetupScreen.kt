@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.accountsetup
+package `in`.koreatech.business.feature.signup.accountsetup
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature_signup.textfield.LinedTextField
+import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorSecondary
@@ -37,7 +37,6 @@ import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
-import `in`.koreatech.koin.domain.util.regex.InputValidationUtils
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 

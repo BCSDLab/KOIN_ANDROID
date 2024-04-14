@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.accountsetup
+package `in`.koreatech.business.feature.signup.accountsetup
 
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 

@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_signup.dialog
+package `in`.koreatech.business.feature.signup.dialog
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
