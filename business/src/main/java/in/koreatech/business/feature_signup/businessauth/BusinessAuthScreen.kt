@@ -157,7 +157,7 @@ fun BusinessAuthScreen(
                     .height(125.dp),
             ) {
 
-                if (itemList.isNotEmpty()) UploadFileList(itemList)
+                if (itemList.isNotEmpty()) UploadFileList(modifier, itemList)
                 else
                     Column(
                         modifier = Modifier
@@ -225,9 +225,9 @@ fun BusinessAuthScreen(
 }
 
 @Composable
-fun UploadFileList(item: MutableList<String>) {
+fun UploadFileList(modifier: Modifier, item: MutableList<String>) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .border(BorderStroke(1.dp, ColorHelper)),
     ) {
