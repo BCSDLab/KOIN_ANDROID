@@ -12,7 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreenImpl
 import `in`.koreatech.business.feature_changepassword.finishchangepassword.FinishChangePasswordScreen
-import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreen
+import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreenImpl
 
 
 @Composable
@@ -26,7 +26,7 @@ fun ChangePassword(
         modifier = modifier
     ){
         composable(route = ChangePasswordRoute.Authentication.name){
-            PasswordAuthenticationScreen(
+            PasswordAuthenticationScreenImpl(
                 navigateToChangePassword = {
                     navigateToRandomScreen(navController, it)
                 },
