@@ -1,9 +1,7 @@
-package `in`.koreatech.business.feature_signup.businessauth
+package `in`.koreatech.business.feature.signup.businessauth
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.usecase.owner.OwnerSignupRequestEmailVerificationUseCase
-import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
