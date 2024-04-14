@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +55,8 @@ fun ChangePasswordScreenImpl(
         passwordChecked = state.passwordChecked,
         notCoincidePassword = state.notCoincidePW,
         fillAllPasswords = state.fillAllPasswords,
+        passwordIsEmpty = state.passwordIsBlank(),
+        passwordCheckedIsEmpty = state.passwordCheckedIsBlank(),
         onPasswordChange = {
                 newPassword -> viewModel.insertPassword(newPassword)
                 viewModel.coincidePasswordReset()
@@ -81,6 +82,8 @@ fun ChangePasswordScreen(
     passwordChecked: String,
     notCoincidePassword: Boolean,
     fillAllPasswords :Boolean,
+    passwordIsEmpty: Boolean,
+    passwordCheckedIsEmpty: Boolean,
     onPasswordChange: (String) -> Unit,
     onPasswordCheckedChange: (String) -> Unit,
     onBackPressed: () -> Unit,
@@ -117,6 +120,7 @@ fun ChangePasswordScreen(
             onValueChange = onPasswordChange,
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
+            visualTransformation = PasswordVisualTransformation(),
             decorationBox = { innerTextField ->
                 Column(
                     modifier = Modifier
@@ -126,7 +130,7 @@ fun ChangePasswordScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (password.isEmpty()) {
+                        if (passwordIsEmpty) {
                             Text(
                                 text = stringResource(id = R.string.password_new),
                                 color = Blue1,
@@ -138,7 +142,7 @@ fun ChangePasswordScreen(
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        color = if (password.isEmpty()) Blue1 else Color.Black
+                        color = if (passwordIsEmpty) Blue1 else Color.Black
                     )
                 }
             },
@@ -162,6 +166,7 @@ fun ChangePasswordScreen(
             onValueChange = onPasswordCheckedChange,
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
+            visualTransformation = PasswordVisualTransformation(),
             decorationBox = { innerTextField ->
                 Column(
                     modifier = Modifier
@@ -171,7 +176,7 @@ fun ChangePasswordScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (passwordChecked.isEmpty()) {
+                        if (passwordCheckedIsEmpty) {
                             Text(
                                 text = stringResource(id = R.string.password_confirm),
                                 color = Blue1,
@@ -183,7 +188,7 @@ fun ChangePasswordScreen(
                     Divider(
                         modifier = Modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        color = if (passwordChecked.isEmpty()) Blue1 else Color.Black
+                        color = if (passwordCheckedIsEmpty) Blue1 else Color.Black
                     )
                 }
             },
@@ -267,6 +272,8 @@ fun PreviewChangePassswordScreen() {
         passwordChecked = "",
         notCoincidePassword = true,
         fillAllPasswords = true,
+        passwordIsEmpty = true,
+        passwordCheckedIsEmpty = true,
         onPasswordChange = {},
         onPasswordCheckedChange = {},
         onBackPressed = {},

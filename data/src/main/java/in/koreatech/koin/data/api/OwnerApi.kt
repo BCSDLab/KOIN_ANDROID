@@ -26,7 +26,7 @@ interface OwnerApi {
     suspend fun changePasswordVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest)
 
     @POST(URLConstant.OWNER.CHANGEPASSWORDCODE)
-    suspend fun changePasswordVerificationCode(@Body ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse
+    suspend fun changePasswordVerificationCode(@Body ownerVerificationCode: OwnerVerificationCodeRequest)
 
     @PUT(URLConstant.OWNER.CHANGEPASSWORD)
     suspend fun changePassword(@Body ownerChangePasswordRequest: OwnerChangePasswordRequest)

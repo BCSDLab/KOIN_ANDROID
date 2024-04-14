@@ -11,3 +11,6 @@ data class ChangePasswordState(
     val notCoincidePW: Boolean = false,
     val fillAllPasswords: Boolean = false
 ): Parcelable
+
+fun ChangePasswordState.passwordIsBlank() = password.isBlank()
+fun ChangePasswordState.passwordCheckedIsBlank() = passwordChecked.isBlank()

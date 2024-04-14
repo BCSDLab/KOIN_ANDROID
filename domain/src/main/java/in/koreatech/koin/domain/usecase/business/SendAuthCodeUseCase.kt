@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.usecase.business
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
-import `in`.koreatech.koin.domain.util.EmailUtil.isOwnerNotEmailValid
+import `in`.koreatech.koin.domain.util.isOwnerNotEmailValid
 import javax.inject.Inject
 
 class SendAuthCodeUseCase @Inject constructor(
