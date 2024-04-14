@@ -24,6 +24,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 class MainActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Main
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
+    override val screenTitle = "코인 - 메인"
     private val mainActivityViewModel by viewModels<MainActivityViewModel>()
 
     private val busPagerAdapter = BusPagerAdapter().apply {
@@ -133,7 +135,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(selectedType) {
-            binding.textViewCardDiningTime.text = it.localized(this@MainActivity)
+            binding.textViewDiningTime.text = it.localized(this@MainActivity)
         }
 
         observeLiveData(busTimer) {
@@ -172,17 +174,37 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         listOf(
             binding.textViewCardDiningMenu0,
-            binding.textViewCardDiningMenu1,
             binding.textViewCardDiningMenu2,
-            binding.textViewCardDiningMenu3,
             binding.textViewCardDiningMenu4,
-            binding.textViewCardDiningMenu5,
             binding.textViewCardDiningMenu6,
-            binding.textViewCardDiningMenu7,
             binding.textViewCardDiningMenu8,
+            binding.textViewCardDiningMenu1,
+            binding.textViewCardDiningMenu3,
+            binding.textViewCardDiningMenu5,
+            binding.textViewCardDiningMenu7,
             binding.textViewCardDiningMenu9
         ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
             textView.text = menu
+        }
+
+        val isSoldOut = diningArranged[position].soldoutAt.isNotEmpty()
+        val isChanged = diningArranged[position].changedAt.isNotEmpty()
+        with (binding.textViewDiningStatus) {
+            when {
+                isSoldOut -> {
+                    text = context.getString(R.string.dining_soldout)
+                    setTextColor(ContextCompat.getColor(context, R.color.dining_soldout_text))
+                    background = ContextCompat.getDrawable(context, R.drawable.dining_soldout_fill_radius_4)
+                }
+                isChanged -> {
+                    text = context.getString(R.string.dining_changed)
+                    setTextColor(ContextCompat.getColor(context, R.color.dining_changed_text))
+                    background = ContextCompat.getDrawable(context, R.drawable.dining_changed_fill_radius_4)
+                }
+                else -> {
+                    visibility = View.INVISIBLE
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.util.ext
 
+import `in`.koreatech.koin.domain.util.regex.EmailUtil
 import `in`.koreatech.koin.domain.util.regex.PasswordUtil
 
 fun String.isValidEmail(): Boolean = EmailUtil().isEmailValidate(this)

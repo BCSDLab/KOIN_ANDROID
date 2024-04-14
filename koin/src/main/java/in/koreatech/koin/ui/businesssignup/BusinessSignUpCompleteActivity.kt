@@ -20,6 +20,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 @AndroidEntryPoint
 class BusinessSignUpCompleteActivity : ActivityBase(R.layout.activity_business_sign_up_complete) {
     private val binding by dataBinding<ActivityBusinessSignUpCompleteBinding>()
+    override val screenTitle = "회원가입 완료 For Business"
     private val businessSignUpCompleteViewModel by viewModels<BusinessSignUpCompleteViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

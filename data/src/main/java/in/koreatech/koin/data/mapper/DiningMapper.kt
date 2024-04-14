@@ -2,7 +2,6 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.response.DiningResponse
 import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.model.dining.DiningType
 
 fun DiningResponse.toDining() = Dining(
     this.id,
@@ -13,8 +12,11 @@ fun DiningResponse.toDining() = Dining(
     (this.priceCash ?: 0).toString(),
     (this.kcal ?: 0).toString(),
     this.menu,
+    this.imageUrl ?: "",
     this.createdAt,
     this.updatedAt,
+    this.soldoutAt ?: "",
+    this.changedAt ?: "",
     this.error ?: ""
 )
 

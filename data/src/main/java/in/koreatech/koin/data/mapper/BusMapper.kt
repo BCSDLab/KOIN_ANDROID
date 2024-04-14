@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.model.bus.toBusDirection
 import `in`.koreatech.koin.domain.model.bus.toBusType
 import android.content.Context
+import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
     busType = busType.toBusType(),
@@ -19,7 +20,23 @@ fun BusCourseResponse.toBusCourse() = BusCourse(
     region = region
 )
 
-fun BusTimetableResponse.toShuttleBusRoute(): BusRoute.ShuttleBusRoute {
+fun ShuttleBusTimetableResponse.toShuttleBusTimetable(): BusTimetable.ShuttleBusTimetable {
+    return BusTimetable.ShuttleBusTimetable(
+        routes = this.routes.map {
+            it.toShuttleBusRoute()
+        },
+        updatedAt = updatedAt
+    )
+}
+
+fun ExpressBusTimetableResponse.toExpressBusTimetable(): BusTimetable.ExpressBusTimetable {
+    return BusTimetable.ExpressBusTimetable(
+        routes = this.routes.toExpressBusRoute(),
+        updatedAt = updatedAt
+    )
+}
+
+fun ShuttleBusRouteResponse.toShuttleBusRoute(): BusRoute.ShuttleBusRoute {
     return BusRoute.ShuttleBusRoute(
         routeName = routeName,
         arrivalInfo = arrivalInfo.map { route ->
