@@ -93,14 +93,14 @@ fun AccountSetupScreen(
             ) {
                 drawLine(
                     color = ColorUnarchived,
-                    start = Offset(0f - 40, 0f),
+                    start = Offset(-40f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
                 drawLine(
                     color = ColorSecondary,
-                    start = Offset(0f - 40, 0f),
+                    start = Offset(-40f, 0f),
                     end = Offset((size.width + 40) / 3, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
