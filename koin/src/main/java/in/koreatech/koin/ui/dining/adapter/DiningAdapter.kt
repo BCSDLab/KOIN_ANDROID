@@ -27,6 +27,26 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
     }
 
     class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        private fun setEmptyDataVisibility(dining: Dining) {
+            with(binding) {
+                if(dining.kcal.isEmpty()) {
+                    textViewKcal.visibility = View.GONE
+                    dividerDot.visibility = View.GONE
+                }
+                if(dining.priceCash.isEmpty()) {
+                    textViewCashPrice.visibility = View.GONE
+                    dividerSlash.visibility = View.GONE
+                }
+                if(dining.priceCard.isEmpty()) {
+                    textViewCardPrice.visibility = View.GONE
+                    dividerSlash.visibility = View.GONE
+                }
+                if(dining.priceCard.isEmpty() && dining.priceCash.isEmpty()) {
+                    dividerDot.visibility = View.GONE
+                }
+            }
+        }
         
         fun bind(dining: Dining) {
             with(binding) {
@@ -39,6 +59,8 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
                 textViewDiningMenuItems.text = dining.menu.joinToString("\n")
+                
+                setEmptyDataVisibility(dining)
 
                 if(dining.imageUrl.isNotEmpty()) {
                     Glide.with(context)
