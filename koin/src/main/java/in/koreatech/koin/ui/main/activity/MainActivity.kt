@@ -104,18 +104,22 @@ class MainActivity : KoinNavigationDrawerActivity() {
             adapter = storeCategoryRecyclerAdapter
         }
 
-        recyclerViewDiningType.apply {
-            layoutManager =
-                LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-            adapter = diningTypeAdapter
-        }
+//        recyclerViewDiningType.apply {
+//            layoutManager =
+//                LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
+//            adapter = diningTypeAdapter
+//        }
 
         mainSwipeRefreshLayout.setOnRefreshListener {
             mainActivityViewModel.updateDining()
         }
 
-        diningContainer.setOnClickListener {
-            callDrawerItem(R.id.navi_item_dining)
+//        diningContainer.setOnClickListener {
+//            callDrawerItem(R.id.navi_item_dining)
+//        }
+
+        DiningUtil.diningPlace.forEach { place ->
+            tabDining.addTab(tabDining.newTab().setText(place))
         }
     }
 
@@ -165,46 +169,46 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 }
         )
 
-        if (list.isEmpty() || position >= diningArranged.size) {
-            binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
-            return
-        }
+//        if (list.isEmpty() || position >= diningArranged.size) {
+//            binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
+//            return
+//        }
 
-        binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
+//        binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
+//
+//        listOf(
+//            binding.textViewCardDiningMenu0,
+//            binding.textViewCardDiningMenu2,
+//            binding.textViewCardDiningMenu4,
+//            binding.textViewCardDiningMenu6,
+//            binding.textViewCardDiningMenu8,
+//            binding.textViewCardDiningMenu1,
+//            binding.textViewCardDiningMenu3,
+//            binding.textViewCardDiningMenu5,
+//            binding.textViewCardDiningMenu7,
+//            binding.textViewCardDiningMenu9
+//        ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
+//            textView.text = menu
+//        }
 
-        listOf(
-            binding.textViewCardDiningMenu0,
-            binding.textViewCardDiningMenu2,
-            binding.textViewCardDiningMenu4,
-            binding.textViewCardDiningMenu6,
-            binding.textViewCardDiningMenu8,
-            binding.textViewCardDiningMenu1,
-            binding.textViewCardDiningMenu3,
-            binding.textViewCardDiningMenu5,
-            binding.textViewCardDiningMenu7,
-            binding.textViewCardDiningMenu9
-        ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
-            textView.text = menu
-        }
-
-        val isSoldOut = diningArranged[position].soldoutAt.isNotEmpty()
-        val isChanged = diningArranged[position].changedAt.isNotEmpty()
-        with (binding.textViewDiningStatus) {
-            when {
-                isSoldOut -> {
-                    text = context.getString(R.string.dining_soldout)
-                    setTextColor(ContextCompat.getColor(context, R.color.dining_soldout_text))
-                    background = ContextCompat.getDrawable(context, R.drawable.dining_soldout_fill_radius_4)
-                }
-                isChanged -> {
-                    text = context.getString(R.string.dining_changed)
-                    setTextColor(ContextCompat.getColor(context, R.color.dining_changed_text))
-                    background = ContextCompat.getDrawable(context, R.drawable.dining_changed_fill_radius_4)
-                }
-                else -> {
-                    visibility = View.INVISIBLE
-                }
-            }
-        }
+//        val isSoldOut = diningArranged[position].soldoutAt.isNotEmpty()
+//        val isChanged = diningArranged[position].changedAt.isNotEmpty()
+//        with (binding.textViewDiningStatus) {
+//            when {
+//                isSoldOut -> {
+//                    text = context.getString(R.string.dining_soldout)
+//                    setTextColor(ContextCompat.getColor(context, R.color.dining_soldout_text))
+//                    background = ContextCompat.getDrawable(context, R.drawable.dining_soldout_fill_radius_4)
+//                }
+//                isChanged -> {
+//                    text = context.getString(R.string.dining_changed)
+//                    setTextColor(ContextCompat.getColor(context, R.color.dining_changed_text))
+//                    background = ContextCompat.getDrawable(context, R.drawable.dining_changed_fill_radius_4)
+//                }
+//                else -> {
+//                    visibility = View.INVISIBLE
+//                }
+//            }
+//        }
     }
 }
