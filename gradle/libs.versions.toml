@@ -66,6 +66,7 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeB
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material2 = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
@@ -139,7 +140,7 @@ koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 
 [bundles]
-compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose"]
+compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
