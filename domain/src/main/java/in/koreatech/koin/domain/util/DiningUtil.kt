@@ -7,6 +7,7 @@ import `in`.koreatech.koin.domain.util.ext.typeFilter
 
 object DiningUtil {
     private val diningEndTime = listOf("09:00", "13:30", "18:30", "23:59")
+    val diningPlace = listOf("A코너", "B코너", "C코너", "능수관" )
 
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
