@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.bundles.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.compose.navigation)
     implementation(project(mapOf("path" to ":domain")))
