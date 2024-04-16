@@ -16,7 +16,6 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
@@ -55,15 +54,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
 
     private val callContract = registerForActivityResult(StoreCallContract()) {}
-
-    private val storeMenuAdapter = StoreDetailMenuRecyclerAdapter()
-    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
-        setOnItemClickListener { position, _ ->
-            flyerDialogFragment = StoreFlyerDialogFragment()
-            flyerDialogFragment?.initialPosition = position
-            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
-        }
-    }
+    private val storeMenuAdapter: MutableList<StoreDetailMenuRecyclerAdapter> =
+        List(4) { StoreDetailMenuRecyclerAdapter() }.toMutableList()
 
     private val storeRecyclerAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
@@ -76,19 +68,25 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        /*binding.storeDetailFlyerRecyclerview.apply {
-            layoutManager = LinearLayoutManager(
-                this@StoreDetailActivity,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            setHasFixedSize(true)
-            adapter = storeDetailFlyerRecyclerAdapter
-        }*/
+        repeat(4) {
+            storeMenuAdapter.add(StoreDetailMenuRecyclerAdapter())
+        }
 
-        binding.storeDetailRecyclerview.apply {
+        binding.storeDetailRecommendRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter
+            adapter = storeMenuAdapter[0]
+        }
+        binding.storeDetailMainRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
+            adapter = storeMenuAdapter[1]
+        }
+        binding.storeDetailSetRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
+            adapter = storeMenuAdapter[2]
+        }
+        binding.storeDetailSideRecyclerview.apply {
+            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
+            adapter = storeMenuAdapter[3]
         }
 
         binding.storeRandomRecyclerView.apply {
@@ -100,8 +98,11 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             showCallDialog()
         }
 
-        binding.menuSpreadTextView.setOnClickListener {
-            isMenuExpanded = !isMenuExpanded
+        viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
+
+            viewModel.storeMenu.value?.let {
+                storeMenuAdapter[index].submitList(it)
+            }
         }
 
         initViewModel()
@@ -153,10 +154,12 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 if (!it.isDeliveryOk) {
                     storeDetailConstDeliverTextview.isVisible = false
                     storeDetailDeliverTextview.isVisible = false
-                    storeDetailIsDeliveryTextview . setTextColor (ContextCompat.getColor(
-                        this@StoreDetailActivity,
-                        R.color.gray2
-                    ))
+                    storeDetailIsDeliveryTextview.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreDetailActivity,
+                            R.color.gray2
+                        )
+                    )
                     storeDetailIsDeliveryTextview.background = ContextCompat.getDrawable(
                         this@StoreDetailActivity,
                         R.drawable.button_rect_gray_radius_5dp
@@ -185,17 +188,24 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(viewModel.storeMenu) {
-            storeMenuAdapter.submitList(it)
-            (it.size <= MAX_MENUS_FOLDED).let {
-                binding.menuSpreadTextView.isVisible = !it
-                binding.arrowImageView.isVisible = !it
+            viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
+                viewModel.storeMenu.value?.let {
+                    storeMenuAdapter[index].submitList(
+                        it
+                    )
+                }
             }
-            isMenuExpanded = false
         }
-
         observeLiveData(viewModel.recommendStores) {
             if (it != null) {
                 storeRecyclerAdapter.submitList(it)
+            }
+        }
+        observeLiveData(viewModel.categories) {
+            if (it.menuCategories != null) {
+                viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
+                    storeMenuAdapter[index].setCategory(category.name)
+                }
             }
         }
     }
@@ -246,6 +256,5 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     }
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
-        private const val MAX_MENUS_FOLDED = 6
     }
 }
