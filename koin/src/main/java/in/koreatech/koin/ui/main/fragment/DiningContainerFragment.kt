@@ -22,7 +22,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
 
     private fun initView() {
         place.apply {
-            binding.textViewDiningContainer.text = this.toString()
+//            binding.textViewDiningContainer.text = this.toString()
         }
     }
 

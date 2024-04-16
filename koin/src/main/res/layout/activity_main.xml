@@ -124,7 +124,7 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/text_view_dining_time"
+                                    android:id="@+id/text_view_dining_today_or_tomorrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="20dp"
@@ -134,7 +134,7 @@
                                     android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    tools:text="아침" />
+                                    tools:text="오늘" />
 
                                 <TextView
                                     android:id="@+id/text_view_dining_title"
@@ -145,8 +145,8 @@
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
-                                    app:layout_constraintStart_toEndOf="@id/text_view_dining_time"
-                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_time" />
+                                    app:layout_constraintStart_toEndOf="@id/text_view_dining_today_or_tomorrow"
+                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_today_or_tomorrow" />
 
 
                             </androidx.constraintlayout.widget.ConstraintLayout>

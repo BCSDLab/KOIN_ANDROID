@@ -145,7 +145,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(selectedType) {
-            binding.textViewDiningTime.text = it.localized(this@MainActivity)
+            binding.textViewDiningTodayOrTomorrow.text = it.localized(this@MainActivity)
         }
 
         observeLiveData(busTimer) {
