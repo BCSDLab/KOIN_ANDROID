@@ -34,35 +34,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-    private var isMenuExpanded: Boolean
-        get() {
-            return when {
-                viewModel.storeMenu.value == null -> true
-                viewModel.storeMenu.value!!.size <= MAX_MENUS_FOLDED -> true
-                else -> viewModel.storeMenu.value!!.size == storeMenuAdapter.itemCount
-            }
-        }
-        set(value) {
-            viewModel.storeMenu.value?.let {
-                storeMenuAdapter.submitList(
-                    if (!value) it.take(MAX_MENUS_FOLDED) else it
-                )
-            }
 
-            binding.menuSpreadTextView.text = getString(
-                if (value) {
-                    R.string.hide_menu
-                } else {
-                    R.string.show_more_menu
-                }
-            )
-
-            binding.arrowImageView.rotation = if (value) 0F else 180F
-        }
 
     private val storeDetailActivityContract =
         registerForActivityResult(StoreDetailActivityContract()) {
-
         }
 
     private val callPermission =
