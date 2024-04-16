@@ -1,4 +1,4 @@
-package in.koreatech.koin.domain.util.regex
+package `in`.koreatech.koin.domain.util.regex
 
 class InputValidationUtils {
 }
