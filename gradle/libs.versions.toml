@@ -48,6 +48,7 @@ googleServiceVersion = "4.3.14"
 composeNavigationVersion = "2.7.7"
 orbitVersion="7.0.1"
 hiltComposeVersion="1.0.0"
+firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -125,6 +126,7 @@ orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit
 orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
 
 hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtoolsVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
