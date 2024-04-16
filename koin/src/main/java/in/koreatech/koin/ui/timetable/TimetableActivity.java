@@ -963,4 +963,10 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
     protected MenuState getMenuState() {
         return MenuState.Timetable.INSTANCE;
     }
+
+    @NonNull
+    @Override
+    protected final String getScreenTitle() {
+        return "시간표";
+    }
 }
