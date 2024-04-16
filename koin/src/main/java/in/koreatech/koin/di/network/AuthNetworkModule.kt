@@ -17,7 +17,6 @@ import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
 import kotlinx.coroutines.runBlocking
