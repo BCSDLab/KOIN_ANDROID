@@ -29,10 +29,13 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
+import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 
 @AndroidEntryPoint
@@ -51,6 +54,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             mainActivityViewModel.setSelectedPosition(it)
         }
     }
+    private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
     private val storeCategoryRecyclerAdapter = StoreCategoryRecyclerAdapter().apply {
         setRecyclerViewClickListener(object : RecyclerViewClickListener {
@@ -118,9 +122,11 @@ class MainActivity : KoinNavigationDrawerActivity() {
 //            callDrawerItem(R.id.navi_item_dining)
 //        }
 
-        DiningUtil.diningPlace.forEach { place ->
-            tabDining.addTab(tabDining.newTab().setText(place))
-        }
+        pagerDiningContainer.adapter = diningContainerAdapter
+
+        TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
+            tab.text = DiningPlace.entries[position].place
+        }.attach()
     }
 
     private fun initViewModel() = with(mainActivityViewModel) {
