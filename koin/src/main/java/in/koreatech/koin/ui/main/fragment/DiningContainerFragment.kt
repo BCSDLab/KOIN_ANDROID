@@ -28,17 +28,10 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        addListener()
         initViewModel()
     }
 
     private fun initView() {
-        place.apply {
-//            binding.textViewDiningContainer.text = this.toString()
-        }
-    }
-
-    private fun addListener() {
 
     }
 

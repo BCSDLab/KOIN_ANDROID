@@ -1,18 +1,5 @@
 package `in`.koreatech.koin.ui.main.activity
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
-import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
-import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
-import `in`.koreatech.koin.data.util.localized
-import `in`.koreatech.koin.databinding.ActivityMainBinding
-import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
-import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
-import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.observeLiveData
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -21,9 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
+import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
+import `in`.koreatech.koin.data.util.todayOrTomorrow
+import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
+import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
+import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
+import `in`.koreatech.koin.util.ext.observeLiveData
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -121,7 +121,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(selectedType) {
-            binding.textViewDiningTodayOrTomorrow.text = it.localized(this@MainActivity)
+            binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
         observeLiveData(busTimer) {
