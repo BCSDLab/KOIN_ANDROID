@@ -80,7 +80,10 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 DiningType.Breakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
                 DiningType.Lunch -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(1))
                 DiningType.Dinner -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(2))
-                DiningType.NextBreakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
+                DiningType.NextBreakfast -> {
+                    tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
+                    diningDateAdapter.setSelectedPosition(dates.size / 2 + 1)
+                }
             }
         }
     }
@@ -90,10 +93,10 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             recyclerViewCalendar.adapter = diningDateAdapter
             val current = TimeUtil.getCurrentTime()
             dates.add(current)
-            repeat(7) {
+            repeat(3) {
                 dates.add(0, TimeUtil.getPreviousDayDate(dates.first()))
             }
-            repeat(7) {
+            repeat(3) {
                 dates.add(TimeUtil.getNextDayDate(dates.last()))
             }
             diningDateAdapter.submitList(dates)

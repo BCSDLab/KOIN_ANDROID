@@ -87,9 +87,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
             offscreenPageLimit = 3
             currentItem = Int.MAX_VALUE / 2
 
-            val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
-            val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
-            setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
+            // val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
+            // val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
+            // setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@MainActivity,
