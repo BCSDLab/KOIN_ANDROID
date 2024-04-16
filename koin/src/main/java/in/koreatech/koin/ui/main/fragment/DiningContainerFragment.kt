@@ -15,6 +15,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 
@@ -31,8 +32,13 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         initViewModel()
     }
 
-    private fun initView() {
-
+    private fun initView() = with(binding) {
+        diningContainer.setOnClickListener {
+            if (activity is MainActivity) {
+                val mainActivity = activity as MainActivity
+                mainActivity.callDrawerItem(R.id.navi_item_dining)
+            }
+        }
     }
 
     private fun initViewModel() = with(viewModel) {
