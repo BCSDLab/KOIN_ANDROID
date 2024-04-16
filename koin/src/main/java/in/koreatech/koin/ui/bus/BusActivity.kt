@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BusActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<BusActivityMainBinding>(R.layout.bus_activity_main)
+    override val screenTitle = "버스"
     private val busMainViewPager2Adapter = BusMainViewPager2Adapter(this)
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil("Bus_Activity")

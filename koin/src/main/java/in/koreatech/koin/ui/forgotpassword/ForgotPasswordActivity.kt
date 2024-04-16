@@ -20,6 +20,7 @@ class ForgotPasswordActivity : DataBindingActivity<ActivityForgotPasswordBinding
         get() = R.layout.activity_forgot_password
 
     private val forgotPasswordViewModel by viewModels<ForgotPasswordViewModel>()
+    override val screenTitle = "비밀번호 초기화"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
