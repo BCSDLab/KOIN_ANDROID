@@ -7,8 +7,8 @@ import javax.inject.Inject
 class GetUserRefreshTokenUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
 ) {
-    suspend operator fun invoke(isResponseSuccess: Boolean, refreshBody: AuthToken): String? = runCatching {
-        if (isResponseSuccess) {
+    suspend operator fun invoke(isResponseSuccess: Boolean, refreshBody: AuthToken?): String? = runCatching {
+        if (isResponseSuccess &&  refreshBody != null) {
             tokenRepository.saveAccessToken(refreshBody.token)
             tokenRepository.saveRefreshToken(refreshBody.refreshToken)
             refreshBody.token
@@ -18,6 +18,4 @@ class GetUserRefreshTokenUseCase @Inject constructor(
             null
         }
     }.getOrNull()
-
-
 }
