@@ -16,7 +16,9 @@ import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserRefreshTokenUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateUserRefreshTokenUseCase
 import `in`.koreatech.koin.util.OwnerTokenAuthenticator
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -54,9 +56,10 @@ object AuthNetworkModule {
     @Singleton
     fun provideRefreshInterceptor(
         tokenLocalDataSource: TokenLocalDataSource,
-        getUserRefreshTokenUseCase: GetUserRefreshTokenUseCase,
+        updateUserRefreshTokenUseCase: UpdateUserRefreshTokenUseCase,
+        deleteUserRefreshTokenUseCase: DeleteUserRefreshTokenUseCase,
         userApi: UserApi,
-    ): Authenticator = AuthAuthenticator(tokenLocalDataSource, getUserRefreshTokenUseCase,userApi)
+    ): Authenticator = AuthAuthenticator(tokenLocalDataSource, updateUserRefreshTokenUseCase, deleteUserRefreshTokenUseCase, userApi)
 
 
     @Auth
