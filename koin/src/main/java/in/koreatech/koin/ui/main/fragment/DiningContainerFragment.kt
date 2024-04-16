@@ -63,14 +63,7 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         val diningArranged = list
             .typeFilter(diningType)
             .arrange()
-
-        if (list.isEmpty() || position >= diningArranged.size) {
-            binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
-            return
-        }
-        binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
-
-        listOf(
+        val menus = listOf(
             binding.textViewDiningContainerMenu0,
             binding.textViewDiningContainerMenu2,
             binding.textViewDiningContainerMenu4,
@@ -81,24 +74,37 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
             binding.textViewDiningContainerMenu5,
             binding.textViewDiningContainerMenu7,
             binding.textViewDiningContainerMenu9
-        ).zip(diningArranged[position].menu).forEach { (textView, menu) ->
+        )
+
+        if (list.isEmpty() || diningArranged[position].menu.isEmpty()) {
+            binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
+            return
+        }
+        binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
+
+        menus.forEach { it.text = "" }
+        menus.zip(diningArranged[position].menu).forEach { (textView, menu) ->
             textView.text = menu
         }
 
         val isSoldOut = diningArranged[position].soldoutAt.isNotEmpty()
         val isChanged = diningArranged[position].changedAt.isNotEmpty()
-        with (binding.textViewDiningStatus) {
+        with(binding.textViewDiningStatus) {
             when {
                 isSoldOut -> {
                     text = context.getString(R.string.dining_soldout)
                     setTextColor(ContextCompat.getColor(context, R.color.dining_soldout_text))
-                    background = ContextCompat.getDrawable(context, R.drawable.dining_soldout_fill_radius_4)
+                    background =
+                        ContextCompat.getDrawable(context, R.drawable.dining_soldout_fill_radius_4)
                 }
+
                 isChanged -> {
                     text = context.getString(R.string.dining_changed)
                     setTextColor(ContextCompat.getColor(context, R.color.dining_changed_text))
-                    background = ContextCompat.getDrawable(context, R.drawable.dining_changed_fill_radius_4)
+                    background =
+                        ContextCompat.getDrawable(context, R.drawable.dining_changed_fill_radius_4)
                 }
+
                 else -> {
                     visibility = View.INVISIBLE
                 }
