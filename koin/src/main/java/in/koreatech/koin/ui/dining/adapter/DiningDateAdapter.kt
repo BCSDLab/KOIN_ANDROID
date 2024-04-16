@@ -48,7 +48,7 @@ class DiningDateAdapter(
                 textViewDayOfTheWeek.text = DateFormatUtil.getDayOfWeek(date)
                 textViewDay.text = date.date.toString()
 
-                if (position < selectedPosition) {
+                if (position < itemCount / 2) {
                     textViewDay.setTextColor(
                         ContextCompat.getColor(
                             context,
@@ -97,7 +97,7 @@ class DiningDateAdapter(
                         )
                     else
                         notifyItemRangeChanged(position, selectedPosition - position + 1)
-                    selectedPosition = position
+                    setSelectedPosition(position)
                 }
             }
         }
