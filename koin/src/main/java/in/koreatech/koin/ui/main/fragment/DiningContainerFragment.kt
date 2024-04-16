@@ -62,6 +62,12 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         val diningArranged = list
             .typeFilter(diningType)
             .arrange()
+
+        updateMenu(list, position, diningArranged)
+        updateStatus(position, diningArranged)
+    }
+
+    private fun updateMenu(list: List<Dining>, position: Int, arrangedList: List<Dining>) {
         val menus = listOf(
             binding.textViewDiningContainerMenu0,
             binding.textViewDiningContainerMenu2,
@@ -75,19 +81,21 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
             binding.textViewDiningContainerMenu9
         )
 
-        if (list.isEmpty() || diningArranged[position].menu.isEmpty()) {
+        if (list.isEmpty() || arrangedList[position].menu.isEmpty()) {
             binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
             return
         }
         binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
 
         menus.forEach { it.text = "" }
-        menus.zip(diningArranged[position].menu).forEach { (textView, menu) ->
+        menus.zip(arrangedList[position].menu).forEach { (textView, menu) ->
             textView.text = menu
         }
+    }
 
-        val isSoldOut = diningArranged[position].soldoutAt.isNotEmpty()
-        val isChanged = diningArranged[position].changedAt.isNotEmpty()
+    private fun updateStatus(position: Int, arrangedList: List<Dining>) {
+        val isSoldOut = arrangedList[position].soldoutAt.isNotEmpty()
+        val isChanged = arrangedList[position].changedAt.isNotEmpty()
         with(binding.textViewDiningStatus) {
             when {
                 isSoldOut -> {
