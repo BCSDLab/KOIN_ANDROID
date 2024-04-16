@@ -29,12 +29,10 @@ class AuthAuthenticator @Inject constructor(
             }.getOrNull()
 
             val token = if (newResponse?.isSuccessful == true) {
-                newResponse.body()?.toAuthToken()?.let {
-                    getUserRefreshTokenUseCase.invoke(
-                        isResponseSuccess = newResponse.isSuccessful,
-                        refreshBody = it
-                    )
-                }
+                getUserRefreshTokenUseCase.invoke(
+                    isResponseSuccess = newResponse.isSuccessful,
+                    refreshBody = newResponse.body()?.toAuthToken()
+                )
             } else {
                 getUserRefreshTokenUseCase.invoke(
                     isResponseSuccess = false,
