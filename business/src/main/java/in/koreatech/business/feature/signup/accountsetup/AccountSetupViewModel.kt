@@ -70,6 +70,10 @@ class AccountSetupViewModel @Inject constructor(
                     intent { reduce { state.copy(signUpContinuationError = it) } }
                 }
             intent { reduce { state.copy(isLoading = false) } }
+            intent {
+                if (state.signupContinuationState == SignupContinuationState.CheckComplete)
+                    onNextButtonClicked()
+            }
         }
     }
 }
