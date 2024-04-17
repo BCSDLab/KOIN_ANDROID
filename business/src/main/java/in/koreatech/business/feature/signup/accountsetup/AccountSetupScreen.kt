@@ -30,10 +30,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
@@ -168,8 +168,6 @@ fun AccountSetupScreen(
                     viewModel.postEmailVerification(
                         state.email, state.password, state.passwordConfirm
                     )
-                    if (state.signupContinuationState == SignupContinuationState.CheckComplete)
-                        viewModel.onNextButtonClicked()
                 }) {
                 Text(
                     text = stringResource(id = R.string.email_authentication),
