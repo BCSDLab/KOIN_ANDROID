@@ -46,7 +46,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
@@ -56,11 +55,13 @@ import `in`.koreatech.business.ui.theme.ColorSearch
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import kotlinx.coroutines.launch
+import okhttp3.internal.immutableListOf
 
 @Composable
 fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
     var search by remember { mutableStateOf("") }
-    val storeItems = ImmutableList.of("")
+    val storeItems = immutableListOf("")
+
     Column(
         modifier = modifier,
     ) {
@@ -138,7 +139,7 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StoreList(item: ImmutableList<String>, onSelected: () -> Unit = {}) {
+fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
     var selectedItemIndex by remember { mutableStateOf(-1) }
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
