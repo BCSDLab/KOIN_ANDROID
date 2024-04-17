@@ -69,7 +69,6 @@ class AccountSetupViewModel @Inject constructor(
                 .onFailure {
                     intent { reduce { state.copy(signUpContinuationError = it) } }
                 }
-            sendSignupEmailUseCase.sendEmail(email)
             intent { reduce { state.copy(isLoading = false) } }
         }
     }
