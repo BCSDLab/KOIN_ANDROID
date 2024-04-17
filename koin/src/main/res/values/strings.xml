@@ -36,6 +36,13 @@
     <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_cancel">취소</string>
+    <string name="login_request">로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?</string>
+    <string name="navigation_ok">확인</string>
+    <string name="user_only">회원 전용 서비스</string>
+    <string name="to_be_opened">서비스예정입니다</string>
+    <string name="press_again_to_exit">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="user_anon">익명</string>
 
 
     <!-- Server Messages -->
@@ -223,7 +230,7 @@
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>
     <string name="dining_dinner">저녁</string>
-    <string name="dining_kcal">kcal</string>
+    <string name="dining_kcal">%1$skcal</string>
     <string name="dining_cashbee">캐쉬비</string>
     <string name="dining_money_unit">원</string>
     <string name="dining_cash">현금</string>
@@ -232,6 +239,8 @@
     <string name="dining_western">양식</string>
     <string name="dining_nungsu">능수관</string>
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
+    <string name="dining_soldout">품절</string>
+    <string name="dining_changed">변경됨</string>
     <string name="bus_app_bar_title">버스 / 교통</string>
     <string name="bus_tab_info">운행정보</string>
     <string name="bus_tab_search_info">운행 정보 검색</string>
@@ -357,4 +366,9 @@
     <string name="set_form">%1$s-</string>
     <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
     <string name="last_update">마지막 업데이트 : </string>
+    <string name="sold_out_menu">품절된 메뉴입니다.</string>
+    <string name="no_photo">사진 없음</string>
+    <string name="sold_out">품절</string>
+    <string name="changed">변경됨</string>
+    <string name="price">%1$s원</string>
 </resources>

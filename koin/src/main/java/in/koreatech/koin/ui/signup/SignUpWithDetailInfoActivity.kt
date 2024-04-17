@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 class SignupWithDetailInfoActivity : ActivityBase() {
 
     private lateinit var binding: ActivitySignUpWithDetailInfoBinding
+    override val screenTitle = "회원가입 상세"
     private val signupViewModel by viewModels<SignupViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

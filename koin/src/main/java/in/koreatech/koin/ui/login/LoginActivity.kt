@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
     private val binding by dataBinding<ActivityLoginBinding>()
+    override val screenTitle = "로그인"
 
     private val loginViewModel by viewModels<LoginViewModel>()
 

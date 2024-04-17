@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'org.jetbrains.kotlin.android'
 }
 
 android {
@@ -108,4 +109,7 @@ dependencies {
 
     api libs.androidx.activity.ktx
     api libs.androidx.fragment.ktx
+
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.analytics.ktx
 }
