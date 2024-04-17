@@ -3,6 +3,7 @@ package `in`.koreatech.business.feature.signup.accountsetup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.business.SendSignupEmailUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,18 +30,21 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(password = password)
         }
+        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
     fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
         reduce {
             state.copy(passwordConfirm = passwordConfirm)
         }
+        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
     fun onEmailChanged(email: String) = intent {
         reduce {
             state.copy(email = email)
         }
+        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
     fun onNextButtonClicked() = intent {
@@ -51,30 +55,21 @@ class AccountSetupViewModel @Inject constructor(
         postSideEffect(AccountAuthSideEffect.NavigateToBackScreen)
     }
 
-    fun checkInfo(email: String, password: String, passwordConfirm: String) {
+
+    fun postEmailVerification(email: String, password: String, passwordConfirm: String) {
         intent { reduce { state.copy(isLoading = true) } }
         viewModelScope.launch(Dispatchers.IO) {
             sendSignupEmailUseCase(email, password, passwordConfirm)
                 .onSuccess {
                     intent {
-                        reduce { state.copy(signupContinuationState = it)}
-                        reduce { state.copy(signUpContinuationError = null)}
+                        reduce { state.copy(signupContinuationState = it) }
+                        reduce { state.copy(signUpContinuationError = null) }
                     }
                 }
                 .onFailure {
                     intent { reduce { state.copy(signUpContinuationError = it) } }
                 }
-            intent { reduce { state.copy(isLoading = false) } }
-        }
-    }
-    fun postEmailVerification(email: String) {
-        intent { reduce { state.copy(isLoading = true) } }
-        viewModelScope.launch(Dispatchers.IO) {
             sendSignupEmailUseCase.sendEmail(email)
-                .onSuccess {}
-                .onFailure {
-                    intent { reduce { state.copy(signUpContinuationError = it) } }
-                }
             intent { reduce { state.copy(isLoading = false) } }
         }
     }
