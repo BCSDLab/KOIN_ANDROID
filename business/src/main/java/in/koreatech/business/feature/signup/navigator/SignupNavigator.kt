@@ -30,8 +30,7 @@ fun SignupNavigator(modifier: Modifier) {
         ) {
             AccountSetupScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = {
-                    navController.navigate("${SignupRoute.ACCOUNT_AUTH.name}/$it")
+                onNextClicked = { navController.navigate("${SignupRoute.ACCOUNT_AUTH.name}/$it")
                 },
             )
         }

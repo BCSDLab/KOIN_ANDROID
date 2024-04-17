@@ -165,16 +165,11 @@ fun AccountSetupScreen(
                     disabledContentColor = Color.White,
                 ),
                 onClick = {
-                    viewModel.checkInfo(
-                        state.email,
-                        state.password,
-                        state.passwordConfirm,
+                    viewModel.postEmailVerification(
+                        state.email, state.password, state.passwordConfirm
                     )
                     if (state.signupContinuationState == SignupContinuationState.CheckComplete)
                         viewModel.onNextButtonClicked()
-                    viewModel.postEmailVerification(
-                        state.email,
-                    )
                 }) {
                 Text(
                     text = stringResource(id = R.string.email_authentication),
