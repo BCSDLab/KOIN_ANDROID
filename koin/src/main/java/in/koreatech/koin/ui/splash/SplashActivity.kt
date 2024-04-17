@@ -30,6 +30,7 @@ class SplashActivity : ActivityBase() {
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil("koin_start")
     }
+    override val screenTitle = "스플래시"
 
     private val splashViewModel by viewModels<SplashViewModel>()
     private val createdTime = System.currentTimeMillis()
