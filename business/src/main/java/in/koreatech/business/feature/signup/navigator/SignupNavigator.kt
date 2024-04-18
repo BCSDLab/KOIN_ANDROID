@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import `in`.koreatech.business.feature.signup.accountauth.AccountAuthScreen
+import `in`.koreatech.business.feature.signup.accountauth.EmailAuthScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
 import `in`.koreatech.business.feature.signup.businessauth.SearchStoreScreen
@@ -21,7 +21,7 @@ fun SignupNavigator(modifier: Modifier) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = SignupRoute.BASIC_INFO_INPUT.name,
+        startDestination = SignupRoute.EMAIL_AUTH.name,
         modifier = Modifier.padding(16.dp)
     ) {
 
@@ -30,14 +30,13 @@ fun SignupNavigator(modifier: Modifier) {
         ) {
             AccountSetupScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { navController.navigate("${SignupRoute.ACCOUNT_AUTH.name}/$it")
+                onNextClicked = { navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$it")
                 },
             )
         }
 
         composable(
-            route = "${SignupRoute.ACCOUNT_AUTH.name}/{email}",
-
+            route = "${SignupRoute.EMAIL_AUTH.name}/{email}",
             arguments = listOf(
                 navArgument("email") {
                     type = NavType.StringType
@@ -46,7 +45,7 @@ fun SignupNavigator(modifier: Modifier) {
             )
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            AccountAuthScreen(
+            EmailAuthScreen(
                 email = email,
                 onBackClicked = { navController.popBackStack() },
                 onNextClicked = {
