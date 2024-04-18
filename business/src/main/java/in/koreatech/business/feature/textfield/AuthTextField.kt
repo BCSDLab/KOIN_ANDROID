@@ -37,7 +37,7 @@ fun AuthTextField(
     label: String,
     textStyle: TextStyle = TextStyle.Default.copy(fontSize = 15.sp),
     isPassword: Boolean = false,
-    isError: Boolean = true,
+    isError: Boolean = false,
 ) {
     var focused by remember { mutableStateOf(false) }
 
