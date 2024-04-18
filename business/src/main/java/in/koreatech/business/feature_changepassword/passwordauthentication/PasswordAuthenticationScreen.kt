@@ -17,11 +17,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -111,7 +111,7 @@ fun PasswordAuthenticationScreen(
                         }
                         innerTextField()
                     }
-                    HorizontalDivider(
+                    Divider(
                         modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
                         color = if (state.email.isEmpty()) Blue1 else Color.Black
@@ -152,7 +152,7 @@ fun PasswordAuthenticationScreen(
                             }
                             innerTextField()
                         }
-                        HorizontalDivider(
+                        Divider(
                             modifier = modifier.width(220.dp),
                             thickness = 1.dp,
                             color = if (state.authenticationCode.isEmpty()) Blue1 else Color.Black
