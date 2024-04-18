@@ -33,21 +33,28 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.textfield.AuthTextField
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import kotlinx.coroutines.delay
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun AccountAuthScreen(
+fun EmailAuthScreen(
     modifier: Modifier = Modifier,
     email: String,
+    verifyViewModel: EmailAuthViewModel= hiltViewModel(),
+    sendEmailViewModel: AccountSetupViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
-    var authCode by remember { mutableStateOf("") }
+    val state = verifyViewModel.collectAsState().value
+
     Column(
         modifier = modifier,
     ) {
@@ -124,12 +131,13 @@ fun AccountAuthScreen(
             )
             Spacer(modifier = Modifier.height(38.dp))
             AuthTextField(
-                value = authCode,
-                onValueChange = { authCode = it },
+                value = state.authCode,
+                onValueChange = { verifyViewModel.onAuthCodeChanged(it)},
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_verification_code),
                 textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                 isPassword = true,
+                isError = state.signUpContinuationError != null,
 
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -148,7 +156,7 @@ fun AccountAuthScreen(
                         contentColor = Color.White,
                         disabledContentColor = Color.White,
                     ),
-                    onClick = { }
+                    onClick = { sendEmailViewModel.postEmailVerification(email,"","") }
                 ) {
                     Text(text = stringResource(id = R.string.resend))
                 }
@@ -163,9 +171,17 @@ fun AccountAuthScreen(
                         disabledContentColor = Color.White,
                     ),
                     onClick = {
+                        verifyViewModel.verifyEmail(email, state.authCode)
                     }) {
                     Text(text = stringResource(id = R.string.next))
                 }
+            }
+        }
+
+        verifyViewModel.collectSideEffect {
+            when (it) {
+                is EmailAuthSideEffect.NavigateToNextScreen-> onNextClicked()
+                EmailAuthSideEffect.NavigateToBackScreen -> onBackClicked()
             }
         }
     }
