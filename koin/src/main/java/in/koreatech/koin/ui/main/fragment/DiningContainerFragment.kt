@@ -57,39 +57,30 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
         }
     }
 
-    fun updateDining(list: List<Dining>, position: Int) {
+    fun updateDining(originalList: List<Dining>, position: Int) {
         val diningType = DiningUtil.getCurrentType()
-        val diningArranged = list
+        val diningArranged = originalList
             .typeFilter(diningType)
             .arrange()
 
-        updateMenu(list, position, diningArranged)
+        updateMenu(originalList, diningArranged, position)
         updateStatus(position, diningArranged)
     }
 
-    private fun updateMenu(list: List<Dining>, position: Int, arrangedList: List<Dining>) {
-        val menus = listOf(
-            binding.textViewDiningContainerMenu0,
-            binding.textViewDiningContainerMenu2,
-            binding.textViewDiningContainerMenu4,
-            binding.textViewDiningContainerMenu6,
-            binding.textViewDiningContainerMenu8,
-            binding.textViewDiningContainerMenu1,
-            binding.textViewDiningContainerMenu3,
-            binding.textViewDiningContainerMenu5,
-            binding.textViewDiningContainerMenu7,
-            binding.textViewDiningContainerMenu9
-        )
-
-        if (list.isEmpty() || arrangedList[position].menu.isEmpty()) {
+    private fun updateMenu(originalList: List<Dining>, arrangedList: List<Dining>, position: Int) {
+        if (originalList.isEmpty() || arrangedList[position].menu.isEmpty()) {
             binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = true
             return
         }
         binding.viewEmptyDining.emptyDiningListFrameLayout.isVisible = false
 
-        menus.forEach { it.text = "" }
-        menus.zip(arrangedList[position].menu).forEach { (textView, menu) ->
-            textView.text = menu
+        val menus = listOf(binding.textViewDiningContainerMenuLeft, binding.textViewDiningContainerMenuRight)
+        val limit = arrangedList[position].menu.size.coerceAtMost(5)
+        menus.forEachIndexed { index, textView ->
+            textView.text =  when (index) {
+                0 -> arrangedList[position].menu.subList(0, limit).joinToString("\n")
+                else -> arrangedList[position].menu.subList(limit, arrangedList[position].menu.size).joinToString("\n")
+            }
         }
     }
 
