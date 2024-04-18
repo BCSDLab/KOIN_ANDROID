@@ -17,8 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountSetupViewModel @Inject constructor(
     private val sendSignupEmailUseCase: SendSignupEmailUseCase,
-) : ViewModel(), ContainerHost<AccountAuthState, AccountAuthSideEffect> {
-    override val container = container<AccountAuthState, AccountAuthSideEffect>(AccountAuthState())
+) : ViewModel(), ContainerHost<AccountSetupState, AccountSetupSideEffect> {
+    override val container = container<AccountSetupState, AccountSetupSideEffect>(AccountSetupState())
 
     fun onIdChanged(id: String) = intent {
         reduce {
@@ -48,11 +48,11 @@ class AccountSetupViewModel @Inject constructor(
     }
 
     fun onNextButtonClicked() = intent {
-        postSideEffect(AccountAuthSideEffect.NavigateToNextScreen(state.email))
+        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.email))
     }
 
     fun onBackButtonClicked() = intent {
-        postSideEffect(AccountAuthSideEffect.NavigateToBackScreen)
+        postSideEffect(AccountSetupSideEffect.NavigateToBackScreen)
     }
 
 

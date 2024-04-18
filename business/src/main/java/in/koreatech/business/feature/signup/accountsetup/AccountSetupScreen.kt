@@ -180,8 +180,8 @@ fun AccountSetupScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is AccountAuthSideEffect.NavigateToNextScreen -> onNextClicked(it.email)
-            AccountAuthSideEffect.NavigateToBackScreen -> onBackClicked()
+            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(it.email)
+            AccountSetupSideEffect.NavigateToBackScreen -> onBackClicked()
         }
     }
 }
