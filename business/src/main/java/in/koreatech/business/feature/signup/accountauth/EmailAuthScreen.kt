@@ -17,10 +17,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -48,7 +44,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun EmailAuthScreen(
     modifier: Modifier = Modifier,
     email: String,
-    verifyViewModel: EmailAuthViewModel= hiltViewModel(),
+    verifyViewModel: EmailAuthViewModel = hiltViewModel(),
     sendEmailViewModel: AccountSetupViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
@@ -60,7 +56,7 @@ fun EmailAuthScreen(
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { onBackClicked() }
+            onClick = { verifyViewModel.onBackButtonClicked() }
         ) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
@@ -132,16 +128,30 @@ fun EmailAuthScreen(
             Spacer(modifier = Modifier.height(38.dp))
             AuthTextField(
                 value = state.authCode,
-                onValueChange = { verifyViewModel.onAuthCodeChanged(it)},
+                onValueChange = { verifyViewModel.onAuthCodeChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_verification_code),
                 textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                 isPassword = true,
                 isError = state.signUpContinuationError != null,
 
-            )
+                )
             Spacer(modifier = Modifier.height(8.dp))
-            CountdownTimer()
+
+            LaunchedEffect(key1 = state.timeLeft) {
+                while (state.timeLeft > 0) {
+                    delay(1000L)
+                    verifyViewModel.onTimerTick()
+                }
+            }
+
+
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = stringResource(id = R.string.time_limit) + state.formattedTimeLeft
+            )
+
             Spacer(modifier = Modifier.height(183.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -156,7 +166,10 @@ fun EmailAuthScreen(
                         contentColor = Color.White,
                         disabledContentColor = Color.White,
                     ),
-                    onClick = { sendEmailViewModel.postEmailVerification(email,"","") }
+                    onClick = {
+                        sendEmailViewModel.postEmailVerification(email, "", "")
+                        verifyViewModel.onResendButtonClicked()
+                    }
                 ) {
                     Text(text = stringResource(id = R.string.resend))
                 }
@@ -180,36 +193,9 @@ fun EmailAuthScreen(
 
         verifyViewModel.collectSideEffect {
             when (it) {
-                is EmailAuthSideEffect.NavigateToNextScreen-> onNextClicked()
+                is EmailAuthSideEffect.NavigateToNextScreen -> onNextClicked()
                 EmailAuthSideEffect.NavigateToBackScreen -> onBackClicked()
             }
         }
     }
-}
-
-
-@Composable
-fun CountdownTimer() {
-
-    var timeLeft by remember { mutableStateOf(300) }
-    var minutes by remember { mutableStateOf(0) }
-    var seconds by remember { mutableStateOf(0) }
-
-    LaunchedEffect(key1 = timeLeft) {
-        while (timeLeft > 0) {
-            delay(1000L)
-            timeLeft--
-            minutes = timeLeft / 60
-            seconds = timeLeft % 60
-        }
-    }
-
-    val formattedTimeLeft = "%02d".format(minutes)
-    val formattedSeconds = "%02d".format(seconds)
-
-    Text(
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center,
-        text = stringResource(id = R.string.time_limit) + "$formattedTimeLeft : $formattedSeconds"
-    )
 }
