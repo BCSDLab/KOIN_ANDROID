@@ -67,151 +67,37 @@
                     android:background="@color/container_stroke_inside"
                     app:layout_constraintTop_toBottomOf="@id/text_view_dining_status" />
 
-                <TableLayout
+                <TextView
+                    android:id="@+id/text_view_dining_container_menu_left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:minLines="5"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/text_view_dining_container_menu_right"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:lineSpacingExtra="4dp"
+                    android:minLines="5"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow_dining_container_menu"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="20dp"
+                    app:constraint_referenced_ids="text_view_dining_container_menu_left,text_view_dining_container_menu_right"
+                    app:flow_horizontalGap="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_dining_container_line">
-
-                    <TableRow android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_0"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴1" />
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴2" />
-
-                    </TableRow>
-
-                    <TableRow android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴3" />
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴4" />
-
-                    </TableRow>
-
-                    <TableRow android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_4"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="까르보나라민트초코파맛첵스파게티" />
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_5"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴6" />
-
-                    </TableRow>
-
-                    <TableRow android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_6"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴7" />
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_7"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴8" />
-
-                    </TableRow>
-
-                    <TableRow android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_8"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="메뉴9" />
-
-                        <TextView
-                            android:id="@+id/text_view_dining_container_menu_9"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:textSize="12sp"
-                            tools:text="까르보나라민트초코파맛첵스파게티" />
-
-                    </TableRow>
-
-                </TableLayout>
+                    app:layout_constraintTop_toBottomOf="@id/view_dining_container_line" />
 
                 <include
                     android:id="@+id/view_empty_dining"
