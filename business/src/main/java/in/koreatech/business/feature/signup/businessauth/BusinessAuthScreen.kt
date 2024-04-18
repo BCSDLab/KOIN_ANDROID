@@ -1,5 +1,8 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.border
@@ -37,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
@@ -46,25 +50,28 @@ import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorMinor
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun BusinessAuthScreen(
     modifier: Modifier = Modifier,
+    viewModel: BusinessAuthViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
-    var name by remember { mutableStateOf("") }
-    var storeName by remember { mutableStateOf("") }
-    var storeNumber by remember { mutableStateOf("") }
-    var phoneNumber by remember { mutableStateOf("") }
-    val openAlertDialog = remember { mutableStateOf(false) }
-    val itemList: MutableList<String> = mutableListOf()
-
+    val state = viewModel.collectAsState().value
+    val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        onResult = { uris ->
+            viewModel.onImageUrisChanged(uris.map { it.toString() }.toMutableList())
+        }
+    )
     Column(
         modifier = modifier,
     ) {
-        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { onBackClicked() }) {
+        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { viewModel.onNavigateToBackScreen() }) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -112,8 +119,8 @@ fun BusinessAuthScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             LinedTextField(
-                value = name,
-                onValueChange = { name = it },
+                value = state.name,
+                onValueChange = { viewModel.onNameChanged(it) },
                 label = stringResource(id = R.string.master_name)
             )
 
@@ -122,13 +129,13 @@ fun BusinessAuthScreen(
             ) {
                 LinedTextField(
                     modifier = Modifier.width(197.dp),
-                    value = storeName,
-                    onValueChange = { storeName = it },
+                    value = state.storeName,
+                    onValueChange = { viewModel.onStoreNameChanged(it) },
                     label = stringResource(id = R.string.enter_store_name)
                 )
                 Button(
                     modifier = Modifier,
-                    onClick = { onSearchClicked() },
+                    onClick = { viewModel.onNavigateToSearchStore() },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
@@ -139,16 +146,15 @@ fun BusinessAuthScreen(
                 }
             }
             LinedTextField(
-                value = storeNumber,
-                onValueChange = { storeNumber = it },
+                value = state.storeNumber,
+                onValueChange = { viewModel.onStoreNumberChanged(it) },
                 label = stringResource(id = R.string.business_registration_number)
             )
             LinedTextField(
-                value = phoneNumber,
-                onValueChange = { phoneNumber = it },
+                value = state.phoneNumber,
+                onValueChange = { viewModel.onPhoneNumberChanged(it) },
                 label = stringResource(id = R.string.personal_contact)
             )
-
 
             Box(
                 modifier = Modifier
@@ -156,14 +162,14 @@ fun BusinessAuthScreen(
                     .height(125.dp),
             ) {
 
-                if (itemList.isNotEmpty()) UploadFileList(modifier, itemList)
+                if (state.selectedImageUris.isNotEmpty()) UploadFileList(modifier, state.selectedImageUris)
                 else
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .height(125.dp)
                             .border(BorderStroke(1.dp, ColorHelper))
-                            .clickable { },
+                            .clickable { viewModel.onDialogVisibilityChanged(true) },
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -199,7 +205,7 @@ fun BusinessAuthScreen(
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),
-                onClick = { onNextClicked() }) {
+                onClick = { viewModel.onNavigateToNextScreen() }) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
@@ -207,17 +213,34 @@ fun BusinessAuthScreen(
                 )
 
                 BusinessAlertDialog(
-                    onDismissRequest = { openAlertDialog.value = false },
+                    onDismissRequest = { viewModel.onDialogVisibilityChanged(false)},
                     onConfirmation = {
-                        openAlertDialog.value = false
+                        multiplePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
+                        )
+                        viewModel.onDialogVisibilityChanged(false)
                     },
                     dialogTitle = stringResource(id = R.string.file_upload),
                     dialogText = stringResource(id = R.string.file_upload_requirements),
-                    positiveButtonText = stringResource(id = R.string.select_file)
+                    positiveButtonText = stringResource(id = R.string.select_file),
+                    visibility = state.dialogVisibility
                 )
-
             }
-
+        }
+        viewModel.collectSideEffect {
+            when (it) {
+                BusinessAuthSideEffect.NavigateToSearchStore -> {
+                    onSearchClicked()
+                }
+                BusinessAuthSideEffect.NavigateToBackScreen -> {
+                    onBackClicked()
+                }
+                BusinessAuthSideEffect.NavigateToNextScreen -> {
+                    onNextClicked()
+                }
+            }
 
         }
     }
