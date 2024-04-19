@@ -124,7 +124,7 @@
                                 android:layout_height="wrap_content">
 
                                 <TextView
-                                    android:id="@+id/text_view_dining_time"
+                                    android:id="@+id/text_view_dining_today_or_tomorrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="20dp"
@@ -134,7 +134,7 @@
                                     android:textStyle="bold"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    tools:text="아침" />
+                                    tools:text="오늘" />
 
                                 <TextView
                                     android:id="@+id/text_view_dining_title"
@@ -145,221 +145,30 @@
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
-                                    app:layout_constraintStart_toEndOf="@id/text_view_dining_time"
-                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_time" />
+                                    app:layout_constraintStart_toEndOf="@id/text_view_dining_today_or_tomorrow"
+                                    app:layout_constraintTop_toTopOf="@id/text_view_dining_today_or_tomorrow" />
 
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
-                            <com.google.android.material.card.MaterialCardView
-                                android:id="@+id/dining_container"
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tab_dining"
+                                android:layout_marginTop="16dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
-                                android:elevation="@dimen/normal_card_elevation"
-                                app:cardCornerRadius="0dp">
+                                android:layout_marginHorizontal="24dp"
+                                app:tabMode="scrollable" />
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent">
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="#E1E1E1" />
 
-                                    <androidx.recyclerview.widget.RecyclerView
-                                        android:id="@+id/recycler_view_dining_type"
-                                        android:layout_width="0dp"
-                                        android:layout_height="52dp"
-                                        android:paddingStart="16dp"
-                                        android:paddingEnd="48dp"
-                                        app:layout_constraintEnd_toStartOf="@id/text_view_dining_status"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent" />
+                            <androidx.viewpager2.widget.ViewPager2
+                                android:id="@+id/pager_dining_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
 
-                                    <TextView
-                                        android:id="@+id/text_view_dining_status"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="17dp"
-                                        android:layout_marginEnd="16dp"
-                                        android:includeFontPadding="false"
-                                        android:paddingHorizontal="8dp"
-                                        android:paddingVertical="4dp"
-                                        android:textSize="12sp"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        tools:background="@drawable/dining_soldout_fill_radius_4"
-                                        tools:text="@string/dining_soldout"
-                                        tools:textColor="@color/dining_soldout_text" />
-
-                                    <TableLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="33dp"
-                                        android:layout_marginTop="64dp"
-                                        android:layout_marginEnd="33dp"
-                                        android:layout_marginBottom="25dp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent">
-
-                                        <TableRow android:paddingBottom="4dp">
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_0"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴1" />
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_1"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴2" />
-
-                                        </TableRow>
-
-                                        <TableRow android:paddingBottom="4dp">
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_2"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴3" />
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_3"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴4" />
-
-                                        </TableRow>
-
-                                        <TableRow android:paddingBottom="4dp">
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_4"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴5" />
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_5"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴6" />
-
-                                        </TableRow>
-
-                                        <TableRow android:paddingBottom="4dp">
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_6"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴7" />
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_7"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴8" />
-
-                                        </TableRow>
-
-                                        <TableRow
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:paddingBottom="4dp">
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_8"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginEnd="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="메뉴9" />
-
-                                            <TextView
-                                                android:id="@+id/text_view_card_dining_menu_9"
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="8dp"
-                                                android:layout_weight="1"
-                                                android:ellipsize="end"
-                                                android:maxLines="1"
-                                                android:textColor="@color/black"
-                                                android:textSize="12sp"
-                                                tools:text="까르보나라민트초코파맛첵스파게티" />
-
-                                        </TableRow>
-
-                                    </TableLayout>
-
-                                    <include
-                                        android:id="@+id/view_empty_dining"
-                                        layout="@layout/dining_view_empty"
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toBottomOf="@+id/recycler_view_dining_type"
-                                        tools:visibility="invisible" />
-
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </androidx.core.widget.NestedScrollView>
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

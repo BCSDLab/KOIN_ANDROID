@@ -61,5 +61,6 @@
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>
     <string name="dining_dinner">저녁</string>
-    <string name="dining_next_breakfast">내일 아침</string>
+    <string name="dining_today">오늘</string>
+    <string name="dining_tomorrow">내일</string>
 </resources>
