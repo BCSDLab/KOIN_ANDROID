@@ -12,7 +12,7 @@ sealed class User {
         val major: String?
     ): User()
 
-    object Anonymous: User()
+    data object Anonymous: User()
 
     val isAnonymous get() = this is Anonymous
     val isStudent get() = this is Student
