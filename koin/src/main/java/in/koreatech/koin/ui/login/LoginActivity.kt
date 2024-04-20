@@ -2,13 +2,16 @@ package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
@@ -21,11 +24,14 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginActivity : ActivityBase(R.layout.activity_login) {
     private val binding by dataBinding<ActivityLoginBinding>()
+    override val screenTitle = "로그인"
 
     private val loginViewModel by viewModels<LoginViewModel>()
 
@@ -40,12 +46,16 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         withLoading(this@LoginActivity, this)
 
         lifecycleScope.launch {
-            loginState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                when (it) {
-                    LoginState.Init -> Unit
-                    LoginState.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    is LoginState.Failed -> {
-                        SnackbarUtil.makeShortSnackbar(binding.root, it.message)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginState.collect {
+                    when (it.status) {
+                        is UiStatus.Init -> Unit
+                        is UiStatus.Loading -> Unit
+                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        is UiStatus.Failed -> {
+                            SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
+                            loginViewModel.onFailedLogin()
+                        }
                     }
                 }
             }

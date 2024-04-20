@@ -45,6 +45,9 @@ composeCompilerVersion = "1.5.10"
 glideVersion = "4.9.0"
 butterknifeVersion = "10.1.0"
 googleServiceVersion = "4.3.14"
+composeNavigationVersion = "2.7.7"
+orbitVersion="7.0.1"
+hiltComposeVersion="1.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -63,10 +66,12 @@ compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeB
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material2 = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion"}
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
 android-gradle-crashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseGradleVersion" }
@@ -83,6 +88,7 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
 firebase-messsaing = { module = "com.google.firebase:firebase-messaging"}
@@ -115,6 +121,12 @@ glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = 
 butterknife = { module = "com.jakewharton:butterknife", version.ref = "butterknifeVersion" }
 butterknife-compiler = { module = "com.jakewharton:butterknife-compiler", version.ref = "butterknifeVersion" }
 
+orbit-core = {module= "org.orbit-mvi:orbit-core", version.ref = "orbitVersion"}
+orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbitVersion"}
+orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
+
+hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
@@ -125,7 +137,11 @@ google-service = { id = "com.google.gms.google-services", version.ref = "googleS
 
 koin-application = { id = "in.koreatech.plugin.application", version = "unspecified" }
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
+koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
+koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 
 [bundles]
-compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material3", "activity-compose"]
+compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
+hilt = ["hilt-compose", "hilt-android"]
+orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

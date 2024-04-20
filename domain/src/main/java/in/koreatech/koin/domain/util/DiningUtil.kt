@@ -4,22 +4,28 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.DiningType
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
-import javax.naming.Context
 
 object DiningUtil {
-    private val diningEndTime = listOf("09:00", "13:30", "18:30")
+    private val diningEndTime = listOf("09:00", "13:30", "18:30", "23:59")
 
     fun typeFiltering(diningList: List<Dining>, type: DiningType): List<Dining> =
         diningList.typeFilter(type).arrange()
 
-    fun getCurrentType() = if (TimeUtil.compareWithCurrentTime(diningEndTime[0]) >= 0) {
-        DiningType.Breakfast
-    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[1]) >= 0) {
-        DiningType.Lunch
-    } else if (TimeUtil.compareWithCurrentTime(diningEndTime[2]) >= 0) {
-        DiningType.Dinner
-    } else {
-        DiningType.Breakfast
+    fun getCurrentType(): DiningType {
+        var currentType = DiningType.Breakfast
+        diningEndTime.forEachIndexed { index, time ->
+            if (TimeUtil.compareWithCurrentTime(time) >= 0) {
+                currentType = when (index) {
+                    0 -> DiningType.Breakfast
+                    1 -> DiningType.Lunch
+                    2 -> DiningType.Dinner
+                    3 -> DiningType.NextBreakfast
+                    else -> DiningType.Breakfast
+                }
+                return currentType
+            }
+        }
+        return currentType
     }
 
     fun isNextDay() = TimeUtil.compareWithCurrentTime(diningEndTime[2]) < 0

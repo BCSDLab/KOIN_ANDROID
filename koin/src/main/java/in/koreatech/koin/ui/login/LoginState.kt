@@ -1,9 +1,7 @@
 package `in`.koreatech.koin.ui.login
 
-sealed class LoginState {
-    object Init : LoginState()
-    object Success : LoginState()
-    data class Failed(
-        val message: String = "",
-    ) : LoginState()
-}
+import `in`.koreatech.koin.common.UiStatus
+
+data class LoginState(
+    val status: UiStatus = UiStatus.Init,
+)
