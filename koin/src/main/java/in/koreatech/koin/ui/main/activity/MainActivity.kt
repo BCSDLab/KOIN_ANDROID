@@ -1,18 +1,13 @@
 package `in`.koreatech.koin.ui.main.activity
 
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
@@ -55,9 +50,10 @@ class MainActivity : KoinNavigationDrawerActivity() {
         })
     }
 
-    private val requestNotificationPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-        // handle POST_NOTIFICATION permission
-    }
+    private val requestNotificationPermissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            // handle POST_NOTIFICATION permission
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +61,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         initView()
         initViewModel()
-        getToken()
     }
 
     override fun onResume() {
@@ -136,26 +131,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
-        }
-    }
-
-    private fun getToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {}
-            val token = task.result
-            Log.e("device_token", "token : $token")
-        }
-    }
-
-    private fun checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-                getToken()
-            } else {
-                requestNotificationPermissionResult.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-            }
-        } else {
-            getToken()
         }
     }
 
