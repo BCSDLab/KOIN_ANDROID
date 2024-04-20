@@ -31,6 +31,7 @@ class SignupActivity : DataBindingActivity<ActivitySignupBinding>() {
     override val layoutId: Int
         get() = R.layout.activity_signup
 
+    override val screenTitle = "회원가입"
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil(SIGN_UP_ACTIVITY)
     }
