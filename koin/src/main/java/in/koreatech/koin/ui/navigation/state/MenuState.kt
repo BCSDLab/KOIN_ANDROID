@@ -9,4 +9,5 @@ sealed class MenuState {
     data object Land: MenuState()
     data object Owner: MenuState()
     data object UserInfo: MenuState()
+    data object Notification: MenuState()
 }
