@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.main.activity
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,11 +48,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
             }
         })
     }
-
-    private val requestNotificationPermissionResult =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            // handle POST_NOTIFICATION permission
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
