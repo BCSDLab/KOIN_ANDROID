@@ -37,6 +37,10 @@
         tools:replace="android:name">
 
         <activity
+            android:name=".ui.notification.NotificationActivity"
+            android:exported="false"
+            android:theme="@style/KAPTheme.NoActionBar"/>
+        <activity
             android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
             android:exported="false"/>
         <activity
