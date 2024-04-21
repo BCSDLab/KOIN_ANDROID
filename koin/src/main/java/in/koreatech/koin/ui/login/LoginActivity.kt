@@ -2,14 +2,11 @@ package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
@@ -25,8 +22,6 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -52,10 +47,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     when (it.status) {
                         is UiStatus.Init -> Unit
                         is UiStatus.Loading -> Unit
-                        is UiStatus.Success -> {
-                            getToken()
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        }
+                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         is UiStatus.Failed -> {
                             SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
                             loginViewModel.onFailedLogin()
@@ -63,14 +55,6 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     }
                 }
             }
-        }
-    }
-
-    private fun getToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {}
-            val token = task.result
-            Log.e("device_token", "token : $token")
         }
     }
 
