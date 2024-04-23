@@ -1,5 +1,7 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,16 +27,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -44,12 +43,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
-import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorMinor
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
+import `in`.koreatech.koin.domain.model.store.AttachStore
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -61,17 +61,56 @@ fun BusinessAuthScreen(
     onSearchClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
+    val context = LocalContext.current
+
     val state = viewModel.collectAsState().value
+    var fileName = ""
+    var fileSize = 0L
+
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
-        onResult = { uris ->
-            viewModel.onImageUrisChanged(uris.map { it.toString() }.toMutableList())
+        onResult = { uriList ->
+            state.inputStream.clear()
+            state.fileInfo.clear()
+            uriList.forEach {
+                state.selectedImages.add(AttachStore(it.toString(), it.lastPathSegment ?: ""))
+                val inputStream = context.contentResolver.openInputStream(it)
+                viewModel.onImageUrlsChanged(state.selectedImages)
+
+                if (it.scheme.equals("content")) {
+                    val cursor = context.contentResolver.query(it, null, null, null, null)
+                    cursor.use {
+                        if (cursor != null && cursor.moveToFirst()) {
+                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+
+                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                fileName = cursor.getString(fileNameIndex)
+                                fileSize = cursor.getLong(fileSizeIndex)
+                            }
+                        }
+                    }
+                }
+
+                if (inputStream != null) {
+                    viewModel.presignedUrl(
+                        uri = it,
+                        fileName = it.lastPathSegment ?: "",
+                        fileSize = fileSize,
+                        fileType = "image/" + fileName.split(".")[1],
+                        fileStream = inputStream
+                    )
+
+                }
+            }
         }
     )
     Column(
         modifier = modifier,
     ) {
-        IconButton(modifier = Modifier.padding(vertical = 24.dp), onClick = { viewModel.onNavigateToBackScreen() }) {
+        IconButton(
+            modifier = Modifier.padding(vertical = 24.dp),
+            onClick = { viewModel.onNavigateToBackScreen() }) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -162,7 +201,10 @@ fun BusinessAuthScreen(
                     .height(125.dp),
             ) {
 
-                if (state.selectedImageUris.isNotEmpty()) UploadFileList(modifier, state.selectedImageUris)
+                if (state.selectedImages.isNotEmpty()) UploadFileList(
+                    modifier,
+                    state.selectedImages
+                )
                 else
                     Column(
                         modifier = Modifier
@@ -205,7 +247,18 @@ fun BusinessAuthScreen(
                     contentColor = Color.White,
                     disabledContentColor = Color.White,
                 ),
-                onClick = { viewModel.onNavigateToNextScreen() }) {
+
+                onClick = {
+                    state.fileInfo.forEach {
+                        viewModel.uploadImage(
+                            it.preSignedUrl,
+                            state.inputStream[state.fileInfo.indexOf(it)],
+                            it.mediaType,
+                            it.fileSize,
+                        )
+                    }
+                    viewModel.onNavigateToNextScreen()
+                }) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 15.sp,
@@ -247,7 +300,7 @@ fun BusinessAuthScreen(
 }
 
 @Composable
-fun UploadFileList(modifier: Modifier, item: MutableList<String>) {
+fun UploadFileList(modifier: Modifier, item: MutableList<AttachStore>) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -269,9 +322,10 @@ fun UploadFileList(modifier: Modifier, item: MutableList<String>) {
                     contentDescription = stringResource(id = R.string.file_icon),
                     tint = ColorMinor,
                 )
-                Text(text = "", fontSize = 15.sp, color = ColorMinor)
+                Text(text = item[it].title, fontSize = 15.sp, color = ColorMinor)
             }
             Spacer(modifier = Modifier.width(12.dp))
         }
     }
 }
+
