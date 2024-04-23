@@ -7,7 +7,7 @@ import java.io.InputStream
 data class BusinessAuthState(
     val name: String = "",
     val storeName: String = "",
-    val storeNumber: String = "",
+    val shopNumber: String = "",
     val phoneNumber: String = "",
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
