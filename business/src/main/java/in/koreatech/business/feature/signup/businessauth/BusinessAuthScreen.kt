@@ -169,7 +169,7 @@ fun BusinessAuthScreen(
                 LinedTextField(
                     modifier = Modifier.width(197.dp),
                     value = state.storeName,
-                    onValueChange = { viewModel.onStoreNameChanged(it) },
+                    onValueChange = { viewModel.onShopNameChanged(it) },
                     label = stringResource(id = R.string.enter_store_name)
                 )
                 Button(
@@ -185,7 +185,7 @@ fun BusinessAuthScreen(
                 }
             }
             LinedTextField(
-                value = state.storeNumber,
+                value = state.shopNumber,
                 onValueChange = { viewModel.onStoreNumberChanged(it) },
                 label = stringResource(id = R.string.business_registration_number)
             )
