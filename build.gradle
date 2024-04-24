@@ -13,7 +13,7 @@ buildscript {
         minSdkVersion = 21
         targetSdkVersion = 34
         versionName = "3.3.1"
-        minVersionCode = 30310
+        minVersionCode = 30301
     }
 
     dependencies {
