@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +55,11 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
             with(binding) {
                 val context = root.context
                 textViewDiningCorner.text = dining.place
+                when(dining.place) {
+                    "능수관", "2캠퍼스" -> cardViewDining.visibility = View.GONE
+                    else -> cardViewDining.visibility = View.VISIBLE
+                }
+
                 textViewKcal.text =
                     context.getString(R.string.dining_kcal, dining.kcal)
                 textViewCashPrice.text =
