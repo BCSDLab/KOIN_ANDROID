@@ -26,8 +26,8 @@ class EmailAuthViewModel @Inject constructor(
         }
     }
 
-    private fun onNextButtonClicked() = intent {
-        postSideEffect(EmailAuthSideEffect.NavigateToNextScreen)
+    private fun onNextButtonClicked(email: String, password: String) = intent {
+        postSideEffect(EmailAuthSideEffect.NavigateToNextScreen(email, password))
     }
 
     fun onBackButtonClicked() = intent {
@@ -40,13 +40,13 @@ class EmailAuthViewModel @Inject constructor(
         }
     }
 
-    fun verifyEmail(email: String, verificationCode: String) {
+    fun verifyEmail(email: String, password: String, verificationCode: String) {
         intent { reduce { state.copy(isLoading = true) } }
         viewModelScope.launch(Dispatchers.IO) {
 
             emailAuthUseCase(email, verificationCode)
                 .onSuccess {
-                    onNextButtonClicked()
+                    onNextButtonClicked(email, password)
                     intent {
                         reduce { state.copy(signupContinuationState = it) }
                         reduce { state.copy(signUpContinuationError = null) }

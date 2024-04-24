@@ -44,10 +44,11 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun EmailAuthScreen(
     modifier: Modifier = Modifier,
     email: String,
+    password: String,
     verifyViewModel: EmailAuthViewModel = hiltViewModel(),
     sendEmailViewModel: AccountSetupViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: () -> Unit = {},
+    onNextClicked: (String, String) -> Unit = { _, _ -> },
 ) {
     val state = verifyViewModel.collectAsState().value
 
@@ -184,7 +185,7 @@ fun EmailAuthScreen(
                         disabledContentColor = Color.White,
                     ),
                     onClick = {
-                        verifyViewModel.verifyEmail(email, state.authCode)
+                        verifyViewModel.verifyEmail(email, password, state.authCode)
                     }) {
                     Text(text = stringResource(id = R.string.next))
                 }
@@ -193,7 +194,7 @@ fun EmailAuthScreen(
 
         verifyViewModel.collectSideEffect {
             when (it) {
-                is EmailAuthSideEffect.NavigateToNextScreen -> onNextClicked()
+                is EmailAuthSideEffect.NavigateToNextScreen -> onNextClicked(email, password)
                 EmailAuthSideEffect.NavigateToBackScreen -> onBackClicked()
             }
         }

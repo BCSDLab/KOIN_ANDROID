@@ -21,7 +21,7 @@ fun SignupNavigator(modifier: Modifier) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = SignupRoute.EMAIL_AUTH.name,
+        startDestination = SignupRoute.BASIC_INFO_INPUT.name,
         modifier = Modifier.padding(16.dp)
     ) {
 
@@ -30,34 +30,54 @@ fun SignupNavigator(modifier: Modifier) {
         ) {
             AccountSetupScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$it")
+                onNextClicked = { email, password ->
+                    navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$email/$password")
+
                 },
             )
         }
 
         composable(
-            route = "${SignupRoute.EMAIL_AUTH.name}/{email}",
+            route = "${SignupRoute.EMAIL_AUTH.name}/{email}/{password}",
             arguments = listOf(
                 navArgument("email") {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("password") {
                     type = NavType.StringType
                     nullable = true
                 }
             )
         ) {
             val email = it.arguments?.getString("email") ?: ""
+            val password = it.arguments?.getString("password") ?: ""
             EmailAuthScreen(
                 email = email,
+                password = password,
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = {
-                    navController.navigate(SignupRoute.BUSINESS_AUTH.name)
+                onNextClicked = { email, password->
+                    navController.navigate("${SignupRoute.BUSINESS_AUTH.name}/$email/$password")
                 },
             )
         }
 
         composable(
-            route = SignupRoute.BUSINESS_AUTH.name,
+            route = "${SignupRoute.BUSINESS_AUTH.name}/{email}/{password}",
+            arguments = listOf(
+                navArgument("email") {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("password") {
+                    type = NavType.StringType
+                    nullable = true
+                }
+            )
         ) {
             BusinessAuthScreen(
+                email= it.arguments?.getString("email") ?: "",
+                password= it.arguments?.getString("password") ?: "",
                 onBackClicked = { navController.popBackStack() },
                 onSearchClicked = {
                     navController.navigate(SignupRoute.STORE_SETUP.name)
