@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -57,6 +56,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun BusinessAuthScreen(
     modifier: Modifier = Modifier,
     viewModel: BusinessAuthViewModel = hiltViewModel(),
+    email: String,
+    password: String,
     onBackClicked: () -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
@@ -257,6 +258,16 @@ fun BusinessAuthScreen(
                             it.fileSize,
                         )
                     }
+                    viewModel.sendRegisterRequest(
+                        state.fileUrl,
+                        state.shopNumber,
+                        email,
+                        state.name,
+                        password,
+                        state.phoneNumber,
+                        state.shopId,
+                        state.storeName,
+                    )
                     viewModel.onNavigateToNextScreen()
                 }) {
                 Text(
@@ -266,7 +277,7 @@ fun BusinessAuthScreen(
                 )
 
                 BusinessAlertDialog(
-                    onDismissRequest = { viewModel.onDialogVisibilityChanged(false)},
+                    onDismissRequest = { viewModel.onDialogVisibilityChanged(false) },
                     onConfirmation = {
                         multiplePhotoPickerLauncher.launch(
                             PickVisualMediaRequest(
@@ -287,9 +298,11 @@ fun BusinessAuthScreen(
                 BusinessAuthSideEffect.NavigateToSearchStore -> {
                     onSearchClicked()
                 }
+
                 BusinessAuthSideEffect.NavigateToBackScreen -> {
                     onBackClicked()
                 }
+
                 BusinessAuthSideEffect.NavigateToNextScreen -> {
                     onNextClicked()
                 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
@@ -40,6 +41,11 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
+    fun onShopIdChanged(shopId: Int) = intent {
+        reduce {
+            state.copy(shopId = shopId)
+        }
+    }
     fun onStoreNumberChanged(storeNumber: String) = intent {
         reduce {
             state.copy(shopNumber = storeNumber)
@@ -91,7 +97,16 @@ class BusinessAuthViewModel @Inject constructor(
                     reduce {
                         state.copy(
                             fileInfo = state.fileInfo.toMutableList().apply {
-                                add(StoreUrl(uri.toString(), it.first, fileName, fileType, it.second, fileSize))
+                                add(
+                                    StoreUrl(
+                                        uri.toString(),
+                                        it.first,
+                                        fileName,
+                                        fileType,
+                                        it.second,
+                                        fileSize
+                                    )
+                                )
                             }
                         )
                     }
@@ -124,11 +139,40 @@ class BusinessAuthViewModel @Inject constructor(
                 intent {
                     reduce { state.copy(error = null) }
                 }
+                intent { reduce { state.copy(fileUrl = state.fileUrl.toMutableList().apply{
+                    add(url)
+                }) } }
             }.onFailure {
                 intent {
                     reduce { state.copy(error = it) }
                 }
             }
+        }
+    }
+
+    fun sendRegisterRequest(//등록 요청
+        fileUrls: List<String>,
+        companyNumber: String,
+        email: String,
+        name: String,
+        password: String,
+        phoneNumber: String,
+        shopId: Int,
+        shopName: String
+    ) {
+        viewModelScope.launch {
+            ownerRegisterUseCase(
+                fileUrls.strToOwnerRegisterUrl(), companyNumber, email, name, password, phoneNumber, shopId, shopName
+            ).onSuccess {
+                intent {
+                    reduce { state.copy(continuation = true) }
+                }
+            }.onFailure {
+                intent {
+                    reduce { state.copy(error = it) }
+                }
+            }
+
         }
     }
 }
