@@ -47,6 +47,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
+            logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                "store_${it.name}_click",
+                it.name)
         }
     }
 
