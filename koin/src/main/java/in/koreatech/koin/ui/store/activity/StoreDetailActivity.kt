@@ -85,6 +85,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment = StoreFlyerDialogFragment()
             flyerDialogFragment?.initialPosition = position
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+            logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                "store_${viewModel.store.value?.name ?: "Unknown"}_picture",
+                viewModel.store.value?.name ?: "Unknown")
         }
     }
 
