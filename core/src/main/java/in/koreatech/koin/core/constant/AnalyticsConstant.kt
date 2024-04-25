@@ -23,6 +23,8 @@ object AnalyticsConstant {
         const val HAMBURGER_MY_INFO_WITH_LOGIN = "${HAMBURGER}_my_info_with_login"
         const val HAMBURGER_BUS = "${HAMBURGER}_bus"
         const val USER_ONLY_OK = "user_only_ok"
+        const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
+        const val MAIN_MENU_CORNER = "main_menu_corner"
     }
 
 }

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -8,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.databinding.FragmentDiningContainerBinding
@@ -15,6 +18,7 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
+import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -34,10 +38,12 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
 
     private fun initView() = with(binding) {
         diningContainer.setOnClickListener {
-            if (activity is MainActivity) {
-                val mainActivity = activity as MainActivity
-                mainActivity.callDrawerItem(R.id.navi_item_dining)
-            }
+            startActivity(Intent(requireContext(), DiningActivity::class.java))
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
+                requireContext().getString(R.string.navigation_item_dining)
+            )
         }
     }
 
