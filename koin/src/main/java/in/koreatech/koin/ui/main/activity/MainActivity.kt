@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
@@ -44,7 +45,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setRecyclerViewClickListener(object : RecyclerViewClickListener {
             override fun onClick(view: View?, position: Int) {
                 gotoStoreActivity(position)
-                logClickEvent(
+                EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.BUSINESS,
                     AnalyticsConstant.Label.MAIN_STORE_CATEGORIES,
                     view?.findViewById<TextView>(R.id.text_view_store_category)?.text.toString()
