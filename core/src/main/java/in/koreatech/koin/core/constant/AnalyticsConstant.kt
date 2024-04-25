@@ -26,6 +26,8 @@ object AnalyticsConstant {
         const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
         const val MAIN_MENU_CORNER = "main_menu_corner"
         const val MENU_TIME = "menu_time"
+        const val MAIN_BUS = "main_bus"
+        const val MAIN_BUS_CHANGETOFROM = "main_bus_changeToFrom"
     }
 
 }

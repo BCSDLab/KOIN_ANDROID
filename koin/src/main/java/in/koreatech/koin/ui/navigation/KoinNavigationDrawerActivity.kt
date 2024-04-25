@@ -212,7 +212,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Bus -> {
                     action = AnalyticsConstant.Domain.CAMPUS
                     label = AnalyticsConstant.Label.HAMBURGER_BUS
-                    value = getString(R.string.navigation_item_bus)
+                    value = getString(R.string.bus)
                     goToBusActivity()
                 }
                 MenuState.Dining -> {

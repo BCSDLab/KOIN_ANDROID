@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -16,9 +17,11 @@ import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
+import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -36,8 +39,22 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
 
     private val busPagerAdapter = BusPagerAdapter().apply {
-        setOnCardClickListener { callDrawerItem(R.id.navi_item_bus, Bundle()) }
-        setOnSwitchClickListener { viewModel.switchBusNode() }
+        setOnCardClickListener {
+            startActivity(Intent(this@MainActivity, BusActivity::class.java))
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.MAIN_BUS,
+                getString(R.string.bus)
+            )
+        }
+        setOnSwitchClickListener {
+            viewModel.switchBusNode()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
+                it.localized(this@MainActivity)
+            )
+        }
     }
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
