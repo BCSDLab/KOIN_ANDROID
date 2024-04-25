@@ -14,7 +14,6 @@ data class BusinessAuthState(
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
     val dialogVisibility:Boolean = false,
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
-    val fileUrl: MutableList<String> = mutableListOf(),
     val inputStream: MutableList<InputStream> = mutableListOf(),
     val continuation: Boolean = false,
     val error: Throwable? = null,

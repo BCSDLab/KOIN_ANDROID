@@ -74,7 +74,6 @@ fun BusinessAuthScreen(
             state.inputStream.clear()
             state.fileInfo.clear()
             uriList.forEach {
-                state.selectedImages.add(AttachStore(it.toString(), it.lastPathSegment ?: ""))
                 val inputStream = context.contentResolver.openInputStream(it)
                 viewModel.onImageUrlsChanged(state.selectedImages)
 
@@ -92,11 +91,11 @@ fun BusinessAuthScreen(
                         }
                     }
                 }
-
+                state.selectedImages.add(AttachStore(it.toString(), fileName))
                 if (inputStream != null) {
                     viewModel.presignedUrl(
                         uri = it,
-                        fileName = it.lastPathSegment ?: "",
+                        fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
                         fileStream = inputStream
@@ -268,7 +267,7 @@ fun BusinessAuthScreen(
                         state.shopId,
                         state.storeName,
                     )
-                    viewModel.onNavigateToNextScreen()
+
                 }) {
                 Text(
                     text = stringResource(id = R.string.next),
