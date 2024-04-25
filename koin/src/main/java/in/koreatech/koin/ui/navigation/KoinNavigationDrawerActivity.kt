@@ -19,6 +19,8 @@ import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
@@ -203,12 +205,31 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
 
         observeLiveData(menuEvent) { menuState ->
+            var action = ""
+            var label = ""
+            var value = ""
             when (menuState) {
-                MenuState.Bus -> goToBusActivity()
-                MenuState.Dining -> goToDiningActivity()
+                MenuState.Bus -> {
+                    action = AnalyticsConstant.Domain.CAMPUS
+                    label = AnalyticsConstant.Label.HAMBURGER_BUS
+                    value = getString(R.string.navigation_item_bus)
+                    goToBusActivity()
+                }
+                MenuState.Dining -> {
+                    action = AnalyticsConstant.Domain.CAMPUS
+                    label = AnalyticsConstant.Label.HAMBURGER_DINING
+                    value = getString(R.string.navigation_item_dining)
+                    goToDiningActivity()
+                }
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
-                MenuState.Store -> goToStoreActivity()
+                MenuState.Store -> {
+                    action = AnalyticsConstant.Domain.BUSINESS
+                    label = AnalyticsConstant.Label.HAMBURGER_STORE
+                    value = getString(R.string.nearby_stores)
+                    goToStoreActivity()
+                }
+
                 MenuState.Timetable -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
                         goToAnonymousTimeTableActivity()
@@ -218,15 +239,19 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.UserInfo -> {
+                    action = AnalyticsConstant.Domain.USER
+                    value = getString(R.string.navigation_drawer_right_myinfo)
                     if (userState.value == null || userState.value?.isAnonymous == true) {
+                        label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN
                         showLoginRequestDialog()
                     } else {
+                        label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN
                         goToUserInfoActivity()
                     }
                 }
-
                 else -> Unit
             }
+            EventLogger.logClickEvent(action, label, value)
             drawerLayout.closeDrawer()
         }
     }
@@ -379,6 +404,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.USER_ONLY_OK,
+                    getString(R.string.user_only_ok)
+                )
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->

@@ -74,6 +74,11 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.HAMBURGER,
+                getString(R.string.hamburger)
+            )
         }
 
         busViewPager.apply {

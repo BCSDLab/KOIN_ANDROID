@@ -381,4 +381,6 @@
     <string name="beauty_salon">미용실</string>
     <string name="etc">기타</string>
     <string name="unselect_see_all">미지정(전체보기)</string>
+    <string name="nearby_stores">주변상점</string>
+    <string name="user_only_ok">회원전용 확인</string>
 </resources>
