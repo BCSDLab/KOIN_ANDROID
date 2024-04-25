@@ -120,6 +120,10 @@ class MainActivity : KoinNavigationDrawerActivity() {
         tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setSelectedPosition(tab.position)
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_MENU_CORNER,
+                    tab.text.toString())
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
