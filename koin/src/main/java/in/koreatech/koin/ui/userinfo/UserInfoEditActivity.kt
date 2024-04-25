@@ -87,17 +87,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                             userinfoeditedTextviewId.text = user.email
                             userinfoeditedTextviewAnonymousNickName.text = user.anonymousNickname
 
-                            userinfoeditedEdittextName.apply {
-                                setText(user.name)
-
-                                if (user.name.isNullOrEmpty()) {
-                                    isEnabled = true
-                                    setDefaultBackground()
-                                } else {
-                                    isEnabled = false
-                                    setTransparentBackground()
-                                }
-                            }
+                            userinfoeditedEdittextName.setText(user.name)
 
                             userinfoeditedEdittextNickName.setText(user.nickname)
 
