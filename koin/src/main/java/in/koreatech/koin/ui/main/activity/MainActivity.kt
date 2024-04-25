@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.main.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
@@ -42,6 +44,11 @@ class MainActivity : KoinNavigationDrawerActivity() {
         setRecyclerViewClickListener(object : RecyclerViewClickListener {
             override fun onClick(view: View?, position: Int) {
                 gotoStoreActivity(position)
+                logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.MAIN_STORE_CATEGORIES,
+                    view?.findViewById<TextView>(R.id.text_view_store_category)?.text.toString()
+                )
             }
 
             override fun onLongClick(view: View?, position: Int) {
