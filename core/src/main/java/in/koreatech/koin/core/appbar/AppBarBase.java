@@ -17,6 +17,8 @@ import android.util.AttributeSet;
 
 
 import in.koreatech.koin.core.R;
+import in.koreatech.koin.core.analytics.EventLogger;
+import in.koreatech.koin.core.constant.AnalyticsConstant;
 
 
 public class AppBarBase extends AppBarLayout {
@@ -50,7 +52,14 @@ public class AppBarBase extends AppBarLayout {
         this.onClickListener = onClickListener;
         background.setOnClickListener(onClickListener);
         leftButton.setOnClickListener(onClickListener);
-        rightButton.setOnClickListener(onClickListener);
+        rightButton.setOnClickListener(v -> {
+            onClickListener.onClick(v);
+            EventLogger.INSTANCE.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.HAMBURGER,
+                    getContext().getString(R.string.hamburger)
+            );
+        });
         title.setOnClickListener(onClickListener);
     }
 
