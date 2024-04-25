@@ -139,9 +139,6 @@ class BusinessAuthViewModel @Inject constructor(
                 intent {
                     reduce { state.copy(error = null) }
                 }
-                intent { reduce { state.copy(fileUrl = state.fileUrl.toMutableList().apply{
-                    add(url)
-                }) } }
             }.onFailure {
                 intent {
                     reduce { state.copy(error = it) }
@@ -164,6 +161,7 @@ class BusinessAuthViewModel @Inject constructor(
             ownerRegisterUseCase(
                 fileUrls.strToOwnerRegisterUrl(), companyNumber, email, name, password, phoneNumber, shopId, shopName
             ).onSuccess {
+                onNavigateToNextScreen()
                 intent {
                     reduce { state.copy(continuation = true) }
                 }
