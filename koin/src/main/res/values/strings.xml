@@ -371,4 +371,14 @@
     <string name="sold_out">품절</string>
     <string name="changed">변경됨</string>
     <string name="price">%1$s원</string>
+    <string name="chicken">치킨</string>
+    <string name="pizza">피자</string>
+    <string name="dorisak">도시락</string>
+    <string name="pork_feet">족발</string>
+    <string name="chinese">중국집</string>
+    <string name="normal_food">일반음식</string>
+    <string name="cafe">카페</string>
+    <string name="beauty_salon">미용실</string>
+    <string name="etc">기타</string>
+    <string name="unselect_see_all">미지정(전체보기)</string>
 </resources>

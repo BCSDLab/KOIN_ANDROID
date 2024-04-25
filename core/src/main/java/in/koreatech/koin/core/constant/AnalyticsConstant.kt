@@ -15,6 +15,7 @@ object AnalyticsConstant {
 
     object Label {
         const val MAIN_STORE_CATEGORIES = "main_store_categories"
+        const val STORE_CATEGORIES = "store_categories"
     }
 
 }

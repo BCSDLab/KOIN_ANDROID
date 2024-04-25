@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
@@ -197,6 +198,26 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private fun View.setCategoryOnClick(category: StoreCategory) {
         setOnClickListener {
+            var eventValue = when(category) {
+                StoreCategory.Chicken -> getString(R.string.chicken)
+                StoreCategory.Pizza -> getString(R.string.pizza)
+                StoreCategory.DOSIRAK -> getString(R.string.dorisak)
+                StoreCategory.PorkFeet -> getString(R.string.pork_feet)
+                StoreCategory.Chinese -> getString(R.string.chinese)
+                StoreCategory.NormalFood -> getString(R.string.normal_food)
+                StoreCategory.Cafe -> getString(R.string.cafe)
+                StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
+                StoreCategory.Etc -> getString(R.string.etc)
+                else -> ""
+            }
+            if(viewModel.category.value == category)
+                eventValue = getString(R.string.unselect_see_all)
+
+            logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.STORE_CATEGORIES,
+                eventValue)
+
             binding.searchEditText.clearFocus()
             viewModel.setCategory(category)
         }
