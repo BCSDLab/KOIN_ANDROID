@@ -25,6 +25,7 @@ object AnalyticsConstant {
         const val USER_ONLY_OK = "user_only_ok"
         const val MAIN_MENU_MOVEDETAILVIEW = "main_menu_moveDetailView"
         const val MAIN_MENU_CORNER = "main_menu_corner"
+        const val MENU_TIME = "menu_time"
     }
 
 }
