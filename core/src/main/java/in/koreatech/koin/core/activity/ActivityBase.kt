@@ -10,6 +10,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.progressdialog.CustomProgressDialog
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
@@ -56,39 +57,6 @@ abstract class ActivityBase : AppCompatActivity, IProgressDialog {
         super.onResume()
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW) {
             param(PAGE_TITLE, screenTitle)
-        }
-    }
-
-    /**
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     */
-    protected fun logClickEvent(action: String, label: String, value: String) {
-        logEvent(action, AnalyticsConstant.Category.CLICK, label, value)
-    }
-
-    /**
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     */
-    protected fun logScrollEvent(action: String, label: String, value: String) {
-        logEvent(action, AnalyticsConstant.Category.SCROLL, label, value)
-    }
-
-    /**
-     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
-     * @param category: 이벤트 종류(click, scroll, ...)
-     * @param label: 이벤트 소분류
-     * @param value: 이벤트 값
-     * @sample logEvent("BUSINESS", "click", "main_store_categories", "전체보기")
-     */
-    private fun logEvent(action: String, category: String, label: String, value: String) {
-        Firebase.analytics.logEvent(action) {
-            param("event_category", category)
-            param("event_label", label)
-            param("value", value)
         }
     }
 

@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -47,7 +48,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
-            logClickEvent(
+            EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 "store_${it.name}_click",
                 it.name)
@@ -217,7 +218,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             if(viewModel.category.value == category)
                 eventValue = getString(R.string.unselect_see_all)
 
-            logClickEvent(
+            EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.STORE_CATEGORIES,
                 eventValue)
