@@ -40,4 +40,14 @@ object DiningUtil {
         }
         return null
     }
+
+    fun getKoreanName(type: String): String {
+        return when (type) {
+            DiningType.Breakfast.typeEnglish -> DiningType.Breakfast.typeKorean
+            DiningType.Lunch.typeEnglish -> DiningType.Lunch.typeKorean
+            DiningType.Dinner.typeEnglish -> DiningType.Dinner.typeKorean
+            DiningType.NextBreakfast.typeEnglish -> DiningType.NextBreakfast.typeKorean
+            else -> ""
+        }
+    }
 }
