@@ -153,21 +153,19 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
 
             observeLiveData(nicknameDuplicatedEvent) {
-                ToastUtil.getInstance().makeShort(
-                    when (it) {
-                        NicknameCheckState.POSSIBLE -> {
-                            R.string.nickname_available
-                        }
-
-                        NicknameCheckState.SAME_AS_BEFORE -> {
-                            R.string.edit_user_error_same_as_before
-                        }
-
-                        NicknameCheckState.EXIST -> {
-                            R.string.error_nickname_duplicated
-                        }
+                when(it) {
+                    NicknameCheckState.POSSIBLE -> {
+                        ToastUtil.getInstance().makeShort(R.string.nickname_available)
                     }
-                )
+
+                    NicknameCheckState.SAME_AS_BEFORE -> {
+                        ToastUtil.getInstance().makeShort(R.string.edit_user_error_same_as_before)
+                    }
+
+                    NicknameCheckState.EXIST -> {
+                        ToastUtil.getInstance().makeShort(R.string.error_nickname_duplicated)
+                    }
+                }
             }
 
             observeLiveData(userInfoEditedEvent) {

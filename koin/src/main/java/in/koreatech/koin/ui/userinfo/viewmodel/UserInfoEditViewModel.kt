@@ -74,7 +74,7 @@ class UserInfoEditViewModel @Inject constructor(
     fun checkNickname(nickname: String) = viewModelScope.launchWithLoading {
         _nicknameState.value = NicknameState.newNickname(nickname)
 
-        if (nickname == (user.value as User.Student).nickname) {
+        if (nickname == (user.value as? User.Student)?.nickname) {
             _nicknameState.value = _nicknameState.value?.copy(isNicknameDuplicated = false)
             _nicknameDuplicatedEvent.value = NicknameCheckState.SAME_AS_BEFORE
             return@launchWithLoading

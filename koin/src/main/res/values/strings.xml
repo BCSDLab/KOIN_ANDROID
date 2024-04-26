@@ -371,6 +371,7 @@
     <string name="last_update">마지막 업데이트 : </string>
     <string name="sold_out_menu">품절된 메뉴입니다.</string>
     <string name="no_photo">사진 없음</string>
+    <string name="prepare_photo">식단 사진이 추가될 거에요</string>
     <string name="sold_out">품절</string>
     <string name="changed">변경됨</string>
     <string name="price">%1$s원</string>
