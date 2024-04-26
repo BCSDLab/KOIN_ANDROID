@@ -28,6 +28,7 @@ object AnalyticsConstant {
         const val MENU_TIME = "menu_time"
         const val MAIN_BUS = "main_bus"
         const val MAIN_BUS_CHANGETOFROM = "main_bus_changeToFrom"
+        const val MAIN_BUS_SCROLL = "main_bus_scroll"
     }
 
 }
