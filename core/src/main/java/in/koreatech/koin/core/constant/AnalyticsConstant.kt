@@ -29,6 +29,8 @@ object AnalyticsConstant {
         const val MAIN_BUS = "main_bus"
         const val MAIN_BUS_CHANGETOFROM = "main_bus_changeToFrom"
         const val MAIN_BUS_SCROLL = "main_bus_scroll"
+        const val BUS_DEPARTURE = "bus_departure"
+        const val BUS_ARRIVAL = "bus_arrival"
     }
 
 }
