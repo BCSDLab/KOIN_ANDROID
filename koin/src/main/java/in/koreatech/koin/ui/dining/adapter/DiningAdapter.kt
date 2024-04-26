@@ -1,20 +1,22 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
-import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.marginStart
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.github.chrisbanes.photoview.PhotoView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
@@ -31,6 +33,64 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
 
     class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(dining: Dining) {
+            with(binding) {
+                val context = root.context
+
+                setDiningImageVisibility(context, dining)
+                setDiningDataText(context, dining)
+                setEmptyDataVisibility(dining)
+
+                if(dining.imageUrl.isNotEmpty()) {
+                    cardViewDining.strokeWidth = 0
+                    textViewNoPhoto.visibility = View.INVISIBLE
+                    imageViewNoPhoto.visibility = View.INVISIBLE
+                    imageViewDining.visibility = View.VISIBLE
+                    Glide.with(context)
+                        .load(dining.imageUrl)
+                        .into(imageViewDining)
+
+                    val dialog = createZoomableDialog(context)
+                    cardViewDining.setOnClickListener {
+                        dialog.show()
+                        val imageView = dialog.findViewById<PhotoView>(R.id.photo_view_dining)
+                        Glide.with(context)
+                            .load(dining.imageUrl)
+                            .into(imageView)
+                    }
+                } else {
+                    cardViewDining.strokeWidth =
+                        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                    textViewNoPhoto.visibility = View.VISIBLE
+                    imageViewNoPhoto.visibility = View.VISIBLE
+                    imageViewDining.visibility = View.INVISIBLE
+                    cardViewDining.setOnClickListener(null)
+                }
+
+                if(dining.changedAt.isNotEmpty()) {
+                    textViewDiningChanged.visibility = View.VISIBLE
+                } else {
+                    textViewDiningChanged.visibility = View.INVISIBLE
+                }
+
+                if(dining.soldoutAt.isNotEmpty()) {
+                    groupSoldOut.visibility = View.VISIBLE
+                    textViewDiningSoldOut.visibility = View.VISIBLE
+                    textViewDiningChanged.visibility = View.INVISIBLE
+                } else {
+                    groupSoldOut.visibility = View.INVISIBLE
+                    textViewDiningSoldOut.visibility = View.INVISIBLE
+                }
+            }
+        }
+
+        private fun setDiningImageVisibility(context: Context, dining: Dining) {
+            when(dining.place) {
+                context.getString(R.string.dining_nungsu),
+                context.getString(R.string.dining_2campus) -> binding.cardViewDining.visibility = View.GONE
+                else -> binding.cardViewDining.visibility = View.VISIBLE
+            }
+        }
         private fun setEmptyDataVisibility(dining: Dining) {
             with(binding) {
                 if(dining.kcal.isEmpty()) {
@@ -50,16 +110,9 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 }
             }
         }
-        
-        fun bind(dining: Dining) {
+        private fun setDiningDataText(context: Context, dining: Dining) {
             with(binding) {
-                val context = root.context
                 textViewDiningCorner.text = dining.place
-                when(dining.place) {
-                    "능수관", "2캠퍼스" -> cardViewDining.visibility = View.GONE
-                    else -> cardViewDining.visibility = View.VISIBLE
-                }
-
                 textViewKcal.text =
                     context.getString(R.string.dining_kcal, dining.kcal)
                 textViewCashPrice.text =
@@ -67,49 +120,60 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
                 textViewDiningMenuItems.text = dining.menu.joinToString("\n")
-                
-                setEmptyDataVisibility(dining)
+            }
+        }
+        private fun createZoomableDialog(context: Context) : Dialog = object : Dialog(context) {
 
-                if(dining.imageUrl.isNotEmpty()) {
-                    Glide.with(context)
-                        .load(dining.imageUrl)
-                        .into(imageViewDining)
+            private var isUserImageInteraction = false
+            private val ACTION_POINTER_DOWN = 261
+            private lateinit var photoView : PhotoView
+            private lateinit var imageViewClose : ImageView
 
-                    cardViewDining.strokeWidth = 0
-                    textViewNoPhoto.visibility = View.INVISIBLE
-                    imageViewNoPhoto.visibility = View.INVISIBLE
+            override fun onStart() {
+                super.onStart()
+                window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
 
-                    val dialog = Dialog(context).apply {
-                        setContentView(R.layout.dialog_dining_image)
-                        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    }
-                    val closeButton = dialog.findViewById<ImageView>(R.id.image_view_close)
-                    closeButton.setOnClickListener {
-                        dialog.dismiss()
-                    }
-                    cardViewDining.setOnClickListener {
-                        val imageView = dialog.findViewById<ImageView>(R.id.image_view_dining)
-                        Glide.with(context)
-                            .load(dining.imageUrl)
-                            .into(imageView)
-                        dialog.show()
-                    }
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                setContentView(R.layout.dialog_dining_image)
+
+                photoView = findViewById(R.id.photo_view_dining)
+                imageViewClose = findViewById(R.id.image_view_close)
+
+                imageViewClose.setOnClickListener {
+                    dismiss()
                 }
+            }
 
-                if(dining.changedAt.isNotEmpty()) {
-                    textViewDiningChanged.visibility = View.VISIBLE
-                } else {
-                    textViewDiningChanged.visibility = View.INVISIBLE
-                }
+            override fun onTouchEvent(event: MotionEvent): Boolean {
+                if(event.action == ACTION_POINTER_DOWN)
+                    isUserImageInteraction = true
 
-                if(dining.soldoutAt.isNotEmpty()) {
-                    groupSoldOut.visibility = View.VISIBLE
-                    textViewDiningSoldOut.visibility = View.VISIBLE
-                    textViewDiningChanged.visibility = View.INVISIBLE
-                } else {
-                    groupSoldOut.visibility = View.INVISIBLE
-                    textViewDiningSoldOut.visibility = View.INVISIBLE
+                // 이미지 영역 밖 터치 시 dismiss
+                if(event.action == MotionEvent.ACTION_UP) {
+                    if (!isUserImageInteraction) {
+                        val rect = Rect()
+                        window!!.decorView.getWindowVisibleDisplayFrame(rect)
+                        val statusBarHeight = rect.top
+                        photoView.getGlobalVisibleRect(rect)
+
+                        with(photoView) {
+                            rect.apply {
+                                right = rect.left + displayRect.right.toInt()
+                                left += displayRect.left.toInt()
+                                bottom = rect.top + displayRect.bottom.toInt() + statusBarHeight
+                                top += displayRect.top.toInt() + statusBarHeight
+                            }
+                        }
+                        if (!rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                            dismiss()
+                        }
+                    }
+                    isUserImageInteraction = false
                 }
+                return super.onTouchEvent(event)
             }
         }
     }
