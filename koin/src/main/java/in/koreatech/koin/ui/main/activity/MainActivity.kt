@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,10 +17,10 @@ import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
-import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
@@ -56,6 +57,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
             )
         }
     }
+    private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
+    private var isBusScrollCallbackInitialized = false
+
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
     private val storeCategoryRecyclerAdapter = StoreCategoryRecyclerAdapter().apply {
@@ -160,12 +164,36 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
+            if (!isBusScrollCallbackInitialized) {
+                initBusViewPagerScrollCallback(it)
+                isBusScrollCallbackInitialized = true
+            }
         }
+    }
+
+    private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
+        busViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+            var prev = 0
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_BUS_SCROLL,
+                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(this@MainActivity)
+                )
+                prev = position
+            }
+        }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
     }
 
     private fun gotoStoreActivity(position: Int) {
         val bundle = Bundle()
         bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
         callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
     }
 }

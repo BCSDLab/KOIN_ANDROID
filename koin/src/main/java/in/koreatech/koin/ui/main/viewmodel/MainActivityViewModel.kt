@@ -25,7 +25,6 @@ class MainActivityViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
-    val busNode: LiveData<Pair<BusNode, BusNode>> get() = _busNode
 
     private val _selectedPosition = MutableLiveData(0)
     val selectedPosition : LiveData<Int> get() = _selectedPosition
