@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.LayoutShuttleBusTimetableBinding
@@ -42,10 +44,20 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setCoursePosition(position)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_AREA,
+                busTimetableCoursesSpinner.selectedItem.toString()
+            )
         }
 
         busTimetableRoutesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setRoutePosition(position)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_TIME,
+                busTimetableRoutesSpinner.selectedItem.toString()
+            )
         }
     }
 
