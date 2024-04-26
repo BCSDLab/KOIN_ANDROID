@@ -93,6 +93,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     password = loginEdittextPw.text.toString().trim()
                 )
             }
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.LOGIN,
+                getString(R.string.login)
+            )
         }
 
         loginButtonSignup.setOnClickListener {
