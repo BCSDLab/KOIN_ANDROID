@@ -23,6 +23,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 
 @AndroidEntryPoint
 class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetableBinding>() {
@@ -47,6 +49,11 @@ class ExpressBusTimetableFragment : DataBindingFragment<LayoutExpressBusTimetabl
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             expressBusTimetableViewModel.setCoursePosition(position)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_EXPRESS,
+                busTimetableCoursesSpinner.selectedItem.toString()
+            )
         }
     }
 

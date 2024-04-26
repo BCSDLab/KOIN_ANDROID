@@ -31,6 +31,10 @@ object AnalyticsConstant {
         const val MAIN_BUS_SCROLL = "main_bus_scroll"
         const val BUS_DEPARTURE = "bus_departure"
         const val BUS_ARRIVAL = "bus_arrival"
+        const val BUS_TIMETABLE = "bus_timetable"
+        const val BUS_TIMETABLE_AREA = "bus_timetable_area"
+        const val BUS_TIMETABLE_TIME = "bus_timetable_time"
+        const val BUS_TIMETABLE_EXPRESS = "bus_timetable_express"
     }
 
 }
