@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.store.activity
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -107,6 +108,18 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             isSearchMode = hasFocus
         }
 
+        binding.searchEditText.setOnTouchListener { v, event ->
+            if(event.action == MotionEvent.ACTION_DOWN) {
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.STORE_CATEGORIES_SEARCH,
+                    "search in " + getStoreCategoryName(viewModel.category.value)
+                )
+            }
+            v.performClick()
+        }
+
+
         binding.storeRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreActivity)
             adapter = storeAdapter
@@ -201,30 +214,34 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.storeCategoryEtcTextview.setCategorySelected(category == StoreCategory.Etc)
     }
 
+    private fun getStoreCategoryName(category: StoreCategory?): String {
+        return when(category) {
+            StoreCategory.Chicken -> getString(R.string.chicken)
+            StoreCategory.Pizza -> getString(R.string.pizza)
+            StoreCategory.DOSIRAK -> getString(R.string.dorisak)
+            StoreCategory.PorkFeet -> getString(R.string.pork_feet)
+            StoreCategory.Chinese -> getString(R.string.chinese)
+            StoreCategory.NormalFood -> getString(R.string.normal_food)
+            StoreCategory.Cafe -> getString(R.string.cafe)
+            StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
+            StoreCategory.Etc -> getString(R.string.etc)
+            null -> getString(R.string.see_all)
+            else -> ""
+        }
+    }
+
     private fun View.setCategoryOnClick(category: StoreCategory) {
         setOnClickListener {
-            var eventValue = when(category) {
-                StoreCategory.Chicken -> getString(R.string.chicken)
-                StoreCategory.Pizza -> getString(R.string.pizza)
-                StoreCategory.DOSIRAK -> getString(R.string.dorisak)
-                StoreCategory.PorkFeet -> getString(R.string.pork_feet)
-                StoreCategory.Chinese -> getString(R.string.chinese)
-                StoreCategory.NormalFood -> getString(R.string.normal_food)
-                StoreCategory.Cafe -> getString(R.string.cafe)
-                StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
-                StoreCategory.Etc -> getString(R.string.etc)
-                else -> ""
-            }
-            if(viewModel.category.value == category)
-                eventValue = getString(R.string.unselect_see_all)
+            binding.searchEditText.clearFocus()
+            viewModel.setCategory(category)
+
+            val eventValue = getStoreCategoryName(viewModel.category.value)
 
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.STORE_CATEGORIES,
-                eventValue)
-
-            binding.searchEditText.clearFocus()
-            viewModel.setCategory(category)
+                eventValue
+            )
         }
     }
 
