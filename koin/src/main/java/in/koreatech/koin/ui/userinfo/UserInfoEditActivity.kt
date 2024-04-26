@@ -1,21 +1,27 @@
 package `in`.koreatech.koin.ui.userinfo
 
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityUserInfoEditedBinding
 import `in`.koreatech.koin.domain.model.user.Gender
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
+import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoEditViewModel
-import `in`.koreatech.koin.util.ext.*
-import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
-import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.setDefaultBackground
+import `in`.koreatech.koin.util.ext.setTransparentBackground
+import `in`.koreatech.koin.util.ext.splitPhoneNumber
+import `in`.koreatech.koin.util.ext.textString
+import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class UserInfoEditActivity : KoinNavigationDrawerActivity() {
@@ -77,11 +83,12 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             withLoading(this@UserInfoEditActivity, this)
 
             observeLiveData(user) { user ->
-                when(user) {
+                when (user) {
                     User.Anonymous -> {
                         ToastUtil.getInstance().makeShort(getString(R.string.user_info_anonymous))
                         finish()
                     }
+
                     is User.Student ->
                         with(binding) {
                             userinfoeditedTextviewId.text = user.email
@@ -146,8 +153,21 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
 
             observeLiveData(nicknameDuplicatedEvent) {
-                if (it) ToastUtil.getInstance().makeShort(R.string.error_nickname_duplicated)
-                else ToastUtil.getInstance().makeShort(R.string.nickname_available)
+                ToastUtil.getInstance().makeShort(
+                    when (it) {
+                        NicknameCheckState.POSSIBLE -> {
+                            R.string.nickname_available
+                        }
+
+                        NicknameCheckState.SAME_AS_BEFORE -> {
+                            R.string.edit_user_error_same_as_before
+                        }
+
+                        NicknameCheckState.EXIST -> {
+                            R.string.error_nickname_duplicated
+                        }
+                    }
+                )
             }
 
             observeLiveData(userInfoEditedEvent) {
