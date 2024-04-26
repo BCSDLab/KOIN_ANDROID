@@ -2,17 +2,17 @@ package `in`.koreatech.koin.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
@@ -24,8 +24,6 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -99,6 +97,11 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
 
         loginButtonSignup.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.START_SIGN_UP,
+                getString(R.string.sign_up)
+            )
         }
 
         forgotPasswordLinearLayout.setOnClickListener {

@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
-    <string name="sign_up">회원 가입</string>
+    <string name="sign_up">회원가입</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -384,4 +384,5 @@
     <string name="user_only_ok">회원전용 확인</string>
     <string name="bus">버스</string>
     <string name="see_all">전체보기</string>
+    <string name="complete_sign_up">회원가입 완료</string>
 </resources>
