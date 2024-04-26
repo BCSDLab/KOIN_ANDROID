@@ -37,6 +37,7 @@ object AnalyticsConstant {
         const val BUS_TIMETABLE_TIME = "bus_timetable_time"
         const val BUS_TIMETABLE_EXPRESS = "bus_timetable_express"
         const val MENU_IMAGE = "menu_image"
+        const val LOGIN = "login"
         const val START_SIGN_UP = "start_sign_up"
         const val COMPLETE_SIGN_UP = "complete_sign_up"
     }
