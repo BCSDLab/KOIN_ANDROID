@@ -16,6 +16,7 @@ object AnalyticsConstant {
     object Label {
         const val MAIN_STORE_CATEGORIES = "main_store_categories"
         const val STORE_CATEGORIES = "store_categories"
+        const val STORE_CATEGORIES_SEARCH = "store_categories_search"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_STORE = "${HAMBURGER}_store"
         const val HAMBURGER_DINING = "${HAMBURGER}_dining"
