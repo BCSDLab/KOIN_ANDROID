@@ -40,6 +40,9 @@ object AnalyticsConstant {
         const val LOGIN = "login"
         const val START_SIGN_UP = "start_sign_up"
         const val COMPLETE_SIGN_UP = "complete_sign_up"
+        const val STORE_PICTURE = "store_picture"
+        const val STORE_CALL = "store_call"
+        const val STORE_CLICK = "store_click"
     }
 
 }

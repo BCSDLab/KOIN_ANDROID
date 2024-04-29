@@ -51,7 +51,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             storeDetailContract.launch(it.uid)
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
-                "store_${it.name}_click",
+                AnalyticsConstant.Label.STORE_CLICK,
                 it.name)
         }
     }
