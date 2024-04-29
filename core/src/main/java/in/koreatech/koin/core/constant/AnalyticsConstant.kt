@@ -14,11 +14,11 @@ object AnalyticsConstant {
     }
 
     object Label {
-        const val MAIN_STORE_CATEGORIES = "main_store_categories"
-        const val STORE_CATEGORIES = "store_categories"
-        const val STORE_CATEGORIES_SEARCH = "store_categories_search"
+        const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
+        const val SHOP_CATEGORIES = "shop_categories"
+        const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
         const val HAMBURGER = "hamburger"
-        const val HAMBURGER_STORE = "${HAMBURGER}_store"
+        const val HAMBURGER_SHOP = "${HAMBURGER}_shop"
         const val HAMBURGER_DINING = "${HAMBURGER}_dining"
         const val HAMBURGER_MY_INFO_WITHOUT_LOGIN = "${HAMBURGER}_my_info_without_login"
         const val HAMBURGER_MY_INFO_WITH_LOGIN = "${HAMBURGER}_my_info_with_login"
@@ -40,9 +40,9 @@ object AnalyticsConstant {
         const val LOGIN = "login"
         const val START_SIGN_UP = "start_sign_up"
         const val COMPLETE_SIGN_UP = "complete_sign_up"
-        const val STORE_PICTURE = "store_picture"
-        const val STORE_CALL = "store_call"
-        const val STORE_CLICK = "store_click"
+        const val SHOP_PICTURE = "shop_picture"
+        const val SHOP_CALL = "shop_call"
+        const val SHOP_CLICK = "shop_click"
     }
 
 }

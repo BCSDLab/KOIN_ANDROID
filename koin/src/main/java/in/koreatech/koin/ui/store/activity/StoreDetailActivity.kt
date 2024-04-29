@@ -88,7 +88,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.STORE_PICTURE,
+                AnalyticsConstant.Label.SHOP_PICTURE,
                 viewModel.store.value?.name ?: "Unknown")
         }
     }
@@ -128,7 +128,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             showCallDialog()
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.STORE_CALL,
+                AnalyticsConstant.Label.SHOP_CALL,
                 viewModel.store.value?.name ?: "Unknown")
         }
 

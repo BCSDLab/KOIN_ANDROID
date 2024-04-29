@@ -225,7 +225,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> {
                     action = AnalyticsConstant.Domain.BUSINESS
-                    label = AnalyticsConstant.Label.HAMBURGER_STORE
+                    label = AnalyticsConstant.Label.HAMBURGER_SHOP
                     value = getString(R.string.nearby_stores)
                     goToStoreActivity()
                 }

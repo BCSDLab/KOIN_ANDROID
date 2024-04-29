@@ -68,7 +68,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 gotoStoreActivity(position)
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_STORE_CATEGORIES,
+                    AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
                     view?.findViewById<TextView>(R.id.text_view_store_category)?.text.toString()
                 )
             }
