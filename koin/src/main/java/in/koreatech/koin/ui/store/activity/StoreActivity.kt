@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
@@ -51,7 +50,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             storeDetailContract.launch(it.uid)
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.STORE_CLICK,
+                AnalyticsConstant.Label.SHOP_CLICK,
                 it.name)
         }
     }
@@ -112,7 +111,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             if(event.action == MotionEvent.ACTION_DOWN) {
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.BUSINESS,
-                    AnalyticsConstant.Label.STORE_CATEGORIES_SEARCH,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
                     "search in " + getStoreCategoryName(viewModel.category.value)
                 )
             }
@@ -239,7 +238,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.STORE_CATEGORIES,
+                AnalyticsConstant.Label.SHOP_CATEGORIES,
                 eventValue
             )
         }
