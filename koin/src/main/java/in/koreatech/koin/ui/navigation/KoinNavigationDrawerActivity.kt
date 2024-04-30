@@ -164,11 +164,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
                             else -> Unit
                         }
-                        EventLogger.logClickEvent(
-                            action,
-                            label,
-                            value
-                        )
+                        EventLogger.logClickEvent(action, label, value)
                     }
                 }
             }
@@ -176,7 +172,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         findViewById<View>(R.id.navi_item_myinfo).setOnClickListener {
             koinNavigationDrawerViewModel.selectMenu(MenuState.UserInfo)
-
         }
 
         val leftArrowButton = findViewById<View>(R.id.drawer_left_arrow_button)
