@@ -46,7 +46,7 @@ class DiningDateAdapter(
                 textViewDayOfTheWeek.text = DateFormatUtil.getDayOfWeek(date)
                 textViewDay.text = date.date.toString()
 
-                backgroundTodayIndicator.visibility = View.INVISIBLE
+                groupTodayIndicator.visibility = View.INVISIBLE
                 if (position < itemCount / 2) {     // 오늘 이전
                     textViewDay.setTextColor(
                         ContextCompat.getColor(
@@ -81,12 +81,12 @@ class DiningDateAdapter(
                             R.color.gray9
                         )
                     )
-                    backgroundTodayIndicator.visibility = View.VISIBLE
+                    groupTodayIndicator.visibility = View.VISIBLE
                 }
 
-                groupSelectedDate.visibility = View.INVISIBLE
+                backgroundSelectedDate.visibility = View.INVISIBLE
                 if (position == selectedPosition) {
-                    groupSelectedDate.visibility = View.VISIBLE
+                    backgroundSelectedDate.visibility = View.VISIBLE
                     textViewDay.setTextColor(Color.WHITE)
                 }
 
