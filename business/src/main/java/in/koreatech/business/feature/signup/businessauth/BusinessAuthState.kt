@@ -8,7 +8,7 @@ data class BusinessAuthState(
     val name: String = "",
     val storeName: String = "",
     val shopNumber: String = "",
-    val shopId: Int = 0,
+    val shopId: Int? = null,
     val phoneNumber: String = "",
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
