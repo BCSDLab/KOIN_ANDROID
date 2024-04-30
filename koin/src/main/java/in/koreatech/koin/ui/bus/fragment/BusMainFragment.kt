@@ -43,39 +43,38 @@ class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
         initViewModel()
     }
 
-    private var isUserSelection = false
     private fun initView() = with(binding) {
         busDepartureSpinner.setSelection(BusNode.Koreatech.spinnerSelection)
         busArrivalSpinner.setSelection(BusNode.Terminal.spinnerSelection)
         busDepartureSpinner.setOnTouchListener { _, _ ->
-            isUserSelection = true
+            viewModel.isUserSelection = true
             busDepartureSpinner.performClick()
         }
         busDepartureSpinner.setOnItemSelectedListener { _, _, position, _ ->
             viewModel.setDeparture(position.busNodeSelection)
-            if(isUserSelection) {
+            if(viewModel.isUserSelection) {
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.CAMPUS,
                     AnalyticsConstant.Label.BUS_DEPARTURE,
                     resources.getStringArray(R.array.bus_place)[position]
                 )
-                isUserSelection = false
+                viewModel.isUserSelection = false
             }
         }
 
         busArrivalSpinner.setOnTouchListener { _, _ ->
-            isUserSelection = true
+            viewModel.isUserSelection = true
             busArrivalSpinner.performClick()
         }
         busArrivalSpinner.setOnItemSelectedListener { _, _, position, _ ->
             viewModel.setArrival(position.busNodeSelection)
-            if(isUserSelection) {
+            if(viewModel.isUserSelection) {
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.CAMPUS,
                     AnalyticsConstant.Label.BUS_ARRIVAL,
                     resources.getStringArray(R.array.bus_place)[position]
                 )
-                isUserSelection = false
+                viewModel.isUserSelection = false
             }
         }
         recyclerView.apply {
