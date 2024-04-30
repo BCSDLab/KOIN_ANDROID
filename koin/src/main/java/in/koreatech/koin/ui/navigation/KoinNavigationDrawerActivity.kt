@@ -132,6 +132,43 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                     else -> {
                         koinNavigationDrawerViewModel.selectMenu(state)
+                        var action = ""
+                        var label = ""
+                        var value = ""
+                        when(state) {
+                            MenuState.Store -> {
+                                action = AnalyticsConstant.Domain.BUSINESS
+                                label = AnalyticsConstant.Label.HAMBURGER_SHOP
+                                value = getString(R.string.nearby_stores)
+                            }
+                            MenuState.Bus -> {
+                                action = AnalyticsConstant.Domain.CAMPUS
+                                label = AnalyticsConstant.Label.HAMBURGER_BUS
+                                value = getString(R.string.bus)
+                            }
+                            MenuState.Dining -> {
+                                action = AnalyticsConstant.Domain.CAMPUS
+                                label = AnalyticsConstant.Label.HAMBURGER_DINING
+                                value = getString(R.string.navigation_item_dining)
+                            }
+                            MenuState.UserInfo -> {
+                                action = AnalyticsConstant.Domain.USER
+                                value = getString(R.string.navigation_drawer_right_myinfo)
+                                if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
+                                    label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN
+                                    showLoginRequestDialog()
+                                } else {
+                                    label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN
+                                    goToUserInfoActivity()
+                                }
+                            }
+                            else -> Unit
+                        }
+                        EventLogger.logClickEvent(
+                            action,
+                            label,
+                            value
+                        )
                     }
                 }
             }
@@ -139,6 +176,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         findViewById<View>(R.id.navi_item_myinfo).setOnClickListener {
             koinNavigationDrawerViewModel.selectMenu(MenuState.UserInfo)
+
         }
 
         val leftArrowButton = findViewById<View>(R.id.drawer_left_arrow_button)
@@ -205,31 +243,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
 
         observeLiveData(menuEvent) { menuState ->
-            var action = ""
-            var label = ""
-            var value = ""
             when (menuState) {
-                MenuState.Bus -> {
-                    action = AnalyticsConstant.Domain.CAMPUS
-                    label = AnalyticsConstant.Label.HAMBURGER_BUS
-                    value = getString(R.string.bus)
-                    goToBusActivity()
-                }
-                MenuState.Dining -> {
-                    action = AnalyticsConstant.Domain.CAMPUS
-                    label = AnalyticsConstant.Label.HAMBURGER_DINING
-                    value = getString(R.string.navigation_item_dining)
-                    goToDiningActivity()
-                }
+                MenuState.Bus -> goToBusActivity()
+                MenuState.Dining -> goToDiningActivity()
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
-                MenuState.Store -> {
-                    action = AnalyticsConstant.Domain.BUSINESS
-                    label = AnalyticsConstant.Label.HAMBURGER_SHOP
-                    value = getString(R.string.nearby_stores)
-                    goToStoreActivity()
-                }
-
+                MenuState.Store -> goToStoreActivity()
                 MenuState.Timetable -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
                         goToAnonymousTimeTableActivity()
@@ -239,19 +258,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.UserInfo -> {
-                    action = AnalyticsConstant.Domain.USER
-                    value = getString(R.string.navigation_drawer_right_myinfo)
                     if (userState.value == null || userState.value?.isAnonymous == true) {
-                        label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN
                         showLoginRequestDialog()
                     } else {
-                        label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN
                         goToUserInfoActivity()
                     }
                 }
                 else -> Unit
             }
-            EventLogger.logClickEvent(action, label, value)
             drawerLayout.closeDrawer()
         }
     }
