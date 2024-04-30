@@ -1,21 +1,26 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.github.chrisbanes.photoview.PhotoView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemDiningBinding
@@ -53,10 +58,31 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     val dialog = createZoomableDialog(context)
                     cardViewDining.setOnClickListener {
                         dialog.show()
-                        val imageView = dialog.findViewById<PhotoView>(R.id.photo_view_dining)
+                        val photoView = dialog.findViewById<PhotoView>(R.id.photo_view_dining)
                         Glide.with(context)
                             .load(dining.imageUrl)
-                            .into(imageView)
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean = false
+
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    photoView.post {
+                                        photoView.scale = DIALOG_MIN_SCALE
+                                    }
+                                    return false
+                                }
+                            })
+                            .into(photoView)
                     }
                 } else {
                     cardViewDining.strokeWidth =
@@ -125,9 +151,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         private fun createZoomableDialog(context: Context) : Dialog = object : Dialog(context) {
 
             private var isUserImageInteraction = false
-            private val ACTION_POINTER_DOWN = 261
             private lateinit var photoView : PhotoView
-            private lateinit var imageViewClose : ImageView
 
             override fun onStart() {
                 super.onStart()
@@ -135,15 +159,20 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             }
 
+            @SuppressLint("ClickableViewAccessibility")
             override fun onCreate(savedInstanceState: Bundle?) {
                 super.onCreate(savedInstanceState)
                 setContentView(R.layout.dialog_dining_image)
 
                 photoView = findViewById(R.id.photo_view_dining)
-                imageViewClose = findViewById(R.id.image_view_close)
-
-                imageViewClose.setOnClickListener {
-                    dismiss()
+                photoView.apply {
+                    setOnTouchListener { v, event ->
+                        attacher.onTouch(v, event)
+                        if (event?.action == 261 || event?.action == MotionEvent.ACTION_UP)
+                            false
+                        else true
+                    }
+                    minimumScale = DIALOG_MIN_SCALE
                 }
             }
 
@@ -179,6 +208,8 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
     }
 
     companion object {
+        private const val DIALOG_MIN_SCALE = 0.75f
+        private const val ACTION_POINTER_DOWN = 261
         private val diffCallback = object : DiffUtil.ItemCallback<Dining>() {
             override fun areItemsTheSame(
                 oldItem: Dining,
