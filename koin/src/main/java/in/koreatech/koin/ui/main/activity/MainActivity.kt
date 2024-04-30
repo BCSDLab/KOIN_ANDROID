@@ -58,7 +58,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
     }
     private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
-    private var isBusScrollCallbackInitialized = false
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
@@ -164,9 +163,8 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
-            if (!isBusScrollCallbackInitialized) {
+            if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
                 initBusViewPagerScrollCallback(it)
-                isBusScrollCallbackInitialized = true
             }
         }
     }
