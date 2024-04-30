@@ -7,21 +7,11 @@
     android:clipChildren="false"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/image_view_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_close_round"
-        app:layout_constraintEnd_toEndOf="@id/photo_view_dining"
-        app:layout_constraintBottom_toTopOf="@id/photo_view_dining" />
-
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photo_view_dining"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:maxWidth="342dp"
-        android:maxHeight="224dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
