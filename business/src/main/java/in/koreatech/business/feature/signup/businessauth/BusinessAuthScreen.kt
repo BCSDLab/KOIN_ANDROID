@@ -241,6 +241,7 @@ fun BusinessAuthScreen(
                 .fillMaxWidth()
                 .height(44.dp),
                 shape = RectangleShape,
+                enabled = state.isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,
