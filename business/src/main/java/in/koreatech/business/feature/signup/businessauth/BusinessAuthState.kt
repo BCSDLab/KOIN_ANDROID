@@ -17,4 +17,7 @@ data class BusinessAuthState(
     val inputStream: MutableList<InputStream> = mutableListOf(),
     val continuation: Boolean = false,
     val error: Throwable? = null,
-)
+){
+    val isButtonEnabled: Boolean
+        get() = name.isNotEmpty() && storeName.isNotEmpty() && shopNumber.isNotEmpty() && phoneNumber.isNotEmpty() && selectedImages.isNotEmpty()
+}
