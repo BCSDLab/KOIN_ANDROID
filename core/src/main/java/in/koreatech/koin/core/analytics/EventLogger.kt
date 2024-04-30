@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.core.analytics
 
-import android.os.Build
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
