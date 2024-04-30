@@ -27,6 +27,8 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
     private val shuttleBusTimetableViewModel by viewModels<ShuttleBusTimetableViewModel>()
     private val shuttleBusTimetableAdapter = ShuttleBusTimetableAdapter()
+    private var isCourseInitialization = true
+    private var isRouteInitialization = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,6 +46,10 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setCoursePosition(position)
+            if (isCourseInitialization) {
+                isCourseInitialization = false
+                return@setOnItemSelectedListener
+            }
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE_AREA,
@@ -53,6 +59,10 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
         busTimetableRoutesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setRoutePosition(position)
+            if (isRouteInitialization) {
+                isRouteInitialization = false
+                return@setOnItemSelectedListener
+            }
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.CAMPUS,
                 AnalyticsConstant.Label.BUS_TIMETABLE_TIME,
@@ -67,7 +77,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         withToastError(this@ShuttleBusTimetableFragment, binding.root)
 
         observeLiveData(busCoursesString) { courses ->
-            if(courses.isNullOrEmpty()) {
+            if (courses.isNullOrEmpty()) {
                 binding.busTimetableCoursesSpinner.isVisible = false
             } else {
                 binding.busTimetableCoursesSpinner.isVisible = true
@@ -93,7 +103,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         }
 
         observeLiveData(busRoutes) {
-            if(it.isNullOrEmpty()) {
+            if (it.isNullOrEmpty()) {
                 binding.busTimetableRoutesSpinner.isVisible = false
             } else {
                 binding.busTimetableRoutesSpinner.isVisible = true
@@ -109,7 +119,8 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         observeLiveData(selectedRoutesPosition) {
             shuttleBusTimetableAdapter.submitList(
                 busTimetables.value?.get(
-                    selectedRoutesPosition.value ?: 0)?.map { it.toShuttleBusTimetableUiItem() }
+                    selectedRoutesPosition.value ?: 0
+                )?.map { it.toShuttleBusTimetableUiItem() }
             )
         }
     }
