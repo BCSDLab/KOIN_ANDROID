@@ -119,6 +119,12 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         }
         private fun setEmptyDataVisibility(dining: Dining) {
             with(binding) {
+                textViewKcal.visibility = View.VISIBLE
+                dividerDot.visibility = View.VISIBLE
+                textViewCashPrice.visibility = View.VISIBLE
+                dividerSlash.visibility = View.VISIBLE
+                textViewCardPrice.visibility = View.VISIBLE
+                
                 if(dining.kcal.isEmpty()) {
                     textViewKcal.visibility = View.GONE
                     dividerDot.visibility = View.GONE
@@ -168,7 +174,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 photoView.apply {
                     setOnTouchListener { v, event ->
                         attacher.onTouch(v, event)
-                        if (event?.action == 261 || event?.action == MotionEvent.ACTION_UP)
+                        if (event?.action == ACTION_POINTER_DOWN || event?.action == MotionEvent.ACTION_UP)
                             false
                         else true
                     }
