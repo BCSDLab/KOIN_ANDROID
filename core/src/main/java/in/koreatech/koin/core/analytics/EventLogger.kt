@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.core.analytics
 
+import android.os.Build
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import `in`.koreatech.koin.core.BuildConfig
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 
 object EventLogger {
@@ -30,9 +32,10 @@ object EventLogger {
      * @param category: 이벤트 종류(click, scroll, ...)
      * @param label: 이벤트 소분류
      * @param value: 이벤트 값
-     * @sample logEvent("BUSINESS", "click", "main_store_categories", "전체보기")
+     * @sample logEvent("BUSINESS", "click", "main_shop_categories", "전체보기")
      */
     private fun logEvent(action: String, category: String, label: String, value: String) {
+        if(BuildConfig.IS_DEBUG) return
         Firebase.analytics.logEvent(action) {
             param("event_category", category)
             param("event_label", label)
