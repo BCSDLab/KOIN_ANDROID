@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.main.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -22,7 +21,6 @@ import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
-import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
@@ -41,7 +39,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private val busPagerAdapter = BusPagerAdapter().apply {
         setOnCardClickListener {
-            startActivity(Intent(this@MainActivity, BusActivity::class.java))
+            callDrawerItem(R.id.navi_item_bus, Bundle())
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS,

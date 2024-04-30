@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.main.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -18,7 +17,6 @@ import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.domain.util.ext.typeFilter
-import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
