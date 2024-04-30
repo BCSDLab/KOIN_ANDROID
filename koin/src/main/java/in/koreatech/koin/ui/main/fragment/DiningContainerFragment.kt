@@ -38,7 +38,10 @@ class DiningContainerFragment : Fragment(R.layout.fragment_dining_container) {
 
     private fun initView() = with(binding) {
         diningContainer.setOnClickListener {
-            startActivity(Intent(requireContext(), DiningActivity::class.java))
+            if (activity is MainActivity) {
+                val mainActivity = activity as MainActivity
+                mainActivity.callDrawerItem(R.id.navi_item_dining)
+            }
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.CAMPUS,
                 AnalyticsConstant.Label.MAIN_MENU_MOVEDETAILVIEW,
