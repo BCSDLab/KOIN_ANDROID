@@ -201,17 +201,8 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                         val rect = Rect()
                         window!!.decorView.getWindowVisibleDisplayFrame(rect)
                         val statusBarHeight = rect.top
-                        photoView.getGlobalVisibleRect(rect)
 
-                        with(photoView) {
-                            rect.apply {
-                                right = rect.left + displayRect.right.toInt()
-                                left += displayRect.left.toInt()
-                                bottom = rect.top + displayRect.bottom.toInt() + statusBarHeight
-                                top += displayRect.top.toInt() + statusBarHeight
-                            }
-                        }
-                        if (!rect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                        if (!photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
                             dismiss()
                         }
                     }
