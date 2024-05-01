@@ -86,6 +86,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                                         val rectF = photoView.displayRect
                                         lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
                                         closeButton.layoutParams = lp
+                                        closeButton.visibility = View.VISIBLE
                                     }
                                     return false
                                 }
