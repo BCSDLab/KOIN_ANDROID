@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import android.graphics.BitmapFactory.decodeStream
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -71,12 +72,11 @@ fun BusinessAuthScreen(
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uriList ->
-            state.inputStream.clear()
+            state.bitmap.clear()
             state.fileInfo.clear()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
-                viewModel.onImageUrlsChanged(state.selectedImages)
-
+                viewModel.onImageUrlsChanged(mutableListOf())
                 if (it.scheme.equals("content")) {
                     val cursor = context.contentResolver.query(it, null, null, null, null)
                     cursor.use {
@@ -91,17 +91,18 @@ fun BusinessAuthScreen(
                         }
                     }
                 }
-                state.selectedImages.add(AttachStore(it.toString(), fileName))
+               viewModel.onImageUrlsChanged(uriList.map { AttachStore(it.toString(), fileName) }.toMutableList())
                 if (inputStream != null) {
-                    viewModel.presignedUrl(
+                    viewModel.getPreSignedUrl(
                         uri = it,
                         fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
-                        fileStream = inputStream
+                        bitmap = decodeStream(inputStream)
                     )
 
                 }
+                inputStream?.close()
             }
         }
     )
@@ -253,13 +254,13 @@ fun BusinessAuthScreen(
                     state.fileInfo.forEach {
                         viewModel.uploadImage(
                             it.preSignedUrl,
-                            state.inputStream[state.fileInfo.indexOf(it)],
+                            state.bitmap[state.fileInfo.indexOf(it)].toString(),
                             it.mediaType,
                             it.fileSize,
                         )
                     }
                     viewModel.sendRegisterRequest(
-                        state.fileUrl,
+                        state.fileInfo.map { it.resultUrl },
                         state.shopNumber,
                         email,
                         state.name,
