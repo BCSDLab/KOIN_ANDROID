@@ -224,8 +224,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             StoreCategory.Cafe -> getString(R.string.cafe)
             StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
             StoreCategory.Etc -> getString(R.string.etc)
-            null -> getString(R.string.see_all)
-            else -> ""
+            StoreCategory.All, null -> getString(R.string.see_all)
         }
     }
 
