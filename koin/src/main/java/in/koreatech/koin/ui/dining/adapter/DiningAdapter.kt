@@ -134,19 +134,19 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 dividerSlash.visibility = View.VISIBLE
                 textViewCardPrice.visibility = View.VISIBLE
                 
-                if(dining.kcal.isEmpty()) {
+                if(dining.kcal.isEmpty() || dining.kcal == "0") {
                     textViewKcal.visibility = View.GONE
                     dividerDot.visibility = View.GONE
                 }
-                if(dining.priceCash.isEmpty()) {
+                if(dining.priceCash.isEmpty() || dining.priceCash == "0") {
                     textViewCashPrice.visibility = View.GONE
                     dividerSlash.visibility = View.GONE
                 }
-                if(dining.priceCard.isEmpty()) {
+                if(dining.priceCard.isEmpty() || dining.priceCard == "0") {
                     textViewCardPrice.visibility = View.GONE
                     dividerSlash.visibility = View.GONE
                 }
-                if(dining.priceCard.isEmpty() && dining.priceCash.isEmpty()) {
+                if((dining.priceCard.isEmpty() || dining.priceCard == "0") && (dining.priceCash.isEmpty() || dining.priceCash == "0")) {
                     dividerDot.visibility = View.GONE
                 }
             }
