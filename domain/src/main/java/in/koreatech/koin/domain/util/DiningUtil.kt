@@ -47,7 +47,7 @@ object DiningUtil {
             DiningType.Lunch.typeEnglish -> DiningType.Lunch.typeKorean
             DiningType.Dinner.typeEnglish -> DiningType.Dinner.typeKorean
             DiningType.NextBreakfast.typeEnglish -> DiningType.NextBreakfast.typeKorean
-            else -> ""
+            else -> "Unknown type"
         }
     }
 }
