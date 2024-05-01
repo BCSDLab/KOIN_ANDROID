@@ -150,11 +150,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.eventViewPager.apply {
 
             currentItem = Int.MAX_VALUE / 2
-            offscreenPageLimit = 3
             adapter = storeEventPagerAdapter
-            val nextItemPx = resources.getDimension(R.dimen.event_view_pager_next_item_visible_dp)
-            val currentItemMarginPx = resources.getDimension(R.dimen.event_view_pager_item_margin)
-            setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@StoreActivity,

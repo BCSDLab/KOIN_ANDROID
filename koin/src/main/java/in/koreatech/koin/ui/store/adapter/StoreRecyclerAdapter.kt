@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.ui.store.adapter
 
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreListItemBinding
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.util.ext.hasJongSungAtLastChar
 
 class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>(
     diffCallback
@@ -43,7 +47,50 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             binding.storeAccountTextview.setTextState(store.isBankOk)
             if(!store.isOpen){
                 binding.readyStoreFrameLayout.isVisible = true
-                binding.storeDoesNotOpenTextView.text = store.name + "은/는 준비 중 입니다."
+                binding.storeDoesNotOpenTextView.text = if(store.name.hasJongSungAtLastChar()){
+                    itemView.context.getString(R.string.store_eun, store.name)
+                } else {
+                    itemView.context.getString(R.string.store_neun, store.name)
+                }
+                if(store.name.hasJongSungAtLastChar()){
+                    val fullText = itemView.context.getString(R.string.store_neun, store.name)
+                    val spannableString = SpannableString(fullText)
+
+                    val start = fullText.indexOf(store.name)
+                    val end = start + store.name.length
+
+                    val color = ContextCompat.getColor(itemView.context, R.color.closed_store_name)
+
+                    if (start >= 0) {
+                        spannableString.setSpan(
+                            ForegroundColorSpan(color),
+                            start,
+                            end,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+                    binding.storeDoesNotOpenTextView.text = spannableString
+                } else {
+                    val fullText = itemView.context.getString(R.string.store_neun, store.name)
+
+                    val spannableString = SpannableString(fullText)
+
+                    val start = fullText.indexOf(store.name)
+                    val end = start + store.name.length
+
+                    val color = ContextCompat.getColor(itemView.context, R.color.closed_store_name)
+
+                    if (start >= 0) {
+                        spannableString.setSpan(
+                            ForegroundColorSpan(color),
+                            start,
+                            end,
+                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                        )
+                    }
+
+                    binding.storeDoesNotOpenTextView.text = spannableString
+                }
             }
 
             binding.eventImageView.isVisible = store.isEvent
