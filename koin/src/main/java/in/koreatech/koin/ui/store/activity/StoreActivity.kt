@@ -41,6 +41,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
 
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
+    override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
 
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {

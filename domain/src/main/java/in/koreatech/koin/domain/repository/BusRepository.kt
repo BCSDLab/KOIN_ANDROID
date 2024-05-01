@@ -5,14 +5,14 @@ import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
 import java.time.LocalDateTime
 
 interface BusRepository {
     suspend fun getShuttleBusCourses(): List<Pair<BusCourse, String>>
     suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>>
-
-    suspend fun getShuttleBusTimetable(busCourse: BusCourse): List<BusRoute.ShuttleBusRoute>
-    suspend fun getExpressBusTimetable(busCourse: BusCourse): BusRoute.ExpressBusRoute
+    suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable
+    suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable
     suspend fun getCityBusTimetable(): BusRoute.CityBusRoute
 
     suspend fun getShuttleBusRemainTime(

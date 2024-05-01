@@ -22,6 +22,7 @@ jobs:
        run: chmod +x ./gradlew
 
      - name: Set current date
+       id: date
        uses: Kaven-Universe/github-action-current-date-time@v1
        with:
           format: "YYYY-MM-DD"
@@ -76,7 +77,7 @@ jobs:
             done
 
      - name: Build with Gradle
-       run: ./gradlew assembleRelease
+       run: ./gradlew koin:assembleRelease
 
      - name: Upload to Firebase
        env:
@@ -89,7 +90,7 @@ jobs:
             "$apk_path" \
             --app "$FIREBASE_PROJECT_ID" \
             --groups "bcsd" \
-            --release-notes "${{ steps.date.outputs.time }} develop" \
+            --release-notes "${{ steps.date.outputs.time }} - develop" \
             --debug
 
      - name: Upload to Slack

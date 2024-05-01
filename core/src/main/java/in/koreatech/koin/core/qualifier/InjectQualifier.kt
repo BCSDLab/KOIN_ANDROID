@@ -21,7 +21,10 @@ annotation class OwnerAuth
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class PreSignedUrl
-annotation class REFRESH
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class Refresh
 
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)

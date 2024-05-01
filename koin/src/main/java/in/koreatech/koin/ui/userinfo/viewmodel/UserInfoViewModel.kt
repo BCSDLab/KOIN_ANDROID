@@ -1,15 +1,23 @@
 package `in`.koreatech.koin.ui.userinfo.viewmodel
 
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
-import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
-import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
-import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.common.UiStatus
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
+import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
+import `in`.koreatech.koin.ui.userinfo.UserInfoState
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,37 +30,27 @@ class UserInfoViewModel @Inject constructor(
     private val _user = MutableLiveData<User?>()
     val user: LiveData<User?> get() = _user
 
-    private val _logoutEvent = SingleLiveEvent<Unit>()
-    val logoutEvent: LiveData<Unit> get() = _logoutEvent
-
-    private val _userRemoveEvent = SingleLiveEvent<Unit>()
-    val userRemoveEvent: LiveData<Unit> get() = _userRemoveEvent
-
-    private val _getUserErrorMessage = SingleLiveEvent<String>()
-    val getUserErrorMessage: LiveData<String> get() = _getUserErrorMessage
-
-    private val _logoutErrorMessage = SingleLiveEvent<String>()
-    val logoutErrorMessage: LiveData<String> get() = _logoutErrorMessage
-
-    private val _userRemoveErrorMessage = SingleLiveEvent<String>()
-    val userRemoveErrorMessage: LiveData<String> get() = _userRemoveErrorMessage
+    private val _userInfoState = MutableStateFlow(UserInfoState())
+    val userInfoState: StateFlow<UserInfoState> = _userInfoState.asStateFlow()
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
         userInfoUseCase().let { (user, error) ->
-            if (error != null) _getUserErrorMessage.value = error.message
+            if (error != null) _userInfoState.update {
+                it.copy(status = UiStatus.Failed(error.message))
+            }
             else _user.value = user
         }
     }
 
     fun logout() = viewModelScope.launchWithLoading {
-        userLogoutUseCase()?.let {
-            _logoutErrorMessage.value = it.message
-        } ?: _logoutEvent.call()
+        userLogoutUseCase()?.let { errorHandler ->
+            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
     }
 
     fun removeUser() = viewModelScope.launchWithLoading {
         userRemoveUseCase().second?.let { errorHandler ->
-            _userRemoveErrorMessage.value = errorHandler.message
-        } ?: _userRemoveEvent.call()
+            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
     }
 }

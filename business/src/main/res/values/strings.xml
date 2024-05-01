@@ -1,0 +1,73 @@
+<resources>
+    <string name="title_activity_business_main">BusinessMainActivity</string>
+
+    <!--change_password-->
+    <string name="master_sign_up">사장님용\n회원가입</string>
+    <string name="input_email">이메일 입력</string>
+    <string name="input_authentication_code">인증번호 입력</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="change_password">비밀번호 변경</string>
+    <string name="password_condition">* 특수문자 포함 영어와 숫자 조합 6~18 자리</string>
+    <string name="not_coincide_password">비밀번호가 일치하지 않습니다.</string>
+    <string name="please_sign_in_with_new_password">비밀번호가 변경되었습니다.\n새로운 비밀번호로 로그인 부탁드립니다.</string>
+    <string name="password_change_complete">비밀번호 변경 완료</string>
+    <string name="resend">재발송</string>
+    <string name="send_authentication_code">인증번호발송</string>
+    <string name="email_certification">이메일 인증하기</string>
+    <string name="confirm_password">비밀번호 확인</string>
+    <string name="new_password">새 비밀번호</string>
+    <string name="changing_password">비밀번호 변경하기</string>
+    <string name="go_login_activity">로그인 화면 바로가기</string>
+    <string name="title_activity_splash">SplashActivity</string>
+
+    <string name="input_basic_information">1.기본 정보 입력</string>
+    <string name="id">아이디</string>
+    <string name="password">비밀번호</string>
+    <string name="password_confirm">비밀번호 확인</string>
+    <string name="password_mismatch" >비밀번호가 일치하지 않습니다.</string>
+    <string name="password_requirements">* 특수문자 포함 영어와 숫자 조합 6~18 자리 이상</string>
+    <string name="email_confirm"> 본인확인 이메일</string>
+    <string name="email_authentication">이메일 인증하기</string>
+    <string name="account_authentication">계정 인증</string>
+    <string name="verification_code_prompt">발송된 인증번호 6자리를 입력해주세요</string>
+    <string name="enter_verification_code">인증번호 입력</string>
+    <string name="resend_verification_code">재발송</string>
+
+
+    <string name="one_third">1/3</string>
+    <string name="two_third">2/3</string>
+    <string name="three_third">3/3</string>
+    <string name="next">다음</string>
+    <string name="verification_code_error">인증번호가 일치하지 않습니다.</string>
+    <string name="by">으로</string>
+    <string name="time_limit">제한시간</string>
+    <string name="business_auth">3.사업자 인증</string>
+    <string name="master_name">대표자명(실명)</string>
+    <string name="enter_store_name">가게명 직접 입력하기</string>
+    <string name="search_store">가게검색</string>
+    <string name="file_upload">파일첨부</string>
+    <string name="file_upload_prompt">파일을 첨부해주세요</string>
+    <string name="file_upload_instruction">사업자등록증, 영업신고증, 통장사본 이미지 첨부</string>
+    <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
+    <string name="select_file">파일 선택하기</string>
+    <string name="cancel">취소</string>
+    <string name="business_registration_number">사업자 등록번호</string>
+    <string name="personal_contact">개인 연락처</string>
+    <string name="search_shop">상점 검색</string>
+    <string name="store_name">식당이름</string>
+    <string name="delivery">배달</string>
+    <string name="card_payment">카드결제</string>
+    <string name="account_transfer">계좌이체</string>
+    <string name="phone_number">전화번호</string>
+    <string name="select">선택</string>
+    <string name="signup_request_complete">가입 신청 완료</string>
+    <string name="signup_request_complete_description">가입 신청이 완료되었습니다.\\n가입 허가가 승인되면 로그인이 가능합니다.</string>
+    <string name="navigate_to_login_screen">로그인 화면으로 가기</string>
+    <string name="back_icon">BackArrow</string>
+    <string name="check_icon">check</string>
+    <string name="upload_file_icon">upload file</string>
+    <string name="file_icon">upload item image</string>
+    <string name="search_icon">search</string>
+    <string name="email_not_validate">존재하지 않는 도메인입니다.</string>
+
+</resources>
