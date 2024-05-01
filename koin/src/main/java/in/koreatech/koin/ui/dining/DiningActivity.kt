@@ -6,10 +6,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityDiningBinding
 import `in`.koreatech.koin.domain.model.dining.DiningType
@@ -35,11 +38,14 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private val diningDateAdapter by lazy { DiningDateAdapter {
         viewModel.setSelectedDate(it)
     } }
+    private lateinit var diningViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initDiningViewPagerScrollCallback()
         initCalendar()
         initViewPager()
 
@@ -67,6 +73,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             diningViewPager.apply {
                 offscreenPageLimit = 3
                 adapter = DiningItemsViewPager2Adapter(this@DiningActivity)
+                registerOnPageChangeCallback(diningViewPagerScrollCallback)
             }
             TabLayoutMediator(tabsDiningTime, diningViewPager) { tab, position ->
                 tab.text = when (position) {
@@ -83,6 +90,17 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 DiningType.NextBreakfast -> {
                     tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
                     diningDateAdapter.setSelectedPosition(dates.size / 2 + 1)
+                }
+            }
+            // 스크롤이 아닌 탭 선택 이벤트만 받기 위한 구현
+            repeat(binding.tabsDiningTime.tabCount) {
+                val tab = binding.tabsDiningTime.getTabAt(it)
+                tab?.view?.setOnClickListener {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_TIME,
+                        tab.text.toString()
+                    )
                 }
             }
         }
@@ -115,5 +133,31 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             val offset = (screenWidthPx / 2 - itemWidthPx / 2)
             layoutManager?.scrollToPositionWithOffset(todayPosition, offset)
         }
+    }
+
+    private fun initDiningViewPagerScrollCallback() {
+        // 탭 선택이 아닌 스크롤 이벤트만 받기 위한 구현
+        diningViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+            var isUserScrolling = false
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                if(state == ViewPager2.SCROLL_STATE_DRAGGING){
+                    isUserScrolling = true
+                } else if(state == ViewPager2.SCROLL_STATE_IDLE){
+                    if(isUserScrolling){
+                        EventLogger.logScrollEvent(
+                            AnalyticsConstant.Domain.CAMPUS,
+                            AnalyticsConstant.Label.MENU_TIME,
+                            binding.tabsDiningTime.getTabAt(binding.tabsDiningTime.selectedTabPosition)?.text.toString()
+                        )
+                    }
+                    isUserScrolling = false
+                }
+            }
+        }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.diningViewPager.unregisterOnPageChangeCallback(diningViewPagerScrollCallback)
     }
 }

@@ -12,6 +12,8 @@ import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 
 @AndroidEntryPoint
 class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() {
@@ -39,12 +41,27 @@ class BusTimetableFragment : DataBindingFragment<BusTimetableFragmentBinding>() 
 
         binding.busTimetableBustypeShuttle.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Shuttle)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE,
+                getString(R.string.bus_name_school_shuttle)
+            )
         }
         binding.busTimetableBustypeDaesung.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.Express)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE,
+                getString(R.string.bus_name_express)
+            )
         }
         binding.busTimetableBustypeCity.setOnClickListener {
             busTimetableViewModel.setBusType(BusType.City)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE,
+                getString(R.string.bus_name_city)
+            )
         }
     }
 

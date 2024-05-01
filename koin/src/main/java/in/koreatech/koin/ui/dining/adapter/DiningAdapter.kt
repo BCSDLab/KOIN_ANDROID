@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.util.DiningUtil
 
 class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
@@ -85,6 +88,19 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                             .load(dining.imageUrl)
                             .into(imageView)
                         dialog.show()
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.CAMPUS,
+                            AnalyticsConstant.Label.MENU_IMAGE,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                        )
+                    }
+                } else {
+                    cardViewDining.setOnClickListener {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.CAMPUS,
+                            AnalyticsConstant.Label.MENU_IMAGE,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                        )
                     }
                 }
 
