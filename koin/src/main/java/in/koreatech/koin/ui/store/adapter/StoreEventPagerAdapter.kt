@@ -4,24 +4,42 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreEventCardBinding
 import androidx.recyclerview.widget.ListAdapter
-import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 
 class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.StoreEventCardViewHolder>(
     diffCallback
 ){
-    private val storeEvents = mutableListOf<StoreEvent>()
+    private val glideOptions: RequestOptions = RequestOptions()
+        .fitCenter()
+        .override(300, 300)
+        .error(R.drawable.image_no_image)
+        .placeholder(R.color.white)
+
+    var onItemClickListener: OnItemClickListener? = null
+
     inner class StoreEventCardViewHolder(
         val binding: StoreEventCardBinding
     ): RecyclerView.ViewHolder(binding.root){
         val container = binding.storeEventContainer
         val eventStoreImage = binding.eventImageView
         val eventStoreName = binding.evnetStoreNameTv
+        fun bind(storeEvent: StoreEvent) {
+            binding.root.setOnClickListener {
+                onItemClickListener?.onItemClick(storeEvent)
+
+            }
+        }
     }
 
     override fun onCreateViewHolder(
@@ -32,15 +50,25 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
         return StoreEventCardViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = storeEvents.size
-
     override fun onBindViewHolder(holder: StoreEventPagerAdapter.StoreEventCardViewHolder, position: Int) {
-        Log.d("로그 이벤트2", storeEvents.toString())
-        val event = storeEvents[position]
+
+        val event = getItem(position % itemCount)
         with(holder){
-            if(storeEvents.size > 0){
-                eventStoreName.text = storeEvents[position % storeEvents.size].shop_name
+            bind(event)
+
+            eventStoreName.text = itemView.context.getString(R.string.store_at_here, event.shop_name)
+
+            if(event.thumbnail_images?.isEmpty() == true){
+                eventStoreImage.setImageResource(R.drawable.image_no_image)
             }
+            else{
+                Glide.with(eventStoreImage)
+                    .load(event.thumbnail_images?.get(0))
+                    .override(100, 100)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
+                    .into(eventStoreImage)
+            }
+
 
             when(position % 4){
                 0 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_1))
@@ -48,17 +76,19 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
                 2 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_3))
                 3 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_4))
             }
-            Log.d("로그 이벤트3", event.toString())
         }
     }
 
-    fun setStoreEvents(items: List<StoreEvent>?) {
-        if (items != null) {
-            storeEvents.clear()
-            storeEvents.addAll(items)
+    inline fun setOnItemClickListener(crossinline onItemClick: (storeEvent: StoreEvent) -> Unit) {
+        onItemClickListener = object : OnItemClickListener {
+            override fun onItemClick(storeEvent: StoreEvent) {
+                onItemClick(storeEvent)
+            }
         }
-        Log.d("로그 이벤트", storeEvents.toString())
-        notifyDataSetChanged()
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(storeEvent: StoreEvent)
     }
 
     companion object {

@@ -25,6 +25,7 @@ fun StoreItemResponse.toStore(): Store = Store(
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
     isEvent = isEvent ?: false,
+    isOpen = isOpen ?: false,
     open = open.filter { it.dayOfWeek == localDayOfWeekName }.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,
@@ -32,7 +33,7 @@ fun StoreItemResponse.toStore(): Store = Store(
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.first(),
+    }.getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00:00")},
     categoryIds = categoryIds.map { it.toStoreCategory() }
 )
 
@@ -64,7 +65,7 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.orEmpty().first(),
+    }.orEmpty().getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00,00")},
     imageUrls = imageUrls ?: emptyList(),
     shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
     menuCategories = menuCategories?.map { it.toCategory() }.orEmpty()

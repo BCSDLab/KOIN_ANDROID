@@ -187,7 +187,8 @@
 
     <!--store-->
     <string name="store_how_about_here">여기는 어떠세요?</string>
-    <string name="get_discount">할인 혜택을 받아보세요!</string>
+    <string name="store_get_discount">할인 혜택을 받아보세요!</string>
+    <string name="store_at_here">%1$s에서</string>
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
