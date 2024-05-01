@@ -37,7 +37,7 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun onShopNameChanged(storeName: String) = intent {
         reduce {
-            state.copy(storeName = storeName)
+            state.copy(shopName = storeName)
         }
     }
 
