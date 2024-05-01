@@ -26,6 +26,7 @@ import `in`.koreatech.koin.util.ext.goToKakaoTalkBcsdlabFriend
 
 class ErrorActivity : ActivityBase() {
     private val binding by dataBinding<ActivityErrorBinding>(R.layout.activity_error)
+    override val screenTitle: String = "에러"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

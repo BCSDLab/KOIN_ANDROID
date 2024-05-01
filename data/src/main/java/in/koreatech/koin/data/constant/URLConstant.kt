@@ -33,6 +33,7 @@ object URLConstant {
         const val BUS = "bus"
         const val COURSES = "$BUS/courses"
         const val TIMETABLE = "$BUS/timetable"
+        const val TIMETABLE_V2 = "$BUS/timetable/v2"
         const val SEARCH = "$BUS/search"
         const val BUSES = "/buses"
     }

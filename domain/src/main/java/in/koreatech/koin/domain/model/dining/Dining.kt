@@ -9,7 +9,10 @@ data class Dining(
     val priceCash: String,
     val kcal: String,
     val menu: List<String>,
+    val imageUrl: String,
     val createdAt: String,
     val updatedAt: String,
+    val soldoutAt: String,
+    val changedAt: String,
     val error: String
 )
