@@ -89,7 +89,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 DiningType.Dinner -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(2))
                 DiningType.NextBreakfast -> {
                     tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
-                    diningDateAdapter.setSelectedPosition(dates.size / 2 + 1)
+                    diningDateAdapter.selectPosition(dates.size / 2 + 1)
                 }
             }
             // 스크롤이 아닌 탭 선택 이벤트만 받기 위한 구현
@@ -120,7 +120,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             diningDateAdapter.submitList(dates)
 
             val todayPos = dates.size / 2
-            diningDateAdapter.setSelectedPosition(todayPos)
+            diningDateAdapter.selectPosition(todayPos)
             scrollDateTodayToCenter(todayPos)
         }
     }
