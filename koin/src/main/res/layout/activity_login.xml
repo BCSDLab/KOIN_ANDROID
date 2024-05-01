@@ -265,7 +265,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorPrimary"
-            android:text="회원가입"
+            android:text="@string/sign_up"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:fontName="Normal"
