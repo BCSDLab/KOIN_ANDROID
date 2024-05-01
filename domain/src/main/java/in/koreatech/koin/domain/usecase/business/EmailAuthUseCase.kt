@@ -14,7 +14,8 @@ class EmailAuthUseCase @Inject constructor(
     ): Result<Unit> {
         return try {
             val authToken = ownerVerificationCodeRepository.compareVerificationCode(address, verificationCode)
-            tokenRepository.saveOwnerAccessToken(authToken.getOrDefault(defaultValue = null)!!.token)
+            authToken.getOrDefault(defaultValue = null)
+                ?.let { tokenRepository.saveOwnerAccessToken(it.token) }
             Result.success(Unit)
         } catch (t: Throwable) {
             Result.failure(t)
