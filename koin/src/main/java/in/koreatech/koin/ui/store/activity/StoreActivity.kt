@@ -56,7 +56,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-    private val storeEventPagerAdapter = StoreEventPagerAdapter()
+    private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
+        setOnItemClickListener {
+            storeDetailContract.launch(it.shop_id)
+        }
+    }
 
     private var isSearchMode: Boolean = false
         set(value) {
@@ -67,28 +71,28 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
     private var showRemoveQueryButton : Boolean = false
-    set(value) {
-        if (!value) {
-            binding.searchImageView.background = ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_search
-            )
-            binding.searchImageView.layoutParams.apply {
-                width = dpToPx(24)
-                height = dpToPx(24)
+        set(value) {
+            if (!value) {
+                binding.searchImageView.background = ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_search
+                )
+                binding.searchImageView.layoutParams.apply {
+                    width = dpToPx(24)
+                    height = dpToPx(24)
+                }
+            } else {
+                binding.searchImageView.background = ContextCompat.getDrawable(
+                    this,
+                    R.drawable.ic_search_close
+                )
+                binding.searchImageView.layoutParams.apply {
+                    width = dpToPx(16)
+                    height = dpToPx(16)
+                }
             }
-        } else {
-            binding.searchImageView.background = ContextCompat.getDrawable(
-                this,
-                R.drawable.ic_search_close
-            )
-            binding.searchImageView.layoutParams.apply {
-                width = dpToPx(16)
-                height = dpToPx(16)
-            }
+            field = value
         }
-        field = value
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,17 +148,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         binding.eventViewPager.apply {
-            /*tmpData.add("기분좋은뷔페")
-            tmpData.add("거성한식식당")
-            tmpData.add("한솥")
-            tmpData.add("소주방울")
-            tmpData.add("멕시카나")*/
 
             currentItem = Int.MAX_VALUE / 2
             offscreenPageLimit = 3
-            adapter = StoreEventPagerAdapter()
-            val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
-            val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
+            adapter = storeEventPagerAdapter
+            val nextItemPx = resources.getDimension(R.dimen.event_view_pager_next_item_visible_dp)
+            val currentItemMarginPx = resources.getDimension(R.dimen.event_view_pager_item_margin)
             setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
             addItemDecoration(
                 HorizontalMarginItemDecoration(
@@ -171,7 +170,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             var currentPosition = binding.eventViewPager.currentItem
             val itemCount = binding.eventViewPager.adapter?.itemCount ?: 0
 
-            currentPosition += 1
+            currentPosition = if (currentPosition >= itemCount - 1) 0 else currentPosition + 1
 
             binding.eventViewPager.setCurrentItem(currentPosition, true)
             viewPagerHandler.postDelayed(this, viewPagerDelayTime)
@@ -191,8 +190,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(viewModel.storeEvents){
-            storeEventPagerAdapter.setStoreEvents(it)
-            Log.d("로그", it.toString())
+            storeEventPagerAdapter.submitList(it)
         }
 
         lifecycleScope.launch {
@@ -280,4 +278,3 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         startAutoScroll()
     }
 }
-

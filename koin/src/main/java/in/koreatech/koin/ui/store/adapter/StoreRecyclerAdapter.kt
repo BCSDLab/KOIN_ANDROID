@@ -37,24 +37,16 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
 
         fun bind(store: Store) {
             binding.storeNameTextview.text = store.name
-            binding.storeNameTextview.setStoreNameState(store.open.closed)
+            binding.storeNameTextview.setStoreNameState(store.isOpen)
             binding.storeDeliveryTextview.setTextState(store.isDeliveryOk)
             binding.storeCardTextview.setTextState(store.isCardOk)
             binding.storeAccountTextview.setTextState(store.isBankOk)
-            if(store.open.closed){
+            if(!store.isOpen){
                 binding.readyStoreFrameLayout.isVisible = true
                 binding.storeDoesNotOpenTextView.text = store.name + "은/는 준비 중 입니다."
             }
-            else{
-                !store.open.openStore()
-            }
 
-            binding.evnetStoreFrameLayout.isVisible = store.isEvent
-           /* binding.readyStoreFrameLayout.isVisible = if (store.open.closed) {
-                true
-            } else {
-                !store.open.openStore()
-            }*/
+            binding.eventImageView.isVisible = store.isEvent
 
             binding.root.setOnClickListener {
                 onItemClickListener?.onItemClick(store)
@@ -77,7 +69,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             setTextColor(
                 ContextCompat.getColor(
                     context,
-                    if (active) R.color.blue1 else R.color.black
+                    if (!active) R.color.blue1 else R.color.black
                 )
             )
         }

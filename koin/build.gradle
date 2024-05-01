@@ -143,4 +143,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database")
     implementation("com.google.firebase:firebase-perf")
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 }
