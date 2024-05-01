@@ -1,8 +1,8 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import android.graphics.Bitmap
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
-import java.io.InputStream
 
 data class BusinessAuthState(
     val name: String = "",
@@ -14,7 +14,7 @@ data class BusinessAuthState(
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
     val dialogVisibility:Boolean = false,
     val fileInfo: MutableList<StoreUrl> = mutableListOf(),
-    val inputStream: MutableList<InputStream> = mutableListOf(),
+    val bitmap: MutableList<Bitmap> = mutableListOf(),
     val continuation: Boolean = false,
     val error: Throwable? = null,
 ){

@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,9 +8,9 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -17,13 +18,12 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.io.InputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class BusinessAuthViewModel @Inject constructor(
-    private val attachStoreFileUseCase: AttachStoreFileUseCase,
-    private val uploadPreSignedUrlUseCase: UploadPreSignedUrlUseCase,
+    private val getPresignedUrlUseCase: AttachStoreFileUseCase,
+    private val uploadFilesUseCase: UploadFileUseCase,
     private val ownerRegisterUseCase: OwnerRegisterUseCase
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, BaseViewModel() {
     override val container =
@@ -82,15 +82,15 @@ class BusinessAuthViewModel @Inject constructor(
         postSideEffect(BusinessAuthSideEffect.NavigateToNextScreen)
     }
 
-    fun presignedUrl(//url 생성
+    fun getPreSignedUrl(
         uri: Uri,
         fileSize: Long,
         fileType: String,
         fileName: String,
-        fileStream: InputStream
+        bitmap: Bitmap
     ) {
         viewModelScope.launch {
-            attachStoreFileUseCase(
+            getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
                 intent {
@@ -111,8 +111,8 @@ class BusinessAuthViewModel @Inject constructor(
                         )
                     }
                     reduce {
-                        state.copy(inputStream = state.inputStream.toMutableList().apply {
-                            add(fileStream)
+                        state.copy(bitmap = state.bitmap.toMutableList().apply {
+                            add(bitmap)
                         })
                     }
                 }
@@ -128,33 +128,33 @@ class BusinessAuthViewModel @Inject constructor(
 
     }
 
-    fun uploadImage(//파일 업로드
+    fun uploadImage(
         url: String,
-        inputStream: InputStream,
+        bitmap: String,
         mediaType: String,
         mediaSize: Long
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            uploadPreSignedUrlUseCase(url, inputStream, mediaType, mediaSize).onSuccess {
+            uploadFilesUseCase(url, bitmap, mediaType, mediaSize).onSuccess {
                 intent {
                     reduce { state.copy(error = null) }
                 }
             }.onFailure {
-                intent {
+                   intent {
                     reduce { state.copy(error = it) }
                 }
             }
         }
     }
 
-    fun sendRegisterRequest(//등록 요청
+    fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
         email: String,
         name: String,
         password: String,
         phoneNumber: String,
-        shopId: Int,
+        shopId: Int?,
         shopName: String
     ) {
         viewModelScope.launch {
