@@ -52,7 +52,7 @@ public class AppBarBase extends AppBarLayout {
         this.onClickListener = onClickListener;
         background.setOnClickListener(onClickListener);
         leftButton.setOnClickListener(onClickListener);
-        rightButton.setOnClickListener(v -> {
+        rightButton.setOnClickListener( v -> {
             onClickListener.onClick(v);
             EventLogger.INSTANCE.logClickEvent(
                     AnalyticsConstant.Domain.USER,
@@ -116,7 +116,7 @@ public class AppBarBase extends AppBarLayout {
         leftButton.setBackground(leftButtonBackground);
         leftButton.setText(leftButtonString);
         leftButton.setVisibility(leftButtonVisibility);
-        if(leftButtonHeight!= -1 || leftButtonWidth != -1){
+        if (leftButtonHeight != -1 || leftButtonWidth != -1) {
             leftButton.setHeight(leftButtonHeight);
             leftButton.setWidth(leftButtonWidth);
         }
@@ -125,7 +125,7 @@ public class AppBarBase extends AppBarLayout {
         rightButton.setBackground(rightButtonBackground);
         rightButton.setText(rightButtonString);
         rightButton.setVisibility(rightButtonVisibility);
-        if(leftButtonHeight!= -1 || leftButtonWidth != -1){
+        if (leftButtonHeight != -1 || leftButtonWidth != -1) {
             rightButton.setHeight(rightButtonHeight);
             rightButton.setWidth(rightButtonWidth);
         }
