@@ -132,39 +132,51 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                     else -> {
                         koinNavigationDrawerViewModel.selectMenu(state)
-                        var action = ""
-                        var label = ""
-                        var value = ""
-                        when(state) {
+                        when (state) {
                             MenuState.Store -> {
-                                action = AnalyticsConstant.Domain.BUSINESS
-                                label = AnalyticsConstant.Label.HAMBURGER_SHOP
-                                value = getString(R.string.nearby_stores)
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.BUSINESS,
+                                    AnalyticsConstant.Label.HAMBURGER_SHOP,
+                                    getString(R.string.nearby_stores)
+                                )
                             }
+
                             MenuState.Bus -> {
-                                action = AnalyticsConstant.Domain.CAMPUS
-                                label = AnalyticsConstant.Label.HAMBURGER_BUS
-                                value = getString(R.string.bus)
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER_BUS,
+                                    getString(R.string.bus)
+                                )
                             }
+
                             MenuState.Dining -> {
-                                action = AnalyticsConstant.Domain.CAMPUS
-                                label = AnalyticsConstant.Label.HAMBURGER_DINING
-                                value = getString(R.string.navigation_item_dining)
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER_DINING,
+                                    getString(R.string.navigation_item_dining)
+                                )
                             }
+
                             MenuState.UserInfo -> {
-                                action = AnalyticsConstant.Domain.USER
-                                value = getString(R.string.navigation_drawer_right_myinfo)
                                 if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
-                                    label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN
+                                    EventLogger.logClickEvent(
+                                        AnalyticsConstant.Domain.USER,
+                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
+                                        getString(R.string.navigation_drawer_right_myinfo)
+                                    )
                                     showLoginRequestDialog()
                                 } else {
-                                    label = AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN
+                                    EventLogger.logClickEvent(
+                                        AnalyticsConstant.Domain.USER,
+                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
+                                        getString(R.string.navigation_drawer_right_myinfo)
+                                    )
                                     goToUserInfoActivity()
                                 }
                             }
+
                             else -> Unit
                         }
-                        EventLogger.logClickEvent(action, label, value)
                     }
                 }
             }
@@ -259,6 +271,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         goToUserInfoActivity()
                     }
                 }
+
                 else -> Unit
             }
             drawerLayout.closeDrawer()
