@@ -395,7 +395,7 @@
                         <androidx.viewpager2.widget.ViewPager2
                             android:id="@+id/event_view_pager"
                             android:layout_width="match_parent"
-                            android:layout_height="64dp"
+                            android:layout_height="72dp"
                             android:layout_marginTop="4dp"
                             android:clipToPadding="false"
                             app:layout_constraintTop_toBottomOf="@id/category_constraint_layout"

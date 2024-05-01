@@ -23,7 +23,7 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
     private val glideOptions: RequestOptions = RequestOptions()
         .fitCenter()
         .override(300, 300)
-        .error(R.drawable.image_no_image)
+        .error(R.drawable.event_default)
         .placeholder(R.color.white)
 
     var onItemClickListener: OnItemClickListener? = null
@@ -56,10 +56,10 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
         with(holder){
             bind(event)
 
-            eventStoreName.text = itemView.context.getString(R.string.store_at_here, event.shop_name)
+            eventStoreName.text = event.shop_name
 
             if(event.thumbnail_images?.isEmpty() == true){
-                eventStoreImage.setImageResource(R.drawable.image_no_image)
+                eventStoreImage.setImageResource(R.drawable.event_default)
             }
             else{
                 Glide.with(eventStoreImage)
@@ -67,14 +67,6 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
                     .override(100, 100)
                     .apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
                     .into(eventStoreImage)
-            }
-
-
-            when(position % 4){
-                0 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_1))
-                1 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_2))
-                2 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_3))
-                3 -> container.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.event_card_color_4))
             }
         }
     }

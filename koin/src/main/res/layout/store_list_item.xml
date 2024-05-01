@@ -109,7 +109,8 @@
                     android:id="@+id/store_does_not_open_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
                     android:text="준비중"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
