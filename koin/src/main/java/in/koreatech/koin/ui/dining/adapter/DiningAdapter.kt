@@ -13,6 +13,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -78,6 +80,12 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                                 ): Boolean {
                                     photoView.post {
                                         photoView.scale = DIALOG_MIN_SCALE
+
+                                        val closeButton = dialog.findViewById<ImageView>(R.id.close_button_dining)
+                                        val lp = closeButton.layoutParams as FrameLayout.LayoutParams
+                                        val rectF = photoView.displayRect
+                                        lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
+                                        closeButton.layoutParams = lp
                                     }
                                     return false
                                 }
