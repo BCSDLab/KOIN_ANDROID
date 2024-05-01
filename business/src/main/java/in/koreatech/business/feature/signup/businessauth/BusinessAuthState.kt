@@ -6,7 +6,7 @@ import `in`.koreatech.koin.domain.model.store.StoreUrl
 
 data class BusinessAuthState(
     val name: String = "",
-    val storeName: String = "",
+    val shopName: String = "",
     val shopNumber: String = "",
     val shopId: Int? = null,
     val phoneNumber: String = "",
@@ -19,5 +19,5 @@ data class BusinessAuthState(
     val error: Throwable? = null,
 ){
     val isButtonEnabled: Boolean
-        get() = name.isNotEmpty() && storeName.isNotEmpty() && shopNumber.isNotEmpty() && phoneNumber.isNotEmpty() && selectedImages.isNotEmpty()
+        get() = name.isNotEmpty() && shopName.isNotEmpty() && shopNumber.isNotEmpty() && phoneNumber.isNotEmpty() && selectedImages.isNotEmpty()
 }
