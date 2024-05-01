@@ -223,24 +223,28 @@ fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
 }
 
 @Composable
-fun StoreBottomSheet(onSelected: () -> Unit) {
+fun StoreBottomSheet(store: Store, viewModel: SearchStoreViewModel= hiltViewModel()) {
     Row(
-        modifier = Modifier.background(Color.White)
-            .fillMaxWidth().height(118.dp)
+        modifier = Modifier
+            .background(Color.White)
+            .fillMaxWidth()
+            .height(118.dp)
             .padding(20.dp),
 
         ) {
-        Column(modifier = Modifier,) {
+        Column(modifier = Modifier) {
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = stringResource(id = R.string.store_name),
+                text = store.name,
                 fontSize = 18.sp,
                 color = Color.Black,
                 fontWeight = Bold,
             )
-            Row(  modifier=Modifier,
+            Row(
+                modifier = Modifier,
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically) {
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = stringResource(id = R.string.phone_number),
                     fontSize = 14.sp,
@@ -249,20 +253,17 @@ fun StoreBottomSheet(onSelected: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "", fontSize = 14.sp, color = Color.Black,
+                    text =store.phone , fontSize = 14.sp, color = Color.Black,
                     fontWeight = Bold
                 )
-
             }
-
         }
         Button(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 100.dp)
-                .height(55.dp)
-            ,
-            onClick = { onSelected() },
+                .padding(start = 20.dp)
+                .height(55.dp),
+            onClick = { viewModel.onNavigateToNextScreen(store.uid, store.name) },
             shape = RectangleShape,
         ) {
             Text(text = stringResource(id = R.string.select), fontWeight = Bold)
