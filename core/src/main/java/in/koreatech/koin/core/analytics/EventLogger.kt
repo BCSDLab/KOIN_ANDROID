@@ -8,6 +8,10 @@ import `in`.koreatech.koin.core.constant.AnalyticsConstant
 
 object EventLogger {
 
+    private const val EVENT_CATEGORY = "event_category"
+    private const val EVENT_LABEL = "event_label"
+    private const val VALUE = "value"
+
     /**
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param label: 이벤트 소분류
@@ -34,11 +38,11 @@ object EventLogger {
      * @sample logEvent("BUSINESS", "click", "main_shop_categories", "전체보기")
      */
     private fun logEvent(action: String, category: String, label: String, value: String) {
-        if(BuildConfig.IS_DEBUG) return
+        if (BuildConfig.IS_DEBUG) return
         Firebase.analytics.logEvent(action) {
-            param("event_category", category)
-            param("event_label", label)
-            param("value", value)
+            param(EVENT_CATEGORY, category)
+            param(EVENT_LABEL, label)
+            param(VALUE, value)
         }
     }
 }
