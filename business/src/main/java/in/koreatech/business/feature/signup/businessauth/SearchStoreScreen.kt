@@ -139,8 +139,8 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
-    var selectedItemIndex by remember { mutableStateOf(-1) }
+fun StoreList(item: List<Store>, viewModel: SearchStoreViewModel= hiltViewModel()) {
+    val state= viewModel.collectAsState().value
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
     )
@@ -160,15 +160,15 @@ fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
                         .fillMaxWidth()
                         .height(59.dp)
                         .clickable {
-                            selectedItemIndex = index
                             scope.launch {
                                 sheetState.show()
                             }
+                            viewModel.onItemIndexChange(index)
                         }
                         .border(
                             BorderStroke(
-                                width = if (selectedItemIndex == index) 1.5.dp else 1.dp,
-                                color = if (selectedItemIndex == index) ColorPrimary else ColorHelper
+                                width = if (state.itemIndex == index) 1.5.dp else 1.dp,
+                                color = if (state.itemIndex == index) ColorPrimary else ColorHelper
                             )
                         ),
                 ) {
@@ -181,7 +181,7 @@ fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = stringResource(id = R.string.store_name),
+                            text = item[index].name,
                             fontSize = 15.sp,
                             color = Color.Black,
                             fontWeight = Bold
@@ -208,17 +208,15 @@ fun StoreList(item: List<String>, onSelected: () -> Unit = {}) {
             }
         }
 
-        ModalBottomSheetLayout(
-            modifier = Modifier,
-            sheetState = sheetState,
-            sheetElevation = 8.dp,
-            sheetContent = {
-            StoreBottomSheet {
-                onSelected()
+        if(state.itemIndex > -1)
+            ModalBottomSheetLayout(
+                modifier = Modifier,
+                sheetState = sheetState,
+                sheetElevation = 8.dp,
+                sheetContent = {
+                    StoreBottomSheet(item[state.itemIndex])
+                }) {
             }
-        }) {
-        }
-
     }
 }
 
