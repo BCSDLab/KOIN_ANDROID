@@ -39,11 +39,6 @@ class SearchStoreViewModel @Inject constructor(
     fun onNavigateToBackScreen() = intent {
         postSideEffect(SearchStoreSideEffect.NavigateToBackScreen)
     }
-
-    fun onNavigateToNextScreen(shopId: Int, shopName: String) = intent {
-        postSideEffect(SearchStoreSideEffect.NavigateToNextScreen(shopId, shopName))
-    }
-
     init {
         intent {
             viewModelScope.launch(Dispatchers.IO) {
