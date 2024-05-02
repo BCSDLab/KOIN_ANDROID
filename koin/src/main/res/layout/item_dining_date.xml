@@ -22,27 +22,43 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="월" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_today_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:constraint_referenced_ids="background_today_indicator,background_today_indicator_bottom_line" />
+
         <View
             android:id="@+id/background_selected_date"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:background="@drawable/background_selected_date"
             android:visibility="invisible"
+            android:background="@drawable/background_selected_date_today"
             app:layout_constraintBottom_toBottomOf="@id/text_view_day"
             app:layout_constraintEnd_toEndOf="@id/text_view_day"
             app:layout_constraintStart_toStartOf="@id/text_view_day"
             app:layout_constraintTop_toTopOf="@id/text_view_day" />
 
         <View
-            android:id="@+id/background_selected_date_today"
+            android:id="@+id/background_today_indicator"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:background="@drawable/background_selected_date_today"
-            android:visibility="invisible"
+            android:background="@drawable/background_selected_date"
             app:layout_constraintBottom_toBottomOf="@id/text_view_day"
             app:layout_constraintEnd_toEndOf="@id/text_view_day"
             app:layout_constraintStart_toStartOf="@id/text_view_day"
             app:layout_constraintTop_toTopOf="@id/text_view_day" />
+
+        <View
+            android:id="@+id/background_today_indicator_bottom_line"
+            android:layout_width="11.5dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/background_date_today_indicator"
+            app:layout_constraintTop_toBottomOf="@id/background_today_indicator"
+            app:layout_constraintStart_toStartOf="@id/background_today_indicator"
+            app:layout_constraintEnd_toEndOf="@id/background_today_indicator" />
 
         <TextView
             android:id="@+id/text_view_day"
