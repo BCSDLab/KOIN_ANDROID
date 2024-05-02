@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,13 +12,18 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import `in`.koreatech.business.feature.signup.accountauth.EmailAuthScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
+import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
+import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthViewModel
 import `in`.koreatech.business.feature.signup.businessauth.SearchStoreScreen
 import `in`.koreatech.business.feature.signup.completesignup.CompleteSignupScreen
 
 
 @Composable
-fun SignupNavigator(modifier: Modifier) {
+fun SignupNavigator(
+    modifier: Modifier,
+    accountSetupViewModel: AccountSetupViewModel= hiltViewModel(),
+    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -82,7 +88,9 @@ fun SignupNavigator(modifier: Modifier) {
             route = SignupRoute.STORE_SETUP.name,
         ) {
             SearchStoreScreen(
-                onBackClicked = { navController.popBackStack() })
+                businessAuthViewModel = businessAuthViewModel,
+                onBackClicked = {
+                    navController.popBackStack() },)
         }
 
 

@@ -27,11 +27,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,6 +42,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDescription
@@ -53,14 +50,19 @@ import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSearch
 import `in`.koreatech.business.ui.theme.ColorSecondary
-import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.domain.model.store.Store
 import kotlinx.coroutines.launch
-import okhttp3.internal.immutableListOf
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit = {}) {
-    var search by remember { mutableStateOf("") }
-    val storeItems = immutableListOf("")
+fun SearchStoreScreen(
+    modifier: Modifier = Modifier,
+    viewModel: SearchStoreViewModel = hiltViewModel(),
+    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
+    onBackClicked: () -> Unit = {}
+) {
+    val state = viewModel.collectAsState().value
 
     Column(
         modifier = modifier,
@@ -105,7 +107,7 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                value = search, onValueChange = { search = it },
+                value = state.search, onValueChange = { viewModel.onSearchChanged(it) },
                 textStyle = TextStyle(fontSize = 14.sp),
 
                 colors = TextFieldDefaults.textFieldColors(
@@ -131,15 +133,26 @@ fun SearchStoreScreen(modifier: Modifier = Modifier, onBackClicked: () -> Unit =
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
-            StoreList(storeItems, onSelected = {})
+            StoreList(state.stores, viewModel,businessAuthViewModel)
+        }
+
+        viewModel.collectSideEffect {
+            when (it) {
+                is SearchStoreSideEffect.SearchStore -> {
+                }
+                SearchStoreSideEffect.NavigateToBackScreen -> {
+                    onBackClicked()
+                }
+            }
         }
     }
+
 }
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun StoreList(item: List<Store>, viewModel: SearchStoreViewModel= hiltViewModel()) {
+fun StoreList(item: List<Store>, viewModel: SearchStoreViewModel= hiltViewModel(), authViewModel: BusinessAuthViewModel= hiltViewModel() ) {
     val state= viewModel.collectAsState().value
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
@@ -214,14 +227,15 @@ fun StoreList(item: List<Store>, viewModel: SearchStoreViewModel= hiltViewModel(
                 sheetState = sheetState,
                 sheetElevation = 8.dp,
                 sheetContent = {
-                    StoreBottomSheet(item[state.itemIndex])
+                    StoreBottomSheet(item[state.itemIndex], viewModel, authViewModel)
                 }) {
             }
     }
 }
 
 @Composable
-fun StoreBottomSheet(store: Store, viewModel: SearchStoreViewModel= hiltViewModel()) {
+fun StoreBottomSheet(store: Store, viewModel: SearchStoreViewModel= hiltViewModel(), authViewModel: BusinessAuthViewModel= hiltViewModel() ) {
+   val state=authViewModel.collectAsState().value
     Row(
         modifier = Modifier
             .background(Color.White)
@@ -261,22 +275,14 @@ fun StoreBottomSheet(store: Store, viewModel: SearchStoreViewModel= hiltViewMode
                 .fillMaxWidth()
                 .padding(start = 20.dp)
                 .height(55.dp),
-            onClick = { viewModel.onNavigateToNextScreen(store.uid, store.name) },
+            onClick = {
+                viewModel.onNavigateToBackScreen()
+                authViewModel.onShopIdChanged(store.uid)
+                authViewModel.onShopNameChanged(store.name)},
             shape = RectangleShape,
         ) {
             Text(text = stringResource(id = R.string.select), fontWeight = Bold)
         }
-    }
-
-}
-
-
-@Preview
-@Composable
-fun PreviewSearchStoreScreen() {
-    KOIN_ANDROIDTheme {
-     //   StoreList(ImmutableList.of(""))
-        StoreBottomSheet(onSelected = {})
     }
 
 }
