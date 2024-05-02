@@ -30,7 +30,7 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
         fun bind(busArrivalInfo: BusArrivalInfo) {
             with(binding) {
                 root.setOnClickListener { onCardClickListener?.onCardClick(busArrivalInfo.busType) }
-                imageButtonSwitch.setOnClickListener { onSwitchClickListener?.onSwitchClick() }
+                imageButtonSwitch.setOnClickListener { onSwitchClickListener?.onSwitchClick(busArrivalInfo) }
 
                 textViewDepartures.text = busArrivalInfo.departure.localized(root.context)
                 textViewArrival.text = busArrivalInfo.arrival.localized(root.context)
@@ -94,10 +94,10 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
         notifyDataSetChanged()
     }
 
-    inline fun setOnSwitchClickListener(crossinline onSwitchClick: () -> Unit) {
+    inline fun setOnSwitchClickListener(crossinline onSwitchClick: (BusArrivalInfo) -> Unit) {
         onSwitchClickListener = object : OnSwitchClickListener {
-            override fun onSwitchClick() {
-                onSwitchClick()
+            override fun onSwitchClick(busArrivalInfo: BusArrivalInfo) {
+                onSwitchClick(busArrivalInfo)
             }
         }
     }
@@ -111,7 +111,7 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
     }
 
     interface OnSwitchClickListener {
-        fun onSwitchClick()
+        fun onSwitchClick(busArrivalInfo: BusArrivalInfo)
     }
 
     interface OnCardClickListener {
