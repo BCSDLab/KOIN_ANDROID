@@ -45,26 +45,14 @@ fun SignupNavigator(
         }
 
         composable(
-            route = "${SignupRoute.EMAIL_AUTH.name}/{email}/{password}",
-            arguments = listOf(
-                navArgument("email") {
-                    type = NavType.StringType
-                    nullable = true
-                },
-                navArgument("password") {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
+            route = "${SignupRoute.EMAIL_AUTH.name}/{email}",
         ) {
             val email = it.arguments?.getString("email") ?: ""
-            val password = it.arguments?.getString("password") ?: ""
             EmailAuthScreen(
                 email = email,
-                password = password,
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { email, password->
-                    navController.navigate("${SignupRoute.BUSINESS_AUTH.name}/$email/$password")
+                onNextClicked = {
+                    navController.navigate(SignupRoute.BUSINESS_AUTH.name)
                 },
             )
         }
