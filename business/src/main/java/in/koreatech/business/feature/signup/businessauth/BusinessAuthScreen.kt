@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorDescription
@@ -56,27 +57,29 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun BusinessAuthScreen(
     modifier: Modifier = Modifier,
-    viewModel: BusinessAuthViewModel = hiltViewModel(),
-    email: String,
-    password: String,
+    accountSetupViewModel: AccountSetupViewModel = hiltViewModel(),
+    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
     onSearchClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
 
-    val state = viewModel.collectAsState().value
+    val businessAuthState = businessAuthViewModel.collectAsState().value
+    val accountSetupState = accountSetupViewModel.collectAsState().value
+
     var fileName = ""
     var fileSize = 0L
+
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uriList ->
-            state.bitmap.clear()
-            state.fileInfo.clear()
+            businessAuthState.bitmap.clear()
+            businessAuthState.fileInfo.clear()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
-                viewModel.onImageUrlsChanged(mutableListOf())
+                businessAuthViewModel.onImageUrlsChanged(mutableListOf())
                 if (it.scheme.equals("content")) {
                     val cursor = context.contentResolver.query(it, null, null, null, null)
                     cursor.use {
@@ -91,9 +94,9 @@ fun BusinessAuthScreen(
                         }
                     }
                 }
-               viewModel.onImageUrlsChanged(uriList.map { AttachStore(it.toString(), fileName) }.toMutableList())
+               businessAuthViewModel.onImageUrlsChanged(uriList.map { AttachStore(it.toString(), fileName) }.toMutableList())
                 if (inputStream != null) {
-                    viewModel.getPreSignedUrl(
+                    businessAuthViewModel.getPreSignedUrl(
                         uri = it,
                         fileName = fileName,
                         fileSize = fileSize,
@@ -111,7 +114,7 @@ fun BusinessAuthScreen(
     ) {
         IconButton(
             modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { viewModel.onNavigateToBackScreen() }) {
+            onClick = { businessAuthViewModel.onNavigateToBackScreen() }) {
             Icon(
                 modifier = Modifier.padding(start = 10.dp),
                 painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -149,7 +152,7 @@ fun BusinessAuthScreen(
 
                 drawLine(
                     color = ColorSecondary,
-                    start = Offset(0f - 35, 0f),
+                    start = Offset(-35f, 0f),
                     end = Offset(size.width + 35, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
@@ -159,8 +162,8 @@ fun BusinessAuthScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             LinedTextField(
-                value = state.name,
-                onValueChange = { viewModel.onNameChanged(it) },
+                value = businessAuthState.name,
+                onValueChange = { businessAuthViewModel.onNameChanged(it) },
                 label = stringResource(id = R.string.master_name)
             )
 
@@ -169,13 +172,13 @@ fun BusinessAuthScreen(
             ) {
                 LinedTextField(
                     modifier = Modifier.width(197.dp),
-                    value = state.shopName,
-                    onValueChange = { viewModel.onShopNameChanged(it) },
+                    value = businessAuthState.shopName,
+                    onValueChange = { businessAuthViewModel.onShopNameChanged(it) },
                     label = stringResource(id = R.string.enter_store_name)
                 )
                 Button(
                     modifier = Modifier,
-                    onClick = { viewModel.onNavigateToSearchStore() },
+                    onClick = { businessAuthViewModel.onNavigateToSearchStore() },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
@@ -186,13 +189,13 @@ fun BusinessAuthScreen(
                 }
             }
             LinedTextField(
-                value = state.shopNumber,
-                onValueChange = { viewModel.onStoreNumberChanged(it) },
+                value = businessAuthState.shopNumber,
+                onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
                 label = stringResource(id = R.string.business_registration_number)
             )
             LinedTextField(
-                value = state.phoneNumber,
-                onValueChange = { viewModel.onPhoneNumberChanged(it) },
+                value = businessAuthState.phoneNumber,
+                onValueChange = { businessAuthViewModel.onPhoneNumberChanged(it) },
                 label = stringResource(id = R.string.personal_contact)
             )
 
@@ -202,9 +205,9 @@ fun BusinessAuthScreen(
                     .height(125.dp),
             ) {
 
-                if (state.selectedImages.isNotEmpty()) UploadFileList(
+                if (businessAuthState.selectedImages.isNotEmpty()) UploadFileList(
                     modifier,
-                    state.selectedImages
+                    businessAuthState.selectedImages
                 )
                 else
                     Column(
@@ -212,7 +215,7 @@ fun BusinessAuthScreen(
                             .fillMaxSize()
                             .height(125.dp)
                             .border(BorderStroke(1.dp, ColorHelper))
-                            .clickable { viewModel.onDialogVisibilityChanged(true) },
+                            .clickable { businessAuthViewModel.onDialogVisibilityChanged(true) },
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -234,7 +237,6 @@ fun BusinessAuthScreen(
                             color = ColorDescription,
                         )
                     }
-
             }
 
             Spacer(modifier = Modifier.height(47.dp))
@@ -242,7 +244,7 @@ fun BusinessAuthScreen(
                 .fillMaxWidth()
                 .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isButtonEnabled,
+                enabled = businessAuthState.isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     disabledBackgroundColor = ColorDisabledButton,
@@ -251,23 +253,23 @@ fun BusinessAuthScreen(
                 ),
 
                 onClick = {
-                    state.fileInfo.forEach {
-                        viewModel.uploadImage(
+                    businessAuthState.fileInfo.forEach {
+                        businessAuthViewModel.uploadImage(
                             it.preSignedUrl,
-                            state.bitmap[state.fileInfo.indexOf(it)].toString(),
+                            businessAuthState.bitmap[businessAuthState.fileInfo.indexOf(it)].toString(),
                             it.mediaType,
                             it.fileSize,
                         )
                     }
-                    viewModel.sendRegisterRequest(
-                        state.fileInfo.map { it.resultUrl },
-                        state.shopNumber,
-                        email,
-                        state.name,
-                        password,
-                        state.phoneNumber,
-                        state.shopId,
-                        state.shopName,
+                    businessAuthViewModel.sendRegisterRequest(
+                        businessAuthState.fileInfo.map { it.resultUrl },
+                        businessAuthState.shopNumber,
+                        accountSetupState.email,
+                        businessAuthState.name,
+                        accountSetupState.password,
+                        businessAuthState.phoneNumber,
+                        businessAuthState.shopId,
+                        businessAuthState.shopName,
                     )
 
                 }) {
@@ -278,23 +280,23 @@ fun BusinessAuthScreen(
                 )
 
                 BusinessAlertDialog(
-                    onDismissRequest = { viewModel.onDialogVisibilityChanged(false) },
+                    onDismissRequest = { businessAuthViewModel.onDialogVisibilityChanged(false) },
                     onConfirmation = {
                         multiplePhotoPickerLauncher.launch(
                             PickVisualMediaRequest(
                                 ActivityResultContracts.PickVisualMedia.ImageOnly
                             )
                         )
-                        viewModel.onDialogVisibilityChanged(false)
+                        businessAuthViewModel.onDialogVisibilityChanged(false)
                     },
                     dialogTitle = stringResource(id = R.string.file_upload),
                     dialogText = stringResource(id = R.string.file_upload_requirements),
                     positiveButtonText = stringResource(id = R.string.select_file),
-                    visibility = state.dialogVisibility
+                    visibility = businessAuthState.dialogVisibility
                 )
             }
         }
-        viewModel.collectSideEffect {
+        businessAuthViewModel.collectSideEffect {
             when (it) {
                 BusinessAuthSideEffect.NavigateToSearchStore -> {
                     onSearchClicked()
