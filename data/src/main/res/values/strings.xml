@@ -41,6 +41,7 @@
     <string name="bus_name_commuting">통학버스</string>
     <string name="bus_name_express">대성고속</string>
     <string name="bus_name_shuttle">셔틀버스</string>
+    <string name="bus_name_school_shuttle">학교셔틀</string>
     <string name="city_bus_number_format">%1$d번 버스</string>
     <!-- dept -->
     <string name="dept_mechanical_engineering">기계공학부</string>
@@ -61,5 +62,6 @@
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>
     <string name="dining_dinner">저녁</string>
-    <string name="dining_next_breakfast">내일 아침</string>
+    <string name="dining_today">오늘</string>
+    <string name="dining_tomorrow">내일</string>
 </resources>
