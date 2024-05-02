@@ -226,6 +226,9 @@
     <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
     <string name="nickname_available">사용 가능한 닉네임입니다</string>
 
+    <!-- edit user -->
+    <string name="edit_user_error_same_as_before">기존의 닉네임과 동일합니다</string>
+
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
     <string name="dining_breakfast">아침</string>
