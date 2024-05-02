@@ -190,6 +190,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
+        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
+            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
     }
 }
