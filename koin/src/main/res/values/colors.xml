@@ -6,4 +6,8 @@
     <!-- dining changed -->
     <color name="dining_changed_text">#4B4B4B</color>
     <color name="dining_changed_background">#EEEEEE</color>
+    <!-- main-dining -->
+    <color name="container_background">#FAFAFA</color>
+    <color name="container_stroke">#E1E1E1</color>
+    <color name="container_stroke_inside">#EEEEEE</color>
 </resources>
