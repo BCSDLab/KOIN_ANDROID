@@ -45,7 +45,7 @@ fun AccountSetupScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSetupViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: (String, String) -> Unit = { _, _ ->},
+    onNextClicked: (String) -> Unit = {},
 ) {
     val state = viewModel.collectAsState().value
     Column(
@@ -180,7 +180,7 @@ fun AccountSetupScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(state.email, state.password)
+            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(state.email)
             AccountSetupSideEffect.NavigateToBackScreen -> onBackClicked()
         }
     }
@@ -191,7 +191,7 @@ fun AccountSetupScreen(
 fun AccountSetupScreenPreview() {
     KOIN_ANDROIDTheme {
         AccountSetupScreen(
-            onNextClicked = { _, _ ->},
+            onNextClicked = {},
             onBackClicked = {}
         )
  }

@@ -30,10 +30,11 @@ fun SignupNavigator(modifier: Modifier) {
         ) {
             AccountSetupScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { email, password ->
-                    navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$email/$password")
+                onNextClicked = { email->
+                    navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$email")
 
                 },
+                viewModel = accountSetupViewModel
             )
         }
 
