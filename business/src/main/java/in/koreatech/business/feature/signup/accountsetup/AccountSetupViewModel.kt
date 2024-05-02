@@ -48,7 +48,7 @@ class AccountSetupViewModel @Inject constructor(
     }
 
     fun onNextButtonClicked() = intent {
-        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.email, state.password))
+        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.email))
     }
 
     fun onBackButtonClicked() = intent {
