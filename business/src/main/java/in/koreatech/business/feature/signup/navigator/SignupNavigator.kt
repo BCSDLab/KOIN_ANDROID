@@ -64,29 +64,18 @@ fun SignupNavigator(modifier: Modifier) {
         }
 
         composable(
-            route = "${SignupRoute.BUSINESS_AUTH.name}/{email}/{password}",
-            arguments = listOf(
-                navArgument("email") {
-                    type = NavType.StringType
-                    nullable = true
-                },
-                navArgument("password") {
-                    type = NavType.StringType
-                    nullable = true
-                }
-            )
+            route = SignupRoute.BUSINESS_AUTH.name,
         ) {
             BusinessAuthScreen(
-                email= it.arguments?.getString("email") ?: "",
-                password= it.arguments?.getString("password") ?: "",
+                accountSetupViewModel= accountSetupViewModel,
+                businessAuthViewModel = businessAuthViewModel,
                 onBackClicked = { navController.popBackStack() },
-                onSearchClicked = {
+                onSearchClicked ={
                     navController.navigate(SignupRoute.STORE_SETUP.name)
                 },
-                onNextClicked = {
-                    navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
-                },
-            )
+            ) {
+                navController.navigate(SignupRoute.SIGNUP_COMPLETED.name)
+            }
         }
 
         composable(
