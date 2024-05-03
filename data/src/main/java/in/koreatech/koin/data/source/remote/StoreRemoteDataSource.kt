@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.StoreApi
+import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
@@ -18,5 +19,8 @@ class StoreRemoteDataSource @Inject constructor(
     }
     suspend fun getShopMenus(storeUid: Int): StoreMenuResponse {
         return storeApi.getShopMenus(storeUid)
+    }
+    suspend fun getShopEvents(storeUid: Int): StoreEventResponse {
+        return storeApi.getShopEvents(storeUid)
     }
 }

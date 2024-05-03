@@ -1,9 +1,11 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toStore
+import `in`.koreatech.koin.data.mapper.toStoreEvents
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
+import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
@@ -31,6 +33,9 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
     }
 
+    override suspend fun getShopEvents(storeId: Int): ShopEvents {
+        return storeRemoteDataSource.getShopEvents(storeId).toStoreEvents()
+    }
     override suspend fun invalidateStores() {
         stores = null
     }
