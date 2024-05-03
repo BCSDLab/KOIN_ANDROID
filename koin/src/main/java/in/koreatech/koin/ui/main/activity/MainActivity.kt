@@ -67,7 +67,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         initView()
         initViewModel()
-        checkPermission()
     }
 
     override fun onResume() {
@@ -138,18 +137,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
-        }
-    }
-
-    private fun checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-
-            } else {
-                requestNotificationPermissionResult.launch(android.Manifest.permission.POST_NOTIFICATIONS)
-            }
-        } else {
-
         }
     }
 
