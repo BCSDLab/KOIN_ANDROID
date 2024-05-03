@@ -143,12 +143,7 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
-            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus">
-            <intent-filter>
-                <action android:name="LOGIN_ACTIVITY"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+            android:theme="@style/KAPTheme.NoActionBar.WhiteStatus"/>
         <activity
             android:name=".ui.signup.SignupActivity"
             android:exported="false"
