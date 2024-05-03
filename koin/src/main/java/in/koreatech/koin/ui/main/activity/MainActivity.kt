@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.content.pm.PackageManager
+
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -23,6 +25,13 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+
+
+import com.google.firebase.messaging.FirebaseMessaging
+import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import android.os.Build
+import android.util.Log
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -49,12 +58,16 @@ class MainActivity : KoinNavigationDrawerActivity() {
         })
     }
 
+    private val requestNotificationPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        // handle POST_NOTIFICATION permission
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initView()
         initViewModel()
+        checkPermission()
     }
 
     override fun onResume() {
@@ -125,6 +138,18 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
+        }
+    }
+
+    private fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+
+            } else {
+                requestNotificationPermissionResult.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+
         }
     }
 
