@@ -373,4 +373,5 @@
     <string name="menu_info">메뉴 소개</string>
     <string name="nearby_store">주변 상점</string>
     <string name="main_menu">메인 메뉴</string>
+    <string name="view_all">전체보기</string>
 </resources>
