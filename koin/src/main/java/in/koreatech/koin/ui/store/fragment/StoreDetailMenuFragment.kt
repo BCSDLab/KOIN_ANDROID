@@ -53,28 +53,11 @@ class StoreDetailMenuFragment : Fragment() {
         repeat(4) {
             storeMenuAdapter.add(StoreDetailMenuRecyclerAdapter())
         }
-
-        binding.storeDetailRecommendRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = storeMenuAdapter[0]
-        }
-        binding.storeDetailMainRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = storeMenuAdapter[1]
-        }
-        binding.storeDetailSetRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = storeMenuAdapter[2]
-        }
-        binding.storeDetailSideRecyclerview.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = storeMenuAdapter[3]
-        }
-
-        binding.storeRandomRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = storeRecyclerAdapter
-        }
+        binding.storeDetailRecommendRecyclerview.adapter = storeMenuAdapter[0]
+        binding.storeDetailMainRecyclerview.adapter = storeMenuAdapter[1]
+        binding.storeDetailSetRecyclerview.adapter = storeMenuAdapter[2]
+        binding.storeDetailSideRecyclerview.adapter = storeMenuAdapter[3]
+        binding.storeRandomRecyclerView.adapter = storeRecyclerAdapter
     }
     
     private fun initViewModel() {

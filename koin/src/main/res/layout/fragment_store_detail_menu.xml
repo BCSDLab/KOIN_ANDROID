@@ -103,6 +103,7 @@
                 android:layout_marginBottom="12dp"
                 android:clipToPadding="false"
                 android:paddingBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/store_detail_menu_list_item" />
 
 
@@ -114,6 +115,7 @@
                 android:layout_marginBottom="12dp"
                 android:clipToPadding="false"
                 android:paddingBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/store_detail_menu_list_item" />
 
 
@@ -125,6 +127,7 @@
                 android:layout_marginBottom="12dp"
                 android:clipToPadding="false"
                 android:paddingBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/store_detail_menu_list_item" />
 
 
@@ -136,6 +139,7 @@
                 android:layout_marginBottom="12dp"
                 android:clipToPadding="false"
                 android:paddingBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/store_detail_menu_list_item" />
 
             <TextView
@@ -153,6 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16.5dp"
                 android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/store_list_item" />
 
         </LinearLayout>
