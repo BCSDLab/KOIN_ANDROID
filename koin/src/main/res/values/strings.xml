@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
-    <string name="sign_up">회원 가입</string>
+    <string name="sign_up">회원가입</string>
+    <string name="login">로그인</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -36,6 +37,13 @@
     <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_cancel">취소</string>
+    <string name="login_request">로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?</string>
+    <string name="navigation_ok">확인</string>
+    <string name="user_only">회원 전용 서비스</string>
+    <string name="to_be_opened">서비스예정입니다</string>
+    <string name="press_again_to_exit">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="user_anon">익명</string>
 
 
     <!-- Server Messages -->
@@ -218,12 +226,15 @@
     <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
     <string name="nickname_available">사용 가능한 닉네임입니다</string>
 
+    <!-- edit user -->
+    <string name="edit_user_error_same_as_before">기존의 닉네임과 동일합니다</string>
+
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
     <string name="dining_breakfast">아침</string>
     <string name="dining_lunch">점심</string>
     <string name="dining_dinner">저녁</string>
-    <string name="dining_kcal">kcal</string>
+    <string name="dining_kcal">%1$skcal</string>
     <string name="dining_cashbee">캐쉬비</string>
     <string name="dining_money_unit">원</string>
     <string name="dining_cash">현금</string>
@@ -231,7 +242,10 @@
     <string name="dining_onedish">일품식</string>
     <string name="dining_western">양식</string>
     <string name="dining_nungsu">능수관</string>
+    <string name="dining_2campus">2캠퍼스</string>
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
+    <string name="dining_soldout">품절</string>
+    <string name="dining_changed">변경됨</string>
     <string name="bus_app_bar_title">버스 / 교통</string>
     <string name="bus_tab_info">운행정보</string>
     <string name="bus_tab_search_info">운행 정보 검색</string>
@@ -357,6 +371,25 @@
     <string name="set_form">%1$s-</string>
     <string name="failed_file_upload">파일 업로드에 실패했습니다.</string>
     <string name="last_update">마지막 업데이트 : </string>
+    <string name="sold_out_menu">품절된 메뉴입니다.</string>
+    <string name="no_photo">사진 없음</string>
+    <string name="sold_out">품절</string>
+    <string name="changed">변경됨</string>
+    <string name="price">%1$s원</string>
+    <string name="chicken">치킨</string>
+    <string name="pizza">피자</string>
+    <string name="dorisak">도시락</string>
+    <string name="pork_feet">족발</string>
+    <string name="chinese">중국집</string>
+    <string name="normal_food">일반음식</string>
+    <string name="cafe">카페</string>
+    <string name="beauty_salon">미용실</string>
+    <string name="etc">기타</string>
+    <string name="nearby_stores">주변상점</string>
+    <string name="user_only_ok">회원전용 확인</string>
+    <string name="bus">버스</string>
+    <string name="see_all">전체보기</string>
+    <string name="complete_sign_up">회원가입 완료</string>
     <string name="set_menu">세트 메뉴</string>
     <string name="side_menu">사이드 메뉴</string>
     <string name="best_menu">대표 메뉴</string>

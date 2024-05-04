@@ -1,6 +1,14 @@
 package `in`.koreatech.koin.ui.userinfo
 
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
@@ -14,10 +22,10 @@ import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
-import android.content.Intent
-import android.os.Bundle
-import androidx.activity.viewModels
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserInfoActivity : KoinNavigationDrawerActivity() {
@@ -83,30 +91,18 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        observeLiveData(getUserErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-            finish()
-        }
-
-        observeLiveData(logoutEvent) {
-            finishAffinity()
-            startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
-        }
-
-        observeLiveData(logoutErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-        }
-
-        observeLiveData(userRemoveEvent) {
-            val intent = Intent(this@UserInfoActivity, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-            finish()
-        }
-
-        observeLiveData(userRemoveErrorMessage) {
-            ToastUtil.getInstance().makeShort(it)
-        }
+        userInfoState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it.status) {
+                UiStatus.Init -> Unit
+                UiStatus.Loading -> Unit
+                UiStatus.Success -> goToLoginActivity()
+                is UiStatus.Failed -> ToastUtil.getInstance().makeShort(it.status.message)
+            }
+        }.launchIn(lifecycleScope)
+    }
+    private fun goToLoginActivity() {
+        finishAffinity()
+        startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
     }
 
     override fun onDestroy() {

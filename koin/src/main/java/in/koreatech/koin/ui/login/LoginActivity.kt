@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.ActivityLoginBinding
 import `in`.koreatech.koin.ui.businesslogin.BusinessLoginActivity
@@ -41,12 +44,16 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
         withLoading(this@LoginActivity, this)
 
         lifecycleScope.launch {
-            loginState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
-                when (it) {
-                    LoginState.Init -> Unit
-                    LoginState.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    is LoginState.Failed -> {
-                        SnackbarUtil.makeShortSnackbar(binding.root, it.message)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginState.collect {
+                    when (it.status) {
+                        is UiStatus.Init -> Unit
+                        is UiStatus.Loading -> Unit
+                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        is UiStatus.Failed -> {
+                            SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
+                            loginViewModel.onFailedLogin()
+                        }
                     }
                 }
             }
@@ -86,10 +93,20 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     password = loginEdittextPw.text.toString().trim()
                 )
             }
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.LOGIN,
+                getString(R.string.login)
+            )
         }
 
         loginButtonSignup.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.START_SIGN_UP,
+                getString(R.string.sign_up)
+            )
         }
 
         forgotPasswordLinearLayout.setOnClickListener {

@@ -9,8 +9,13 @@ class EmailUtil {
         return EMAIL_REGEX.matcher(email).matches()
     }
 
+    fun isBusinessEmailValidate(email: String): Boolean {
+        return BUSINESS_EMAIL_REGEX.matcher(email).matches()
+    }
     companion object {
         private const val FILTER_EMAIL = "^[a-zA-Z0-9._%+-]+@koreatech\\.ac\\.kr\$"
+        private const val FILTER_BUSINESS_EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$"
+        val BUSINESS_EMAIL_REGEX: Pattern = Pattern.compile(FILTER_BUSINESS_EMAIL)
         val EMAIL_REGEX: Pattern = Pattern.compile(FILTER_EMAIL)
     }
 }

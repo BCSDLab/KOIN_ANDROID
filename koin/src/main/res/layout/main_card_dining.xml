@@ -20,7 +20,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_card_dining_time"
+            app:layout_constraintEnd_toStartOf="@id/text_view_dining_time"
             app:layout_constraintTop_toTopOf="parent" >
 
             <LinearLayout
@@ -111,7 +111,7 @@
         </HorizontalScrollView>
 
         <TextView
-            android:id="@+id/text_view_card_dining_time"
+            android:id="@+id/text_view_dining_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"

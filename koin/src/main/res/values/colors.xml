@@ -1,3 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- dining sold out -->
+    <color name="dining_soldout_text">#FFAD0D</color>
+    <color name="dining_soldout_background">#FFF7E1</color>
+    <!-- dining changed -->
+    <color name="dining_changed_text">#4B4B4B</color>
+    <color name="dining_changed_background">#EEEEEE</color>
+    <!-- main-dining -->
+    <color name="container_background">#FAFAFA</color>
+    <color name="container_stroke">#E1E1E1</color>
+    <color name="container_stroke_inside">#EEEEEE</color>
 </resources>
