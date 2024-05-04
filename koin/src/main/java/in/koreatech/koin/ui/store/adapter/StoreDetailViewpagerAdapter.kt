@@ -3,15 +3,15 @@ package `in`.koreatech.koin.ui.store.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import `in`.koreatech.koin.ui.store.fragment.StoreEventFragment
-import `in`.koreatech.koin.ui.store.fragment.StoreMenuFragment
+import `in`.koreatech.koin.ui.store.fragment.StoreDetailEventFragment
+import `in`.koreatech.koin.ui.store.fragment.StoreDetailMenuFragment
 
 class StoreDetailViewpagerAdapter(fragment: FragmentActivity): FragmentStateAdapter(fragment){
     override fun getItemCount() = PAGE_NUMBER
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> StoreMenuFragment()
-            1 -> StoreEventFragment()
+            0 -> StoreDetailMenuFragment()
+            1 -> StoreDetailEventFragment()
             else -> throw IndexOutOfBoundsException()
         }
     }
