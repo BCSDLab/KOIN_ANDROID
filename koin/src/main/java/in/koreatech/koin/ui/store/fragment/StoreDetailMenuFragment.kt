@@ -75,14 +75,8 @@ class StoreDetailMenuFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = storeRecyclerAdapter
         }
-        viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-            viewModel.storeMenu.value?.let {
-                storeMenuAdapter[index].submitList(it)
-            }
-        }
     }
-
-
+    
     private fun initViewModel() {
 
         observeLiveData(viewModel.storeMenu) {
