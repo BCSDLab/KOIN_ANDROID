@@ -17,6 +17,7 @@ import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -35,9 +36,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
 
 
-    private val storeDetailActivityContract =
-        registerForActivityResult(StoreDetailActivityContract()) {
-        }
 
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
@@ -54,59 +52,19 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
 
     private val callContract = registerForActivityResult(StoreCallContract()) {}
-    private val storeMenuAdapter: MutableList<StoreDetailMenuRecyclerAdapter> =
-        List(4) { StoreDetailMenuRecyclerAdapter() }.toMutableList()
 
-    private val storeRecyclerAdapter = StoreRecyclerAdapter().apply {
-        setOnItemClickListener {
-            storeDetailActivityContract.launch(it.uid)
-            finish()
-        }
-    }
+    private val storeDetailViewpagerAdapter =StoreDetailViewpagerAdapter(this)
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        repeat(4) {
-            storeMenuAdapter.add(StoreDetailMenuRecyclerAdapter())
-        }
-
-        binding.storeDetailRecommendRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter[0]
-        }
-        binding.storeDetailMainRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter[1]
-        }
-        binding.storeDetailSetRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter[2]
-        }
-        binding.storeDetailSideRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter[3]
-        }
-
-        binding.storeRandomRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeRecyclerAdapter
-        }
-
+        binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
         }
-
-        viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-
-            viewModel.storeMenu.value?.let {
-                storeMenuAdapter[index].submitList(it)
-            }
-        }
-
         initViewModel()
-
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
             ToastUtil.getInstance()
@@ -187,27 +145,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        observeLiveData(viewModel.storeMenu) {
-            viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                viewModel.storeMenu.value?.let {
-                    storeMenuAdapter[index].submitList(
-                        it
-                    )
-                }
-            }
-        }
-        observeLiveData(viewModel.recommendStores) {
-            if (it != null) {
-                storeRecyclerAdapter.submitList(it)
-            }
-        }
-        observeLiveData(viewModel.categories) {
-            if (it.menuCategories != null) {
-                viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                    storeMenuAdapter[index].setCategory(category.name)
-                }
-            }
-        }
     }
 
     override fun onDestroy() {
