@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/store_detail_event_imageview"
+                android:layout_width="74dp"
+                android:layout_height="85dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@color/blue_alpha20" />
+
+            <TextView
+                android:id="@+id/store_detail_event_title_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:fontName="Custom5"
+                app:layout_constraintStart_toEndOf="@+id/store_detail_event_imageview"
+                app:layout_constraintTop_toTopOf="@+id/store_detail_event_imageview"
+                tools:text="24년 신년 이벤트에오-" />
+
+            <TextView
+                android:id="@+id/store_detail_view_all"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/view_all"
+                android:textColor="@color/gray10"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:fontName="Custom5"
+                app:layout_constraintEnd_toStartOf="@+id/view_all_icon"
+                app:layout_constraintTop_toTopOf="@+id/store_detail_event_title_textview" />
+
+            <ImageView
+                android:id="@+id/view_all_icon"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginEnd="24dp"
+                android:src="@drawable/ic_arrow_down_2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/store_detail_view_all" />
+
+            <TextView
+                android:id="@+id/store_detail_event_textview"
+                android:layout_width="273dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/gray10"
+                android:textSize="12sp"
+                app:fontName="Custom5"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_title_textview"
+                app:layout_constraintTop_toBottomOf="@+id/store_detail_event_title_textview"
+                tools:text="24년을 맞이해 학생들의 어쩌구저쩌구 그래서 할인 이벤트를 진행합니다. 24년을 맞이해 학생들의 어쩌구저쩌구 그래서 할인 이벤트를 진행합니다. 두 줄 이상은 전체보기로 봐야한" />
+
+            <TextView
+                android:id="@+id/store_detail_event_date_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/gray10"
+                android:textSize="12sp"
+                app:fontName="Custom5"
+                app:layout_constraintBottom_toBottomOf="@+id/store_detail_event_imageview"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_title_textview"
+                tools:text="2024.01.01 - 2024.01.15" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/store_detail_event_expand_imageview"
+                android:layout_width="327dp"
+                android:layout_height="363dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@color/blue_alpha20" />
+
+            <TextView
+                android:id="@+id/store_detail_event_title_expand_textview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:fontName="Custom5"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_expand_imageview"
+                app:layout_constraintTop_toBottomOf="@+id/store_detail_event_expand_imageview"
+                tools:text="24년 신년 이벤트에오-" />
+
+            <TextView
+                android:id="@+id/store_detail_view_summary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/view_all"
+                android:textColor="@color/gray10"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:fontName="Custom5"
+                app:layout_constraintEnd_toStartOf="@+id/view_summary_icon"
+                app:layout_constraintTop_toTopOf="@+id/store_detail_event_title_expand_textview" />
+
+            <ImageView
+                android:id="@+id/view_summary_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_arrow_down_2"
+                app:layout_constraintEnd_toEndOf="@+id/store_detail_event_expand_imageview"
+                app:layout_constraintTop_toTopOf="@+id/store_detail_view_summary" />
+
+            <TextView
+                android:id="@+id/store_detail_event_expand_textview"
+                android:layout_width="273dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/gray10"
+                android:textSize="14sp"
+                app:fontName="Custom5"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_title_expand_textview"
+                app:layout_constraintTop_toBottomOf="@+id/store_detail_event_title_expand_textview"
+                tools:text="24년을 맞이해 학생들의 어쩌구저쩌구 그래서 할인 이벤트를 진행합니다. 24년을 맞이해 학생들의 어쩌구저쩌구 그래서 할인 이벤트를 진행합니다. 두 줄 이상은 전체보기로 봐야한" />
+
+            <TextView
+                android:id="@+id/store_detail_event_date_expand_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/gray10"
+                android:textSize="12sp"
+                app:fontName="Custom5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_title_expand_textview"
+                app:layout_constraintTop_toBottomOf="@+id/store_detail_event_expand_textview"
+                tools:text="2024.01.01 - 2024.01.15" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+
+    </LinearLayout>
+
+</layout>
