@@ -18,6 +18,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
