@@ -66,7 +66,7 @@ class StoreDetailMenuFragment : Fragment() {
             viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
                 viewModel.storeMenu.value?.let {
                     storeMenuAdapter[index].submitList(
-                        it
+                        category.menus
                     )
                 }
             }
