@@ -12,9 +12,7 @@ data class Dining(
     val imageUrl: String,
     val createdAt: String,
     val updatedAt: String,
-    val isSoldOut: Boolean,
-    // TODO: sold_out 품절 시각으로 변경시 대응
-//    val soldOutAt: String,
-    val isChanged: Boolean,
+    val soldoutAt: String,
+    val changedAt: String,
     val error: String
 )

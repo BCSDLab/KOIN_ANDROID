@@ -18,7 +18,7 @@ class WebViewActivity : ActivityBase(R.layout.activity_webview) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val title = intent.getStringExtra("title")
+        val title = intent.getStringExtra("title") ?: ""
         val url = intent.getStringExtra("url")
         init(title, url)
     }

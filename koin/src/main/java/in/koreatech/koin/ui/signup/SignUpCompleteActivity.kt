@@ -27,8 +27,8 @@ class SignUpCompleteActivity : ActivityBase() {
 
     private fun initView() = with(binding){
         goToLoginButton.setOnClickListener{
-            val intent = Intent(this@SignUpCompleteActivity, LoginActivity::class.java)
-            startActivity(intent)
+            finishAffinity()
+            startActivity(Intent(this@SignUpCompleteActivity, LoginActivity::class.java))
         }
 
         goToShcoolHomePageButton.setOnClickListener {

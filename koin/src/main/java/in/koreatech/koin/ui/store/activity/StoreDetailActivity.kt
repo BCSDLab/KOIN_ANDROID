@@ -11,6 +11,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
@@ -53,6 +55,18 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     private val callContract = registerForActivityResult(StoreCallContract()) {}
 
+    private val storeMenuAdapter = StoreDetailMenuRecyclerAdapter()
+    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
+        setOnItemClickListener { position, _ ->
+            flyerDialogFragment = StoreFlyerDialogFragment()
+            flyerDialogFragment?.initialPosition = position
+            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_PICTURE,
+                viewModel.store.value?.name ?: "Unknown")
+        }
+    }
     private val storeDetailViewpagerAdapter =StoreDetailViewpagerAdapter(this)
 
 
@@ -63,6 +77,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown")
         }
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
