@@ -14,4 +14,13 @@ data class SubscribesResponse(
     val type: String,
     @SerializedName("is_permit")
     val isPermit: Boolean,
+    @SerializedName("detail_subscribes")
+    val detailSubscribes: List<SubscribeDetailResponse>,
+)
+
+data class SubscribeDetailResponse(
+    @SerializedName("detail_type")
+    val detailType: String,
+    @SerializedName("is_permit")
+    val isPermit: String,
 )
