@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.notification.DetailTypeRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
@@ -35,8 +36,14 @@ interface UserAuthApi {
     @POST("/notification/subscribe")
     suspend fun updateSubscription(@Query("type") type: String)
 
+    @POST("/notification/subscribe/detail")
+    suspend fun updateSubscriptionDetail(@Body detailType: DetailTypeRequest)
+
     @DELETE("/notification/subscribe")
     suspend fun deleteSubscription(@Query("type") type: String)
+
+    @DELETE("/notification/subscribe/detail")
+    suspend fun deleteSubscriptionDetail()
 
     @DELETE("/notification")
     suspend fun deleteDeviceToken()
