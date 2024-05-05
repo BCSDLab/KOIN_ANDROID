@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.usecase.store.GetRecommendStoresUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
 import javax.inject.Inject
@@ -18,7 +20,8 @@ import javax.inject.Inject
 class StoreDetailViewModel @Inject constructor(
     private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase,
     private val getRecommendStoresUseCase: GetRecommendStoresUseCase,
-    private val getShopMenusUseCase: GetShopMenusUseCase
+    private val getShopMenusUseCase: GetShopMenusUseCase,
+    private val getStoreEventsUseCase: GetShopEventsUseCase
 ) : BaseViewModel() {
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
@@ -26,6 +29,8 @@ class StoreDetailViewModel @Inject constructor(
     private var _categories = MutableLiveData<StoreMenu>()
     val storeMenu: LiveData<List<ShopMenus>> get() = _storeMenu
     private val _storeMenu = MutableLiveData<List<ShopMenus>>()
+    val storeEvent: LiveData<List<ShopEvent>> get() = _storeEvent
+    private val _storeEvent = MutableLiveData<List<ShopEvent>>()
     val recommendStores: LiveData<List<Store>?> get() = _recommendStores
     private val _recommendStores = MutableLiveData<List<Store>?>()
 
@@ -44,6 +49,15 @@ class StoreDetailViewModel @Inject constructor(
             } else {
                 shop.menuCategories?.first()?.menus ?: emptyList()
             }
+        }
+    }
+
+    fun getShopEvents(storeId: Int) = viewModelScope.launchWithLoading {
+        getStoreEventsUseCase(storeId).also { events ->
+            _storeEvent.value = events.events.ifEmpty {
+                emptyList()
+            }
+
         }
     }
 }

@@ -92,6 +92,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
         viewModel.getStoreWithMenu(storeId!!)
         viewModel.getShopMenus(storeId)
+        viewModel.getShopEvents(storeId)
     }
 
     override fun onBackPressed() {
