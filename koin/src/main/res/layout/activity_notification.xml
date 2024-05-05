@@ -46,17 +46,63 @@
                     android:id="@+id/notification_dining_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:description="@string/notification_sold_out_description"
+                    app:description="@string/notification_dining_sold_out_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/text_view_dining"
-                    app:text="@string/notification_sold_out" />
+                    app:text="@string/notification_dining_sold_out" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gray2"
                     app:layout_constraintTop_toBottomOf="@id/notification_dining_sold_out" />
+
+                <in.koreatech.koin.core.view.notificaiton.NotificationRow
+                    android:id="@+id/notification_dining_breakfast_sold_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:text="@string/notification_dining_breakfast_sold_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_sold_out" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray2"
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_breakfast_sold_out" />
+
+                <in.koreatech.koin.core.view.notificaiton.NotificationRow
+                    android:id="@+id/notification_dining_lunch_sold_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:text="@string/notification_dining_lunch_sold_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_breakfast_sold_out" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray2"
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_lunch_sold_out" />
+
+                <in.koreatech.koin.core.view.notificaiton.NotificationRow
+                    android:id="@+id/notification_dining_dinner_sold_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:text="@string/notification_dining_dinner_sold_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_lunch_sold_out" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray2"
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_dinner_sold_out" />
+
 
                 <TextView
                     android:id="@+id/text_view_store"
@@ -70,7 +116,7 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_dinner_sold_out" />
 
                 <in.koreatech.koin.core.view.notificaiton.NotificationHeader
                     android:id="@+id/notification_event"
