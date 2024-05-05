@@ -8,6 +8,7 @@ data class NotificationPermissionInfo(
 data class Subscribes(
     val type: SubscribesType,
     val isPermit: Boolean,
+    val detailSubscribes: List<SubscribesDetail>
 ) {
     companion object {
         const val SHOP_EVENT = "SHOP_EVENT"
@@ -15,6 +16,21 @@ data class Subscribes(
     }
 }
 
-enum class SubscribesType{
+data class SubscribesDetail(
+    val type: SubscribesDetailType,
+    val isPermit: Boolean,
+) {
+    companion object {
+        const val BREAKFAST = "BREAKFAST"
+        const val LUNCH = "LUNCH"
+        const val DINNER = "DINNER"
+    }
+}
+
+enum class SubscribesType {
     SHOP_EVENT, DINING_SOLD_OUT, NOTHING
+}
+
+enum class SubscribesDetailType {
+    BREAKFAST, LUNCH, DINNER, NOTHING
 }
