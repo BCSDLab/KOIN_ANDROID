@@ -22,5 +22,5 @@ data class SubscribeDetailResponse(
     @SerializedName("detail_type")
     val detailType: String,
     @SerializedName("is_permit")
-    val isPermit: String,
+    val isPermit: Boolean,
 )
