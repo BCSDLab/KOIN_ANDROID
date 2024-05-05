@@ -43,7 +43,7 @@ interface UserAuthApi {
     suspend fun deleteSubscription(@Query("type") type: String)
 
     @DELETE("/notification/subscribe/detail")
-    suspend fun deleteSubscriptionDetail()
+    suspend fun deleteSubscriptionDetail(@Body detailType: DetailTypeRequest)
 
     @DELETE("/notification")
     suspend fun deleteDeviceToken()
