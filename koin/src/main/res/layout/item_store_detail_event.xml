@@ -9,6 +9,7 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/store_detail_event"
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:gravity="center_vertical"
@@ -91,6 +92,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/store_detail_event_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
