@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -52,10 +53,10 @@
 
             <ImageView
                 android:id="@+id/view_all_icon"
-                android:layout_width="17dp"
-                android:layout_height="17dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginEnd="24dp"
-                android:src="@drawable/ic_arrow_down_2"
+                android:src="@drawable/ic_arrow_down_3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/store_detail_view_all" />
 
@@ -136,9 +137,9 @@
 
             <ImageView
                 android:id="@+id/view_summary_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_arrow_down_2"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_arrow_up"
                 app:layout_constraintEnd_toEndOf="@+id/store_detail_event_expand_imageview"
                 app:layout_constraintTop_toTopOf="@+id/store_detail_view_summary" />
 
@@ -174,10 +175,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
-            android:layout_width="match_parent"
+            android:layout_width="365dp"
             android:layout_height="1dp"
-            android:background="@color/black"
-            app:layout_constraintTop_toBottomOf="parent" />
+            android:background="@color/gray17"
+            android:layout_gravity="center"
+       />
 
 
     </LinearLayout>
