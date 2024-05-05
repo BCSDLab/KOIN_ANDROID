@@ -10,6 +10,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
+import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -47,7 +48,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 when (it.type) {
                                     SubscribesType.SHOP_EVENT -> {
-                                        binding.notificationEvent.isChecked = it.isPermit
+                                        binding.notificationShopEvent.isChecked = it.isPermit
                                     }
 
                                     SubscribesType.DINING_SOLD_OUT -> {
@@ -55,6 +56,26 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                     }
 
                                     SubscribesType.NOTHING -> Unit
+                                }
+                                it.detailSubscribes.forEach {
+                                    when (it.type) {
+                                        SubscribesDetailType.BREAKFAST -> {
+                                            binding.notificationDiningBreakfastSoldOut.isChecked =
+                                                it.isPermit
+                                        }
+
+                                        SubscribesDetailType.LUNCH -> {
+                                            binding.notificationDiningLunchSoldOut.isChecked =
+                                                it.isPermit
+                                        }
+
+                                        SubscribesDetailType.DINNER -> {
+                                            binding.notificationDiningDinnerSoldOut.isChecked =
+                                                it.isPermit
+                                        }
+
+                                        SubscribesDetailType.NOTHING -> Unit
+                                    }
                                 }
                             }
                         }
@@ -68,16 +89,38 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun onSubscribe() {
+        subscribeNotification()
+        subscribeDetailNotification()
+    }
+
+    private fun subscribeNotification() {
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
         }
-        binding.notificationEvent.setOnSwitchClickListener { isChecked ->
+        binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
+        }
+    }
+
+    private fun subscribeDetailNotification() {
+        binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
+//            handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
+        }
+        binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
+//            handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
+        }
+        binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
+//            handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
 
     private fun handleSubscription(isChecked: Boolean, type: SubscribesType) {
         if (isChecked) viewModel.updateSubscription(type)
         else viewModel.deleteSubscription(type)
+    }
+
+    private fun handleSubscriptionDetail(isChecked: Boolean, type: SubscribesDetailType) {
+        if (isChecked) viewModel.updateSubscriptionDetail(type)
+        else viewModel.deleteSubscriptionDetail(type)
     }
 }

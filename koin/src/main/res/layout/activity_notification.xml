@@ -62,10 +62,10 @@
                     android:id="@+id/notification_dining_breakfast_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:text="@string/notification_dining_breakfast_sold_out"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_sold_out"
+                    app:text="@string/notification_dining_breakfast_sold_out" />
 
                 <View
                     android:layout_width="match_parent"
@@ -77,10 +77,10 @@
                     android:id="@+id/notification_dining_lunch_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:text="@string/notification_dining_lunch_sold_out"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_breakfast_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_breakfast_sold_out"
+                    app:text="@string/notification_dining_lunch_sold_out" />
 
                 <View
                     android:layout_width="match_parent"
@@ -92,10 +92,10 @@
                     android:id="@+id/notification_dining_dinner_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:text="@string/notification_dining_dinner_sold_out"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_lunch_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_lunch_sold_out"
+                    app:text="@string/notification_dining_dinner_sold_out" />
 
                 <View
                     android:layout_width="match_parent"
@@ -119,7 +119,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/notification_dining_dinner_sold_out" />
 
                 <in.koreatech.koin.core.view.notificaiton.NotificationHeader
-                    android:id="@+id/notification_event"
+                    android:id="@+id/notification_shop_event"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:description="@string/notification_event_description"
@@ -132,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gray2"
-                    app:layout_constraintTop_toBottomOf="@id/notification_event" />
+                    app:layout_constraintTop_toBottomOf="@id/notification_shop_event" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
