@@ -8,7 +8,7 @@ data class NotificationPermissionInfo(
 data class Subscribes(
     val type: SubscribesType,
     val isPermit: Boolean,
-    val detailSubscribes: List<SubscribesDetail>
+    val detailSubscribes: List<SubscribesDetail>,
 ) {
     companion object {
         const val SHOP_EVENT = "SHOP_EVENT"
