@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" tools:ignore="DuplicateDefinition">코인\n커뮤니티</string>
 
-    <string name="sign_up">회원 가입</string>
+    <string name="sign_up">회원가입</string>
+    <string name="login">로그인</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -225,6 +226,9 @@
     <string name="user_info_edited">사용자 정보가 수정되었습니다.</string>
     <string name="nickname_available">사용 가능한 닉네임입니다</string>
 
+    <!-- edit user -->
+    <string name="edit_user_error_same_as_before">기존의 닉네임과 동일합니다</string>
+
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
     <string name="dining_breakfast">아침</string>
@@ -238,6 +242,7 @@
     <string name="dining_onedish">일품식</string>
     <string name="dining_western">양식</string>
     <string name="dining_nungsu">능수관</string>
+    <string name="dining_2campus">2캠퍼스</string>
     <string name="dining_non_upload">학교에서 식단이 업로드 되지 않았습니다.</string>
     <string name="dining_soldout">품절</string>
     <string name="dining_changed">변경됨</string>
@@ -371,4 +376,18 @@
     <string name="sold_out">품절</string>
     <string name="changed">변경됨</string>
     <string name="price">%1$s원</string>
+    <string name="chicken">치킨</string>
+    <string name="pizza">피자</string>
+    <string name="dorisak">도시락</string>
+    <string name="pork_feet">족발</string>
+    <string name="chinese">중국집</string>
+    <string name="normal_food">일반음식</string>
+    <string name="cafe">카페</string>
+    <string name="beauty_salon">미용실</string>
+    <string name="etc">기타</string>
+    <string name="nearby_stores">주변상점</string>
+    <string name="user_only_ok">회원전용 확인</string>
+    <string name="bus">버스</string>
+    <string name="see_all">전체보기</string>
+    <string name="complete_sign_up">회원가입 완료</string>
 </resources>

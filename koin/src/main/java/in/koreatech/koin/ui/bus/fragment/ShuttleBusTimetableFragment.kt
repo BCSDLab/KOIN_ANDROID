@@ -8,6 +8,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.fragment.DataBindingFragment
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.LayoutShuttleBusTimetableBinding
@@ -25,6 +27,8 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
     private val shuttleBusTimetableViewModel by viewModels<ShuttleBusTimetableViewModel>()
     private val shuttleBusTimetableAdapter = ShuttleBusTimetableAdapter()
+    private var isCourseInitialization = true
+    private var isRouteInitialization = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,10 +46,28 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
 
         busTimetableCoursesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setCoursePosition(position)
+            if (isCourseInitialization) {
+                isCourseInitialization = false
+                return@setOnItemSelectedListener
+            }
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_AREA,
+                busTimetableCoursesSpinner.selectedItem.toString()
+            )
         }
 
         busTimetableRoutesSpinner.setOnItemSelectedListener { _, _, position, _ ->
             shuttleBusTimetableViewModel.setRoutePosition(position)
+            if (isRouteInitialization) {
+                isRouteInitialization = false
+                return@setOnItemSelectedListener
+            }
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_TIME,
+                busTimetableRoutesSpinner.selectedItem.toString()
+            )
         }
     }
 
@@ -55,7 +77,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         withToastError(this@ShuttleBusTimetableFragment, binding.root)
 
         observeLiveData(busCoursesString) { courses ->
-            if(courses.isNullOrEmpty()) {
+            if (courses.isNullOrEmpty()) {
                 binding.busTimetableCoursesSpinner.isVisible = false
             } else {
                 binding.busTimetableCoursesSpinner.isVisible = true
@@ -81,7 +103,7 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         }
 
         observeLiveData(busRoutes) {
-            if(it.isNullOrEmpty()) {
+            if (it.isNullOrEmpty()) {
                 binding.busTimetableRoutesSpinner.isVisible = false
             } else {
                 binding.busTimetableRoutesSpinner.isVisible = true
@@ -97,7 +119,8 @@ class ShuttleBusTimetableFragment : DataBindingFragment<LayoutShuttleBusTimetabl
         observeLiveData(selectedRoutesPosition) {
             shuttleBusTimetableAdapter.submitList(
                 busTimetables.value?.get(
-                    selectedRoutesPosition.value ?: 0)?.map { it.toShuttleBusTimetableUiItem() }
+                    selectedRoutesPosition.value ?: 0
+                )?.map { it.toShuttleBusTimetableUiItem() }
             )
         }
     }
