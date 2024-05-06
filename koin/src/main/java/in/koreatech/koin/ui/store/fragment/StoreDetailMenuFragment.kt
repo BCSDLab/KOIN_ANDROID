@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
+import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -64,25 +65,50 @@ class StoreDetailMenuFragment : Fragment() {
 
         observeLiveData(viewModel.storeMenu) {
             viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                viewModel.storeMenu.value?.let {
-                    storeMenuAdapter[index].submitList(
-                        category.menus
-                    )
-                }
-            }
-        }
-        observeLiveData(viewModel.recommendStores) {
-            if (it != null) {
-                storeRecyclerAdapter.submitList(it)
-            }
-        }
-        observeLiveData(viewModel.categories) {
-            if (it.menuCategories != null) {
-                viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                    storeMenuAdapter[index].setCategory(category.name)
-                }
-            }
-        }
-    }
 
+                val list = mutableListOf<ShopMenus>()
+                viewModel.storeMenu.value?.let {
+                    category.menus?.forEachIndexed { menuIndex, shopMenus ->
+                        if (shopMenus.isSingle && shopMenus.singlePrice != null) {
+                            shopMenus.singlePrice
+                            list.add(shopMenus)
+                        } else if (shopMenus.optionPrices?.isNotEmpty() == true) {//옵션
+
+                            shopMenus.optionPrices?.forEachIndexed { optionIndex, shopMenuOptions ->
+                                list.add(
+                                    ShopMenus(
+                                        id = shopMenus.id,
+                                        name = shopMenus.name+"-"+shopMenuOptions.option,
+                                        isHidden = shopMenus.isHidden,
+                                        isSingle = true,
+                                        singlePrice = shopMenuOptions.price,
+                                        null,
+                                        description = shopMenus.description,
+                                        imageUrls = shopMenus.imageUrls
+                                    )
+                                )
+                            }
+                        }
+                        storeMenuAdapter[index].submitList(
+                            list
+                        )
+
+                    }
+                }
+            }
+            observeLiveData(viewModel.recommendStores) {
+                if (it != null) {
+                    storeRecyclerAdapter.submitList(it)
+                }
+            }
+            observeLiveData(viewModel.categories) {
+                if (it.menuCategories != null) {
+                    viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
+                        storeMenuAdapter[index].setCategory(category.name)
+                    }
+                }
+            }
+        }
+
+    }
 }
