@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.mapper
 import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
@@ -10,6 +11,7 @@ import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
@@ -46,6 +48,12 @@ fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
     thumbnail_images = thumbnail_images ?: ArrayList<String>(),
     start_date = start_date ?: "",
     end_date = end_date ?: ""
+)
+
+fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories = StoreCategories(
+    id = id,
+    image_url = image_url,
+    name = name
 )
 
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(

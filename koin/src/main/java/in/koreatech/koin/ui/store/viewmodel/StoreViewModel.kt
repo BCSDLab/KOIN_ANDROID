@@ -9,8 +9,10 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.store.NeedSignUpStoreInfo
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.StoreEvent
+import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
@@ -22,7 +24,8 @@ import javax.inject.Inject
 class StoreViewModel @Inject constructor(
     private val getStoresUseCase: GetStoresUseCase,
     private val invalidateStoresUseCase: InvalidateStoresUseCase,
-    private val getStoreEventUseCase: GetStoreEventUseCase
+    private val getStoreEventUseCase: GetStoreEventUseCase,
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
 ) : BaseViewModel() {
     private val search = MutableStateFlow("")
     private val refreshEvent = MutableSharedFlow<Unit>()
@@ -39,7 +42,12 @@ class StoreViewModel @Inject constructor(
     val store: StateFlow<Store?> = _store.asStateFlow()
     val needToProceedStoreInfo = _needToProceedStoreInfo.asSharedFlow()
 
+    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+
     init {
+        getStoreCategories()
+
         viewModelScope.launch {
             search
                 .debounce(100)
@@ -93,6 +101,12 @@ class StoreViewModel @Inject constructor(
     fun getStoreEvents(){
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
+        }
+    }
+
+    fun getStoreCategories(){
+        viewModelScope.launchWithLoading {
+            _storeCategories.value = getStoreCategoriesUseCase()
         }
     }
 }

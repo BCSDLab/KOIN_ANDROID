@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -47,11 +49,7 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
             binding.storeAccountTextview.setTextState(store.isBankOk)
             if(!store.isOpen){
                 binding.readyStoreFrameLayout.isVisible = true
-                binding.storeDoesNotOpenTextView.text = if(store.name.hasJongSungAtLastChar()){
-                    itemView.context.getString(R.string.store_eun, store.name)
-                } else {
-                    itemView.context.getString(R.string.store_neun, store.name)
-                }
+                Log.e("로그 가게이름", store.name)
                 if(store.name.hasJongSungAtLastChar()){
                     val fullText = itemView.context.getString(R.string.store_neun, store.name)
                     val spannableString = SpannableString(fullText)
@@ -91,6 +89,9 @@ class StoreRecyclerAdapter : ListAdapter<Store, StoreRecyclerAdapter.ViewHolder>
 
                     binding.storeDoesNotOpenTextView.text = spannableString
                 }
+            }
+            else{
+                binding.readyStoreFrameLayout.isInvisible = true
             }
 
             binding.eventImageView.isVisible = store.isEvent

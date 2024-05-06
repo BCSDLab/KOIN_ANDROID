@@ -102,8 +102,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:alpha="0.5"
-                    android:background="@color/black" />
+                    android:alpha="0.8"
+                    android:background="@color/default_side_header_font_color" />
 
                 <TextView
                     android:id="@+id/store_does_not_open_text_view"
