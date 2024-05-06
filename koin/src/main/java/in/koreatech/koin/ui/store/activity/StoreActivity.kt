@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -18,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
@@ -57,6 +60,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CLICK,
+                it.name
+            )
         }
     }
 
@@ -80,7 +88,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             field = value
         }
 
-    private var showRemoveQueryButton : Boolean = false
+    private var showRemoveQueryButton: Boolean = false
         set(value) {
             if (!value) {
                 binding.searchImageView.background = ContextCompat.getDrawable(
@@ -153,6 +161,18 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             isSearchMode = hasFocus
         }
 
+        binding.searchEditText.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
+                    "search in " + getStoreCategoryName(viewModel.category.value)
+                )
+            }
+            v.performClick()
+        }
+
+
         binding.storeRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreActivity)
             adapter = storeAdapter
@@ -163,7 +183,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         binding.searchImageView.setOnClickListener {
-            if(showRemoveQueryButton) binding.searchEditText.setText("")
+            if (showRemoveQueryButton) binding.searchEditText.setText("")
         }
 
         binding.eventViewPager.apply {
@@ -221,51 +241,33 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
     }
 
-   /* private fun handleCategoryClickEvent() {
-        binding.storeCategoryChicken.setCategoryOnClick(StoreCategory.Chicken)
-        binding.storeCategoryChickenTextview.setCategoryOnClick(StoreCategory.Chicken)
-
-        binding.storeCategoryPizza.setCategoryOnClick(StoreCategory.Pizza)
-        binding.storeCategoryPizzaTextview.setCategoryOnClick(StoreCategory.Pizza)
-
-        binding.storeCategoryDosirak.setCategoryOnClick(StoreCategory.DOSIRAK)
-        binding.storeCategoryDosirakTextview.setCategoryOnClick(StoreCategory.DOSIRAK)
-
-        binding.storeCategoryPorkFeet.setCategoryOnClick(StoreCategory.PorkFeet)
-        binding.storeCategoryPorkFeetTextview.setCategoryOnClick(StoreCategory.PorkFeet)
-
-        binding.storeCategoryChinese.setCategoryOnClick(StoreCategory.Chinese)
-        binding.storeCategoryChineseTextview.setCategoryOnClick(StoreCategory.Chinese)
-
-        binding.storeCategoryNormal.setCategoryOnClick(StoreCategory.NormalFood)
-        binding.storeCategoryNormalTextview.setCategoryOnClick(StoreCategory.NormalFood)
-
-        binding.storeCategoryCafe.setCategoryOnClick(StoreCategory.Cafe)
-        binding.storeCategoryCafeTextview.setCategoryOnClick(StoreCategory.Cafe)
-
-        binding.storeCategoryHair.setCategoryOnClick(StoreCategory.BeautySalon)
-        binding.storeCategoryHairTextview.setCategoryOnClick(StoreCategory.BeautySalon)
-
-        binding.storeCategoryEtc.setCategoryOnClick(StoreCategory.Etc)
-        binding.storeCategoryEtcTextview.setCategoryOnClick(StoreCategory.Etc)
-    }*/
-
-    /*private fun handleCategorySelection(category: StoreCategory?) {
-        binding.storeCategoryChickenTextview.setCategorySelected(category == StoreCategory.Chicken)
-        binding.storeCategoryPizzaTextview.setCategorySelected(category == StoreCategory.Pizza)
-        binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.DOSIRAK)
-        binding.storeCategoryPorkFeetTextview.setCategorySelected(category == StoreCategory.PorkFeet)
-        binding.storeCategoryChineseTextview.setCategorySelected(category == StoreCategory.Chinese)
-        binding.storeCategoryNormalTextview.setCategorySelected(category == StoreCategory.NormalFood)
-        binding.storeCategoryCafeTextview.setCategorySelected(category == StoreCategory.Cafe)
-        binding.storeCategoryHairTextview.setCategorySelected(category == StoreCategory.BeautySalon)
-        binding.storeCategoryEtcTextview.setCategorySelected(category == StoreCategory.Etc)
-    }*/
+    private fun getStoreCategoryName(category: StoreCategory?): String {
+        return when (category) {
+            StoreCategory.Chicken -> getString(R.string.chicken)
+            StoreCategory.Pizza -> getString(R.string.pizza)
+            StoreCategory.DOSIRAK -> getString(R.string.dorisak)
+            StoreCategory.PorkFeet -> getString(R.string.pork_feet)
+            StoreCategory.Chinese -> getString(R.string.chinese)
+            StoreCategory.NormalFood -> getString(R.string.normal_food)
+            StoreCategory.Cafe -> getString(R.string.cafe)
+            StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
+            StoreCategory.Etc -> getString(R.string.etc)
+            StoreCategory.All, null -> getString(R.string.see_all)
+        }
+    }
 
     private fun View.setCategoryOnClick(category: StoreCategory) {
         setOnClickListener {
             binding.searchEditText.clearFocus()
             viewModel.setCategory(category)
+
+            val eventValue = getStoreCategoryName(viewModel.category.value)
+
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES,
+                eventValue
+            )
         }
     }
 
