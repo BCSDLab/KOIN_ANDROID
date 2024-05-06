@@ -51,7 +51,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
     }
 
     public void setOnCLickedDialogItemListener(OnCLickedDialogItemListener onCLickedDialogItemListener) {
-        onCLickedDialogItemListener = onCLickedDialogItemListener;
+        this.onCLickedDialogItemListener = onCLickedDialogItemListener;
     }
 
     public void setMajorDialogListener(MajorDialogListener majorDialogListener) {
@@ -179,7 +179,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                 if (toggleButton[1].isChecked()) {
                     OffToggleButton(1);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_3);
-                    majorDialogListener.sendActivity("elecronic", 1);
+                    majorDialogListener.sendActivity("electronic", 1);
                     toggleButton[1].setBackgroundResource(R.drawable.button_rect_squash_radius);
                     toggleButton[1].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
@@ -227,7 +227,7 @@ public class TimetableSelectMajorDialog extends Dialog implements View.OnClickLi
                 if (toggleButton[5].isChecked()) {
                     OffToggleButton(5);
                     onClickedItem(DepartmentCode.DEPARTMENT_CODE_2);
-                    majorDialogListener.sendActivity("mecchanical", 5);
+                    majorDialogListener.sendActivity("mechanical", 5);
                     toggleButton[5].setBackgroundResource(R.drawable.button_rect_squash_radius);
                     toggleButton[5].setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 } else {
