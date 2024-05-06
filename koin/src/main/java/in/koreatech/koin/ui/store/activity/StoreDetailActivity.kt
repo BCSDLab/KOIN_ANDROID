@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -83,6 +84,15 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_CALL,
                 viewModel.store.value?.name ?: "Unknown")
         }
+
+        TabLayoutMediator(binding.storeDetailTabLayout, binding.storeDetailViewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.menu)
+                1 -> getString(R.string.event_notification)
+                else -> throw IllegalArgumentException("Invalid position")
+            }
+        }.attach()
+
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
