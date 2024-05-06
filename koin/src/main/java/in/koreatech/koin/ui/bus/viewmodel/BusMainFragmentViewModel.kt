@@ -25,6 +25,7 @@ class BusMainFragmentViewModel @Inject constructor(
 
     private val _departure = MutableLiveData<BusNode>(BusNode.Koreatech)
     private val _arrival = MutableLiveData<BusNode>(BusNode.Terminal)
+    var isUserSelection = false
 
     val departure: LiveData<BusNode> get() = _departure
     val arrival: LiveData<BusNode> get() = _arrival
