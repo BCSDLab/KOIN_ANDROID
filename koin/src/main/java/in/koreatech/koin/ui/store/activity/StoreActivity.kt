@@ -13,7 +13,9 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
@@ -25,6 +27,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
@@ -60,6 +63,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.shop_id)
+        }
+    }
+
+    private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
+        setOnItemClickListener {
+            viewModel.setCategory(it.toStoreCategory())
         }
     }
 
@@ -100,13 +109,15 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
 
 
-        handleCategoryClickEvent()
+        //handleCategoryClickEvent()
         initViewModel()
         initView()
         startAutoScroll()
 
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
+
+        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(1)
         viewModel.setCategory(initStoreCategory)
     }
 
@@ -125,6 +136,13 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
+
+
+        binding.categoriesRecyclerview.apply {
+            layoutManager = GridLayoutManager(this@StoreActivity, 5)
+            adapter = storeCategoriesAdapter
+        }
+
 
         binding.searchEditText.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
@@ -190,6 +208,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             storeEventPagerAdapter.submitList(it)
         }
 
+        observeLiveData(viewModel.storeCategories){
+            storeCategoriesAdapter.setStoreCategoriesData(it)
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.stores.collect {
@@ -197,18 +219,9 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
-
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.category.collect {
-                    handleCategorySelection(it)
-                }
-            }
-        }
     }
 
-    private fun handleCategoryClickEvent() {
+   /* private fun handleCategoryClickEvent() {
         binding.storeCategoryChicken.setCategoryOnClick(StoreCategory.Chicken)
         binding.storeCategoryChickenTextview.setCategoryOnClick(StoreCategory.Chicken)
 
@@ -235,9 +248,9 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         binding.storeCategoryEtc.setCategoryOnClick(StoreCategory.Etc)
         binding.storeCategoryEtcTextview.setCategoryOnClick(StoreCategory.Etc)
-    }
+    }*/
 
-    private fun handleCategorySelection(category: StoreCategory?) {
+    /*private fun handleCategorySelection(category: StoreCategory?) {
         binding.storeCategoryChickenTextview.setCategorySelected(category == StoreCategory.Chicken)
         binding.storeCategoryPizzaTextview.setCategorySelected(category == StoreCategory.Pizza)
         binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.DOSIRAK)
@@ -247,7 +260,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.storeCategoryCafeTextview.setCategorySelected(category == StoreCategory.Cafe)
         binding.storeCategoryHairTextview.setCategorySelected(category == StoreCategory.BeautySalon)
         binding.storeCategoryEtcTextview.setCategorySelected(category == StoreCategory.Etc)
-    }
+    }*/
 
     private fun View.setCategoryOnClick(category: StoreCategory) {
         setOnClickListener {

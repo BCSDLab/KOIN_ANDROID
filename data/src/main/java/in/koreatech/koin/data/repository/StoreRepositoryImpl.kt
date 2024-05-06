@@ -2,11 +2,13 @@ package `in`.koreatech.koin.data.repository
 
 import android.util.Log
 import `in`.koreatech.koin.data.mapper.toStore
+import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
@@ -18,6 +20,7 @@ class StoreRepositoryImpl @Inject constructor(
 ) : StoreRepository {
     private var stores: List<Store>? = null
     private var storeEvents: List<StoreEvent>? = null
+    private var storeCategories: List<StoreCategories>? = null
 
     override suspend fun getStores(): List<Store> {
         if (stores == null) {
@@ -33,6 +36,14 @@ class StoreRepositoryImpl @Inject constructor(
         }
 
         return storeEvents!!
+    }
+
+    override suspend fun getStoreCategories(): List<StoreCategories> {
+        if (storeCategories == null) {
+            storeCategories = storeRemoteDataSource.getStoreCategories().map{it.toStoreCategories()}
+        }
+
+        return storeCategories!!
     }
 
     override suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu {

@@ -20,11 +20,6 @@ import `in`.koreatech.koin.domain.model.store.StoreEvent
 class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.StoreEventCardViewHolder>(
     diffCallback
 ){
-    private val glideOptions: RequestOptions = RequestOptions()
-        .fitCenter()
-        .override(300, 300)
-        .error(R.drawable.event_default)
-        .placeholder(R.color.white)
 
     var onItemClickListener: OnItemClickListener? = null
 
