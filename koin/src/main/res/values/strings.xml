@@ -407,4 +407,6 @@
     <string name="nearby_store">주변 상점</string>
     <string name="main_menu">메인 메뉴</string>
     <string name="view_all">전체보기</string>
+    <string name="menu">메뉴</string>
+    <string name="event_notification">이벤트/공지</string>
 </resources>
