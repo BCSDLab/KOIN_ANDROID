@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import `in`.koreatech.koin.domain.util.ext.isNotValidPassword
+import `in`.koreatech.koin.domain.util.ext.toSHA256
 import javax.inject.Inject
 
 class OwnerChangePasswordUseCase @Inject constructor(
@@ -22,7 +23,7 @@ private val ownerChangePasswordRepository: OwnerChangePasswordRepository
             password != passwordChanged -> Result.failure(ChangePasswordExceptionState.NotCoincidePassword)
             else -> ownerChangePasswordRepository.changePassword(
                 email = email,
-                password = password
+                password = password.toSHA256()
             ).map { ChangePasswordContinuationState.FinishedChangePassword}
         }
     }

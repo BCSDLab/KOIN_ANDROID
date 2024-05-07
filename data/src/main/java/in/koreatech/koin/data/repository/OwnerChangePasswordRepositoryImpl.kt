@@ -1,11 +1,13 @@
 package `in`.koreatech.koin.data.repository
 
+import android.util.Log
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
+import kotlinx.coroutines.CancellationException
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -23,10 +25,15 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
             )
 
             Result.success(Unit)
-        } catch (e: HttpException) {
+        }
+        catch (e: HttpException) {
             e.httpExceptionMapper()
-        } catch (t: Throwable) {
-            Result.failure(t)
+        }
+        catch (e: CancellationException) {
+            Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
@@ -43,10 +50,15 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
             )
 
             Result.success(Unit)
-        } catch (e: HttpException) {
+        }
+        catch (e: HttpException) {
             e.httpExceptionMapper()
-        } catch (t: Throwable) {
-            Result.failure(t)
+        }
+        catch (e: CancellationException) {
+            Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
@@ -62,10 +74,15 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
             )
 
             Result.success(Unit)
-        } catch (e: HttpException) {
+        }
+        catch (e: HttpException) {
             e.httpExceptionMapper()
-        } catch (t: Throwable) {
-            Result.failure(t)
+        }
+        catch (e: CancellationException) {
+            Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }
