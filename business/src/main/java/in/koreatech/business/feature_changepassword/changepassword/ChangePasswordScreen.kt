@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
+import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.ui.theme.Red2
@@ -59,13 +59,9 @@ fun ChangePasswordScreenImpl(
         passwordCheckedIsEmpty = state.passwordCheckedIsBlank(),
         onPasswordChange = {
                 newPassword -> viewModel.insertPassword(newPassword)
-                viewModel.coincidePasswordReset()
-                viewModel.fillAllPasswords()
                            },
         onPasswordCheckedChange = {
                 newCheckedPassword -> viewModel.insertPasswordChecked(newCheckedPassword)
-                viewModel.coincidePasswordReset()
-                viewModel.fillAllPasswords()
                                   },
         onBackPressed = onBackPressed,
         onChangePasswordClick = {
@@ -259,7 +255,7 @@ fun WaringNotCoincidePW(
         Text(
             text = stringResource(R.string.password_not_coincide),
             fontSize = 16.sp,
-            color = Red2,
+            color = ColorError
         )
     }
 }
