@@ -32,7 +32,8 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dining.collect {
-                    diningAdapter.submitList(it.filter { dining -> dining.type == type}.arrange() )
+                    val diningList = it.filter { dining -> dining.type == type }.arrange()
+                    diningAdapter.submitList( diningList.filter { dining -> dining.menu.isNotEmpty() } )
                 }
             }
         }

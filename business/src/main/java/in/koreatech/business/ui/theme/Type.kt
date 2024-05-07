@@ -70,7 +70,6 @@ val Typography = Typography(
         fontFamily = Rubik,
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
-        background = ColorPrimary,
     ),
     caption = TextStyle(
         color = Color(0xFFD2DAE2),
