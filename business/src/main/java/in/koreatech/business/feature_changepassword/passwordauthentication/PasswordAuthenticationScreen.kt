@@ -233,7 +233,7 @@ fun HandleSideEffects(viewModel: PasswordAuthenticationViewModel, email: String,
             is PasswordAuthenticationSideEffect.ToastNoEmail -> ToastUtil.getInstance().makeShort(context.getString(R.string.email_address_insert))
             is PasswordAuthenticationSideEffect.SendAuthCode -> ToastUtil.getInstance().makeShort(context.getString(R.string.auth_code_input_from_email))
             is PasswordAuthenticationSideEffect.ToastNotCoincideAuthCode -> ToastUtil.getInstance().makeShort(context.getString(R.string.auth_code_not_equal))
-            else -> {ToastUtil.getInstance().makeShort(context.getString(R.string.error))}
+            is PasswordAuthenticationSideEffect.ToastNullAuthCode -> ToastUtil.getInstance().makeShort(context.getString(R.string.auth_code_insert))
         }
     }
 }

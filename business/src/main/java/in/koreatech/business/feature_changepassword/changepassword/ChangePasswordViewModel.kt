@@ -6,6 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import `in`.koreatech.koin.domain.usecase.business.OwnerChangePasswordUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -26,6 +29,18 @@ class ChangePasswordViewModel  @Inject constructor(
             checkNotNull(email)
             getEmail(email)
         }
+
+    private val changePasswordState =  MutableSharedFlow<Triple<String, String, String>>()
+
+    init {
+        viewModelScope.launch{
+            changePasswordState
+                .debounce(500L)
+                .collect{
+                    performChangePassword(it.first, it.second, it.third)
+                }
+        }
+    }
     fun viewNotCoincidePassword() = intent {
         reduce{
             state.copy(notCoincidePW = true)
@@ -51,8 +66,17 @@ class ChangePasswordViewModel  @Inject constructor(
     fun insertPasswordChecked(passwordChecked: String) = intent{
         reduce { state.copy(passwordChecked = passwordChecked) }
     }
-
     fun changePassword(
+        email: String,
+        password: String,
+        passwordChecked: String
+    ){
+        viewModelScope.launch {
+            changePasswordState.emit(Triple(email, password, passwordChecked))
+        }
+    }
+
+    private suspend fun performChangePassword(
         email: String,
         password: String,
         passwordChecked: String

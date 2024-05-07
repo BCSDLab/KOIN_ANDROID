@@ -8,6 +8,10 @@ import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import `in`.koreatech.koin.domain.usecase.business.SendAuthCodeUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerAuthenticateCode
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.cancellable
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -23,6 +27,26 @@ class PasswordAuthenticationViewModel @Inject constructor(
 ): ViewModel() , ContainerHost<PasswordAuthenticationState, PasswordAuthenticationSideEffect> {
     override val container = container<PasswordAuthenticationState, PasswordAuthenticationSideEffect>(PasswordAuthenticationState())
 
+    private val sendAuthCodeFlow = MutableSharedFlow<String>()
+    private val authenticateCodeFlow = MutableSharedFlow<Pair<String, String>>()
+
+    init{
+        viewModelScope.launch {
+            sendAuthCodeFlow
+                .debounce(500L)
+                .collect{
+                    performSendAuthCode(it)
+                }
+        }
+
+        viewModelScope.launch {
+            authenticateCodeFlow
+                .debounce(500L)
+                .collect{
+                    performAuthenticateCode(it.first, it.second)
+                }
+        }
+    }
     private fun authenticationBtnClicked() = intent {
         reduce{
             state.copy(authenticationBtnIsClicked = true)
@@ -62,23 +86,33 @@ class PasswordAuthenticationViewModel @Inject constructor(
     }
 
     fun sendAuthCode(email: String){
-            viewModelScope.launch {
-                sendAuthCodeUseCase(email = email)
-                    .onSuccess {
-                        authenticationBtnClicked()
-                        sendAuthCode()
-                    }
-                    .onFailure {
-                        when(it){
-                            ChangePasswordExceptionState.ToastNullEmail -> toastNullEmail()
-                            ChangePasswordExceptionState.ToastIsNotEmail -> toastIsNotEmail()
-                            else -> {}
-                        }
-                    }
+        viewModelScope.launch {
+            sendAuthCodeFlow.emit(email)
+        }
+    }
+
+    fun authenticateCode(email: String, authCode: String){
+        viewModelScope.launch {
+            authenticateCodeFlow.emit(email to authCode)
+        }
+    }
+
+    private suspend fun performSendAuthCode(email: String) {
+        sendAuthCodeUseCase(email = email)
+            .onSuccess {
+                authenticationBtnClicked()
+                sendAuthCode()
+            }
+            .onFailure {
+                when (it) {
+                    ChangePasswordExceptionState.ToastNullEmail -> toastNullEmail()
+                    ChangePasswordExceptionState.ToastIsNotEmail -> toastIsNotEmail()
+                    else -> {}
+                }
             }
     }
 
-    fun authenticateCode(
+    private suspend fun performAuthenticateCode(
         email: String,
         authCode: String
     ){
