@@ -40,19 +40,19 @@ fun StoreItemResponse.toStore(): Store = Store(
 )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
-    shop_id = shop_id,
-    shop_name = shop_name ?: "",
-    event_id = event_id,
+    shopId = shopId,
+    shopName = shopName ?: "",
+    eventId = eventId,
     title = title ?: "",
     content = content ?: "",
-    thumbnail_images = thumbnail_images ?: ArrayList<String>(),
-    start_date = start_date ?: "",
-    end_date = end_date ?: ""
+    thumbnailImages = thumbnailImages ?: ArrayList<String>(),
+    startDate = startDate ?: "",
+    endDate = endDate ?: ""
 )
 
 fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories = StoreCategories(
     id = id,
-    image_url = image_url,
+    imageUrl = imageUrl,
     name = name
 )
 

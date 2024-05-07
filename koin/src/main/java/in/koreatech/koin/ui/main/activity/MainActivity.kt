@@ -121,7 +121,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             busPagerAdapter.setBusTimerItems(it)
         }
         observeLiveData(storeCategories){
-            storeCategoriesRecyclerAdapter.setStoreCategoriesData(it)
+            storeCategoriesRecyclerAdapter.submitList(it)
         }
     }
 
