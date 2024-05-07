@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.fragment
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -64,6 +65,7 @@ class StoreDetailMenuFragment : Fragment() {
         binding.storeRandomRecyclerView.adapter = storeRecyclerAdapter
     }
     
+    @SuppressLint("ResourceAsColor")
     private fun initViewModel() {
 
         observeLiveData(viewModel.storeMenu) {
@@ -108,20 +110,20 @@ class StoreDetailMenuFragment : Fragment() {
                 if (it.menuCategories != null) {
                     viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
                         if(binding.storeDetailMainMenuTextView.text == category.name){
-                            binding.storeDetailMainMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-                            binding.storeDetailMainMenuTextView.setTextColor(Color.WHITE)
+                            binding.storeDetailMainMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
+                            binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
                         }
                         else if(binding.storeDetailSetMenuTextView.text == category.name){
-                            binding.storeDetailSetMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-                            binding.storeDetailSetMenuTextView.setTextColor(Color.WHITE)
+                            binding.storeDetailSetMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
+                            binding.storeDetailSetMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
                         }
                         else if (binding.storeDetailSideMenuTextView.text == category.name){
-                            binding.storeDetailSideMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-                            binding.storeDetailSideMenuTextView.setTextColor(Color.WHITE)
+                            binding.storeDetailSideMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
+                            binding.storeDetailSideMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
                         }
                         else{
-                            binding.storeDetailRecommendMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-                            binding.storeDetailRecommendMenuTextView.setTextColor(Color.WHITE)
+                            binding.storeDetailRecommendMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
+                            binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
                         }
 
 
