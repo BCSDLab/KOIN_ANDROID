@@ -3,6 +3,9 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import `in`.koreatech.koin.domain.model.store.StoreCategory
+
+import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -16,7 +19,9 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
@@ -43,8 +48,6 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
 
-    private var isUserScrolling = false
-
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
 
     }
@@ -55,6 +58,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CLICK,
+                it.name
+            )
         }
     }
 
@@ -78,7 +86,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             field = value
         }
 
-    private var showRemoveQueryButton : Boolean = false
+    private var showRemoveQueryButton: Boolean = false
         set(value) {
             if (!value) {
                 binding.searchImageView.background = ContextCompat.getDrawable(
@@ -148,6 +156,18 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             isSearchMode = hasFocus
         }
 
+        binding.searchEditText.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
+                    "search in " + getStoreCategoryName(viewModel.category.value)
+                )
+            }
+            v.performClick()
+        }
+
+
         binding.storeRecyclerview.apply {
             layoutManager = LinearLayoutManager(this@StoreActivity)
             adapter = storeAdapter
@@ -158,7 +178,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         binding.searchImageView.setOnClickListener {
-            if(showRemoveQueryButton) binding.searchEditText.setText("")
+            if (showRemoveQueryButton) binding.searchEditText.setText("")
         }
 
         binding.eventViewPager.apply {
@@ -229,6 +249,22 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                     storeAdapter.submitList(it)
                 }
             }
+        }
+    }
+
+
+    private fun getStoreCategoryName(category: StoreCategory?): String {
+        return when (category) {
+            StoreCategory.Chicken -> getString(R.string.chicken)
+            StoreCategory.Pizza -> getString(R.string.pizza)
+            StoreCategory.DOSIRAK -> getString(R.string.dorisak)
+            StoreCategory.PorkFeet -> getString(R.string.pork_feet)
+            StoreCategory.Chinese -> getString(R.string.chinese)
+            StoreCategory.NormalFood -> getString(R.string.normal_food)
+            StoreCategory.Cafe -> getString(R.string.cafe)
+            StoreCategory.BeautySalon -> getString(R.string.beauty_salon)
+            StoreCategory.Etc -> getString(R.string.etc)
+            StoreCategory.All, null -> getString(R.string.see_all)
         }
     }
 

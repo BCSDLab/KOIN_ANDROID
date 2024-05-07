@@ -1,7 +1,5 @@
 package `in`.koreatech.koin.ui.store.adapter
 
-import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -49,7 +47,6 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
             bind(event)
 
             eventStoreName.text = event.shopName
-            Log.e("로그 상점이름 길이", eventStoreName.text.toString()+ ", " + eventStoreName.text.length)
 
             if(event.thumbnailImages?.isEmpty() == true){
                 eventStoreImage.setImageResource(R.drawable.event_default)
