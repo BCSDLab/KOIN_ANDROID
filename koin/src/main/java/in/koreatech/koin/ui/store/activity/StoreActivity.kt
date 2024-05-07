@@ -3,7 +3,6 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -15,13 +14,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
-import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
@@ -219,63 +216,6 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 }
             }
         }
-    }
-
-   /* private fun handleCategoryClickEvent() {
-        binding.storeCategoryChicken.setCategoryOnClick(StoreCategory.Chicken)
-        binding.storeCategoryChickenTextview.setCategoryOnClick(StoreCategory.Chicken)
-
-        binding.storeCategoryPizza.setCategoryOnClick(StoreCategory.Pizza)
-        binding.storeCategoryPizzaTextview.setCategoryOnClick(StoreCategory.Pizza)
-
-        binding.storeCategoryDosirak.setCategoryOnClick(StoreCategory.DOSIRAK)
-        binding.storeCategoryDosirakTextview.setCategoryOnClick(StoreCategory.DOSIRAK)
-
-        binding.storeCategoryPorkFeet.setCategoryOnClick(StoreCategory.PorkFeet)
-        binding.storeCategoryPorkFeetTextview.setCategoryOnClick(StoreCategory.PorkFeet)
-
-        binding.storeCategoryChinese.setCategoryOnClick(StoreCategory.Chinese)
-        binding.storeCategoryChineseTextview.setCategoryOnClick(StoreCategory.Chinese)
-
-        binding.storeCategoryNormal.setCategoryOnClick(StoreCategory.NormalFood)
-        binding.storeCategoryNormalTextview.setCategoryOnClick(StoreCategory.NormalFood)
-
-        binding.storeCategoryCafe.setCategoryOnClick(StoreCategory.Cafe)
-        binding.storeCategoryCafeTextview.setCategoryOnClick(StoreCategory.Cafe)
-
-        binding.storeCategoryHair.setCategoryOnClick(StoreCategory.BeautySalon)
-        binding.storeCategoryHairTextview.setCategoryOnClick(StoreCategory.BeautySalon)
-
-        binding.storeCategoryEtc.setCategoryOnClick(StoreCategory.Etc)
-        binding.storeCategoryEtcTextview.setCategoryOnClick(StoreCategory.Etc)
-    }*/
-
-    /*private fun handleCategorySelection(category: StoreCategory?) {
-        binding.storeCategoryChickenTextview.setCategorySelected(category == StoreCategory.Chicken)
-        binding.storeCategoryPizzaTextview.setCategorySelected(category == StoreCategory.Pizza)
-        binding.storeCategoryDosirakTextview.setCategorySelected(category == StoreCategory.DOSIRAK)
-        binding.storeCategoryPorkFeetTextview.setCategorySelected(category == StoreCategory.PorkFeet)
-        binding.storeCategoryChineseTextview.setCategorySelected(category == StoreCategory.Chinese)
-        binding.storeCategoryNormalTextview.setCategorySelected(category == StoreCategory.NormalFood)
-        binding.storeCategoryCafeTextview.setCategorySelected(category == StoreCategory.Cafe)
-        binding.storeCategoryHairTextview.setCategorySelected(category == StoreCategory.BeautySalon)
-        binding.storeCategoryEtcTextview.setCategorySelected(category == StoreCategory.Etc)
-    }*/
-
-    private fun View.setCategoryOnClick(category: StoreCategory) {
-        setOnClickListener {
-            binding.searchEditText.clearFocus()
-            viewModel.setCategory(category)
-        }
-    }
-
-    private fun TextView.setCategorySelected(isSelected: Boolean) {
-        setTextColor(
-            ContextCompat.getColor(
-                context,
-                if (isSelected) R.color.colorAccent else R.color.black
-            )
-        )
     }
 
     override fun onPause() {

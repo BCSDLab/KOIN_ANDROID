@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.main.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
