@@ -117,12 +117,11 @@ dependencies {
     implementation libs.hilt.android
     kapt libs.hilt.compiler
 
-    implementation 'com.makeramen:roundedimageview:2.3.0'
-
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.database)
     implementation(libs.firebase.perf)
     implementation(libs.firebase.analytics)
+    implementation(libs.markerman.roundedImageView)
 }

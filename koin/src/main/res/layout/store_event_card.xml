@@ -45,7 +45,7 @@
 
         <TextView
             android:id="@+id/evnet_store_name_tv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:ellipsize="end"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/get_discount_tv"
-            android:maxWidth="130dp"
+            android:maxWidth="150dp"
             />
 
             <TextView

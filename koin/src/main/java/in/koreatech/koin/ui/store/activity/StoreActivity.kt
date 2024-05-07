@@ -3,8 +3,6 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -14,13 +12,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
-import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -44,6 +43,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
 
+    private var isUserScrolling = false
+
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
 
     }
@@ -59,7 +60,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
-            storeDetailContract.launch(it.shop_id)
+            storeDetailContract.launch(it.shopId)
         }
     }
 
@@ -105,11 +106,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
-        //handleCategoryClickEvent()
         initViewModel()
         initView()
-        startAutoScroll()
 
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
@@ -167,12 +165,28 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
             currentItem = Int.MAX_VALUE / 2
             adapter = storeEventPagerAdapter
+
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@StoreActivity,
                     R.dimen.view_pager_item_margin
                 )
             )
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
+                }
+
+                override fun onPageSelected(position: Int) {
+
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+                        startAutoScroll()
+                    }
+                }
+            })
         }
 
     }
@@ -206,7 +220,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(viewModel.storeCategories){
-            storeCategoriesAdapter.setStoreCategoriesData(it)
+            storeCategoriesAdapter.submitList(it)
         }
 
         lifecycleScope.launch {

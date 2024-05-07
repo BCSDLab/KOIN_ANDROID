@@ -1,20 +1,17 @@
 package `in`.koreatech.koin.ui.store.adapter
 
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.StoreEventCardBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 
 class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.StoreEventCardViewHolder>(
@@ -51,14 +48,15 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
         with(holder){
             bind(event)
 
-            eventStoreName.text = event.shop_name
+            eventStoreName.text = event.shopName
+            Log.e("로그 상점이름 길이", eventStoreName.text.toString()+ ", " + eventStoreName.text.length)
 
-            if(event.thumbnail_images?.isEmpty() == true){
+            if(event.thumbnailImages?.isEmpty() == true){
                 eventStoreImage.setImageResource(R.drawable.event_default)
             }
             else{
                 Glide.with(eventStoreImage)
-                    .load(event.thumbnail_images?.get(0))
+                    .load(event.thumbnailImages?.get(0))
                     .override(100, 100)
                     .apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
                     .into(eventStoreImage)
@@ -81,7 +79,7 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<StoreEvent>() {
             override fun areItemsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
-                return oldItem.shop_id == newItem.shop_id
+                return oldItem.shopId == newItem.shopId
             }
 
             override fun areContentsTheSame(oldItem: StoreEvent, newItem: StoreEvent): Boolean {
