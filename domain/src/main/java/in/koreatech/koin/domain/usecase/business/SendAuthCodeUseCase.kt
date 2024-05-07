@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import `in`.koreatech.koin.domain.util.regex.isOwnerNotEmailValid
+import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 
 class SendAuthCodeUseCase @Inject constructor(
@@ -12,13 +13,18 @@ class SendAuthCodeUseCase @Inject constructor(
     suspend operator fun invoke(
         email: String
     ): Result<ChangePasswordContinuationState> {
-        return when {
-            email == "" -> Result.failure(ChangePasswordExceptionState.ToastNullEmail)
-            email.isOwnerNotEmailValid() -> Result.failure(ChangePasswordExceptionState.ToastIsNotEmail)
+        return try {
+            when {
+                email == "" -> Result.failure(ChangePasswordExceptionState.ToastNullEmail)
+                email.isOwnerNotEmailValid() -> Result.failure(ChangePasswordExceptionState.ToastIsNotEmail)
 
-            else -> ownerChangePasswordRepository.requestEmailVerification(
-                email = email
-            ).map { ChangePasswordContinuationState.SendAuthCode}
+                else -> ownerChangePasswordRepository.requestEmailVerification(
+                    email = email
+                ).map { ChangePasswordContinuationState.SendAuthCode}
+            }
+        }
+        catch (t: CancellationException){
+            throw t
         }
     }
 

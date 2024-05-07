@@ -29,8 +29,8 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
         catch (e: HttpException) {
             e.httpExceptionMapper()
         }
-        catch (e: CancellationException) {
-            Result.failure(e)
+        catch (t: CancellationException) {
+            throw t
         }
         catch (e: Exception) {
             Result.failure(e)
@@ -54,8 +54,8 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
         catch (e: HttpException) {
             e.httpExceptionMapper()
         }
-        catch (e: CancellationException) {
-            Result.failure(e)
+        catch (t: CancellationException) {
+            throw t
         }
         catch (e: Exception) {
             Result.failure(e)
@@ -78,8 +78,8 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
         catch (e: HttpException) {
             e.httpExceptionMapper()
         }
-        catch (e: CancellationException) {
-            Result.failure(e)
+        catch (t: CancellationException) {
+            throw t
         }
         catch (e: Exception) {
             Result.failure(e)
