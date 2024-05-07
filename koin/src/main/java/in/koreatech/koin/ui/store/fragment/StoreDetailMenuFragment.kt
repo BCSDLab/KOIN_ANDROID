@@ -1,12 +1,15 @@
 package `in`.koreatech.koin.ui.store.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
@@ -104,6 +107,24 @@ class StoreDetailMenuFragment : Fragment() {
             observeLiveData(viewModel.categories) {
                 if (it.menuCategories != null) {
                     viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
+                        if(binding.storeDetailMainMenuTextView.text == category.name){
+                            binding.storeDetailMainMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                            binding.storeDetailMainMenuTextView.setTextColor(Color.WHITE)
+                        }
+                        else if(binding.storeDetailSetMenuTextView.text == category.name){
+                            binding.storeDetailSetMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                            binding.storeDetailSetMenuTextView.setTextColor(Color.WHITE)
+                        }
+                        else if (binding.storeDetailSideMenuTextView.text == category.name){
+                            binding.storeDetailSideMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                            binding.storeDetailSideMenuTextView.setTextColor(Color.WHITE)
+                        }
+                        else{
+                            binding.storeDetailRecommendMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+                            binding.storeDetailRecommendMenuTextView.setTextColor(Color.WHITE)
+                        }
+
+
                         storeMenuAdapter[index].setCategory(category.name)
                     }
                 }
