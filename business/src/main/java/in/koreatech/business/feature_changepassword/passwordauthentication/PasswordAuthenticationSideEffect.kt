@@ -7,11 +7,13 @@ sealed class PasswordAuthenticationSideEffect {
     data class GotoChangePasswordScreen(val email: String): PasswordAuthenticationSideEffect()
 
     object SendAuthCode: PasswordAuthenticationSideEffect()
-    object ToastNoEmail: PasswordAuthenticationSideEffect()
 
-    object ToastIsNotEmail: PasswordAuthenticationSideEffect()
+    data class ShowMessage(val type: ErrorType): PasswordAuthenticationSideEffect()
+}
 
-    object ToastNullAuthCode: PasswordAuthenticationSideEffect()
-    object ToastNotCoincideAuthCode: PasswordAuthenticationSideEffect()
-
+enum class ErrorType {
+    NoEmail,
+    IsNotEmail,
+    NullAuthCode,
+    NotCoincideAuthCode
 }

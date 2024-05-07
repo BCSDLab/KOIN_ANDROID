@@ -66,11 +66,11 @@ class PasswordAuthenticationViewModel @Inject constructor(
     }
 
     private fun toastNullEmail() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ToastNoEmail)
+        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NoEmail))
     }
 
     private fun toastIsNotEmail() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ToastIsNotEmail)
+        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.IsNotEmail))
     }
 
     private fun sendAuthCode() = intent {
@@ -78,11 +78,11 @@ class PasswordAuthenticationViewModel @Inject constructor(
     }
 
     private fun toastNullAuthCode() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ToastNullAuthCode)
+        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NullAuthCode))
     }
 
     private fun toastNotCoincideAuthCode() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ToastNotCoincideAuthCode)
+        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NotCoincideAuthCode))
     }
 
     fun sendAuthCode(email: String){

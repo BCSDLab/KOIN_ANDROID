@@ -30,17 +30,6 @@ class ChangePasswordViewModel  @Inject constructor(
             getEmail(email)
         }
 
-    private val changePasswordState =  MutableSharedFlow<Triple<String, String, String>>()
-
-    init {
-        viewModelScope.launch{
-            changePasswordState
-                .debounce(500L)
-                .collect{
-                    performChangePassword(it.first, it.second, it.third)
-                }
-        }
-    }
     fun viewNotCoincidePassword() = intent {
         reduce{
             state.copy(notCoincidePW = true)
@@ -61,22 +50,17 @@ class ChangePasswordViewModel  @Inject constructor(
 
     fun insertPassword(password: String) = intent{
         reduce { state.copy(password = password) }
+        coincidePasswordReset()
+        fillAllPasswords()
     }
 
     fun insertPasswordChecked(passwordChecked: String) = intent{
         reduce { state.copy(passwordChecked = passwordChecked) }
-    }
-    fun changePassword(
-        email: String,
-        password: String,
-        passwordChecked: String
-    ){
-        viewModelScope.launch {
-            changePasswordState.emit(Triple(email, password, passwordChecked))
-        }
+        coincidePasswordReset()
+        fillAllPasswords()
     }
 
-    private suspend fun performChangePassword(
+    fun changePassword(
         email: String,
         password: String,
         passwordChecked: String
