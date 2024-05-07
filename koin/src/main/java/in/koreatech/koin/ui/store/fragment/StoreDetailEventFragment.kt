@@ -39,10 +39,19 @@ class StoreDetailEventFragment : Fragment() {
             adapter = storeDetailMenuAdapter
         }
         viewModel.storeEvent.value?.let {
-            storeDetailMenuAdapter.submitList(it)
+            if (it.isNotEmpty()) {
+                binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
+                binding.storeDetailNoEventImageView.visibility = View.GONE
+                binding.storeDetailNoEventTextView.visibility = View.GONE
+                storeDetailMenuAdapter.submitList(it)
+            } else {
+                binding.storeDetailEventRecyclerview.visibility = View.GONE
+                binding.storeDetailNoEventImageView.visibility = View.VISIBLE
+                binding.storeDetailNoEventTextView.visibility = View.VISIBLE
+            }
         }
-    }
 
+    }
 
     private fun initViewModel() {
         observeLiveData(viewModel.storeEvent) {
