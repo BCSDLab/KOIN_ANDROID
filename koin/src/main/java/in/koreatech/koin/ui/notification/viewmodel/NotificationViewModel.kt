@@ -31,11 +31,8 @@ class NotificationViewModel @Inject constructor(
         MutableStateFlow<NotificationUiState>(NotificationUiState.Nothing)
     val notificationUiState = _notificationUiState.asStateFlow()
 
-    init {
-        getPermissionInfo()
-    }
 
-    private fun getPermissionInfo() {
+    fun getPermissionInfo() {
         viewModelScope.launchWithLoading {
             getNotificationPermissionInfoUseCase().onSuccess { info ->
                 _notificationUiState.update {
