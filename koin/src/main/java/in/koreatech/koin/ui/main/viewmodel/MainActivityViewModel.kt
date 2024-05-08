@@ -10,6 +10,9 @@ import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreEvent
+import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.util.TimeUtil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.collectLatest
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val getBusTimerUseCase: GetBusTimerUseCase,
     private val busErrorHandler: BusErrorHandler,
-    private val getDiningUseCase: GetDiningUseCase
+    private val getDiningUseCase: GetDiningUseCase,
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
 ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
@@ -33,8 +37,12 @@ class MainActivityViewModel @Inject constructor(
     private val _selectedType = MutableLiveData(DiningUtil.getCurrentType())
     val selectedType: LiveData<DiningType> get() = _selectedType
 
+    private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
+    val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
+
     init {
         updateDining()
+        getStoreCategories()
     }
 
     val busTimer = liveData {
@@ -87,6 +95,12 @@ class MainActivityViewModel @Inject constructor(
                     _diningData.value = listOf()
                     _isLoading.value = false
                 }
+        }
+    }
+
+    fun getStoreCategories(){
+        viewModelScope.launchWithLoading {
+            _storeCategories.value = getStoreCategoriesUseCase()
         }
     }
 }
