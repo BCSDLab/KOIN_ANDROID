@@ -43,6 +43,7 @@ class StoreDetailEventFragment : Fragment() {
                 binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
                 binding.storeDetailNoEventImageView.visibility = View.GONE
                 binding.storeDetailNoEventTextView.visibility = View.GONE
+                storeDetailEventAdapter.submitList(it)
 
             } else {
                 binding.storeDetailEventRecyclerview.visibility = View.GONE
