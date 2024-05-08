@@ -10,3 +10,7 @@ data class PasswordAuthenticationState (
     val email: String = "",
     val authenticationCode: String = "",
 )
+
+fun PasswordAuthenticationState.emailIsEmpty() = email.isEmpty()
+
+fun PasswordAuthenticationState.authCodeIsEmpty() = authenticationCode.isEmpty()

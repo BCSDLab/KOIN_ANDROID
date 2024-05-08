@@ -24,6 +24,8 @@ import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
@@ -156,6 +158,51 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                     else -> {
                         koinNavigationDrawerViewModel.selectMenu(state)
+                        when (state) {
+                            MenuState.Store -> {
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.BUSINESS,
+                                    AnalyticsConstant.Label.HAMBURGER_SHOP,
+                                    getString(R.string.nearby_stores)
+                                )
+                            }
+
+                            MenuState.Bus -> {
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER_BUS,
+                                    getString(R.string.bus)
+                                )
+                            }
+
+                            MenuState.Dining -> {
+                                EventLogger.logClickEvent(
+                                    AnalyticsConstant.Domain.CAMPUS,
+                                    AnalyticsConstant.Label.HAMBURGER_DINING,
+                                    getString(R.string.navigation_item_dining)
+                                )
+                            }
+
+                            MenuState.UserInfo -> {
+                                if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
+                                    EventLogger.logClickEvent(
+                                        AnalyticsConstant.Domain.USER,
+                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
+                                        getString(R.string.navigation_drawer_right_myinfo)
+                                    )
+                                    showLoginRequestDialog()
+                                } else {
+                                    EventLogger.logClickEvent(
+                                        AnalyticsConstant.Domain.USER,
+                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
+                                        getString(R.string.navigation_drawer_right_myinfo)
+                                    )
+                                    goToUserInfoActivity()
+                                }
+                            }
+
+                            else -> Unit
+                        }
                     }
                 }
             }
@@ -423,6 +470,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.USER_ONLY_OK,
+                    getString(R.string.user_only_ok)
+                )
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
