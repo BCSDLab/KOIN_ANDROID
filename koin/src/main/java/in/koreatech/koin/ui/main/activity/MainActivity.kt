@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.content.pm.PackageManager
+
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +29,13 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 
+
+import com.google.firebase.messaging.FirebaseMessaging
+import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
+import android.os.Build
+import android.util.Log
+
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Main
@@ -51,6 +60,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 it.localized(this@MainActivity)
             )
         }
+    }
+    private val requestNotificationPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        // handle POST_NOTIFICATION permission
     }
     private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
 

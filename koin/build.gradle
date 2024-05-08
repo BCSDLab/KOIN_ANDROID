@@ -125,4 +125,5 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.viewpager2)
     implementation(libs.markerman.roundedImageView)
+    implementation(libs.firebase.messsaing)
 }
