@@ -43,4 +43,20 @@
         app:showText="false"
         app:track="@drawable/selector_switch" />
 
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/btn_switch_fake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:checked="true"
+        android:thumb="@drawable/selector_thumb"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/btn_switch"
+        app:layout_constraintStart_toEndOf="@id/btn_switch"
+        app:layout_constraintStart_toStartOf="@+id/btn_switch"
+        app:layout_constraintTop_toTopOf="@id/btn_switch"
+        app:showText="false"
+        app:track="@drawable/selector_switch" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

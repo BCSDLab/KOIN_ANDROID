@@ -1,8 +1,11 @@
 package `in`.koreatech.koin.core.view.notificaiton
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.NotificationHeaderBinding
 
@@ -20,6 +23,27 @@ class NotificationHeader @JvmOverloads constructor(
             field = value
         }
 
+    /**
+     * Fake Switch
+     * Switch 를 api response 로 시각화 하고 있음.
+     * true 시, Switch.isChecked = true => 왼쪽에서 오른쪽 애니메이션이 발생함.
+     * 위 이슈를 눈속임으로 개선할 수 있었음.
+     */
+    var fakeChecked: Boolean? = null
+        set(value) {
+            if (value == true) {
+                binding.btnSwitchFake.isVisible = true
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.btnSwitch.isChecked = true
+                    onSwitchClickListener?.onSwitch(true)
+                    binding.btnSwitchFake.isVisible = false
+                }, 200)
+            } else {
+                binding.btnSwitchFake.isVisible = false
+            }
+            field = value
+        }
+
     init {
         initView()
         context.theme.obtainStyledAttributes(
@@ -29,7 +53,6 @@ class NotificationHeader @JvmOverloads constructor(
             binding.tvDescription.text = getString(R.styleable.Notification_description)
             recycle()
         }
-
     }
 
     private fun initView() {
