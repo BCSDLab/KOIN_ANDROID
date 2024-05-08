@@ -39,11 +39,11 @@ class StoreDetailEventFragment : Fragment() {
             adapter = storeDetailEventAdapter
         }
         viewModel.storeEvent.value?.let {
-            if (it.isNotEmpty()) {
+            if (storeDetailEventAdapter.itemCount > 0) {
                 binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
                 binding.storeDetailNoEventImageView.visibility = View.GONE
                 binding.storeDetailNoEventTextView.visibility = View.GONE
-                storeDetailMenuAdapter.submitList(it)
+
             } else {
                 binding.storeDetailEventRecyclerview.visibility = View.GONE
                 binding.storeDetailNoEventImageView.visibility = View.VISIBLE
