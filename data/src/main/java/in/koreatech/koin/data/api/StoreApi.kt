@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
+import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
@@ -27,6 +28,6 @@ interface StoreApi {
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
     suspend fun getShopMenus(@Path("id") uid: Int): StoreMenuResponse
 
-    @GET(URLConstant.SHOPS + "/{id}" + "/events")
+    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
     suspend fun getShopEvents(@Path("id") uid: Int): StoreDetailEventResponse
 }
