@@ -161,6 +161,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 }
 
                 //기타정보
+                if (it.description == null) {
+                    storeDetailConstEtcTextview.isVisible = false
+                    storeDetailEtcTextview.isVisible = false
+                } else {
+                    storeDetailEtcTextview.text = it.description
+                }
+                
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
