@@ -1,8 +1,12 @@
 package `in`.koreatech.koin.core.view.notificaiton
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.NotificationRowBinding
 
@@ -17,6 +21,21 @@ class NotificationRow @JvmOverloads constructor(
     var isChecked: Boolean? = null
         set(value) {
             binding.btnSwitch.isChecked = value == true
+            field = value
+        }
+
+    var fakeChecked: Boolean? = null
+        set(value) {
+            if (value == true) {
+                binding.btnSwitchFake.isVisible = true
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.btnSwitch.isChecked = true
+                    onSwitchClickListener?.onSwitch(true)
+                    binding.btnSwitchFake.isVisible = false
+                }, 200)
+            } else {
+                binding.btnSwitchFake.isVisible = false
+            }
             field = value
         }
 

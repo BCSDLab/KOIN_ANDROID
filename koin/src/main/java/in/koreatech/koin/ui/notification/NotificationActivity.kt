@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.notification
 
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -48,30 +49,33 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 when (it.type) {
                                     SubscribesType.SHOP_EVENT -> {
+                                        binding.notificationShopEvent.fakeChecked = it.isPermit
                                         binding.notificationShopEvent.isChecked = it.isPermit
                                     }
 
                                     SubscribesType.DINING_SOLD_OUT -> {
+                                        binding.notificationDiningSoldOut.fakeChecked = it.isPermit
                                         binding.notificationDiningSoldOut.isChecked = it.isPermit
+                                        updateDiningSoldOutVisibility(it.isPermit)
                                     }
 
                                     SubscribesType.NOTHING -> Unit
                                 }
-                                it.detailSubscribes.forEach {
-                                    when (it.type) {
+                                it.detailSubscribes.forEach { detail ->
+                                    when (detail.type) {
                                         SubscribesDetailType.BREAKFAST -> {
-                                            binding.notificationDiningBreakfastSoldOut.isChecked =
-                                                it.isPermit
+                                            binding.notificationDiningBreakfastSoldOut.fakeChecked = detail.isPermit
+                                            binding.notificationDiningBreakfastSoldOut.isChecked = detail.isPermit
                                         }
 
                                         SubscribesDetailType.LUNCH -> {
-                                            binding.notificationDiningLunchSoldOut.isChecked =
-                                                it.isPermit
+                                            binding.notificationDiningLunchSoldOut.fakeChecked = detail.isPermit
+                                            binding.notificationDiningLunchSoldOut.isChecked = detail.isPermit
                                         }
 
                                         SubscribesDetailType.DINNER -> {
-                                            binding.notificationDiningDinnerSoldOut.isChecked =
-                                                it.isPermit
+                                            binding.notificationDiningDinnerSoldOut.fakeChecked = detail.isPermit
+                                            binding.notificationDiningDinnerSoldOut.isChecked = detail.isPermit
                                         }
 
                                         SubscribesDetailType.NOTHING -> Unit
@@ -96,6 +100,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
     private fun subscribeNotification() {
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
+            enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
         }
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
@@ -122,5 +127,17 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
     private fun handleSubscriptionDetail(isChecked: Boolean, type: SubscribesDetailType) {
         if (isChecked) viewModel.updateSubscriptionDetail(type)
         else viewModel.deleteSubscriptionDetail(type)
+    }
+
+    private fun enableSubscriptionDetail(isChecked: Boolean, subscribesType: SubscribesType) {
+        if (subscribesType == SubscribesType.DINING_SOLD_OUT) {
+            updateDiningSoldOutVisibility(isChecked)
+        }
+    }
+
+    private fun updateDiningSoldOutVisibility(isChecked: Boolean) {
+        binding.notificationDiningBreakfastSoldOut.isVisible = isChecked
+        binding.notificationDiningLunchSoldOut.isVisible = isChecked
+        binding.notificationDiningDinnerSoldOut.isVisible = isChecked
     }
 }
