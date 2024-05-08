@@ -39,20 +39,17 @@ class StoreDetailEventFragment : Fragment() {
             adapter = storeDetailEventAdapter
         }
         viewModel.storeEvent.value?.let {
-            storeDetailEventAdapter.submitList(it)
-
+            if (it.isNotEmpty()) {
+                binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
+                binding.storeDetailNoEventImageView.visibility = View.GONE
+                binding.storeDetailNoEventTextView.visibility = View.GONE
+                storeDetailMenuAdapter.submitList(it)
+            } else {
+                binding.storeDetailEventRecyclerview.visibility = View.GONE
+                binding.storeDetailNoEventImageView.visibility = View.VISIBLE
+                binding.storeDetailNoEventTextView.visibility = View.VISIBLE
+            }
         }
-        if (storeDetailEventAdapter.itemCount > 0) {
-            binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
-            binding.storeDetailNoEventImageView.visibility = View.GONE
-            binding.storeDetailNoEventTextView.visibility = View.GONE
-
-        } else {
-            binding.storeDetailEventRecyclerview.visibility = View.GONE
-            binding.storeDetailNoEventImageView.visibility = View.VISIBLE
-            binding.storeDetailNoEventTextView.visibility = View.VISIBLE
-        }
-
 
     }
 
