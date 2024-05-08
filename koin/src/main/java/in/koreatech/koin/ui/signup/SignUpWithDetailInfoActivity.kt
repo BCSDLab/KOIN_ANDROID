@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.ActivitySignUpWithDetailInfoBinding
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.user.Gender
@@ -92,6 +94,11 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     phoneNumber = signupUserEdittextPhoneNumber.text.toString(),
                     studentNumber = signupUserEdittextStudentId.text.toString(),
                     isCheckNickname = signupViewModel.isCheckedNickname
+                )
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.COMPLETE_SIGN_UP,
+                    getString(R.string.complete_sign_up)
                 )
             }
         }

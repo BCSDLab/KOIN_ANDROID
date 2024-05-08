@@ -146,4 +146,12 @@ object RepositoryModule {
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideOwnerChangePasswordRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerChangePasswordRepository {
+        return OwnerChangePasswordRepositoryImpl(ownerRemoteDataSource)
+    }
 }

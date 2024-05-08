@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
@@ -84,6 +86,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment = StoreFlyerDialogFragment()
             flyerDialogFragment?.initialPosition = position
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_PICTURE,
+                viewModel.store.value?.name ?: "Unknown")
         }
     }
 
@@ -120,6 +126,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown")
         }
 
         binding.menuSpreadTextView.setOnClickListener {

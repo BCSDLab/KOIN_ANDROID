@@ -26,13 +26,11 @@
                     app:rightButtonBackground="@drawable/ic_create"
                     app:titleText="내정보" />
 
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="56dp"
                     android:orientation="vertical">
-
 
                     <ScrollView
                         android:id="@+id/userinfoedited_scrollview"
@@ -195,10 +193,7 @@
                                     android:textColor="@color/gray9"
                                     android:textSize="8sp"
                                     app:fontName="Custom6" />
-
-
                             </LinearLayout>
-
 
                             <TextView
                                 android:id="@+id/userinfoedited_anonymous_nick_name_textview"
@@ -307,12 +302,12 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
                                 android:lineSpacingExtra="7sp"
+                                android:text="-"
                                 android:textColor="@color/black"
                                 android:textSize="15sp"
                                 app:fontName="Custom6"
                                 app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_2"
-                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name"
-                                tools:text="-" />
+                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
                             <EditText
                                 android:id="@+id/userinfoedited_edittext_phone_num_3"
@@ -330,7 +325,7 @@
                                 android:theme="@style/EditTextTheme"
                                 app:fontName="Custom6"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintHorizontal_bias="0.2"
                                 app:layout_constraintStart_toEndOf="@id/userinfoeditededited_second_dash"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
@@ -391,7 +386,6 @@
                                     android:textColor="@color/colorPrimaryText"
                                     android:textSize="15sp" />
                             </RadioGroup>
-
 
                             <FrameLayout
                                 android:id="@+id/userinfoedited_school_info_framlayout"
@@ -495,15 +489,15 @@
                                 android:id="@+id/userinfoedited_edittext_major_error"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/red"
-                                tools:text="올바른 학번을 입력해 주세요"
                                 android:paddingStart="4dp"
                                 android:paddingEnd="4dp"
+                                android:textColor="@color/red"
+                                android:textSize="10sp"
                                 app:fontName="Custom6"
-                                app:layout_constraintStart_toStartOf="@id/userinfoedited_edittext_major"
                                 app:layout_constraintEnd_toEndOf="@id/userinfoedited_edittext_major"
+                                app:layout_constraintStart_toStartOf="@id/userinfoedited_edittext_major"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major"
-                                android:textSize="10sp" />
+                                tools:text="올바른 학번을 입력해 주세요" />
 
                             <TextView
                                 android:id="@+id/userinfoeditededited_change_info"
@@ -523,15 +517,12 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
                     </ScrollView>
-
                 </RelativeLayout>
             </RelativeLayout>
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include layout="@layout/base_navigation_drawer_right" />
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
