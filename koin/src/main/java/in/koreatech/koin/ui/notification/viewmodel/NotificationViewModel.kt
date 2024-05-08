@@ -42,7 +42,7 @@ class NotificationViewModel @Inject constructor(
                     NotificationUiState.Success(info)
                 }
             }.onFailure {
-                _notificationUiState.update { NotificationUiState.Error }
+                _notificationUiState.update { NotificationUiState.Failed }
             }
         }
     }
@@ -76,6 +76,6 @@ sealed class NotificationUiState {
     data class Success(val notificationPermissionInfo: NotificationPermissionInfo) :
         NotificationUiState()
 
-    data object Error : NotificationUiState()
+    data object Failed : NotificationUiState()
     data object Nothing : NotificationUiState()
 }

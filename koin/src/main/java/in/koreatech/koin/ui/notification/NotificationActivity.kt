@@ -80,7 +80,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                             }
                         }
 
-                        is NotificationUiState.Error -> {}
+                        is NotificationUiState.Failed -> {}
                         is NotificationUiState.Nothing -> {}
                     }
                 }
