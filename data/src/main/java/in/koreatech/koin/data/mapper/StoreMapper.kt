@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.mapper
 
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
-import `in`.koreatech.koin.data.response.store.StoreEventResponse
+import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
@@ -88,11 +88,11 @@ fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
     price = price
 )
 
-fun StoreEventResponse.toStoreEvents(): ShopEvents = ShopEvents(
-    events = events?.map { it.toStoreEvent() }.orEmpty()
+fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents = ShopEvents(
+    events = events?.map { it.toStoreDetailEvent() }.orEmpty()
 )
 
-fun StoreEventResponse.StoreEventDTO.toStoreEvent() = ShopEvent(
+fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
     shopId = shopId ?: 0,
     shopName = shopName ?: "",
     eventId = eventId ?: 0,

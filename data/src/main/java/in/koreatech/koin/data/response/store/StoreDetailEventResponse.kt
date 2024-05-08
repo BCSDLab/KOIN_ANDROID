@@ -2,7 +2,7 @@ package `in`.koreatech.koin.data.response.store
 
 import com.google.gson.annotations.SerializedName
 
-data class StoreEventResponse(
+data class StoreDetailEventResponse(
     @SerializedName("events") val events: List<StoreEventDTO>?,
 ){
     data class StoreEventDTO(
