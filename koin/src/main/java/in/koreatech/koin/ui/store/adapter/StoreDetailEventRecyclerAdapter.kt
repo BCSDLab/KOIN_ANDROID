@@ -44,6 +44,10 @@ class StoreDetailEventRecyclerAdapter():
                 .load(shopEvent.thumbnailImages?.getOrNull(0) ?: R.drawable.no_event_thumbnail_image)
                 .into(binding.storeDetailEventExpandImageview)
 
+            if(shopEvent.thumbnailImages?.isEmpty() ==  true){
+                binding.storeDetailEventNoImageTextview.visibility = View.VISIBLE
+            } else binding.storeDetailEventNoImageTextview.visibility = View.GONE
+
         }
 
     }
