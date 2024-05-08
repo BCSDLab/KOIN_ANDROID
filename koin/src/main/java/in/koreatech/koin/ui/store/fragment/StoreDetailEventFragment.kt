@@ -15,7 +15,7 @@ class StoreDetailEventFragment : Fragment() {
     private var _binding: FragmentStoreDetailEventBinding? = null
     private val binding: FragmentStoreDetailEventBinding get() = _binding!!
     private val viewModel by activityViewModels<StoreDetailViewModel>()
-    private val storeDetailMenuAdapter = StoreDetailEventRecyclerAdapter()
+    private val storeDetailEventAdapter = StoreDetailEventRecyclerAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,26 +36,29 @@ class StoreDetailEventFragment : Fragment() {
     private fun initViews() {
 
         binding.storeDetailEventRecyclerview.apply {
-            adapter = storeDetailMenuAdapter
+            adapter = storeDetailEventAdapter
         }
         viewModel.storeEvent.value?.let {
-            if (it.isNotEmpty()) {
-                binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
-                binding.storeDetailNoEventImageView.visibility = View.GONE
-                binding.storeDetailNoEventTextView.visibility = View.GONE
-                storeDetailMenuAdapter.submitList(it)
-            } else {
-                binding.storeDetailEventRecyclerview.visibility = View.GONE
-                binding.storeDetailNoEventImageView.visibility = View.VISIBLE
-                binding.storeDetailNoEventTextView.visibility = View.VISIBLE
-            }
+            storeDetailEventAdapter.submitList(it)
+
         }
+        if (storeDetailEventAdapter.itemCount > 0) {
+            binding.storeDetailEventRecyclerview.visibility = View.VISIBLE
+            binding.storeDetailNoEventImageView.visibility = View.GONE
+            binding.storeDetailNoEventTextView.visibility = View.GONE
+
+        } else {
+            binding.storeDetailEventRecyclerview.visibility = View.GONE
+            binding.storeDetailNoEventImageView.visibility = View.VISIBLE
+            binding.storeDetailNoEventTextView.visibility = View.VISIBLE
+        }
+
 
     }
 
     private fun initViewModel() {
         observeLiveData(viewModel.storeEvent) {
-            storeDetailMenuAdapter.submitList(it)
+            storeDetailEventAdapter.submitList(it)
         }
 
     }
