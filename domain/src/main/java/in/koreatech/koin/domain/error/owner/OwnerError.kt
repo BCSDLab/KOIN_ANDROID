@@ -8,4 +8,6 @@ sealed class OwnerError {
     object AlreadyUsingEmailException: IllegalAccessException()
     object AlreadyUsingRegistrationNumberException: IllegalAccessException()
     object AlreadyValidIdException: IllegalAccessException()
+
+    object IncorrectParaMeter: IllegalAccessException()
 }
