@@ -1,7 +1,14 @@
 package `in`.koreatech.koin.ui.notification
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -22,11 +29,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class NotificationActivity : KoinNavigationDrawerActivity() {
     override val menuState: MenuState = MenuState.Notification
-    private val binding by dataBinding<ActivityNotificationBinding>(R.layout.activity_notification)
-
     override val screenTitle: String = "알림"
-
+    private val binding by dataBinding<ActivityNotificationBinding>(R.layout.activity_notification)
     private val viewModel: NotificationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -38,6 +44,34 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
         observeData()
         onSubscribe()
+        setOnClickNotificationSetting()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!checkPermission()) {
+            permissionDenied()
+        } else {
+            permissionGranted()
+        }
+    }
+
+    private fun permissionGranted() {
+        viewModel.getPermissionInfo()
+        binding.notificationDiningSoldOut.isEnabled = true
+        binding.notificationShopEvent.isEnabled = true
+        binding.textViewNotificationSetting.isVisible = false
+    }
+
+    private fun permissionDenied() {
+        updateDiningSoldOutVisibility(false)
+        binding.notificationDiningSoldOut.isEnabled = false
+        binding.notificationShopEvent.isEnabled = false
+        binding.notificationDiningSoldOut.isChecked = false
+        binding.notificationDiningSoldOut.fakeChecked = false
+        binding.notificationShopEvent.isChecked = false
+        binding.notificationShopEvent.fakeChecked = false
+        binding.textViewNotificationSetting.isVisible = true
     }
 
     private fun observeData() {
@@ -49,33 +83,45 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 when (it.type) {
                                     SubscribesType.SHOP_EVENT -> {
-                                        binding.notificationShopEvent.fakeChecked = it.isPermit
-                                        binding.notificationShopEvent.isChecked = it.isPermit
+                                        if (binding.notificationShopEvent.isChecked != it.isPermit) {
+                                            binding.notificationShopEvent.fakeChecked = it.isPermit
+                                            binding.notificationShopEvent.isChecked = it.isPermit
+                                        }
                                     }
 
                                     SubscribesType.DINING_SOLD_OUT -> {
-                                        binding.notificationDiningSoldOut.fakeChecked = it.isPermit
-                                        binding.notificationDiningSoldOut.isChecked = it.isPermit
-                                        updateDiningSoldOutVisibility(it.isPermit)
+                                        if (binding.notificationDiningSoldOut.isChecked != it.isPermit) {
+                                            binding.notificationDiningSoldOut.fakeChecked = it.isPermit
+                                            binding.notificationDiningSoldOut.isChecked = it.isPermit
+                                            updateDiningSoldOutVisibility(it.isPermit)
+                                        }
                                     }
 
                                     SubscribesType.NOTHING -> Unit
                                 }
+                            }
+                            uiState.notificationPermissionInfo.subscribes.forEach {
                                 it.detailSubscribes.forEach { detail ->
                                     when (detail.type) {
                                         SubscribesDetailType.BREAKFAST -> {
-                                            binding.notificationDiningBreakfastSoldOut.fakeChecked = detail.isPermit
-                                            binding.notificationDiningBreakfastSoldOut.isChecked = detail.isPermit
+                                            if (binding.notificationDiningBreakfastSoldOut.isChecked != detail.isPermit) {
+                                                binding.notificationDiningBreakfastSoldOut.fakeChecked = detail.isPermit
+                                                binding.notificationDiningBreakfastSoldOut.isChecked = detail.isPermit
+                                            }
                                         }
 
                                         SubscribesDetailType.LUNCH -> {
-                                            binding.notificationDiningLunchSoldOut.fakeChecked = detail.isPermit
-                                            binding.notificationDiningLunchSoldOut.isChecked = detail.isPermit
+                                            if (binding.notificationDiningLunchSoldOut.isChecked != detail.isPermit) {
+                                                binding.notificationDiningLunchSoldOut.fakeChecked = detail.isPermit
+                                                binding.notificationDiningLunchSoldOut.isChecked = detail.isPermit
+                                            }
                                         }
 
                                         SubscribesDetailType.DINNER -> {
-                                            binding.notificationDiningDinnerSoldOut.fakeChecked = detail.isPermit
-                                            binding.notificationDiningDinnerSoldOut.isChecked = detail.isPermit
+                                            if (binding.notificationDiningDinnerSoldOut.isChecked != detail.isPermit) {
+                                                binding.notificationDiningDinnerSoldOut.fakeChecked = detail.isPermit
+                                                binding.notificationDiningDinnerSoldOut.isChecked = detail.isPermit
+                                            }
                                         }
 
                                         SubscribesDetailType.NOTHING -> Unit
@@ -139,5 +185,34 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationDiningBreakfastSoldOut.isVisible = isChecked
         binding.notificationDiningLunchSoldOut.isVisible = isChecked
         binding.notificationDiningDinnerSoldOut.isVisible = isChecked
+    }
+
+    private fun checkPermission() = NOTIFICATION_REQUIRED_PERMISSION.all {
+        ContextCompat.checkSelfPermission(
+            this, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setOnClickNotificationSetting() {
+        binding.textViewNotificationSetting.setOnClickListener {
+            intentAppSettings()
+        }
+    }
+
+    private fun intentAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts(PACKAGE, packageName, null)
+        }
+        startActivity(intent)
+    }
+
+    companion object {
+        const val PACKAGE = "package"
+
+        private val NOTIFICATION_REQUIRED_PERMISSION = mutableListOf<String>().apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }.toTypedArray()
     }
 }

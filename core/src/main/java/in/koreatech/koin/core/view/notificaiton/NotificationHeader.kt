@@ -17,6 +17,13 @@ class NotificationHeader @JvmOverloads constructor(
     private lateinit var binding: NotificationHeaderBinding
     var onSwitchClickListener: OnSwitchClickListener? = null
 
+    var isEnabled: Boolean? = null
+        set(value) {
+            binding.btnSwitch.isEnabled = value == true
+            field = value
+        }
+
+
     var isChecked: Boolean? = null
         set(value) {
             binding.btnSwitch.isChecked = value == true
