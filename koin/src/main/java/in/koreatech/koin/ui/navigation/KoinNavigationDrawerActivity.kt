@@ -212,9 +212,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
                 is User.Student -> {
                     nameTextview.text = user.name
-                    if (menuState == MenuState.Main) {
-                        if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
-                        koinNavigationDrawerViewModel.updateDeviceToken()
+                    when (menuState) {
+                        MenuState.Main, MenuState.Notification -> {
+                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                            koinNavigationDrawerViewModel.updateDeviceToken()
+                        }
+                        else -> Unit
                     }
                 }
             }
