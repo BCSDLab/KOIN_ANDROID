@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/store_detail_event"
@@ -92,6 +93,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/store_detail_event_expand"
             android:layout_width="match_parent"
@@ -109,6 +111,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@color/blue_alpha20" />
+
+            <TextView
+                android:id="@+id/store_detail_event_no_image_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:text="@string/no_event_image"
+                android:textColor="@color/gray10"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/store_detail_event_expand_imageview"
+                app:layout_constraintEnd_toEndOf="@+id/store_detail_event_expand_imageview"
+                app:layout_constraintStart_toStartOf="@+id/store_detail_event_expand_imageview" />
 
             <TextView
                 android:id="@+id/store_detail_event_title_expand_textview"
