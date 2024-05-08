@@ -32,7 +32,7 @@ class NotificationRow @JvmOverloads constructor(
                     binding.btnSwitch.isChecked = true
                     onSwitchClickListener?.onSwitch(true)
                     binding.btnSwitchFake.isVisible = false
-                }, 200)
+                }, 300)
             } else {
                 binding.btnSwitchFake.isVisible = false
             }
