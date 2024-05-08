@@ -104,13 +104,13 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun subscribeDetailNotification() {
         binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
-//            handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
+            handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
         binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
-//            handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
+            handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
         binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
-//            handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
+            handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }
 

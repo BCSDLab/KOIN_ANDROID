@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
-import `in`.koreatech.koin.data.request.notification.DetailTypeRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import javax.inject.Inject
 
@@ -16,7 +15,7 @@ class NotificationRemoteDataSource @Inject constructor(
     }
 
     suspend fun updateSubscriptionDetail(type: String) {
-        userAuthApi.updateSubscriptionDetail(DetailTypeRequest(type))
+        userAuthApi.updateSubscriptionDetail(type)
     }
 
     suspend fun deleteSubscription(type: String) {
@@ -24,6 +23,6 @@ class NotificationRemoteDataSource @Inject constructor(
     }
 
     suspend fun deleteSubscriptionDetail(type: String) {
-        userAuthApi.deleteSubscriptionDetail(DetailTypeRequest(type))
+        userAuthApi.deleteSubscriptionDetail(type)
     }
 }

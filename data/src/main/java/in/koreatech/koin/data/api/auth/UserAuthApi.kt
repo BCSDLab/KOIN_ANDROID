@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.request.notification.DetailTypeRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.user.UserInfoEditResponse
 import `in`.koreatech.koin.data.response.user.UserResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -37,14 +37,14 @@ interface UserAuthApi {
     suspend fun updateSubscription(@Query("type") type: String)
 
     @POST("/notification/subscribe/detail")
-    suspend fun updateSubscriptionDetail(@Body detailType: DetailTypeRequest)
+    suspend fun updateSubscriptionDetail(@Query("detail_type") type: String)
 
     @DELETE("/notification/subscribe")
-    suspend fun deleteSubscription(@Query("type") type: String)
+    suspend fun deleteSubscription(@Query("type") type: String): Response<Unit?>
 
     @DELETE("/notification/subscribe/detail")
-    suspend fun deleteSubscriptionDetail(@Body detailType: DetailTypeRequest)
+    suspend fun deleteSubscriptionDetail(@Query("detail_type") type: String): Response<Unit?>
 
     @DELETE("/notification")
-    suspend fun deleteDeviceToken()
+    suspend fun deleteDeviceToken(): Response<Unit?>
 }
