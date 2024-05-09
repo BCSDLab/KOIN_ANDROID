@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.store.fragment
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,14 +23,16 @@ class StoreDetailMenuFragment : Fragment() {
     private val binding: FragmentStoreDetailMenuBinding get() = _binding!!
     private val viewModel by activityViewModels<StoreDetailViewModel>()
 
-    private val storeMenuAdapter: MutableList<StoreDetailMenuRecyclerAdapter> =
-        List(4) { StoreDetailMenuRecyclerAdapter() }.toMutableList()
+    private val storeRecommendMenuAdapter = StoreDetailMenuRecyclerAdapter()
+    private val storeMainMenuAdapter = StoreDetailMenuRecyclerAdapter()
+    private val storeSetMenuAdapter = StoreDetailMenuRecyclerAdapter()
+    private val storeSideMenuAdapter = StoreDetailMenuRecyclerAdapter()
 
     private val storeDetailActivityContract =
         registerForActivityResult(StoreDetailActivityContract()) {
         }
 
-    private val storeRecyclerAdapter = StoreRecyclerAdapter().apply {
+    private val storeRandomRecyclerAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
             storeDetailActivityContract.launch(it.uid)
             requireActivity().finish()
@@ -55,14 +56,12 @@ class StoreDetailMenuFragment : Fragment() {
     }
 
     private fun initViews() {
-        repeat(4) {
-            storeMenuAdapter.add(StoreDetailMenuRecyclerAdapter())
-        }
-        binding.storeDetailRecommendRecyclerview.adapter = storeMenuAdapter[0]
-        binding.storeDetailMainRecyclerview.adapter = storeMenuAdapter[1]
-        binding.storeDetailSetRecyclerview.adapter = storeMenuAdapter[2]
-        binding.storeDetailSideRecyclerview.adapter = storeMenuAdapter[3]
-        binding.storeRandomRecyclerView.adapter = storeRecyclerAdapter
+        binding.storeDetailRecommendRecyclerview.adapter = storeRecommendMenuAdapter
+        binding.storeDetailMainRecyclerview.adapter = storeMainMenuAdapter
+        binding.storeDetailSetRecyclerview.adapter = storeSetMenuAdapter
+        binding.storeDetailSideRecyclerview.adapter = storeSideMenuAdapter
+        binding.storeRandomRecyclerView.adapter = storeRandomRecyclerAdapter
+
     }
     
     @SuppressLint("ResourceAsColor")
@@ -94,40 +93,73 @@ class StoreDetailMenuFragment : Fragment() {
                                 )
                             }
                         }
-                        storeMenuAdapter[index].submitList(
-                            list
-                        )
-
+                        when(category.name){
+                            "추천 메뉴" -> {
+                                binding.storeDetailRecommendRecyclerview.visibility = View.VISIBLE
+                                storeRecommendMenuAdapter.submitList(list)
+                                binding.storeDetailRecommendMenuButton.setOnClickListener {
+                                    binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailRecommendRecyclerview.top)
+                                }
+                            }
+                            "메인 메뉴" -> {
+                                binding.storeDetailMainRecyclerview.visibility = View.VISIBLE
+                                storeMainMenuAdapter.submitList(list)
+                                binding.storeDetailMainMenuButton.setOnClickListener {
+                                    binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailMainRecyclerview.top)
+                                }
+                            }
+                            "세트 메뉴" -> {
+                                binding.storeDetailSetRecyclerview.visibility = View.VISIBLE
+                                storeSetMenuAdapter.submitList(list)
+                                binding.storeDetailSetMenuButton.setOnClickListener {
+                                    binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailSetRecyclerview.top)
+                                }
+                            }
+                            "사이드 메뉴" -> {
+                                binding.storeDetailSideRecyclerview.visibility = View.VISIBLE
+                                storeSideMenuAdapter.submitList(list)
+                                binding.storeDetailSideMenuButton.setOnClickListener {
+                                    binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailSideRecyclerview.top)
+                                }
+                            }
+                        }
                     }
                 }
             }
             observeLiveData(viewModel.recommendStores) {
                 if (it != null) {
-                    storeRecyclerAdapter.submitList(it)
+                    storeRandomRecyclerAdapter.submitList(it)
                 }
             }
             observeLiveData(viewModel.categories) {
                 if (it.menuCategories != null) {
                     viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
-                        if(binding.storeDetailMainMenuTextView.text == category.name){
-                            binding.storeDetailMainMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
-                            binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
-                        }
-                        else if(binding.storeDetailSetMenuTextView.text == category.name){
-                            binding.storeDetailSetMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
-                            binding.storeDetailSetMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
-                        }
-                        else if (binding.storeDetailSideMenuTextView.text == category.name){
-                            binding.storeDetailSideMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
-                            binding.storeDetailSideMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
-                        }
-                        else{
-                            binding.storeDetailRecommendMenuButton.strokeColor= ContextCompat.getColor(requireContext(), R.color.gray15)
-                            binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                        when(category.name) {
+                            binding.storeDetailMainMenuTextView.text -> {
+
+                                binding.storeDetailMainMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
+                                binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                            }
+                            binding.storeDetailSetMenuTextView.text -> {
+                                binding.storeDetailSetMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
+                                binding.storeDetailSetMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                            }
+                            binding.storeDetailSideMenuTextView.text -> {
+                                binding.storeDetailSideMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
+                                binding.storeDetailSideMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                            }
+                            else -> {
+                                binding.storeDetailRecommendMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
+                                binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                            }
                         }
 
-
-                        storeMenuAdapter[index].setCategory(category.name)
+                        when(category.name){
+                            "추천 메뉴" -> storeRecommendMenuAdapter.setCategory(category.name)
+                            "메인 메뉴" -> storeMainMenuAdapter.setCategory(category.name)
+                            "세트 메뉴" -> storeSetMenuAdapter.setCategory(category.name)
+                            "사이드 메뉴" -> storeSideMenuAdapter.setCategory(category.name)
+                        }
                     }
                 }
             }
