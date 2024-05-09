@@ -123,6 +123,7 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.perf)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messsaing)
     implementation(libs.viewpager2)
     implementation(libs.markerman.roundedImageView)
 }
