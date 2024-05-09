@@ -148,6 +148,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
+
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
             if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
@@ -155,7 +156,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             }
         }
         observeLiveData(storeCategories) {
-            storeCategoriesRecyclerAdapter.submitList(it)
+            storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
     }
 
