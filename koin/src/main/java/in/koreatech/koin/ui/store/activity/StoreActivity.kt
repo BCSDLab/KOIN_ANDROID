@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 
 import android.view.MotionEvent
@@ -15,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
@@ -120,7 +122,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
 
-        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(1)
+        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
         viewModel.setCategory(initStoreCategory)
     }
 
@@ -142,8 +144,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
 
         binding.categoriesRecyclerview.apply {
-            layoutManager = GridLayoutManager(this@StoreActivity, 5)
+            //layoutManager = GridLayoutManager(this@StoreActivity, 5)
+            layoutManager = StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL)
             adapter = storeCategoriesAdapter
+            
         }
 
 
@@ -240,7 +244,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
 
         observeLiveData(viewModel.storeCategories){
-            storeCategoriesAdapter.submitList(it)
+            storeCategoriesAdapter.submitList(it.drop(1))
         }
 
         lifecycleScope.launch {

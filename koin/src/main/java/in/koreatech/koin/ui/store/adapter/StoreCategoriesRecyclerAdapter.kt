@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -20,6 +21,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
 
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
+    var isDoubleClick: Boolean = false
 
     inner class StoreCategoriesViewHolder(val binding: MainItemStoreBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
@@ -34,12 +36,27 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     }
 
     override fun onBindViewHolder(holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder, position: Int) {
-        val events = getItem(position)
 
+        val layoutParams = holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+        if(position > 4){
+            layoutParams.width = 450
+        }
+        else{
+            layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        }
+
+        holder.itemView.layoutParams = layoutParams
+        val events = getItem(position)
         with(holder){
             container.setOnClickListener {
                 onItemClickListener?.onItemClick(events.id)
-                selectPosition = position
+                if(selectPosition == position){
+                    isDoubleClick = !isDoubleClick
+                }
+                else{
+                    selectPosition = position
+                    isDoubleClick = false
+                }
                 notifyDataSetChanged()
             }
 
@@ -50,7 +67,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
                 .into(storeCategoryImage)
 
             storeCategoryName.text = events.name
-            storeCategoryName.setTextColor(ContextCompat.getColor(itemView.context, if (selectPosition == position)R.color.colorAccent else R.color.black))
+            storeCategoryName.setTextColor(ContextCompat.getColor(itemView.context, if (selectPosition == position && !isDoubleClick)R.color.colorAccent else R.color.black))
         }
     }
 
