@@ -143,12 +143,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private fun initViewModel() = with(viewModel) {
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
-
         }
 
         observeLiveData(selectedType) {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
+
 
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
