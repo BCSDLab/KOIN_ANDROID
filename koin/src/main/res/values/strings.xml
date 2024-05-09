@@ -197,6 +197,10 @@
     <!--store-->
     <string name="store_how_about_here">여기는 어떠세요?</string>
     <string name="store_nearby">주변상점</string>
+    <string name="store_get_discount">할인 혜택을 받아보세요!</string>
+    <string name="store_at_here">%1$s에서</string>
+    <string name="store_neun">%1$s는 준비 중 입니다.</string>
+    <string name="store_eun">%1$s은 준비 중 입니다.</string>
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
@@ -403,4 +407,25 @@
     <string name="bus">버스</string>
     <string name="see_all">전체보기</string>
     <string name="complete_sign_up">회원가입 완료</string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
+    <string name="best_menu">대표 메뉴</string>
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="event">이벤트</string>
+    <string name="telephone">전화번호</string>
+    <string name="operating_time">운영시간</string>
+    <string name="address">주소정보</string>
+    <string name="delivery_fee">배달금액</string>
+    <string name="other_info">기타정보</string>
+    <string name="delivery_available">#배달가능</string>
+    <string name="card_available">#카드가능</string>
+    <string name="account_transfer_avilable">#계좌이체가능</string>
+    <string name="menu_info">메뉴 소개</string>
+    <string name="nearby_store">주변 상점</string>
+    <string name="main_menu">메인 메뉴</string>
+    <string name="view_all">전체보기</string>
+    <string name="menu">메뉴</string>
+    <string name="event_notification">이벤트/공지</string>
+    <string name="no_event">사장님이 이벤트를 준비 중입니다.</string>
+    <string name="no_event_image">사장님이 이미지를 준비 중입니다.</string>
 </resources>

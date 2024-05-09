@@ -1,13 +1,21 @@
 package `in`.koreatech.koin.data.mapper
 
+import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
+import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
+import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.domain.model.store.ShopEvent
+import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreCategories
+import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
@@ -21,6 +29,8 @@ fun StoreItemResponse.toStore(): Store = Store(
     isDeliveryOk = isDeliveryOk ?: false,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
+    isEvent = isEvent ?: false,
+    isOpen = isOpen ?: false,
     open = open.filter { it.dayOfWeek == localDayOfWeekName }.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,
@@ -28,8 +38,25 @@ fun StoreItemResponse.toStore(): Store = Store(
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.first(),
+    }.getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00:00")},
     categoryIds = categoryIds.map { it.toStoreCategory() }
+)
+
+fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
+    shopId = shopId,
+    shopName = shopName ?: "",
+    eventId = eventId,
+    title = title ?: "",
+    content = content ?: "",
+    thumbnailImages = thumbnailImages ?: ArrayList<String>(),
+    startDate = startDate ?: "",
+    endDate = endDate ?: ""
+)
+
+fun StoreCategoriesItemResponse.toStoreCategories(): StoreCategories = StoreCategories(
+    id = id,
+    imageUrl = imageUrl,
+    name = name
 )
 
 fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
@@ -49,7 +76,7 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.orEmpty().first(),
+    }.orEmpty().getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00,00")},
     imageUrls = imageUrls ?: emptyList(),
     shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
     menuCategories = menuCategories?.map { it.toCategory() }.orEmpty()
@@ -83,4 +110,19 @@ fun ShopMenusResponse.toShopMenus() = ShopMenus(
 fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
     option = option ?: "",
     price = price
+)
+
+fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents = ShopEvents(
+    events = events?.map { it.toStoreDetailEvent() }.orEmpty()
+)
+
+fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
+    shopId = shopId ?: 0,
+    shopName = shopName ?: "",
+    eventId = eventId ?: 0,
+    title = title ?: "",
+    content = content ?: "",
+    thumbnailImages = thumbnailImages ?: emptyList(),
+    startDate = startDate ?: "",
+    endDate = endDate ?: ""
 )
