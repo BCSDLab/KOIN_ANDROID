@@ -1,4 +1,4 @@
-import `in`.koreatech.convention.kapt
+
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
