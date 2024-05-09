@@ -15,7 +15,7 @@ val localDayOfWeekName get() = when(localDateTimeNow.dayOfWeek.value) {
     5 -> "FRIDAY"
     6 -> "SATURDAY"
     7 -> "SUNDAY"
-    else -> {}
+    else -> ""
 }
 
 val LocalTime.HHMM get() = this.format(DateTimeFormatter.ofPattern("HH:mm"))

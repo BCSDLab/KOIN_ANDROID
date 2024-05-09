@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tool="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="4dp"
-        app:cardBackgroundColor="@color/white"
+        android:layout_height="wrap_content"
         tool:ignore="MissingPrefix">
+
+        <!-- CardView 설정 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="4dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -82,20 +93,24 @@
 
             <FrameLayout
                 android:id="@+id/ready_store_frame_layout"
+                android:layout_gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="invisible">
+                android:visibility="invisible"
+                >
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:alpha="0.3"
-                    android:background="@color/black" />
+                    android:alpha="0.8"
+                    android:background="@color/default_side_header_font_color" />
 
                 <TextView
+                    android:id="@+id/store_does_not_open_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
                     android:text="준비중"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
@@ -103,4 +118,17 @@
             </FrameLayout>
         </FrameLayout>
     </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/event_image_view"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/store_event"
+            android:padding="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="6dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

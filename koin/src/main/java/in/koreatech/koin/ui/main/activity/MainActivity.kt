@@ -1,8 +1,6 @@
 package `in`.koreatech.koin.ui.main.activity
 
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -11,24 +9,24 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.constant.AnalyticsConstant
-import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
-import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
+import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import androidx.activity.result.contract.ActivityResultContracts
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -59,21 +57,10 @@ class MainActivity : KoinNavigationDrawerActivity() {
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
-    private val storeCategoryRecyclerAdapter = StoreCategoryRecyclerAdapter().apply {
-        setRecyclerViewClickListener(object : RecyclerViewClickListener {
-            override fun onClick(view: View?, position: Int) {
-                gotoStoreActivity(position)
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
-                    AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                    view?.findViewById<TextView>(R.id.text_view_store_category)?.text.toString()
-                )
-            }
-
-            override fun onLongClick(view: View?, position: Int) {
-
-            }
-        })
+    private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
+        setOnItemClickListener {
+            gotoStoreActivity(it)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,7 +105,8 @@ class MainActivity : KoinNavigationDrawerActivity() {
         recyclerViewStoreCategory.apply {
             layoutManager =
                 LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-            adapter = storeCategoryRecyclerAdapter
+            //adapter = storeCategoryRecyclerAdapter
+            adapter = storeCategoriesRecyclerAdapter
         }
 
         mainSwipeRefreshLayout.setOnRefreshListener {
@@ -141,7 +129,8 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.CAMPUS,
                     AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                    tab.text.toString())
+                    tab.text.toString()
+                )
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
@@ -165,6 +154,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 initBusViewPagerScrollCallback(it)
             }
         }
+        observeLiveData(storeCategories) {
+            storeCategoriesRecyclerAdapter.submitList(it)
+        }
     }
 
     private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
@@ -175,7 +167,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 EventLogger.logScrollEvent(
                     AnalyticsConstant.Domain.CAMPUS,
                     AnalyticsConstant.Label.MAIN_BUS_SCROLL,
-                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(this@MainActivity)
+                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
+                        this@MainActivity
+                    )
                 )
                 prev = position
             }
