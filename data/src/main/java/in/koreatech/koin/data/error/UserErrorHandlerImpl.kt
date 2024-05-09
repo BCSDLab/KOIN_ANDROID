@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.error
 
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import `in`.koreatech.koin.data.R
 import `in`.koreatech.koin.data.util.handleCommonError
 import `in`.koreatech.koin.data.util.unknownErrorHandler
@@ -9,14 +11,18 @@ import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_GENDER_NOT_SET
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK
 import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class UserErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserErrorHandler {
+    override fun handleUserError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
+
     override fun handleGetTokenError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when(it) {

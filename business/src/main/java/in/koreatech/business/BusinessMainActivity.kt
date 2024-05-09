@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.feature.signup.navigator.SignupNavigator
+import `in`.koreatech.business.feature_changepassword.navigator.ChangePassword
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @AndroidEntryPoint
@@ -26,8 +27,8 @@ class BusinessMainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                  //  ChangePassword()
-                    SignupNavigator(modifier = Modifier.fillMaxSize())
+                    ChangePassword()
+                    //SignupNavigator(modifier = Modifier.fillMaxSize())
                 }
             }
         }

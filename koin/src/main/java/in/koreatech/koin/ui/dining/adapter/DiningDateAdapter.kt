@@ -25,13 +25,23 @@ class DiningDateAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return DiningDateViewHolder(
+        val holder = DiningDateViewHolder(
             ItemDiningDateBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
+
+        val displayMetrics = parent.context.resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val itemWidth = screenWidth / 7
+
+        val layoutParams = holder.itemView.layoutParams
+        layoutParams.width = itemWidth
+        holder.itemView.layoutParams = layoutParams
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

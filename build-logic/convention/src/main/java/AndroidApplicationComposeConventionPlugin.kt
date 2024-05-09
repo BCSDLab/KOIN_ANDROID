@@ -11,6 +11,7 @@ internal class AndroidApplicationComposeConventionPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
                 apply("kotlin-kapt")
+                apply("kotlin-parcelize")
             }
             extensions.configure<ApplicationExtension> {
                 configureAndroidCompose(this)

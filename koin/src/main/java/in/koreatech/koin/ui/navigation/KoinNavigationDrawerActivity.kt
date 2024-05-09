@@ -1,12 +1,17 @@
 package `in`.koreatech.koin.ui.navigation
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -32,6 +37,7 @@ import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
+import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
@@ -67,6 +73,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
+            R.id.navi_item_myinfo, R.id.navi_item_notification,
             R.id.navi_item_store,
             R.id.navi_item_bus, R.id.navi_item_dining,
             R.id.navi_item_timetable, R.id.navi_item_land,
@@ -75,6 +82,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             findViewById<View>(it)
         }.zip(
             listOf(
+                MenuState.UserInfo,
+                MenuState.Notification,
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
@@ -107,6 +116,23 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         ) { view, state ->
             state to view
         }.toMap()
+    }
+
+    private val requestMainPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permission ->
+        var permissionGranted = true
+        permission.entries.forEach {
+            if (it.key in MAIN_REQUIRED_PERMISSION && it.value == false) {
+                permissionGranted = false
+            }
+        }
+
+        if (!permissionGranted) {
+            // handle permission granted
+        } else {
+            // handle permission denied
+        }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -182,10 +208,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }
         }
 
-        findViewById<View>(R.id.navi_item_myinfo).setOnClickListener {
-            koinNavigationDrawerViewModel.selectMenu(MenuState.UserInfo)
-        }
-
         val leftArrowButton = findViewById<View>(R.id.drawer_left_arrow_button)
         leftArrowButton.setOnClickListener { //왼쪽화살표  클릭리스너 등록
             drawerLayout.closeDrawer()
@@ -235,7 +257,16 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
             when (user) {
                 User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
-                is User.Student -> nameTextview.text = user.name
+                is User.Student -> {
+                    nameTextview.text = user.name
+                    when (menuState) {
+                        MenuState.Main, MenuState.Notification -> {
+                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                            koinNavigationDrawerViewModel.updateDeviceToken()
+                        }
+                        else -> Unit
+                    }
+                }
             }
         }
 
@@ -269,6 +300,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         showLoginRequestDialog()
                     } else {
                         goToUserInfoActivity()
+                    }
+                }
+
+                MenuState.Notification -> {
+                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                        showLoginRequestDialog()
+                    } else {
+                        goToNotificationActivity()
                     }
                 }
 
@@ -414,6 +453,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         startActivity(intent)
     }
 
+    private fun goToNotificationActivity() {
+        val intent = Intent(this, NotificationActivity::class.java)
+        startActivity(intent)
+    }
+
     fun showLoginRequestDialog() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.user_only))
@@ -457,6 +501,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         drawerLayout.toggleDrawer()
     }
 
+    private fun checkMainPermission() = MAIN_REQUIRED_PERMISSION.all {
+        ContextCompat.checkSelfPermission(
+            this, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     val TextView.selected: TextView
         get() {
             val s = text.toString()
@@ -473,4 +523,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             text = text.toString()
             return this
         }
+
+    companion object {
+        private val MAIN_REQUIRED_PERMISSION = mutableListOf<String>().apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                add(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }.toTypedArray()
+    }
 }

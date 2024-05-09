@@ -48,4 +48,9 @@
         <attr name="marginBottom" format="dimension"/>
         <attr name="activateTimebar" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="Notification">
+        <attr name="text" format="reference|string"/>
+        <attr name="description" format="reference|string"/>
+    </declare-styleable>
 </resources>

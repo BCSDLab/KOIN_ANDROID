@@ -96,11 +96,31 @@ class TokenLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun getDeviceToken(): String? = withContext(dispatchersIO) {
+        sharedPreferences.getString(SHARED_DEVICE_KEY, null)
+    }
+
+    fun saveDeviceToken(token: String) {
+        with(sharedPreferences.edit()) {
+            putString(SHARED_DEVICE_KEY, token)
+            apply()
+        }
+    }
+
+    suspend fun removeDeviceToken() = withContext(dispatchersIO) {
+        with(sharedPreferences.edit()) {
+            remove(SHARED_DEVICE_KEY)
+            apply()
+        }
+    }
+
     companion object {
         private const val SHARED_PREF_FILENAME = "token"
         private const val OWNER_SHARED_PREF_FILENAME = "ownerToken"
 
         private const val SHARED_PREF_KEY = "accessToken"
         private const val SHARED_PREF_REFRESH_KEY = "refreshToken"
+
+        private const val SHARED_DEVICE_KEY = "deviceToken"
     }
 }

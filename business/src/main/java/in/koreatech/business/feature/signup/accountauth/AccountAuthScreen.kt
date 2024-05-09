@@ -150,7 +150,7 @@ fun AccountAuthScreen(
                     ),
                     onClick = { }
                 ) {
-                    Text(text = stringResource(id = R.string.resend))
+                    Text(text = stringResource(id = R.string.auth_code_resend))
                 }
                 Spacer(modifier = Modifier.width(14.dp))
 
