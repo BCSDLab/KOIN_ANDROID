@@ -214,10 +214,11 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                         val rect = Rect()
                         window!!.decorView.getWindowVisibleDisplayFrame(rect)
                         val statusBarHeight = rect.top
-
-                        if (!photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
-                            dismiss()
-                        }
+                        
+                        if(photoView.displayRect != null)
+                            if (!photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
+                                dismiss()
+                            }
                     }
                     isUserImageInteraction = false
                 }
