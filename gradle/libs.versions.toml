@@ -92,6 +92,7 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
+firebase-messsaing = { module = "com.google.firebase:firebase-messaging"}
 firebase-appdistribution-gradle = { module = "com.google.firebase:firebase-appdistribution-gradle", version.ref = "firebaseAppdistributionGradleVersion" }
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInjectVersion" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
