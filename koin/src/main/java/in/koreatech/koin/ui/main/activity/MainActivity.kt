@@ -155,7 +155,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 }
             }
             observeLiveData(storeCategories) {
-                storeCategoriesRecyclerAdapter.submitList(it)
+                storeCategoriesRecyclerAdapter.submitList(it.drop(1))
             }
         }
 

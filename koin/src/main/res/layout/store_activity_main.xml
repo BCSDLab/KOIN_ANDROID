@@ -108,6 +108,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:paddingLeft="30dp"
                                 android:id="@+id/categories_recyclerview"
                                 android:layout_marginVertical="20dp"
                                 app:layoutManager="GridLayoutManager"
