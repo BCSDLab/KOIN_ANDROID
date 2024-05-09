@@ -105,269 +105,29 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_goneMarginTop="24dp" />
 
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/categories_recyclerview"
+                                android:layout_marginVertical="20dp"
+                                app:layoutManager="GridLayoutManager"
+                                app:spanCount="5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/textView2"
+                                app:layout_constraintBottom_toTopOf="@id/border_frameLayout"
+                                tools:listitem="@layout/main_item_store"
+                                />
 
-                            <ImageView
-                                android:id="@+id/store_category_chicken"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_chicken"
-                                app:layout_constraintEnd_toStartOf="@+id/store_category_pizza"
-                                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                                app:layout_constraintStart_toStartOf="@+id/guideline_category_start"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                            <ImageView
-                                android:id="@+id/store_category_pizza"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_pizza"
-                                app:layout_constraintLeft_toRightOf="@+id/store_category_chicken"
-                                app:layout_constraintRight_toLeftOf="@+id/store_category_dosirak"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                            <ImageView
-                                android:id="@+id/store_category_dosirak"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_dosirak"
-                                app:layout_constraintLeft_toRightOf="@+id/store_category_pizza"
-                                app:layout_constraintRight_toLeftOf="@+id/store_category_pork_feet"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                            <ImageView
-                                android:id="@+id/store_category_pork_feet"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_porkfeet"
-                                app:layout_constraintLeft_toRightOf="@+id/store_category_dosirak"
-                                app:layout_constraintRight_toLeftOf="@+id/store_category_chinese"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-                            <ImageView
-                                android:id="@+id/store_category_chinese"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="20dp"
-                                android:background="@drawable/ic_chinese"
-                                app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
-                                app:layout_constraintStart_toEndOf="@id/store_category_pork_feet"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-
-                            <TextView
-                                android:id="@+id/store_category_chicken_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="치킨"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@id/store_category_chicken"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_chicken"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken" />
-
-                            <TextView
-                                android:id="@+id/store_category_pizza_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="피자"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_pizza"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_pizza"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_pizza" />
-
-                            <TextView
-                                android:id="@+id/store_category_dosirak_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="도시락"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_dosirak"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_dosirak"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_dosirak" />
-
-                            <TextView
-                                android:id="@+id/store_category_pork_feet_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="족발"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_pork_feet"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_pork_feet"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_pork_feet" />
-
-                            <TextView
-                                android:id="@+id/store_category_chinese_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="중국집"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_chinese"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_chinese"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chinese" />
-
-                            <ImageView
-                                android:id="@+id/store_category_normal"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginStart="21dp"
-                                android:layout_marginTop="11dp"
-                                android:background="@drawable/ic_normal"
-                                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                                app:layout_constraintRight_toLeftOf="@id/store_category_cafe"
-                                app:layout_constraintStart_toStartOf="@id/guideline_category_start"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-                            <ImageView
-                                android:id="@+id/store_category_cafe"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="11dp"
-                                android:background="@drawable/ic_cafe"
-                                app:layout_constraintLeft_toRightOf="@+id/store_category_normal"
-                                app:layout_constraintRight_toLeftOf="@+id/store_category_hair"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-
-                            <ImageView
-                                android:id="@+id/store_category_hair"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="11dp"
-                                android:background="@drawable/ic_hair"
-                                app:layout_constraintLeft_toRightOf="@+id/store_category_cafe"
-                                app:layout_constraintRight_toLeftOf="@+id/store_category_etc"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-                            <ImageView
-                                android:id="@+id/store_category_etc"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="11dp"
-                                android:layout_marginEnd="21dp"
-                                android:background="@drawable/ic_etc"
-                                app:layout_constraintEnd_toEndOf="@+id/guideline_category_end"
-                                app:layout_constraintLeft_toRightOf="@id/store_category_hair"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_chicken_textview" />
-
-
-                            <TextView
-                                android:id="@+id/store_category_normal_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="일반음식점"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_normal"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_normal"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_normal" />
-
-
-                            <TextView
-                                android:id="@+id/store_category_cafe_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="카페"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_cafe"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_cafe"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_cafe" />
-
-
-                            <TextView
-                                android:id="@+id/store_category_hair_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="미용실"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_hair"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_hair"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_hair" />
-
-
-                            <TextView
-                                android:id="@+id/store_category_etc_textview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:gravity="center_horizontal"
-                                android:includeFontPadding="false"
-                                android:letterSpacing="-0.02"
-                                android:lineSpacingExtra="6sp"
-                                android:text="기타"
-                                android:textColor="@color/black"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@+id/store_category_etc"
-                                app:layout_constraintStart_toStartOf="@+id/store_category_etc"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_etc" />
 
 
                             <FrameLayout
                                 android:id="@+id/border_frameLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="31dp"
-                                android:layout_marginTop="24dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/store_category_normal_textview">
+                                app:layout_constraintTop_toBottomOf="@+id/categories_recyclerview">
 
                                 <ImageView
                                     android:layout_width="match_parent"
@@ -386,9 +146,24 @@
                                     android:textColor="@color/gray9"
                                     android:textSize="13sp"
                                     app:fontName="Custom6" />
+
+
                             </FrameLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/event_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="72dp"
+                            android:layout_marginTop="4dp"
+                            android:clipToPadding="false"
+                            app:layout_constraintTop_toBottomOf="@id/category_constraint_layout"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/search_constraint_layout"
+                            tools:listitem="@layout/store_event_card"
+                            />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/search_constraint_layout"
@@ -400,7 +175,8 @@
                             android:background="@color/white"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/category_constraint_layout">
+                            app:layout_constraintTop_toBottomOf="@+id/event_view_pager">
+
 
                             <ImageView
                                 android:id="@+id/imageView2"
