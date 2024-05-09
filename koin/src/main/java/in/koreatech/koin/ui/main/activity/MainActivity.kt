@@ -53,6 +53,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
             )
         }
     }
+    private val requestNotificationPermissionResult = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        // handle POST_NOTIFICATION permission
+    }
     private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
 
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
