@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategory
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -55,7 +56,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
-    private val viewPagerDelayTime = 3000L
+    private val viewPagerDelayTime = 10000L
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
@@ -77,6 +78,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
             viewModel.setCategory(it.toStoreCategory())
+            binding.searchEditText.text.clear()
         }
     }
 
@@ -144,8 +146,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
 
         binding.categoriesRecyclerview.apply {
-            //layoutManager = GridLayoutManager(this@StoreActivity, 5)
-            layoutManager = StaggeredGridLayoutManager(5, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = GridLayoutManager(this@StoreActivity, 5)
             adapter = storeCategoriesAdapter
             
         }
@@ -153,11 +154,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         binding.searchEditText.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
-            showRemoveQueryButton = isSearchMode && !it.isNullOrEmpty()
-        }
-
-        binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
-            isSearchMode = hasFocus
+            showRemoveQueryButton = !it.isNullOrEmpty()
         }
 
         binding.searchEditText.setOnTouchListener { v, event ->
@@ -184,6 +181,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.searchImageView.setOnClickListener {
             if (showRemoveQueryButton) binding.searchEditText.setText("")
         }
+
 
         binding.eventViewPager.apply {
 
@@ -233,7 +231,6 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private fun initViewModel() {
         viewModel.refreshStores()
-        viewModel.getStoreEvents()
 
         observeLiveData(viewModel.isLoading) {
             binding.storeSwiperefreshlayout.isRefreshing = it
@@ -241,6 +238,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(viewModel.storeEvents){
             storeEventPagerAdapter.submitList(it)
+            binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
 
         observeLiveData(viewModel.storeCategories){

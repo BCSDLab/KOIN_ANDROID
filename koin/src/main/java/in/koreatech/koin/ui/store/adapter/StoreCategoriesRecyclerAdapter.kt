@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.MainItemStoreBinding
+import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 
 class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
@@ -23,7 +24,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
 
-    inner class StoreCategoriesViewHolder(val binding: MainItemStoreBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
         val storeCategoryImage = binding.imageViewStoreCategory
         val storeCategoryName = binding.textViewStoreCategory
@@ -31,21 +32,12 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = MainItemStoreBinding.inflate(inflater, parent, false)
+        val binding = StoreCategoryItemBinding.inflate(inflater, parent, false)
         return StoreCategoriesViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder, position: Int) {
 
-        val layoutParams = holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
-        if(position > 4){
-            layoutParams.width = 450
-        }
-        else{
-            layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
-        }
-
-        holder.itemView.layoutParams = layoutParams
         val events = getItem(position)
         with(holder){
             container.setOnClickListener {
