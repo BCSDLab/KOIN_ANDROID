@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
@@ -76,6 +77,12 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.koinBaseAppbar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+            }
+        }
         binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
