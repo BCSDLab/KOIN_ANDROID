@@ -26,6 +26,7 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
+import androidx.activity.result.contract.ActivityResultContracts
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -62,128 +63,129 @@ class MainActivity : KoinNavigationDrawerActivity() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(binding.root)
+        initView()
+        initViewModel()
+    }
 
-            initView()
-            initViewModel()
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateDining()
+    }
+
+    private fun initView() = with(binding) {
+        buttonCategory.setOnClickListener {
+            toggleNavigationDrawer()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.HAMBURGER,
+                getString(R.string.hamburger)
+            )
         }
 
-        override fun onResume() {
-            super.onResume()
+        busViewPager.apply {
+            adapter = busPagerAdapter
+            offscreenPageLimit = 3
+            currentItem = Int.MAX_VALUE / 2
+
+            // val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
+            // val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
+            // setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
+            addItemDecoration(
+                HorizontalMarginItemDecoration(
+                    this@MainActivity,
+                    R.dimen.view_pager_item_margin
+                )
+            )
+        }
+
+        recyclerViewStoreCategory.apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
+            //adapter = storeCategoryRecyclerAdapter
+            adapter = storeCategoriesRecyclerAdapter
+        }
+
+        mainSwipeRefreshLayout.setOnRefreshListener {
             viewModel.updateDining()
         }
-
-        private fun initView() = with(binding) {
-            buttonCategory.setOnClickListener {
-                toggleNavigationDrawer()
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
-                    AnalyticsConstant.Label.HAMBURGER,
-                    getString(R.string.hamburger)
-                )
-            }
-
-            busViewPager.apply {
-                adapter = busPagerAdapter
-                offscreenPageLimit = 3
-                currentItem = Int.MAX_VALUE / 2
-
-                // val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
-                // val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
-                // setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
-                addItemDecoration(
-                    HorizontalMarginItemDecoration(
-                        this@MainActivity,
-                        R.dimen.view_pager_item_margin
-                    )
-                )
-            }
-
-            recyclerViewStoreCategory.apply {
-                layoutManager =
-                    LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-                //adapter = storeCategoryRecyclerAdapter
-                adapter = storeCategoriesRecyclerAdapter
-            }
-
-            mainSwipeRefreshLayout.setOnRefreshListener {
-                viewModel.updateDining()
-            }
 
 //        diningContainer.setOnClickListener {
 //            callDrawerItem(R.id.navi_item_dining)
 //        }
 
-            pagerDiningContainer.adapter = diningContainerAdapter
+        pagerDiningContainer.adapter = diningContainerAdapter
 
-            TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
-                tab.text = DiningPlace.entries[position].place
-            }.attach()
+        TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
+            tab.text = DiningPlace.entries[position].place
+        }.attach()
 
-            tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewModel.setSelectedPosition(tab.position)
-                    EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
-                        AnalyticsConstant.Label.MAIN_MENU_CORNER,
-                        tab.text.toString()
-                    )
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab) {}
-
-                override fun onTabReselected(tab: TabLayout.Tab) {}
-            })
-        }
-
-        private fun initViewModel() = with(viewModel) {
-            observeLiveData(isLoading) {
-                binding.mainSwipeRefreshLayout.isRefreshing = it
+        tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewModel.setSelectedPosition(tab.position)
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_MENU_CORNER,
+                    tab.text.toString()
+                )
             }
 
-            observeLiveData(selectedType) {
-                binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
-            }
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
 
-            observeLiveData(busTimer) {
-                busPagerAdapter.setBusTimerItems(it)
-                if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
-                    initBusViewPagerScrollCallback(it)
-                }
-            }
-            observeLiveData(storeCategories) {
-                storeCategoriesRecyclerAdapter.submitList(it.drop(1))
-            }
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
+    }
+
+    private fun initViewModel() = with(viewModel) {
+        observeLiveData(isLoading) {
+            binding.mainSwipeRefreshLayout.isRefreshing = it
         }
 
-        private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
-            busViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
-                var prev = 0
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    EventLogger.logScrollEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
-                        AnalyticsConstant.Label.MAIN_BUS_SCROLL,
-                        busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
-                            this@MainActivity
-                        )
-                    )
-                    prev = position
-                }
-            }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
+        observeLiveData(selectedType) {
+            binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
-        private fun gotoStoreActivity(position: Int) {
-            val bundle = Bundle()
-            bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
-            callDrawerItem(R.id.navi_item_store, bundle)
-        }
 
-        override fun onDestroy() {
-            super.onDestroy()
-            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
+        observeLiveData(busTimer) {
+            busPagerAdapter.setBusTimerItems(it)
+            if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
+                initBusViewPagerScrollCallback(it)
+            }
+        }
+        observeLiveData(storeCategories) {
+            storeCategoriesRecyclerAdapter.submitList(it.drop(1))
         }
     }
+
+    private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
+        busViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+            var prev = 0
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_BUS_SCROLL,
+                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
+                        this@MainActivity
+                    )
+                )
+                prev = position
+            }
+        }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
+    }
+
+    private fun gotoStoreActivity(position: Int) {
+        val bundle = Bundle()
+        bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
+        callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
+            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
+    }
+}
