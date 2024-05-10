@@ -7,11 +7,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.MainItemStoreBinding
+import `in`.koreatech.koin.databinding.StoreCategoryItemBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 
 class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder>(
@@ -20,8 +22,9 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
 
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
+    var isDoubleClick: Boolean = false
 
-    inner class StoreCategoriesViewHolder(val binding: MainItemStoreBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class StoreCategoriesViewHolder(val binding: StoreCategoryItemBinding) : RecyclerView.ViewHolder(binding.root){
         val container = binding.container
         val storeCategoryImage = binding.imageViewStoreCategory
         val storeCategoryName = binding.textViewStoreCategory
@@ -29,17 +32,23 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = MainItemStoreBinding.inflate(inflater, parent, false)
+        val binding = StoreCategoryItemBinding.inflate(inflater, parent, false)
         return StoreCategoriesViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StoreCategoriesRecyclerAdapter.StoreCategoriesViewHolder, position: Int) {
-        val events = getItem(position)
 
+        val events = getItem(position)
         with(holder){
             container.setOnClickListener {
                 onItemClickListener?.onItemClick(events.id)
-                selectPosition = position
+                if(selectPosition == position){
+                    isDoubleClick = !isDoubleClick
+                }
+                else{
+                    selectPosition = position
+                    isDoubleClick = false
+                }
                 notifyDataSetChanged()
             }
 
@@ -50,7 +59,7 @@ class StoreCategoriesRecyclerAdapter(): ListAdapter<StoreCategories, StoreCatego
                 .into(storeCategoryImage)
 
             storeCategoryName.text = events.name
-            storeCategoryName.setTextColor(ContextCompat.getColor(itemView.context, if (selectPosition == position)R.color.colorAccent else R.color.black))
+            storeCategoryName.setTextColor(ContextCompat.getColor(itemView.context, if (selectPosition == position && !isDoubleClick)R.color.colorAccent else R.color.black))
         }
     }
 

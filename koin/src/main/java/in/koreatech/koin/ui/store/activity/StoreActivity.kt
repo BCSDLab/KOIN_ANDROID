@@ -3,11 +3,10 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import `in`.koreatech.koin.domain.model.store.StoreCategory
-
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -25,6 +24,7 @@ import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
+import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -53,7 +53,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
-    private val viewPagerDelayTime = 3000L
+    private val viewPagerDelayTime = 10000L
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
@@ -75,6 +75,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
             viewModel.setCategory(it.toStoreCategory())
+            binding.searchEditText.text.clear()
         }
     }
 
@@ -120,7 +121,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
 
-        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(1)
+        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
         viewModel.setCategory(initStoreCategory)
     }
 
@@ -144,16 +145,13 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.categoriesRecyclerview.apply {
             layoutManager = GridLayoutManager(this@StoreActivity, 5)
             adapter = storeCategoriesAdapter
+            
         }
 
 
         binding.searchEditText.addTextChangedListener {
             viewModel.updateSearchQuery(it.toString())
-            showRemoveQueryButton = isSearchMode && !it.isNullOrEmpty()
-        }
-
-        binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
-            isSearchMode = hasFocus
+            showRemoveQueryButton = !it.isNullOrEmpty()
         }
 
         binding.searchEditText.setOnTouchListener { v, event ->
@@ -180,6 +178,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.searchImageView.setOnClickListener {
             if (showRemoveQueryButton) binding.searchEditText.setText("")
         }
+
 
         binding.eventViewPager.apply {
 
@@ -229,7 +228,6 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private fun initViewModel() {
         viewModel.refreshStores()
-        viewModel.getStoreEvents()
 
         observeLiveData(viewModel.isLoading) {
             binding.storeSwiperefreshlayout.isRefreshing = it
@@ -237,10 +235,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         observeLiveData(viewModel.storeEvents){
             storeEventPagerAdapter.submitList(it)
+            binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
 
         observeLiveData(viewModel.storeCategories){
-            storeCategoriesAdapter.submitList(it)
+            storeCategoriesAdapter.submitList(it.drop(1))
         }
 
         lifecycleScope.launch {

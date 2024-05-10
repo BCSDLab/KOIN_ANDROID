@@ -16,6 +16,7 @@ import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreEventUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.InvalidateStoresUseCase
+import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StoreViewModel @Inject constructor(
     private val getStoresUseCase: GetStoresUseCase,
+    private val searchStoreUseCase: SearchStoreUseCase,
     private val invalidateStoresUseCase: InvalidateStoresUseCase,
     private val getStoreEventUseCase: GetStoreEventUseCase,
     private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
@@ -47,19 +49,32 @@ class StoreViewModel @Inject constructor(
 
     init {
         getStoreCategories()
+        getStoreEvents()
+        changeCategory()
+        searchStore()
+    }
 
+    fun updateSearchQuery(query: String) {
+        search.value = query
+    }
+
+    fun setCategory(storeCategory: StoreCategory?) {
+        if(category.value == storeCategory) {
+            _category.value = StoreCategory.All
+        } else {
+            _category.value = storeCategory
+        }
+    }
+
+    private fun changeCategory(){
         viewModelScope.launch {
-            search
-                .debounce(100)
-                .combine(category) { search, category ->
-                    search to category
-                }.combine(refreshEvent) { value, _ ->
+            category
+                .combine(refreshEvent) { value, _ ->
                     value
                 }
-                .map { (search, category) ->
+                .map {
                     getStoresUseCase(
-                        category = category,
-                        search = search
+                        category = it
                     )
                 }
                 .collectLatest {
@@ -69,15 +84,25 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchQuery(query: String) {
-        search.value = query
-    }
-
-    fun setCategory(storeCategory: StoreCategory?) {
-        if(category.value == storeCategory) {
-            _category.value = null
-        } else {
-            _category.value = storeCategory
+    private fun searchStore(){
+        viewModelScope.launch {
+            search
+                .debounce(100)
+                .combine(category) { search, category ->
+                    search to category
+                }.combine(refreshEvent) { value, _ ->
+                    value
+                }
+                .map { (search, category) ->
+                    searchStoreUseCase(
+                        search = search,
+                        category = category
+                    )
+                }
+                .collectLatest {
+                    _isLoading.value = false
+                    _stores.value = it
+                }
         }
     }
 
@@ -98,13 +123,13 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    fun getStoreEvents(){
+    private fun getStoreEvents(){
         viewModelScope.launch {
             _storeEvents.value = getStoreEventUseCase()
         }
     }
 
-    fun getStoreCategories(){
+    private fun getStoreCategories(){
         viewModelScope.launchWithLoading {
             _storeCategories.value = getStoreCategoriesUseCase()
         }
