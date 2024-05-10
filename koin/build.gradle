@@ -126,4 +126,6 @@ dependencies {
     implementation(libs.firebase.messsaing)
     implementation(libs.viewpager2)
     implementation(libs.markerman.roundedImageView)
+    implementation(libs.coil.svg)
+    implementation(libs.coil)
 }
