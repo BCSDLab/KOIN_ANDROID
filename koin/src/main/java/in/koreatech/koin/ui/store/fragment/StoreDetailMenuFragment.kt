@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -27,6 +26,8 @@ class StoreDetailMenuFragment : Fragment() {
     private val storeMainMenuAdapter = StoreDetailMenuRecyclerAdapter()
     private val storeSetMenuAdapter = StoreDetailMenuRecyclerAdapter()
     private val storeSideMenuAdapter = StoreDetailMenuRecyclerAdapter()
+
+    private var selectedCategory: String = "추천 메뉴"
 
     private val storeDetailActivityContract =
         registerForActivityResult(StoreDetailActivityContract()) {
@@ -99,6 +100,9 @@ class StoreDetailMenuFragment : Fragment() {
                                 storeRecommendMenuAdapter.submitList(list)
                                 binding.storeDetailRecommendMenuButton.setOnClickListener {
                                     binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailRecommendRecyclerview.top)
+                                    setUnselectedCategoryButtonStyle(selectedCategory)
+                                    selectedCategory = "추천 메뉴"
+                                    setSelectedCategoryButtonStyle(selectedCategory)
                                 }
                             }
                             "메인 메뉴" -> {
@@ -106,6 +110,9 @@ class StoreDetailMenuFragment : Fragment() {
                                 storeMainMenuAdapter.submitList(list)
                                 binding.storeDetailMainMenuButton.setOnClickListener {
                                     binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailMainRecyclerview.top)
+                                    setUnselectedCategoryButtonStyle(selectedCategory)
+                                    selectedCategory = "메인 메뉴"
+                                    setSelectedCategoryButtonStyle(selectedCategory)
                                 }
                             }
                             "세트 메뉴" -> {
@@ -113,6 +120,9 @@ class StoreDetailMenuFragment : Fragment() {
                                 storeSetMenuAdapter.submitList(list)
                                 binding.storeDetailSetMenuButton.setOnClickListener {
                                     binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailSetRecyclerview.top)
+                                    setUnselectedCategoryButtonStyle(selectedCategory)
+                                    selectedCategory = "세트 메뉴"
+                                    setSelectedCategoryButtonStyle(selectedCategory)
                                 }
                             }
                             "사이드 메뉴" -> {
@@ -120,6 +130,9 @@ class StoreDetailMenuFragment : Fragment() {
                                 storeSideMenuAdapter.submitList(list)
                                 binding.storeDetailSideMenuButton.setOnClickListener {
                                     binding.storeDetailMenuNestedScrollView.smoothScrollTo(0, binding.storeDetailSideRecyclerview.top)
+                                    setUnselectedCategoryButtonStyle(selectedCategory)
+                                    selectedCategory = "사이드 메뉴"
+                                    setSelectedCategoryButtonStyle(selectedCategory)
                                 }
                             }
                         }
@@ -136,7 +149,6 @@ class StoreDetailMenuFragment : Fragment() {
                     viewModel.categories.value?.menuCategories?.forEachIndexed { index, category ->
                         when(category.name) {
                             binding.storeDetailMainMenuTextView.text -> {
-
                                 binding.storeDetailMainMenuButton.strokeColor = ContextCompat.getColor(requireContext(), R.color.gray15)
                                 binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
                             }
@@ -162,6 +174,54 @@ class StoreDetailMenuFragment : Fragment() {
                         }
                     }
                 }
+            }
+        }
+    }
+    private fun setSelectedCategoryButtonStyle(name: String) {
+        when(name) {
+            "추천 메뉴" -> {
+                binding.storeDetailRecommendMenuButton.strokeWidth = 0
+                binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.storeDetailRecommendMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            }
+            "메인 메뉴" -> {
+                binding.storeDetailMainMenuButton.strokeWidth = 0
+                binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.storeDetailMainMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            }
+            "세트 메뉴" -> {
+                binding.storeDetailSetMenuButton.strokeWidth = 0
+                binding.storeDetailSetMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.storeDetailSetMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            }
+            "사이드 메뉴" -> {
+                binding.storeDetailSideMenuButton.strokeWidth = 0
+                binding.storeDetailSideMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.storeDetailSideMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+            }
+        }
+    }
+    private fun setUnselectedCategoryButtonStyle(name: String) {
+        when(name) {
+            "추천 메뉴" -> {
+                binding.storeDetailRecommendMenuButton.strokeWidth = 1
+                binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                binding.storeDetailRecommendMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+            "메인 메뉴" -> {
+                binding.storeDetailMainMenuButton.strokeWidth = 1
+                binding.storeDetailMainMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                binding.storeDetailMainMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+            "세트 메뉴" -> {
+                binding.storeDetailSetMenuButton.strokeWidth = 1
+                binding.storeDetailSetMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                binding.storeDetailSetMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
+            "사이드 메뉴" -> {
+                binding.storeDetailSideMenuButton.strokeWidth = 1
+                binding.storeDetailSideMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
+                binding.storeDetailSideMenuButton.setCardBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
             }
         }
 
