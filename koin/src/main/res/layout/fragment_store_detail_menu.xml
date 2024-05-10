@@ -171,6 +171,7 @@
 
                 <TextView
                     android:id="@+id/how_about_here_text_view"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -181,6 +182,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/store_random_recycler_view"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="16dp"
                     android:clipToPadding="false"
