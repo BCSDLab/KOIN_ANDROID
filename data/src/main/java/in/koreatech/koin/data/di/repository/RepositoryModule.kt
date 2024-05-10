@@ -1,26 +1,27 @@
 package `in`.koreatech.koin.data.di.repository
 
-import `in`.koreatech.koin.data.repository.*
-import `in`.koreatech.koin.domain.repository.*
-import `in`.koreatech.koin.data.repository.DiningRepositoryImpl
-import `in`.koreatech.koin.data.repository.LandRepositoryImpl
-import `in`.koreatech.koin.data.repository.SignupRepositoryImpl
-import `in`.koreatech.koin.data.repository.TokenRepositoryImpl
-import `in`.koreatech.koin.data.repository.UserRepositoryImpl
-import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
-import `in`.koreatech.koin.data.source.local.*
-import `in`.koreatech.koin.data.source.remote.*
 import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.repository.*
+import `in`.koreatech.koin.data.source.local.*
+import `in`.koreatech.koin.data.source.remote.*
+import `in`.koreatech.koin.domain.repository.*
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object RepositoryModule {
+    @Provides
+    @Singleton
+    fun provideNotificationRepository(
+        notificationRemoteDataSource: NotificationRemoteDataSource
+    ): NotificationRepository {
+        return NotificationRepositoryImpl(notificationRemoteDataSource)
+    }
     @Provides
     @Singleton
     fun provideTokenRepository(
@@ -144,5 +145,13 @@ object RepositoryModule {
         preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnerChangePasswordRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerChangePasswordRepository {
+        return OwnerChangePasswordRepositoryImpl(ownerRemoteDataSource)
     }
 }

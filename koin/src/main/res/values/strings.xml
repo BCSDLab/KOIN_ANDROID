@@ -196,6 +196,11 @@
 
     <!--store-->
     <string name="store_how_about_here">여기는 어떠세요?</string>
+    <string name="store_nearby">주변상점</string>
+    <string name="store_get_discount">할인 혜택을 받아보세요!</string>
+    <string name="store_at_here">%1$s에서</string>
+    <string name="store_neun">%1$s는 준비 중 입니다.</string>
+    <string name="store_eun">%1$s은 준비 중 입니다.</string>
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
@@ -270,6 +275,18 @@
     <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
+
+    <!-- Notification -->
+    <string name="notification_appbar_title">알림 설정</string>
+    <string name="notification_dining">식단 알림</string>
+    <string name="notification_dining_description">오늘 나오는 식단의 알림을 받습니다.</string>
+    <string name="notification_dining_sold_out">품절 알림</string>
+    <string name="notification_dining_breakfast_sold_out">아침 식단</string>
+    <string name="notification_dining_lunch_sold_out">점심 식단</string>
+    <string name="notification_dining_dinner_sold_out">저녁 식단</string>
+    <string name="notification_dining_sold_out_description">식단이 품절될 경우 알림을 받습니다.</string>
+    <string name="notification_event">이벤트 알림</string>
+    <string name="notification_event_description">모든 주변상점의 이벤트 알림을 받습니다.</string>
 
     <!-- Land -->
     <string name="land_data_load_fail">원룸 리스트를 받아오지 못했습니다</string>
@@ -390,4 +407,26 @@
     <string name="bus">버스</string>
     <string name="see_all">전체보기</string>
     <string name="complete_sign_up">회원가입 완료</string>
+    <string name="caution_dining_changable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
+    <string name="best_menu">대표 메뉴</string>
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="event">이벤트</string>
+    <string name="telephone">전화번호</string>
+    <string name="operating_time">운영시간</string>
+    <string name="address">주소정보</string>
+    <string name="delivery_fee">배달금액</string>
+    <string name="other_info">기타정보</string>
+    <string name="delivery_available">#배달가능</string>
+    <string name="card_available">#카드가능</string>
+    <string name="account_transfer_avilable">#계좌이체가능</string>
+    <string name="menu_info">메뉴 소개</string>
+    <string name="nearby_store">주변 상점</string>
+    <string name="main_menu">메인 메뉴</string>
+    <string name="view_all">전체보기</string>
+    <string name="menu">메뉴</string>
+    <string name="event_notification">이벤트/공지</string>
+    <string name="no_event">사장님이 이벤트를 준비 중입니다.</string>
+    <string name="no_event_image">사장님이 이미지를 준비 중입니다.</string>
 </resources>
