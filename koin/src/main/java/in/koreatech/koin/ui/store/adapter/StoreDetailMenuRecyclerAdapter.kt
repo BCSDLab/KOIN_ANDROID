@@ -25,14 +25,13 @@ class StoreDetailMenuRecyclerAdapter :
 
         fun setCategory(category: String?) {
             (binding as StoreDetailMenuHeaderBinding).textViewHeaderTitle.text = category
-            binding.imageViewHeaderIcon.setImageResource(
+            binding.imageViewHeaderIcon.setBackgroundResource(
 
                 when (category) {
-
-                    "추천메뉴" -> R.drawable.ic_recommend
-                    "메인메뉴" -> R.drawable.ic_represent
-                    "세트메뉴" -> R.drawable.ic_set
-                    "사이드메뉴" -> R.drawable.ic_side
+                    "추천 메뉴" -> R.drawable.ic_recommend
+                    "메인 메뉴" -> R.drawable.ic_represent
+                    "세트 메뉴" -> R.drawable.ic_set
+                    "사이드 메뉴" -> R.drawable.ic_side
                     else -> R.drawable.ic_represent
                 }
             )
