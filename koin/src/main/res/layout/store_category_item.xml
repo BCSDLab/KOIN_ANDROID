@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_marginHorizontal="13dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="?attr/selectableItemBackgroundBorderless">
+
+        <ImageView
+            android:id="@+id/image_view_store_category"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            tools:src="@drawable/ic_chicken"/>
+
+        <TextView
+            android:id="@+id/text_view_store_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            tools:text="일반음식점" />
+
+    </LinearLayout>
+</layout>

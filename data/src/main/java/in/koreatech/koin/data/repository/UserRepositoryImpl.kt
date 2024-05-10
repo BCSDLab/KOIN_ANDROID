@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
-    private val tokenLocalDataSource: TokenLocalDataSource
+    private val tokenLocalDataSource: TokenLocalDataSource,
 ) : UserRepository {
     override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
@@ -24,6 +23,7 @@ class UserRepositoryImpl @Inject constructor(
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
     }
+
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser()
     }
@@ -47,7 +47,7 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkNickname(nickname)
             false
         } catch (e: HttpException) {
-            if(e.code() == 409) true
+            if (e.code() == 409) true
             else throw e
         }
     }
@@ -57,15 +57,29 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkEmail(email)
             false
         } catch (e: HttpException) {
-            if(e.code() == 409) true
+            if (e.code() == 409) true
             else throw e
         }
     }
 
     override suspend fun updateUser(user: User) {
-        when(user) {
+        when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> userRemoteDataSource.updateUser(user.toUserRequest())
         }
+    }
+
+    override suspend fun updateDeviceToken(token: String) {
+        if (tokenLocalDataSource.getDeviceToken()
+                .isNullOrEmpty() || (tokenLocalDataSource.getDeviceToken() != token && token.isNotEmpty())
+        ) {
+            tokenLocalDataSource.saveDeviceToken(token)
+            userRemoteDataSource.updateDeviceToken(token)
+        }
+    }
+
+    override suspend fun deleteDeviceToken() {
+        tokenLocalDataSource.removeDeviceToken()
+        userRemoteDataSource.deleteDeviceToken()
     }
 }
