@@ -41,7 +41,10 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class StoreActivity : KoinNavigationDrawerActivity() {
@@ -153,8 +156,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
 
         binding.searchEditText.addTextChangedListener {
-            viewModel.updateSearchQuery(it.toString())
-            showRemoveQueryButton = !it.isNullOrEmpty()
+            CoroutineScope(Dispatchers.Default).launch {
+                viewModel.updateSearchQuery(it.toString())
+                withContext(Dispatchers.Main) {
+                    showRemoveQueryButton = !it.isNullOrEmpty()
+                }
+            }
         }
 
         binding.searchEditText.setOnTouchListener { v, event ->
