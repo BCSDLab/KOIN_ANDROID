@@ -49,6 +49,8 @@ composeNavigationVersion = "2.7.7"
 orbitVersion="7.0.1"
 hiltComposeVersion="1.0.0"
 markermanVersion="2.3.0"
+coilVersion = "1.2.0"
+napier = "2.6.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -61,6 +63,8 @@ androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version
 androidx-runner = { module = "androidx.test:runner", version.ref = "runnerVersion" }
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
+
+napier = {module = "io.github.aakira:napier", version.ref="napier"}
 
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotationsVersion" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
@@ -130,6 +134,9 @@ orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVers
 hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
 
 markerman-roundedImageView={module= "com.makeramen:roundedimageview", version.ref = "markermanVersion"}
+
+coil ={module = "io.coil-kt:coil", version.ref ="coilVersion"}
+coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

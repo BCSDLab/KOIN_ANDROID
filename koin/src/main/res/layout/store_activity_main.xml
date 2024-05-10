@@ -116,10 +116,8 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/textView2"
                                 app:layout_constraintBottom_toTopOf="@id/border_frameLayout"
-                                tools:listitem="@layout/main_item_store"
+                                tools:listitem="@layout/store_category_item"
                                 />
-
-
 
                             <FrameLayout
                                 android:id="@+id/border_frameLayout"
