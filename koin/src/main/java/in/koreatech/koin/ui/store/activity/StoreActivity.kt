@@ -3,9 +3,6 @@ package `in`.koreatech.koin.ui.store.activity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import `in`.koreatech.koin.domain.model.store.StoreCategory
-
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -17,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +24,7 @@ import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
+import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -41,10 +38,7 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class StoreActivity : KoinNavigationDrawerActivity() {
@@ -156,12 +150,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
 
         binding.searchEditText.addTextChangedListener {
-            CoroutineScope(Dispatchers.Default).launch {
-                viewModel.updateSearchQuery(it.toString())
-                withContext(Dispatchers.Main) {
-                    showRemoveQueryButton = !it.isNullOrEmpty()
-                }
-            }
+            viewModel.updateSearchQuery(it.toString())
+            showRemoveQueryButton = !it.isNullOrEmpty()
         }
 
         binding.searchEditText.setOnTouchListener { v, event ->
