@@ -47,6 +47,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                         .into(imageViewDining)
 
                     val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                    dialog.initialScale = 0.75f
                     cardViewDining.setOnClickListener {
                         dialog.show()
                         EventLogger.logClickEvent(
