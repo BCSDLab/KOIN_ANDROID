@@ -25,6 +25,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
 
     private var isUserImageInteraction = false
     private lateinit var photoView : PhotoView
+    var initialScale = 1f
 
     override fun onStart() {
         super.onStart()
@@ -45,7 +46,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                     false
                 else true
             }
-            minimumScale = DIALOG_MIN_SCALE
+            minimumScale = initialScale
         }
     }
 
@@ -90,7 +91,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                     isFirstResource: Boolean
                 ): Boolean {
                     photoView.post {
-                        photoView.scale = DIALOG_MIN_SCALE
+                        photoView.scale = initialScale
 
                         val closeButton = findViewById<ImageView>(R.id.dialog_close_button)
                         val lp = closeButton.layoutParams as FrameLayout.LayoutParams
@@ -106,7 +107,6 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
     }
 
     companion object {
-        private const val DIALOG_MIN_SCALE = 0.75f
         private const val ACTION_POINTER_DOWN = 261
     }
 }
