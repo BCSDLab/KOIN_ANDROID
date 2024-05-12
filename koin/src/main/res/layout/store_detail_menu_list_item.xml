@@ -1,61 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="4.5dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="4.5dp"
-        android:orientation="vertical"
-        app:cardBackgroundColor="@color/white"
-        tools:ignore="MissingPrefix">
+        android:layout_height="88dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/store_detail_menu_imageview"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:id="@+id/event_layout"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/store_detail_menu_imageview"
+            app:layout_constraintStart_toStartOf="@+id/store_detail_menu_imageview">
 
-            <TextView
-                android:id="@+id/store_detail_menu_name_textview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:fontName="Custom5"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toStartOf="@+id/store_detail_menu_price_textview"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="68dp"
+                android:layout_height="16dp"
+                android:background="@drawable/button_rect_blue_line_radius_5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/store_detail_menu_price_textview"
-                android:layout_width="0dp"
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:gravity="end"
-                android:textColor="@color/colorPrimary"
-                android:textSize="13sp"
-                app:fontName="Custom5"
+                android:layout_marginEnd="15dp"
+                android:gravity="center"
+                android:text="@string/event"
+                android:textColor="@color/white"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="100원" />
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
 
+            <ImageView
+                android:id="@+id/event_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/ic_event"
+                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                app:layout_constraintEnd_toStartOf="@+id/textView"
+                app:layout_constraintTop_toTopOf="@+id/textView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/store_detail_menu_name_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:breakStrategy="balanced"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/store_detail_menu_imageview"
+            app:layout_constraintTop_toTopOf="@id/store_detail_menu_imageview"
+            app:layout_constraintBottom_toTopOf="@id/store_detail_menu_price_textview"
+            tools:text="메뉴이름" />
+
+        <TextView
+            android:id="@+id/store_detail_menu_price_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/store_detail_menu_imageview"
+            app:layout_constraintStart_toStartOf="@id/store_detail_menu_name_textview"
+            app:layout_constraintTop_toBottomOf="@id/store_detail_menu_name_textview"
+            tools:text="100원" />
+
+        <View
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="#ECECEC" />
-    </androidx.cardview.widget.CardView>
+            android:background="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>
