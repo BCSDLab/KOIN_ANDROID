@@ -76,6 +76,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         setOnItemClickListener {
             viewModel.setCategory(it.toStoreCategory())
             binding.searchEditText.text.clear()
+            val eventValue = getStoreCategoryName(viewModel.category.value)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES,
+                eventValue
+            )
         }
     }
 
