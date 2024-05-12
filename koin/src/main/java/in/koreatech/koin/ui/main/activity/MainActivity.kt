@@ -9,10 +9,10 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.util.dataBinding
-import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
@@ -26,7 +26,6 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
-import androidx.activity.result.contract.ActivityResultContracts
 
 @AndroidEntryPoint
 class MainActivity : KoinNavigationDrawerActivity() {
@@ -58,8 +57,13 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
-        setOnItemClickListener {
-            gotoStoreActivity(it)
+        setOnItemClickListener { id, name ->
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                name
+            )
+            gotoStoreActivity(id)
         }
     }
 
