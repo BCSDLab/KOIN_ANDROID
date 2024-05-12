@@ -51,6 +51,9 @@
     <color name="gray12">#555555</color>
     <color name="gray13">#757575</color>
     <color name="gray14">#4b4b4b</color>
+    <color name="gray15">#cacaca</color>
+    <color name="gray16">#e1e1e1</color>
+    <color name="gray17">#eeeeee</color>
 
 
     <color name="black_alpha12">#1f252525</color>
@@ -75,6 +78,7 @@
     <color name="blue8">#9fa9b3</color>
     <color name="blue_alpha30">#4d7c9fae</color>
     <color name="blue_alpha51">#33d2dae2</color>
+    <color name="blue_alpha20">#6DBBDD</color>
 
     <!-- BusWidget -->
     <color name="deep_light_navy">@color/blue5</color>
@@ -112,4 +116,12 @@
     <color name="default_sticker_font_color">#ffffff</color>
     <color name="gray">#7c9fae</color>
     <color name="black1">#222222</color>
+
+    <!-- store -->
+    <color name="event_card_color_1">#6DBBDD</color>
+    <color name="event_card_color_2">#4590BB</color>
+    <color name="event_card_color_3">#175C8E</color>
+    <color name="event_card_color_4">#10477A</color>
+    <color name="event_card_neutral_100">#F5F5F5</color>
+    <color name="closed_store_name">#FCCC77</color>
 </resources>

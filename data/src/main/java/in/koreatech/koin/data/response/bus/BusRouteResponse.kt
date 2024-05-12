@@ -8,8 +8,8 @@ data class ShuttleBusRouteResponse(
 )
 
 data class ShuttleBusNodeInfoResponse(
-    @SerializedName("nodeName") val nodeName: String,
-    @SerializedName("arrivalTime") val arrivalTime: String
+    @SerializedName("node_name") val nodeName: String,
+    @SerializedName("arrival_time") val arrivalTime: String
 )
 
 data class ExpressBusRouteResponse(
