@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.changepassword.changepassword
 
 
 import androidx.compose.foundation.Image
@@ -36,7 +36,6 @@ import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
-import `in`.koreatech.business.ui.theme.Red2
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect

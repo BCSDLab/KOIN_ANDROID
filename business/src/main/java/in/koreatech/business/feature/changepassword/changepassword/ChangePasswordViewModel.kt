@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.changepassword.changepassword
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -6,9 +6,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
 import `in`.koreatech.koin.domain.usecase.business.OwnerChangePasswordUseCase
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -19,7 +16,7 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class ChangePasswordViewModel  @Inject constructor(
+class ChangePasswordViewModel @Inject constructor(
     private val ownerChangePasswordUseCase: OwnerChangePasswordUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<ChangePasswordState, ChangePasswordSideEffect> {
@@ -36,13 +33,13 @@ class ChangePasswordViewModel  @Inject constructor(
         }
     }
 
-    fun fillAllPasswords() = intent {
+    private fun fillAllPasswords() = intent {
         reduce{
             state.copy(fillAllPasswords = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
         }
     }
 
-    fun coincidePasswordReset() = intent {
+    private fun coincidePasswordReset() = intent {
         reduce{
             state.copy(notCoincidePW = false)
         }

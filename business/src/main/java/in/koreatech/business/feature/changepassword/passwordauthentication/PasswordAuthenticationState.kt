@@ -1,9 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.passwordauthentication
-
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+package `in`.koreatech.business.feature.changepassword.passwordauthentication
 
 data class PasswordAuthenticationState (
     val authenticationBtnIsClicked: Boolean = false,

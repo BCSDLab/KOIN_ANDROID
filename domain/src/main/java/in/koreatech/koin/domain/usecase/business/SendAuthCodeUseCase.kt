@@ -17,7 +17,6 @@ class SendAuthCodeUseCase @Inject constructor(
             when {
                 email == "" -> Result.failure(ChangePasswordExceptionState.ToastNullEmail)
                 email.isOwnerNotEmailValid() -> Result.failure(ChangePasswordExceptionState.ToastIsNotEmail)
-
                 else -> ownerChangePasswordRepository.requestEmailVerification(
                     email = email
                 ).map { ChangePasswordContinuationState.SendAuthCode}

@@ -7,6 +7,7 @@
     <string name="back_arrow">backArrow</string>
     <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
 
+
     <!--인증번호 관련-->
     <string name="auth_code_input_from_email">이메일로 발송된 인증번호 6자리를 입력해 주세요.</string>
     <string name="auth_code_not_equal">인증번호가 일치하지 않습니다.</string>
