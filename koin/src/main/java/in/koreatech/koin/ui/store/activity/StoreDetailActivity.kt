@@ -39,9 +39,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-
-
-
+    
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -72,14 +70,19 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     }
     private val storeDetailViewpagerAdapter =StoreDetailViewpagerAdapter(this)
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_BACK_BUTTON,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                    onBackPressed()
+                }
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
