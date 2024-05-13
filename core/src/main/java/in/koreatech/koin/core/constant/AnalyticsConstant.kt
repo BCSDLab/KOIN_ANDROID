@@ -43,6 +43,7 @@ object AnalyticsConstant {
         const val SHOP_PICTURE = "shop_picture"
         const val SHOP_CALL = "shop_call"
         const val SHOP_CLICK = "shop_click"
+        const val SHOP_BACK_BUTTON = "shop_back_button"
     }
 
 }
