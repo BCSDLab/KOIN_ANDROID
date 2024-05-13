@@ -62,7 +62,7 @@ class StoreDetailMenuRecyclerAdapter :
                 }
             }
             Glide.with(binding.root.context)
-                .load(shopMenu.imageUrls?.getOrNull(0) ?: R.drawable.no_image)
+                .load(shopMenu.imageUrls?.getOrNull(0))
                 .into(binding.storeDetailMenuImageview)
         }
 
