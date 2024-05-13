@@ -69,6 +69,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
+                it.shopName
+            )
             storeDetailContract.launch(it.shopId)
         }
     }

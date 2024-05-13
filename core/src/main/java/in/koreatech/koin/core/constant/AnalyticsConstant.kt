@@ -17,6 +17,7 @@ object AnalyticsConstant {
         const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
+        const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = "${HAMBURGER}_shop"
         const val HAMBURGER_DINING = "${HAMBURGER}_dining"
