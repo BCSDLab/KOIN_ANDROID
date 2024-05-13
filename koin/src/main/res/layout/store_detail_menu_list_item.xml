@@ -15,7 +15,7 @@
             android:layout_width="68dp"
             android:layout_height="68dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -71,8 +71,8 @@
             android:textSize="16sp"
             android:breakStrategy="balanced"
             android:layout_marginBottom="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/store_detail_menu_imageview"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/store_detail_menu_imageview"
             app:layout_constraintTop_toTopOf="@id/store_detail_menu_imageview"
             app:layout_constraintBottom_toTopOf="@id/store_detail_menu_price_textview"
             tools:text="메뉴이름" />

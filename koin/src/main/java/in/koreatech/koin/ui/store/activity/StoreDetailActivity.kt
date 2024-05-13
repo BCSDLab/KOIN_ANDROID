@@ -21,6 +21,7 @@ import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
@@ -64,10 +65,11 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_PICTURE,
-                viewModel.store.value?.name ?: "Unknown")
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
     }
-    private val storeDetailViewpagerAdapter =StoreDetailViewpagerAdapter(this)
+    private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,10 +93,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown")
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
 
-        TabLayoutMediator(binding.storeDetailTabLayout, binding.storeDetailViewPager) { tab, position ->
+        TabLayoutMediator(
+            binding.storeDetailTabLayout,
+            binding.storeDetailViewPager
+        ) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.menu)
                 1 -> getString(R.string.event_notification)
@@ -191,17 +197,17 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 } else {
                     storeDetailEtcTextview.text = it.description
                 }
-                
+
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //계좌이체
                 setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
 
-                Glide.with(this@StoreDetailActivity)
-                    .load(it.imageUrls?.getOrNull(0) ?: R.drawable.defualt_image)
-                    .error(R.drawable.arrow_back)
-                    .into(storeDetailImageview)
+                binding.storeDetailImageview.apply {
+                    adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
+
+                }
 
             }
         }
@@ -252,6 +258,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             )
         }
     }
+
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
     }
