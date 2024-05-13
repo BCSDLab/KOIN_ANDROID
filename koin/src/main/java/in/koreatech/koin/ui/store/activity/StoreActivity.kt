@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.activity
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -127,7 +128,8 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
 
-        storeCategoriesAdapter.selectPosition = intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
+        storeCategoriesAdapter.selectPosition =
+            intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
         viewModel.setCategory(initStoreCategory)
     }
 
@@ -139,7 +141,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         super.onBackPressed()
     }
 
-    private fun initView(){
+    private fun initView() {
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
@@ -151,7 +153,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.categoriesRecyclerview.apply {
             layoutManager = GridLayoutManager(this@StoreActivity, 5)
             adapter = storeCategoriesAdapter
-            
+
         }
 
 
@@ -198,7 +200,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 )
             )
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
 
                 }
 
@@ -214,6 +220,25 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             })
         }
 
+        binding.root.post {
+            val rect = Rect()
+            window!!.decorView.getWindowVisibleDisplayFrame(rect)
+            val statusBarHeight = rect.top
+
+            binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
+                val oldScrollRatio =
+                    oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
+                val scrollRatio =
+                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
+                if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
+                    EventLogger.logScrollEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CATEGORIES,
+                        "scroll in " + getStoreCategoryName(viewModel.category.value)
+                    )
+                }
+            }
+        }
     }
 
     private val runnable = object : Runnable {
@@ -227,6 +252,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             viewPagerHandler.postDelayed(this, viewPagerDelayTime)
         }
     }
+
     private fun startAutoScroll() {
         viewPagerHandler.removeCallbacks(runnable)
         viewPagerHandler.postDelayed(runnable, viewPagerDelayTime)
@@ -239,12 +265,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             binding.storeSwiperefreshlayout.isRefreshing = it
         }
 
-        observeLiveData(viewModel.storeEvents){
+        observeLiveData(viewModel.storeEvents) {
             storeEventPagerAdapter.submitList(it)
             binding.eventViewPager.isGone = it.isNullOrEmpty()
         }
 
-        observeLiveData(viewModel.storeCategories){
+        observeLiveData(viewModel.storeCategories) {
             storeCategoriesAdapter.submitList(it.drop(1))
         }
 
