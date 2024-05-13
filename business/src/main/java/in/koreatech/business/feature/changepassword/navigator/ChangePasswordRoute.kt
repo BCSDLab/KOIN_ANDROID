@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.navigator
+package `in`.koreatech.business.feature.changepassword.navigator
 
 enum class ChangePasswordRoute() {
     Login,

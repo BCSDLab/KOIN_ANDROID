@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.finishchangepassword
+package `in`.koreatech.business.feature.changepassword.finishchangepassword
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.passwordauthentication
+package `in`.koreatech.business.feature.changepassword.passwordauthentication
 
 
 import androidx.lifecycle.ViewModel
@@ -9,8 +9,6 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptio
 import `in`.koreatech.koin.domain.usecase.business.SendAuthCodeUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerAuthenticateCode
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -25,7 +23,9 @@ class PasswordAuthenticationViewModel @Inject constructor(
     private val sendAuthCodeUseCase: SendAuthCodeUseCase,
     private val ownerAuthenticateCode: OwnerAuthenticateCode
 ): ViewModel() , ContainerHost<PasswordAuthenticationState, PasswordAuthenticationSideEffect> {
-    override val container = container<PasswordAuthenticationState, PasswordAuthenticationSideEffect>(PasswordAuthenticationState())
+    override val container = container<PasswordAuthenticationState, PasswordAuthenticationSideEffect>(
+        PasswordAuthenticationState()
+    )
 
     private val sendAuthCodeFlow = MutableSharedFlow<String>()
     private val authenticateCodeFlow = MutableSharedFlow<Pair<String, String>>()

@@ -23,6 +23,8 @@ class UserErrorHandlerImpl @Inject constructor(
                 is HttpException -> {
                     when(it.code()) {
                         401 -> ErrorHandler(context.getString(R.string.error_login_incorrect))
+                        404 -> ErrorHandler(context.getString(R.string.error_forgotpassword_no_user))
+                        400 -> ErrorHandler(context.getString(R.string.error_wrong_password))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }

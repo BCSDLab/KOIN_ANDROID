@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.changepassword.changepassword
 sealed class ChangePasswordSideEffect {
 
     object ToastNullEmail: ChangePasswordSideEffect()

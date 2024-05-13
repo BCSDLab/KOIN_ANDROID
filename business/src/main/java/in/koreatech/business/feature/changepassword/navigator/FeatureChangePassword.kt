@@ -1,6 +1,5 @@
-package `in`.koreatech.business.feature_changepassword.navigator
+package `in`.koreatech.business.feature.changepassword.navigator
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -10,9 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreenImpl
-import `in`.koreatech.business.feature_changepassword.finishchangepassword.FinishChangePasswordScreen
-import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreenImpl
+import `in`.koreatech.business.feature.changepassword.changepassword.ChangePasswordScreenImpl
+import `in`.koreatech.business.feature.changepassword.finishchangepassword.FinishChangePasswordScreen
+import `in`.koreatech.business.feature.changepassword.passwordauthentication.PasswordAuthenticationScreenImpl
 
 
 @Composable
