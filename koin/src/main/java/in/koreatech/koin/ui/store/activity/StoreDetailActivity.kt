@@ -8,6 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -37,8 +39,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-
-
+    
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -75,7 +76,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_BACK_BUTTON,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                    onBackPressed()
+                }
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
@@ -99,6 +107,21 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
+
+        binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 1)
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
+        })
 
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
