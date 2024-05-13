@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -23,7 +23,6 @@ import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
-import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.fragment.StoreFlyerDialogFragment
@@ -102,6 +101,21 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
+
+        binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 1)
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
+        })
 
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
