@@ -17,6 +17,7 @@ object AnalyticsConstant {
         const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
         const val SHOP_CATEGORIES = "shop_categories"
         const val SHOP_CATEGORIES_SEARCH = "shop_categories_search"
+        const val SHOP_CATEGORIES_EVENT = "shop_categories_event"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = "${HAMBURGER}_shop"
         const val HAMBURGER_DINING = "${HAMBURGER}_dining"
@@ -43,6 +44,8 @@ object AnalyticsConstant {
         const val SHOP_PICTURE = "shop_picture"
         const val SHOP_CALL = "shop_call"
         const val SHOP_CLICK = "shop_click"
+        const val SHOP_BACK_BUTTON = "shop_back_button"
+        const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
     }
 
 }
