@@ -78,7 +78,7 @@
                                     android:orientation="horizontal"
                                     app:layout_constraintGuide_percent="0.288" />
 
-                                <ImageView
+                                <androidx.viewpager2.widget.ViewPager2
                                     android:id="@+id/store_detail_imageview"
                                     android:layout_width="match_parent"
                                     android:layout_height="255dp"
