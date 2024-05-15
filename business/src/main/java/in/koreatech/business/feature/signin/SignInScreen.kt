@@ -61,7 +61,7 @@ fun SignInScreenImpl(
             password -> viewModel.insertPassword(password)
         },
         onSignInClick = {
-           viewModel.login(state.id.trim(), state.password.trim())
+           viewModel.login()
                         },
         onSignUpClick = {viewModel.navigateToSignUp()},
         onFindPasswordClick = {viewModel.navigateToFindPassword()}
@@ -71,14 +71,14 @@ fun SignInScreenImpl(
 }
 @Composable
 fun SignInScreen (
-    modifier: Modifier,
-    id: String,
-    password: String,
-    onIdChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onSignInClick: () -> Unit,
-    onSignUpClick:() ->Unit,
-    onFindPasswordClick:() -> Unit
+    modifier: Modifier = Modifier,
+    id: String = "",
+    password: String = "",
+    onIdChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit  = {},
+    onSignInClick: () -> Unit  = {},
+    onSignUpClick: () -> Unit  = {},
+    onFindPasswordClick: () -> Unit  = {}
     ){
     Column(modifier = modifier.fillMaxSize()) {
         Row(

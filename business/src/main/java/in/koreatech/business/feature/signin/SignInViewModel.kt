@@ -21,6 +21,7 @@ class SignInViewModel @Inject constructor(
     override val container = container<SignInState, SignInSideEffect>(
         SignInState()
     )
+
     fun insertId(id: String) = intent{
         reduce { state.copy(id = id) }
         validateField()
@@ -38,25 +39,24 @@ class SignInViewModel @Inject constructor(
         postSideEffect(SignInSideEffect.NavigateToFindPassword)
     }
 
-    fun login(
-        id: String,
-        password: String,
-    ){
-        if(SignInState().validateField){
-            viewModelScope.launch {
-                userLoginUseCase(
-                    email = id,
-                    password = password
-                )   .onSuccess {
-                    navigateToMain()
-                }
-                    .onFailure {
-                        toastErrorMessage(it.message)
+    fun login(){
+        intent{
+            if(state.validateField){
+                viewModelScope.launch {
+                    userLoginUseCase(
+                        email = state.id.trim(),
+                        password = state.password.trim()
+                    )   .onSuccess {
+                        navigateToMain()
                     }
+                        .onFailure {
+                            toastErrorMessage(it.message)
+                        }
+                }
             }
-        }
-        else{
-            toastNullMessage()
+            else{
+                toastNullMessage()
+            }
         }
     }
 
