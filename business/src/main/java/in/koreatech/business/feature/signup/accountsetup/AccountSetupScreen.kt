@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.signup.accountsetup
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,12 +10,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -29,14 +34,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.signup.accountauth.EmailAuthViewModel
+import `in`.koreatech.business.feature.textfield.AuthTextField
 import `in`.koreatech.business.feature.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorDisabledButton
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
+import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
+import `in`.koreatech.koin.domain.util.ext.isValidPassword
+import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -44,34 +52,44 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun AccountSetupScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSetupViewModel = hiltViewModel(),
+    authViewModel: EmailAuthViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
     onNextClicked: (String) -> Unit = {},
 ) {
+
     val state = viewModel.collectAsState().value
+    val authState = authViewModel.collectAsState().value
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        IconButton(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { onBackClicked() }
+        Box(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)
         ) {
-            Icon(
-                modifier = Modifier.padding(start = 10.dp),
-                painter = painterResource(id = R.drawable.ic_arrow_back),
-                contentDescription = stringResource(id = R.string.back_icon),
+            IconButton(
+                onClick = { viewModel.onBackButtonClicked() },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_back),
+                    contentDescription = stringResource(id = R.string.back_icon),
+                )
+            }
+
+            Text(
+                text = stringResource(id = R.string.sign_up),
+                fontSize = 18.sp,
+                fontWeight = Bold,
+                modifier = Modifier.align(Alignment.Center)
             )
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         Column(
             modifier = Modifier
-                .padding(horizontal = 32.dp),
+                .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(
-                text = stringResource(id = R.string.master_sign_up),
-                fontSize = 24.sp,
-                fontWeight = Bold,
-            )
-            Spacer(modifier = Modifier.height(40.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -79,10 +97,11 @@ fun AccountSetupScreen(
             ) {
                 Text(
                     modifier = Modifier,
-                    color = ColorSecondary,
+                    color = ColorPrimary,
+                    fontWeight = Bold,
                     text = stringResource(id = R.string.input_basic_information),
                 )
-                Text(text = stringResource(id = R.string.one_third), color = ColorSecondary)
+                Text(text = stringResource(id = R.string.two_third), color = ColorPrimary,   fontWeight = Bold,)
             }
 
             Canvas(
@@ -98,81 +117,156 @@ fun AccountSetupScreen(
                     cap = StrokeCap.Round
                 )
                 drawLine(
-                    color = ColorSecondary,
+                    color = ColorPrimary,
                     start = Offset(-40f, 0f),
-                    end = Offset((size.width + 40) / 3, size.height),
+                    end = Offset((size.width + 40) / 3 * 2, size.height),
                     strokeWidth = 4.dp.toPx(),
                     cap = StrokeCap.Round
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
-            LinedTextField(
-                value = state.id,
-                onValueChange = { viewModel.onIdChanged(it) },
-                modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.id),
-                textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                lineColor = ColorHelper,
-            )
+            Text(text = stringResource(id = R.string.id), fontSize = 14.sp, fontWeight = Bold)
+            Row(
+                modifier=Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
 
+                LinedTextField(
+                    value = state.id,
+                    onValueChange = { viewModel.onIdChanged(it) },
+                    modifier = Modifier.width(203.dp),
+                    label = stringResource(id = R.string.enter_id),
+                    errorText = stringResource(id = R.string.id_not_validate),
+                    textStyle = TextStyle.Default.copy(fontSize = 15.sp),
+                )
+
+                Button(modifier = Modifier
+                    .width(115.dp)
+                    .height(44.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    enabled = state.id.isNotEmpty(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                        disabledBackgroundColor = Gray2,
+                        disabledContentColor = Gray1,
+                    ),
+                    onClick = {
+                       /* 아이디 중복 확인 */
+                    }) {
+                    Text(
+                        text = stringResource(id = R.string.check_duplicate),
+                        fontSize = 13.sp,
+                        fontWeight = Bold,
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(text = stringResource(id = R.string.password), fontSize = 14.sp, fontWeight = Bold)
             LinedTextField(
                 value = state.password,
                 onValueChange = { viewModel.onPasswordChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.password),
+                label = stringResource(id = R.string.enter_password),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                lineColor = ColorHelper,
                 isPassword = true,
-                helperText = stringResource(id = R.string.password_requirements),
+                isError = state.password.isValidPassword,
             )
+            Spacer(modifier = Modifier.height(10.dp))
 
+            Text(text = stringResource(id = R.string.password_confirm), fontSize = 14.sp, fontWeight = Bold)
             LinedTextField(
                 value = state.passwordConfirm,
                 onValueChange = { viewModel.onPasswordConfirmChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.password_confirm),
+                label = stringResource(id = R.string.enter_password_confirm),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                lineColor = ColorHelper,
                 isPassword = true,
                 errorText = stringResource(id = R.string.password_mismatch),
-                isError = state.signupContinuationState == SignupContinuationState.PasswordNotMatching,
+                isError = state.password !=state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(text = stringResource(id = R.string.phone_number), fontSize = 14.sp, fontWeight = Bold)
 
             LinedTextField(
-                value = state.email,
-                onValueChange = { viewModel.onEmailChanged(it) },
+                value = state.phoneNumber,
+                onValueChange = { viewModel.onPhoneNumChanged(it) },
                 modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.email_confirm),
+                label = stringResource(id = R.string.enter_phone_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                lineColor = ColorHelper,
-                errorText = stringResource(id = R.string.email_not_validate),
-                isError = state.signupContinuationState == SignupContinuationState.EmailIsNotValidate,
+                errorText = stringResource(id = R.string.phone_number_not_validate),
+                isError = state.phoneNumber.length!=11 && state.phoneNumber.isNotEmpty(),
             )
 
+            Spacer(modifier = Modifier.height(10.dp))
 
-            Spacer(modifier = Modifier.height(78.dp))
+            Text(text = stringResource(id = R.string.authentication_code), fontSize = 14.sp, fontWeight = Bold)
+
+            Row(
+                modifier=Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                LinedTextField(
+                    value = authState.authCode,
+                    onValueChange = { authViewModel.onAuthCodeChanged(it) },
+                    modifier = Modifier.width(203.dp),
+                    label = stringResource(id = R.string.enter_verification_code),
+                    textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+                    isPassword = true,
+                    isError = state.signUpContinuationError != null,
+                    )
+
+                Button(modifier = Modifier
+                    .width(115.dp)
+                    .height(44.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    enabled = state.phoneNumber.isNotEmpty(),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                        disabledBackgroundColor = Gray2,
+                        disabledContentColor = Gray1,
+                    ),
+                    onClick = {
+                        viewModel.postPhoneVerification(
+                            state.phoneNumber, state.password, state.passwordConfirm
+                        )
+                    }) {
+                    Text(
+                        text = stringResource(id = R.string.send_authentication_code),
+                        fontWeight= Bold,
+                        fontSize = 13.sp,
+
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(55.dp))
             Button(modifier = Modifier
                 .fillMaxWidth()
                 .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isPasswordEnabled,
+                enabled = state.signUpContinuationError == null && state.isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,
-                    disabledBackgroundColor = ColorDisabledButton,
-                    disabledContentColor = Color.White,
+                    disabledBackgroundColor = Gray2,
+                    disabledContentColor = Gray1,
                 ),
                 onClick = {
-                    viewModel.postEmailVerification(
-                        state.email, state.password, state.passwordConfirm
-                    )
+                    viewModel.onNextButtonClicked()
                 }) {
                 Text(
-                    text = stringResource(id = R.string.email_authentication),
-                    fontSize = 15.sp,
-                    color = Color.White,
+                    text = stringResource(id = R.string.next),
+                    fontSize = 13.sp,
+                    fontWeight = Bold,
                 )
             }
         }
@@ -180,7 +274,7 @@ fun AccountSetupScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(state.email)
+            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(state.phoneNumber)
             AccountSetupSideEffect.NavigateToBackScreen -> onBackClicked()
         }
     }
