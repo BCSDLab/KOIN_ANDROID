@@ -26,6 +26,9 @@ class SearchStoreViewModel @Inject constructor(
     override val container =
         container<SearchStoreState, SearchStoreSideEffect>(SearchStoreState())
 
+    init {
+        searchStore()
+    }
     fun onItemIndexChange(index: Int) = intent {
         reduce {
             state.copy(itemIndex = index)
@@ -33,29 +36,33 @@ class SearchStoreViewModel @Inject constructor(
     }
 
     fun onSearchChanged(search: String) = intent {
-       postSideEffect(SearchStoreSideEffect.SearchStore(search))
+        reduce {
+            state.copy(search = search)
+        }
+    }
+
+
+    fun searchStore() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            val newSearchJob = launch {
+                getStoresUseCase(null, state.search).let { stores ->
+                    reduce {
+                        state.copy(stores = stores)
+                    }
+                }
+            }
+            reduce {
+                state.copy(searchJob = newSearchJob)
+            }
+        }
+    }
+
+    fun onSearchStore()= intent {
+        postSideEffect(SearchStoreSideEffect.SearchStore(state.search))
     }
 
     fun onNavigateToBackScreen() = intent {
         postSideEffect(SearchStoreSideEffect.NavigateToBackScreen)
     }
-    init {
-        intent {
-            viewModelScope.launch(Dispatchers.IO) {
-                state.searchJob?.cancel()
-                val newSearchJob = launch {
 
-                    getStoresUseCase(null, "").let { stores ->
-                        reduce {
-                            state.copy(stores = stores)
-                        }
-                    }
-                }
-                reduce {
-                    state.copy(searchJob = newSearchJob)
-                }
-
-            }
-        }
-    }
 }
