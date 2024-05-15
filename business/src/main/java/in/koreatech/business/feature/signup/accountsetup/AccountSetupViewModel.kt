@@ -30,25 +30,22 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(password = password)
         }
-        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
     fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
         reduce {
             state.copy(passwordConfirm = passwordConfirm)
         }
-        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
-    fun onEmailChanged(email: String) = intent {
+    fun onPhoneNumChanged(phoneNumber: String) = intent {
         reduce {
-            state.copy(email = email)
+            state.copy(phoneNumber = phoneNumber)
         }
-        reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedEmailValidation) }
     }
 
     fun onNextButtonClicked() = intent {
-        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.email))
+        postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.phoneNumber))
     }
 
     fun onBackButtonClicked() = intent {
@@ -56,7 +53,7 @@ class AccountSetupViewModel @Inject constructor(
     }
 
 
-    fun postEmailVerification(email: String, password: String, passwordConfirm: String) {
+    fun postPhoneVerification(email: String, password: String, passwordConfirm: String) {
         intent { reduce { state.copy(isLoading = true) } }
         viewModelScope.launch(Dispatchers.IO) {
             sendSignupEmailUseCase(email, password, passwordConfirm)
@@ -70,10 +67,6 @@ class AccountSetupViewModel @Inject constructor(
                     intent { reduce { state.copy(signUpContinuationError = it) } }
                 }
             intent { reduce { state.copy(isLoading = false) } }
-            intent {
-                if (state.signupContinuationState == SignupContinuationState.CheckComplete)
-                    onNextButtonClicked()
-            }
         }
     }
 }
