@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signin
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,10 +16,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,8 +61,7 @@ fun SignInScreenImpl(
             password -> viewModel.insertPassword(password)
         },
         onSignInClick = {
-            if(state.isFilledIdEmailField) viewModel.login(state.id.trim(), state.password.trim())
-            else viewModel.toastNullMessage()
+           viewModel.login(state.id.trim(), state.password.trim())
                         },
         onSignUpClick = {viewModel.navigateToSignUp()},
         onFindPasswordClick = {viewModel.navigateToFindPassword()}
@@ -86,21 +82,21 @@ fun SignInScreen (
     ){
     Column(modifier = modifier.fillMaxSize()) {
         Row(
-            modifier = modifier
+            modifier = Modifier
                 .padding(start = 32.dp, top = 88.dp, end = 32.dp, bottom = 80.dp)
                 .fillMaxWidth(),
         ) {
             Image(
                 painter = painterResource(id = R.drawable.logo_color_horizontal_300x168),
                 contentDescription = "Koin Logo",
-                modifier = modifier
+                modifier = Modifier
                     .width(107.dp)
                     .height(60.dp)
             )
             Text(
                 text = stringResource(id = R.string.for_business),
                 fontSize = 20.sp,
-                modifier = modifier
+                modifier = Modifier
                     .padding(start = 8.dp, top = 30.dp)
             )
         }
@@ -137,7 +133,7 @@ fun SignInScreen (
                     )
                 }
             },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 28.dp)
@@ -176,7 +172,7 @@ fun SignInScreen (
                     )
                 }
             },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 40.dp)
@@ -186,7 +182,7 @@ fun SignInScreen (
             onClick = onSignInClick,
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(ColorAccent),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(bottom = 16.dp)
@@ -205,7 +201,7 @@ fun SignInScreen (
             onClick = onSignUpClick,
             shape = RectangleShape,
             colors = ButtonDefaults.buttonColors(ColorPrimary),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
                 .padding(top = 16.dp, bottom = 24.dp)
@@ -224,19 +220,19 @@ fun SignInScreen (
             onClick = onFindPasswordClick,
             colors = ButtonDefaults.buttonColors(Color.White),
             shape = RectangleShape,
-            modifier = modifier
+            modifier = Modifier
                 .padding(horizontal = 127.dp)
                 .padding(top = 24.dp)
                 .fillMaxWidth()
 
         ) {
             Row(
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ){
                 Image(
                     painter = painterResource(id = R.drawable.ic_password),
                     contentDescription = "password_icon",
-                    modifier = modifier
+                    modifier = Modifier
                         .height(20.dp)
                         .width(20.dp)
                 )
@@ -251,7 +247,7 @@ fun SignInScreen (
 
         Text(
             text = stringResource(R.string.copy_right),
-            modifier = modifier
+            modifier = Modifier
                 .padding(top = 102.dp, bottom = 24.dp)
                 .padding(horizontal = 64.dp)
         )
@@ -285,15 +281,52 @@ private fun HandleSideEffects(
 
 @Preview
 @Composable
-fun PreViewSignInScreen(){
+fun PreViewSignInScreen(
+    modifier: Modifier = Modifier,
+    id: String = "",
+    password: String = "",
+    onIdChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit  = {},
+    onSignInClick: () -> Unit  = {},
+    onSignUpClick: () -> Unit  = {},
+    onFindPasswordClick: () -> Unit  = {}
+){
     SignInScreen(
-        modifier = Modifier,
-        id = "",
-        password = "",
-        onIdChange = {},
-        onPasswordChange = {},
-        onSignInClick = {},
-        onSignUpClick = {},
-        onFindPasswordClick = {}
+        modifier = modifier,
+        id = id,
+        password = password,
+        onIdChange = onIdChange,
+        onPasswordChange = onPasswordChange,
+        onSignInClick = onSignInClick,
+        onSignUpClick = onSignUpClick,
+        onFindPasswordClick = onFindPasswordClick
+    )
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES,
+    name = "DefaultPreviewDark"
+)
+@Composable
+fun PreViewDarkModeSignInScreen(
+    modifier: Modifier = Modifier,
+    id: String = "",
+    password: String = "",
+    onIdChange: (String) -> Unit = {},
+    onPasswordChange: (String) -> Unit  = {},
+    onSignInClick: () -> Unit  = {},
+    onSignUpClick: () -> Unit  = {},
+    onFindPasswordClick: () -> Unit  = {}
+){
+    SignInScreen(
+        modifier = modifier,
+        id = id,
+        password = password,
+        onIdChange = onIdChange,
+        onPasswordChange = onPasswordChange,
+        onSignInClick = onSignInClick,
+        onSignUpClick = onSignUpClick,
+        onFindPasswordClick = onFindPasswordClick
     )
 }

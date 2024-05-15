@@ -6,6 +6,7 @@
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="back_arrow">backArrow</string>
     <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
+    <string name="koin_for_business">Koin For Business</string>
 
 
     <!--인증번호 관련-->
