@@ -21,27 +21,15 @@ class SignInViewModel @Inject constructor(
     override val container = container<SignInState, SignInSideEffect>(
         SignInState()
     )
-
-    private fun fillAllPasswords() = intent {
-        reduce{
-            state.copy(isFilledIdEmailField = (state.id.isNotBlank() && state.password.isNotBlank()))
-        }
-    }
-
     fun insertId(id: String) = intent{
         reduce { state.copy(id = id) }
-        fillAllPasswords()
+        validateField()
     }
 
     fun insertPassword(password: String) = intent{
         reduce { state.copy(password = password) }
-        fillAllPasswords()
+        validateField()
     }
-
-    fun toastNullMessage() = intent {
-        postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullEmailOrPassword))
-    }
-
     fun navigateToSignUp() = intent {
         postSideEffect(SignInSideEffect.NavigateToSignUp)
     }
@@ -50,30 +38,42 @@ class SignInViewModel @Inject constructor(
         postSideEffect(SignInSideEffect.NavigateToFindPassword)
     }
 
-    private fun navigateToMain() = intent {
-        postSideEffect(SignInSideEffect.NavigateToMain)
-    }
-
-
-
     fun login(
         id: String,
         password: String,
     ){
-        viewModelScope.launch {
-            userLoginUseCase(
-                email = id,
-                password = password
-            )   .onSuccess {
+        if(SignInState().validateField){
+            viewModelScope.launch {
+                userLoginUseCase(
+                    email = id,
+                    password = password
+                )   .onSuccess {
                     navigateToMain()
-            }
-                .onFailure {
-                    toastErrorMessage(it.message)
                 }
+                    .onFailure {
+                        toastErrorMessage(it.message)
+                    }
+            }
+        }
+        else{
+            toastNullMessage()
         }
     }
 
+    private fun navigateToMain() = intent {
+        postSideEffect(SignInSideEffect.NavigateToMain)
+    }
+
+    private fun toastNullMessage() = intent {
+        postSideEffect(SignInSideEffect.ShowNullMessage(ErrorType.NullEmailOrPassword))
+    }
     private fun toastErrorMessage(message: String) = intent {
         postSideEffect(SignInSideEffect.ShowMessage(message))
+    }
+
+    private fun validateField() = intent {
+        reduce{
+            state.copy(validateField = (state.id.isNotBlank() && state.password.isNotBlank()))
+        }
     }
 }
