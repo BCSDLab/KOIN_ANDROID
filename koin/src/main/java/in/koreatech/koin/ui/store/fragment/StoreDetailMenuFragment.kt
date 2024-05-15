@@ -27,7 +27,7 @@ class StoreDetailMenuFragment : Fragment() {
     private val storeSetMenuAdapter = StoreDetailMenuRecyclerAdapter()
     private val storeSideMenuAdapter = StoreDetailMenuRecyclerAdapter()
 
-    private var selectedCategory: String = "추천 메뉴"
+    private var selectedCategory: String? = null
 
     private val storeDetailActivityContract =
         registerForActivityResult(StoreDetailActivityContract()) {
@@ -177,7 +177,7 @@ class StoreDetailMenuFragment : Fragment() {
             }
         }
     }
-    private fun setSelectedCategoryButtonStyle(name: String) {
+    private fun setSelectedCategoryButtonStyle(name: String?) {
         when(name) {
             "추천 메뉴" -> {
                 binding.storeDetailRecommendMenuButton.strokeWidth = 0
@@ -201,8 +201,9 @@ class StoreDetailMenuFragment : Fragment() {
             }
         }
     }
-    private fun setUnselectedCategoryButtonStyle(name: String) {
+    private fun setUnselectedCategoryButtonStyle(name: String?) {
         when(name) {
+            null -> return
             "추천 메뉴" -> {
                 binding.storeDetailRecommendMenuButton.strokeWidth = 1
                 binding.storeDetailRecommendMenuTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.gray10))
