@@ -10,6 +10,11 @@
     <string name="positive">확인</string>
     <string name="negative">아니오</string>
     <string name="neutral">취소</string>
+    <string name="next">다음</string>
+    <string name="page_one">1 / 4</string>
+    <string name="page_two">2 / 4</string>
+    <string name="page_three">3 / 4</string>
+    <string name="page_four">4 / 4</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -77,4 +82,13 @@
     <string name="navigation_drawer_right_hello_message">님, 안녕하세요!</string>
     <string name="navigation_drawer_right_myinfo">내 정보</string>
     <string name="hamburger">햄버거</string>
+
+    <!-- 가게 등록 -->
+    <string name="insert_store">가게 등록</string>
+    <string name="insert_store_info">가게 정보 기입</string>
+    <string name="insert_store_guide">가게의 다양한 정보를 입력 및 수정하여\n학생들에게 최신 가게 정보를 알려주세요.</string>
+    <string name="insert_store_start">가게 정보 기입하기</string>
+    <string name="insert_store_main_info">등록 하시려는 업체의\n메인 정보를 입력해 주세요.</string>
+    <string name="insert_store_category_setting">1. 가게 카테고리 설정</string>
+    <string name="insert_store_choose_category">카테고리를 골라주세요.</string>
 </resources>
