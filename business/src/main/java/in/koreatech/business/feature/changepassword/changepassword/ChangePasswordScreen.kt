@@ -53,7 +53,7 @@ fun ChangePasswordScreenImpl(
         password = state.password,
         passwordChecked = state.passwordChecked,
         notCoincidePassword = state.notCoincidePW,
-        fillAllPasswords = state.fillAllPasswords,
+        passwordsFieldIsValidate = state.PasswordsFieldIsValidate,
         passwordIsEmpty = state.passwordIsBlank(),
         passwordCheckedIsEmpty = state.passwordCheckedIsBlank(),
         onPasswordChange = {
@@ -76,7 +76,7 @@ fun ChangePasswordScreen(
     password: String,
     passwordChecked: String,
     notCoincidePassword: Boolean,
-    fillAllPasswords :Boolean,
+    passwordsFieldIsValidate :Boolean,
     passwordIsEmpty: Boolean,
     passwordCheckedIsEmpty: Boolean,
     onPasswordChange: (String) -> Unit,
@@ -201,7 +201,7 @@ fun ChangePasswordScreen(
         Button(
             onClick = onChangePasswordClick,
             shape = RectangleShape,
-            colors = if(fillAllPasswords) ButtonDefaults.buttonColors(ColorPrimary)
+            colors = if(passwordsFieldIsValidate) ButtonDefaults.buttonColors(ColorPrimary)
             else ButtonDefaults.buttonColors(Gray5),
             modifier = modifier
                 .padding(horizontal = 32.dp)
@@ -266,7 +266,7 @@ fun PreviewChangePassswordScreen() {
         password = "",
         passwordChecked = "",
         notCoincidePassword = true,
-        fillAllPasswords = true,
+        passwordsFieldIsValidate = true,
         passwordIsEmpty = true,
         passwordCheckedIsEmpty = true,
         onPasswordChange = {},

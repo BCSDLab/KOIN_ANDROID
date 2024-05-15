@@ -33,13 +33,13 @@ class ChangePasswordViewModel @Inject constructor(
         }
     }
 
-    private fun fillAllPasswords() = intent {
+    private fun passwordsFieldIsValidate() = intent {
         reduce{
-            state.copy(fillAllPasswords = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
+            state.copy(PasswordsFieldIsValidate = (state.password.isNotBlank() && state.passwordChecked.isNotBlank()))
         }
     }
 
-    private fun coincidePasswordReset() = intent {
+    private fun notCoincidePWisValidate() = intent {
         reduce{
             state.copy(notCoincidePW = false)
         }
@@ -47,14 +47,14 @@ class ChangePasswordViewModel @Inject constructor(
 
     fun insertPassword(password: String) = intent{
         reduce { state.copy(password = password) }
-        coincidePasswordReset()
-        fillAllPasswords()
+        notCoincidePWisValidate()
+        passwordsFieldIsValidate()
     }
 
     fun insertPasswordChecked(passwordChecked: String) = intent{
         reduce { state.copy(passwordChecked = passwordChecked) }
-        coincidePasswordReset()
-        fillAllPasswords()
+        notCoincidePWisValidate()
+        passwordsFieldIsValidate()
     }
 
     fun changePassword(

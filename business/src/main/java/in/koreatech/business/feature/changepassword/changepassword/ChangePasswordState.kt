@@ -9,7 +9,7 @@ data class ChangePasswordState(
     val passwordChecked: String = "",
     val email: String = "",
     val notCoincidePW: Boolean = false,
-    val fillAllPasswords: Boolean = false
+    val PasswordsFieldIsValidate: Boolean = false
 ): Parcelable
 
 fun ChangePasswordState.passwordIsBlank() = password.isBlank()
