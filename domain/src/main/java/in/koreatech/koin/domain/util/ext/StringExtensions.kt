@@ -14,10 +14,6 @@ val String.isValidStudentId: Boolean get() {
     return year in 1992..Calendar.getInstance().get(Calendar.YEAR)
 }
 
-val String.isValidPassword: Boolean
-    get() = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=])(?=\\S+\$).{8,}\$".toRegex().matches(this)
-
-
 fun String.toUnderlineForHtml() = "<u>$this</u>"
 fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)}'>$this</font>" //color = #ff000000 형태
 
