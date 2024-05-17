@@ -3,9 +3,8 @@ package `in`.koreatech.business.feature.signup.accountsetup
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.business.BusinessSignupCheckUseCase
-import `in`.koreatech.koin.domain.usecase.business.SendSignupEmailUseCase
+import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSetupViewModel @Inject constructor(
-    private val sendSignupEmailUseCase: SendSignupEmailUseCase,
+    private val sendSignupSmsCodeUseCase: SendSignupSmsCodeUseCase,
     private val businessSignupCheckUseCase: BusinessSignupCheckUseCase,
 ) : ViewModel(), ContainerHost<AccountSetupState, AccountSetupSideEffect> {
     override val container =
@@ -80,7 +79,7 @@ class AccountSetupViewModel @Inject constructor(
 
     fun sendSmsVerificationCode(phoneNumber: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            sendSignupEmailUseCase(phoneNumber).onSuccess {
+            sendSignupSmsCodeUseCase(phoneNumber).onSuccess {
                 intent {
                     reduce { state.copy(signupContinuationState = it) }
                     reduce { state.copy(signUpContinuationError = null) }
