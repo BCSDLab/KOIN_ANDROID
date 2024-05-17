@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.signup.accountsetup
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,17 +34,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.signup.accountauth.EmailAuthViewModel
-import `in`.koreatech.business.feature.textfield.AuthTextField
 import `in`.koreatech.business.feature.textfield.LinedTextField
-import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
-import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -52,18 +49,18 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun AccountSetupScreen(
     modifier: Modifier = Modifier,
     viewModel: AccountSetupViewModel = hiltViewModel(),
-    authViewModel: EmailAuthViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
-    onNextClicked: (String) -> Unit = {},
+    onNextClicked: () -> Unit = {},
 ) {
 
     val state = viewModel.collectAsState().value
-    val authState = authViewModel.collectAsState().value
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
         ) {
             IconButton(
                 onClick = { viewModel.onBackButtonClicked() },
@@ -101,7 +98,11 @@ fun AccountSetupScreen(
                     fontWeight = Bold,
                     text = stringResource(id = R.string.input_basic_information),
                 )
-                Text(text = stringResource(id = R.string.two_third), color = ColorPrimary,   fontWeight = Bold,)
+                Text(
+                    text = stringResource(id = R.string.two_third),
+                    color = ColorPrimary,
+                    fontWeight = Bold,
+                )
             }
 
             Canvas(
@@ -129,15 +130,17 @@ fun AccountSetupScreen(
 
             Text(text = stringResource(id = R.string.id), fontSize = 14.sp, fontWeight = Bold)
             Row(
-                modifier=Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
 
                 LinedTextField(
                     value = state.id,
                     onValueChange = { viewModel.onIdChanged(it) },
-                    modifier = Modifier.width(203.dp),
+                    modifier = Modifier
+                        .width(203.dp),
                     label = stringResource(id = R.string.enter_id),
                     errorText = stringResource(id = R.string.id_not_validate),
                     textStyle = TextStyle.Default.copy(fontSize = 15.sp),
@@ -145,7 +148,7 @@ fun AccountSetupScreen(
 
                 Button(modifier = Modifier
                     .width(115.dp)
-                    .height(44.dp),
+                    .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
                     enabled = state.id.isNotEmpty(),
                     colors = ButtonDefaults.buttonColors(
@@ -155,7 +158,7 @@ fun AccountSetupScreen(
                         disabledContentColor = Gray1,
                     ),
                     onClick = {
-                       /* 아이디 중복 확인 */
+                        /* 아이디 중복 확인 */
                     }) {
                     Text(
                         text = stringResource(id = R.string.check_duplicate),
@@ -164,7 +167,7 @@ fun AccountSetupScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(text = stringResource(id = R.string.password), fontSize = 14.sp, fontWeight = Bold)
             LinedTextField(
@@ -173,12 +176,17 @@ fun AccountSetupScreen(
                 modifier = Modifier.fillMaxWidth(),
                 label = stringResource(id = R.string.enter_password),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
+                errorText = stringResource(id = R.string.password_not_validate),
                 isPassword = true,
-                isError = state.password.isValidPassword,
+                isError = !state.password.isValidPassword() && state.password.isNotEmpty(),
             )
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(text = stringResource(id = R.string.password_confirm), fontSize = 14.sp, fontWeight = Bold)
+            Text(
+                text = stringResource(id = R.string.password_confirm),
+                fontSize = 14.sp,
+                fontWeight = Bold
+            )
             LinedTextField(
                 value = state.passwordConfirm,
                 onValueChange = { viewModel.onPasswordConfirmChanged(it) },
@@ -187,12 +195,16 @@ fun AccountSetupScreen(
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 isPassword = true,
                 errorText = stringResource(id = R.string.password_mismatch),
-                isError = state.password !=state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
+                isError = state.password != state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(text = stringResource(id = R.string.phone_number), fontSize = 14.sp, fontWeight = Bold)
+            Text(
+                text = stringResource(id = R.string.phone_number),
+                fontSize = 14.sp,
+                fontWeight = Bold
+            )
 
             LinedTextField(
                 value = state.phoneNumber,
@@ -201,31 +213,37 @@ fun AccountSetupScreen(
                 label = stringResource(id = R.string.enter_phone_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 errorText = stringResource(id = R.string.phone_number_not_validate),
-                isError = state.phoneNumber.length!=11 && state.phoneNumber.isNotEmpty(),
+                isError = state.phoneNumber.length != 11 && state.phoneNumber.isNotEmpty(),
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(text = stringResource(id = R.string.authentication_code), fontSize = 14.sp, fontWeight = Bold)
+            Text(
+                text = stringResource(id = R.string.authentication_code),
+                fontSize = 14.sp,
+                fontWeight = Bold
+            )
 
             Row(
-                modifier=Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 LinedTextField(
-                    value = authState.authCode,
-                    onValueChange = { authViewModel.onAuthCodeChanged(it) },
-                    modifier = Modifier.width(203.dp),
+                    modifier = Modifier
+                        .width(203.dp),
+                    value = state.authCode,
+                    onValueChange = { viewModel.onAuthCodeChanged(it) },
                     label = stringResource(id = R.string.enter_verification_code),
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-                    isPassword = true,
+                    errorText = stringResource(id = R.string.sms_code_not_validate),
                     isError = state.signUpContinuationError != null,
-                    )
+                )
 
                 Button(modifier = Modifier
                     .width(115.dp)
-                    .height(44.dp),
+                    .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
                     enabled = state.phoneNumber.isNotEmpty(),
                     colors = ButtonDefaults.buttonColors(
@@ -235,15 +253,14 @@ fun AccountSetupScreen(
                         disabledContentColor = Gray1,
                     ),
                     onClick = {
-                        viewModel.postPhoneVerification(
-                            state.phoneNumber, state.password, state.passwordConfirm
+                        viewModel.sendSmsVerificationCode(
+                            state.phoneNumber
                         )
                     }) {
                     Text(
                         text = stringResource(id = R.string.send_authentication_code),
-                        fontWeight= Bold,
+                        fontWeight = Bold,
                         fontSize = 13.sp,
-
                     )
                 }
             }
@@ -261,7 +278,12 @@ fun AccountSetupScreen(
                     disabledContentColor = Gray1,
                 ),
                 onClick = {
-                    viewModel.onNextButtonClicked()
+                    viewModel.verifySmsCode(
+                        state.password,
+                        state.passwordConfirm,
+                        state.phoneNumber,
+                        state.authCode,
+                    )
                 }) {
                 Text(
                     text = stringResource(id = R.string.next),
@@ -274,7 +296,7 @@ fun AccountSetupScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked(state.phoneNumber)
+            is AccountSetupSideEffect.NavigateToNextScreen -> onNextClicked()
             AccountSetupSideEffect.NavigateToBackScreen -> onBackClicked()
         }
     }
@@ -288,5 +310,5 @@ fun AccountSetupScreenPreview() {
             onNextClicked = {},
             onBackClicked = {}
         )
- }
+    }
 }
