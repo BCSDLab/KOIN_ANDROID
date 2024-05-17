@@ -286,7 +286,7 @@ fun StoreList(
         Button(modifier = Modifier
             .fillMaxWidth()
             .height(44.dp),
-            shape = RectangleShape,
+            shape = RoundedCornerShape(4.dp),
             enabled = state.itemIndex > -1,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = ColorPrimary,
