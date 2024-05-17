@@ -159,7 +159,7 @@ fun CheckTermScreen(
                         .width(24.dp)
                         .clickable {
                             viewModel.onAllTermCheckedChanged(!state.isAllTermChecked)
-                            if (state.isAllTermChecked) {
+                            if (!state.isAllTermChecked) {
                                 viewModel.onPrivacyTermCheckedChanged(true)
                                 viewModel.onKoinTermCheckedChanged(true)
                             } else {
