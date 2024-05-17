@@ -61,6 +61,8 @@ object URLConstant {
         const val REGISTER: String = "$OWNERS/register"
         const val CODE = "$OWNERS/$VERIFICATION/code"
         const val EMAIL = "$OWNERS/$VERIFICATION/email"
+        const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
+        const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
     }
 

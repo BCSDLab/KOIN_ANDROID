@@ -4,6 +4,8 @@ import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
+import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
+import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 
@@ -18,5 +20,12 @@ class OwnerRemoteDataSource(private val ownerApi: OwnerApi) {
 
     suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerRegister(ownerRegisterRequest)
+    }
+
+    suspend fun postVerificationSms(ownerVerificationEmail: VerificationSmsRequest){
+        return ownerApi.postVerificationSms(ownerVerificationEmail)
+    }
+    suspend fun postVerificationCodeSms(ownerVerificationCode: VerificationCodeSmsRequest): OwnerVerificationCodeResponse {
+        return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 }
