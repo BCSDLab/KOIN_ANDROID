@@ -20,6 +20,7 @@
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="title_activity_splash">SplashActivity</string>
 
+    <string name="check_terms">1. 약관 동의</string>
     <string name="input_basic_information">2.기본 정보 입력</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
@@ -87,5 +88,11 @@
     <string name="error_phone_duplicated">중복된 휴대폰 번호입니다.</string>
     <string name="password_not_validate">특수문자 포함 영어와 숫자 6~18 자리로 입력해주세요.</string>
     <string name="attach_file">파일 첨부</string>
+    <string name="check_all">모두 동의 합니다.</string>
+    <string name="term_1">제1조 (목적) 코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다. \n제2조 (약관의 효력 및 변경) ① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다. ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="term_2">제1조 (목적) 코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다. \n제2조 (약관의 효력 및 변경) ① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다. ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="koin_essential_term">코인 이용약관 (필수)</string>
+    <string name="private_info_term">개인정보 이용약관 (필수)</string>
+    <string name="check">확인</string>
 
 </resources>

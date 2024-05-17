@@ -15,6 +15,7 @@ val ColorAccent = Color(0xFFF7941E)
 
 val ColorSecondaryText = Color(0xFFa1a1a1)
 val Black1 = Color(0xFF222222)
+val Gray6= Color(0xFF8E8E8E)
 val Gray5 = Color(0xFFC4C4C4)
 val Gray1 = Color(0xFF4B4B4B)
 val Gray2= Color(0xFFEEEEEE)
