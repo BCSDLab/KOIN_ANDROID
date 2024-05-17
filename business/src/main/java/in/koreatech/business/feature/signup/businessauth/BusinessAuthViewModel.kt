@@ -2,9 +2,9 @@ package `in`.koreatech.business.feature.signup.businessauth
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
@@ -25,7 +25,7 @@ class BusinessAuthViewModel @Inject constructor(
     private val getPresignedUrlUseCase: AttachStoreFileUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val ownerRegisterUseCase: OwnerRegisterUseCase
-) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, BaseViewModel() {
+) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
     override val container =
         container<BusinessAuthState, BusinessAuthSideEffect>(BusinessAuthState())
 
