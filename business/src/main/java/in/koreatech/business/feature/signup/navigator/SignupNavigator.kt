@@ -5,55 +5,49 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import `in`.koreatech.business.feature.signup.accountauth.EmailAuthScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupScreen
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthScreen
 import `in`.koreatech.business.feature.signup.businessauth.BusinessAuthViewModel
 import `in`.koreatech.business.feature.signup.businessauth.SearchStoreScreen
+import `in`.koreatech.business.feature.signup.checkterm.CheckTermScreen
 import `in`.koreatech.business.feature.signup.completesignup.CompleteSignupScreen
 
 
 @Composable
 fun SignupNavigator(
     modifier: Modifier,
-    accountSetupViewModel: AccountSetupViewModel= hiltViewModel(),
-    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),) {
+    accountSetupViewModel: AccountSetupViewModel = hiltViewModel(),
+    businessAuthViewModel: BusinessAuthViewModel = hiltViewModel(),
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = SignupRoute.BASIC_INFO_INPUT.name,
-        modifier = Modifier.padding(16.dp)
+        startDestination = SignupRoute.TERMS_OF_SERVICE.name,
+        modifier = modifier.padding(16.dp)
     ) {
+
+        composable(
+            route = SignupRoute.TERMS_OF_SERVICE.name,
+        ) {
+            CheckTermScreen(
+                onBackClicked = { navController.popBackStack() },
+                onNextClicked = { navController.navigate(SignupRoute.BASIC_INFO_INPUT.name) }
+            )
+        }
 
         composable(
             route = SignupRoute.BASIC_INFO_INPUT.name,
         ) {
             AccountSetupScreen(
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { email->
-                    navController.navigate("${SignupRoute.EMAIL_AUTH.name}/$email")
-
-                },
-                viewModel = accountSetupViewModel
-            )
-        }
-
-        composable(
-            route = "${SignupRoute.EMAIL_AUTH.name}/{email}",
-        ) {
-            val email = it.arguments?.getString("email") ?: ""
-            EmailAuthScreen(
-                email = email,
-                onBackClicked = { navController.popBackStack() },
                 onNextClicked = {
                     navController.navigate(SignupRoute.BUSINESS_AUTH.name)
                 },
+                viewModel = accountSetupViewModel
             )
         }
 
@@ -61,10 +55,10 @@ fun SignupNavigator(
             route = SignupRoute.BUSINESS_AUTH.name,
         ) {
             BusinessAuthScreen(
-                accountSetupViewModel= accountSetupViewModel,
+                accountSetupViewModel = accountSetupViewModel,
                 businessAuthViewModel = businessAuthViewModel,
                 onBackClicked = { navController.popBackStack() },
-                onSearchClicked ={
+                onSearchClicked = {
                     navController.navigate(SignupRoute.STORE_SETUP.name)
                 },
             ) {
@@ -77,10 +71,11 @@ fun SignupNavigator(
         ) {
             SearchStoreScreen(
                 businessAuthViewModel = businessAuthViewModel,
-                onBackClicked = {
-                    navController.popBackStack() },)
+                onBackButtonClicked = {
+                    navController.popBackStack()
+                },
+            )
         }
-
 
         composable(
             route = SignupRoute.SIGNUP_COMPLETED.name,
@@ -89,7 +84,5 @@ fun SignupNavigator(
                 onBackClicked = { navController.navigate(SignupRoute.LOGIN.name) }
             )
         }
-
-
     }
 }
