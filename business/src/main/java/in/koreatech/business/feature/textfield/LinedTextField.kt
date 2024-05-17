@@ -72,9 +72,11 @@ fun LinedTextField(
                         .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Row(
+                    Box(
                         modifier = Modifier.padding(start = 12.dp),
                     ) {
+                        if(value.isEmpty())
+                            Text(text = label, fontSize = 14.sp, color = ColorHelper, )
                         innerTextField()
                     }
 
