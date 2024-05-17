@@ -48,7 +48,7 @@
     <string name="file_upload">파일 첨부</string>
     <string name="file_upload_prompt">파일을 첨부해주세요</string>
     <string name="file_upload_instruction">사업자 등록증, 영업신고증, 통장사본을 첨부하세요.</string>
-    <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
+    <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
     <string name="select_file">파일 선택하기</string>
     <string name="cancel">취소</string>
     <string name="business_registration_number">사업자 등록번호</string>
@@ -61,7 +61,7 @@
     <string name="phone_number">휴대폰 번호</string>
     <string name="select">선택</string>
     <string name="signup_request_complete">회원가입 완료</string>
-    <string name="signup_request_complete_description">가입 신청이 완료되었습니다.\\n가입 허가가 승인되면 로그인이 가능합니다.</string>
+    <string name="signup_request_complete_description">회원가입이 완료되었습니다!\n가입 승인 시 로그인이 가능합니다.</string>
     <string name="navigate_to_login_screen">로그인 화면 바로가기</string>
     <string name="back_icon">BackArrow</string>
     <string name="check_icon">check</string>
@@ -83,5 +83,9 @@
     <string name="enter_business_registration_number">사업자 등록번호를 입력해주세요.</string>
     <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
     <string name="instruction_file">사업자 인증 파일</string>
+    <string name="sms_code_not_validate">인증번호가 일치하지 않습니다.</string>
+    <string name="error_phone_duplicated">중복된 휴대폰 번호입니다.</string>
+    <string name="password_not_validate">특수문자 포함 영어와 숫자 6~18 자리로 입력해주세요.</string>
+    <string name="attach_file">파일 첨부</string>
 
 </resources>
