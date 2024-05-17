@@ -1,5 +1,6 @@
 package `in`.koreatech.convention
 
+import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.plugins.ExtensionAware
@@ -11,10 +12,11 @@ internal fun configureAndroidProject(
 ) {
     commonExtension.apply {
         compileSdk = 34
-
+        (this as? ApplicationExtension)?.let {
+            it.defaultConfig.targetSdk = 34
+        }
         defaultConfig {
             minSdk = 23
-
             testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
             vectorDrawables.useSupportLibrary = true
         }
