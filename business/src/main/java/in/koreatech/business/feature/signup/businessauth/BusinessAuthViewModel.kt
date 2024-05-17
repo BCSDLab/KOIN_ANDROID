@@ -11,6 +11,8 @@ import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
+import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
+import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -159,7 +161,7 @@ class BusinessAuthViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             ownerRegisterUseCase(
-                fileUrls.strToOwnerRegisterUrl(), companyNumber, email, name, password, phoneNumber, shopId, shopName
+                fileUrls.strToOwnerRegisterUrl(), companyNumber.formatBusinessNumber(), email, name, password, phoneNumber.formatPhoneNumber(), shopId, shopName
             ).onSuccess {
                 onNavigateToNextScreen()
                 intent {
