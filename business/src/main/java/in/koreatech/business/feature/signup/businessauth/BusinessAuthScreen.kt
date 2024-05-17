@@ -76,13 +76,12 @@ fun BusinessAuthScreen(
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
 
-    var fileName = ""
-    var fileSize = 0L
-
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(),
         onResult = { uriList ->
+            var fileName = ""
+            var fileSize = 0L
             businessAuthState.bitmap.clear()
             businessAuthState.fileInfo.clear()
             uriList.forEach {
@@ -222,7 +221,8 @@ fun BusinessAuthScreen(
                 LinedTextField(
                     modifier = Modifier.width(197.dp),
                     value = businessAuthState.shopName,
-                    onValueChange = { businessAuthViewModel.onShopNameChanged(it) },
+                    onValueChange = { businessAuthViewModel.onShopNameChanged(it)
+                        businessAuthViewModel.onShopIdChanged(null)},
                     label = stringResource(id = R.string.enter_store_name)
                 )
 
