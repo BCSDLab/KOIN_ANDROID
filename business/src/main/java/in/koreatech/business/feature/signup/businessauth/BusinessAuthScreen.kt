@@ -196,194 +196,200 @@ fun BusinessAuthScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(id = R.string.master_name),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            LinedTextField(
-                value = businessAuthState.name,
-                onValueChange = { businessAuthViewModel.onNameChanged(it) },
-                label = stringResource(id = R.string.enter_name)
-            )
+            Column {
 
-            Text(
-                text = stringResource(id = R.string.shop_name),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top,
-            ) {
 
+                Text(
+                    text = stringResource(id = R.string.master_name),
+                    fontSize = 14.sp,
+                    fontWeight = Bold
+                )
                 LinedTextField(
-                    modifier = Modifier.width(197.dp),
-                    value = businessAuthState.shopName,
-                    onValueChange = { businessAuthViewModel.onShopNameChanged(it)
-                        businessAuthViewModel.onShopIdChanged(null)},
-                    label = stringResource(id = R.string.enter_store_name)
+                    value = businessAuthState.name,
+                    onValueChange = { businessAuthViewModel.onNameChanged(it) },
+                    label = stringResource(id = R.string.enter_name)
                 )
 
+                Text(
+                    text = stringResource(id = R.string.shop_name),
+                    fontSize = 14.sp,
+                    fontWeight = Bold
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top,
+                ) {
+
+                    LinedTextField(
+                        modifier = Modifier.width(197.dp),
+                        value = businessAuthState.shopName,
+                        onValueChange = {
+                            businessAuthViewModel.onShopNameChanged(it)
+                            businessAuthViewModel.onShopIdChanged(null)
+                        },
+                        label = stringResource(id = R.string.enter_store_name)
+                    )
+
+                    Button(modifier = Modifier
+                        .height(41.dp),
+                        shape = RoundedCornerShape(4.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = ColorPrimary,
+                            contentColor = Color.White,
+                        ),
+                        onClick = {
+                            businessAuthViewModel.onNavigateToSearchStore()
+                        }) {
+                        Text(text = stringResource(id = R.string.search_store))
+                    }
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(id = R.string.business_registration_number),
+                    fontSize = 14.sp,
+                    fontWeight = Bold
+                )
+                LinedTextField(
+                    value = businessAuthState.shopNumber,
+                    onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
+                    label = stringResource(id = R.string.enter_business_registration_number),
+                    isError = businessAuthState.shopNumber.length != 10 && businessAuthState.shopNumber.isNotEmpty(),
+                    errorText = stringResource(id = R.string.business_number_not_validate)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = stringResource(id = R.string.personal_contact),
+                    fontSize = 14.sp,
+                    fontWeight = Bold
+                )
+                LinedTextField(
+                    value = businessAuthState.phoneNumber,
+                    onValueChange = { businessAuthViewModel.onPhoneNumberChanged(it) },
+                    label = stringResource(id = R.string.enter_personal_contact),
+                    isError = businessAuthState.phoneNumber.length != 11 && businessAuthState.phoneNumber.isNotEmpty(),
+                    errorText = stringResource(id = R.string.phone_number_not_validate)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = stringResource(id = R.string.instruction_file),
+                    fontSize = 14.sp,
+                    fontWeight = Bold
+                )
+                Text(
+                    text = stringResource(id = R.string.file_upload_instruction),
+                    fontSize = 12.sp,
+                    color = ColorDescription
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+
+                    if (businessAuthState.selectedImages.isNotEmpty()) {
+                        UploadFileList(
+                            modifier,
+                            businessAuthState.selectedImages,
+                        ) {
+                            val list = mutableListOf<String>()
+                            businessAuthState.selectedImages.forEach {
+                                list.add(it.title)
+                            }
+                            list.removeAt(it)
+                            businessAuthViewModel.onImageUrlsChanged(
+                                list.map {
+                                    AttachStore(
+                                        it,
+                                        it
+                                    )
+                                }.toMutableList()
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(44.dp),
+                        shape = RectangleShape,
+                        enabled = businessAuthState.selectedImages.isEmpty(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = ColorTextField,
+                            contentColor = Gray1,
+                            disabledBackgroundColor = ColorTextField,
+                            disabledContentColor = Gray3,
+                        ),
+                        onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.attach_file_add),
+                            contentDescription = stringResource(id = R.string.attach_file)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.file_upload),
+                            fontSize = 13.sp,
+                            fontWeight = Bold,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(60.dp))
                 Button(modifier = Modifier
-                    .height(41.dp),
+                    .fillMaxWidth()
+                    .height(44.dp),
                     shape = RoundedCornerShape(4.dp),
+                    enabled = businessAuthState.isButtonEnabled,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
+                        disabledBackgroundColor = ColorDisabledButton,
                         contentColor = Color.White,
+                        disabledContentColor = Color.White,
                     ),
+
                     onClick = {
-                        businessAuthViewModel.onNavigateToSearchStore()
-                    }) {
-                    Text(text = stringResource(id = R.string.search_store))
-                }
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = stringResource(id = R.string.business_registration_number),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            LinedTextField(
-                value = businessAuthState.shopNumber,
-                onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
-                label = stringResource(id = R.string.enter_business_registration_number),
-                isError = businessAuthState.shopNumber.length !=10,
-                errorText = stringResource(id = R.string.business_number_not_validate)
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = stringResource(id = R.string.personal_contact),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            LinedTextField(
-                value = businessAuthState.phoneNumber,
-                onValueChange = { businessAuthViewModel.onPhoneNumberChanged(it) },
-                label = stringResource(id = R.string.enter_personal_contact),
-                isError = businessAuthState.phoneNumber.length != 11,
-                errorText = stringResource(id = R.string.phone_number_not_validate)
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = stringResource(id = R.string.instruction_file),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-            Text(
-                text = stringResource(id = R.string.file_upload_instruction),
-                fontSize = 12.sp,
-                color = ColorDescription
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
-
-                if (businessAuthState.selectedImages.isNotEmpty()) {
-                    UploadFileList(
-                        modifier,
-                        businessAuthState.selectedImages,
-                    ) {
-                        val list = mutableListOf<String>()
-                        businessAuthState.selectedImages.forEach {
-                            list.add(it.title)
-                        }
-                        list.removeAt(it)
-                        businessAuthViewModel.onImageUrlsChanged(
-                            list.map {
-                                AttachStore(
-                                    it,
-                                    it
-                                )
-                            }.toMutableList()
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(10.dp))
-                }
-
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
-                    shape = RectangleShape,
-                    enabled = businessAuthState.selectedImages.isEmpty(),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorTextField,
-                        contentColor = Gray1,
-                        disabledBackgroundColor = ColorTextField,
-                        disabledContentColor = Gray3,
-                    ),
-                    onClick = { businessAuthViewModel.onDialogVisibilityChanged(true) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.attach_file_add),
-                        contentDescription = stringResource(id = R.string.attach_file)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.file_upload),
-                        fontSize = 13.sp,
-                        fontWeight = Bold,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(60.dp))
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp),
-                shape = RoundedCornerShape(4.dp),
-                enabled = businessAuthState.isButtonEnabled,
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorPrimary,
-                    disabledBackgroundColor = ColorDisabledButton,
-                    contentColor = Color.White,
-                    disabledContentColor = Color.White,
-                ),
-
-                onClick = {
-                    businessAuthState.fileInfo.forEach {
-                        businessAuthViewModel.uploadImage(
-                            it.preSignedUrl,
-                            businessAuthState.bitmap[businessAuthState.fileInfo.indexOf(it)].toString(),
-                            it.mediaType,
-                            it.fileSize,
-                        )
-                    }
-                    businessAuthViewModel.sendRegisterRequest(
-                        businessAuthState.fileInfo.map { it.resultUrl },
-                        businessAuthState.shopNumber,
-                        accountSetupState.phoneNumber,
-                        businessAuthState.name,
-                        accountSetupState.password,
-                        businessAuthState.phoneNumber,
-                        businessAuthState.shopId,
-                        businessAuthState.shopName,
-                    )
-
-                }) {
-                Text(
-                    text = stringResource(id = R.string.next),
-                    fontSize = 15.sp,
-                    color = Color.White,
-                )
-
-                BusinessAlertDialog(
-                    onDismissRequest = { businessAuthViewModel.onDialogVisibilityChanged(false) },
-                    onConfirmation = {
-                        multiplePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                        businessAuthState.fileInfo.forEach {
+                            businessAuthViewModel.uploadImage(
+                                it.preSignedUrl,
+                                businessAuthState.bitmap[businessAuthState.fileInfo.indexOf(it)].toString(),
+                                it.mediaType,
+                                it.fileSize,
                             )
+                        }
+                        businessAuthViewModel.sendRegisterRequest(
+                            businessAuthState.fileInfo.map { it.resultUrl },
+                            businessAuthState.shopNumber,
+                            accountSetupState.phoneNumber,
+                            businessAuthState.name,
+                            accountSetupState.password,
+                            businessAuthState.phoneNumber,
+                            businessAuthState.shopId,
+                            businessAuthState.shopName,
                         )
-                        businessAuthViewModel.onDialogVisibilityChanged(false)
-                    },
-                    dialogTitle = stringResource(id = R.string.file_upload),
-                    dialogText = stringResource(id = R.string.file_upload_requirements),
-                    positiveButtonText = stringResource(id = R.string.select_file),
-                    visibility = businessAuthState.dialogVisibility
-                )
+
+                    }) {
+                    Text(
+                        text = stringResource(id = R.string.next),
+                        fontSize = 15.sp,
+                        color = Color.White,
+                    )
+
+                    BusinessAlertDialog(
+                        onDismissRequest = { businessAuthViewModel.onDialogVisibilityChanged(false) },
+                        onConfirmation = {
+                            multiplePhotoPickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+                            businessAuthViewModel.onDialogVisibilityChanged(false)
+                        },
+                        dialogTitle = stringResource(id = R.string.file_upload),
+                        dialogText = stringResource(id = R.string.file_upload_requirements),
+                        positiveButtonText = stringResource(id = R.string.select_file),
+                        visibility = businessAuthState.dialogVisibility
+                    )
+                }
             }
         }
         businessAuthViewModel.collectSideEffect {
