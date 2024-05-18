@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.textfield.SearchTextField
 import `in`.koreatech.business.ui.theme.ColorDescription
 import `in`.koreatech.business.ui.theme.ColorHelper
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -136,36 +137,15 @@ fun SearchStoreScreen(
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
-            TextField(
+            SearchTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(45.dp),
-                shape = RoundedCornerShape(6.dp),
-                value = state.search, onValueChange = { viewModel.onSearchChanged(it)
-                                                      viewModel.onSearchStore()},
+                value = state.search,
+                onValueChange = { viewModel.onSearchChanged(it)
+                                  viewModel.onSearchStore()},
+                label = stringResource(id = R.string.search_shop),
                 textStyle = TextStyle(fontSize = 14.sp),
-
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = ColorTextField,
-                    unfocusedIndicatorColor = ColorTextField,
-                    focusedLabelColor = ColorTextField,
-                ),
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.search_shop),
-                        color = ColorDescription,
-                        fontSize = 13.sp
-                    )
-                },
-                trailingIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            modifier = Modifier.size(17.dp),
-                            painter = painterResource(id = R.drawable.search),
-                            contentDescription = stringResource(id = R.string.search_icon)
-                        )
-                    }
-                }
             )
             Spacer(modifier = Modifier.height(5.dp))
             StoreList(state.stores, viewModel, businessAuthViewModel)
