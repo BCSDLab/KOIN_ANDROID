@@ -23,6 +23,7 @@ class SearchStoreViewModel @Inject constructor(
     init {
         searchStore()
     }
+
     fun onItemIndexChange(index: Int) = intent {
         reduce {
             state.copy(itemIndex = index)
@@ -37,7 +38,7 @@ class SearchStoreViewModel @Inject constructor(
 
 
     fun searchStore() = intent {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val newSearchJob = launch {
                 searchStoresUseCase(state.search).let { stores ->
                     reduce {
@@ -51,7 +52,7 @@ class SearchStoreViewModel @Inject constructor(
         }
     }
 
-    fun onSearchStore()= intent {
+    fun onSearchStore() = intent {
         postSideEffect(SearchStoreSideEffect.SearchStore(state.search))
     }
 
