@@ -2,20 +2,28 @@ package `in`.koreatech.koin.ui.store.activity
 
 import android.Manifest
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
-import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.fragment.StoreFlyerDialogFragment
@@ -31,37 +39,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-    private var isMenuExpanded: Boolean
-        get() {
-            return when {
-                viewModel.storeMenu.value == null -> true
-                viewModel.storeMenu.value!!.size <= MAX_MENUS_FOLDED -> true
-                else -> viewModel.storeMenu.value!!.size == storeMenuAdapter.itemCount
-            }
-        }
-        set(value) {
-            viewModel.storeMenu.value?.let {
-                storeMenuAdapter.submitList(
-                    if (!value) it.take(MAX_MENUS_FOLDED) else it
-                )
-            }
-
-            binding.menuSpreadTextView.text = getString(
-                if (value) {
-                    R.string.hide_menu
-                } else {
-                    R.string.show_more_menu
-                }
-            )
-
-            binding.arrowImageView.rotation = if (value) 0F else 180F
-        }
-
-    private val storeDetailActivityContract =
-        registerForActivityResult(StoreDetailActivityContract()) {
-
-        }
-
+    
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -84,50 +62,68 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment = StoreFlyerDialogFragment()
             flyerDialogFragment?.initialPosition = position
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_PICTURE,
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
     }
-
-    private val storeRecyclerAdapter = StoreRecyclerAdapter().apply {
-        setOnItemClickListener {
-            storeDetailActivityContract.launch(it.uid)
-            finish()
-        }
-    }
+    private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        binding.storeDetailFlyerRecyclerview.apply {
-            layoutManager = LinearLayoutManager(
-                this@StoreDetailActivity,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            setHasFixedSize(true)
-            adapter = storeDetailFlyerRecyclerAdapter
+        binding.koinBaseAppbar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_BACK_BUTTON,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                    onBackPressed()
+                }
+                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+            }
         }
-
-        binding.storeDetailRecyclerview.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeMenuAdapter
-        }
-
-        binding.storeRandomRecyclerView.apply {
-            layoutManager = LinearLayoutManager(this@StoreDetailActivity)
-            adapter = storeRecyclerAdapter
-        }
-
+        binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_CALL,
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
 
-        binding.menuSpreadTextView.setOnClickListener {
-            isMenuExpanded = !isMenuExpanded
-        }
+        TabLayoutMediator(
+            binding.storeDetailTabLayout,
+            binding.storeDetailViewPager
+        ) { tab, position ->
+            tab.text = when (position) {
+                0 -> getString(R.string.menu)
+                1 -> getString(R.string.event_notification)
+                else -> throw IllegalArgumentException("Invalid position")
+            }
+        }.attach()
+
+        binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 1)
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
+        })
 
         initViewModel()
-
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
             ToastUtil.getInstance()
@@ -136,6 +132,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         }
         viewModel.getStoreWithMenu(storeId!!)
         viewModel.getShopMenus(storeId)
+        viewModel.getShopEvents(storeId)
     }
 
     override fun onBackPressed() {
@@ -175,7 +172,16 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 if (!it.isDeliveryOk) {
                     storeDetailConstDeliverTextview.isVisible = false
                     storeDetailDeliverTextview.isVisible = false
-                    storeDetailIsDeliveryTextview.isVisible = false
+                    storeDetailIsDeliveryTextview.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreDetailActivity,
+                            R.color.gray2
+                        )
+                    )
+                    storeDetailIsDeliveryTextview.background = ContextCompat.getDrawable(
+                        this@StoreDetailActivity,
+                        R.drawable.button_rect_gray_radius_5dp
+                    )
                 } else {
                     storeDetailDeliverTextview.text = if (it.deliveryPrice <= 0) {
                         getString(R.string.store_delivery_free)
@@ -192,34 +198,20 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailEtcTextview.text = it.description
                 }
 
+                setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
-                if (!it.isCardOk) {
-                    storeDetailIsCardTextview.isVisible = false
-                }
-
+                setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //계좌이체
-                if (!it.isBankOk) {
-                    storeDetailIsBankTextview.isVisible = false
+                setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
+
+                binding.storeDetailImageview.apply {
+                    adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
+
                 }
 
-                storeDetailFlyerRecyclerAdapter.submitList(it.imageUrls)
             }
         }
 
-        observeLiveData(viewModel.storeMenu) {
-            storeMenuAdapter.submitList(it)
-            (it.size <= MAX_MENUS_FOLDED).let {
-                binding.menuSpreadTextView.isVisible = !it
-                binding.arrowImageView.isVisible = !it
-            }
-            isMenuExpanded = false
-        }
-
-        observeLiveData(viewModel.recommendStores) {
-            if (it != null) {
-                storeRecyclerAdapter.submitList(it)
-            }
-        }
     }
 
     override fun onDestroy() {
@@ -257,8 +249,17 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         return stringBuilder.toString()
     }
 
+    private fun setEtcInfo(textView: TextView, isAvailable: Boolean) {
+        if (!isAvailable) {
+            textView.setTextColor(ContextCompat.getColor(this@StoreDetailActivity, R.color.gray2))
+            textView.background = ContextCompat.getDrawable(
+                this@StoreDetailActivity,
+                R.drawable.button_rect_gray_radius_5dp
+            )
+        }
+    }
+
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
-        private const val MAX_MENUS_FOLDED = 6
     }
 }

@@ -10,6 +10,8 @@ import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import dagger.hilt.android.HiltAndroidApp
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -20,6 +22,7 @@ class KoinApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Napier.base(DebugAntilog())
         Typekit.getInstance()
             .addBold(Typekit.createFromAsset(this, getString(R.string.font_kr_bold)))
             .addNormal(Typekit.createFromAsset(this, getString(R.string.font_regular)))
