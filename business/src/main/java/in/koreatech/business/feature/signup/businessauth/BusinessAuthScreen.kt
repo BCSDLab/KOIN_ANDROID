@@ -78,7 +78,7 @@ fun BusinessAuthScreen(
 
 
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+        contract = ActivityResultContracts.PickMultipleVisualMedia(5),
         onResult = { uriList ->
             var fileName = ""
             var fileSize = 0L
