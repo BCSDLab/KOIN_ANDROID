@@ -38,6 +38,7 @@ android {
     }
 
     buildFeatures {
+        viewBinding true
         dataBinding true
     }
 
@@ -112,4 +113,6 @@ dependencies {
 
     implementation platform(libs.firebase.bom)
     implementation libs.firebase.analytics.ktx
+
+    implementation libs.photoview
 }

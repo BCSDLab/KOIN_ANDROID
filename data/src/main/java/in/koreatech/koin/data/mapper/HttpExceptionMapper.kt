@@ -6,6 +6,7 @@ import retrofit2.HttpException
 
 fun HttpException.httpExceptionMapper(): Result<Unit> {
     return when(this.code()) {
+        400 -> Result.failure(OwnerError.IncorrectParaMeter)
         404 -> Result.failure(UploadError.NotExistDomainException)
         409 -> {
             when(this.response()?.code() ?: -1) {

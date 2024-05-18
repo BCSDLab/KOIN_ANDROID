@@ -10,7 +10,6 @@
         android:fitsSystemWindows="true"
         tools:ignore="MissingPrefix">
 
-
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/callvan_main_layout"
             android:layout_width="fill_parent"
@@ -18,7 +17,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <in.koreatech.koin.core.appbar.AppBarBase
                     android:id="@+id/koin_base_appbar"
@@ -30,412 +30,356 @@
                     app:rightButtonBackground="@drawable/ic_hamburger_button"
                     app:rightButtonHeight="18dp"
                     app:rightButtonWidth="12dp"
-                    app:titleText="주변상점" />
+                    app:titleText="@string/nearby_store" />
+
+
+
+
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:id="@+id/callvan_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <com.google.android.material.appbar.CollapsingToolbarLayout
+                            android:id="@+id/store_detail_collapsing_toolbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/white">
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline_start"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.044" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline_end"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    app:layout_constraintGuide_percent="0.953" />
+
+                                <androidx.constraintlayout.widget.Guideline
+                                    android:id="@+id/guideline_horizontal_0.288"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    app:layout_constraintGuide_percent="0.288" />
+
+                                <androidx.viewpager2.widget.ViewPager2
+                                    android:id="@+id/store_detail_imageview"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="255dp"
+                                    android:background="@color/blue1"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_title_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="end"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="9sp"
+                                    android:maxLines="1"
+                                    android:paddingTop="20dp"
+                                    android:paddingBottom="20dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    app:fontName="Custom5"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_imageview"
+                                    tools:text="상점명" />
+
+
+                                <TextView
+                                    android:id="@+id/store_detail_const_phone_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="7sp"
+                                    android:text="@string/telephone"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_phone_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="5sp"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_phone_num"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
+                                    tools:text="010-5181-1203" />
+
+                                <androidx.constraintlayout.widget.Barrier
+                                    android:id="@+id/barrier_phone"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:barrierDirection="bottom"
+                                    app:constraint_referenced_ids="store_detail_const_phone_num, store_detail_phone_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_const_time_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="7sp"
+                                    android:text="@string/operating_time"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_phone" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_time_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="5sp"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_time_textview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_time_textview"
+                                    tools:text="14:00 ~" />
+
+                                <androidx.constraintlayout.widget.Barrier
+                                    android:id="@+id/barrier_time"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:barrierDirection="bottom"
+                                    app:constraint_referenced_ids="store_detail_const_time_textview, store_detail_time_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_const_address_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="7sp"
+                                    android:text="@string/address"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_time" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_address_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:includeFontPadding="false"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_address_textview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    tools:text="충청남도 천안시 동남구 병천면 가전7길 4충청남도 천안시 동남구 병천면 가전7길 4" />
+
+                                <androidx.constraintlayout.widget.Barrier
+                                    android:id="@+id/barrier_address"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:barrierDirection="bottom"
+                                    app:constraint_referenced_ids="store_detail_const_address_textview, store_detail_address_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_const_deliver_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/delivery_fee"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_address" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_deliver_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="5sp"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_deliver_textview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_deliver_textview"
+                                    tools:text="2000원" />
+
+                                <androidx.constraintlayout.widget.Barrier
+                                    android:id="@+id/barrier_deliver"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:barrierDirection="bottom"
+                                    app:constraint_referenced_ids="store_detail_const_deliver_textview, store_detail_deliver_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_const_etc_textview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="7sp"
+                                    android:text="@string/other_info"
+                                    android:textColor="@color/gray9"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_deliver" />
+
+
+                                <TextView
+                                    android:id="@+id/store_detail_etc_textview"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:includeFontPadding="false"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_etc_textview"
+                                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                                    app:layout_constraintHorizontal_bias="0"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    tools:text="배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원" />
+
+                                <androidx.constraintlayout.widget.Barrier
+                                    android:id="@+id/barrier_etc"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:barrierDirection="bottom"
+                                    app:constraint_referenced_ids="store_detail_const_etc_textview, store_detail_etc_textview" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_is_delivery_textview"
+                                    android:layout_width="70dp"
+                                    android:layout_height="26dp"
+                                    android:layout_marginTop="12dp"
+                                    android:background="@drawable/button_rect_blue_line_radius_5dp"
+                                    android:gravity="center"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="6sp"
+                                    android:text="@string/delivery_available"
+                                    android:textColor="@color/blue_alpha20"
+                                    android:textSize="12sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_is_card_textview"
+                                    android:layout_width="70dp"
+                                    android:layout_height="26dp"
+                                    android:layout_marginStart="6dp"
+                                    android:layout_marginTop="12dp"
+                                    android:background="@drawable/button_rect_blue_line_radius_5dp"
+                                    android:gravity="center"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="6sp"
+                                    android:text="@string/card_available"
+                                    android:textColor="@color/blue_alpha20"
+                                    android:textSize="12sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
+
+                                <TextView
+                                    android:id="@+id/store_detail_is_bank_textview"
+                                    android:layout_width="89dp"
+                                    android:layout_height="26dp"
+                                    android:layout_marginStart="6dp"
+                                    android:layout_marginTop="12dp"
+                                    android:background="@drawable/button_rect_blue_line_radius_5dp"
+                                    android:gravity="center"
+                                    android:includeFontPadding="false"
+                                    android:lineSpacingExtra="6sp"
+                                    android:text="@string/account_transfer_avilable"
+                                    android:textColor="@color/blue_alpha20"
+                                    android:textSize="12sp"
+                                    app:fontName="Custom6"
+                                    app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
+                                    app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
+
+                                <FrameLayout
+                                    android:id="@+id/border_frameLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="12dp"
+                                    android:layout_marginTop="32dp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview"
+                                    app:layout_goneMarginTop="72dp">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:alpha="0.2"
+                                        android:background="@color/blue1" />
+
+                                </FrameLayout>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/store_detail_tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_collapseMode="pin"
+                            />
+
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/store_detail_view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        app:layout_constraintTop_toBottomOf="@+id/store_detail_tab_layout" />
+
+
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             </LinearLayout>
-
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="56dp"
-                android:background="@color/white"
-                android:fillViewport="true">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:paddingBottom="120dp">
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.044" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.953" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guideline_horizontal_0.288"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent="0.288" />
-
-
-                    <TextView
-                        android:id="@+id/store_detail_title_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="9sp"
-                        android:maxLines="1"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="20dp"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        app:fontName="Custom5"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="상점명" />
-
-
-                    <TextView
-                        android:id="@+id/store_detail_const_phone_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="7sp"
-                        android:text="전화번호"
-                        android:textColor="@color/gray9"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_phone_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="5sp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_phone_num"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
-                        tools:text="010-5181-1203" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/barrier_phone"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="store_detail_const_phone_num, store_detail_phone_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_const_time_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="7sp"
-                        android:text="운영시간"
-                        android:textColor="@color/gray9"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_phone" />
-
-                    <TextView
-                        android:id="@+id/store_detail_time_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="5sp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_time_textview"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_const_time_textview"
-                        tools:text="14:00 ~" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/barrier_time"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="store_detail_const_time_textview, store_detail_time_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_const_address_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="7sp"
-                        android:text="주소정보"
-                        android:textColor="@color/gray9"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_time" />
-
-                    <TextView
-                        android:id="@+id/store_detail_address_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_address_textview"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:text="충청남도 천안시 동남구 병천면 가전7길 4충청남도 천안시 동남구 병천면 가전7길 4" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/barrier_address"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="store_detail_const_address_textview, store_detail_address_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_const_deliver_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:includeFontPadding="false"
-                        android:text="배달금액"
-                        android:textColor="@color/gray9"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_address" />
-
-                    <TextView
-                        android:id="@+id/store_detail_deliver_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="5sp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_deliver_textview"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_const_deliver_textview"
-                        tools:text="2000원" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/barrier_deliver"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="store_detail_const_deliver_textview, store_detail_deliver_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_const_etc_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="7sp"
-                        android:text="기타정보"
-                        android:textColor="@color/gray9"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_deliver" />
-
-
-                    <TextView
-                        android:id="@+id/store_detail_etc_textview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:includeFontPadding="false"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_etc_textview"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                        app:layout_constraintHorizontal_bias="0"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_const_address_textview"
-                        app:layout_constraintVertical_bias="0.0"
-                        tools:text="배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원배달료 5000원" />
-
-                    <androidx.constraintlayout.widget.Barrier
-                        android:id="@+id/barrier_etc"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:barrierDirection="bottom"
-                        app:constraint_referenced_ids="store_detail_const_etc_textview, store_detail_etc_textview" />
-
-                    <TextView
-                        android:id="@+id/store_detail_is_delivery_textview"
-                        android:layout_width="70dp"
-                        android:layout_height="26dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/button_rect_squash_radius_13dp"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="6sp"
-                        android:text="#배달가능"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
-
-                    <TextView
-                        android:id="@+id/store_detail_is_card_textview"
-                        android:layout_width="70dp"
-                        android:layout_height="26dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/button_rect_squash_radius_13dp"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="6sp"
-
-                        android:text="#카드가능"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
-
-                    <TextView
-                        android:id="@+id/store_detail_is_bank_textview"
-                        android:layout_width="89dp"
-                        android:layout_height="26dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginTop="12dp"
-                        android:background="@drawable/button_rect_squash_radius_13dp"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:lineSpacingExtra="6sp"
-                        android:text="#계좌이체가능"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:fontName="Custom6"
-                        app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
-                        app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
-
-                    <FrameLayout
-                        android:id="@+id/border_frameLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="31dp"
-                        android:layout_marginTop="32dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview"
-                        app:layout_goneMarginTop="72dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:alpha="0.2"
-                            android:background="@color/blue1" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center"
-                            android:layout_marginStart="16dp"
-                            android:includeFontPadding="false"
-                            android:lineSpacingExtra="6sp"
-                            android:text="메뉴 소개"
-                            android:textColor="@color/gray9"
-                            android:textSize="13sp"
-                            app:fontName="Custom6" />
-                    </FrameLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/store_detail_flyer_recyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:background="@color/background"
-                        android:clipToPadding="false"
-                        android:minHeight="159dp"
-                        android:paddingBottom="12dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/border_frameLayout" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/store_detail_recyclerview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="12dp"
-                        android:clipToPadding="false"
-                        android:paddingBottom="12dp"
-                        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@+id/store_detail_flyer_recyclerview"
-                        tools:listitem="@layout/store_detail_menu_list_item" />
-
-                    <TextView
-                        android:id="@+id/menu_spread_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12sp"
-                        android:text="@string/show_more_menu"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        app:layout_constraintEnd_toStartOf="@+id/arrow_image_view"
-                        app:layout_constraintHorizontal_chainStyle="packed"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@id/store_detail_recyclerview" />
-
-
-                    <ImageView
-                        android:id="@+id/arrow_image_view"
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_marginStart="4dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_arrow_back"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="@+id/menu_spread_text_view"
-                        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-                        app:layout_constraintStart_toEndOf="@+id/menu_spread_text_view"
-                        app:layout_constraintTop_toTopOf="@+id/menu_spread_text_view" />
-
-
-                    <TextView
-                        android:id="@+id/how_about_here_text_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="48dp"
-                        android:text="@string/store_how_about_here"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@id/menu_spread_text_view"
-                        app:layout_goneMarginTop="70dp" />
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/store_random_recycler_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16.5dp"
-                        android:clipToPadding="false"
-                        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-                        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                        app:layout_constraintTop_toBottomOf="@id/how_about_here_text_view"
-                        tools:listitem="@layout/store_list_item" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.core.widget.NestedScrollView>
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/store_detail_call_button"
                 android:layout_width="56dp"
@@ -448,9 +392,7 @@
                 android:src="@drawable/basic_phone_outline"
                 app:borderWidth="0dp"
                 app:tint="@color/white" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
         <!--navigation drawer-->
         <include layout="@layout/base_navigation_drawer_right" />
 

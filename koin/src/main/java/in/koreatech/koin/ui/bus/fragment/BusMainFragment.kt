@@ -24,6 +24,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 
 @AndroidEntryPoint
@@ -44,11 +46,36 @@ class BusMainFragment : Fragment(R.layout.bus_main_fragment) {
     private fun initView() = with(binding) {
         busDepartureSpinner.setSelection(BusNode.Koreatech.spinnerSelection)
         busArrivalSpinner.setSelection(BusNode.Terminal.spinnerSelection)
+        busDepartureSpinner.setOnTouchListener { _, _ ->
+            viewModel.isUserSelection = true
+            busDepartureSpinner.performClick()
+        }
         busDepartureSpinner.setOnItemSelectedListener { _, _, position, _ ->
             viewModel.setDeparture(position.busNodeSelection)
+            if(viewModel.isUserSelection) {
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.BUS_DEPARTURE,
+                    resources.getStringArray(R.array.bus_place)[position]
+                )
+                viewModel.isUserSelection = false
+            }
+        }
+
+        busArrivalSpinner.setOnTouchListener { _, _ ->
+            viewModel.isUserSelection = true
+            busArrivalSpinner.performClick()
         }
         busArrivalSpinner.setOnItemSelectedListener { _, _, position, _ ->
             viewModel.setArrival(position.busNodeSelection)
+            if(viewModel.isUserSelection) {
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.BUS_ARRIVAL,
+                    resources.getStringArray(R.array.bus_place)[position]
+                )
+                viewModel.isUserSelection = false
+            }
         }
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
