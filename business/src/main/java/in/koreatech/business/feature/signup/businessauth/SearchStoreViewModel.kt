@@ -3,7 +3,7 @@ package `in`.koreatech.business.feature.signup.businessauth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.store.GetStoresUseCase
+import `in`.koreatech.koin.domain.usecase.business.SearchStoresUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchStoreViewModel @Inject constructor(
-    private val getStoresUseCase: GetStoresUseCase,
+    private val searchStoresUseCase: SearchStoresUseCase,
 ) : ContainerHost<SearchStoreState, SearchStoreSideEffect>, ViewModel() {
     override val container =
         container<SearchStoreState, SearchStoreSideEffect>(SearchStoreState())
@@ -39,7 +39,7 @@ class SearchStoreViewModel @Inject constructor(
     fun searchStore() = intent {
         viewModelScope.launch(Dispatchers.IO) {
             val newSearchJob = launch {
-                getStoresUseCase(null, state.search).let { stores ->
+                searchStoresUseCase(state.search).let { stores ->
                     reduce {
                         state.copy(stores = stores)
                     }
