@@ -248,7 +248,9 @@ fun BusinessAuthScreen(
             LinedTextField(
                 value = businessAuthState.shopNumber,
                 onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
-                label = stringResource(id = R.string.enter_business_registration_number)
+                label = stringResource(id = R.string.enter_business_registration_number),
+                isError = businessAuthState.shopNumber.length !=10,
+                errorText = stringResource(id = R.string.business_number_not_validate)
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -259,7 +261,9 @@ fun BusinessAuthScreen(
             LinedTextField(
                 value = businessAuthState.phoneNumber,
                 onValueChange = { businessAuthViewModel.onPhoneNumberChanged(it) },
-                label = stringResource(id = R.string.enter_personal_contact)
+                label = stringResource(id = R.string.enter_personal_contact),
+                isError = businessAuthState.phoneNumber.length != 11,
+                errorText = stringResource(id = R.string.phone_number_not_validate)
             )
             Spacer(modifier = Modifier.height(10.dp))
 
