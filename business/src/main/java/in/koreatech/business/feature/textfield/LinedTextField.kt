@@ -66,7 +66,7 @@ fun LinedTextField(
                         .height(41.dp)
                         .border(
                             width = 1.dp,
-                            color = if (isError && !focused) ColorSecondary else if (focused) ColorPrimary else ColorTextField,
+                            color = if (isError) ColorSecondary else if (focused) ColorPrimary else ColorTextField,
                             shape = RoundedCornerShape(4.dp)
                         )
                         .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
@@ -89,7 +89,7 @@ fun LinedTextField(
                         fontSize = 11.sp,
                         color = ColorHelper,
                     )
-                    if (isError && !focused) Text(text = errorText, fontSize = 11.sp, color = ColorSecondary)
+                    if (isError) Text(text = errorText, fontSize = 11.sp, color = ColorSecondary)
 
                 }
 
