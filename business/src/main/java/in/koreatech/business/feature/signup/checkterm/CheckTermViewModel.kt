@@ -16,21 +16,23 @@ class CheckTermViewModel @Inject constructor() :
     override val container =
         container<CheckTermState, CheckTermSideEffect>(CheckTermState())
 
-    fun onAllTermCheckedChanged(isChecked: Boolean) {
+    fun onAllTermCheckedChanged() {
         intent {
-            reduce { state.copy(isAllTermChecked = isChecked) }
+            reduce { state.copy(isAllTermChecked = !state.isAllTermChecked) }
+            reduce { state.copy(isCheckedPrivacyTerms = state.isAllTermChecked) }
+            reduce { state.copy(isCheckedKoinTerms = state.isAllTermChecked) }
         }
     }
 
-    fun onPrivacyTermCheckedChanged(isChecked: Boolean) {
+    fun onPrivacyTermCheckedChanged() {
         intent {
-            reduce { state.copy(isCheckedPrivacyTerms = isChecked) }
+            reduce { state.copy(isCheckedPrivacyTerms = !state.isCheckedPrivacyTerms) }
         }
     }
 
-    fun onKoinTermCheckedChanged(isChecked: Boolean) {
+    fun onKoinTermCheckedChanged() {
         intent {
-            reduce { state.copy(isCheckedKoinTerms = isChecked) }
+            reduce { state.copy(isCheckedKoinTerms = !state.isCheckedKoinTerms) }
         }
     }
 
