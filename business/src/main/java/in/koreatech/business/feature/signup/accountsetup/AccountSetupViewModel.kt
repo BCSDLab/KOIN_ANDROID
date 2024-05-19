@@ -48,9 +48,8 @@ class AccountSetupViewModel @Inject constructor(
 
     fun onAuthCodeChanged(authCode: String) = intent {
         reduce {
-            state.copy(authCode = authCode)
+            state.copy(authCode = authCode, signUpContinuationError = null)
         }
-        reduce { state.copy(signUpContinuationError = null) }
     }
 
     fun onBackButtonClicked() = intent {
@@ -65,8 +64,12 @@ class AccountSetupViewModel @Inject constructor(
                 password, passwordConfirm, phoneNumber, verifyCode
             ).onSuccess {
                 intent {
-                    reduce { state.copy(signupContinuationState = it) }
-                    reduce { state.copy(signUpContinuationError = null) }
+                    reduce {
+                        state.copy(
+                            signupContinuationState = it,
+                            signUpContinuationError = null
+                        )
+                    }
                     postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.phoneNumber))
                 }
             }.onFailure {

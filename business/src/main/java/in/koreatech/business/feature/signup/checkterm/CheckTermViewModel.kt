@@ -18,9 +18,13 @@ class CheckTermViewModel @Inject constructor() :
 
     fun onAllTermCheckedChanged() {
         intent {
-            reduce { state.copy(isAllTermChecked = !state.isAllTermChecked) }
-            reduce { state.copy(isCheckedPrivacyTerms = state.isAllTermChecked) }
-            reduce { state.copy(isCheckedKoinTerms = state.isAllTermChecked) }
+            reduce {
+                state.copy(
+                    isAllTermChecked = !state.isAllTermChecked,
+                    isCheckedPrivacyTerms = state.isAllTermChecked,
+                    isCheckedKoinTerms = state.isAllTermChecked
+                )
+            }
         }
     }
 
