@@ -48,6 +48,7 @@ class BusinessAuthViewModel @Inject constructor(
             state.copy(shopId = shopId)
         }
     }
+
     fun onStoreNumberChanged(storeNumber: String) = intent {
         reduce {
             state.copy(shopNumber = storeNumber)
@@ -109,17 +110,13 @@ class BusinessAuthViewModel @Inject constructor(
                                         fileSize
                                     )
                                 )
-                            }
+                            },
+                            bitmap = state.bitmap.toMutableList().apply {
+                                add(bitmap)
+                            },
+                            error = null
                         )
                     }
-                    reduce {
-                        state.copy(bitmap = state.bitmap.toMutableList().apply {
-                            add(bitmap)
-                        })
-                    }
-                }
-                intent {
-                    reduce { state.copy(error = null) }
                 }
             }.onFailure {
                 intent {
@@ -142,7 +139,7 @@ class BusinessAuthViewModel @Inject constructor(
                     reduce { state.copy(error = null) }
                 }
             }.onFailure {
-                   intent {
+                intent {
                     reduce { state.copy(error = it) }
                 }
             }
@@ -161,7 +158,14 @@ class BusinessAuthViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             ownerRegisterUseCase(
-                fileUrls.strToOwnerRegisterUrl(), companyNumber.formatBusinessNumber(), email, name, password, phoneNumber.formatPhoneNumber(), shopId, shopName
+                fileUrls.strToOwnerRegisterUrl(),
+                companyNumber.formatBusinessNumber(),
+                email,
+                name,
+                password,
+                phoneNumber.formatPhoneNumber(),
+                shopId,
+                shopName
             ).onSuccess {
                 onNavigateToNextScreen()
                 intent {
