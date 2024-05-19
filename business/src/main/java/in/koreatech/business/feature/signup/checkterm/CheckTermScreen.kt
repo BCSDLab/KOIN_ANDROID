@@ -158,14 +158,7 @@ fun CheckTermScreen(
                         .height(24.dp)
                         .width(24.dp)
                         .clickable {
-                            viewModel.onAllTermCheckedChanged(!state.isAllTermChecked)
-                            if (!state.isAllTermChecked) {
-                                viewModel.onPrivacyTermCheckedChanged(true)
-                                viewModel.onKoinTermCheckedChanged(true)
-                            } else {
-                                viewModel.onPrivacyTermCheckedChanged(false)
-                                viewModel.onKoinTermCheckedChanged(false)
-                            }
+                            viewModel.onAllTermCheckedChanged()
                         }
                 )
 
@@ -186,7 +179,9 @@ fun CheckTermScreen(
 
             ) {
                 Image(
-                    painter = if (state.isCheckedPrivacyTerms) painterResource(id = R.drawable.ic_check_selected) else painterResource(
+                    painter = if (state.isCheckedPrivacyTerms || state.isAllTermChecked) painterResource(
+                        id = R.drawable.ic_check_selected
+                    ) else painterResource(
                         id = R.drawable.ic_check
                     ),
                     contentDescription = stringResource(R.string.check),
@@ -195,8 +190,9 @@ fun CheckTermScreen(
                         .height(24.dp)
                         .width(24.dp)
                         .clickable {
-                            viewModel.onPrivacyTermCheckedChanged(!state.isCheckedPrivacyTerms)
-                            viewModel.onAllTermCheckedChanged(state.isCheckedPrivacyTerms && state.isCheckedKoinTerms)
+                            viewModel.onPrivacyTermCheckedChanged()
+                            if (state.isCheckedKoinTerms)
+                                viewModel.onAllTermCheckedChanged()
                         }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -228,7 +224,9 @@ fun CheckTermScreen(
 
             ) {
                 Image(
-                    painter = if (state.isCheckedKoinTerms) painterResource(id = R.drawable.ic_check_selected) else painterResource(
+                    painter = if (state.isCheckedKoinTerms || state.isAllTermChecked) painterResource(
+                        id = R.drawable.ic_check_selected
+                    ) else painterResource(
                         id = R.drawable.ic_check
                     ),
                     contentDescription = stringResource(R.string.check),
@@ -237,8 +235,9 @@ fun CheckTermScreen(
                         .height(24.dp)
                         .width(24.dp)
                         .clickable {
-                            viewModel.onKoinTermCheckedChanged(!state.isCheckedKoinTerms)
-                            viewModel.onAllTermCheckedChanged(state.isCheckedPrivacyTerms && state.isCheckedKoinTerms)
+                            viewModel.onKoinTermCheckedChanged()
+                            if (state.isCheckedPrivacyTerms)
+                                viewModel.onAllTermCheckedChanged()
                         }
                 )
 
