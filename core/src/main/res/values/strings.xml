@@ -91,4 +91,11 @@
     <string name="insert_store_main_info">등록 하시려는 업체의\n메인 정보를 입력해 주세요.</string>
     <string name="insert_store_category_setting">1. 가게 카테고리 설정</string>
     <string name="insert_store_choose_category">카테고리를 골라주세요.</string>
+
+    <string name="insert_store_basic_info">2. 기본 정보 입력</string>
+    <string name="insert_store_store_name">가게이름</string>
+    <string name="insert_store_store_address">주소정보</string>
+    <string name="insert_store_null_store_name">가게이름을 입력해주세요.</string>
+    <string name="insert_store_null_store_address">주소정보를 입력해주세요.</string>
+    <string name="insert_store_null_store_image">가게사진을 등록해주세요.</string>
 </resources>

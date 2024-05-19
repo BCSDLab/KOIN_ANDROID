@@ -49,7 +49,7 @@ composeNavigationVersion = "2.7.7"
 orbitVersion="7.0.1"
 hiltComposeVersion="1.0.0"
 markermanVersion="2.3.0"
-coilVersion = "1.2.0"
+coilVersion = "2.6.0"
 napier = "2.6.1"
 
 [libraries]
@@ -136,6 +136,7 @@ hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "h
 markerman-roundedImageView={module= "com.makeramen:roundedimageview", version.ref = "markermanVersion"}
 
 coil ={module = "io.coil-kt:coil", version.ref ="coilVersion"}
+coil-compose = {module = "io.coil-kt:coil-compose", version.ref = "coilVersion"}
 coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 
 [plugins]
@@ -152,7 +153,7 @@ koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
 
 [bundles]
-compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose"]
+compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]

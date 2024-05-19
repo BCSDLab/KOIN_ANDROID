@@ -30,7 +30,9 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
 fun StartInsertScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    goToSelectCategoryScreen: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize()
@@ -40,7 +42,7 @@ fun StartInsertScreen(
                 .padding(top = 56.dp, start = 10.dp , bottom = 18.dp)
                 .width(40.dp)
                 .height(40.dp)
-                .clickable {  }
+                .clickable { onBackPressed }
 
         ) {
             Image(
@@ -89,7 +91,7 @@ fun StartInsertScreen(
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = goToSelectCategoryScreen,
             colors = ButtonDefaults.buttonColors(ColorPrimary),
             shape = RectangleShape,
             modifier = modifier
@@ -112,6 +114,8 @@ fun StartInsertScreen(
 @Composable
 fun PreviewStartInsertScreen(){
     StartInsertScreen(
-        modifier = Modifier
+        modifier = Modifier,
+        goToSelectCategoryScreen = {} ,
+        onBackPressed = {}
     )
 }
