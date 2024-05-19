@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
@@ -251,4 +252,12 @@ fun UploadFileList(modifier: Modifier, item: MutableList<String>) {
             Spacer(modifier = Modifier.width(12.dp))
         }
     }
+}
+
+@Preview
+@Composable
+fun PreviewScreen(){
+    BusinessAuthScreen(
+
+    )
 }
