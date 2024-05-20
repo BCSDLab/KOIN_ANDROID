@@ -26,7 +26,7 @@ fun InsertDetailInfoScreenImpl(
 @Composable
 fun InsertDetailInfoScreen(
     modifier: Modifier = Modifier,
-    storeNumber: String = "010-1111-1111"
+    storeNumber: String = ""
 ) {
     Column(
         modifier = modifier
