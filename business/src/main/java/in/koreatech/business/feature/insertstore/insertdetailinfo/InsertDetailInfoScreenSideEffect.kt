@@ -4,12 +4,12 @@ import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInf
 
 sealed class InsertDetailInfoScreenSideEffect {
 
-    data class ShowMessage(val type: ErrorType): InsertDetailInfoScreenSideEffect()
+    data class ShowMessage(val type: DetailInfoErrorType): InsertDetailInfoScreenSideEffect()
 
     data class NavigateToInsertDetailInfoScreen(val storeBasicInfo: InsertDetailInfoScreenSideEffect) :  InsertDetailInfoScreenSideEffect()
 }
 
-enum class ErrorType {
+enum class DetailInfoErrorType {
     NullStoreName,
     NullStoreAddress,
     NullStoreImage

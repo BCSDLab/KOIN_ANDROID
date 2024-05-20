@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
+import kotlinx.android.parcel.Parcelize
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -22,18 +23,13 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
     override val container: Container<InsertDetailInfoScreenState, InsertDetailInfoScreenSideEffect> =
         container(InsertDetailInfoScreenState(), savedStateHandle = savedStateHandle) {
 
-            val storeBasicInfoJson: String? = savedStateHandle.get<String>("storeBasicInfo")
+            val storeBasicInfoJson: InsertBasicInfoScreenState? = savedStateHandle.get<InsertBasicInfoScreenState>("storeBasicInfo")
             checkNotNull(storeBasicInfoJson)
-
-            val storeBasicInfo = Gson().fromJson(
-                storeBasicInfoJson,
-                StoreBasicInfo::class.java
-            )
-            getStoreBasicInfo(storeBasicInfo)
+            getStoreBasicInfo(storeBasicInfoJson)
         }
 
 
-    private fun getStoreBasicInfo(storeBasicInfo: StoreBasicInfo){
+    private fun getStoreBasicInfo(storeBasicInfo: InsertBasicInfoScreenState){
         intent{
             reduce {
                 state.copy(

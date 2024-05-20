@@ -51,14 +51,14 @@ import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
-fun SelectCategoryScreenImpl(
+fun SelectCategoryScreen(
     modifier: Modifier = Modifier,
     navigateToInsertBasicInfoScreen: (Int) -> Unit,
     onBackPressed: () -> Unit,
     viewModel: SelectCategoryScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    SelectCategoryScreen(
+    SelectCategoryScreenImpl(
         modifier = modifier,
         categories = state.categories,
         categoryId = state.categoryId,
@@ -78,7 +78,7 @@ fun SelectCategoryScreenImpl(
 
 
 @Composable
-fun SelectCategoryScreen(
+fun SelectCategoryScreenImpl(
     modifier: Modifier = Modifier,
     categories: List<StoreCategories> = emptyList(),
     categoryId: Int = -1,
@@ -282,7 +282,7 @@ fun PreviewCategoryItem() {
 @Preview
 @Composable
 fun PreviewSelectCategoryScreen(){
-    SelectCategoryScreen(
+    SelectCategoryScreenImpl(
         categories = sampleCategories
     )
 }

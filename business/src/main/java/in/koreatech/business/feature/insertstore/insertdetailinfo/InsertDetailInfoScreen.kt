@@ -10,23 +10,23 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
-fun InsertDetailInfoScreenImpl(
+fun InsertDetailInfoScreen(
     modifier: Modifier = Modifier,
     onBackPress: () -> Unit,
     stroeBasicInfo: StoreBasicInfo = StoreBasicInfo(),
     viewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    InsertDetailInfoScreen(
+    InsertDetailInfoScreenImpl(
         storeNumber = state.storeAddress
     )
 }
 
 
 @Composable
-fun InsertDetailInfoScreen(
+fun InsertDetailInfoScreenImpl(
     modifier: Modifier = Modifier,
-    storeNumber: String = "010-1111-1111"
+    storeNumber: String = ""
 ) {
     Column(
         modifier = modifier
@@ -40,5 +40,5 @@ fun InsertDetailInfoScreen(
 @Preview
 @Composable
 fun PreviewInsertDetailInfoScreen(){
-    InsertDetailInfoScreen()
+    InsertDetailInfoScreenImpl()
 }

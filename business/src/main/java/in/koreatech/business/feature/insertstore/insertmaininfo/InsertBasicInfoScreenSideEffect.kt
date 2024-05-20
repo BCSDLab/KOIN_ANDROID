@@ -5,12 +5,11 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
 sealed class InsertBasicInfoScreenSideEffect {
 
-    data class ShowMessage(val type: ErrorType): InsertBasicInfoScreenSideEffect()
-
-    data class NavigateToInsertDetailInfoScreen(val storeBasicInfo: StoreBasicInfo) : InsertBasicInfoScreenSideEffect()
+    data class ShowMessage(val type: BasicInfoErrorType): InsertBasicInfoScreenSideEffect()
+    data class NavigateToInsertDetailInfoScreen(val storeBasicInfo: InsertBasicInfoScreenState) : InsertBasicInfoScreenSideEffect()
 }
 
-enum class ErrorType {
+enum class BasicInfoErrorType {
     NullStoreName,
     NullStoreAddress,
     NullStoreImage
