@@ -49,26 +49,22 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
 
     fun onNextButtonClick(){
         intent{
-            if(state.isBasicInfoValidate){
-                val storeBasicInfo: StoreBasicInfo = StoreBasicInfo(
+            if(state.isBasicInfoValid){
+                val storeBasicInfo = InsertBasicInfoScreenState(
                     storeName = state.storeName,
                     storeAddress = state.storeAddress,
-                    storeImage = state.storeImage.toString(),
+                    storeImage = state.storeImage,
                     storeCategory = state.storeCategory
                 )
                 postSideEffect(InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen(storeBasicInfo))
+                return@intent
             }
-            else{
-                if(state.storeImageIsEmpty){
-                    postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(ErrorType.NullStoreImage))
+
+                when {
+                    state.storeImageIsEmpty -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreImage))
+                    state.storeName.isEmpty() -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreName))
+                    state.storeAddress.isEmpty() -> postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(BasicInfoErrorType.NullStoreAddress))
                 }
-                else if(state.storeName.isEmpty()){
-                    postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(ErrorType.NullStoreName))
-                }
-                else if(state.storeAddress.isEmpty()){
-                    postSideEffect(InsertBasicInfoScreenSideEffect.ShowMessage(ErrorType.NullStoreAddress))
-                }
-            }
         }
     }
 
@@ -92,7 +88,7 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
     private fun isBasicInfoValidate() = intent {
         reduce {
             state.copy(
-                isBasicInfoValidate = state.storeAddress.isNotBlank() && state.storeName.isNotBlank() && state.storeImage != Uri.EMPTY
+                isBasicInfoValid = state.storeAddress.isNotBlank() && state.storeName.isNotBlank() && state.storeImage != Uri.EMPTY
             )
         }
     }

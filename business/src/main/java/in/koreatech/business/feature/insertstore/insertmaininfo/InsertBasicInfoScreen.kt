@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
@@ -52,19 +53,19 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 
 
 @Composable
-fun InsertBasicInfoScreenImpl(
+fun InsertBasicInfoScreen(
     onBackPressed: () -> Unit,
-    navigateToInsertDetailInfoScreen: (StoreBasicInfo) -> Unit,
+    navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit,
     viewModel: InsertBasicInfoScreenViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
-    InsertBasicInfoScreen(
+    InsertBasicInfoScreenImpl(
         storeImage = state.storeImage,
         storeName = state.storeName,
         storeAddress = state.storeAddress,
         storeImageIsEmpty = state.storeImageIsEmpty,
-        isBasicInfoValidate = state.isBasicInfoValidate,
+        isBasicInfoValid = state.isBasicInfoValid,
         onStoreImageChange = {
             viewModel.insertStoreImage(it)
         },
@@ -84,13 +85,13 @@ fun InsertBasicInfoScreenImpl(
 }
 
 @Composable
-fun InsertBasicInfoScreen(
+fun InsertBasicInfoScreenImpl(
     modifier: Modifier = Modifier,
     storeImage: Uri = Uri.EMPTY,
     storeImageIsEmpty: Boolean = true,
-    storeName: String = "맛있는 족발",
-    storeAddress: String = "층청남도 충절로 1600",
-    isBasicInfoValidate: Boolean = false,
+    storeName: String = "",
+    storeAddress: String = "",
+    isBasicInfoValid: Boolean = false,
     onStoreImageChange: (Uri) -> Unit = {},
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
@@ -114,8 +115,7 @@ fun InsertBasicInfoScreen(
         Box(
             modifier = modifier
                 .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                .width(40.dp)
-                .height(40.dp)
+                .size(40.dp)
                 .clickable {
                     onBackPressed()
                 }
@@ -124,8 +124,7 @@ fun InsertBasicInfoScreen(
                 painter = painterResource(R.drawable.ic_arrow_left),
                 contentDescription = "backArrow",
                 modifier = modifier
-                    .width(40.dp)
-                    .height(40.dp)
+                    .size(40.dp)
             )
         }
 
@@ -193,7 +192,7 @@ fun InsertBasicInfoScreen(
 
         Button(
             onClick = onNextButtonClicked,
-            colors = if(isBasicInfoValidate) ButtonDefaults.buttonColors(ColorPrimary)
+            colors = if(isBasicInfoValid) ButtonDefaults.buttonColors(ColorPrimary)
                     else ButtonDefaults.buttonColors(ColorDisabledButton),
             shape = RectangleShape,
             modifier = modifier
@@ -214,7 +213,7 @@ fun InsertBasicInfoScreen(
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigateToInsertDetailInfoScreen: (StoreBasicInfo) -> Unit) {
+private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigateToInsertDetailInfoScreen: (InsertBasicInfoScreenState) -> Unit) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
@@ -222,9 +221,9 @@ private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigat
             is InsertBasicInfoScreenSideEffect.NavigateToInsertDetailInfoScreen -> navigateToInsertDetailInfoScreen(sideEffect.storeBasicInfo)
             is InsertBasicInfoScreenSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
-                    ErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
-                    ErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
-                    ErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
+                    BasicInfoErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
+                    BasicInfoErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
+                    BasicInfoErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
                 }
                 ToastUtil.getInstance().makeShort(message)
             }
@@ -234,8 +233,8 @@ private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigat
 
 @Composable
 fun NameTextField(
-    textString: String = "가게명",
-    inputString: String = "0",
+    textString: String = "",
+    inputString: String = "",
     onStringChange: (String) -> Unit = {},
     paddingTopValue: Dp = 10.dp
 ){
@@ -299,5 +298,5 @@ private val takePhotoFromAlbumIntent =
 @Preview
 @Composable
 fun PreviewInsertBasicInfo() {
-    InsertBasicInfoScreen()
+    InsertBasicInfoScreenImpl()
 }

@@ -1,21 +1,24 @@
 package `in`.koreatech.business.feature.insertstore.navigator
 
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.NavType
+import androidx.navigation.Navigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenImpl
-import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenImpl
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
+import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
-import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreenImpl
+import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreen
 import `in`.koreatech.business.feature.insertstore.startinsetstore.StartInsertScreen
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
@@ -46,7 +49,7 @@ fun InsertStoreNavigator(
         composable(
             route = InsertStoreRoute.SELECT_CATEGORY.name,
         ) {
-           SelectCategoryScreenImpl(
+           SelectCategoryScreen(
                navigateToInsertBasicInfoScreen = {
                    navigateToMainInfo(navController, it)
                },
@@ -65,7 +68,7 @@ fun InsertStoreNavigator(
                 }
             )
         ){
-            InsertBasicInfoScreenImpl(
+            InsertBasicInfoScreen(
                 onBackPressed = {
                     navController.navigateUp()
                 },
@@ -76,16 +79,9 @@ fun InsertStoreNavigator(
         }
 
         composable(
-            route = "${InsertStoreRoute.DETAIL_INFO.name}/{storeBasicInfo}",
-            arguments = listOf(
-                navArgument("storeBasicInfo")
-                {
-                    type = NavType.StringType
-                    defaultValue = ""
-                }
-            )
+            route = InsertStoreRoute.DETAIL_INFO.name
         ){
-            InsertDetailInfoScreenImpl(
+            InsertDetailInfoScreen(
                 onBackPress = {
                     navController.navigateUp()
                 }
@@ -103,8 +99,22 @@ private fun navigateToMainInfo(
 
 private fun navigateToDetailInfo(
     navController: NavController,
-    storeBasicInfo: StoreBasicInfo
+    storeBasicInfo: InsertBasicInfoScreenState
 ) {
-    val storeBasicInfoJson = Uri.encode(Gson().toJson(storeBasicInfo))
-    navController.navigate("${InsertStoreRoute.DETAIL_INFO}/${storeBasicInfoJson}")
+    val bundle = Bundle()
+    bundle.putParcelable("storeBasicInfo", storeBasicInfo)
+    navController.navigate(InsertStoreRoute.DETAIL_INFO.name, args = bundle)
+}
+
+
+fun NavController.navigate(
+    route: String,
+    args: Bundle,
+    navOptions: NavOptions? = null,
+    navigatorExtras: Navigator.Extras? = null
+) {
+    val nodeId = graph.findNode(route = route)?.id
+    if (nodeId != null) {
+        navigate(nodeId, args, navOptions, navigatorExtras)
+    }
 }
