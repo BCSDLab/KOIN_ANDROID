@@ -156,7 +156,7 @@ fun AccountSetupScreen(
                         disabledContentColor = Gray1,
                     ),
                     onClick = {
-                        /* 아이디 중복 확인 */
+                        TODO("아이디 중복 확인")
                     }) {
                     Text(
                         text = stringResource(id = R.string.check_duplicate),
