@@ -1,0 +1,392 @@
+package `in`.koreatech.business.feature.store
+
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import `in`.koreatech.business.R
+import `in`.koreatech.business.ui.theme.Blue2
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.business.ui.theme.Shapes
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
+
+
+@Composable
+fun MyStoreDetailScreen(modifier: Modifier, viewModel: MyStoreDetailViewModel) {
+    Column(
+        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ColorPrimary),
+        ) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_setting), contentDescription = "뒤로가기",
+
+                    )
+            }
+            Text(
+                text = "내 상점", modifier = Modifier.align(Alignment.Center),
+                style = TextStyle(color = Color.White, fontSize = 18.sp),
+            )
+        }
+        ScrollView(viewModel)
+
+
+    }
+}
+
+@Composable
+private fun CollapsedTopBar(
+    modifier: Modifier = Modifier,
+    isCollapsed: Boolean
+) {
+    val color: Color by animateColorAsState(
+        if (isCollapsed)
+            Color.White
+        else
+            Color.Transparent
+    )
+    Box(
+        modifier = modifier
+            .background(color)
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(16.dp),
+        contentAlignment = Alignment.BottomStart
+    ) {
+        AnimatedVisibility(visible = isCollapsed) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "가게 이름", style = MaterialTheme.typography.h6)
+                IconButton(onClick = { /*TODO*/ }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_setting),
+                        contentDescription = "가게 관리하기"
+                    )
+                }
+
+            }
+        }
+    }
+}
+
+@Composable
+fun TopBar(viewModel: MyStoreDetailViewModel) {
+    val state = viewModel.collectAsState().value
+    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(255.dp),
+            painter = state.storeInfo?.imageUrls?.get(0)
+                .let { painterResource(id = R.drawable.ic_launcher_background) },
+            contentDescription = "Store Image",
+            contentScale = ContentScale.Crop,
+        )
+
+        Button(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxWidth()
+                .height(40.dp),
+            onClick = { /*TODO*/ },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.White,
+                contentColor = ColorPrimary,
+            ),
+            shape = Shapes.medium,
+            border = BorderStroke(1.dp, ColorPrimary)
+
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    contentDescription = "가게 관리하기"
+                )
+                Text(text = "가게 관리하기")
+            }
+
+        }
+        Text(
+            modifier = Modifier.padding(vertical = 10.dp),
+            text = state.storeInfo?.name ?: "가게 이름",
+            style = TextStyle(color = Color.Black, fontSize = 20.sp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight(600),
+        )
+    }
+
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ScrollView(viewModel: MyStoreDetailViewModel) {
+    val pagerState = rememberPagerState(0, 0f) { 2 }
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+    val isCollapsed: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+    }
+    CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsed)
+
+    LazyColumn(
+        state = listState,
+        verticalArrangement = Arrangement.Top,
+    ) {
+        item {
+            TopBar(viewModel)
+        }
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
+            ) {
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "전화번호",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "010-12312-12",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "운영시간",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "16:00",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "휴무일",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "매주화요일",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "주소정보",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "주소주소",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "배달금액",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "0원",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Text(
+                        text = "기타 정보",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                    Text(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        text = "3대째 다져온 어쩌구",
+                        style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    )
+                }
+                Row(modifier = Modifier.padding(vertical = 5.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Blue2,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(6.dp),
+                            text = "# 배달 가능",
+                            fontSize = 12.sp,
+                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Blue2,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(6.dp),
+                            text = "# 카드 가능",
+                            fontSize = 12.sp,
+                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = Blue2,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(6.dp),
+                            text = "# 계좌이체 가능",
+                            fontSize = 12.sp,
+                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
+                        )
+                    }
+                }
+            }
+        }
+        item {
+            Divider(
+                modifier = Modifier.padding(vertical = 5.dp).height(12.dp),
+                color = Gray5,
+            )
+        }
+        stickyHeader {
+            TabRow(modifier = Modifier.height(45.dp),
+                selectedTabIndex = pagerState.currentPage,
+                backgroundColor = Color.White,
+                contentColor = Color.Black,
+                indicator = { tabPositions ->
+                    TabRowDefaults.Indicator(
+                        modifier = Modifier.tabIndicatorOffset(
+                            tabPositions[pagerState.currentPage],
+                        ), color = ColorPrimary
+                    )
+                }) {
+                Tab(selected = true, onClick = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(0)
+                    }
+                }) {
+                    Text("메뉴")
+                }
+                Tab(selected = false, onClick = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(1)
+                    }
+                }) {
+                    Text("이벤트/공지")
+                }
+            }
+        }
+
+        item {
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                HorizontalPager(
+                    modifier = Modifier.fillMaxSize(),
+                    state = pagerState,
+                ) { page ->
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        when (page) {
+                            0 -> MenuScreen()
+                            1 -> EventScreen()
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+
+    KOIN_ANDROIDTheme {
+        val viewModel = MyStoreDetailViewModel()
+        MyStoreDetailScreen(Modifier, viewModel)
+    }
+}
+
