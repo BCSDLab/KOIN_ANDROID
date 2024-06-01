@@ -11,7 +11,7 @@ val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
 val ColorAccent = Color(0xFFF7941E)
-
+val ColorTextField = Color(0xFFf5f5f5)
 
 val ColorSecondaryText = Color(0xFFa1a1a1)
 val Black1 = Color(0xFF222222)
@@ -22,6 +22,7 @@ val ColorError = Color(0xFFF05D3D)
 
 val ColorHelper = Color(0xFFD2DAE2)
 val Blue1 = Color(0xFFD2DAE2)
+val Blue2= Color(0xFF6dbbdd)
 
 val ColorPrimary = Color(0xFF175c8e)
 
