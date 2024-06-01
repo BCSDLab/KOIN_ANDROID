@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.compose.navigation)
+    implementation(libs.androidx.security.crypto)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))

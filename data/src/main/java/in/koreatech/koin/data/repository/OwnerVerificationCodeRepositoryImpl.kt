@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
+import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
@@ -33,4 +34,22 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun verifySmsCode(
+        phoneNumber: String,
+        verificationCode: String
+    ): Result<OwnerAuthToken?> {
+        return try {
+            val tempToken = ownerRemoteDataSource.postVerificationCodeSms(
+                VerificationCodeSmsRequest(
+                    phoneNumber = phoneNumber,
+                    certificationCode = verificationCode
+                )
+            )
+            Result.success(tempToken.toAuthToken())
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 }
