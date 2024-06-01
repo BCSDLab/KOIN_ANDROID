@@ -385,8 +385,7 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
 fun GreetingPreview() {
 
     KOIN_ANDROIDTheme {
-        val viewModel = MyStoreDetailViewModel()
-        MyStoreDetailScreen(Modifier, viewModel)
+      
     }
 }
 
