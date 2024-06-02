@@ -420,6 +420,7 @@
             app:spinner_popup_background="@color/cardview_light_background"
             app:spinner_popup_height="300dp" />
 
+<!--    TODO:: 학번 입력란 에러 메세지로 변경
         <TextView
             android:id="@+id/signup_user_edittext_major_error"
             android:layout_width="0dp"
@@ -433,7 +434,7 @@
             app:layout_constraintEnd_toEndOf="@id/spinner_signup_user_major"
             app:layout_constraintStart_toStartOf="@id/spinner_signup_user_major"
             app:layout_constraintTop_toBottomOf="@id/spinner_signup_user_major"
-            tools:text="올바른 학번을 입력해 주세요" />
+            tools:text="올바른 학번을 입력해 주세요" />-->
 
         <TextView
             android:id="@+id/signup_user_graduate_textview"
