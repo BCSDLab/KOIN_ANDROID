@@ -33,3 +33,7 @@ val ColorUnarchived = Color(0xFFF4F4F4)
 val ColorDescription = Color(0xFFA1A1A1)
 val ColorMinor = Color(0xFF858585)
 val ColorSearch = Color(0xFFF6F8F9)
+
+val ColorCardBackground = Color(0xFFF5F5F5)
+val ColorTextDescription = Color(0xFF8E8E8E)
+val ColorTextFieldDescription = Color(0xFFCACACA)

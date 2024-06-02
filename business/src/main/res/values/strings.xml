@@ -5,7 +5,10 @@
     <string name="master_sign_up">사장님용\n회원가입</string>
     <string name="go_login_activity">로그인 화면 바로가기</string>
     <string name="back_arrow">backArrow</string>
+    <string name="register_image">사진 등록하기</string>
     <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
+    <string name="action_cancel">취소하기</string>
+    <string name="action_register">등록하기</string>
 
     <!--인증번호 관련-->
     <string name="auth_code_input_from_email">이메일로 발송된 인증번호 6자리를 입력해 주세요.</string>
