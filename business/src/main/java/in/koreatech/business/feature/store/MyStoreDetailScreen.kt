@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +53,7 @@ import androidx.compose.ui.zIndex
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue2
 import `in`.koreatech.business.ui.theme.ColorPrimary
-import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.business.ui.theme.Shapes
 import kotlinx.coroutines.launch
@@ -71,12 +72,13 @@ fun MyStoreDetailScreen(modifier: Modifier, viewModel: MyStoreDetailViewModel) {
         ) {
             IconButton(onClick = { /*TODO*/ }) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_setting), contentDescription = "뒤로가기",
-
-                    )
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    contentDescription = stringResource(R.string.back),
+                )
             }
             Text(
-                text = "내 상점", modifier = Modifier.align(Alignment.Center),
+                text = stringResource(R.string.my_shop),
+                modifier = Modifier.align(Alignment.Center),
                 style = TextStyle(color = Color.White, fontSize = 18.sp),
             )
         }
@@ -88,14 +90,11 @@ fun MyStoreDetailScreen(modifier: Modifier, viewModel: MyStoreDetailViewModel) {
 
 @Composable
 private fun CollapsedTopBar(
-    modifier: Modifier = Modifier,
-    isCollapsed: Boolean
+    modifier: Modifier = Modifier, isCollapsed: Boolean
 ) {
     val color: Color by animateColorAsState(
-        if (isCollapsed)
-            Color.White
-        else
-            Color.Transparent
+        if (isCollapsed) Color.White
+        else Color.Transparent
     )
     Box(
         modifier = modifier
@@ -107,14 +106,13 @@ private fun CollapsedTopBar(
     ) {
         AnimatedVisibility(visible = isCollapsed) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "가게 이름", style = MaterialTheme.typography.h6)
+                Text(text = stringResource(R.string.shop_name), style = MaterialTheme.typography.h6)
                 IconButton(onClick = { /*TODO*/ }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_setting),
-                        contentDescription = "가게 관리하기"
+                        contentDescription = stringResource(R.string.shop_management)
                     )
                 }
 
@@ -133,7 +131,7 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
                 .height(255.dp),
             painter = state.storeInfo?.imageUrls?.get(0)
                 .let { painterResource(id = R.drawable.ic_launcher_background) },
-            contentDescription = "Store Image",
+            contentDescription = stringResource(R.string.shop_image),
             contentScale = ContentScale.Crop,
         )
 
@@ -142,7 +140,7 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
                 .background(Color.White)
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = { /*TODO*/ },
+            onClick = {},
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.White,
                 contentColor = ColorPrimary,
@@ -154,15 +152,15 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = "가게 관리하기"
+                    contentDescription = stringResource(R.string.shop_management),
                 )
-                Text(text = "가게 관리하기")
+                Text(text = stringResource(R.string.shop_management))
             }
 
         }
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = state.storeInfo?.name ?: "가게 이름",
+            text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
             style = TextStyle(color = Color.Black, fontSize = 20.sp),
             fontSize = 20.sp,
             fontWeight = FontWeight(600),
@@ -198,83 +196,80 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
             ) {
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "전화번호",
+                        text = stringResource(R.string.telephone_number),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "010-12312-12",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
 
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "운영시간",
+                        text = stringResource(R.string.operating_time),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "16:00",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "휴무일",
+                        text = stringResource(R.string.clodsed_day),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "매주화요일",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "주소정보",
+                        text = stringResource(R.string.address),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "주소주소",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "배달금액",
+                        text = stringResource(R.string.delivery_amount),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "0원",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Text(
-                        text = "기타 정보",
+                        text = stringResource(R.string.other_information),
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                     Text(
                         modifier = Modifier.padding(horizontal = 10.dp),
-                        text = "3대째 다져온 어쩌구",
+                        text = "",
                         style = TextStyle(color = Color.Black, fontSize = 15.sp),
                     )
                 }
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Box(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = Blue2,
-                                shape = RoundedCornerShape(8.dp)
+                        modifier = Modifier.border(
+                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                             )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
-                            text = "# 배달 가능",
+                            text = stringResource(R.string.deliver_available),
                             fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
                             color = Blue2,
@@ -282,34 +277,27 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                     }
                     Spacer(modifier = Modifier.width(10.dp))
                     Box(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = Blue2,
-                                shape = RoundedCornerShape(8.dp)
+                        modifier = Modifier.border(
+                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                             )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
-                            text = "# 카드 가능",
+                            text = stringResource(R.string.card_available),
                             fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
                             color = Blue2,
                         )
                     }
                     Spacer(modifier = Modifier.width(10.dp))
-
                     Box(
-                        modifier = Modifier
-                            .border(
-                                width = 1.dp,
-                                color = Blue2,
-                                shape = RoundedCornerShape(8.dp)
+                        modifier = Modifier.border(
+                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                             )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
-                            text = "# 계좌이체 가능",
+                            text = stringResource(R.string.account_transfer_available),
                             fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
                             color = Blue2,
@@ -320,8 +308,10 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
         }
         item {
             Divider(
-                modifier = Modifier.padding(vertical = 5.dp).height(12.dp),
-                color = Gray5,
+                modifier = Modifier
+                    .padding(vertical = 5.dp)
+                    .height(12.dp),
+                color = ColorTextField,
             )
         }
         stickyHeader {
@@ -341,14 +331,14 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                         pagerState.animateScrollToPage(0)
                     }
                 }) {
-                    Text("메뉴")
+                    Text(stringResource(R.string.menu))
                 }
                 Tab(selected = false, onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(1)
                     }
                 }) {
-                    Text("이벤트/공지")
+                    Text(stringResource(R.string.event_notification))
                 }
             }
         }
@@ -374,10 +364,7 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
         }
 
     }
-
-
 }
-
 
 
 @Preview(showBackground = true)
@@ -385,7 +372,7 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
 fun GreetingPreview() {
 
     KOIN_ANDROIDTheme {
-      
+
     }
 }
 
