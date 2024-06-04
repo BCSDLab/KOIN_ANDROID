@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ fun LinedWhiteTextField(
     textStyle: TextStyle = TextStyle.Default,
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
 
     BasicTextField(
@@ -42,6 +44,7 @@ fun LinedWhiteTextField(
         enabled = enabled,
         singleLine = singleLine,
         maxLines = maxLines,
+        keyboardOptions = keyboardOptions
     ) {
         Box(
             modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),

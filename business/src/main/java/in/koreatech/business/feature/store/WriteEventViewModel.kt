@@ -25,6 +25,8 @@ class WriteEventViewModel(
     }
 
     fun onStartYearChanged(startYear: String) = intent {
+        if(isValidNumberInput(4, startYear).not())
+            return@intent
         if(startYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusStartMonth)
         reduce {
@@ -33,6 +35,8 @@ class WriteEventViewModel(
     }
 
     fun onStartMonthChanged(startMonth: String) = intent {
+        if(isValidNumberInput(2, startMonth).not())
+            return@intent
         if(startMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusStartDay)
         reduce {
@@ -41,6 +45,8 @@ class WriteEventViewModel(
     }
 
     fun onStartDayChanged(startDay: String) = intent {
+        if(isValidNumberInput(2, startDay).not())
+            return@intent
         if(startDay.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndYear)
         reduce {
@@ -49,6 +55,8 @@ class WriteEventViewModel(
     }
 
     fun onEndYearChanged(endYear: String) = intent {
+        if(isValidNumberInput(4, endYear).not())
+            return@intent
         if(endYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusEndMonth)
         reduce {
@@ -57,6 +65,8 @@ class WriteEventViewModel(
     }
 
     fun onEndMonthChanged(endMonth: String) = intent {
+        if(isValidNumberInput(2, endMonth).not())
+            return@intent
         if(endMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndDay)
         reduce {
@@ -65,6 +75,8 @@ class WriteEventViewModel(
     }
 
     fun onEndDayChanged(endDay: String) = intent {
+        if(isValidNumberInput(2, endDay).not())
+            return@intent
         reduce {
             state.copy(endDay = endDay)
         }
@@ -72,5 +84,9 @@ class WriteEventViewModel(
 
     fun registerEvent() {
 
+    }
+
+    private fun isValidNumberInput(maxLength: Int, input: String): Boolean {
+        return !(input.length > maxLength || input.toIntOrNull() == null)
     }
 }

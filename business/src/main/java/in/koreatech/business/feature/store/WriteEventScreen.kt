@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -297,7 +299,8 @@ private fun DateInputRow(
             onValueChange = onYearChanged,
             label = "0000",
             singleLine = true,
-            modifier = Modifier.focusRequester(yearFocusRequester)
+            modifier = Modifier.focusRequester(yearFocusRequester),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
@@ -307,7 +310,8 @@ private fun DateInputRow(
             onValueChange = onMonthChanged,
             label = "00",
             singleLine = true,
-            modifier = Modifier.focusRequester(monthFocusRequester)
+            modifier = Modifier.focusRequester(monthFocusRequester),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
@@ -317,7 +321,8 @@ private fun DateInputRow(
             onValueChange = onDayChanged,
             label = "00",
             singleLine = true,
-            modifier = Modifier.focusRequester(dayFocusRequester)
+            modifier = Modifier.focusRequester(dayFocusRequester),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
     }
 }
