@@ -2,31 +2,29 @@ package `in`.koreatech.business.feature.store
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,8 +34,8 @@ import `in`.koreatech.business.feature.textfield.LinedWhiteTextField
 import `in`.koreatech.business.ui.theme.ColorCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
-import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Preview
 @Composable
@@ -47,17 +45,23 @@ fun WriteEventScreen(
 ) {
     val state = viewModel.collectAsState().value
     val scrollState = rememberScrollState()
+    val startYearFR = remember { FocusRequester() }
+    val startMonthFR = remember { FocusRequester() }
+    val startDayFR = remember { FocusRequester() }
+    val endYearFR = remember { FocusRequester() }
+    val endMonthFR = remember { FocusRequester() }
+    val endDayFR = remember { FocusRequester() }
 
     Column(
         modifier = modifier.verticalScroll(scrollState)
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            text = "사진"
+            text = stringResource(id = R.string.image)
         )
         Row {
             Text(
-                text = "이벤트/공지와 관련된 사진을 올려보세요.",
+                text = stringResource(id = R.string.upload_event_image_instruction),
                 color = ColorTextDescription
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -87,7 +91,7 @@ fun WriteEventScreen(
         ) {
             Text(
                 fontWeight = FontWeight.Bold,
-                text = "제목"
+                text = stringResource(id = R.string.title)
             )
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "0/25")
@@ -98,7 +102,7 @@ fun WriteEventScreen(
                 .fillMaxWidth(),
             value = state.title,
             onValueChange = { viewModel.onTitleChanged(it) },
-            label = "이벤트/공지 제목을 입력해주세요.",
+            label = stringResource(id = R.string.input_event_title_instruction)
         )
 
         Row(
@@ -106,7 +110,7 @@ fun WriteEventScreen(
         ) {
             Text(
                 fontWeight = FontWeight.Bold,
-                text = "이벤트/공지 내용"
+                text = stringResource(id = R.string.event_content)
             )
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "0/500")
@@ -117,13 +121,13 @@ fun WriteEventScreen(
                 .fillMaxWidth(),
             value = state.content,
             onValueChange = { viewModel.onContentChanged(it) },
-            label = "이벤트/공지 내용을 입력해주세요.",
+            label = stringResource(id = R.string.input_event_content_instruction)
         )
 
         Text(
             modifier = Modifier.padding(top = 24.dp),
             fontWeight = FontWeight.Bold,
-            text = "이벤트/공지 등록 기간"
+            text = stringResource(id = R.string.event_period)
         )
 
         Row(
@@ -138,7 +142,7 @@ fun WriteEventScreen(
                 .background(ColorCardBackground)
             ) {
                 Text(
-                    text = "시작일",
+                    text = stringResource(id = R.string.start_date),
                     fontWeight = FontWeight.Bold,
                     color = ColorTextDescription,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -149,9 +153,12 @@ fun WriteEventScreen(
                 year = state.startYear,
                 month = state.startMonth,
                 day = state.startDay,
-                onStartYearChanged = { viewModel.onStartYearChanged(it) },
-                onStartMonthChanged = { viewModel.onStartMonthChanged(it) },
-                onStartDayChanged = { viewModel.onStartDayChanged(it) }
+                onYearChanged = { viewModel.onStartYearChanged(it) },
+                onMonthChanged = { viewModel.onStartMonthChanged(it) },
+                onDayChanged = { viewModel.onStartDayChanged(it) },
+                yearFocusRequester = startYearFR,
+                monthFocusRequester = startMonthFR,
+                dayFocusRequester = startDayFR
             )
         }
         Row(
@@ -166,7 +173,7 @@ fun WriteEventScreen(
                 .background(ColorCardBackground)
             ) {
                 Text(
-                    text = "종료일",
+                    text = stringResource(id = R.string.end_date),
                     fontWeight = FontWeight.Bold,
                     color = ColorTextDescription,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -177,9 +184,12 @@ fun WriteEventScreen(
                 year = state.endYear,
                 month = state.endMonth,
                 day = state.endDay,
-                onStartYearChanged = { viewModel.onEndYearChanged(it) },
-                onStartMonthChanged = { viewModel.onEndMonthChanged(it) },
-                onStartDayChanged = { viewModel.onEndDayChanged(it) }
+                onYearChanged = { viewModel.onEndYearChanged(it) },
+                onMonthChanged = { viewModel.onEndMonthChanged(it) },
+                onDayChanged = { viewModel.onEndDayChanged(it) },
+                yearFocusRequester = endYearFR,
+                monthFocusRequester = endMonthFR,
+                dayFocusRequester = endDayFR
             )
         }
 
@@ -230,7 +240,28 @@ fun WriteEventScreen(
             }
         }
     }
-
+    viewModel.collectSideEffect {
+        when(it) {
+            WriteEventSideEffect.FocusStartYear -> {
+                startYearFR.requestFocus()
+            }
+            WriteEventSideEffect.FocusStartMonth -> {
+                startMonthFR.requestFocus()
+            }
+            WriteEventSideEffect.FocusStartDay -> {
+                startDayFR.requestFocus()
+            }
+            WriteEventSideEffect.FocusEndYear -> {
+                endYearFR.requestFocus()
+            }
+            WriteEventSideEffect.FocusEndMonth -> {
+                endMonthFR.requestFocus()
+            }
+            WriteEventSideEffect.FocusEndDay -> {
+                endDayFR.requestFocus()
+            }
+        }
+    }
 }
 
 @Composable
@@ -250,9 +281,12 @@ private fun DateInputRow(
     year: String = "",
     month: String = "",
     day: String = "",
-    onStartYearChanged: (String) -> Unit = {},
-    onStartMonthChanged: (String) -> Unit = {},
-    onStartDayChanged: (String) -> Unit = {},
+    onYearChanged: (String) -> Unit = {},
+    onMonthChanged: (String) -> Unit = {},
+    onDayChanged: (String) -> Unit = {},
+    yearFocusRequester: FocusRequester = FocusRequester(),
+    monthFocusRequester: FocusRequester = FocusRequester(),
+    dayFocusRequester: FocusRequester = FocusRequester()
 ) {
     Row(
         modifier = modifier,
@@ -260,17 +294,30 @@ private fun DateInputRow(
     ) {
         LinedWhiteTextField(
             value = year,
-            onValueChange = onStartYearChanged,
+            onValueChange = onYearChanged,
             label = "0000",
-            singleLine = true
+            singleLine = true,
+            modifier = Modifier.focusRequester(yearFocusRequester)
         )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField(value = month, onValueChange = onStartMonthChanged, label = "00", singleLine = true)
+        LinedWhiteTextField(
+            value = month,
+            onValueChange = onMonthChanged,
+            label = "00",
+            singleLine = true,
+            modifier = Modifier.focusRequester(monthFocusRequester)
+        )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField(value = day, onValueChange = onStartDayChanged, label = "00", singleLine = true)
+        LinedWhiteTextField(
+            value = day,
+            onValueChange = onDayChanged,
+            label = "00",
+            singleLine = true,
+            modifier = Modifier.focusRequester(dayFocusRequester)
+        )
     }
 }

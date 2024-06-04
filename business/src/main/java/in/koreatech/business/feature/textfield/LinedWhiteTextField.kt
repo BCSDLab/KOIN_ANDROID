@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
@@ -49,8 +50,8 @@ fun LinedWhiteTextField(
             it()
             Text(
                 modifier = Modifier.padding(start = 2.dp),
-                text = if (value.isEmpty()) label else "",
-                color = ColorTextFieldDescription,
+                text = label,
+                color = if(value.isEmpty()) ColorTextFieldDescription else Color.Transparent
             )
         }
     }

@@ -85,4 +85,13 @@
     <string name="file_icon">upload item image</string>
     <string name="search_icon">search</string>
     <string name="email_not_validate">존재하지 않는 도메인입니다.</string>
+    <string name="upload_event_image_instruction">이벤트/공지와 관련된 사진을 올려보세요.</string>
+    <string name="image">사진</string>
+    <string name="title">제목</string>
+    <string name="input_event_title_instruction">이벤트/공지 제목을 입력해주세요.</string>
+    <string name="event_content">이벤트/공지 내용</string>
+    <string name="input_event_content_instruction">이벤트/공지 내용을 입력해주세요.</string>
+    <string name="event_period">이벤트/공지 등록 기간</string>
+    <string name="start_date">시작일</string>
+    <string name="end_date">종료일</string>
 </resources>
