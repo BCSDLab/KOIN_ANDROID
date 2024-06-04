@@ -15,17 +15,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyStoreDetailViewModel @Inject constructor(
-    private val getStoreWithMenuUseCase: GetStoreWithMenuUseCase
 ) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
     override val container = container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
-    fun getStoreWithMenu(storeId: Int) {
-        val test=11
-        viewModelScope.launch {
-            getStoreWithMenuUseCase(test).also { store ->
-                intent {
-                    reduce { state.copy(storeInfo = store)}
-                }
-            }
-        }
-    }
 }
