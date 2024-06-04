@@ -67,7 +67,7 @@ fun WriteEventScreen(
                 color = ColorTextDescription
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/3")
+            CountLimitText(text = "0/${viewModel.maxImageLength}")
         }
         Row(
             modifier = Modifier
@@ -96,7 +96,7 @@ fun WriteEventScreen(
                 text = stringResource(id = R.string.title)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/25")
+            CountLimitText(text = "${state.title.length}/${viewModel.maxTitleLength}" )
         }
         LinedWhiteTextField(
             modifier = Modifier
@@ -115,7 +115,7 @@ fun WriteEventScreen(
                 text = stringResource(id = R.string.event_content)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/500")
+            CountLimitText(text = "${state.content.length}/${viewModel.maxContentLength}")
         }
         LinedWhiteTextField(
             modifier = Modifier
