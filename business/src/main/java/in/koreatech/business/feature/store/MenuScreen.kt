@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.business.R
@@ -24,7 +25,7 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 
 @Composable
 fun MenuScreen() {
-    val list = listOf("Menu1", "Menu2", "Menu3", "d", "sd", "sd", "sd", "sd")
+    val list = listOf("Menu1", "Menu2", "Menu3")
     Column(modifier = Modifier.fillMaxSize()) {
         list.forEach { item ->
             Row(
@@ -36,14 +37,14 @@ fun MenuScreen() {
             ) {
                 Column {
                     Text(text = item, fontWeight = FontWeight(500))
-                    Text(text = "가격", color = ColorPrimary)
+                    Text(text = stringResource(R.string.price), color = ColorPrimary)
                 }
                 Image(
                     modifier = Modifier
                         .width(68.dp)
                         .height(68.dp),
-                    painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "메뉴이미지",
+                    painter = painterResource(id = R.drawable.ic_koin_logo),
+                    contentDescription = stringResource(R.string.menu_default_image),
                 )
             }
             Divider(
