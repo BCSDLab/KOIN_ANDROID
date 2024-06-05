@@ -9,6 +9,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import java.io.InputStream
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class PreSignedUrlRepositoryImpl @Inject constructor(
     private val preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource
@@ -36,10 +37,9 @@ class PreSignedUrlRepositoryImpl @Inject constructor(
             val file = bitmap.toRequestBody(mediaType.toMediaTypeOrNull())
             preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
             Result.success(Unit)
-        } catch (e: HttpException) {
-            Result.failure(e)
+        }  catch (e: CancellationException) {
+            throw e
         } catch (t: Throwable) {
-            t.printStackTrace()
             Result.failure(t)
         }
     }

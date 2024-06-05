@@ -8,11 +8,12 @@ import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
 import retrofit2.HttpException
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class OwnerSignupRepositoryImpl @Inject constructor(
     private val ownerRemoteDataSource: OwnerRemoteDataSource,
     private val signupTermsLocalDataSource: SignupTermsLocalDataSource
-): OwnerSignupRepository {
+) : OwnerSignupRepository {
     override suspend fun getPrivacyTermText(): String {
         return signupTermsLocalDataSource.getPrivacyTermText()
     }
@@ -25,7 +26,7 @@ class OwnerSignupRepositoryImpl @Inject constructor(
         email: String
     ): Result<Unit> {
         return try {
-            ownerRemoteDataSource.postVerificationEmail (
+            ownerRemoteDataSource.postVerificationEmail(
                 OwnerVerificationEmailRequest(
                     address = email
                 )
@@ -49,11 +50,10 @@ class OwnerSignupRepositoryImpl @Inject constructor(
                 )
             )
             Result.success(Unit)
-        } catch (e: HttpException) {
-            e.httpExceptionMapper()
+        } catch (e: CancellationException) {
+            throw e
         } catch (t: Throwable) {
             Result.failure(t)
         }
     }
-
 }
