@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.compose.numberPicker)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))
