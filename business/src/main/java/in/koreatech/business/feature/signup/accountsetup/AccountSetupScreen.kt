@@ -176,7 +176,7 @@ fun AccountSetupScreen(
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 errorText = stringResource(id = R.string.password_not_validate),
                 isPassword = true,
-                isError = !state.password.isValidPassword() && state.password.isNotEmpty(),
+                isError = state.isPasswordError,
             )
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -193,7 +193,7 @@ fun AccountSetupScreen(
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 isPassword = true,
                 errorText = stringResource(id = R.string.password_mismatch),
-                isError = state.password != state.passwordConfirm && state.passwordConfirm.isNotEmpty(),
+                isError = state.isPasswordConfirmError,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -211,7 +211,7 @@ fun AccountSetupScreen(
                 label = stringResource(id = R.string.enter_phone_number),
                 textStyle = TextStyle.Default.copy(fontSize = 15.sp),
                 errorText = stringResource(id = R.string.phone_number_not_validate),
-                isError = state.phoneNumber.length != 11 && state.phoneNumber.isNotEmpty(),
+                isError = state.isPhoneNumberError,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
