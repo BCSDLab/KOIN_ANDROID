@@ -41,7 +41,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
                 name = name,
                 nickName = nickName,
                 password = password,
-                phoneNumber = phoneNumber.formatPhoneNumber(),
+                phoneNumber = phoneNumber,
                 studentNumber = studentNumber,
             ).map {
                 SignupContinuationState.RequestedEmailValidation

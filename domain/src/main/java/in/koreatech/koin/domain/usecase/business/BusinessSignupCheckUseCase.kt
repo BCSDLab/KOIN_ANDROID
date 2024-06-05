@@ -3,8 +3,8 @@ package `in`.koreatech.koin.domain.usecase.business
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
-import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import `in`.koreatech.koin.domain.util.ext.isNotValidPassword
+import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
 
 class BusinessSignupCheckUseCase @Inject constructor(
@@ -23,13 +23,13 @@ class BusinessSignupCheckUseCase @Inject constructor(
             (phoneNumber.length != 11) -> Result.success(SignupContinuationState.PhoneNumberIsNotValidate)
             else -> {
                 val authToken = ownerVerificationCodeRepository.verifySmsCode(
-                    phoneNumber.formatPhoneNumber(),
+                    phoneNumber,
                     verificationCode
                 )
                 authToken.getOrDefault(defaultValue = null)
                     ?.let { tokenRepository.saveOwnerAccessToken(it.token) }
                 if (authToken.isFailure) {
-                    Result.failure(authToken.exceptionOrNull()!!)
+                    Result.failure(authToken.exceptionOrNull() ?: CancellationException())
                 } else
                     Result.success(SignupContinuationState.CheckComplete)
             }
