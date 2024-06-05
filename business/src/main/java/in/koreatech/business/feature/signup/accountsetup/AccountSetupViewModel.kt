@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.business.BusinessSignupCheckUseCase
 import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
+import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -30,19 +31,19 @@ class AccountSetupViewModel @Inject constructor(
 
     fun onPasswordChanged(password: String) = intent {
         reduce {
-            state.copy(password = password)
+            state.copy(password = password, isPasswordError = !password.isValidPassword())
         }
     }
 
     fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
         reduce {
-            state.copy(passwordConfirm = passwordConfirm)
+            state.copy(passwordConfirm = passwordConfirm, isPasswordConfirmError = state.password != passwordConfirm)
         }
     }
 
     fun onPhoneNumChanged(phoneNumber: String) = intent {
         reduce {
-            state.copy(phoneNumber = phoneNumber)
+            state.copy(phoneNumber = phoneNumber, isPhoneNumberError = phoneNumber.length != 11)
         }
     }
 
