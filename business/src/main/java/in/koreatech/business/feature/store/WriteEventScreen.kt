@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +36,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedWhiteTextField
 import `in`.koreatech.business.ui.theme.ColorCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -67,7 +69,7 @@ fun WriteEventScreen(
                 color = ColorTextDescription
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/${viewModel.maxImageLength}")
+            CountLimitText(text = "0/${viewModel.maxImageLength}", inputTextLength = state.images.size, limit = viewModel.maxImageLength)
         }
         Row(
             modifier = Modifier
@@ -96,7 +98,7 @@ fun WriteEventScreen(
                 text = stringResource(id = R.string.title)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "${state.title.length}/${viewModel.maxTitleLength}" )
+            CountLimitText(text = "${state.title.length}/${viewModel.maxTitleLength}", inputTextLength = state.title.length, limit = viewModel.maxTitleLength)
         }
         LinedWhiteTextField(
             modifier = Modifier
@@ -104,18 +106,20 @@ fun WriteEventScreen(
                 .fillMaxWidth(),
             value = state.title,
             onValueChange = { viewModel.onTitleChanged(it) },
-            label = stringResource(id = R.string.input_event_title_instruction)
+            label = stringResource(id = R.string.input_event_title_instruction),
+            showAlert = state.showTitleInputAlert,
+            alertMessage = stringResource(R.string.text_should_inputted)
         )
 
         Row(
-            modifier = Modifier.padding(top = 19.dp)
+            modifier = Modifier.padding(top = 12.dp)
         ) {
             Text(
                 fontWeight = FontWeight.Bold,
                 text = stringResource(id = R.string.event_content)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "${state.content.length}/${viewModel.maxContentLength}")
+            CountLimitText(text = "${state.content.length}/${viewModel.maxContentLength}", inputTextLength = state.content.length, limit = viewModel.maxContentLength)
         }
         LinedWhiteTextField(
             modifier = Modifier
@@ -123,11 +127,13 @@ fun WriteEventScreen(
                 .fillMaxWidth(),
             value = state.content,
             onValueChange = { viewModel.onContentChanged(it) },
-            label = stringResource(id = R.string.input_event_content_instruction)
+            label = stringResource(id = R.string.input_event_content_instruction),
+            showAlert = state.showContentInputAlert,
+            alertMessage = stringResource(R.string.text_should_inputted)
         )
 
         Text(
-            modifier = Modifier.padding(top = 24.dp),
+            modifier = Modifier.padding(top = 17.dp),
             fontWeight = FontWeight.Bold,
             text = stringResource(id = R.string.event_period)
         )
@@ -160,7 +166,8 @@ fun WriteEventScreen(
                 onDayChanged = { viewModel.onStartDayChanged(it) },
                 yearFocusRequester = startYearFR,
                 monthFocusRequester = startMonthFR,
-                dayFocusRequester = startDayFR
+                dayFocusRequester = startDayFR,
+                showDateInputAlert = state.showDateInputAlert
             )
         }
         Row(
@@ -191,7 +198,25 @@ fun WriteEventScreen(
                 onDayChanged = { viewModel.onEndDayChanged(it) },
                 yearFocusRequester = endYearFR,
                 monthFocusRequester = endMonthFR,
-                dayFocusRequester = endDayFR
+                dayFocusRequester = endDayFR,
+                showDateInputAlert = state.showDateInputAlert
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            modifier = Modifier.padding(top = 4.dp, start = 8.dp, end = 8.dp)
+        ) {
+            Image(
+                colorFilter = ColorFilter.tint(ColorSecondary),
+                painter = painterResource(R.drawable.exclamation),
+                contentDescription = "Alert",
+                alpha = if (state.showDateInputAlert) 1f else 0f
+            )
+            Text(
+                modifier = Modifier.padding(start = 1.5.dp),
+                text = if (state.showDateInputAlert) stringResource(id = R.string.text_should_inputted) else "",
+                color = ColorSecondary,
             )
         }
 
@@ -268,10 +293,12 @@ fun WriteEventScreen(
 
 @Composable
 private fun CountLimitText(
-    text: String
+    text: String,
+    inputTextLength: Int,
+    limit: Int
 ) {
     Text(
-        color = ColorTextDescription,
+        color = if(inputTextLength == limit) ColorSecondary else ColorTextDescription,
         modifier = Modifier.padding(end = 8.dp),
         text = text
     )
@@ -288,7 +315,8 @@ private fun DateInputRow(
     onDayChanged: (String) -> Unit = {},
     yearFocusRequester: FocusRequester = FocusRequester(),
     monthFocusRequester: FocusRequester = FocusRequester(),
-    dayFocusRequester: FocusRequester = FocusRequester()
+    dayFocusRequester: FocusRequester = FocusRequester(),
+    showDateInputAlert: Boolean = false
 ) {
     Row(
         modifier = modifier,
@@ -300,7 +328,9 @@ private fun DateInputRow(
             label = "0000",
             singleLine = true,
             modifier = Modifier.focusRequester(yearFocusRequester),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isAlertRowAvailable = false,
+            showAlert = showDateInputAlert
         )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
@@ -311,7 +341,9 @@ private fun DateInputRow(
             label = "00",
             singleLine = true,
             modifier = Modifier.focusRequester(monthFocusRequester),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isAlertRowAvailable = false,
+            showAlert = showDateInputAlert
         )
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
@@ -322,7 +354,9 @@ private fun DateInputRow(
             label = "00",
             singleLine = true,
             modifier = Modifier.focusRequester(dayFocusRequester),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isAlertRowAvailable = false,
+            showAlert = showDateInputAlert
         )
     }
 }

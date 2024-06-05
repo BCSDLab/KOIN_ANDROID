@@ -10,4 +10,7 @@ data class WriteEventState(
     val endMonth: String = "",
     val endDay: String = "",
     val images: List<String> = emptyList(),
+    val showTitleInputAlert: Boolean = false,
+    val showContentInputAlert: Boolean = false,
+    val showDateInputAlert: Boolean = false,
 )

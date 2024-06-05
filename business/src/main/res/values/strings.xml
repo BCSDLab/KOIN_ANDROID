@@ -94,4 +94,5 @@
     <string name="event_period">이벤트/공지 등록 기간</string>
     <string name="start_date">시작일</string>
     <string name="end_date">종료일</string>
+    <string name="text_should_inputted">필수 입력 항목입니다.</string>
 </resources>
