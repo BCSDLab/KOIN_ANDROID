@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -179,16 +180,16 @@ fun InsertStoreProgressBar(
     Row(
         modifier = modifier
             .padding(top = 24.dp)
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 32.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stringResource(id = resourceId),
             fontSize = 15.sp,
             color = ColorSecondary
         )
-
+        Spacer(modifier = Modifier.weight(1f))
         Text(
-            modifier = Modifier.padding(start = 160.dp),
             text = stringResource(id = pageId),
             fontSize = 15.sp,
             color = ColorSecondary
