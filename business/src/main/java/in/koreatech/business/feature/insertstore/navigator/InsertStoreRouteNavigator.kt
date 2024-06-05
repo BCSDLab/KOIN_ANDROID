@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -16,6 +17,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.gson.Gson
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.OperatingTimeSettingScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreen
@@ -25,7 +28,8 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 @Composable
 fun InsertStoreNavigator(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    detailInfoScreenViewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
 ) {
     NavHost(
         navController = navController,
@@ -82,9 +86,28 @@ fun InsertStoreNavigator(
             route = InsertStoreRoute.DETAIL_INFO.name
         ){
             InsertDetailInfoScreen(
-                onBackPress = {
+                reviseButtonClicked = {
+                    navController.navigate(InsertStoreRoute.OPERATING_TIME.name)
+                },
+                onBackPressed = {
                     navController.navigateUp()
+                },
+                viewModel = detailInfoScreenViewModel,
+
+                navigateToCheckScreen = {
+
                 }
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.OPERATING_TIME.name
+        ){
+            OperatingTimeSettingScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                viewModel = detailInfoScreenViewModel
             )
         }
     }
