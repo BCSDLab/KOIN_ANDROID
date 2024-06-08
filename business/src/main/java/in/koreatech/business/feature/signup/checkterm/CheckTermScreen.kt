@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,86 +58,88 @@ fun CheckTermScreen(
     onNextClicked: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
+    val scrollState = rememberScrollState()
     val scrollStatePrivacy = rememberScrollState()
     val scrollStateKoin = rememberScrollState()
 
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
-        ) {
-            IconButton(
-                onClick = { viewModel.onBackButtonClicked() },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
-                )
-            }
-
-            Text(
-                text = stringResource(id = R.string.sign_up),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold,
-                    text = stringResource(id = R.string.check_terms)
-                )
-                Text(
-                    text = stringResource(id = R.string.one_third),
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-
-            Canvas(
+        Column {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(vertical = 12.dp)
             ) {
-                drawLine(
-                    color = ColorUnarchived,
-                    start = Offset(-40f, 0f),
-                    end = Offset(size.width + 35, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
+                IconButton(
+                    onClick = { viewModel.onBackButtonClicked() },
+                    modifier = Modifier.align(Alignment.CenterStart)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(id = R.string.back_icon),
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.sign_up),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.Center)
                 )
-                drawLine(
-                    color = ColorPrimary,
-                    start = Offset(-40f, 0f),
-                    end = Offset((size.width + 40) / 3 * 2, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
+                        text = stringResource(id = R.string.check_terms)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.one_third),
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    drawLine(
+                        color = ColorUnarchived,
+                        start = Offset(-40f, 0f),
+                        end = Offset(size.width + 35, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                    drawLine(
+                        color = ColorPrimary,
+                        start = Offset(-40f, 0f),
+                        end = Offset((size.width + 40) / 3, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
             }
         }
 
-
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp).verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -191,8 +194,7 @@ fun CheckTermScreen(
                         .width(24.dp)
                         .clickable {
                             viewModel.onPrivacyTermCheckedChanged()
-                            if (state.isCheckedKoinTerms)
-                                viewModel.onAllTermCheckedChanged()
+
                         }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -236,8 +238,6 @@ fun CheckTermScreen(
                         .width(24.dp)
                         .clickable {
                             viewModel.onKoinTermCheckedChanged()
-                            if (state.isCheckedPrivacyTerms)
-                                viewModel.onAllTermCheckedChanged()
                         }
                 )
 
