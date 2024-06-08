@@ -11,15 +11,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -41,12 +41,8 @@ import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
-import `in`.koreatech.koin.domain.util.ext.isValidPassword
-import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.reduce
 
 @Composable
 fun AccountSetupScreen(
@@ -55,79 +51,89 @@ fun AccountSetupScreen(
     onBackClicked: () -> Unit = {},
     onNextClicked: () -> Unit = {},
 ) {
-
+    val scrollState = rememberScrollState()
     val state = viewModel.collectAsState().value
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
-        ) {
-            IconButton(
-                onClick = { viewModel.onBackButtonClicked() },
-                modifier = Modifier.align(Alignment.CenterStart)
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                IconButton(
+                    onClick = { viewModel.onBackButtonClicked() },
+                    modifier = Modifier.align(Alignment.CenterStart)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(id = R.string.back_icon),
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.sign_up),
+                    fontSize = 18.sp,
+                    fontWeight = Bold,
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
 
-            Text(
-                text = stringResource(id = R.string.sign_up),
-                fontSize = 18.sp,
-                fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+            Spacer(modifier = Modifier.height(20.dp))
 
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        color = ColorPrimary,
+                        fontWeight = Bold,
+                        text = stringResource(id = R.string.input_basic_information)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.two_third),
+                        color = ColorPrimary,
+                        fontWeight = Bold,
+                    )
+                }
+
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    drawLine(
+                        color = ColorUnarchived,
+                        start = Offset(-40f, 0f),
+                        end = Offset(size.width + 40, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                    drawLine(
+                        color = ColorPrimary,
+                        start = Offset(-40f, 0f),
+                        end = Offset((size.width + 35) / 3 * 2, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 24.dp).verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier,
-                    color = ColorPrimary,
-                    fontWeight = Bold,
-                    text = stringResource(id = R.string.input_basic_information),
-                )
-                Text(
-                    text = stringResource(id = R.string.two_third),
-                    color = ColorPrimary,
-                    fontWeight = Bold,
-                )
-            }
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                drawLine(
-                    color = ColorUnarchived,
-                    start = Offset(-40f, 0f),
-                    end = Offset(size.width + 35, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-                drawLine(
-                    color = ColorPrimary,
-                    start = Offset(-40f, 0f),
-                    end = Offset((size.width + 40) / 3 * 2, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
