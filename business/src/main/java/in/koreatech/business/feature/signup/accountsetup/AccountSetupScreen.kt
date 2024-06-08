@@ -18,6 +18,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -40,8 +42,11 @@ import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
+import kotlinx.coroutines.flow.combine
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
 
 @Composable
 fun AccountSetupScreen(
@@ -268,7 +273,7 @@ fun AccountSetupScreen(
                 .fillMaxWidth()
                 .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.signUpContinuationError == null && state.isButtonEnabled,
+                enabled = state.isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,
