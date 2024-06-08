@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
@@ -73,7 +72,7 @@ fun BusinessAuthScreen(
     onNextClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
-
+    val scrollState = rememberScrollState()
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
 
@@ -122,78 +121,89 @@ fun BusinessAuthScreen(
             }
         }
     )
-    Column(
-        modifier = modifier,
-    ) {
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp)
-        ) {
-            IconButton(
-                onClick = { businessAuthViewModel.onNavigateToBackScreen() },
-                modifier = Modifier.align(Alignment.CenterStart)
+    Column(
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back),
-                    contentDescription = stringResource(id = R.string.back_icon),
+                IconButton(
+                    onClick = { businessAuthViewModel.onNavigateToBackScreen() },
+                    modifier = Modifier.align(Alignment.CenterStart)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(id = R.string.back_icon),
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.sign_up),
+                    fontSize = 18.sp,
+                    fontWeight = Bold,
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
 
-            Text(
-                text = stringResource(id = R.string.sign_up),
-                fontSize = 18.sp,
-                fontWeight = Bold,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        color = ColorPrimary,
+                        fontWeight = Bold,
+                        text = stringResource(id = R.string.business_auth)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.three_third),
+                        color = ColorPrimary,
+                        fontWeight = Bold,
+                    )
+                }
+
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    drawLine(
+                        color = ColorUnarchived,
+                        start = Offset(-40f, 0f),
+                        end = Offset(size.width + 35, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                    drawLine(
+                        color = ColorPrimary,
+                        start = Offset(-40f, 0f),
+                        end = Offset(size.width + 40, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(20.dp))
         Column(
             modifier = Modifier
-                .padding(horizontal = 32.dp)
+                .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    modifier = Modifier,
-                    color = ColorPrimary,
-                    fontWeight = Bold,
-                    text = stringResource(id = R.string.business_auth),
-                )
-                Text(
-                    text = stringResource(id = R.string.three_third),
-                    color = ColorPrimary,
-                    fontWeight = Bold,
-                )
-            }
-
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                drawLine(
-                    color = ColorUnarchived,
-                    start = Offset(-40f, 0f),
-                    end = Offset(size.width + 35, size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-                drawLine(
-                    color = ColorPrimary,
-                    start = Offset(-40f, 0f),
-                    end = Offset((size.width + 40) , size.height),
-                    strokeWidth = 4.dp.toPx(),
-                    cap = StrokeCap.Round
-                )
-            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
