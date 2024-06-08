@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.compose.navigation)
+    implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.androidx.security.crypto)
