@@ -2,17 +2,15 @@
 package `in`.koreatech.business.di.resource
 
 import android.content.Context
-import android.util.Log
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.job
 import kotlinx.coroutines.withContext
 
-class TokenLocalDataSource @Inject constructor(
+class BusinessTokenLocalDataSource @Inject constructor(
     @ApplicationContext applicationContext: Context,
     private val dispatchersIO: CoroutineDispatcher,
 ) {
