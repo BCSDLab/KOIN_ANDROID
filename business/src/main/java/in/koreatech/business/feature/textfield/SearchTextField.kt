@@ -53,7 +53,7 @@ fun SearchTextField(
         decorationBox = { innerTextField ->
             Row(
                 modifier = Modifier.fillMaxWidth().height(40.dp)
-                    .background(color=Gray5, shape = RoundedCornerShape(4.dp))
+                    .background(color = Gray5, shape = RoundedCornerShape(4.dp))
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
