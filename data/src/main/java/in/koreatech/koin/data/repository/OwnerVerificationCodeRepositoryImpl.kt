@@ -1,6 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
+import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.mapper.toAuthToken
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -9,7 +9,6 @@ import `in`.koreatech.koin.domain.model.owner.OwnerAuthToken
 import `in`.koreatech.koin.domain.repository.OwnerVerificationCodeRepository
 import retrofit2.HttpException
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 class OwnerVerificationCodeRepositoryImpl @Inject constructor(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
@@ -38,18 +37,14 @@ class OwnerVerificationCodeRepositoryImpl @Inject constructor(
         phoneNumber: String,
         verificationCode: String
     ): Result<OwnerAuthToken?> {
-        return try {
+        return safeApiCall {
             val tempToken = ownerRemoteDataSource.postVerificationCodeSms(
                 VerificationCodeSmsRequest(
                     phoneNumber = phoneNumber,
                     certificationCode = verificationCode
                 )
             )
-            Result.success(tempToken.toAuthToken())
-        } catch (e: CancellationException) {
-            throw e
-        } catch (t: Throwable) {
-            Result.failure(t)
+            tempToken.toAuthToken()
         }
     }
 }
