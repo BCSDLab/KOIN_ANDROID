@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
+import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
@@ -43,17 +44,12 @@ class OwnerSignupRepositoryImpl @Inject constructor(
     override suspend fun requestSmsVerificationCode(
         phoneNumber: String
     ): Result<Unit> {
-        return try {
+        return safeApiCall {
             ownerRemoteDataSource.postVerificationSms(
                 VerificationSmsRequest(
                     phoneNumber = phoneNumber
                 )
             )
-            Result.success(Unit)
-        } catch (e: CancellationException) {
-            throw e
-        } catch (t: Throwable) {
-            Result.failure(t)
         }
     }
 }
