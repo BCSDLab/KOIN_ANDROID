@@ -10,6 +10,10 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 internal fun configureAndroidProject(
     commonExtension: CommonExtension<*, *, *, *>,
 ) {
+    (commonExtension as? ApplicationExtension)?.let {
+        it.defaultConfig.targetSdk = 34
+    }
+
     commonExtension.apply {
         compileSdk = 34
         (this as? ApplicationExtension)?.let {
@@ -30,6 +34,7 @@ internal fun configureAndroidProject(
             jvmTarget = JavaVersion.VERSION_11.toString()
         }
     }
+
 }
 
 fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
