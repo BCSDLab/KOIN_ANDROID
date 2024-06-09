@@ -8,4 +8,9 @@ interface OwnerVerificationCodeRepository {
         address: String,
         verificationCode: String
     ): Result<OwnerAuthToken?>
+
+    suspend fun verifySmsCode(
+        phoneNumber: String,
+        verificationCode: String
+    ): Result<OwnerAuthToken?>
 }
