@@ -1,11 +1,24 @@
 package `in`.koreatech.business.feature.signup.accountsetup
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.internal.composableLambdaInstance
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.usecase.business.BusinessSignupCheckUseCase
 import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
+import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -22,6 +35,48 @@ class AccountSetupViewModel @Inject constructor(
     override val container =
         container<AccountSetupState, AccountSetupSideEffect>(AccountSetupState())
 
+
+    private val passwordFlow = container.stateFlow
+        .map { it.password }
+        .distinctUntilChanged()
+
+    private val idFlow = container.stateFlow
+        .map { it.id }
+        .distinctUntilChanged()
+
+    private val passwordConfirmFlow = container.stateFlow
+        .map { it.passwordConfirm }
+        .distinctUntilChanged()
+
+    private val phoneNumberFlow = container.stateFlow
+        .map { it.phoneNumber }
+        .distinctUntilChanged()
+
+    private val authCodeFlow = container.stateFlow
+        .map { it.authCode }
+        .distinctUntilChanged()
+
+    init {
+        combine(
+            passwordFlow,
+            idFlow,
+            passwordConfirmFlow,
+            phoneNumberFlow,
+            authCodeFlow
+        ) { password, id, passwordConfirm, phoneNumber, authCode ->
+            password.isNotEmpty() && id.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty()
+        }.distinctUntilChanged()
+            .onEach {
+                updateButton(it)
+            }.launchIn(viewModelScope)
+    }
+
+    private fun updateButton(enabled: Boolean) = intent {
+        reduce {
+            state.copy(isButtonEnabled = enabled)
+        }
+    }
+
     fun onIdChanged(id: String) = intent {
         reduce {
             state.copy(id = id)
@@ -30,19 +85,22 @@ class AccountSetupViewModel @Inject constructor(
 
     fun onPasswordChanged(password: String) = intent {
         reduce {
-            state.copy(password = password)
+            state.copy(password = password, isPasswordError = !password.isValidPassword())
         }
     }
 
     fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
         reduce {
-            state.copy(passwordConfirm = passwordConfirm)
+            state.copy(
+                passwordConfirm = passwordConfirm,
+                isPasswordConfirmError = state.password != passwordConfirm
+            )
         }
     }
 
     fun onPhoneNumChanged(phoneNumber: String) = intent {
         reduce {
-            state.copy(phoneNumber = phoneNumber)
+            state.copy(phoneNumber = phoneNumber, isPhoneNumberError = phoneNumber.length != 11)
         }
     }
 
