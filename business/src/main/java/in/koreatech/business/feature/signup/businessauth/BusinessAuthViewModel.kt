@@ -12,7 +12,6 @@ import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
-import `in`.koreatech.koin.domain.util.ext.formatPhoneNumber
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -124,7 +123,6 @@ class BusinessAuthViewModel @Inject constructor(
                 }
             }
         }
-
     }
 
     fun uploadImage(
@@ -163,7 +161,7 @@ class BusinessAuthViewModel @Inject constructor(
                 email,
                 name,
                 password,
-                phoneNumber.formatPhoneNumber(),
+                phoneNumber,
                 shopId,
                 shopName
             ).onSuccess {
