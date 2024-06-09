@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,9 +27,23 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 
 
 @Composable
-fun MenuScreen() {
-    val list = listOf("Menu1", "Menu2", "Menu3")
-    Column(modifier = Modifier.fillMaxSize()) {
+fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
+    val list =
+        listOf("Menu1", "Menu2", "Menu3", "Menu4", "Menu5", "Menu6", "Menu7", "Menu8", "Menu9", "Menu10")
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(scrollState.value) {
+        if (scrollState.value != 0 && currentPage != 0) {
+            scrollState.scrollTo(0)
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(enabled = verticalOffset || scrollState.value != 0, state = scrollState)
+    ) {
+
         list.forEach { item ->
             Row(
                 modifier = Modifier
