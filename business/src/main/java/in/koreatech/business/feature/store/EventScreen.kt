@@ -15,11 +15,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -38,48 +41,58 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventScreen() {
-    val list = listOf("Test1", "Test2", "Test3")
+fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
+    val list = listOf("Test1", "Test2", "Test3","Test4","Test5","Test6","Test7","Test8","Test9","Test10")
+    val scrollState = rememberScrollState()
     val expandedItem = List(list.size) { rememberSaveable { mutableStateOf(false) } }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Color.Black
-                )
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = stringResource(R.string.edit)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.edit))
-            }
-            Button(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = ColorTextField,
-                    contentColor = Color.Black
-                )
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_add_box),
-                    contentDescription = stringResource(R.string.add)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = stringResource(R.string.add))
-            }
+    LaunchedEffect(scrollState.value) {
+        if (scrollState.value != 0 && currentPage != 1) {
+            scrollState.scrollTo(0)
         }
+    }
 
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_edit),
+                contentDescription = stringResource(R.string.edit)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(R.string.edit))
+        }
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField,
+                contentColor = Color.Black
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_add_box),
+                contentDescription = stringResource(R.string.add)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(R.string.add))
+        }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(enabled = verticalOffset || scrollState.value != 0, state = scrollState)
+    ) {
         list.forEachIndexed { index, item ->
             val pagerState = rememberPagerState { 3 }
             if (expandedItem[index].value) {

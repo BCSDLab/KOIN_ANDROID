@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -61,7 +62,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 
 @Composable
-fun MyStoreDetailScreen(modifier: Modifier, viewModel: MyStoreDetailViewModel) {
+fun MyStoreDetailScreen(
+    modifier: Modifier,
+    viewModel: MyStoreDetailViewModel = MyStoreDetailViewModel()
+) {
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -119,6 +123,12 @@ private fun CollapsedTopBar(
             }
         }
     }
+    Divider(
+        color = ColorTextField,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+    )
 }
 
 @Composable
@@ -176,12 +186,19 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val isCollapsed: Boolean by remember {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val isCollapsedImage: Boolean by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
-    CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsed)
+    val isCollapsed: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 1 }
+    }
+    CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedImage)
 
     LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
         state = listState,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -264,8 +281,8 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                 Row(modifier = Modifier.padding(vertical = 5.dp)) {
                     Box(
                         modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                        )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
@@ -278,8 +295,8 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                     Spacer(modifier = Modifier.width(10.dp))
                     Box(
                         modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                        )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
@@ -292,8 +309,8 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                     Spacer(modifier = Modifier.width(10.dp))
                     Box(
                         modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                        )
                     ) {
                         Text(
                             modifier = Modifier.padding(6.dp),
@@ -342,22 +359,19 @@ fun ScrollView(viewModel: MyStoreDetailViewModel) {
                 }
             }
         }
-
         item {
-            Box(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
-                    state = pagerState,
-                ) { page ->
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        when (page) {
-                            0 -> MenuScreen()
-                            1 -> EventScreen()
-                        }
+            HorizontalPager(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(screenHeight - 145.dp),
+                state = pagerState,
+            ) { page ->
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    when (page) {
+                        0 -> MenuScreen(isCollapsed, pagerState.currentPage)
+                        1 -> EventScreen(isCollapsed, pagerState.currentPage)
                     }
                 }
             }
