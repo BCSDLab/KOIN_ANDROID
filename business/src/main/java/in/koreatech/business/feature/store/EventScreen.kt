@@ -52,6 +52,12 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
         }
     }
 
+    LaunchedEffect(expandedItem) {
+        expandedItem.forEachIndexed { index, item ->
+            item.value = false
+        }
+    }
+
     Row(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = { /*TODO*/ },
