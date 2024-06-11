@@ -5,6 +5,8 @@ import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
+import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
+import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import retrofit2.Response
@@ -30,4 +32,9 @@ interface OwnerApi {
 
     @PUT(URLConstant.OWNER.CHANGEPASSWORD)
     suspend fun changePassword(@Body ownerChangePasswordRequest: OwnerChangePasswordRequest)
+    @POST(URLConstant.OWNER.SMS)
+    suspend fun postVerificationSms(@Body ownerVerificationSms: VerificationSmsRequest)
+
+    @POST(URLConstant.OWNER.CODE_SMS)
+    suspend fun postVerificationCodeSms(@Body ownerVerificationCode: VerificationCodeSmsRequest): OwnerVerificationCodeResponse
 }

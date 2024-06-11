@@ -10,4 +10,11 @@ interface PreSignedUrlRepository {
         mediaType: String,
         mediaSize: Long
     ): Result<Unit>
+
+    suspend fun uploadFile(
+        url: String,
+        bitmap: String,
+        mediaType: String,
+        mediaSize: Long
+    ): Result<Unit>
 }
