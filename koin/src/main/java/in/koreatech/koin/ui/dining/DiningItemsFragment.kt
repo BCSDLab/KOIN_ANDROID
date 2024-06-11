@@ -33,7 +33,7 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.dining.collect {
                     val diningList = it.filter { dining -> dining.type == type }.arrange()
-                    diningAdapter.submitList( diningList.filter { dining -> dining.menu.isNotEmpty() } )
+                    diningAdapter.submitList( diningList.filter { dining -> dining.menu.isNotEmpty() && dining.menu.first() != "미운영" } )
                 }
             }
         }
