@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.signup
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
@@ -79,7 +78,6 @@ class SignupWithDetailInfoActivity : ActivityBase() {
     private fun continueSignup() {
         with(binding) {
             signupSendVerificationButton.setOnClickListener {
-                Log.d("dhk", "Submited major: ${spinnerSignupUserMajor.text}")
                 signupViewModel.continueDetailSignup(
                     portalAccount = signupViewModel.portalEmail,
                     gender = when {
@@ -111,11 +109,6 @@ class SignupWithDetailInfoActivity : ActivityBase() {
 
     private fun initSpinner() = with(binding.spinnerSignupUserMajor) {
         lifecycleOwner = this@SignupWithDetailInfoActivity
-
-
-        setOnSpinnerItemSelectedListener<String> { oldIndex, oldItem, newIndex, newItem ->
-            Log.d("dhk", "major select from $oldItem to $newItem")
-        }
     }
 
 
