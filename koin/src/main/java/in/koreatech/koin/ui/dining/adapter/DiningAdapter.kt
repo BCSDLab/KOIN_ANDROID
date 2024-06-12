@@ -134,7 +134,6 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
     }
 
     companion object {
-        private const val DIALOG_MIN_SCALE = 0.75f
         private val diffCallback = object : DiffUtil.ItemCallback<Dining>() {
             override fun areItemsTheSame(
                 oldItem: Dining,
