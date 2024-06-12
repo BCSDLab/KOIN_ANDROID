@@ -70,7 +70,8 @@ fun WriteEventScreen(
                 color = ColorTextDescription
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/${viewModel.maxImageLength}", inputTextLength = state.images.size, limit = viewModel.maxImageLength)
+            CountLimitText(text = "0/${WriteEventViewModel.MAX_IMAGE_LENGTH}",
+                inputTextLength = state.images.size, limit = WriteEventViewModel.MAX_IMAGE_LENGTH)
         }
         Row(
             modifier = Modifier
@@ -99,7 +100,8 @@ fun WriteEventScreen(
                 text = stringResource(id = R.string.title)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "${state.title.length}/${viewModel.maxTitleLength}", inputTextLength = state.title.length, limit = viewModel.maxTitleLength)
+            CountLimitText(text = "${state.title.length}/${WriteEventViewModel.MAX_TITLE_LENGTH}",
+                inputTextLength = state.title.length, limit = WriteEventViewModel.MAX_TITLE_LENGTH)
         }
         LinedAlertTextField(
             modifier = Modifier
@@ -120,7 +122,8 @@ fun WriteEventScreen(
                 text = stringResource(id = R.string.event_content)
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "${state.content.length}/${viewModel.maxContentLength}", inputTextLength = state.content.length, limit = viewModel.maxContentLength)
+            CountLimitText(text = "${state.content.length}/${WriteEventViewModel.MAX_CONTENT_LENGTH}",
+                inputTextLength = state.content.length, limit = WriteEventViewModel.MAX_CONTENT_LENGTH)
         }
         LinedAlertTextField(
             modifier = Modifier

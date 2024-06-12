@@ -12,11 +12,8 @@ class WriteEventViewModel(
 ) : ViewModel(), ContainerHost<WriteEventState, WriteEventSideEffect> {
     override val container = container<WriteEventState, WriteEventSideEffect>(WriteEventState())
 
-    val maxImageLength = 3
-    val maxTitleLength = 25
-    val maxContentLength = 500
     fun onTitleChanged(title: String) = intent {
-        if(title.length > maxTitleLength)
+        if(title.length > MAX_IMAGE_LENGTH)
             return@intent
         reduce {
             state.copy(title = title, showTitleInputAlert = false)
@@ -24,7 +21,7 @@ class WriteEventViewModel(
     }
 
     fun onContentChanged(content: String) = intent {
-        if(content.length > maxContentLength)
+        if(content.length > MAX_CONTENT_LENGTH)
             return@intent
         reduce {
             state.copy(content = content, showContentInputAlert = false)
@@ -143,5 +140,11 @@ class WriteEventViewModel(
         if(input.isNotEmpty() && input.toIntOrNull() == null)
             return false
         return true
+    }
+
+    companion object {
+        const val MAX_IMAGE_LENGTH = 3
+        const val MAX_TITLE_LENGTH = 25
+        const val MAX_CONTENT_LENGTH = 500
     }
 }
