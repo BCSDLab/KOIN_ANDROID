@@ -37,7 +37,11 @@ class WriteEventViewModel(
         if(startYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusStartMonth)
         reduce {
-            state.copy(startYear = startYear)
+            state.copy(startYear = startYear,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(startYear = startYear))
+                else false
+            )
         }
     }
 
@@ -47,7 +51,11 @@ class WriteEventViewModel(
         if(startMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusStartDay)
         reduce {
-            state.copy(startMonth = startMonth)
+            state.copy(startMonth = startMonth,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(startMonth = startMonth))
+                else false
+            )
         }
     }
 
@@ -57,7 +65,11 @@ class WriteEventViewModel(
         if(startDay.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndYear)
         reduce {
-            state.copy(startDay = startDay)
+            state.copy(startDay = startDay,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(startDay = startDay))
+                else false
+            )
         }
     }
 
@@ -67,7 +79,11 @@ class WriteEventViewModel(
         if(endYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusEndMonth)
         reduce {
-            state.copy(endYear = endYear)
+            state.copy(endYear = endYear,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(endYear = endYear))
+                else false
+            )
         }
     }
 
@@ -77,7 +93,11 @@ class WriteEventViewModel(
         if(endMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndDay)
         reduce {
-            state.copy(endMonth = endMonth)
+            state.copy(endMonth = endMonth,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(endMonth = endMonth))
+                else false
+            )
         }
     }
 
@@ -85,7 +105,11 @@ class WriteEventViewModel(
         if(isValidNumberInput(2, endDay).not())
             return@intent
         reduce {
-            state.copy(endDay = endDay)
+            state.copy(endDay = endDay,
+                showDateInputAlert = if (state.showDateInputAlert)
+                    !isAllDateInputFilled(state.copy(endDay = endDay))
+                else false
+            )
         }
     }
 
@@ -102,6 +126,15 @@ class WriteEventViewModel(
                         || state.endDay.length != 2
             )
         }
+    }
+
+    private fun isAllDateInputFilled(state: WriteEventState) : Boolean {
+        return state.startYear.length == 4
+                && state.startMonth.length == 2
+                && state.startDay.length == 2
+                && state.endYear.length == 4
+                && state.endMonth.length == 2
+                && state.endDay.length == 2
     }
 
     private fun isValidNumberInput(maxLength: Int, input: String): Boolean {
