@@ -33,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.textfield.LinedAlertTextField
 import `in`.koreatech.business.feature.textfield.LinedWhiteTextField
 import `in`.koreatech.business.ui.theme.ColorCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -100,7 +101,7 @@ fun WriteEventScreen(
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "${state.title.length}/${viewModel.maxTitleLength}", inputTextLength = state.title.length, limit = viewModel.maxTitleLength)
         }
-        LinedWhiteTextField(
+        LinedAlertTextField(
             modifier = Modifier
                 .padding(top = 5.dp)
                 .fillMaxWidth(),
@@ -121,7 +122,7 @@ fun WriteEventScreen(
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "${state.content.length}/${viewModel.maxContentLength}", inputTextLength = state.content.length, limit = viewModel.maxContentLength)
         }
-        LinedWhiteTextField(
+        LinedAlertTextField(
             modifier = Modifier
                 .padding(top = 5.dp)
                 .fillMaxWidth(),
@@ -329,7 +330,6 @@ private fun DateInputRow(
             singleLine = true,
             modifier = Modifier.focusRequester(yearFocusRequester),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isAlertRowAvailable = false,
             showAlert = showDateInputAlert
         )
         Spacer(modifier = Modifier.size(12.5.dp))
@@ -342,7 +342,6 @@ private fun DateInputRow(
             singleLine = true,
             modifier = Modifier.focusRequester(monthFocusRequester),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isAlertRowAvailable = false,
             showAlert = showDateInputAlert
         )
         Spacer(modifier = Modifier.size(12.5.dp))
@@ -355,7 +354,6 @@ private fun DateInputRow(
             singleLine = true,
             modifier = Modifier.focusRequester(dayFocusRequester),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isAlertRowAvailable = false,
             showAlert = showDateInputAlert
         )
     }
