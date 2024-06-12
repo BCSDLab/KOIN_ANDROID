@@ -37,7 +37,7 @@ class WriteEventViewModel(
         if(startYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusStartMonth)
         reduce {
-            state.copy(startYear = startYear, showDateInputAlert = false)
+            state.copy(startYear = startYear)
         }
     }
 
@@ -47,7 +47,7 @@ class WriteEventViewModel(
         if(startMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusStartDay)
         reduce {
-            state.copy(startMonth = startMonth, showDateInputAlert = false)
+            state.copy(startMonth = startMonth)
         }
     }
 
@@ -57,7 +57,7 @@ class WriteEventViewModel(
         if(startDay.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndYear)
         reduce {
-            state.copy(startDay = startDay, showDateInputAlert = false)
+            state.copy(startDay = startDay)
         }
     }
 
@@ -67,7 +67,7 @@ class WriteEventViewModel(
         if(endYear.length == 4)
             postSideEffect(WriteEventSideEffect.FocusEndMonth)
         reduce {
-            state.copy(endYear = endYear, showDateInputAlert = false)
+            state.copy(endYear = endYear)
         }
     }
 
@@ -77,7 +77,7 @@ class WriteEventViewModel(
         if(endMonth.length == 2)
             postSideEffect(WriteEventSideEffect.FocusEndDay)
         reduce {
-            state.copy(endMonth = endMonth, showDateInputAlert = false)
+            state.copy(endMonth = endMonth)
         }
     }
 
@@ -85,7 +85,7 @@ class WriteEventViewModel(
         if(isValidNumberInput(2, endDay).not())
             return@intent
         reduce {
-            state.copy(endDay = endDay, showDateInputAlert = false)
+            state.copy(endDay = endDay)
         }
     }
 
@@ -94,12 +94,12 @@ class WriteEventViewModel(
             state.copy(
                 showTitleInputAlert = state.title.isEmpty(),
                 showContentInputAlert = state.content.isEmpty(),
-                showDateInputAlert = state.startYear.isEmpty()
-                        || state.startMonth.isEmpty()
-                        || state.startDay.isEmpty()
-                        || state.endYear.isEmpty()
-                        || state.endMonth.isEmpty()
-                        || state.endDay.isEmpty()
+                showDateInputAlert = state.startYear.length != 4
+                        || state.startMonth.length != 2
+                        || state.startDay.length != 2
+                        || state.endYear.length != 4
+                        || state.endMonth.length != 2
+                        || state.endDay.length != 2
             )
         }
     }
