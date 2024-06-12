@@ -105,6 +105,10 @@ class WriteEventViewModel(
     }
 
     private fun isValidNumberInput(maxLength: Int, input: String): Boolean {
-        return !(input.length > maxLength || input.toIntOrNull() == null)
+        if(input.length > maxLength)
+            return false
+        if(input.isNotEmpty() && input.toIntOrNull() == null)
+            return false
+        return true
     }
 }
