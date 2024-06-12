@@ -62,12 +62,13 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     textViewNoPhoto.visibility = View.VISIBLE
                     imageViewNoPhoto.visibility = View.VISIBLE
                     imageViewDining.visibility = View.INVISIBLE
-                    cardViewDining.setOnClickListener(null)
-                    EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
-                        AnalyticsConstant.Label.MENU_IMAGE,
-                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
-                    )
+                    cardViewDining.setOnClickListener {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.CAMPUS,
+                            AnalyticsConstant.Label.MENU_IMAGE,
+                            DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                        )
+                    }
                 }
 
                 if(dining.changedAt.isNotEmpty()) {
