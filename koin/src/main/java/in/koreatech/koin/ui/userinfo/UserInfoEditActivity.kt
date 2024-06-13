@@ -2,7 +2,9 @@ package `in`.koreatech.koin.ui.userinfo
 
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -17,11 +19,10 @@ import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoEditViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.setDefaultBackground
-import `in`.koreatech.koin.util.ext.setTransparentBackground
 import `in`.koreatech.koin.util.ext.splitPhoneNumber
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserInfoEditActivity : KoinNavigationDrawerActivity() {
@@ -65,13 +66,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
         )
 
-        userinfoeditedEdittextName.addTextChangedListener {
-            userInfoEditViewModel
-        }
-
-        userinfoeditedEdittextStudentId.addTextChangedListener {
-            userInfoEditViewModel.getDept(it.toString())
-        }
+        userinfoeditedSpinnerMajor.lifecycleOwner = this@UserInfoEditActivity
 
         userinfoeditedButtonNicknameCheck.setOnClickListener {
             userInfoEditViewModel.checkNickname(userinfoeditedEdittextNickName.textString)
@@ -118,34 +113,9 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                                 }
                             }
 
-                            userinfoeditedEdittextStudentId.apply {
-                                setText(user.studentNumber)
-                                if (user.studentNumber == null || user.studentNumber?.isEmpty() == false) {
-                                    isEnabled = true
-                                    setDefaultBackground()
-                                    userinfoeditedEdittextMajor.setText("")
-                                } else {
-                                    isEnabled = false
-                                    setTransparentBackground()
-                                    userInfoEditViewModel.getDept(user.studentNumber!!)
-                                }
-                            }
-
-                            userinfoeditedEdittextMajor.apply {
-                                isEnabled = false
-                                hint = context.getString(R.string.user_info_id_hint)
-                            }
+                            userinfoeditedEdittextStudentId.setText(user.studentNumber)
                         }
                 }
-            }
-
-            observeLiveData(dept) {
-                binding.userinfoeditedEdittextMajor.setText(it)
-                binding.userinfoeditedEdittextMajorError.text = ""
-            }
-
-            observeLiveData(getDeptErrorMessage) {
-                binding.userinfoeditedEdittextMajorError.text = it
             }
 
             observeLiveData(toastErrorMessage) {
@@ -153,7 +123,7 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
             }
 
             observeLiveData(nicknameDuplicatedEvent) {
-                when(it) {
+                when (it) {
                     NicknameCheckState.POSSIBLE -> {
                         ToastUtil.getInstance().makeShort(R.string.nickname_available)
                     }
@@ -172,6 +142,21 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                 ToastUtil.getInstance().makeShort(getString(R.string.user_info_edited))
                 setResult(UserInfoEditContract.RESULT_USER_INFO_EDITED)
                 finish()
+            }
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    depts.collect { (depts, userMajor) ->
+                        binding.userinfoeditedSpinnerMajor.setItems(depts)
+                        with(binding.userinfoeditedSpinnerMajor) {
+                            setItems(depts)
+                            val pos = depts.indexOf(userMajor)
+                            if (pos != -1) {
+                                selectItemByIndex(pos)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

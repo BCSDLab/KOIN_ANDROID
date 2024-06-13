@@ -465,39 +465,33 @@
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_student_id_textview"
                                 app:layout_constraintVertical_bias="0" />
 
-                            <EditText
-                                android:id="@+id/userinfoedited_edittext_major"
+                            <com.skydoves.powerspinner.PowerSpinnerView
+                                android:id="@+id/userinfoedited_spinner_major"
                                 android:layout_width="200dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="61dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="16dp"
-                                android:editable="false"
+                                android:layout_height="40dp"
+                                android:background="@drawable/background_round_square"
+                                android:gravity="center_vertical"
+                                android:hint="@string/major_title"
                                 android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
+                                android:paddingHorizontal="8dp"
                                 android:textColor="@color/black"
+                                android:textColorHint="@color/neutral_500"
                                 android:textSize="15sp"
                                 app:fontName="Custom6"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_major_textview"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toEndOf="@id/userinfoedited_major_textview"
-                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_student_id"
-                                tools:text="메카트로닉스공학과" />
-
-                            <TextView
-                                android:id="@+id/userinfoedited_edittext_major_error"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="4dp"
-                                android:paddingEnd="4dp"
-                                android:textColor="@color/red"
-                                android:textSize="10sp"
-                                app:fontName="Custom6"
-                                app:layout_constraintEnd_toEndOf="@id/userinfoedited_edittext_major"
-                                app:layout_constraintStart_toStartOf="@id/userinfoedited_edittext_major"
-                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major"
-                                tools:text="올바른 학번을 입력해 주세요" />
+                                app:layout_constraintStart_toStartOf="@id/userinfoedited_edittext_student_id"
+                                app:layout_constraintTop_toTopOf="@id/userinfoedited_major_textview"
+                                app:spinner_arrow_drawable="@drawable/ic_arrow_down_3"
+                                app:spinner_arrow_gravity="end"
+                                app:spinner_arrow_padding="5dp"
+                                app:spinner_divider_color="@color/neutral_500"
+                                app:spinner_divider_show="true"
+                                app:spinner_divider_size="1dp"
+                                app:spinner_item_height="40dp"
+                                app:spinner_popup_background="@color/cardview_light_background"
+                                app:spinner_popup_height="300dp" />
 
                             <TextView
                                 android:id="@+id/userinfoeditededited_change_info"
@@ -515,7 +509,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_edittext_major" />
+                                app:layout_constraintTop_toBottomOf="@id/userinfoedited_spinner_major" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </ScrollView>
                 </RelativeLayout>
