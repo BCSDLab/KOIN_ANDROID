@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -27,7 +28,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -228,11 +228,14 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
     val listState = rememberLazyListState()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val isCollapsed: Boolean by remember {
+    val isCollapsedTopBar: Boolean by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
+    val isCollapsed: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 5 }
+    }
     Box {
-        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsed)
+        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -242,127 +245,54 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
             item {
                 TopBar(viewModel)
             }
+            StoreDetailInfo()
             item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 20.dp),
-                ) {
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.telephone_number),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                Row(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
+                    Box(
+                        modifier = Modifier.border(
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                         )
+                    ) {
                         Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "sd",
+                            modifier = Modifier.padding(6.dp),
+                            text = stringResource(R.string.deliver_available),
+                            fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
                         )
                     }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.operating_time),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier.border(
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                         )
+                    ) {
                         Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "",
+                            modifier = Modifier.padding(6.dp),
+                            text = stringResource(R.string.card_available),
+                            fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                    }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.clodsed_day),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                        Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "",
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
                         )
                     }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.address),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Box(
+                        modifier = Modifier.border(
+                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
                         )
+                    ) {
                         Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "",
+                            modifier = Modifier.padding(6.dp),
+                            text = stringResource(R.string.account_transfer_available),
+                            fontSize = 12.sp,
                             style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                    }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.delivery_amount),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                        Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "",
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                            color = Blue2,
                         )
                     }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Text(
-                            text = stringResource(R.string.other_information),
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                        Text(
-                            modifier = Modifier.padding(horizontal = 10.dp),
-                            text = "",
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                        )
-                    }
-                    Row(modifier = Modifier.padding(vertical = 5.dp)) {
-                        Box(
-                            modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(6.dp),
-                                text = stringResource(R.string.deliver_available),
-                                fontSize = 12.sp,
-                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                                color = Blue2,
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Box(
-                            modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(6.dp),
-                                text = stringResource(R.string.card_available),
-                                fontSize = 12.sp,
-                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                                color = Blue2,
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Box(
-                            modifier = Modifier.border(
-                                width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                            )
-                        ) {
-                            Text(
-                                modifier = Modifier.padding(6.dp),
-                                text = stringResource(R.string.account_transfer_available),
-                                fontSize = 12.sp,
-                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                                color = Blue2,
-                            )
-                        }
 
-                    }
                 }
 
             }
-
-
             item {
                 Divider(
                     modifier = Modifier
@@ -416,7 +346,6 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
                     }
                 }
             }
-
         }
     }
 }
