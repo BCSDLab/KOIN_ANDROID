@@ -110,7 +110,7 @@ private fun CollapsedTopBar(
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = stringResource(R.string.shop_name), style = MaterialTheme.typography.h6)
+                Text(text = stringResource(R.string.shop_name), )
                 IconButton(onClick = { /*TODO*/ }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_setting),
