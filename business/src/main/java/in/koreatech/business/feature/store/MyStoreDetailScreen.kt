@@ -177,6 +177,38 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
 
 }
 
+fun LazyListScope.StoreDetailInfo(
+) {
+    val infoList = listOf("전화번호", "운영시간", "주소정보", "배달요금", "기타정보")
+    val dataList =
+        listOf("010-1234-5678", "09:00 ~ 18:00", "경기도 안양시 동안구 관양동 123-4", "3000원", "기타정보")//test용
+    infoList.forEach {
+        info(it, dataList[infoList.indexOf(it)])
+    }
+}
+
+fun LazyListScope.info(info: String, data: String?) {
+    item {
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = info,
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                )
+                Text(
+                    text = data ?: "",
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                )
+            }
+        }
+    }
+}
+
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
