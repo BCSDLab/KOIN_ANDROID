@@ -101,32 +101,40 @@ private fun CollapsedTopBar(
     Box(
         modifier = modifier
             .background(color)
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(16.dp),
+            .fillMaxWidth(),
         contentAlignment = Alignment.BottomStart
     ) {
-        AnimatedVisibility(visible = isCollapsed) {
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = stringResource(R.string.shop_name), )
-                IconButton(onClick = { /*TODO*/ }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_setting),
-                        contentDescription = stringResource(R.string.shop_management)
-                    )
-                }
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxWidth(),
+            visible = isCollapsed
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(horizontal = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(text = stringResource(R.string.shop_name))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_setting),
+                            contentDescription = stringResource(R.string.shop_management)
+                        )
+                    }
 
+                }
+                Divider(
+                    color = ColorTextField,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                )
             }
         }
     }
-    Divider(
-        color = ColorTextField,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-    )
 }
 
 @Composable
@@ -136,7 +144,8 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(255.dp),
+                .height(255.dp)
+                .padding(bottom = 10.dp),
             painter = state.storeInfo?.imageUrls?.get(0)
                 .let { painterResource(id = R.drawable.no_image) },
             contentDescription = stringResource(R.string.shop_image),
