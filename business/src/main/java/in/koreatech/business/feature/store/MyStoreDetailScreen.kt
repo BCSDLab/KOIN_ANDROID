@@ -138,7 +138,7 @@ fun TopBar(viewModel: MyStoreDetailViewModel) {
                 .fillMaxWidth()
                 .height(255.dp),
             painter = state.storeInfo?.imageUrls?.get(0)
-                .let { painterResource(id = R.drawable.ic_launcher_background) },
+                .let { painterResource(id = R.drawable.no_image) },
             contentDescription = stringResource(R.string.shop_image),
             contentScale = ContentScale.Crop,
         )
