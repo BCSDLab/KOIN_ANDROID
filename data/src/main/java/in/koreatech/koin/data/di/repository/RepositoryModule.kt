@@ -26,6 +26,7 @@ import `in`.koreatech.koin.data.repository.VersionRepositoryImpl
 import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
+import `in`.koreatech.koin.data.source.local.TimetableLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import `in`.koreatech.koin.data.source.remote.BusRemoteDataSource
@@ -205,8 +206,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesTimetableRepository(
-        timetableRemoteDataSource: TimetableRemoteDataSource
+        timetableRemoteDataSource: TimetableRemoteDataSource,
+        timetableLocalDataSource: TimetableLocalDataSource
     ): TimetableRepository {
-        return TimetableRepositoryImpl(timetableRemoteDataSource)
+        return TimetableRepositoryImpl(timetableRemoteDataSource, timetableLocalDataSource)
     }
 }

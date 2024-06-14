@@ -1,13 +1,23 @@
 package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.viewinterop.AndroidView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.compose.ui.TimetableTheme
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
+import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.timetablev2.view.TimetableScreen
+import `in`.koreatech.koin.util.BitmapUtils
+import `in`.koreatech.koin.util.ext.showToast
 
 class TimetableActivity : KoinNavigationDrawerActivity() {
     private lateinit var binding: ActivityTimetableBinding
@@ -17,18 +27,32 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
     override val menuState: MenuState
         get() = MenuState.Timetable
 
+    private var timetableView: MutableState<TimetableView>? = null
+
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initEvent()
 
-
         binding.composeView.setContent {
             TimetableTheme {
                 TimetableScreen(
-                    content = {
-
+                    onSavedImage = {
+                        BitmapUtils(this).apply {
+                            timetableView?.value?.let { view ->
+                                capture(view) { bitmap ->
+                                    saveBitmapImage(bitmap)
+                                }
+                            } ?: showToast("retry saved image..")
+                        }
+                    },
+                    content = { bottomSheetState, onEventClick ->
+                        TimetableUI(
+                            sheetState = bottomSheetState,
+                            onEventClick = onEventClick
+                        )
                     },
                     sheetContent = {
 
@@ -36,6 +60,36 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 )
             }
         }
+    }
+
+    @OptIn(ExperimentalMaterialApi::class)
+    @Composable
+    fun TimetableUI(
+        sheetState: BottomSheetState,
+        onEventClick: (TimetableEvent) -> Unit,
+    ) {
+        timetableView = remember {
+            mutableStateOf(
+                TimetableView(
+                    context = this@TimetableActivity,
+                    sheetState = sheetState,
+                )
+            )
+        }
+
+        AndroidView(factory = {
+            TimetableView(
+                context = it,
+                sheetState = sheetState,
+            ).apply {
+                post {
+                    timetableView?.value = this
+                }
+                setOnTimetableEventClickListener { timetableEvent ->
+                    onEventClick(timetableEvent)
+                }
+            }
+        })
     }
 
     private fun initEvent() {

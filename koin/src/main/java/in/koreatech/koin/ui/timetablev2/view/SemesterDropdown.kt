@@ -41,7 +41,10 @@ fun SemesterDropdown(
     }
 
     selectedText.ifBlank {
-        if (semesters.isNotEmpty()) semesters[0].format()
+        if (semesters.isNotEmpty()) {
+            onSemesterTextChanged(semesters[0].semester)
+            semesters[0].format()
+        }
         else ""
     }.let {
         selectedText = it
