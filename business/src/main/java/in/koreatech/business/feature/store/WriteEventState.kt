@@ -1,5 +1,7 @@
 package `in`.koreatech.business.feature.store
 
+import android.net.Uri
+
 data class WriteEventState(
     val title: String = "",
     val content: String = "",
@@ -9,7 +11,7 @@ data class WriteEventState(
     val endYear: String = "",
     val endMonth: String = "",
     val endDay: String = "",
-    val images: List<String> = emptyList(),
+    val images: List<Uri> = emptyList(),
     val showTitleInputAlert: Boolean = false,
     val showContentInputAlert: Boolean = false,
     val showDateInputAlert: Boolean = false,

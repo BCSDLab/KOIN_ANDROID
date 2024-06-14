@@ -95,4 +95,5 @@
     <string name="start_date">시작일</string>
     <string name="end_date">종료일</string>
     <string name="text_should_inputted">필수 입력 항목입니다.</string>
+    <string name="delete">삭제</string>
 </resources>

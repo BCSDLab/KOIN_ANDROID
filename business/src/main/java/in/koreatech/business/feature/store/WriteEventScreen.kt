@@ -1,5 +1,8 @@
 package `in`.koreatech.business.feature.store
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,9 +11,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,6 +31,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,16 +39,21 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedAlertTextField
 import `in`.koreatech.business.feature.textfield.LinedWhiteTextField
 import `in`.koreatech.business.ui.theme.ColorCardBackground
+import `in`.koreatech.business.ui.theme.ColorOnCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
+import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Preview
 @Composable
 fun WriteEventScreen(
@@ -57,6 +69,14 @@ fun WriteEventScreen(
     val endMonthFR = remember { FocusRequester() }
     val endDayFR = remember { FocusRequester() }
 
+    val pickImageLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts
+                .PickMultipleVisualMedia(WriteEventViewModel.MAX_IMAGE_LENGTH)
+        ) {
+            viewModel.onImagesChanged(it)
+        }
+
     Column(
         modifier = modifier.verticalScroll(scrollState)
     ) {
@@ -70,26 +90,73 @@ fun WriteEventScreen(
                 color = ColorTextDescription
             )
             Spacer(modifier = Modifier.weight(1f))
-            CountLimitText(text = "0/${WriteEventViewModel.MAX_IMAGE_LENGTH}",
+            CountLimitText(text = "${state.images.size}/${WriteEventViewModel.MAX_IMAGE_LENGTH}",
                 inputTextLength = state.images.size, limit = WriteEventViewModel.MAX_IMAGE_LENGTH)
+        }
+        if(state.images.isNotEmpty()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(112.dp)
+                    .clip(RoundedCornerShape(5.dp))
+                    .background(ColorCardBackground)
+                    .padding(top = 5.dp)
+            ) {
+                Spacer(modifier = Modifier.width(10.dp))
+                state.images.forEachIndexed { i, uri ->
+                    if(i != 0)
+                        Spacer(modifier = Modifier.width(11.dp))
+                    Box(
+                        modifier = Modifier.weight(1f).padding(vertical = 8.dp),
+                        contentAlignment = Alignment.TopEnd
+                    ) {
+                        GlideImage(
+                            model = uri,
+                            contentDescription = stringResource(id = R.string.register_image),
+                            modifier = Modifier.fillMaxSize().padding(top = 4.dp, end = 4.dp),
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_delete),
+                            contentDescription = stringResource(id = R.string.delete),
+                            modifier = Modifier.clickable {
+                                viewModel.deleteImage(uri)
+                            }
+                        )
+                    }
+                }
+                for (i in 0 until WriteEventViewModel.MAX_IMAGE_LENGTH - state.images.size) {
+                    Spacer(modifier = Modifier.width(11.dp))
+                    Spacer(modifier = Modifier.weight(1f).padding(end = 4.dp))
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+            Spacer(modifier = Modifier.height(3.dp))
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable {
+                    pickImageLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
                 .padding(top = 5.dp)
                 .clip(RoundedCornerShape(5.dp))
-                .background(color = ColorCardBackground),
+                .background(ColorCardBackground),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Image(painter = painterResource(R.drawable.ic_add_image),
                 contentDescription = stringResource(id = R.string.register_image),
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
+                colorFilter = if(state.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) ColorFilter.tint(ColorTextFieldDescription) else null
             )
             Text(
                 text = stringResource(id = R.string.register_image),
                 modifier = Modifier.padding(start = 8.dp, top = 12.dp, bottom = 12.dp),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = if(state.images.size == WriteEventViewModel.MAX_IMAGE_LENGTH) ColorTextFieldDescription else ColorOnCardBackground
             )
         }
         Row(

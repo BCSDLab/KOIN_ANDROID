@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -108,6 +109,18 @@ class WriteEventViewModel(
                 else false
             )
         }
+    }
+
+    fun onImagesChanged(images: List<Uri>) = intent {
+        if(images.size > MAX_IMAGE_LENGTH)
+            return@intent
+        reduce {
+            state.copy(images = images)
+        }
+    }
+
+    fun deleteImage(image: Uri) = intent {
+        onImagesChanged(state.images.filter { it != image })
     }
 
     fun registerEvent() = intent {
