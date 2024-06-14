@@ -51,6 +51,7 @@ hiltComposeVersion="1.0.0"
 markermanVersion="2.3.0"
 coilVersion = "1.2.0"
 napier = "2.6.1"
+glideComposeVersion = "1.0.0-beta01"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -123,6 +124,7 @@ stickyScrollView = { module = "com.github.amarjain07:StickyScrollView", version.
 strict-version-matcher-plugin = { module = "com.google.android.gms:strict-version-matcher-plugin", version.ref = "strictVersionMatcherPlugin" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glideVersion" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideComposeVersion" }
 butterknife = { module = "com.jakewharton:butterknife", version.ref = "butterknifeVersion" }
 butterknife-compiler = { module = "com.jakewharton:butterknife-compiler", version.ref = "butterknifeVersion" }
 viewpager2 = { module = "androidx.viewpager2:viewpager2", version = "1.0.0" }
