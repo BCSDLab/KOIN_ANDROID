@@ -111,4 +111,12 @@ object NoAuthNetworkModule {
     ): LandApi {
         return retrofit.create(LandApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun providesTimetableApi(
+        @NoAuth retrofit: Retrofit
+    ): TimetableApi {
+        return retrofit.create(TimetableApi::class.java)
+    }
 }

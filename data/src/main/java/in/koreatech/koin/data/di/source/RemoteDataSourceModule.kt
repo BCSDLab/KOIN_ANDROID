@@ -100,4 +100,12 @@ object RemoteDataSourceModule {
     ): PreSignedUrlRemoteDataSource {
         return PreSignedUrlRemoteDataSource(preSignedUrlApi)
     }
+
+    @Provides
+    @Singleton
+    fun providesTimetableRemoteDataSource(
+        timetableApi: TimetableApi,
+    ): TimetableRemoteDataSource {
+        return TimetableRemoteDataSource((timetableApi))
+    }
 }

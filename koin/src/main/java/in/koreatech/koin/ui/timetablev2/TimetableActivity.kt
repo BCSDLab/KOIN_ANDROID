@@ -7,6 +7,7 @@ import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
+import `in`.koreatech.koin.ui.timetablev2.view.TimetableScreen
 
 class TimetableActivity : KoinNavigationDrawerActivity() {
     private lateinit var binding: ActivityTimetableBinding
@@ -25,6 +26,14 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
 
         binding.composeView.setContent {
             TimetableTheme {
+                TimetableScreen(
+                    content = {
+
+                    },
+                    sheetContent = {
+
+                    }
+                )
             }
         }
     }
