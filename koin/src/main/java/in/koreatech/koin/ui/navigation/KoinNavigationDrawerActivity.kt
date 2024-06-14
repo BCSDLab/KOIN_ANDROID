@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -289,7 +288,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Timetable -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
-                        goToAnonymousTimeTableActivity()
+                        goToTimetableActivityV2()
+//                        goToAnonymousTimeTableActivity()
                     } else {
                         goToTimetableActivty()
                     }
@@ -418,6 +418,17 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             goToActivityFinish(intent)
         } else {
             startActivity(intent)
+        }
+    }
+
+    /**
+     * @TEST
+     */
+    private fun goToTimetableActivityV2() {
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
+        } else {
+            startActivity(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
         }
     }
 

@@ -46,6 +46,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/black" />
 
+        <activity android:name=".ui.timetablev2.TimetableActivity"
+            android:exported="false"/>
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:exported="false"
