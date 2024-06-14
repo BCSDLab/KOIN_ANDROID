@@ -61,7 +61,8 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                         binding.userinfoeditedRadiobuttonGenderWoman.isChecked -> Gender.Woman
                         else -> null
                     },
-                    studentId = binding.userinfoeditedEdittextStudentId.textString
+                    studentId = binding.userinfoeditedEdittextStudentId.textString,
+                    major = userinfoeditedSpinnerMajor.selected.text.toString()
                 )
             }
         )

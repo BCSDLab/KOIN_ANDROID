@@ -18,6 +18,7 @@ import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.state.NicknameState
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
@@ -36,12 +37,6 @@ class UserInfoEditViewModel @Inject constructor(
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> get() = _user
 
-    val depts = flow { emit(getDeptNamesUseCase()) }
-        .combine(user.asFlow()) { depts, user -> depts to user }
-        .filter{ it.second.isStudent }
-        .map { it.first to (it.second as User.Student).major }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf<String>() to null)
-
     private val _getDeptErrorMessage = MutableLiveData<String>()
     val getDeptErrorMessage: LiveData<String> get() = _getDeptErrorMessage
 
@@ -56,6 +51,12 @@ class UserInfoEditViewModel @Inject constructor(
 
     private val _userInfoEditedEvent = SingleLiveEvent<Unit>()
     val userInfoEditedEvent: LiveData<Unit> get() = _userInfoEditedEvent
+
+    val depts: StateFlow<Pair<List<String>, String?>> = flow { emit(getDeptNamesUseCase()) }
+        .combine(user.asFlow()) { depts, user -> depts to user }
+        .filter { it.second.isStudent }
+        .map { it.first to (it.second as User.Student).major }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), listOf<String>() to null)
 
     fun getUserInfo() = viewModelScope.launchWithLoading {
         getUserInfoUseCase()
@@ -101,7 +102,8 @@ class UserInfoEditViewModel @Inject constructor(
         nickname: String,
         separatedPhoneNumber: List<String>?,
         gender: Gender?,
-        studentId: String
+        studentId: String,
+        major: String
     ) {
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
@@ -113,6 +115,7 @@ class UserInfoEditViewModel @Inject constructor(
                         separatedPhoneNumber = separatedPhoneNumber,
                         gender = gender,
                         studentId = studentId,
+                        major = major,
                         checkedEmailValidation = nicknameState.value?.let {
                             it.nickname == nickname && it.isNicknameDuplicated == false
                         } ?: false
