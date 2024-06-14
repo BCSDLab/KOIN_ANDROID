@@ -14,6 +14,7 @@ import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.TimetableSideEffect
 import `in`.koreatech.koin.ui.timetablev2.viewmodel.TimetableViewModel
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -52,13 +54,28 @@ fun TimetableScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
+    val scope = rememberCoroutineScope()
     Log.e("aaa", "lectures : ${state.lectures}")
     Log.e("aaa", "departments : ${state.departments}")
 
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
-        sheetContent = sheetContent,
+        sheetContent = {
+            TimetableBottomSheetContent(
+                searchText = state.searchText,
+                colors = emptyList(),
+                lectures = state.lectures,
+                selectedLectures = state.selectedLecture,
+                currentDepartments = state.currentDepartments,
+                onSetting = { },
+                onCancel = {},
+                onAddLecture = {},
+                onSelectedLecture = {},
+                onSearchTextChanged = {},
+                onClickLecture = {}
+            )
+        },
         sheetBackgroundColor = Color.White,
         sheetPeekHeight = 0.dp,
     ) {
@@ -69,6 +86,12 @@ fun TimetableScreen(
                 semesters = state.semesters,
                 modifier = Modifier.fillMaxWidth(),
                 onSavedImage = onSavedImage,
+                onVisibleBottomSheet = {
+                    scope.launch {
+                        if (sheetState.isCollapsed) sheetState.expand()
+                        else sheetState.collapse()
+                    }
+                },
                 onSemesterTextChanged = timetableViewModel::loadLectures
             )
             content(

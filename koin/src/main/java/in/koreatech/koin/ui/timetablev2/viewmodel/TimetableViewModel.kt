@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.timetablev2.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.domain.usecase.timetable.GetDepartmentsUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
@@ -48,5 +49,17 @@ class TimetableViewModel @Inject constructor(
                 reduce { state.copy(departments = it) }
             }
         }
+    }
+
+    fun updateSearchText(text: String) = intent {
+        reduce { state.copy(searchText = text) }
+    }
+
+    fun updateLectureEvent() {
+
+    }
+
+    fun updateSelectedLecture(lecture: Lecture) = intent {
+        reduce { state.copy(selectedLecture =  lecture) }
     }
 }
