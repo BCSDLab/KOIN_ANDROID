@@ -24,11 +24,11 @@
                 tools:listitem="@layout/item_dining" />
 
             <TextView
-                android:id="@+id/text_view_caution_dining_changable"
+                android:id="@+id/text_view_caution_dining_changeable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="@string/caution_dining_changable"
+                android:text="@string/caution_dining_changeable"
                 android:textColor="@color/gray15"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
