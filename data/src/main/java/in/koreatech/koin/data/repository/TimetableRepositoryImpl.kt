@@ -20,21 +20,29 @@ class TimetableRepositoryImpl @Inject constructor(
     private val timetableRemoteDataSource: TimetableRemoteDataSource,
     private val timetableLocalDataSource: TimetableLocalDataSource,
 ) : TimetableRepository {
-    override suspend fun getTimetables(key: String): List<Lecture> =
+    override suspend fun getTimetables(key: String, isAnonymous: Boolean): List<Lecture> =
         try {
-            val lectureString = timetableLocalDataSource.getString(key).first()
-            val lectureType = object : TypeToken<List<Lecture>>() {}.type
-            val gson = Gson()
-            val updateLectures =
-                gson.fromJson<List<Lecture>>(lectureString, lectureType).orEmpty()
-            updateLectures
+            if (isAnonymous) {
+                val lectureString = timetableLocalDataSource.getString(key).first()
+                val lectureType = object : TypeToken<List<Lecture>>() {}.type
+                val gson = Gson()
+                val updateLectures =
+                    gson.fromJson<List<Lecture>>(lectureString, lectureType).orEmpty()
+                updateLectures
+            } else {
+                emptyList()
+            }
         } catch (e: Exception) {
             emptyList()
         }
 
-    override suspend fun <T> putString(key: String, value: T) {
+    override suspend fun <T> putString(key: String, isAnonymous: Boolean, value: T) {
         try {
-            timetableLocalDataSource.putString(key, Gson().toJson(value))
+            if (isAnonymous) {
+                timetableLocalDataSource.putString(key, Gson().toJson(value))
+            } else {
+
+            }
         } catch (e: Exception) { }
     }
 

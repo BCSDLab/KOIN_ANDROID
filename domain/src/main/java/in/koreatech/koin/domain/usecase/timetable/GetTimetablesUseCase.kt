@@ -2,7 +2,6 @@ package `in`.koreatech.koin.domain.usecase.timetable
 
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.domain.repository.TimetableRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GetTimetablesUseCase @Inject constructor(
@@ -10,5 +9,6 @@ class GetTimetablesUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         semester: String,
-    ): List<Lecture> = timetableRepository.getTimetables(semester)
+        isAnonymous: Boolean,
+    ): List<Lecture> = timetableRepository.getTimetables(semester, isAnonymous)
 }

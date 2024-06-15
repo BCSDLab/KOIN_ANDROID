@@ -9,8 +9,9 @@ class UpdateLectureUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         semester: String,
-        lectures: List<Lecture>
+        isAnonymous: Boolean,
+        lectures: List<Lecture>,
     ) {
-        timetableRepository.putString(semester, lectures)
+        timetableRepository.putString(semester, isAnonymous, lectures)
     }
 }

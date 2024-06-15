@@ -182,19 +182,17 @@ class TimetableViewModel @Inject constructor(
         clear()
         reduce { state.copy(uiStatus = UiStatus.Loading) }
         viewModelScope.launch {
-            if (state.isAnonymous) {
-                val lectures = getLecturesUseCase(semester.semester)
-                val events = getTimetablesUseCase(semester.semester)
+            val lectures = getLecturesUseCase(semester.semester)
+            val events = getTimetablesUseCase(semester.semester, state.isAnonymous)
 
-                reduce {
-                    state.copy(
-                        uiStatus = UiStatus.Success,
-                        lectures = lectures,
-                        _lectures = lectures,
-                        timetableEvents = events,
-                        currentSemester = semester
-                    )
-                }
+            reduce {
+                state.copy(
+                    uiStatus = UiStatus.Success,
+                    lectures = lectures,
+                    _lectures = lectures,
+                    timetableEvents = events,
+                    currentSemester = semester
+                )
             }
         }
     }
@@ -213,7 +211,7 @@ class TimetableViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (state.isAnonymous) {
-                updateLectureUseCase(semester.semester, updateTimetableEvents)
+                updateLectureUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
             }
         }
     }
@@ -230,9 +228,7 @@ class TimetableViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            if (state.isAnonymous) {
-                updateLectureUseCase(semester.semester, updateTimetableEvents)
-            }
+            updateLectureUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
         }
     }
 
