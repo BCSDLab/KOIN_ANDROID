@@ -45,7 +45,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedAlertTextField
-import `in`.koreatech.business.feature.textfield.LinedWhiteTextField2
+import `in`.koreatech.business.feature.textfield.LinedTextField2
 import `in`.koreatech.business.ui.theme.ColorCardBackground
 import `in`.koreatech.business.ui.theme.ColorOnCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -422,7 +422,7 @@ private fun DateInputRow(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        LinedWhiteTextField2(
+        LinedTextField2(
             value = year,
             onValueChange = onYearChanged,
             label = "0000",
@@ -434,7 +434,7 @@ private fun DateInputRow(
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField2(
+        LinedTextField2(
             value = month,
             onValueChange = onMonthChanged,
             label = "00",
@@ -446,7 +446,7 @@ private fun DateInputRow(
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField2(
+        LinedTextField2(
             value = day,
             onValueChange = onDayChanged,
             label = "00",

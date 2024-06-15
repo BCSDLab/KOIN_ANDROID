@@ -29,7 +29,7 @@ import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
  * Alert 메시지 없는 TextField. Alert Border 색상은 존재
  */
 @Composable
-fun LinedWhiteTextField2(
+fun LinedTextField2(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
