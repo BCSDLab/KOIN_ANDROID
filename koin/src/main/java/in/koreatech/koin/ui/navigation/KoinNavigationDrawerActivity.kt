@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -260,9 +259,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     nameTextview.text = user.name
                     when (menuState) {
                         MenuState.Main, MenuState.Notification -> {
-                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(
+                                MAIN_REQUIRED_PERMISSION
+                            )
                             koinNavigationDrawerViewModel.updateDeviceToken()
                         }
+
                         else -> Unit
                     }
                 }
@@ -426,16 +428,17 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      * @TEST
      */
     private fun goToTimetableActivityV2(user: User?, isAnonymous: Boolean) {
-        if (menuState != MenuState.Main) {
-            goToActivityFinish(Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java))
-        } else {
-            val intent = Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
+        val intent =
+            Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
                 if (user == null || isAnonymous) {
                     putExtra("isAnonymous", true)
                 } else {
                     putExtra("isAnonymous", false)
                 }
             }
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(intent)
+        } else {
             startActivity(intent)
         }
     }

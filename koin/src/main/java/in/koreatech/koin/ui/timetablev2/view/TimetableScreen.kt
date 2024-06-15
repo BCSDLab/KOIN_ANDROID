@@ -109,7 +109,8 @@ fun TimetableScreen(
                 timetableViewModel.addLecture(state.currentSemester, lecture)
             }
             timetableViewModel.closeAddLectureDialog()
-//            sendBroadcastReceiver(currentSemester)
+            // TODO : update widget
+            // sendBroadcastReceiver(currentSemester)
         }
     )
 

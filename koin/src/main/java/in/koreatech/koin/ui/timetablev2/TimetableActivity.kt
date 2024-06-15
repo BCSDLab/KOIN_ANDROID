@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
