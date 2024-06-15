@@ -47,6 +47,7 @@
             android:resource="@color/black" />
 
         <activity android:name=".ui.timetablev2.TimetableActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false"/>
         <activity
             android:name=".ui.notification.NotificationActivity"

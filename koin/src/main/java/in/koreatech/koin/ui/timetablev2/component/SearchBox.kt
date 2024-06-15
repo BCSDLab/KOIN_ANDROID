@@ -1,9 +1,12 @@
 package `in`.koreatech.koin.ui.timetablev2.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,56 +34,54 @@ fun SearchBox(
     onSetting: () -> Unit,
     onSearchTextChanged: (String) -> Unit,
 ) {
-    Column(
-        modifier = modifier
-            .padding(end = 24.dp)
-            .fillMaxWidth()
-            .wrapContentHeight()
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = null,
-                modifier = Modifier.clickable(onClick = onSetting)
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            TextField(
-                value = searchText,
-                onValueChange = onSearchTextChanged,
-                placeholder = {
-                    Text(
-                        text = "입력해주세요.",
-                        fontSize = 15.sp,
-                        color = Color.LightGray
-                    )
-                },
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.DarkGray,
-                    focusedIndicatorColor = Color.Black,
-                    cursorColor = Color.Black,
-                    backgroundColor = Color.White
-                ),
-                shape = RoundedCornerShape(4.dp),
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+        Icon(
+            imageVector = Icons.Default.Settings,
+            contentDescription = null,
+            modifier = Modifier.clickable(onClick = onSetting)
+        )
+        Spacer(modifier = Modifier.width(5.dp))
+        TextField(
+            value = searchText,
+            onValueChange = onSearchTextChanged,
+            placeholder = {
+                Text(
+                    text = "입력해주세요.",
+                    fontSize = 15.sp,
+                    color = Color.LightGray
+                )
+            },
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null
+                )
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.DarkGray,
+                focusedIndicatorColor = Color.Black,
+                cursorColor = Color.Black,
+                backgroundColor = Color.White
+            ),
+            shape = RoundedCornerShape(4.dp),
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun SearchBoxPreview() {
-    SearchBox(
-        searchText = "",
-        onSearchTextChanged = {},
-        onSetting = {}
-    )
+    Box(modifier = Modifier.fillMaxSize()) {
+        SearchBox(
+            searchText = "",
+            onSearchTextChanged = {},
+            onSetting = {},
+            modifier = Modifier.padding(8.dp)
+        )
+    }
 }

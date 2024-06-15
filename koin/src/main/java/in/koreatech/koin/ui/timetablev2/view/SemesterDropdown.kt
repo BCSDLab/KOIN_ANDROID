@@ -31,7 +31,7 @@ import `in`.koreatech.koin.domain.model.timetable.Semester
 fun SemesterDropdown(
     semesters: List<Semester>,
     modifier: Modifier = Modifier,
-    onSemesterTextChanged: (semester: String) -> Unit,
+    onSemesterTextChanged: (semester: Semester) -> Unit,
 ) {
     var expanded by rememberSaveable {
         mutableStateOf(false)
@@ -42,7 +42,7 @@ fun SemesterDropdown(
 
     selectedText.ifBlank {
         if (semesters.isNotEmpty()) {
-            onSemesterTextChanged(semesters[0].semester)
+            onSemesterTextChanged(semesters[0])
             semesters[0].format()
         }
         else ""
@@ -86,7 +86,7 @@ fun SemesterDropdown(
             semesters.forEach { semester ->
                 DropdownMenuItem(
                     onClick = {
-                        onSemesterTextChanged(semester.semester)
+                        onSemesterTextChanged(semester)
                         selectedText = semester.format()
                         expanded = false
                     }

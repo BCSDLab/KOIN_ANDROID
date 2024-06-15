@@ -5,12 +5,16 @@ import android.util.AttributeSet
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.view.Timetable
 import `in`.koreatech.koin.ui.timetablev2.viewmodel.TimetableViewModel
+import `in`.koreatech.koin.util.ext.toTimetableEvents
+import org.orbitmvi.orbit.compose.collectAsState
 
 class TimetableView @OptIn(ExperimentalMaterialApi::class)
 @JvmOverloads constructor(
@@ -21,16 +25,31 @@ class TimetableView @OptIn(ExperimentalMaterialApi::class)
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
     lateinit var onTimetableEventClickListener: OnTimetableEventClickListener
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     override fun Content() {
-        val viewModel = viewModel<TimetableViewModel>()
+        val viewModel: TimetableViewModel = viewModel()
+        val state by viewModel.collectAsState()
 
-//        Timetable(
-//            events = ,
-//            sheetState = sheetState,
-//            clickEvent = ,
-//            onEventClick = onTimetableEventClickListener::onEventClick
-//        )
+        Timetable(
+            events = generateTimetableEvents(state.timetableEvents, emptyList()) ,
+            sheetState = sheetState,
+            clickEvent = state.lectureEvents,
+            onEventClick = onTimetableEventClickListener::onEventClick
+        )
+    }
+
+    private fun generateTimetableEvents(timetableEvents: List<Lecture>, colors: List<Color>): List<TimetableEvent> {
+        val updateTimetableEvents = mutableListOf<TimetableEvent>()
+        timetableEvents.mapIndexed { index, lecture ->
+            lecture.toTimetableEvents(index, colors)
+        }.map {
+            it.forEach {
+                updateTimetableEvents.add(it)
+            }
+        }
+
+        return updateTimetableEvents
     }
 
     interface OnTimetableEventClickListener {

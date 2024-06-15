@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.data.di.source
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -63,8 +65,9 @@ object LocalDataSourceModule {
     @Provides
     @Singleton
     fun providesTimetableLocalDataSource(
-        @ApplicationContext applicationContext: Context
+        @ApplicationContext applicationContext: Context,
+        dataStore: DataStore<Preferences>
     ): TimetableLocalDataSource {
-        return TimetableLocalDataSource(applicationContext)
+        return TimetableLocalDataSource(applicationContext, dataStore)
     }
 }

@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
@@ -35,10 +36,12 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         binding = ActivityTimetableBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initEvent()
+        val isAnonymous = intent.getBooleanExtra("isAnonymous", true)
 
         binding.composeView.setContent {
             TimetableTheme {
                 TimetableScreen(
+                    isAnonymous = isAnonymous,
                     onSavedImage = {
                         BitmapUtils(this).apply {
                             timetableView?.value?.let { view ->
@@ -53,9 +56,6 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                             sheetState = bottomSheetState,
                             onEventClick = onEventClick
                         )
-                    },
-                    sheetContent = {
-
                     }
                 )
             }

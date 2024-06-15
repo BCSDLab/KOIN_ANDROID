@@ -51,6 +51,28 @@ data class Lecture(
             }
     }
 
+    fun formatDescription(): String {
+        val description = if (target.isEmpty()) {
+            ""
+        } else {
+            target
+        }.let {
+            if (code.isNotEmpty()) "$it / $code"
+            else it
+        }.let {
+            if (grades.isNotEmpty()) "$it / ${grades}학점"
+            else it
+        }.let {
+            if (professor.isNotEmpty()) "$it / $professor"
+            else "$it / 미정(교수)"
+        }.let {
+            if (regularNumber.isNotEmpty()) "$it / ${regularNumber}명"
+            else "$it / 미정(인원)"
+        }
+
+        return description
+    }
+
     fun doesMatchSearchQuery(query: String): Boolean {
         val matchingCombinations = listOf(
             "$name",

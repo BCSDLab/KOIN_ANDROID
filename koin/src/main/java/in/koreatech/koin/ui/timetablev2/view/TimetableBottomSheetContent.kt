@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.ui.timetablev2.view
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -29,7 +31,7 @@ fun TimetableBottomSheetContent(
     modifier: Modifier = Modifier,
     onSetting: () -> Unit,
     onCancel: (Department) -> Unit,
-    onAddLecture: (Lecture) -> Unit,
+    onAddLecture: () -> Unit,
     onSelectedLecture: (Lecture) -> Unit,
     onSearchTextChanged: (String) -> Unit,
     onClickLecture: (List<TimetableEvent>) -> Unit,
@@ -40,12 +42,14 @@ fun TimetableBottomSheetContent(
             .fillMaxHeight(0.5f),
     ) {
         SearchBox(
+            modifier = Modifier.padding(8.dp),
             searchText = searchText,
             onSearchTextChanged = onSearchTextChanged,
             onSetting = onSetting
         )
         LazyRow(
-            modifier = Modifier.padding(horizontal = 4.dp, vertical = 6.dp)
+            modifier = Modifier
+                .padding(horizontal = 4.dp, vertical = 6.dp)
         ) {
             itemsIndexed(currentDepartments) { index, department ->
                 DepartmentCarouselCard(
@@ -57,6 +61,7 @@ fun TimetableBottomSheetContent(
                 )
             }
         }
+        Spacer(modifier = Modifier.height(4.dp))
         LazyColumn {
             itemsIndexed(lectures) { _, lecture ->
                 LectureItem(

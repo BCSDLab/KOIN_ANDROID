@@ -15,6 +15,18 @@ data class TimetableEvent(
     val end: LocalTime,
     val description: String? = null,
 ) {
+    fun dayOfWeekToKorean(): String =
+        when (dayOfWeek) {
+            DayOfWeek.MONDAY -> "월"
+            DayOfWeek.TUESDAY -> "화"
+            DayOfWeek.WEDNESDAY -> "수"
+            DayOfWeek.THURSDAY -> "목"
+            DayOfWeek.FRIDAY -> "금"
+            DayOfWeek.SATURDAY -> "토"
+            DayOfWeek.SUNDAY -> "일"
+            else -> ""
+        }
+
     fun convertToTimeBlock(endTime: LocalTime): TimeBlock {
         val startDuration = Duration.between(LocalTime.of(start.hour, 0), start).run {
             this.toMinutes() / 60f

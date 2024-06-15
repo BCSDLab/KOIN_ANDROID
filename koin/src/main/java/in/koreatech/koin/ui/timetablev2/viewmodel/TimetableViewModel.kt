@@ -3,13 +3,20 @@ package `in`.koreatech.koin.ui.timetablev2.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.common.UiStatus
+import `in`.koreatech.koin.domain.model.timetable.Department
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.domain.usecase.timetable.GetDepartmentsUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.GetTimetablesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.UpdateLectureUseCase
+import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.TimetableSideEffect
 import `in`.koreatech.koin.ui.timetablev2.TimetableState
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -23,43 +30,230 @@ class TimetableViewModel @Inject constructor(
     private val getSemesterUseCase: GetSemesterUseCase,
     private val getLecturesUseCase: GetLecturesUseCase,
     private val getDepartmentsUseCase: GetDepartmentsUseCase,
+    private val getTimetablesUseCase: GetTimetablesUseCase,
+    private val updateLectureUseCase: UpdateLectureUseCase,
 ) : ContainerHost<TimetableState, TimetableSideEffect>, ViewModel() {
     override val container: Container<TimetableState, TimetableSideEffect> =
         container(TimetableState())
 
-    fun loadSemesters() = intent {
-        viewModelScope.launch {
-            getSemesterUseCase.invoke().let {
-                reduce { state.copy(semesters = it) }
+    init {
+        observeSearchTextAndDepartments()
+    }
+
+    private fun observeSearchTextAndDepartments() {
+        intent {
+            combine(
+                container.stateFlow.map { it.searchText },
+                container.stateFlow.map { it.currentDepartments }
+            ) { searchText, currentDepartments ->
+                Pair(searchText, currentDepartments)
+            }.collect { (searchText, currentDepartments) ->
+                updateLectures(searchText, currentDepartments)
             }
         }
     }
 
-    fun loadLectures(semester: String) = intent {
+    private fun updateLectures(searchText: String, currentDepartments: List<Department>) = intent {
+        reduce {
+            if (searchText.isBlank() && currentDepartments.isEmpty()) {
+                state.copy(lectures = state._lectures)
+            } else if (currentDepartments.isEmpty()) {
+                state.copy(
+                    lectures = state._lectures.filter { lecture ->
+                        lecture.doesMatchSearchQuery(searchText)
+                    }
+                )
+            } else {
+                state.copy(
+                    lectures = state._lectures.filter { lecture ->
+                        lecture.doesMatchDepartmentSearchQuery(currentDepartments.map { it.name }) &&
+                                (searchText.isBlank() || lecture.doesMatchSearchQuery(searchText))
+                    }
+                )
+            }
+        }
+    }
+
+    fun clear() = intent {
+        reduce {
+            state.copy(
+                selectedLecture = Lecture(),
+                lectureEvents = emptyList(),
+                clickLecture = Lecture()
+            )
+        }
+    }
+
+    fun clearSelectedDepartments() = intent {
+        reduce { state.copy(selectedDepartments = emptyList()) }
+    }
+
+    fun loadSemesters() = intent {
         viewModelScope.launch {
-            getLecturesUseCase.invoke(semester).let {
-                reduce { state.copy(lectures = it) }
+            getSemesterUseCase().let {
+                reduce { state.copy(semesters = it) }
             }
         }
     }
 
     fun loadDepartments() = intent {
         viewModelScope.launch {
-            getDepartmentsUseCase.invoke().let {
+            getDepartmentsUseCase().let {
                 reduce { state.copy(departments = it) }
             }
         }
+    }
+
+    fun openAddLectureDialog() = intent {
+        reduce { state.copy(isAddLectureDialogVisible = true) }
+    }
+
+    fun openRemoveLectureDialog() = intent {
+        reduce { state.copy(isRemoveLectureDialogVisible = true) }
+    }
+
+    fun openDepartmentDialog() = intent {
+        reduce { state.copy(isDepartmentDialogVisible = true) }
+    }
+
+    fun closeAddLectureDialog() = intent {
+        reduce { state.copy(isAddLectureDialogVisible = false) }
+    }
+
+    fun closeRemoveLectureDialog() = intent {
+        reduce { state.copy(isRemoveLectureDialogVisible = false) }
+    }
+
+    fun closeDepartmentDialog() = intent {
+        reduce { state.copy(isDepartmentDialogVisible = false) }
+    }
+
+    fun updateIsAnonymous(isAnonymous: Boolean) = intent {
+        reduce { state.copy(isAnonymous = isAnonymous) }
     }
 
     fun updateSearchText(text: String) = intent {
         reduce { state.copy(searchText = text) }
     }
 
-    fun updateLectureEvent() {
+    fun updateLectureEvent(timetableEvents: List<TimetableEvent>) = intent {
+        reduce { state.copy(lectureEvents = timetableEvents) }
+    }
 
+    fun updateClickLecture(event: TimetableEvent) = intent {
+        val updatedLecture =
+            state.timetableEvents.filter { it.id == event.id }.getOrElse(0) { Lecture() }
+        reduce {
+            state.copy(
+                clickLecture = updatedLecture,
+                isRemoveLectureDialogVisible = true
+            )
+        }
     }
 
     fun updateSelectedLecture(lecture: Lecture) = intent {
-        reduce { state.copy(selectedLecture =  lecture) }
+        if (lecture == Lecture()) {
+            updateLectureEvent(emptyList())
+        }
+        reduce { state.copy(selectedLecture = lecture) }
+    }
+
+    fun updateSelectedDepartment(department: Department) = intent {
+        val updatedDepartments = state.selectedDepartments.toMutableList()
+        if (state.selectedDepartments.contains(department)) {
+            updatedDepartments.remove(department)
+        } else {
+            updatedDepartments.add(department)
+        }
+
+        reduce { state.copy(selectedDepartments = updatedDepartments) }
+    }
+
+    fun updateCurrentDepartment(departments: List<Department>) = intent {
+        reduce {
+            state.copy(
+                currentDepartments = departments,
+                isDepartmentDialogVisible = false
+            )
+        }
+    }
+
+    fun updateCurrentSemester(semester: Semester) = intent {
+        clear()
+        reduce { state.copy(uiStatus = UiStatus.Loading) }
+        viewModelScope.launch {
+            if (state.isAnonymous) {
+                val lectures = getLecturesUseCase(semester.semester)
+                val events = getTimetablesUseCase(semester.semester)
+
+                reduce {
+                    state.copy(
+                        uiStatus = UiStatus.Success,
+                        lectures = lectures,
+                        _lectures = lectures,
+                        timetableEvents = events,
+                        currentSemester = semester
+                    )
+                }
+            }
+        }
+    }
+
+    fun addLecture(semester: Semester, lecture: Lecture) = intent {
+        val updateTimetableEvents = state.timetableEvents.toMutableList()
+        updateTimetableEvents.add(lecture)
+        reduce {
+            state.copy(
+                timetableEvents = updateTimetableEvents,
+                clickLecture = Lecture(),
+                selectedLecture = Lecture(),
+                lectureEvents = emptyList()
+            )
+        }
+
+        viewModelScope.launch {
+            if (state.isAnonymous) {
+                updateLectureUseCase(semester.semester, updateTimetableEvents)
+            }
+        }
+    }
+
+    fun removeLecture(semester: Semester, lecture: Lecture) = intent {
+        clear()
+        val updateTimetableEvents = state.timetableEvents.toMutableList()
+        updateTimetableEvents.remove(lecture)
+        reduce {
+            state.copy(
+                timetableEvents = updateTimetableEvents,
+                isRemoveLectureDialogVisible = false
+            )
+        }
+
+        viewModelScope.launch {
+            if (state.isAnonymous) {
+                updateLectureUseCase(semester.semester, updateTimetableEvents)
+            }
+        }
+    }
+
+    fun removeDepartment(department: Department) = intent {
+        val updateDepartments = state.currentDepartments.toMutableList()
+        updateDepartments.remove(department)
+
+        reduce {
+            state.copy(
+                currentDepartments = updateDepartments,
+                selectedDepartments = updateDepartments
+            )
+        }
+    }
+
+    fun duplicateLecture(lecture: Lecture) = intent {
+        lecture.classTime.forEach { time ->
+            state.timetableEvents.filter { it.classTime.contains(time) }.forEach { lecture ->
+                removeLecture(state.currentSemester, lecture)
+            }
+        }
+        addLecture(state.currentSemester, lecture)
     }
 }

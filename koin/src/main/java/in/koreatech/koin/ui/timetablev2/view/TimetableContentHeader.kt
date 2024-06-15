@@ -27,7 +27,7 @@ fun TimetableContentHeader(
     modifier: Modifier = Modifier,
     onSavedImage: () -> Unit,
     onVisibleBottomSheet: () -> Unit,
-    onSemesterTextChanged: (semester: String) -> Unit,
+    onSemesterTextChanged: (semester: Semester) -> Unit,
 ) {
     Row(
         modifier = modifier
