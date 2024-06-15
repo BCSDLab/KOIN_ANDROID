@@ -15,6 +15,9 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,6 +34,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
     val list =
         listOf("Menu1", "Menu2", "Menu3", "Menu4", "Menu5", "Menu6", "Menu7", "Menu8", "Menu9", "Menu10")
     val scrollState = rememberScrollState()
+    val enabledScroll by remember(verticalOffset,scrollState.value) { derivedStateOf { verticalOffset || scrollState.value != 0}}
 
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 0) {
@@ -41,7 +45,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(enabled = verticalOffset || scrollState.value != 0, state = scrollState)
+            .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
 
         list.forEach { item ->
