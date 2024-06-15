@@ -14,9 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.business.feature.signup.navigator.SignupNavigator
-import `in`.koreatech.business.feature.store.WriteEventScreen
-import `in`.koreatech.business.feature_changepassword.navigator.ChangePassword
+import `in`.koreatech.business.feature.store.writeevent.WriteEventScreen
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
 
 @AndroidEntryPoint

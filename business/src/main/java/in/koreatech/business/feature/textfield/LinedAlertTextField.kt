@@ -39,7 +39,7 @@ fun LinedAlertTextField(
 ) {
     var isFocused by remember { mutableStateOf(false) }
     Column {
-        LinedWhiteTextField(
+        LinedWhiteTextField2(
             value = value,
             onValueChange = onValueChange,
             label = label,

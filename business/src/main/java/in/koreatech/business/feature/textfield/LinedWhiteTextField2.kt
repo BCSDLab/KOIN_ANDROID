@@ -26,12 +26,10 @@ import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
 
 /**
- * Alert 메시지 없는 TextField
- *
- * Alert Border 색상은 존재
+ * Alert 메시지 없는 TextField. Alert Border 색상은 존재
  */
 @Composable
-fun LinedWhiteTextField(
+fun LinedWhiteTextField2(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,

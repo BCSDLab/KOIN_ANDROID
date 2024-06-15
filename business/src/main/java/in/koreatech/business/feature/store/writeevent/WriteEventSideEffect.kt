@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.writeevent
 
 sealed class WriteEventSideEffect {
     data object FocusStartYear : WriteEventSideEffect()

@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.writeevent
 
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -45,7 +45,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedAlertTextField
-import `in`.koreatech.business.feature.textfield.LinedWhiteTextField
+import `in`.koreatech.business.feature.textfield.LinedWhiteTextField2
 import `in`.koreatech.business.ui.theme.ColorCardBackground
 import `in`.koreatech.business.ui.theme.ColorOnCardBackground
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -101,7 +101,8 @@ fun WriteEventScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "${state.images.size}/${WriteEventViewModel.MAX_IMAGE_LENGTH}",
-                inputTextLength = state.images.size, limit = WriteEventViewModel.MAX_IMAGE_LENGTH)
+                inputTextLength = state.images.size, limit = WriteEventViewModel.MAX_IMAGE_LENGTH
+            )
         }
         if(state.images.isNotEmpty()) {
             Row(
@@ -188,7 +189,8 @@ fun WriteEventScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "${state.title.length}/${WriteEventViewModel.MAX_TITLE_LENGTH}",
-                inputTextLength = state.title.length, limit = WriteEventViewModel.MAX_TITLE_LENGTH)
+                inputTextLength = state.title.length, limit = WriteEventViewModel.MAX_TITLE_LENGTH
+            )
         }
         LinedAlertTextField(
             modifier = Modifier
@@ -210,7 +212,8 @@ fun WriteEventScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             CountLimitText(text = "${state.content.length}/${WriteEventViewModel.MAX_CONTENT_LENGTH}",
-                inputTextLength = state.content.length, limit = WriteEventViewModel.MAX_CONTENT_LENGTH)
+                inputTextLength = state.content.length, limit = WriteEventViewModel.MAX_CONTENT_LENGTH
+            )
         }
         LinedAlertTextField(
             modifier = Modifier
@@ -380,7 +383,9 @@ fun WriteEventScreen(
                 endDayFR.requestFocus()
             }
             WriteEventSideEffect.ToastImageLimit -> {
-                ToastUtil.getInstance().makeShort(context.getString(R.string.image_limit, WriteEventViewModel.MAX_IMAGE_LENGTH))
+                ToastUtil.getInstance().makeShort(context.getString(R.string.image_limit,
+                    WriteEventViewModel.MAX_IMAGE_LENGTH
+                ))
             }
         }
     }
@@ -417,7 +422,7 @@ private fun DateInputRow(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        LinedWhiteTextField(
+        LinedWhiteTextField2(
             value = year,
             onValueChange = onYearChanged,
             label = "0000",
@@ -429,7 +434,7 @@ private fun DateInputRow(
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField(
+        LinedWhiteTextField2(
             value = month,
             onValueChange = onMonthChanged,
             label = "00",
@@ -441,7 +446,7 @@ private fun DateInputRow(
         Spacer(modifier = Modifier.size(12.5.dp))
         Text(text = "/", fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.size(12.5.dp))
-        LinedWhiteTextField(
+        LinedWhiteTextField2(
             value = day,
             onValueChange = onDayChanged,
             label = "00",
