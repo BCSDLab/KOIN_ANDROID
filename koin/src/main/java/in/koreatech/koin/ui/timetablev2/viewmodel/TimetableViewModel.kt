@@ -11,7 +11,8 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetDepartmentsUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetablesUseCase
-import `in`.koreatech.koin.domain.usecase.timetable.UpdateLectureUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.RemoveTimetablesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetablesUseCase
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.TimetableSideEffect
 import `in`.koreatech.koin.ui.timetablev2.TimetableState
@@ -31,7 +32,8 @@ class TimetableViewModel @Inject constructor(
     private val getLecturesUseCase: GetLecturesUseCase,
     private val getDepartmentsUseCase: GetDepartmentsUseCase,
     private val getTimetablesUseCase: GetTimetablesUseCase,
-    private val updateLectureUseCase: UpdateLectureUseCase,
+    private val updateTimetablesUseCase: UpdateTimetablesUseCase,
+    private val removeTimetablesUseCase: RemoveTimetablesUseCase,
 ) : ContainerHost<TimetableState, TimetableSideEffect>, ViewModel() {
     override val container: Container<TimetableState, TimetableSideEffect> =
         container(TimetableState())
@@ -183,14 +185,14 @@ class TimetableViewModel @Inject constructor(
         reduce { state.copy(uiStatus = UiStatus.Loading) }
         viewModelScope.launch {
             val lectures = getLecturesUseCase(semester.semester)
-            val events = getTimetablesUseCase(semester.semester, state.isAnonymous)
+            val timetables = getTimetablesUseCase(semester.semester, state.isAnonymous)
 
             reduce {
                 state.copy(
                     uiStatus = UiStatus.Success,
                     lectures = lectures,
                     _lectures = lectures,
-                    timetableEvents = events,
+                    timetableEvents = timetables,
                     currentSemester = semester
                 )
             }
@@ -210,9 +212,7 @@ class TimetableViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            if (state.isAnonymous) {
-                updateLectureUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
-            }
+            updateTimetablesUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
         }
     }
 
@@ -228,7 +228,11 @@ class TimetableViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            updateLectureUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
+            if (state.isAnonymous) {
+                updateTimetablesUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
+            } else {
+                removeTimetablesUseCase(lecture.id)
+            }
         }
     }
 

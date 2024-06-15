@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.*
+import `in`.koreatech.koin.data.api.auth.TimetableAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.*
 import javax.inject.Singleton
@@ -105,7 +106,8 @@ object RemoteDataSourceModule {
     @Singleton
     fun providesTimetableRemoteDataSource(
         timetableApi: TimetableApi,
+        timetableAuthApi: TimetableAuthApi
     ): TimetableRemoteDataSource {
-        return TimetableRemoteDataSource((timetableApi))
+        return TimetableRemoteDataSource(timetableApi, timetableAuthApi)
     }
 }
