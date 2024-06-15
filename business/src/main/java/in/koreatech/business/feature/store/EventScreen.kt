@@ -23,7 +23,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +48,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
     val list = listOf("Test1", "Test2", "Test3","Test4","Test5","Test6","Test7","Test8","Test9","Test10")
     val scrollState = rememberScrollState()
     val expandedItem = List(list.size) { rememberSaveable { mutableStateOf(false) } }
+    val enabledScroll by remember(verticalOffset,scrollState.value) { derivedStateOf { verticalOffset || scrollState.value != 0} }
 
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 1) {
@@ -97,7 +101,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(enabled = verticalOffset || scrollState.value != 0, state = scrollState)
+            .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
         list.forEachIndexed { index, item ->
             val pagerState = rememberPagerState { 3 }
