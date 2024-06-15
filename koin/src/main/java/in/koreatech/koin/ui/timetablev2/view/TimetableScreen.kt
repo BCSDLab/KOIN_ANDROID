@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
@@ -144,6 +145,7 @@ fun TimetableScreen(
         },
         sheetBackgroundColor = Color.White,
         sheetPeekHeight = 0.dp,
+        sheetShape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxHeight()
