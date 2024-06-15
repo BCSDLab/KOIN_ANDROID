@@ -112,8 +112,10 @@ class WriteEventViewModel(
     }
 
     fun onImagesChanged(images: List<Uri>) = intent {
-        if(images.size > MAX_IMAGE_LENGTH)
+        if(images.size > MAX_IMAGE_LENGTH) {
+            postSideEffect(WriteEventSideEffect.ToastImageLimit)
             return@intent
+        }
         reduce {
             state.copy(images = images)
         }

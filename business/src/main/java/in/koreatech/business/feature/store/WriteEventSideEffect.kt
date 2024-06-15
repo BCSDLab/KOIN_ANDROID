@@ -7,4 +7,5 @@ sealed class WriteEventSideEffect {
     data object FocusEndYear : WriteEventSideEffect()
     data object FocusEndMonth : WriteEventSideEffect()
     data object FocusEndDay : WriteEventSideEffect()
+    data object ToastImageLimit : WriteEventSideEffect()
 }

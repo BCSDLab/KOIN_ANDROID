@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.store
 
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -32,6 +33,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +52,7 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorTextDescription
 import `in`.koreatech.business.ui.theme.ColorTextFieldDescription
+import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -69,12 +72,19 @@ fun WriteEventScreen(
     val endMonthFR = remember { FocusRequester() }
     val endDayFR = remember { FocusRequester() }
 
+    val context = LocalContext.current
     val pickImageLauncher =
         rememberLauncherForActivityResult(
             ActivityResultContracts
                 .PickMultipleVisualMedia(WriteEventViewModel.MAX_IMAGE_LENGTH)
         ) {
-            viewModel.onImagesChanged(it)
+            if(it.isNotEmpty()) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                    viewModel.onImagesChanged(it)
+                else {
+                    viewModel.onImagesChanged((state.images + it).distinct())
+                }
+            }
         }
 
     Column(
@@ -107,13 +117,17 @@ fun WriteEventScreen(
                     if(i != 0)
                         Spacer(modifier = Modifier.width(11.dp))
                     Box(
-                        modifier = Modifier.weight(1f).padding(vertical = 8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(vertical = 8.dp),
                         contentAlignment = Alignment.TopEnd
                     ) {
                         GlideImage(
                             model = uri,
                             contentDescription = stringResource(id = R.string.register_image),
-                            modifier = Modifier.fillMaxSize().padding(top = 4.dp, end = 4.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(top = 4.dp, end = 4.dp),
                             contentScale = ContentScale.FillBounds
                         )
                         Image(
@@ -127,7 +141,9 @@ fun WriteEventScreen(
                 }
                 for (i in 0 until WriteEventViewModel.MAX_IMAGE_LENGTH - state.images.size) {
                     Spacer(modifier = Modifier.width(11.dp))
-                    Spacer(modifier = Modifier.weight(1f).padding(end = 4.dp))
+                    Spacer(modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 4.dp))
                 }
                 Spacer(modifier = Modifier.width(10.dp))
             }
@@ -338,6 +354,7 @@ fun WriteEventScreen(
             }
         }
     }
+
     viewModel.collectSideEffect {
         when(it) {
             WriteEventSideEffect.FocusStartYear -> {
@@ -357,6 +374,9 @@ fun WriteEventScreen(
             }
             WriteEventSideEffect.FocusEndDay -> {
                 endDayFR.requestFocus()
+            }
+            WriteEventSideEffect.ToastImageLimit -> {
+                ToastUtil.getInstance().makeShort(context.getString(R.string.image_limit, WriteEventViewModel.MAX_IMAGE_LENGTH))
             }
         }
     }

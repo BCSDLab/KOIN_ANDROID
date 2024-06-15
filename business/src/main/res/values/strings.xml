@@ -96,4 +96,5 @@
     <string name="end_date">종료일</string>
     <string name="text_should_inputted">필수 입력 항목입니다.</string>
     <string name="delete">삭제</string>
+    <string name="image_limit" formatted="true">이미지는 %d개까지만 등록 가능해요.</string>
 </resources>
