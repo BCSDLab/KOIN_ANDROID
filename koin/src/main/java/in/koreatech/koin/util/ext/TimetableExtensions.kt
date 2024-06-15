@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.util.ext
 
 import androidx.compose.ui.graphics.Color
-import `in`.koreatech.koin.compose.ui.ColorPrimary
+import `in`.koreatech.koin.compose.ui.basicColors
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import java.time.LocalTime
@@ -16,7 +16,7 @@ fun Lecture.toTimetableEvents(index: Int? = null, colors: List<Color>): List<Tim
             id = id,
             name = name,
 //            color = colors[index ?: 0],
-            color = ColorPrimary,
+            color = basicColors[index ?: 0],
             dayOfWeek = key,
             start = value.firstOrNull() ?: LocalTime.of(0, 0),
             end = value.lastOrNull()?.plusMinutes(30) ?: LocalTime.of(0, 0),
