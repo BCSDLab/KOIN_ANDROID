@@ -152,10 +152,14 @@ fun WriteEventScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    pickImageLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
+                .clickable(
+                    enabled = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+                        true
+                    else {
+                        state.images.size < WriteEventViewModel.MAX_IMAGE_LENGTH
+                    }
+                ) {
+                    pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                 }
                 .padding(top = 5.dp)
                 .clip(RoundedCornerShape(5.dp))
