@@ -8,6 +8,7 @@ import `in`.koreatech.koin.model.timetable.TimetableEvent
 
 data class TimetableState(
     val uiStatus: UiStatus = UiStatus.Init,
+    val isKeyboardVisible: Boolean = false,
     val isAnonymous: Boolean = true,
     val searchText: String = "",
     val isDepartmentDialogVisible: Boolean = false,

@@ -130,6 +130,10 @@ class TimetableViewModel @Inject constructor(
         reduce { state.copy(isDepartmentDialogVisible = false) }
     }
 
+    fun updateIsKeyboardVisible(visible: Boolean) = intent {
+        reduce { state.copy(isKeyboardVisible = visible) }
+    }
+
     fun updateIsAnonymous(isAnonymous: Boolean) = intent {
         reduce { state.copy(isAnonymous = isAnonymous) }
     }

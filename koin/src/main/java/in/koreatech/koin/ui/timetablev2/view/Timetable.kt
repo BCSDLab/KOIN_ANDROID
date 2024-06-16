@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,12 +15,10 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.model.timetable.TimetableEvent
@@ -28,6 +28,7 @@ import `in`.koreatech.koin.util.ext.pxToDp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Timetable(
+    isKeyboardVisible: Boolean,
     events: List<TimetableEvent>,
     modifier: Modifier = Modifier,
     clickEvent: List<TimetableEvent> = emptyList(),
@@ -60,7 +61,12 @@ fun Timetable(
                 bottom = if (sheetState.isExpanded) {
                     if (sheetState.currentValue == BottomSheetValue.Expanded) {
                         if (sheetState.targetValue == BottomSheetValue.Expanded && sheetState.progress == 1f) {
-                            sheetState.requireOffset().pxToDp
+                            if (isKeyboardVisible) {
+                                500.dp
+                            } else {
+                                350.dp
+                            }
+//                            sheetState.requireOffset().pxToDp
                         } else {
                             0.dp
                         }

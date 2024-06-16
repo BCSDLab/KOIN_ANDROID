@@ -1,12 +1,16 @@
 package `in`.koreatech.koin.ui.timetablev2
 
 import android.os.Bundle
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.viewinterop.AndroidView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.compose.ui.TimetableTheme
@@ -41,8 +45,11 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
             TimetableTheme(
                 darkTheme = false
             ) {
+                val isKeyboardVisible = WindowInsets.ime.getBottom(LocalDensity.current) > 0
+
                 TimetableScreen(
                     isAnonymous = isAnonymous,
+                    isKeyboardVisible = isKeyboardVisible,
                     onSavedImage = {
                         BitmapUtils(this).apply {
                             timetableView?.value?.let { view ->

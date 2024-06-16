@@ -6,9 +6,11 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
@@ -27,6 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.koin.common.UiStatus
@@ -41,6 +45,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun TimetableScreen(
     isAnonymous: Boolean,
+    isKeyboardVisible: Boolean,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     timetableViewModel: TimetableViewModel = viewModel(),
@@ -68,10 +73,13 @@ fun TimetableScreen(
         timetableViewModel.updateIsAnonymous(isAnonymous)
     }
 
+    LaunchedEffect(key1 = isKeyboardVisible) {
+        timetableViewModel.updateIsKeyboardVisible(isKeyboardVisible)
+    }
+
     if (state.currentSemester.semester.isBlank() && state.semesters.isNotEmpty()) {
         timetableViewModel.updateCurrentSemester(state.semesters[0])
     }
-
 
     val scope = rememberCoroutineScope()
     val sheetState = rememberBottomSheetState(
@@ -130,6 +138,7 @@ fun TimetableScreen(
         sheetContent = {
             TimetableBottomSheetContent(
                 searchText = state.searchText,
+                isKeyboardVisible = state.isKeyboardVisible,
                 colors = emptyList(),
                 lectures = state.lectures,
                 selectedLectures = state.selectedLecture,

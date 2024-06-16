@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.timetablev2.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,6 +23,7 @@ import `in`.koreatech.koin.ui.timetablev2.component.SearchBox
 @Composable
 fun TimetableBottomSheetContent(
     searchText: String,
+    isKeyboardVisible: Boolean,
     colors: List<Color>,
     lectures: List<Lecture>,
     selectedLectures: Lecture,
@@ -39,7 +39,9 @@ fun TimetableBottomSheetContent(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.5f),
+            .height(
+                if (isKeyboardVisible) 500.dp else 350.dp
+            ),
     ) {
         SearchBox(
             modifier = Modifier.padding(8.dp),
@@ -81,6 +83,7 @@ fun TimetableBottomSheetContent(
 @Composable
 private fun TimetableBottomSheetContentPreview() {
     TimetableBottomSheetContent(
+        isKeyboardVisible = false,
         colors = emptyList(),
         lectures = emptyList(),
         selectedLectures = Lecture(),

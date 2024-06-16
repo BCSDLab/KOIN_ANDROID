@@ -32,6 +32,7 @@ class TimetableView @OptIn(ExperimentalMaterialApi::class)
         val state by viewModel.collectAsState()
 
         Timetable(
+            isKeyboardVisible = state.isKeyboardVisible,
             events = generateTimetableEvents(state.timetableEvents, emptyList()) ,
             sheetState = sheetState,
             clickEvent = state.lectureEvents,
