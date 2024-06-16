@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.timetablev2.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -213,7 +212,6 @@ class TimetableViewModel @Inject constructor(
             }
             val timetables = getTimetablesUseCase(semester.semester, state.isAnonymous)
             reduce {
-                Log.e("aaa", "add timetables : $timetables")
                 state.copy(
                     uiStatus = UiStatus.Success,
                     timetableEvents = timetables,

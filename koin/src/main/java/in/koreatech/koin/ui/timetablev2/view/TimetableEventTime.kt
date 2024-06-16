@@ -51,7 +51,7 @@ fun TimetableEventTime(
             .padding(4.dp)
             .clickable { onEventClick(event) }
     ) {
-        Divider(color = Color.White, thickness = 1.dp)
+        if (eventType == TimetableEventType.BASIC) Divider(color = Color.White, thickness = 1.dp)
         Spacer(modifier = Modifier.height(2.dp))
         when (eventType) {
             TimetableEventType.BASIC -> {
@@ -60,13 +60,14 @@ fun TimetableEventTime(
                             + " - " +
                             event.end.format(timetableEventTimeFormatter),
                     fontSize = 8.sp,
-                    color = Color.White
+                    color = Color.White,
                 )
                 Text(
                     text = event.name,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.White,
+                    lineHeight = 12.sp,
                 )
 
                 if (event.description != null) {
@@ -92,7 +93,7 @@ fun TimetableEventTime(
 private fun TimetableEventTimePreview() {
     val sample = TimetableEvent(
         id = 1,
-        name = "관희의 수업",
+        name = "관희의 수업 dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
         color = Color(0xFFAFBBF2),
         dayOfWeek = DayOfWeek.FRIDAY,
         start = LocalTime.of(16, 0),

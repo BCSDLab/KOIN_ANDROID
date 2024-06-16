@@ -29,8 +29,7 @@ class TimetableRepositoryImpl @Inject constructor(
                     gson.fromJson<List<Lecture>>(lectureString, lectureType).orEmpty()
                 updateLectures
             } else {
-                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }
-                    .orEmpty()
+                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }.orEmpty()
             }
         } catch (e: Exception) {
             emptyList()

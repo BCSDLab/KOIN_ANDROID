@@ -16,6 +16,7 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
@@ -114,9 +115,6 @@ fun TimetableScreen(
         }
     )
 
-    /**
-     * 강의 삭제 모달
-     */
     LectureRemoveDialog(
         context = context,
         visible = state.isRemoveLectureDialogVisible,

@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -59,7 +61,6 @@ fun LectureItem(
             )
             .padding(
                 horizontal = 12.dp,
-                vertical = 4.dp
             )
             .background(
                 color = if (isSelected) {
@@ -88,7 +89,7 @@ fun LectureItem(
             Spacer(modifier = Modifier.width(6.dp))
             events.forEachIndexed { index, event ->
                 Text(
-                    text = (if (index != 0) "/" else "") + "${event.start} ~ ${event.end}",
+                    text = (if (index != 0) "/" else "") + "${event.start}-${event.end}",
                     fontSize = 12.sp,
                     color = Color.Black
                 )
@@ -97,7 +98,8 @@ fun LectureItem(
         Text(
             text = lecture.formatDescription(),
             fontSize = 12.sp,
-            color = Color.Black
+            color = Color.Black,
+            lineHeight = 14.sp
         )
         if (isSelected) {
             Card(
@@ -117,6 +119,9 @@ fun LectureItem(
                 )
             }
         }
+
+        Spacer(modifier = Modifier.height(4.dp))
+        Divider(modifier = Modifier.height(1.dp))
     }
 }
 
@@ -128,7 +133,7 @@ private fun LectureItemPreview() {
             colors = emptyList(),
             lecture = Lecture(
                 name = "직업능력개발훈련평가",
-                professor = "우성민",
+                professor = "우성민 우성민우성민우성민우성민우성민우성민우성민우성민우성민우성민우성민우성민우성민",
                 code = "HRD011",
                 grades = "2",
                 lectureClass = "01",
