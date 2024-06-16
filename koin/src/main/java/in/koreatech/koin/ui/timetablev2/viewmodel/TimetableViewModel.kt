@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.timetablev2.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -202,17 +203,26 @@ class TimetableViewModel @Inject constructor(
     fun addLecture(semester: Semester, lecture: Lecture) = intent {
         val updateTimetableEvents = state.timetableEvents.toMutableList()
         updateTimetableEvents.add(lecture)
-        reduce {
-            state.copy(
-                timetableEvents = updateTimetableEvents,
-                clickLecture = Lecture(),
-                selectedLecture = Lecture(),
-                lectureEvents = emptyList()
-            )
-        }
 
+        reduce { state.copy(uiStatus = UiStatus.Loading) }
         viewModelScope.launch {
-            updateTimetablesUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
+            if (state.isAnonymous) {
+                updateTimetablesUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
+            } else {
+                updateTimetablesUseCase(semester.semester, state.isAnonymous, listOf(lecture))
+            }
+            val timetables = getTimetablesUseCase(semester.semester, state.isAnonymous)
+            reduce {
+                Log.e("aaa", "add timetables : $timetables")
+                state.copy(
+                    uiStatus = UiStatus.Success,
+                    timetableEvents = timetables,
+                    currentSemester = semester,
+                    lectureEvents = emptyList(),
+                    clickLecture = Lecture(),
+                    selectedLecture = Lecture()
+                )
+            }
         }
     }
 
@@ -220,18 +230,21 @@ class TimetableViewModel @Inject constructor(
         clear()
         val updateTimetableEvents = state.timetableEvents.toMutableList()
         updateTimetableEvents.remove(lecture)
-        reduce {
-            state.copy(
-                timetableEvents = updateTimetableEvents,
-                isRemoveLectureDialogVisible = false
-            )
-        }
 
+        reduce { state.copy(uiStatus = UiStatus.Loading, isRemoveLectureDialogVisible = false) }
         viewModelScope.launch {
             if (state.isAnonymous) {
                 updateTimetablesUseCase(semester.semester, state.isAnonymous, updateTimetableEvents)
             } else {
                 removeTimetablesUseCase(lecture.id)
+            }
+
+            val timetables = getTimetablesUseCase(semester.semester, state.isAnonymous)
+            reduce {
+                state.copy(
+                    uiStatus = UiStatus.Success,
+                    timetableEvents = timetables,
+                )
             }
         }
     }
@@ -242,6 +255,7 @@ class TimetableViewModel @Inject constructor(
 
         reduce {
             state.copy(
+                uiStatus = UiStatus.Success,
                 currentDepartments = updateDepartments,
                 selectedDepartments = updateDepartments
             )
