@@ -38,7 +38,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         val isAnonymous = intent.getBooleanExtra("isAnonymous", true)
 
         binding.composeView.setContent {
-            TimetableTheme {
+            TimetableTheme(
+                darkTheme = false
+            ) {
                 TimetableScreen(
                     isAnonymous = isAnonymous,
                     onSavedImage = {
