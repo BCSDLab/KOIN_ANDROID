@@ -24,15 +24,18 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
             val storeBasicInfoJson: InsertBasicInfoScreenState? = savedStateHandle.get<InsertBasicInfoScreenState>("storeBasicInfo")
             if(storeBasicInfoJson != null) getStoreBasicInfo(storeBasicInfoJson)
         }
-    private fun getStoreBasicInfo(storeBasicInfo: InsertBasicInfoScreenState){
+
+    fun getStoreBasicInfo(storeBasicInfo: InsertBasicInfoScreenState?){
         intent{
-            reduce {
-                state.copy(
-                    storeCategory = storeBasicInfo.storeCategory,
-                    storeName = storeBasicInfo.storeName,
-                    storeAddress = storeBasicInfo.storeAddress,
-                    storeImage = storeBasicInfo.storeImage
-                )
+            if (storeBasicInfo != null) {
+                reduce {
+                    state.copy(
+                        storeCategory = storeBasicInfo.storeCategory,
+                        storeName = storeBasicInfo.storeName,
+                        storeAddress = storeBasicInfo.storeAddress,
+                        storeImage = storeBasicInfo.storeImage
+                    )
+                }
             }
         }
     }
@@ -96,11 +99,19 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    fun showDialog(isOpenTimeSetting: Boolean, index: Int) = intent{
+    fun showOpenTimeDialog(index: Int) = intent{
         reduce {
             state.copy(showDialog = true)
         }
-        isOpenTimeSetting(isOpenTimeSetting)
+        isOpenTimeSetting(true)
+        dayOfIndex(index)
+    }
+
+    fun showCloseTimeDialog(index: Int) = intent{
+        reduce {
+            state.copy(showDialog = true)
+        }
+        isOpenTimeSetting(false)
         dayOfIndex(index)
     }
 
@@ -110,28 +121,47 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
         }
     }
 
-    fun settingStoreTime(time: Hours, index: Int, isOpenTimeSetting: Boolean) {
+    fun settingStoreOpenTime(time: Hours, index: Int) {
         intent {
-            val newList = state.operatingTimeList.toMutableList()
-            val currentItem = newList[index]
-            when(isOpenTimeSetting){
-                true -> newList[index] = currentItem.copy(openTime = time.toTimeString())
-                false -> newList[index] = currentItem.copy(closeTime = time.toTimeString())
+            if (index >= 0 && index < state.operatingTimeList.size) {
+                val newList = state.operatingTimeList.toMutableList()
+                val currentItem = newList[index]
+                newList[index] = currentItem.copy(openTime = time.toTimeString())
+
+                reduce {
+                    state.copy(operatingTimeList = newList)
+                }
+
+                closeDialog()
             }
-            reduce{
-                state.copy(operatingTimeList = newList)
+        }
+    }
+
+    fun settingStoreCloseTime(time: Hours, index: Int) {
+        intent {
+            if (index >= 0 && index < state.operatingTimeList.size) {
+                val newList = state.operatingTimeList.toMutableList()
+                val currentItem = newList[index]
+                newList[index] = currentItem.copy(closeTime = time.toTimeString())
+
+                reduce {
+                    state.copy(operatingTimeList = newList)
+                }
+
+                closeDialog()
             }
-            closeDialog()
         }
     }
 
     fun isClosedDay(index: Int) {
         intent {
-            val newList = state.operatingTimeList.toMutableList()
-            val currentItem = newList[index]
-            newList[index] = currentItem.copy(closed = !currentItem.closed)
-            reduce{
-                state.copy(operatingTimeList = newList)
+            if (index >= 0 && index <= state.operatingTimeList.size){
+                val newList = state.operatingTimeList.toMutableList()
+                val currentItem = newList[index]
+                newList[index] = currentItem.copy(closed = !currentItem.closed)
+                reduce{
+                    state.copy(operatingTimeList = newList)
+                }
             }
         }
     }
@@ -142,6 +172,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
                 val storeDetailInfo = state
 
                 postSideEffect(InsertDetailInfoScreenSideEffect.NavigateToCheckScreen(storeDetailInfo))
+                Log.e("로그", storeDetailInfo.toString())
                 return@intent
             }
 
@@ -155,7 +186,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
 
 }
 
-fun Hours.toTimeString(): String {
+private fun Hours.toTimeString(): String {
 
     val hoursString: String =
         if (this.hours < 10) "0" + this.hours.toString() else this.hours.toString()
