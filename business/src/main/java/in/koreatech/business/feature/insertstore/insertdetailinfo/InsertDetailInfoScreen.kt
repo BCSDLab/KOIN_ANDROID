@@ -17,10 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -40,6 +37,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.feature.insertstore.selectcategory.InsertStoreProgressBar
 import `in`.koreatech.business.ui.theme.ColorActiveButton
 import `in`.koreatech.business.ui.theme.ColorDisabledButton
@@ -147,15 +145,17 @@ fun InsertDetailInfoScreenImpl(
             Text(
                 modifier = Modifier.padding(top = 35.dp, start = 40.dp),
                 text = stringResource(id = R.string.insert_store),
-                fontSize = 24.sp
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold
             )
         }
 
         item {
             Text(
-                modifier = Modifier.padding(top = 34.dp, start = 32.dp),
+                modifier = Modifier.padding(top = 34.dp, start = 40.dp),
                 text = stringResource(id = R.string.insert_store_main_info),
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
             )
         }
 
@@ -232,7 +232,7 @@ fun InsertDetailInfoScreenImpl(
                     .padding(top = 40.dp)
                     .padding(horizontal = 32.dp)
             ){
-                CreateCheckBox(
+                CreateOptionCheckBox(
                     stringResource(id = R.string.delivery_available),
                     isDeliveryOk,
                     onIsDeliveryOkChange
@@ -240,7 +240,7 @@ fun InsertDetailInfoScreenImpl(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                CreateCheckBox(
+                CreateOptionCheckBox(
                     stringResource(id = R.string.card_available),
                     isCardOk,
                     onIsCardOkChange
@@ -248,7 +248,7 @@ fun InsertDetailInfoScreenImpl(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                CreateCheckBox(
+                CreateOptionCheckBox(
                     stringResource(id = R.string.account_transfer_avilable),
                     isBankOk,
                     onIsBankOkChange
@@ -348,7 +348,7 @@ fun BorderTextField(
 }
 
 @Composable
-fun CreateCheckBox(
+fun CreateOptionCheckBox(
     checkString: String = "",
     checkValue: Boolean = true,
     onCheckValueChange: () -> Unit = {}
@@ -376,7 +376,7 @@ fun CreateCheckBox(
 @Preview
 @Composable
 fun PreviewCreateCheckBox(){
-    CreateCheckBox()
+    CreateOptionCheckBox()
 }
 
 @Preview

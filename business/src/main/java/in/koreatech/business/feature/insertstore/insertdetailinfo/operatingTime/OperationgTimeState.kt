@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.insertstore.insertdetailinfo
+package `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
