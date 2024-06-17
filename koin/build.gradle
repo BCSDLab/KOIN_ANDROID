@@ -130,4 +130,5 @@ dependencies {
     implementation(libs.coil)
 
     implementation(libs.napier)
+    implementation(libs.powerSpinner)
 }

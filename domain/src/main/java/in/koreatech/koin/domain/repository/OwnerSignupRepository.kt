@@ -7,4 +7,8 @@ interface OwnerSignupRepository {
     suspend fun requestEmailVerification(
         email: String
     ): Result<Unit>
+
+    suspend fun requestSmsVerificationCode(
+        phoneNumber: String,
+    ): Result<Unit>
 }

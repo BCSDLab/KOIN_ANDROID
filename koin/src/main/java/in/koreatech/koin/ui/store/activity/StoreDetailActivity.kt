@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -21,9 +21,9 @@ import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
+import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
-import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreCallContract
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
 import `in`.koreatech.koin.ui.store.fragment.StoreFlyerDialogFragment
@@ -39,9 +39,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-
-
-
+    
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -67,19 +65,25 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_PICTURE,
-                viewModel.store.value?.name ?: "Unknown")
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
     }
-    private val storeDetailViewpagerAdapter =StoreDetailViewpagerAdapter(this)
-
-
+    private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_BACK_BUTTON,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                    onBackPressed()
+                }
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
@@ -89,16 +93,35 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown")
+                viewModel.store.value?.name ?: "Unknown"
+            )
         }
 
-        TabLayoutMediator(binding.storeDetailTabLayout, binding.storeDetailViewPager) { tab, position ->
+        TabLayoutMediator(
+            binding.storeDetailTabLayout,
+            binding.storeDetailViewPager
+        ) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.menu)
                 1 -> getString(R.string.event_notification)
                 else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
+
+        binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab?.position == 1)
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+            }
+
+            override fun onTabUnselected(p0: TabLayout.Tab?) {}
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {}
+        })
 
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
@@ -174,17 +197,17 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 } else {
                     storeDetailEtcTextview.text = it.description
                 }
-                
+
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //계좌이체
                 setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
 
-                Glide.with(this@StoreDetailActivity)
-                    .load(it.imageUrls?.getOrNull(0) ?: R.drawable.defualt_image)
-                    .error(R.drawable.arrow_back)
-                    .into(storeDetailImageview)
+                binding.storeDetailImageview.apply {
+                    adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
+
+                }
 
             }
         }
@@ -235,6 +258,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             )
         }
     }
+
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
     }
