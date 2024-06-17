@@ -71,6 +71,9 @@ object URLConstant {
         const val CHANGEPASSWORDEMAIL = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION"
         const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
         const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
+        const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
+        const val SMS = "$OWNERS/$VERIFICATION/sms"
+        const val PW = "password"
     }
 
     object CALLVANS {

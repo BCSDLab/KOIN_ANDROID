@@ -52,6 +52,8 @@ markermanVersion="2.3.0"
 coilVersion = "2.6.0"
 napier = "2.6.1"
 composeNumberPickerVersion = "1.0.3"
+powerSpinner = "1.2.7"
+firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -78,6 +80,7 @@ compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 compose-navigation = {module = "androidx.navigation:navigation-compose", version.ref = "composeNavigationVersion"}
+security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCryptoVersion" }
 
 android-gradle-tool = { module = "com.android.tools.build:gradle", version.ref = "androidGradleVersion" }
 android-gradle-crashlytics = { module = "com.google.firebase:firebase-crashlytics-gradle", version.ref = "firebaseGradleVersion" }
@@ -133,6 +136,7 @@ orbit-viewmodel = {module= "org.orbit-mvi:orbit-viewmodel", version.ref = "orbit
 orbit-compose = {module= "org.orbit-mvi:orbit-compose", version.ref = "orbitVersion"}
 
 hilt-compose= {module= "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeVersion"}
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtoolsVersion" }
 
 markerman-roundedImageView={module= "com.makeramen:roundedimageview", version.ref = "markermanVersion"}
 
@@ -141,6 +145,8 @@ coil-compose = {module = "io.coil-kt:coil-compose", version.ref = "coilVersion"}
 coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 
 compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
+powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

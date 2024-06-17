@@ -22,4 +22,17 @@ class DeptLocalDataSource @Inject constructor(
             else -> throw IllegalArgumentException()
         }
     )
+
+    fun getDeptNames() = with(context) {
+        listOf(
+            getString(R.string.major_architectural_engineering),
+            getString(R.string.major_employment_service_policy),
+            getString(R.string.major_mechanical_engineering),
+            getString(R.string.major_architectural_engineering),
+            getString(R.string.major_architectural_engineering),
+            getString(R.string.major_architectural_engineering),
+            getString(R.string.major_architectural_engineering),
+            getString(R.string.major_architectural_engineering),
+        )
+    }
 }
