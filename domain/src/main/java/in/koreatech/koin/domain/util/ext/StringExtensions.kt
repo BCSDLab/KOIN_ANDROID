@@ -19,3 +19,7 @@ fun String.toColorForHtml(color: String) = "<font color = '#${color.substring(3)
 
 fun String.formatPhoneNumber(): String =
     this.replace(Regex("(\\d{3})(\\d{4})(\\d{4})"), "$1-$2-$3")
+
+fun String.formatBusinessNumber(): String =
+    this.replace(Regex("(\\d{3})(\\d{2})(\\d{5})"), "$1-$2-$3")
+
