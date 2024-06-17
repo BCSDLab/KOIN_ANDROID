@@ -8,6 +8,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -23,7 +24,6 @@ import `in`.koreatech.koin.ui.signup.SignupActivity.Companion.SIGN_UP_PASSWORD
 import `in`.koreatech.koin.ui.signup.viewmodel.SignupViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.hideKeyboard
-import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.textString
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
@@ -50,26 +50,29 @@ class SignupWithDetailInfoActivity : ActivityBase() {
         getUserDataFromSignupActivity()
         checkNickname()
         continueSignup()
-        addTextChangedListenerWithNicknameAndDept()
-        autoInputMajor()
+        initSpinner()
+//        addTextChangedListenerWithNicknameAndDept()
+//        autoInputMajor()
+
+
     }
 
-    private fun autoInputMajor() {
-        binding.signupUserEdittextMajor.apply {
-            isEnabled = false
-            hint = context.getString(R.string.user_info_id_hint)
-        }
-    }
+//    private fun autoInputMajor() {
+//        binding.signupUserEdittextMajor.apply {
+//            isEnabled = false
+//            hint = context.getString(R.string.user_info_id_hint)
+//        }
+//    }
 
     private fun addTextChangedListenerWithNicknameAndDept() {
         binding.signupUserEdittextNickName.addTextChangedListener {
             if (signupViewModel.isCheckedNickname) signupViewModel.isCheckedNickname = false
         }
 
-        binding.signupUserEdittextStudentId.addTextChangedListener {
-            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
-            signupViewModel.getDept(it.toString())
-        }
+//        binding.signupUserEdittextStudentId.addTextChangedListener {
+//            if (signupViewModel.isPerformDept) signupViewModel.isPerformDept = false
+//            signupViewModel.getDept(it.toString())
+//        }
     }
 
     private fun continueSignup() {
@@ -87,7 +90,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                         signupUserRadiobuttonStudent.isChecked -> Graduated.Student
                         else -> null
                     },
-                    major = signupUserEdittextMajor.text.toString(),
+                    major = spinnerSignupUserMajor.text.toString(),
                     name = signupUserEdittextName.text.toString().trim(),
                     nickName = signupUserEdittextNickName.text.toString().trim(),
                     password = signupViewModel.password.trim(),
@@ -103,6 +106,11 @@ class SignupWithDetailInfoActivity : ActivityBase() {
             }
         }
     }
+
+    private fun initSpinner() = with(binding.spinnerSignupUserMajor) {
+        lifecycleOwner = this@SignupWithDetailInfoActivity
+    }
+
 
     private fun checkNickname() {
         binding.signupUserButtonNicknameCheck.setOnClickListener {
@@ -130,19 +138,19 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                 when (state) {
                     SignupContinuationState.InitName -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_name))
 
-                    SignupContinuationState.InitPhoneNumber -> SnackbarUtil.makeShortSnackbar(binding.root,getString(R.string.signup_init_phone_number))
+                    SignupContinuationState.InitPhoneNumber -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_phone_number))
 
                     SignupContinuationState.InitStudentId -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_student_id))
 
-                    SignupContinuationState.CheckNickName -> SnackbarUtil.makeShortSnackbar(binding.root,getString(R.string.signup_check_nickname))
+                    SignupContinuationState.CheckNickName -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_nickname))
 
-                    SignupContinuationState.CheckGender -> SnackbarUtil.makeShortSnackbar(binding.root,getString(R.string.signup_check_gender))
+                    SignupContinuationState.CheckGender -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_gender))
 
                     SignupContinuationState.CheckGraduate -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_graduate))
 
                     SignupContinuationState.CheckDept -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.user_info_no_major))
 
-                    SignupContinuationState.NicknameDuplicated -> SnackbarUtil.makeShortSnackbar(binding.root,getString(R.string.error_nickname_duplicated))
+                    SignupContinuationState.NicknameDuplicated -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_nickname_duplicated))
 
                     SignupContinuationState.AvailableNickname -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_nickname_available))
 
@@ -164,13 +172,12 @@ class SignupWithDetailInfoActivity : ActivityBase() {
             }
         }
 
-        observeLiveData(dept) {
-            binding.signupUserEdittextMajor.setText(it)
-            binding.signupUserEdittextMajorError.text = ""
-        }
-
-        observeLiveData(getDeptErrorMessage) {
-            binding.signupUserEdittextMajorError.text = it
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                signupViewModel.depts.collect { deptNames ->
+                    binding.spinnerSignupUserMajor.setItems(deptNames)
+                }
+            }
         }
     }
 
