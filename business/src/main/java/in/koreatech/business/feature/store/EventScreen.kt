@@ -25,9 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -37,18 +35,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray6
+import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
-    val list = listOf("Test1", "Test2", "Test3","Test4","Test5","Test6","Test7","Test8","Test9","Test10")
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val scrollState = rememberScrollState()
-    val expandedItem = List(list.size) { rememberSaveable { mutableStateOf(false) } }
-    val enabledScroll by remember(verticalOffset,scrollState.value) { derivedStateOf { verticalOffset || scrollState.value != 0} }
+    val state = viewModel.collectAsState().value
+    val enabledScroll by remember(
+        verticalOffset,
+        scrollState.value
+    ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 1) {
@@ -56,9 +59,9 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
         }
     }
 
-    LaunchedEffect(expandedItem) {
-        expandedItem.forEachIndexed { index, item ->
-            item.value = false
+    LaunchedEffect(state.storeEvent) {
+        state.isEventExpanded.forEachIndexed { index, item ->
+            viewModel.initEventItem()
         }
     }
 
@@ -103,15 +106,16 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
-        list.forEachIndexed { index, item ->
-            val pagerState = rememberPagerState { 3 }
-            if (expandedItem[index].value) {
+        state.storeEvent.forEachIndexed { index, item ->
+            val pagerState =
+                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
+            if (state.isEventExpanded[index]) {
                 EventExpandedItem(
-                    item,
+                    state.storeEvent[index].title,
                     pagerState,
-                    onCollapse = { expandedItem[index].value = false })
+                    onCollapse = { viewModel.toggleEventItem(index) })
             } else {
-                EventItem(item, onClicked = { expandedItem[index].value = true })
+                EventItem(state.storeEvent[index].title, onClicked = { viewModel.toggleEventItem(index) })
             }
 
             Divider(
