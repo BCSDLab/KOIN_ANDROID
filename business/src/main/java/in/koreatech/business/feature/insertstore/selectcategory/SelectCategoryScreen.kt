@@ -110,13 +110,15 @@ fun SelectCategoryScreenImpl(
         Text(
             modifier = Modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
-            modifier = Modifier.padding(top = 34.dp, start = 32.dp),
+            modifier = Modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
 
         InsertStoreProgressBar(Modifier, 0.25f, R.string.insert_store_category_setting, R.string.page_one)
