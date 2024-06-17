@@ -2,9 +2,7 @@ package `in`.koreatech.business.feature.insertstore.insertdetailinfo
 
 import android.net.Uri
 import android.os.Parcelable
-import com.chargemap.compose.numberpicker.FullHours
-import com.chargemap.compose.numberpicker.Hours
-import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
