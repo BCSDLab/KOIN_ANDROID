@@ -10,4 +10,10 @@
     <color name="container_background">#FAFAFA</color>
     <color name="container_stroke">#E1E1E1</color>
     <color name="container_stroke_inside">#EEEEEE</color>
+
+    <!-- Primary -->
+    <color name="main_400">#4590BB</color>
+
+    <!-- Neutral -->
+    <color name="neutral_500">#8E8E8E</color>
 </resources>

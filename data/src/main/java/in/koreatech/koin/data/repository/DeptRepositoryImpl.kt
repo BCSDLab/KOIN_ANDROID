@@ -9,7 +9,7 @@ import javax.inject.Inject
 class DeptRepositoryImpl @Inject constructor(
     private val deptRemoteDataSource: DeptRemoteDataSource,
     private val deptLocalDataSource: DeptLocalDataSource
-) : DeptRepository{
+) : DeptRepository {
     override suspend fun getDeptNameFromDeptCode(deptCode: String): String {
         return try {
             val deptResponse = deptRemoteDataSource.getDeptFromDeptCode(deptCode)
@@ -26,6 +26,16 @@ class DeptRepositoryImpl @Inject constructor(
                 curriculumUrl = it.curriculumLinkUrl,
                 codes = it.deptNums
             )
+        }
+    }
+
+    override suspend fun getDeptNames(): List<String> {
+        return try {
+            deptRemoteDataSource.getAllDepts().map {
+                it.name
+            }
+        } catch (t: Throwable) {
+            deptLocalDataSource.getDeptNames()
         }
     }
 }

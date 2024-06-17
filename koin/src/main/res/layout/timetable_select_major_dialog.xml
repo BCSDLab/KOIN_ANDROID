@@ -37,8 +37,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/computer_science_and_engineering"
-        android:textOn="@string/computer_science_and_engineering"
+        android:textOff="@string/major_computer_science_and_engineering"
+        android:textOn="@string/major_computer_science_and_engineering"
         android:textSize="12sp"
         app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
@@ -57,8 +57,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/electrical_electronics_and_communication_engineering"
-        android:textOn="@string/electrical_electronics_and_communication_engineering"
+        android:textOff="@string/major_electrical_electronics_and_communication_engineering"
+        android:textOn="@string/major_electrical_electronics_and_communication_engineering"
         android:textSize="12sp"
         app:fontName="Custom6" />
 
@@ -75,8 +75,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/industrial_management"
-        android:textOn="@string/industrial_management"
+        android:textOff="@string/major_industrial_management"
+        android:textOn="@string/major_industrial_management"
         android:textSize="12sp"
         app:fontName="Custom6" />
 
@@ -93,8 +93,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/industrial_design_and_architectural_engineering"
-        android:textOn="@string/industrial_design_and_architectural_engineering"
+        android:textOff="@string/major_industrial_design_and_architectural_engineering"
+        android:textOn="@string/major_industrial_design_and_architectural_engineering"
         android:textSize="12sp"
         app:fontName="Custom6" />
 
@@ -112,8 +112,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/hrd"
-        android:textOn="@string/hrd"
+        android:textOff="@string/major_hrd"
+        android:textOn="@string/major_hrd"
         android:textSize="12sp"
         app:fontName="Custom6" />
 
@@ -130,8 +130,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/mechanical_engineering"
-        android:textOn="@string/mechanical_engineering"
+        android:textOff="@string/major_mechanical_engineering"
+        android:textOn="@string/major_mechanical_engineering"
         android:textSize="12sp"
         app:fontName="Custom6" />
 
@@ -148,8 +148,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/energy_meterials_chemical_engineering"
-        android:textOn="@string/energy_meterials_chemical_engineering"
+        android:textOff="@string/major_energy_meterials_chemical_engineering"
+        android:textOn="@string/major_energy_meterials_chemical_engineering"
         android:textSize="12sp"
         app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
@@ -168,8 +168,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/mechatronics_engineering"
-        android:textOn="@string/mechatronics_engineering"
+        android:textOff="@string/major_mechatronics_engineering"
+        android:textOn="@string/major_mechatronics_engineering"
         android:textSize="12sp"
         app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
@@ -188,8 +188,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/liberal_arts"
-        android:textOn="@string/liberal_arts"
+        android:textOff="@string/major_liberal_arts"
+        android:textOn="@string/major_liberal_arts"
         android:textSize="12sp"
         app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
@@ -208,8 +208,8 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="12sp"
         android:textColor="@color/gray7"
-        android:textOff="@string/department_of_future_technology"
-        android:textOn="@string/department_of_future_technology"
+        android:textOff="@string/major_department_of_future_technology"
+        android:textOn="@string/major_department_of_future_technology"
         android:textSize="12sp"
         app:fontName="Custom6" />
 

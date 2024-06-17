@@ -14,7 +14,7 @@ class OwnerRegisterUseCase @Inject constructor(
         name: String,
         password: String,
         phoneNumber: String,
-        shopId: Int,
+        shopId: Int?,
         shopName: String
     ): Result<Unit> {
         return ownerRegisterRepository.ownerRegister(attachments, companyNumber, email, name, password, phoneNumber, shopId, shopName)

@@ -18,7 +18,7 @@ class OwnerRegisterRepositoryImpl(
         name: String,
         password: String,
         phoneNumber: String,
-        shopId: Int,
+        shopId: Int?,
         shopName: String
     ): Result<Unit> {
         return try {
