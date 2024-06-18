@@ -50,6 +50,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue2
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -62,8 +63,8 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun MyStoreDetailScreen(
     modifier: Modifier,
-    viewModel: MyStoreDetailViewModel = MyStoreDetailViewModel()
 ) {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -138,7 +139,8 @@ private fun CollapsedTopBar(
 }
 
 @Composable
-fun TopBar(viewModel: MyStoreDetailViewModel) {
+fun TopBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     Column(modifier = Modifier.padding(horizontal = 20.dp)) {
         Image(
@@ -243,7 +245,7 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
             verticalArrangement = Arrangement.Top,
         ) {
             item {
-                TopBar(viewModel)
+                TopBar()
             }
             StoreDetailInfo()
             item {
