@@ -131,13 +131,15 @@ fun InsertBasicInfoScreenImpl(
         Text(
             modifier = modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
-            modifier = modifier.padding(top = 34.dp, start = 32.dp),
+            modifier = modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
 
         InsertStoreProgressBar(modifier, 0.50f, R.string.insert_store_basic_info, R.string.page_two)
