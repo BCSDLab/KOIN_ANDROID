@@ -51,6 +51,8 @@ hiltComposeVersion="1.0.0"
 markermanVersion="2.3.0"
 coilVersion = "2.6.0"
 napier = "2.6.1"
+composeNumberPickerVersion = "1.0.3"
+powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 
 [libraries]
@@ -141,6 +143,10 @@ markerman-roundedImageView={module= "com.makeramen:roundedimageview", version.re
 coil ={module = "io.coil-kt:coil", version.ref ="coilVersion"}
 coil-compose = {module = "io.coil-kt:coil-compose", version.ref = "coilVersion"}
 coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
+
+compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
+powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
