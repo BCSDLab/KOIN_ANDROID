@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -109,13 +110,15 @@ fun SelectCategoryScreenImpl(
         Text(
             modifier = Modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
-            modifier = Modifier.padding(top = 34.dp, start = 32.dp),
+            modifier = Modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
 
         InsertStoreProgressBar(Modifier, 0.25f, R.string.insert_store_category_setting, R.string.page_one)
@@ -179,16 +182,16 @@ fun InsertStoreProgressBar(
     Row(
         modifier = modifier
             .padding(top = 24.dp)
-            .padding(horizontal = 32.dp)
+            .padding(horizontal = 32.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = stringResource(id = resourceId),
             fontSize = 15.sp,
             color = ColorSecondary
         )
-
+        Spacer(modifier = Modifier.weight(1f))
         Text(
-            modifier = Modifier.padding(start = 160.dp),
             text = stringResource(id = pageId),
             fontSize = 15.sp,
             color = ColorSecondary

@@ -29,7 +29,7 @@ val ColorHelper = Color(0xFFD2DAE2)
 val Blue1 = Color(0xFFD2DAE2)
 
 val ColorPrimary = Color(0xFF175c8e)
-
+val ColorTextBackgrond = Color(0xFFF6F8F9)
 val ColorActiveButton = Color(0xFF175c8e)
 val ColorDisabledButton = Color(0xFFC4C4C4)
 val ColorSecondary = Color(0xFFF7941E)
