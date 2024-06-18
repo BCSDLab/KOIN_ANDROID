@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -236,6 +237,7 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
     val isCollapsed: Boolean by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 5 }
     }
+    val available = listOf("배달 가능", "카드 가능", "계좌이체 가능")
     Box {
         CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
         LazyColumn(
@@ -249,51 +251,25 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
             }
             StoreDetailInfo()
             item {
-                Row(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
-                    Box(
-                        modifier = Modifier.border(
-                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                        )
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(6.dp),
-                            text = stringResource(R.string.deliver_available),
-                            fontSize = 12.sp,
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                            color = Blue2,
-                        )
+                LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
+                    items(3) {
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                                )
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(6.dp),
+                                text = available[it],
+                                fontSize = 12.sp,
+                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                                color = Blue2,
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
                     }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Box(
-                        modifier = Modifier.border(
-                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                        )
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(6.dp),
-                            text = stringResource(R.string.card_available),
-                            fontSize = 12.sp,
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                            color = Blue2,
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Box(
-                        modifier = Modifier.border(
-                            width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
-                        )
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(6.dp),
-                            text = stringResource(R.string.account_transfer_available),
-                            fontSize = 12.sp,
-                            style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                            color = Blue2,
-                        )
-                    }
-
                 }
-
             }
             item {
                 Divider(
