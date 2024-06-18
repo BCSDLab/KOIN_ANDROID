@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.compose.numberPicker)
     implementation(libs.androidx.security.crypto)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
