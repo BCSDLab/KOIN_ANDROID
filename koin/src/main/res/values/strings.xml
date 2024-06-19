@@ -45,7 +45,6 @@
     <string name="press_again_to_exit">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
     <string name="user_anon">익명</string>
 
-
     <!-- Server Messages -->
     <string name="server_failed">서버와 연결에 실패하였습니다</string>
     <string name="upcoming_launch_service">"준비중입니다. 조금만 기다려주세요"</string>
@@ -102,6 +101,19 @@
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
 
     <!--Sign Up-->
+    <string name="signup_info">인적사항</string>
+    <string name="signup_name">이름</string>
+    <string name="signup_nickname">닉네임</string>
+    <string name="signup_nickname_check_duplicated">중복 확인</string>
+    <string name="signup_gender">성별</string>
+    <string name="signup_gender_man">남자</string>
+    <string name="signup_gender_woman">여자</string>
+    <string name="signup_phone_number">전화번호</string>
+    <string name="signup_student_id">학번</string>
+    <string name="signup_is_graduate">졸업여부</string>
+    <string name="signup_graduated_student">졸업생</string>
+    <string name="signup_enrolled_student">재학생</string>
+    <string name="signup_confirm">회원가입하기</string>
     <string name="signup_email_sending">이메일 전송 중</string>
     <string name="signup_term_check_message_ask">&quot;동의&quot; 체크 박스에 체크를 한 후 이메일 인증하기 버튼을 클릭하면 본 약관에 동의하는 것으로 간주합니다.</string>
     <string name="signup_error_email_already_send_or_email_requested">이미 가입한 계정이거나\n이메일 전송을 요청하였습니다.</string>
@@ -151,16 +163,21 @@
     <string name="lost_and_found_delete_fail">삭제에 실패했습니다.</string>
 
     <!--major-->
-    <string name="mechanical_engineering">기계공학부</string>
-    <string name="mechatronics_engineering">메카트로닉스공학부</string>
-    <string name="electrical_electronics_and_communication_engineering">전기전자통신공학부</string>
-    <string name="computer_science_and_engineering">컴퓨터공학부</string>
-    <string name="industrial_design_and_architectural_engineering">디자인건축공학부</string>
-    <string name="energy_meterials_chemical_engineering">에너지신소재화학공학부</string>
-    <string name="industrial_management">산업경영학부</string>
-    <string name="hrd">HRD</string>
-    <string name="department_of_future_technology">융합</string>
-    <string name="liberal_arts">교양학부</string>
+    <string name="major_title">학부</string>
+    <string name="major_architectural_engineering">건축공학부</string>
+    <string name="major_employment_service_policy">고용서비스정책학과</string>
+    <string name="major_mechanical_engineering">기계공학부</string>
+    <string name="major_industrial_design_and_architectural_engineering">디자인건축공학부</string>
+    <string name="major_industrial_design">디자인공학부</string>
+    <string name="major_mechatronics_engineering">메카트로닉스공학부</string>
+    <string name="major_industrial_management">산업경영학부</string>
+    <string name="major_electrical_electronics_and_communication_engineering">전기전자통신공학부</string>
+    <string name="major_computer_science_and_engineering">컴퓨터공학부</string>
+    <string name="major_chemical_engineering">화학생명공학부</string>
+    <string name="major_energy_meterials_chemical_engineering">에너지신소재화학공학부</string>
+    <string name="major_hrd">HRD</string>
+    <string name="major_department_of_future_technology">융합</string>
+    <string name="major_liberal_arts">교양학부</string>
 
 
     <string name="file_path_base">/Pictures/koin/</string>
@@ -407,7 +424,7 @@
     <string name="bus">버스</string>
     <string name="see_all">전체보기</string>
     <string name="complete_sign_up">회원가입 완료</string>
-    <string name="caution_dining_changable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
+    <string name="caution_dining_changeable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
     <string name="set_menu">세트 메뉴</string>
     <string name="side_menu">사이드 메뉴</string>
     <string name="best_menu">대표 메뉴</string>
