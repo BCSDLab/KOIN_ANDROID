@@ -54,6 +54,7 @@ napier = "2.6.1"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 datastore = "1.1.1"
+glance = "1.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -148,6 +149,8 @@ coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
 
+glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+glance-material = { group = "androidx.glance", name = "glance-material", version.ref = "glance" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

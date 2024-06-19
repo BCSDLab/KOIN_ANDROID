@@ -101,6 +101,16 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
+        <receiver android:name=".ui.timetablev2.widget.TimetableWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/timetablev2_app_widget_info"/>
+        </receiver>
+
         <receiver
             android:name=".ui.timetable.TimetableWidget"
             android:exported="false"

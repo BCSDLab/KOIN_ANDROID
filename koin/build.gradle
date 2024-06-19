@@ -133,4 +133,6 @@ dependencies {
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.lifecycle.compose)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material)
 }
