@@ -8,6 +8,7 @@ internal fun Project.configureAndroidHilt(
     commonExtension: CommonExtension<*, *, *, *>,
 ){
     dependencies {
+
         implementation(libs.findBundle("hilt").get())
         kapt(libs.findLibrary("hilt-compiler").get())
     }

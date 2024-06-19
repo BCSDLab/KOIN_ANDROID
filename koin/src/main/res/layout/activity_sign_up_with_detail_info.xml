@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
 
@@ -50,7 +50,7 @@
             android:layout_width="1dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.24" />
+            app:layout_constraintGuide_begin="199dp" />
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -132,16 +132,15 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="233dp"
-            android:text="인적사항"
+            android:text="@string/signup_info"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:fontName="Bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.28"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.188"
-            app:layout_constraintBottom_toTopOf="@id/guideline_horizontal_0.28"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal_0.188" />
 
         <TextView
             android:id="@+id/signup_user_name_textview"
@@ -151,14 +150,13 @@
             android:layout_marginTop="30dp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
-            android:text="이름"
+            android:text="@string/signup_name"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
             app:layout_constraintBottom_toTopOf="@id/signup_user_nickname_textview"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_title"
-            />
+            app:layout_constraintTop_toBottomOf="@id/signup_title" />
 
         <EditText
             android:id="@+id/signup_user_edittext_name"
@@ -166,13 +164,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="61dp"
             android:layout_marginEnd="16dp"
+            android:imeOptions="actionGo"
             android:includeFontPadding="false"
+            android:inputType="text"
             android:lineSpacingExtra="7sp"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:maxLines="1"
-            android:imeOptions="actionGo"
-            android:inputType="text"
             app:fontName="Custom6"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_name_textview"
             app:layout_constraintEnd_toEndOf="parent"
@@ -189,7 +187,7 @@
             android:layout_marginTop="25dp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
-            android:text="닉네임"
+            android:text="@string/signup_nickname"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
@@ -198,7 +196,6 @@
 
         <EditText
             android:id="@+id/signup_user_edittext_nick_name"
-            android:maxLength="10"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
@@ -206,6 +203,7 @@
             android:includeFontPadding="false"
             android:inputType="text"
             android:lineSpacingExtra="7sp"
+            android:maxLength="10"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="13sp"
@@ -236,7 +234,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="4sp"
-                android:text="중복확인"
+                android:text="@string/signup_nickname_check_duplicated"
                 android:textColor="@color/black"
                 android:textSize="8sp"
                 app:fontName="Custom6" />
@@ -249,7 +247,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="25dp"
             android:lineSpacingExtra="7sp"
-            android:text="성별"
+            android:text="@string/signup_gender"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
@@ -279,7 +277,7 @@
                 android:drawableLeft="@drawable/radio_button_checked_24dp"
                 android:drawablePadding="4dp"
                 android:includeFontPadding="false"
-                android:text="남자"
+                android:text="@string/signup_gender_man"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="15sp" />
 
@@ -295,7 +293,7 @@
                 android:drawablePadding="4dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="1dp"
-                android:text="여자"
+                android:text="@string/signup_gender_woman"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="15sp" />
         </RadioGroup>
@@ -308,12 +306,12 @@
             android:layout_marginTop="25dp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
-            android:text="전화번호"
+            android:text="@string/signup_phone_number"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_user_gender_textview"/>
+            app:layout_constraintTop_toBottomOf="@id/signup_user_gender_textview" />
 
         <EditText
             android:id="@+id/signup_user_edittext_phone_number"
@@ -321,15 +319,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="16dp"
+            android:imeOptions="actionGo"
             android:includeFontPadding="false"
+            android:inputType="number"
             android:lineSpacingExtra="7sp"
+            android:maxLength="11"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textColorHint="@color/blue1"
             android:textSize="13sp"
-            android:maxLines="1"
-            android:maxLength="11"
-            android:imeOptions="actionGo"
-            android:inputType="number"
             app:fontName="Custom6"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_phone_number_textview"
             app:layout_constraintEnd_toEndOf="parent"
@@ -345,12 +343,12 @@
             android:layout_marginTop="25dp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
-            android:text="학번"
+            android:text="@string/signup_student_id"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signup_user_phone_number_textview"/>
+            app:layout_constraintTop_toBottomOf="@id/signup_user_phone_number_textview" />
 
         <EditText
             android:id="@+id/signup_user_edittext_student_id"
@@ -358,15 +356,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="61dp"
             android:layout_marginEnd="16dp"
+            android:imeOptions="actionGo"
             android:includeFontPadding="false"
+            android:inputType="number"
             android:lineSpacingExtra="7sp"
+            android:maxLength="10"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textColorHint="@color/blue1"
             android:textSize="13sp"
-            android:maxLines="1"
-            android:maxLength="10"
-            android:imeOptions="actionGo"
-            android:inputType="number"
             app:fontName="Custom6"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_student_id_textview"
             app:layout_constraintEnd_toEndOf="parent"
@@ -383,7 +381,7 @@
             android:layout_marginBottom="36dp"
             android:includeFontPadding="false"
             android:lineSpacingExtra="7sp"
-            android:text="전공"
+            android:text="@string/major_title"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
@@ -392,39 +390,51 @@
             app:layout_constraintTop_toBottomOf="@id/signup_user_student_id_textview"
             app:layout_constraintVertical_bias="0" />
 
-        <EditText
-            android:id="@+id/signup_user_edittext_major"
+        <com.skydoves.powerspinner.PowerSpinnerView
+            android:id="@+id/spinner_signup_user_major"
             android:layout_width="200dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginStart="61dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
-            android:enabled="false"
+            android:background="@drawable/background_round_square"
+            android:gravity="center_vertical"
+            android:hint="@string/major_title"
             android:includeFontPadding="false"
-            android:lineSpacingExtra="7sp"
+            android:paddingHorizontal="8dp"
             android:textColor="@color/black"
+            android:textColorHint="@color/neutral_500"
             android:textSize="15sp"
             app:fontName="Custom6"
             app:layout_constraintBottom_toBottomOf="@+id/signup_user_major_textview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/signup_user_major_textview"
-            app:layout_constraintTop_toBottomOf="@id/signup_user_major_textview"
-            tools:text="메카트로닉스공학과" />
+            app:layout_constraintTop_toTopOf="@id/signup_user_major_textview"
+            app:spinner_arrow_drawable="@drawable/ic_arrow_down_3"
+            app:spinner_arrow_gravity="end"
+            app:spinner_arrow_padding="5dp"
+            app:spinner_divider_color="@color/neutral_500"
+            app:spinner_divider_show="true"
+            app:spinner_divider_size="1dp"
+            app:spinner_item_height="40dp"
+            app:spinner_popup_background="@color/cardview_light_background"
+            app:spinner_popup_height="300dp" />
 
+<!--    TODO:: 학번 입력란 에러 메세지로 변경
         <TextView
             android:id="@+id/signup_user_edittext_major_error"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            tools:text="올바른 학번을 입력해 주세요"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:visibility="gone"
             app:fontName="Custom6"
-            app:layout_constraintStart_toStartOf="@id/signup_user_edittext_major"
-            app:layout_constraintEnd_toEndOf="@id/signup_user_edittext_major"
-            app:layout_constraintTop_toBottomOf="@id/signup_user_edittext_major"
-            android:textSize="10sp" />
+            app:layout_constraintEnd_toEndOf="@id/spinner_signup_user_major"
+            app:layout_constraintStart_toStartOf="@id/spinner_signup_user_major"
+            app:layout_constraintTop_toBottomOf="@id/spinner_signup_user_major"
+            tools:text="올바른 학번을 입력해 주세요" />-->
 
         <TextView
             android:id="@+id/signup_user_graduate_textview"
@@ -433,7 +443,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="55dp"
             android:lineSpacingExtra="7sp"
-            android:text="졸업여부"
+            android:text="@string/signup_is_graduate"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:fontName="Custom6"
@@ -463,7 +473,7 @@
                 android:drawableLeft="@drawable/radio_button_checked_24dp"
                 android:drawablePadding="4dp"
                 android:includeFontPadding="false"
-                android:text="졸업생"
+                android:text="@string/signup_graduated_student"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="15sp" />
 
@@ -479,7 +489,7 @@
                 android:drawablePadding="4dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="1dp"
-                android:text="재학생"
+                android:text="@string/signup_enrolled_student"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="15sp" />
         </RadioGroup>
@@ -491,7 +501,7 @@
             android:layout_height="0dp"
             android:background="@color/colorAccent"
             android:gravity="center"
-            android:text="회원가입하기"
+            android:text="@string/signup_confirm"
             android:textColor="@color/white"
             android:textSize="15sp"
             app:fontName="Regular"
