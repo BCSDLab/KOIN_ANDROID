@@ -207,8 +207,9 @@ object RepositoryModule {
     @Singleton
     fun providesTimetableRepository(
         timetableRemoteDataSource: TimetableRemoteDataSource,
-        timetableLocalDataSource: TimetableLocalDataSource
+        timetableLocalDataSource: TimetableLocalDataSource,
+        tokenLocalDataSource: TokenLocalDataSource
     ): TimetableRepository {
-        return TimetableRepositoryImpl(timetableRemoteDataSource, timetableLocalDataSource)
+        return TimetableRepositoryImpl(timetableRemoteDataSource, timetableLocalDataSource, tokenLocalDataSource)
     }
 }

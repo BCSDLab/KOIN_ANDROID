@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.mapper.toLecture
 import `in`.koreatech.koin.data.mapper.toSemester
 import `in`.koreatech.koin.data.mapper.toTimetablesRequest
 import `in`.koreatech.koin.data.source.local.TimetableLocalDataSource
+import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.TimetableRemoteDataSource
 import `in`.koreatech.koin.domain.model.timetable.Department
 import `in`.koreatech.koin.domain.model.timetable.Lecture
@@ -18,10 +19,11 @@ import javax.inject.Inject
 class TimetableRepositoryImpl @Inject constructor(
     private val timetableRemoteDataSource: TimetableRemoteDataSource,
     private val timetableLocalDataSource: TimetableLocalDataSource,
+    private val tokenLocalDataSource: TokenLocalDataSource
 ) : TimetableRepository {
     override suspend fun getTimetables(key: String, isAnonymous: Boolean): List<Lecture> =
         try {
-            if (isAnonymous) {
+            if (tokenLocalDataSource.getAccessToken().isNullOrEmpty() && isAnonymous) {
                 val lectureString = timetableLocalDataSource.getString(key).first()
                 val lectureType = object : TypeToken<List<Lecture>>() {}.type
                 val gson = Gson()
@@ -29,8 +31,7 @@ class TimetableRepositoryImpl @Inject constructor(
                     gson.fromJson<List<Lecture>>(lectureString, lectureType).orEmpty()
                 updateLectures
             } else {
-                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }
-                    .orEmpty()
+                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }.orEmpty()
             }
         } catch (e: Exception) {
             emptyList()
