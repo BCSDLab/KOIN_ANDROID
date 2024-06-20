@@ -425,7 +425,7 @@
     <string name="bus">버스</string>
     <string name="see_all">전체보기</string>
     <string name="complete_sign_up">회원가입 완료</string>
-    <string name="caution_dining_changable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
+    <string name="caution_dining_changeable">식단 정보는 운영 상황에 따라 변동될 수 있습니다.</string>
     <string name="set_menu">세트 메뉴</string>
     <string name="side_menu">사이드 메뉴</string>
     <string name="best_menu">대표 메뉴</string>
