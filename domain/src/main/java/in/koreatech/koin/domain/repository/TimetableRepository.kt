@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface TimetableRepository {
     suspend fun getTimetables(key: String, isAnonymous: Boolean): List<Lecture>
     suspend fun updateTimetables(key: String, isAnonymous: Boolean, value: List<Lecture>)
+    suspend fun updateCurrentSemester(semester: String)
     suspend fun removeTimetables(id: Int)
     suspend fun loadSemesters(): List<Semester>
     suspend fun loadDepartments(): List<Department>

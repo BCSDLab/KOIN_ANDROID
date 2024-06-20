@@ -12,6 +12,7 @@ import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetablesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.RemoveTimetablesUseCase
+import `in`.koreatech.koin.domain.usecase.timetable.UpdateSemesterUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.UpdateTimetablesUseCase
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.TimetableSideEffect
@@ -33,6 +34,7 @@ class TimetableViewModel @Inject constructor(
     private val getDepartmentsUseCase: GetDepartmentsUseCase,
     private val getTimetablesUseCase: GetTimetablesUseCase,
     private val updateTimetablesUseCase: UpdateTimetablesUseCase,
+    private val updateSemesterUseCase: UpdateSemesterUseCase,
     private val removeTimetablesUseCase: RemoveTimetablesUseCase,
 ) : ContainerHost<TimetableState, TimetableSideEffect>, ViewModel() {
     override val container: Container<TimetableState, TimetableSideEffect> =
@@ -185,6 +187,7 @@ class TimetableViewModel @Inject constructor(
     }
 
     fun updateCurrentSemester(semester: Semester) = intent {
+        updateSemesterUseCase(semester.semester)
         clear()
         reduce { state.copy(uiStatus = UiStatus.Loading) }
         viewModelScope.launch {

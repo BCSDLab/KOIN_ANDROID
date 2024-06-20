@@ -28,6 +28,12 @@ class TimetableLocalDataSource @Inject constructor(
         }
     }
 
+    suspend fun putSemester(value: String) {
+        dataStore.edit { preferences ->
+            preferences[stringPreferencesKey("semester")] = value
+        }
+    }
+
     fun loadDepartments(): List<DepartmentResponse>? =
         context.readData<DepartmentsResponse>("department.json")?.departments
 }

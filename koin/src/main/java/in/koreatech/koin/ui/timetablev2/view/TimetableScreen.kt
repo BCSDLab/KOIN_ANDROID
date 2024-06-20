@@ -6,11 +6,9 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
@@ -18,7 +16,6 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
@@ -29,11 +26,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import `in`.koreatech.koin.common.UiStatus
+import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.TimetableSideEffect
 import `in`.koreatech.koin.ui.timetablev2.viewmodel.TimetableViewModel
@@ -50,7 +46,8 @@ fun TimetableScreen(
     context: Context = LocalContext.current,
     timetableViewModel: TimetableViewModel = viewModel(),
     onSavedImage: () -> Unit,
-    content: @Composable ColumnScope.(sheetState: BottomSheetState, onEventClick: (TimetableEvent) -> Unit) -> Unit,
+    onSendBroadcastReceiver: (semester: Semester) -> Unit,
+    content: @Composable ColumnScope.(sheetState: BottomSheetState, onEventClick: (TimetableEvent) -> Unit) -> Unit
 ) {
     val state by timetableViewModel.collectAsState()
 
@@ -67,6 +64,10 @@ fun TimetableScreen(
         if (state.departments.isEmpty()) {
             timetableViewModel.loadDepartments()
         }
+    }
+
+    if (state.currentSemester.semester.isNotEmpty()) {
+        onSendBroadcastReceiver(state.currentSemester)
     }
 
     LaunchedEffect(key1 = isAnonymous) {
@@ -118,8 +119,7 @@ fun TimetableScreen(
                 timetableViewModel.addLecture(state.currentSemester, lecture)
             }
             timetableViewModel.closeAddLectureDialog()
-            // TODO : update widget
-            // sendBroadcastReceiver(currentSemester)
+            onSendBroadcastReceiver(state.currentSemester)
         }
     )
 
@@ -129,7 +129,10 @@ fun TimetableScreen(
         lecture = state.clickLecture,
         semester = state.currentSemester,
         onDismissRequest = timetableViewModel::closeRemoveLectureDialog,
-        onRemoveLecture = timetableViewModel::removeLecture
+        onRemoveLecture = { semester, lecture ->
+            timetableViewModel.removeLecture(semester, lecture)
+            onSendBroadcastReceiver(state.currentSemester)
+        }
     )
 
     BottomSheetScaffold(
@@ -201,4 +204,3 @@ private fun BackHandler(sheetState: BottomSheetState) {
         }
     }
 }
-

@@ -29,7 +29,8 @@ class TimetableRepositoryImpl @Inject constructor(
                     gson.fromJson<List<Lecture>>(lectureString, lectureType).orEmpty()
                 updateLectures
             } else {
-                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }.orEmpty()
+                timetableRemoteDataSource.loadTimetables(key).timetables?.map { it.toLecture() }
+                    .orEmpty()
             }
         } catch (e: Exception) {
             emptyList()
@@ -42,6 +43,14 @@ class TimetableRepositoryImpl @Inject constructor(
             } else {
                 timetableRemoteDataSource.updateTimetables(value.toTimetablesRequest(key))
             }
+        } catch (e: Exception) {
+            e.message
+        }
+    }
+
+    override suspend fun updateCurrentSemester(semester: String) {
+        try {
+            timetableLocalDataSource.putSemester(semester)
         } catch (e: Exception) {
             e.message
         }

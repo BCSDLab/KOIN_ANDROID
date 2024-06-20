@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.ui.timetablev2
 
+import android.appwidget.AppWidgetManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.ime
@@ -9,17 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.viewinterop.AndroidView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.compose.ui.TimetableTheme
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.databinding.ActivityTimetableBinding
+import `in`.koreatech.koin.domain.model.timetable.Semester
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.timetablev2.view.TimetableScreen
+import `in`.koreatech.koin.ui.timetablev2.widget.TimetableAppWidget
+import `in`.koreatech.koin.ui.timetablev2.widget.TimetableWidgetReceiver
 import `in`.koreatech.koin.util.BitmapUtils
 import `in`.koreatech.koin.util.ext.showToast
 
@@ -41,6 +45,7 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
         initEvent()
         val isAnonymous = intent.getBooleanExtra("isAnonymous", true)
 
+
         binding.composeView.setContent {
             TimetableTheme(
                 darkTheme = false
@@ -58,6 +63,9 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                                 }
                             } ?: showToast("retry saved image..")
                         }
+                    },
+                    onSendBroadcastReceiver = { semester ->
+                        sendTimetableWidgetReceiver(semester)
                     },
                     content = { bottomSheetState, onEventClick ->
                         TimetableUI(
@@ -111,5 +119,13 @@ class TimetableActivity : KoinNavigationDrawerActivity() {
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
+    }
+
+    private fun sendTimetableWidgetReceiver(semester: Semester) {
+        val intent = Intent(this, TimetableWidgetReceiver::class.java).apply {
+            action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            putExtra(TimetableAppWidget.SEMESTER, semester.semester)
+        }
+        sendBroadcast(intent)
     }
 }
