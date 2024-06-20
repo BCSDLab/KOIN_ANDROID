@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.data.repository
 
-import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
@@ -24,6 +24,7 @@ class UserRepositoryImpl @Inject constructor(
 
         return AuthToken(authResponse.token, authResponse.refreshToken, authResponse.userType)
     }
+
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser()
     }
@@ -47,7 +48,7 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkNickname(nickname)
             false
         } catch (e: HttpException) {
-            if(e.code() == 409) true
+            if (e.code() == 409) true
             else throw e
         }
     }
@@ -57,15 +58,19 @@ class UserRepositoryImpl @Inject constructor(
             userRemoteDataSource.checkEmail(email)
             false
         } catch (e: HttpException) {
-            if(e.code() == 409) true
+            if (e.code() == 409) true
             else throw e
         }
     }
 
     override suspend fun updateUser(user: User) {
-        when(user) {
+        when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> userRemoteDataSource.updateUser(user.toUserRequest())
         }
+    }
+
+    override suspend fun verifyPassword(hashedPassword: String) {
+        userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
     }
 }

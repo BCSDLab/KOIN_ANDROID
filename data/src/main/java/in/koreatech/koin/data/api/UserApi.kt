@@ -6,9 +6,7 @@ import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.RefreshRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.CheckNicknameResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
-import `in`.koreatech.koin.data.response.user.RegisterResponse
 import retrofit2.Response
 import retrofit2.http.*
 
