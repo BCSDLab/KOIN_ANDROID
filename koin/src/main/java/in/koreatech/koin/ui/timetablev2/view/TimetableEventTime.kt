@@ -38,7 +38,6 @@ fun TimetableEventTime(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(end = 2.dp, bottom = 2.dp)
             .background(
                 color = if (eventType == TimetableEventType.SELECTED) Color.Transparent else event.color,
                 shape = RoundedCornerShape(4.dp)
@@ -60,14 +59,14 @@ fun TimetableEventTime(
                             + " - " +
                             event.end.format(timetableEventTimeFormatter),
                     fontSize = 8.sp,
-                    color = Color.White,
+                    color = Color.Black,
                 )
                 Text(
                     text = event.name,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                    lineHeight = 12.sp,
+                    color = Color.Black,
+                    lineHeight = 14.sp,
                 )
 
                 if (event.description != null) {
@@ -76,7 +75,7 @@ fun TimetableEventTime(
                         fontSize = 8.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        color = Color.White
+                        color = Color.Black
                     )
                 }
             }
@@ -93,7 +92,7 @@ fun TimetableEventTime(
 private fun TimetableEventTimePreview() {
     val sample = TimetableEvent(
         id = 1,
-        name = "관희의 수업 dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        name = "관희의 수업",
         color = Color(0xFFAFBBF2),
         dayOfWeek = DayOfWeek.FRIDAY,
         start = LocalTime.of(16, 0),
