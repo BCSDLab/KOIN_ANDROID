@@ -37,6 +37,7 @@ fun TimetableEventTime(
 ) {
     Column(
         modifier = modifier
+            .padding(bottom = 2.dp, end = 2.dp)
             .fillMaxSize()
             .background(
                 color = if (eventType == TimetableEventType.SELECTED) Color.Transparent else event.color,

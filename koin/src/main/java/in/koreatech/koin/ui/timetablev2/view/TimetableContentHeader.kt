@@ -5,10 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -31,6 +35,7 @@ fun TimetableContentHeader(
 ) {
     Row(
         modifier = modifier
+            .fillMaxWidth()
             .height(IntrinsicSize.Max),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -50,13 +55,16 @@ fun TimetableContentHeader(
                 .padding(8.dp),
             onClick = onSavedImage
         )
+        Spacer(modifier = Modifier.width(10.dp))
         Icon(
             imageVector = Icons.Default.AddCircle,
             contentDescription = null,
             tint = ColorPrimary,
-            modifier = Modifier.clickable {
-                onVisibleBottomSheet()
-            }
+            modifier = Modifier
+                .size(30.dp)
+                .clickable {
+                    onVisibleBottomSheet()
+                }
         )
     }
 }
