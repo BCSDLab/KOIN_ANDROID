@@ -53,7 +53,7 @@ fun TimetableWidgetContent(
                                     text = i.toString(),
                                     style = TextStyle(
                                         fontSize = 14.sp,
-                                        color = ColorProvider(Color.Gray)
+                                        color = ColorProvider(Color.Black)
                                     ),
                                     modifier = GlanceModifier
                                         .padding(top = 2.dp, end = 2.dp)

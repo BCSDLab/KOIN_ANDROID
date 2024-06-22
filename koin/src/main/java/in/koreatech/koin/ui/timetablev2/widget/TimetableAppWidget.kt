@@ -58,7 +58,7 @@ object TimetableAppWidget : GlanceAppWidget() {
             TimetableWidgetScreen(
                 timeBlocks = timeBlocks.value,
                 modifier = GlanceModifier.fillMaxSize()
-                    .background(imageProvider = ImageProvider(R.drawable.dragon))
+                    .background(Color.White)
             )
         }
     }
