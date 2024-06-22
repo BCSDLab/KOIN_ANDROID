@@ -38,12 +38,13 @@ data class TimetableEvent(
 
         return TimeBlock(
             title = this.name,
-            start = start,
+            start = this.start,
             end = endTime,
             startDuration = startDuration,
             endDuration = endDuration,
             duration = duration,
-            color = this.color
+            color = this.color,
+            description = this.description ?: ""
         )
     }
 

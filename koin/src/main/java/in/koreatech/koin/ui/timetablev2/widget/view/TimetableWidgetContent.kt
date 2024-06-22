@@ -105,7 +105,7 @@ fun TimetableWidgetContent(
                                         )
                                     )
                                     Text(
-                                        text = if (timeBlock?.start == null || timeBlock?.end == null) "" else "${timeBlock.start} - ${timeBlock.end}",
+                                        text = timeBlock?.description ?: "",
                                         style = TextStyle(
                                             fontSize = 8.sp,
                                             color = ColorProvider(Color.Black)

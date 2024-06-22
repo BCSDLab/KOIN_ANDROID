@@ -11,4 +11,5 @@ data class TimeBlock(
     val endDuration: Float = 0f,
     val duration: Float = 0f,
     val color: Color? = null,
+    val description: String = ""
 )

@@ -14,6 +14,7 @@ fun Lecture.toTimetableEvents(index: Int? = null, colors: List<Color>): List<Tim
      * @input : {MONDAY=[09:00, 09:30], TUESDAY=[09:00, 09:30]}
      */
     findDayOfWeekAndTime().forEach { (key, value) ->
+        val description = if (grades.length == 1) "0${grades} ${this.professor}" else "$grades $professor"
         val timetableEvent = TimetableEvent(
             id = id,
             name = name,
@@ -21,7 +22,7 @@ fun Lecture.toTimetableEvents(index: Int? = null, colors: List<Color>): List<Tim
             dayOfWeek = key,
             start = value.firstOrNull() ?: LocalTime.of(0, 0),
             end = value.lastOrNull()?.plusMinutes(30) ?: LocalTime.of(0, 0),
-            description = null
+            description = description
         )
         events.add(timetableEvent)
     }

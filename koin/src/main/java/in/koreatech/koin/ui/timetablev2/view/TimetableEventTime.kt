@@ -56,13 +56,6 @@ fun TimetableEventTime(
         when (eventType) {
             TimetableEventType.BASIC -> {
                 Text(
-                    text = event.start.format(timetableEventTimeFormatter)
-                            + " - " +
-                            event.end.format(timetableEventTimeFormatter),
-                    fontSize = 8.sp,
-                    color = Color.Black,
-                )
-                Text(
                     text = event.name,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
