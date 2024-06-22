@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.compose.ui.defaultColors
 import `in`.koreatech.koin.domain.model.timetable.Department
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.model.timetable.TimetableEvent
@@ -24,7 +25,7 @@ import `in`.koreatech.koin.ui.timetablev2.component.SearchBox
 fun TimetableBottomSheetContent(
     searchText: String,
     isKeyboardVisible: Boolean,
-    colors: List<Color>,
+    colors: List<Color> = defaultColors,
     lectures: List<Lecture>,
     selectedLectures: Lecture,
     currentDepartments: List<Department>,

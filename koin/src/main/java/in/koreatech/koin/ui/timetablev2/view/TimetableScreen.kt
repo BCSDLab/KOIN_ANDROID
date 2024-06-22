@@ -142,7 +142,6 @@ fun TimetableScreen(
             TimetableBottomSheetContent(
                 searchText = state.searchText,
                 isKeyboardVisible = state.isKeyboardVisible,
-                colors = emptyList(),
                 lectures = state.lectures,
                 selectedLectures = state.selectedLecture,
                 currentDepartments = state.currentDepartments,

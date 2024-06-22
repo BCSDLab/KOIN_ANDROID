@@ -23,6 +23,7 @@ import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.compose.ui.basicColors
+import `in`.koreatech.koin.compose.ui.defaultColors
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.domain.repository.TimetableRepository
@@ -72,7 +73,7 @@ object TimetableAppWidget : GlanceAppWidget() {
 
     private fun generateTimetableEvents(
         lectures: List<Lecture>,
-        colors: List<Color>
+        colors: List<Color> = defaultColors
     ): List<TimetableEvent> {
         val updatedTimetableEvents = mutableListOf<TimetableEvent>()
         lectures.mapIndexed { index, lecture ->
@@ -91,31 +92,26 @@ object TimetableAppWidget : GlanceAppWidget() {
         val mondays =
             generateTimetableEvents(
                 timetableEvents,
-                basicColors
             ).filter { it.dayOfWeek == DayOfWeek.MONDAY }
                 .sortedBy { it.start }.toTimeBlocks()
         val tuesdays =
             generateTimetableEvents(
                 timetableEvents,
-                basicColors
             ).filter { it.dayOfWeek == DayOfWeek.TUESDAY }
                 .sortedBy { it.start }.toTimeBlocks()
         val wednesdays =
             generateTimetableEvents(
                 timetableEvents,
-                basicColors
             ).filter { it.dayOfWeek == DayOfWeek.WEDNESDAY }
                 .sortedBy { it.start }.toTimeBlocks()
         val thursday =
             generateTimetableEvents(
                 timetableEvents,
-                basicColors
             ).filter { it.dayOfWeek == DayOfWeek.THURSDAY }
                 .sortedBy { it.start }.toTimeBlocks()
         val fridays =
             generateTimetableEvents(
                 timetableEvents,
-                basicColors
             ).filter { it.dayOfWeek == DayOfWeek.FRIDAY }
                 .sortedBy { it.start }.toTimeBlocks()
 

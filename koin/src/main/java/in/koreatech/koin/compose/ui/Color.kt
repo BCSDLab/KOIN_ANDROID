@@ -7,6 +7,20 @@ val ColorSecondary = Color(0xFFF7941E)
 val ColorMain400 = Color(0xFF4590BB)
 val ColorPrimaryMain400_ALPAH10 = Color(0x1a4590BB)
 
+val defaultColors = listOf(
+    Color(0xfffdbcf5),
+    Color(0xfffdbcf5),
+    Color(0xfffedb8f),
+    Color(0xffc2eead),
+    Color(0xffffb588),
+    Color(0xffffa9b7),
+    Color(0xff8ae9ff),
+    Color(0xff60e4c1),
+    Color(0xffb4bfff),
+    Color(0xff72b0ff),
+    Color(0xffe0e5eb)
+)
+
 val basicColors = listOf(
     Color(0xFFBFC8D7),
     Color(0xFFE2D2D2),

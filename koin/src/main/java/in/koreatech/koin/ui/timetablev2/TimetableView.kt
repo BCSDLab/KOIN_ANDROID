@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.lifecycle.viewmodel.compose.viewModel
+import `in`.koreatech.koin.compose.ui.defaultColors
 import `in`.koreatech.koin.domain.model.timetable.Lecture
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.ui.timetablev2.view.Timetable
@@ -33,14 +34,17 @@ class TimetableView @OptIn(ExperimentalMaterialApi::class)
 
         Timetable(
             isKeyboardVisible = state.isKeyboardVisible,
-            events = generateTimetableEvents(state.timetableEvents, emptyList()) ,
+            events = generateTimetableEvents(state.timetableEvents),
             sheetState = sheetState,
             clickEvent = state.lectureEvents,
             onEventClick = onTimetableEventClickListener::onEventClick
         )
     }
 
-    private fun generateTimetableEvents(timetableEvents: List<Lecture>, colors: List<Color>): List<TimetableEvent> {
+    private fun generateTimetableEvents(
+        timetableEvents: List<Lecture>,
+        colors: List<Color> = defaultColors
+    ): List<TimetableEvent> {
         val updateTimetableEvents = mutableListOf<TimetableEvent>()
         timetableEvents.mapIndexed { index, lecture ->
             lecture.toTimetableEvents(index, colors)
