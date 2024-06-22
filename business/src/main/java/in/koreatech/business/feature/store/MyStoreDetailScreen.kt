@@ -1,0 +1,329 @@
+package `in`.koreatech.business.feature.store
+
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.business.R
+import `in`.koreatech.business.ui.theme.Blue2
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.Shapes
+import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.compose.collectAsState
+
+
+@Composable
+fun MyStoreDetailScreen(
+    modifier: Modifier,
+) {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    Column(
+        modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ColorPrimary),
+        ) {
+            IconButton(onClick = { /*TODO*/ }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    contentDescription = stringResource(R.string.back),
+                )
+            }
+            Text(
+                text = stringResource(R.string.my_shop),
+                modifier = Modifier.align(Alignment.Center),
+                style = TextStyle(color = Color.White, fontSize = 18.sp),
+            )
+        }
+        MyStoreScrollScreen(viewModel)
+
+
+    }
+}
+
+@Composable
+private fun CollapsedTopBar(
+    modifier: Modifier = Modifier, isCollapsed: Boolean
+) {
+    val color: Color by animateColorAsState(
+        if (isCollapsed) Color.White
+        else Color.Transparent
+    )
+    Box(
+        modifier = modifier
+            .background(color)
+            .fillMaxWidth(),
+        contentAlignment = Alignment.BottomStart
+    ) {
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxWidth(),
+            visible = isCollapsed
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(horizontal = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(text = stringResource(R.string.shop_name))
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_setting),
+                            contentDescription = stringResource(R.string.shop_management)
+                        )
+                    }
+
+                }
+                Divider(
+                    color = ColorTextField,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TopBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    val state = viewModel.collectAsState().value
+    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+        Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(255.dp)
+                .padding(bottom = 10.dp),
+            painter = state.storeInfo?.imageUrls?.get(0)
+                .let { painterResource(id = R.drawable.no_image) },
+            contentDescription = stringResource(R.string.shop_image),
+            contentScale = ContentScale.Crop,
+        )
+
+        Button(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxWidth()
+                .height(40.dp),
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.White,
+                contentColor = ColorPrimary,
+            ),
+            shape = Shapes.medium,
+            border = BorderStroke(1.dp, ColorPrimary)
+
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_setting),
+                    contentDescription = stringResource(R.string.shop_management),
+                )
+                Text(text = stringResource(R.string.shop_management))
+            }
+
+        }
+        Text(
+            modifier = Modifier.padding(vertical = 10.dp),
+            text = state.storeInfo?.name ?: stringResource(R.string.shop_name),
+            style = TextStyle(color = Color.Black, fontSize = 20.sp),
+            fontSize = 20.sp,
+            fontWeight = FontWeight(600),
+        )
+    }
+
+}
+
+fun LazyListScope.StoreDetailInfo(
+) {
+    val infoList = listOf("전화번호", "운영시간", "주소정보", "배달요금", "기타정보")
+    val dataList =
+        listOf("010-1234-5678", "09:00 ~ 18:00", "경기도 안양시 동안구 관양동 123-4", "3000원", "기타정보")//test용
+    infoList.forEach {
+        info(it, dataList[infoList.indexOf(it)])
+    }
+}
+
+fun LazyListScope.info(info: String, data: String?) {
+    item {
+        Column(
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = info,
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                )
+                Text(
+                    text = data ?: "",
+                    style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                )
+            }
+        }
+    }
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
+    val toolBarHeight = 145.dp
+    val pagerState = rememberPagerState(0, 0f) { 2 }
+    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val isCollapsedTopBar: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+    }
+    val isCollapsed: Boolean by remember {
+        derivedStateOf { listState.firstVisibleItemIndex > 5 }
+    }
+    val available = listOf("배달 가능", "카드 가능", "계좌이체 가능")
+    Box {
+        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+            state = listState,
+            verticalArrangement = Arrangement.Top,
+        ) {
+            item {
+                TopBar()
+            }
+            StoreDetailInfo()
+            item {
+                LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
+                    items(3) {
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                                )
+                        ) {
+                            Text(
+                                modifier = Modifier.padding(6.dp),
+                                text = available[it],
+                                fontSize = 12.sp,
+                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
+                                color = Blue2,
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
+                }
+            }
+            item {
+                Divider(
+                    modifier = Modifier
+                        .padding(vertical = 5.dp)
+                        .height(12.dp),
+                    color = ColorTextField,
+                )
+            }
+            stickyHeader {
+                TabRow(modifier = Modifier.height(45.dp),
+                    selectedTabIndex = pagerState.currentPage,
+                    backgroundColor = Color.White,
+                    contentColor = Color.Black,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            modifier = Modifier.tabIndicatorOffset(
+                                tabPositions[pagerState.currentPage],
+                            ), color = ColorPrimary
+                        )
+                    }) {
+                    Tab(selected = true, onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(0)
+                        }
+                    }) {
+                        Text(stringResource(R.string.menu))
+                    }
+                    Tab(selected = false, onClick = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(1)
+                        }
+                    }) {
+                        Text(stringResource(R.string.event_notification))
+                    }
+                }
+            }
+            item {
+                HorizontalPager(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(screenHeight - toolBarHeight),
+                    state = pagerState,
+                ) { page ->
+                    Column(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        when (page) {
+                            0 -> MenuScreen(isCollapsed, pagerState.currentPage)
+                            1 -> EventScreen(isCollapsed, pagerState.currentPage)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

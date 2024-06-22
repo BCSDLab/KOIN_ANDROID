@@ -104,7 +104,7 @@
     <string name="check_duplicate">중복 확인</string>
     <string name="authentication_code">인증번호</string>
     <string name="id_not_validate">중복된 아이디입니다.</string>
-    <string name="shop_name">가게명</string>
+    <string name="shop_name">가게이름</string>
     <string name="enter_name">이름을 입력해주세요.</string>
     <string name="enter_business_registration_number">사업자 등록번호를 입력해주세요.</string>
     <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
@@ -119,5 +119,27 @@
     <string name="koin_essential_term">코인 이용약관 (필수)</string>
     <string name="private_info_term">개인정보 이용약관 (필수)</string>
     <string name="check">확인</string>
+    <string name="price">가격</string>
+    <string name="menu_default_image">메뉴 기본 이미지</string>
+    <string name="edit">편집하기</string>
+    <string name="add">추가하기</string>
+    <string name="event_default_image">이벤트 기본 이미지</string>
+    <string name="fold">접기</string>
+    <string name="view_all">전체보기</string>
+    <string name="telephone_number">전화번호</string>
+    <string name="operating_time">운영시간</string>
+    <string name="clodsed_day">휴무일</string>
+    <string name="address">주소정보</string>
+    <string name="delivery_amount">배달금액</string>
+    <string name="other_information">기타 정보</string>
+    <string name="menu">메뉴</string>
+    <string name="event_notification">이벤트/공지</string>
+    <string name="my_shop">내 상점</string>
+    <string name="back">뒤로가기</string>
+    <string name="shop_management">가게 관리하기</string>
+    <string name="shop_image">가게 이미지</string>
+    <string name="deliver_available"># 배달 가능</string>
+    <string name="card_available"># 카드 가능</string>
+    <string name="account_transfer_available"># 계좌이체 가능</string>
 
 </resources>
