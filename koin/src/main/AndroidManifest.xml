@@ -102,7 +102,8 @@
             android:value="false" />
 
         <receiver android:name=".ui.timetablev2.widget.TimetableWidgetReceiver"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/add_widget_timetable">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -111,18 +112,19 @@
                 android:resource="@xml/timetablev2_app_widget_info"/>
         </receiver>
 
-        <receiver
-            android:name=".ui.timetable.TimetableWidget"
-            android:exported="false"
-            android:label="@string/navigation_item_timetable">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
-            </intent-filter>
+        <!-- @unused -->
+<!--        <receiver-->
+<!--            android:name=".ui.timetable.TimetableWidget"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/navigation_item_timetable">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>-->
+<!--            </intent-filter>-->
 
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/timetable_widget_info"/>
-        </receiver>
+<!--            <meta-data-->
+<!--                android:name="android.appwidget.provider"-->
+<!--                android:resource="@xml/timetable_widget_info"/>-->
+<!--        </receiver>-->
 
         <provider
             android:name="androidx.core.content.FileProvider"

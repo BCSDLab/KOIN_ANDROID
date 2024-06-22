@@ -203,6 +203,7 @@
     <string name="settings_message">Go to Permissions to Grant Storage</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="add_widget_timetable">코인 시간표</string>
 
     <!--Error-->
     <string name="error_title">오류</string>
