@@ -31,6 +31,7 @@ fun TimetableWidgetScreen(
         }
         item {
             TimetableWidgetContent(
+                modifier = GlanceModifier.fillMaxWidth(),
                 timeWidth = timeWidth.toFloat(),
                 timeBlocks = timeBlocks
             )

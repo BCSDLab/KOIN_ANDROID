@@ -52,7 +52,7 @@ fun TimetableWidgetContent(
                                 Text(
                                     text = i.toString(),
                                     style = TextStyle(
-                                        fontSize = 14.sp,
+                                        fontSize = 12.sp,
                                         color = ColorProvider(Color.Black)
                                     ),
                                     modifier = GlanceModifier
@@ -73,7 +73,6 @@ fun TimetableWidgetContent(
                                     )
                                     .padding(
                                         top = ((timeBlock?.startDuration ?: 0f) * 60).dp,
-                                        end = 2.dp
                                     )
                                     .background(imageProvider = ImageProvider(R.drawable.shape_timetable_row))
                             ) {
@@ -91,7 +90,7 @@ fun TimetableWidgetContent(
                                     Box(
                                         modifier = GlanceModifier
                                             .fillMaxWidth()
-                                            .height(2.dp)
+                                            .height(1.dp)
                                             .background(Color.White)
                                     ) {
 
@@ -99,7 +98,7 @@ fun TimetableWidgetContent(
                                     Text(
                                         text = timeBlock?.title ?: "",
                                         style = TextStyle(
-                                            fontSize = 12.sp,
+                                            fontSize = 10.sp,
                                             color = ColorProvider(Color.Black),
                                             fontWeight = FontWeight.Bold
                                         )
