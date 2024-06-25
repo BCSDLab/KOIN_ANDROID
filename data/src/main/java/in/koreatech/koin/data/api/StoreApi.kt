@@ -24,10 +24,15 @@ interface StoreApi {
     //Get Shop list API
     @GET(URLConstant.SHOPS.SHOPS + "/{id}")
     suspend fun getStore(@Path("id") uid: Int): StoreItemWithMenusResponse
-
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
+    suspend fun getOwnerShopInfo(@Path("id") uid: Int): StoreItemWithMenusResponse
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
     suspend fun getShopMenus(@Path("id") uid: Int): StoreMenuResponse
-
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}" + "/menus")
+    suspend fun getOwnerShopMenus(@Path("id") uid: Int): StoreMenuResponse
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
     suspend fun getShopEvents(@Path("id") uid: Int): StoreDetailEventResponse
+
+    @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}" + "/events")
+    suspend fun getOwnerShopEvents(@Path("id") uid: Int): StoreDetailEventResponse
 }
