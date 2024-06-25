@@ -84,7 +84,7 @@ fun Timetable(
         )
         Row(
             modifier = Modifier
-                .weight(1f)
+                .fillMaxWidth()
         ) {
             TimetableSidebar(
                 modifier = Modifier
@@ -94,7 +94,6 @@ fun Timetable(
             )
             TimetableContent(
                 modifier = Modifier
-                    .weight(1f)
                     .verticalScroll(verticalScrollState),
                 clickEvent = clickEvent,
                 eventContent = eventContent,

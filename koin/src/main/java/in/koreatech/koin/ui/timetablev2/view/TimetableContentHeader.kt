@@ -49,18 +49,17 @@ fun TimetableContentHeader(
         TimetableSaveButton(
             modifier = Modifier
                 .padding(4.dp)
-                .weight(1f, fill = false)
                 .fillMaxHeight()
                 .background(color = ColorPrimary, shape = RoundedCornerShape(4.dp))
                 .padding(8.dp),
             onClick = onSavedImage
         )
-        Spacer(modifier = Modifier.width(10.dp))
         Icon(
             imageVector = Icons.Default.AddCircle,
             contentDescription = null,
             tint = ColorPrimary,
             modifier = Modifier
+                .padding(start = 4.dp, end = 8.dp)
                 .size(30.dp)
                 .clickable {
                     onVisibleBottomSheet()
