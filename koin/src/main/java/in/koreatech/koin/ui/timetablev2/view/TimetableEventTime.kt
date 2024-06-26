@@ -49,7 +49,11 @@ fun TimetableEventTime(
                 shape = RoundedCornerShape(4.dp)
             )
             .padding(4.dp)
-            .clickable { onEventClick(event) }
+            .clickable(
+                enabled = if (eventType == TimetableEventType.SELECTED) false else true
+            ) {
+                onEventClick(event)
+            }
     ) {
         if (eventType == TimetableEventType.BASIC) Divider(color = Color.White, thickness = 1.dp)
         Spacer(modifier = Modifier.height(2.dp))

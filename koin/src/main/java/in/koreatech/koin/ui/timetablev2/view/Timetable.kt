@@ -1,13 +1,10 @@
 package `in`.koreatech.koin.ui.timetablev2.view
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.model.timetable.TimetableEvent
 import `in`.koreatech.koin.model.timetable.TimetableEventType
-import `in`.koreatech.koin.util.ext.pxToDp
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -66,7 +61,6 @@ fun Timetable(
                             } else {
                                 350.dp
                             }
-//                            sheetState.requireOffset().pxToDp
                         } else {
                             0.dp
                         }
