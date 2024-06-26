@@ -8,7 +8,7 @@ class UploadFileUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         url: String,
-        bitmap: String,
+        bitmap: ByteArray,
         mediaType: String,
         mediaSize: Long
     ): Result<Unit> {

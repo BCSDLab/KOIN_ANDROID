@@ -19,6 +19,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -127,12 +128,24 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun uploadImage(
         url: String,
-        bitmap: String,
+        bitmap: Bitmap,
         mediaType: String,
         mediaSize: Long
     ) {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+
+        when(mediaType){
+            "image/jpeg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            "image/jpg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            "image/png" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            "image/webp" -> bitmap.compress(Bitmap.CompressFormat.WEBP, 100, byteArrayOutputStream)
+            "image/bmp" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        }
+
+        val bitmapByteArray = byteArrayOutputStream.toByteArray()
+
         viewModelScope.launch(Dispatchers.IO) {
-            uploadFilesUseCase(url, bitmap, mediaType, mediaSize).onSuccess {
+            uploadFilesUseCase(url, bitmapByteArray, mediaType, mediaSize).onSuccess {
                 intent {
                     reduce { state.copy(error = null) }
                 }

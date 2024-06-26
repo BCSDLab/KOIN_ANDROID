@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import android.util.Log
 import `in`.koreatech.koin.data.mapper.safeApiCall
 import `in`.koreatech.koin.data.requestbody.S3RequestBody
 import `in`.koreatech.koin.data.source.remote.PreSignedUrlRemoteDataSource
@@ -34,11 +35,12 @@ class PreSignedUrlRepositoryImpl @Inject constructor(
 
     override suspend fun uploadFile(
         url: String,
-        bitmap: String,
+        bitmap: ByteArray,
         mediaType: String,
         mediaSize: Long
     ): Result<Unit> {
         return safeApiCall {
+
             val file = bitmap.toRequestBody(mediaType.toMediaTypeOrNull())
             preSignedUrlRemoteDataSource.putPreSignedUrl(url, file)
         }

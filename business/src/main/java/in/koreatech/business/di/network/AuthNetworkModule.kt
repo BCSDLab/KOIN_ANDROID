@@ -1,6 +1,7 @@
 package `in`.koreatech.business.di.network
 
 import android.content.Context
+import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import kotlinx.coroutines.runBlocking
@@ -168,6 +170,14 @@ object BusinessAuthNetworkModule {
         @OwnerAuth retrofit: Retrofit
     ): UploadUrlApi {
         return retrofit.create(UploadUrlApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnerAuthApi(
+        @OwnerAuth retrofit: Retrofit
+    ):OwnerAuthApi {
+        return retrofit.create(OwnerAuthApi::class.java)
     }
 }
 

@@ -13,7 +13,7 @@ interface PreSignedUrlRepository {
 
     suspend fun uploadFile(
         url: String,
-        bitmap: String,
+        bitmap: ByteArray,
         mediaType: String,
         mediaSize: Long
     ): Result<Unit>
