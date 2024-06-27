@@ -8,8 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
-import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.core.upload.toCompressJPEG
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
@@ -66,11 +65,11 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         fileSize: Long,
         fileType: String,
         fileName: String,
-        bitmap: Bitmap
+        bitmap: Bitmap?
     ) {
         intent {
             if(state.storeImagePreSignedUrl == ""){
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     getMarketPreSignedUrlUseCase(
                         fileSize, fileType, fileName
                     ).onSuccess {
@@ -96,39 +95,28 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
                 )
             }
         }
-
     }
 
     private fun uploadImage(
         preSignedUrl: String,
         fileUrl: String,
-        bitmap: Bitmap,
+        bitmap: Bitmap?,
         mediaType: String,
         mediaSize: Long
     ) {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-
-        when(mediaType){
-            "image/jpeg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-            "image/jpg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-            "image/png" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            "image/webp" -> bitmap.compress(Bitmap.CompressFormat.WEBP, 100, byteArrayOutputStream)
-            "image/bmp" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-        }
-
-        val bitmapByteArray = byteArrayOutputStream.toByteArray()
-
-        viewModelScope.launch {
-            uploadFilesUseCase(
-                preSignedUrl,
-                bitmapByteArray,
-                mediaType,
-                mediaSize
-            ).onSuccess {
-                insertStorePreSignedUrl(preSignedUrl)
-                insertStoreFileUrl(fileUrl)
-            }.onFailure {
-                failUploadImage()
+        if (bitmap != null) {
+            viewModelScope.launch(Dispatchers.IO) {
+                uploadFilesUseCase(
+                    preSignedUrl,
+                    bitmap.toCompressJPEG(),
+                    mediaType,
+                    mediaSize
+                ).onSuccess {
+                    insertStorePreSignedUrl(preSignedUrl)
+                    insertStoreFileUrl(fileUrl)
+                }.onFailure {
+                    failUploadImage()
+                }
             }
         }
     }
