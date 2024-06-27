@@ -51,6 +51,7 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.upload.toResizeBitmap
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -102,7 +103,7 @@ fun InsertBasicInfoScreenImpl(
     storeAddress: String = "",
     isBasicInfoValid: Boolean = false,
     onStoreImageChange: (Uri) -> Unit = {},
-    onUploadImage:(Pair<Pair<Long, String>, Pair<String, Bitmap>>) -> Unit = {},
+    onUploadImage:(Pair<Pair<Long, String>, Pair<String, Bitmap?>>) -> Unit = {},
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
@@ -134,7 +135,7 @@ fun InsertBasicInfoScreenImpl(
                                     onUploadImage(
                                         Pair(
                                             Pair(fileSize, "image/" + fileName.split(".")[1]),
-                                            Pair(fileName, BitmapFactory.decodeStream(inputStream))
+                                            Pair(fileName, inputStream.toResizeBitmap(fileSize))
                                         )
                                     )
                                 }

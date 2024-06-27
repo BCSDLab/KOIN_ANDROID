@@ -10,6 +10,8 @@ import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetail
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.usecase.business.store.RegisterStoreUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -32,8 +34,20 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
             if (storeInfoJson != null) getStoreInfo(storeInfoJson)
         }
 
-    private fun getStoreInfo(storeInfo: InsertDetailInfoScreenState){
-        intent{
+    private val registerStoreFlow = MutableSharedFlow<FinalCheckStoreScreenState>()
+
+    init {
+        viewModelScope.launch {
+            registerStoreFlow
+                .debounce(500L)
+                .collect {
+                    performRegisterStore()
+                }
+        }
+    }
+
+    private fun getStoreInfo(storeInfo: InsertDetailInfoScreenState) {
+        intent {
             reduce {
                 state.copy(
                     storeCategory = storeInfo.storeCategory,
@@ -52,42 +66,48 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
         }
     }
 
-    fun registerStore(){
+    private suspend fun performRegisterStore(){
         intent {
-            viewModelScope.launch {
-                registerStoreUseCase(
-                    name = state.storeName,
-                    category = state.storeCategory,
-                    address = state.storeAddress,
-                    imageUri = state.storeImage,
-                    phoneNumber = state.storePhoneNumber,
-                    deliveryPrice = state.storeDeliveryFee,
-                    description = state.storeOtherInfo,
-                    operatingTime = state.operatingTimeList.toOperatingTimeList(),
-                    isDeliveryOk = state.isDeliveryOk,
-                    isCardOk = state.isCardOk,
-                    isBankOk = state.isBankOk
-                ).onSuccess {
-                    intent{
-                        postSideEffect(FinalCheckStoreScreenSideEffect.GoToFinishScreen)
-                    }
-                }.onFailure {
-                    intent{
-                        postSideEffect(FinalCheckStoreScreenSideEffect.FailRegisterStore)
-                    }
+            registerStoreUseCase(
+                name = state.storeName,
+                category = state.storeCategory,
+                address = state.storeAddress,
+                imageUri = state.storeImage,
+                phoneNumber = state.storePhoneNumber,
+                deliveryPrice = state.storeDeliveryFee,
+                description = state.storeOtherInfo,
+                operatingTime = state.operatingTimeList.toOperatingTimeList(),
+                isDeliveryOk = state.isDeliveryOk,
+                isCardOk = state.isCardOk,
+                isBankOk = state.isBankOk
+            ).onSuccess {
+                intent{
+                    postSideEffect(FinalCheckStoreScreenSideEffect.GoToFinishScreen)
+                }
+            }.onFailure {
+                intent{
+                    postSideEffect(FinalCheckStoreScreenSideEffect.FailRegisterStore)
                 }
             }
         }
     }
-}
 
-private fun List<OperatingTimeState>.toOperatingTimeList(): List<OperatingTime> {
-    return this.map { operatingTimeState ->
-        OperatingTime(
-            closeTime = operatingTimeState.closeTime,
-            closed = operatingTimeState.closed,
-            dayOfWeek = operatingTimeState.dayOfWeekEnglish,
-            openTime = operatingTimeState.openTime
-        )
+    fun registerStore() {
+        intent {
+            viewModelScope.launch {
+                registerStoreFlow.emit(state)
+            }
+        }
+    }
+
+    private fun List<OperatingTimeState>.toOperatingTimeList(): List<OperatingTime> {
+        return this.map { operatingTimeState ->
+            OperatingTime(
+                closeTime = operatingTimeState.closeTime,
+                closed = operatingTimeState.closed,
+                dayOfWeek = operatingTimeState.dayOfWeekEnglish,
+                openTime = operatingTimeState.openTime
+            )
+        }
     }
 }

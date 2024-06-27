@@ -124,40 +124,40 @@ fun FinalCheckStoreScreenImpl(
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.category),
-                    state.storeCategory.toString(),
+                    textString = stringResource(id = R.string.category),
+                    outputString = state.storeCategory.toString(),
                     paddingTopValue = 32.dp
                 )
             }
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.insert_store_store_name),
-                    state.storeName,
+                    textString = stringResource(id = R.string.insert_store_store_name),
+                    outputString = state.storeName,
                     paddingTopValue = 24.dp
                 )
             }
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.insert_store_store_address),
-                    state.storeAddress,
+                    textString = stringResource(id = R.string.insert_store_store_address),
+                    outputString = state.storeAddress,
                     paddingTopValue = 24.dp
                 )
             }
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.calling_number),
-                    state.storePhoneNumber,
+                    textString = stringResource(id = R.string.calling_number),
+                    outputString = state.storePhoneNumber,
                     paddingTopValue = 24.dp
                 )
             }
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.delivery_fee),
-                    state.storeDeliveryFee,
+                    textString = stringResource(id = R.string.delivery_fee),
+                    outputString = state.storeDeliveryFee,
                     paddingTopValue = 24.dp
                 )
             }
@@ -200,8 +200,8 @@ fun FinalCheckStoreScreenImpl(
 
             item {
                 NameTextField(
-                    stringResource(id = R.string.other_info),
-                    state.storeOtherInfo,
+                    textString = stringResource(id = R.string.other_info),
+                    outputString = state.storeOtherInfo,
                     paddingTopValue = 24.dp
                 )
             }
@@ -256,12 +256,13 @@ fun FinalCheckStoreScreenImpl(
 
 @Composable
 fun NameTextField(
+    modifier: Modifier = Modifier,
     textString: String = "",
     outputString: String = "",
     paddingTopValue: Dp = 10.dp
 ){
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp)
             .padding(top = paddingTopValue),
@@ -280,8 +281,6 @@ fun NameTextField(
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
-
-
     }
 }
 
