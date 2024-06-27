@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.timetablev2.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,8 @@ fun TimetableHeader(
 ) {
     Row(
         modifier = modifier
-            .background(Color.LightGray)
+            .background(Color.White)
+            .border(width = (0.5).dp, color = Color.LightGray)
             .padding(start = dayStartPadding)
     ) {
         val days = listOf("월", "화", "수", "목", "금")

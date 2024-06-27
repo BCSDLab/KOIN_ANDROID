@@ -27,6 +27,7 @@ fun TimetableContent(
     events: List<TimetableEvent>,
     modifier: Modifier = Modifier,
     clickEvent: List<TimetableEvent> = emptyList(),
+    onEventY: (Int) -> Unit,
     onEventClick: (event: TimetableEvent) -> Unit,
     eventContent: @Composable (event: TimetableEvent, eventType: TimetableEventType, onEventClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onClick ->
         TimetableEventTime(event = event, eventType = eventType, onEventClick = onClick)
@@ -103,7 +104,7 @@ fun TimetableContent(
         }
 
         layout(width, height) {
-            placeablesWithEvents.forEach { (placeable, event) ->
+            placeablesWithEvents.forEachIndexed { index, (placeable, event) ->
                 val initStartTime = LocalTime.of(9, 0)
                 val eventOffsetMinutes =
                     ChronoUnit.MINUTES.between(initStartTime, event.start)
@@ -118,6 +119,9 @@ fun TimetableContent(
                     else -> -1
                 }
                 val eventX = eventOffsetDays * dayWidth.roundToPx()
+                if (index == placeablesWithEvents.size - 1) {
+                    onEventY(eventY)
+                }
                 placeable.place(eventX, eventY)
             }
         }
@@ -162,8 +166,7 @@ private fun TimetableContentPreview() {
         events = samples,
         dayWidth = 68.dp,
         hourHeight = 64.dp,
-        onEventClick = {
-
-        }
+        onEventY = {},
+        onEventClick = {}
     )
 }

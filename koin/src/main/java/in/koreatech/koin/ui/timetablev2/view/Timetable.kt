@@ -12,6 +12,11 @@ import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -37,12 +42,24 @@ fun Timetable(
         TimetableEventTime(event = event, eventType = eventType, onEventClick = onEventClick)
     },
 ) {
-    val days = 5
-    val dayWidth = 68.dp
-    val hourSidebarWidth =
-        (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp - (dayWidth * days)
+    val screenWidth = (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp
+//    val days = 5
+//    val dayWidth = 68.dp
+    val dayWidth = screenWidth / 6
+//    val hourSidebarWidth =
+//        (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp - (dayWidth * days)
+    val hourSidebarWidth = dayWidth
     val hourHeight = 64.dp
+    var scrollValue by remember {
+        mutableStateOf(0)
+    }
     val verticalScrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = scrollValue) {
+        if (clickEvent.isNotEmpty()) {
+            verticalScrollState.scrollTo(scrollValue)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -94,6 +111,11 @@ fun Timetable(
                 events = events,
                 dayWidth = dayWidth,
                 hourHeight = hourHeight,
+                onEventY = { eventY ->
+                    if (scrollValue != eventY) {
+                        scrollValue = eventY
+                    }
+                },
                 onEventClick = onEventClick
             )
         }

@@ -25,7 +25,7 @@ fun SidebarLabel(
             .fillMaxSize()
             .padding(4.dp),
         textAlign = TextAlign.End,
-        fontSize = 12.sp
+        fontSize = 14.sp
     )
 }
 
