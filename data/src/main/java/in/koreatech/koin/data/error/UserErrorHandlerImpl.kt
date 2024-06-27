@@ -23,8 +23,8 @@ class UserErrorHandlerImpl @Inject constructor(
             when (it) {
                 is HttpException -> {
                     when (it.code()) {
-                        400 -> ErrorHandler(it.response()?.errorBody()?.getErrorResponse()?.message ?: "")
-                        404 -> ErrorHandler(it.response()?.errorBody()?.getErrorResponse()?.message ?: "")
+                        400 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_incorrect))
+                        404 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_login_user_not_found))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }
@@ -99,7 +99,7 @@ class UserErrorHandlerImpl @Inject constructor(
             when (it) {
                 is HttpException -> {
                     when (it.code()) {
-                        400 -> ErrorHandler(it.response()?.errorBody()?.getErrorResponse()?.message ?: "")
+                        400 -> ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_verify_password))
                         else -> ErrorHandler(context.getString(R.string.error_network))
                     }
                 }

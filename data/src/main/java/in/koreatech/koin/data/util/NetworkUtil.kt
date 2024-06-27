@@ -2,9 +2,7 @@ package `in`.koreatech.koin.data.util
 
 import com.google.gson.Gson
 import `in`.koreatech.koin.data.response.ErrorResponse
-import okhttp3.ResponseBody
+import retrofit2.HttpException
 
-fun ResponseBody.getErrorResponse(): ErrorResponse {
-    val errorResponse = Gson().fromJson(this.string(), ErrorResponse::class.java)
-    return errorResponse
-}
+fun HttpException.getErrorResponse(): ErrorResponse? =
+    Gson().fromJson(response()?.errorBody()?.string(), ErrorResponse::class.java)
