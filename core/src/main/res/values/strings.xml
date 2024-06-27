@@ -6,10 +6,11 @@
     <string name="error_network">네트워크 환경을 확인해주세요</string>
 
     <!--common-->
-    <string name="need_permission">권한이 필요합니다.</string>
-    <string name="positive">확인</string>
-    <string name="negative">아니오</string>
-    <string name="neutral">취소</string>
+    <string name="common_need_permission">권한이 필요합니다.</string>
+    <string name="common_confirmation">확인</string>
+    <string name="common_confirm">확인하기</string>
+    <string name="common_negative">아니오</string>
+    <string name="common_cancellation">취소</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -45,13 +46,13 @@
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
 
-
     <!-- Server Messages -->
     <string name="server_failed">서버와 연결에 실패하였습니다</string>
     <string name="upcoming_launch_service">"준비중입니다. 조금만 기다려주세요"</string>
     <string name="version_check_success">최신 버전을 사용하고 있습니다.</string>
     <string name="version_check_failed">버전 정보를 불러오지 못하였습니다. 네트워크 연결을 확인해주세요.</string>
     <string name="token_out_dated">인증 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
+
     <!-- URL -->
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>
