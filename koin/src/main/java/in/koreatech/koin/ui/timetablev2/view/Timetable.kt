@@ -1,0 +1,123 @@
+package `in`.koreatech.koin.ui.timetablev2.view
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.BottomSheetState
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.model.timetable.TimetableEvent
+import `in`.koreatech.koin.model.timetable.TimetableEventType
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun Timetable(
+    isKeyboardVisible: Boolean,
+    events: List<TimetableEvent>,
+    modifier: Modifier = Modifier,
+    clickEvent: List<TimetableEvent> = emptyList(),
+    sheetState: BottomSheetState = BottomSheetState(
+        BottomSheetValue.Collapsed,
+        density = Density(1f)
+    ),
+    onEventClick: (TimetableEvent) -> Unit,
+    eventContent: @Composable
+        (event: TimetableEvent, eventType: TimetableEventType?, onEventClick: (TimetableEvent) -> Unit) -> Unit = { event, eventType, onEventClick ->
+        TimetableEventTime(event = event, eventType = eventType, onEventClick = onEventClick)
+    },
+) {
+    val screenWidth = (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp
+//    val days = 5
+//    val dayWidth = 68.dp
+    val dayWidth = screenWidth / 6
+//    val hourSidebarWidth =
+//        (LocalContext.current.resources.displayMetrics.widthPixels / LocalContext.current.resources.displayMetrics.density).dp - (dayWidth * days)
+    val hourSidebarWidth = dayWidth
+    val hourHeight = 64.dp
+    var scrollValue by remember {
+        mutableStateOf(0)
+    }
+    val verticalScrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = scrollValue) {
+        if (clickEvent.isNotEmpty()) {
+            verticalScrollState.scrollTo(scrollValue)
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .background(Color.White)
+            .fillMaxSize()
+            .padding(
+                /**
+                 * 바텀 시트 올라올 때,
+                 * 바텀 시트 크기 만큼 Bottom Padding 주기
+                 */
+                bottom = if (sheetState.isExpanded) {
+                    if (sheetState.currentValue == BottomSheetValue.Expanded) {
+                        if (sheetState.targetValue == BottomSheetValue.Expanded && sheetState.progress == 1f) {
+                            if (isKeyboardVisible) {
+                                500.dp
+                            } else {
+                                350.dp
+                            }
+                        } else {
+                            0.dp
+                        }
+                    } else {
+                        0.dp
+                    }
+                } else {
+                    0.dp
+                }
+            )
+    ) {
+        TimetableHeader(
+            modifier = Modifier.fillMaxWidth(),
+            dayStartPadding = hourSidebarWidth,
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            TimetableSidebar(
+                modifier = Modifier
+                    .verticalScroll(verticalScrollState),
+                hourHeight = hourHeight,
+                hourWidth = hourSidebarWidth,
+            )
+            TimetableContent(
+                modifier = Modifier
+                    .verticalScroll(verticalScrollState),
+                clickEvent = clickEvent,
+                eventContent = eventContent,
+                events = events,
+                dayWidth = dayWidth,
+                hourHeight = hourHeight,
+                onEventY = { eventY ->
+                    if (scrollValue != eventY) {
+                        scrollValue = eventY
+                    }
+                },
+                onEventClick = onEventClick
+            )
+        }
+    }
+}

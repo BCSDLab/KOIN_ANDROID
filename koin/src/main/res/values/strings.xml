@@ -148,6 +148,7 @@
     <string name="forgotpassword_sent_email_message">학교 메일로 비밀번호 초기화를 완료해 주세요. 이동하실래요?</string>
 
     <!--Timetable-->
+    <string name="timetable_save_image">이미지 저장하기</string>
     <string name="timetable_saved">저장되었습니다.</string>
     <string name="timetable_saved_fail">저장에 실패했습니다.</string>
     <string name="timetable_delete_class_message">해당 수업을 삭제하시겠습니까?</string>
@@ -202,6 +203,7 @@
     <string name="settings_message">Go to Permissions to Grant Storage</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="add_widget_timetable">코인 시간표</string>
 
     <!--Error-->
     <string name="error_title">오류</string>

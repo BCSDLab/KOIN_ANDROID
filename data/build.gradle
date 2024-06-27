@@ -61,4 +61,6 @@ dependencies {
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
+
+    implementation(libs.androidx.datastore)
 }

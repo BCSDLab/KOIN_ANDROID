@@ -46,6 +46,9 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/black" />
 
+        <activity android:name=".ui.timetablev2.TimetableActivity"
+            android:windowSoftInputMode="adjustNothing"
+            android:exported="false"/>
         <activity
             android:name=".ui.notification.NotificationActivity"
             android:exported="false"
@@ -98,18 +101,30 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
 
-        <receiver
-            android:name=".ui.timetable.TimetableWidget"
-            android:exported="false"
-            android:label="@string/navigation_item_timetable">
+        <receiver android:name=".ui.timetablev2.widget.TimetableWidgetReceiver"
+            android:exported="true"
+            android:label="@string/add_widget_timetable">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/timetable_widget_info"/>
+                android:resource="@xml/timetablev2_app_widget_info"/>
         </receiver>
+
+        <!-- @unused -->
+<!--        <receiver-->
+<!--            android:name=".ui.timetable.TimetableWidget"-->
+<!--            android:exported="false"-->
+<!--            android:label="@string/navigation_item_timetable">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>-->
+<!--            </intent-filter>-->
+
+<!--            <meta-data-->
+<!--                android:name="android.appwidget.provider"-->
+<!--                android:resource="@xml/timetable_widget_info"/>-->
+<!--        </receiver>-->
 
         <provider
             android:name="androidx.core.content.FileProvider"

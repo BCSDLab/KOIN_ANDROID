@@ -114,4 +114,9 @@ class SplashActivity : ActivityBase() {
             firebasePerformanceUtil.stop()
         }
     }
+
+    override fun onDestroy() {
+        loginActivityLauncher.unregister()
+        super.onDestroy()
+    }
 }

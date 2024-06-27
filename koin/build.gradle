@@ -1,12 +1,11 @@
 plugins {
-    id 'com.android.application'
+    alias(libs.plugins.koin.compose)
+    alias(libs.plugins.koin.orbit)
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
     id 'com.google.firebase.appdistribution'
     id 'com.google.dagger.hilt.android'
-    id 'org.jetbrains.kotlin.android'
 }
 
 def applicationName = 'koin'
@@ -131,4 +130,9 @@ dependencies {
 
     implementation(libs.napier)
     implementation(libs.powerSpinner)
+
+    implementation(libs.coil.compose)
+    implementation(libs.androidx.lifecycle.compose)
+    implementation(libs.glance.appwidget)
+    implementation(libs.glance.material)
 }

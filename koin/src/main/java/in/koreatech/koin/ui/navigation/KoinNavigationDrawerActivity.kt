@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
@@ -59,8 +58,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     val drawerLayoutId get() = R.id.drawer_layout
 
     private var pressTime = System.currentTimeMillis()
-    private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
 
+    private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
     private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
 
     private val drawerLayout by lazy {
@@ -137,7 +136,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-
         drawerLayout.setScrimColor(ContextCompat.getColor(this, R.color.black_alpha20))
         drawerLayout.addDrawerListener { _, slideOffset ->
             if (slideOffset < 0.5f) window.blueStatusBar() else window.whiteStatusBar()
@@ -261,9 +259,12 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     nameTextview.text = user.name
                     when (menuState) {
                         MenuState.Main, MenuState.Notification -> {
-                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(
+                                MAIN_REQUIRED_PERMISSION
+                            )
                             koinNavigationDrawerViewModel.updateDeviceToken()
                         }
+
                         else -> Unit
                     }
                 }
@@ -288,11 +289,13 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Timetable -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
-                        goToAnonymousTimeTableActivity()
-                    } else {
-                        goToTimetableActivty()
-                    }
+                    goToTimetableActivityV2(userState.value, userState.value?.isAnonymous == true)
+//                    if (userState.value == null || userState.value?.isAnonymous == true) {
+//                        goToAnonymousTimeTableActivity()
+//                    } else {
+//                        goToTimetableActivityV2(userState.value, userState.value?.isAnonymous == true)
+//                        goToTimetableActivty()
+//                    }
                 }
 
                 MenuState.UserInfo -> {
@@ -414,6 +417,25 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         val intent = Intent(this, BusActivity::class.java)
         intent.putExtras(bundle!!)
 
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(intent)
+        } else {
+            startActivity(intent)
+        }
+    }
+
+    /**
+     * @TEST
+     */
+    private fun goToTimetableActivityV2(user: User?, isAnonymous: Boolean) {
+        val intent =
+            Intent(this, `in`.koreatech.koin.ui.timetablev2.TimetableActivity::class.java).apply {
+                if (user == null || isAnonymous) {
+                    putExtra("isAnonymous", true)
+                } else {
+                    putExtra("isAnonymous", false)
+                }
+            }
         if (menuState != MenuState.Main) {
             goToActivityFinish(intent)
         } else {
