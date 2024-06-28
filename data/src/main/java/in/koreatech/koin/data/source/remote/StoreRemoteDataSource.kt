@@ -27,22 +27,14 @@ class StoreRemoteDataSource @Inject constructor(
     suspend fun getStoreMenu(storeUid: Int) : StoreItemWithMenusResponse {
         return storeApi.getStore(storeUid)
     }
-    suspend fun getMyShopList() : List<StoreItemResponse> {
-        return storeApi.getMyShopList().shops
-    }
-    suspend fun getOwnerShopInfo(storeUid: Int) : StoreItemWithMenusResponse {
-        return storeApi.getOwnerShopInfo(storeUid)
-    }
+
+
     suspend fun getShopMenus(storeUid: Int): StoreMenuResponse {
         return storeApi.getShopMenus(storeUid)
     }
-    suspend fun getOwnerShopMenus(storeUid: Int): StoreMenuResponse {
-        return storeApi.getOwnerShopMenus(storeUid)
-    }
+
     suspend fun getShopEvents(storeUid: Int): StoreDetailEventResponse {
         return storeApi.getShopEvents(storeUid)
     }
-    suspend fun getOwnerShopEvents(storeUid: Int): StoreDetailEventResponse {
-        return storeApi.getOwnerShopEvents(storeUid)
-    }
+
 }
