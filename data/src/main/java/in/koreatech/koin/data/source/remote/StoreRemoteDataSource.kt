@@ -27,6 +27,9 @@ class StoreRemoteDataSource @Inject constructor(
     suspend fun getStoreMenu(storeUid: Int) : StoreItemWithMenusResponse {
         return storeApi.getStore(storeUid)
     }
+    suspend fun getMyShopList() : List<StoreItemResponse> {
+        return storeApi.getMyShopList().shops
+    }
     suspend fun getOwnerShopInfo(storeUid: Int) : StoreItemWithMenusResponse {
         return storeApi.getOwnerShopInfo(storeUid)
     }

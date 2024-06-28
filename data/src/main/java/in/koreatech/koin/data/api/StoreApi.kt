@@ -24,6 +24,9 @@ interface StoreApi {
     //Get Shop list API
     @GET(URLConstant.SHOPS.SHOPS + "/{id}")
     suspend fun getStore(@Path("id") uid: Int): StoreItemWithMenusResponse
+
+    @GET(URLConstant.SHOPS.OWNERSHOPS)
+    suspend fun getMyShopList(): StoreResponse
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
     suspend fun getOwnerShopInfo(@Path("id") uid: Int): StoreItemWithMenusResponse
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/menus")
