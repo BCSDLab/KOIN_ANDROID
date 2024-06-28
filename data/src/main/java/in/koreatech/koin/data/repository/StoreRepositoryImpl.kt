@@ -51,24 +51,16 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
     }
 
-    override suspend fun getMyShopList(): List<Store> {
-        return storeRemoteDataSource.getMyShopList().map { it.toStore() }
-    }
-    override suspend fun getOwnerShopInfo(storeId: Int): StoreWithMenu {
-        return storeRemoteDataSource.getOwnerShopInfo(storeId).toStoreWithMenu()
-    }
+
+
     override suspend fun getShopMenus(storeId: Int): StoreMenu {
         return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
     }
-    override suspend fun getOwnerShopMenus(storeId: Int): StoreMenu {
-        return storeRemoteDataSource.getOwnerShopMenus(storeId).toStoreMenu()
-    }
+
     override suspend fun getShopEvents(storeId: Int): ShopEvents {
         return storeRemoteDataSource.getShopEvents(storeId).toStoreDetailEvents()
     }
-    override suspend fun getOwnerShopEvents(storeId: Int): ShopEvents {
-        return storeRemoteDataSource.getOwnerShopEvents(storeId).toStoreDetailEvents()
-    }
+
     override suspend fun invalidateStores() {
         stores = null
     }

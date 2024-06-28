@@ -14,6 +14,7 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -169,6 +170,14 @@ object OwnerAuthNetworkModule {
         @OwnerAuth retrofit: Retrofit
     ): UploadUrlApi {
         return retrofit.create(UploadUrlApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOwnerAuthApi(
+        @OwnerAuth retrofit: Retrofit
+    ): OwnerAuthApi {
+        return retrofit.create(OwnerAuthApi::class.java)
     }
 }
 
