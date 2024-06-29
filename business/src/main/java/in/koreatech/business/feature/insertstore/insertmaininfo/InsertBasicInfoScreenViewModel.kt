@@ -29,8 +29,7 @@ import javax.inject.Inject
 class InsertBasicInfoScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
-    private val uploadFilesUseCase: UploadFileUseCase,
-    private val uploadPreSignedUrlUseCase : UploadPreSignedUrlUseCase
+    private val uploadFilesUseCase: UploadFileUseCase
 ): ViewModel(), ContainerHost<InsertBasicInfoScreenState, InsertBasicInfoScreenSideEffect> {
     override val container: Container<InsertBasicInfoScreenState,InsertBasicInfoScreenSideEffect> =
         container(InsertBasicInfoScreenState(), savedStateHandle = savedStateHandle){
@@ -65,20 +64,20 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
         fileSize: Long,
         fileType: String,
         fileName: String,
-        bitmap: Bitmap?
+        imageUri: String
     ) {
         intent {
             if(state.storeImagePreSignedUrl == ""){
-                viewModelScope.launch(Dispatchers.IO) {
+                viewModelScope.launch{
                     getMarketPreSignedUrlUseCase(
                         fileSize, fileType, fileName
                     ).onSuccess {
                         uploadImage(
                             preSignedUrl = it.second,
                             fileUrl = it.first,
-                            bitmap = bitmap,
                             mediaType = fileType,
-                            mediaSize = fileSize
+                            mediaSize = fileSize,
+                            imageUri = imageUri
                         )
                     }.onFailure {
                         failUploadImage()
@@ -89,9 +88,9 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
                 uploadImage(
                     preSignedUrl = state.storeImagePreSignedUrl,
                     fileUrl = state.storeImageFileUrl,
-                    bitmap = bitmap,
                     mediaType = fileType,
-                    mediaSize = fileSize
+                    mediaSize = fileSize,
+                    imageUri = imageUri
                 )
             }
         }
@@ -100,23 +99,21 @@ class InsertBasicInfoScreenViewModel @Inject constructor(
     private fun uploadImage(
         preSignedUrl: String,
         fileUrl: String,
-        bitmap: Bitmap?,
         mediaType: String,
-        mediaSize: Long
+        mediaSize: Long,
+        imageUri: String
     ) {
-        if (bitmap != null) {
-            viewModelScope.launch(Dispatchers.IO) {
-                uploadFilesUseCase(
-                    preSignedUrl,
-                    bitmap.toCompressJPEG(),
-                    mediaType,
-                    mediaSize
-                ).onSuccess {
-                    insertStorePreSignedUrl(preSignedUrl)
-                    insertStoreFileUrl(fileUrl)
-                }.onFailure {
-                    failUploadImage()
-                }
+        viewModelScope.launch{
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri
+            ).onSuccess {
+                insertStorePreSignedUrl(preSignedUrl)
+                insertStoreFileUrl(fileUrl)
+            }.onFailure {
+                failUploadImage()
             }
         }
     }

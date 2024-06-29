@@ -128,24 +128,12 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun uploadImage(
         url: String,
-        bitmap: Bitmap,
+        imageUri: String,
         mediaType: String,
         mediaSize: Long
     ) {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-
-        when(mediaType){
-            "image/jpeg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-            "image/jpg" -> bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-            "image/png" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            "image/webp" -> bitmap.compress(Bitmap.CompressFormat.WEBP, 100, byteArrayOutputStream)
-            "image/bmp" -> bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-        }
-
-        val bitmapByteArray = byteArrayOutputStream.toByteArray()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            uploadFilesUseCase(url, bitmapByteArray, mediaType, mediaSize).onSuccess {
+        viewModelScope.launch{
+            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
                 intent {
                     reduce { state.copy(error = null) }
                 }

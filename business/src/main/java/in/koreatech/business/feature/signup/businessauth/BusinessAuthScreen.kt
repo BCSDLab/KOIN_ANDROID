@@ -362,7 +362,7 @@ fun BusinessAuthScreen(
                         businessAuthState.fileInfo.forEach {
                             businessAuthViewModel.uploadImage(
                                 it.preSignedUrl,
-                                businessAuthState.bitmap[businessAuthState.fileInfo.indexOf(it)],
+                                it.uri,
                                 it.mediaType,
                                 it.fileSize,
                             )

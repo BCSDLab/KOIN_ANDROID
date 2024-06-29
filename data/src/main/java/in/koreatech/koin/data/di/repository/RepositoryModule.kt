@@ -142,9 +142,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providePreSignedUrlRepository(
-        preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource
+        preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
+        uploadImageLocalDataSource :UploadImageLocalDataSource
     ): PreSignedUrlRepository {
-        return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource)
+        return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource, uploadImageLocalDataSource)
     }
 
     @Provides

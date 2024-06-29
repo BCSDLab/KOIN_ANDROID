@@ -103,7 +103,7 @@ fun InsertBasicInfoScreenImpl(
     storeAddress: String = "",
     isBasicInfoValid: Boolean = false,
     onStoreImageChange: (Uri) -> Unit = {},
-    onUploadImage:(Pair<Pair<Long, String>, Pair<String, Bitmap?>>) -> Unit = {},
+    onUploadImage:(Pair<Pair<Long, String>, Pair<String, String>>) -> Unit = {},
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
@@ -116,12 +116,12 @@ fun InsertBasicInfoScreenImpl(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
+            result.data?.data?.let { uri ->
 
-                val inputStream = context.contentResolver.openInputStream(it)
+                val inputStream = context.contentResolver.openInputStream(uri)
 
-                if (it.scheme.equals("content")) {
-                    val cursor = context.contentResolver.query(it, null, null, null, null)
+                if (uri.scheme.equals("content")) {
+                    val cursor = context.contentResolver.query(uri, null, null, null, null)
                     cursor.use {
                         if (cursor != null && cursor.moveToFirst()) {
                             val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
@@ -135,7 +135,7 @@ fun InsertBasicInfoScreenImpl(
                                     onUploadImage(
                                         Pair(
                                             Pair(fileSize, "image/" + fileName.split(".")[1]),
-                                            Pair(fileName, inputStream.toResizeBitmap(fileSize))
+                                            Pair(fileName, uri.toString())
                                         )
                                     )
                                 }
@@ -145,7 +145,7 @@ fun InsertBasicInfoScreenImpl(
                     }
                 }
 
-                onStoreImageChange(it)
+                onStoreImageChange(uri)
             }
         }
     }
