@@ -23,23 +23,23 @@ import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
 
 fun StoreItemResponse.toStore(): Store = Store(
-    uid = uid,
-    name = name,
+    uid = uid ?: 0,
+    name = name ?: "",
     phone = phone ?: "",
     isDeliveryOk = isDeliveryOk ?: false,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
     isEvent = isEvent ?: false,
     isOpen = isOpen ?: false,
-    open = open.filter { it.dayOfWeek == localDayOfWeekName }.map {
+    open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
         Store.OpenData(
-            dayOfWeek = it.dayOfWeek,
-            closed = it.closed,
+            dayOfWeek = it.dayOfWeek ?: "",
+            closed = it.closed ?: false,
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00:00")},
-    categoryIds = categoryIds.map { it.toStoreCategory() }
+    }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00:00") },
+    categoryIds = categoryIds?.map { it.toStoreCategory() }.orEmpty()
 )
 
 fun StoreEventItemReponse.toStoreEvent(): StoreEvent = StoreEvent(
@@ -71,12 +71,12 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     isBankOk = isBankOk ?: false,
     open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
         Store.OpenData(
-            dayOfWeek = it.dayOfWeek,
-            closed = it.closed,
+            dayOfWeek = it.dayOfWeek ?: "",
+            closed = it.closed ?: false,
             openTime = it.openTime ?: "",
             closeTime = it.closeTime ?: ""
         )
-    }.orEmpty().getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00,00")},
+    }.orEmpty().getOrElse(0) { Store.OpenData(localDayOfWeekName, false, "00:00", "00,00") },
     imageUrls = imageUrls ?: emptyList(),
     shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
     menuCategories = menuCategories?.map { it.toCategory() }.orEmpty()
