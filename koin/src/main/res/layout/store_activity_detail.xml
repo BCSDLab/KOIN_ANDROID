@@ -336,14 +336,38 @@
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
 
+                                <ImageView
+                                    android:id="@+id/update_info"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/fi_info"
+                                    android:layout_marginTop="45dp"
+                                    app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_delivery_textview"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/update_info_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="2024.03.09 업데이트"
+                                    android:textSize="12dp"
+                                    android:textColor="@color/gray15"
+                                    android:gravity="center"
+                                    android:layout_marginStart="4dp"
+                                    app:layout_constraintStart_toEndOf="@+id/update_info"
+                                    app:layout_constraintTop_toTopOf="@+id/update_info"
+                                    app:layout_constraintBottom_toBottomOf="@+id/update_info"
+                                    />
+
                                 <FrameLayout
                                     android:id="@+id/border_frameLayout"
                                     android:layout_width="match_parent"
                                     android:layout_height="12dp"
-                                    android:layout_marginTop="32dp"
+                                    android:layout_marginTop="16dp"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_bank_textview"
+                                    app:layout_constraintTop_toBottomOf="@+id/update_info"
                                     app:layout_goneMarginTop="72dp">
 
                                     <ImageView

@@ -14,6 +14,8 @@ data class StoreItemWithMenusResponse(
     @SerializedName("pay_bank") val isBankOk: Boolean?,
     @SerializedName("open") val open: List<StoreItemResponse.OpenResponseDTO>?,
     @SerializedName("image_urls") val imageUrls: ArrayList<String>?,
+    @SerializedName("updated_at") val updateAt: String,
+    @SerializedName("is_event") val isEvent: Boolean?,
     @SerializedName("shop_categories") val shopCategories: List<CategoriesResponseDTO>?,
     @SerializedName("menu_categories") val menuCategories: List<CategoriesResponseDTO>?,
 ) {
