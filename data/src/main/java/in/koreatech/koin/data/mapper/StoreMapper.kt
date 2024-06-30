@@ -69,6 +69,8 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     deliveryPrice = deliveryPrice ?: 0,
     isCardOk = isCardOk ?: false,
     isBankOk = isBankOk ?: false,
+    updateAt = updateAt,
+    isEvent = isEvent ?: false,
     open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek,

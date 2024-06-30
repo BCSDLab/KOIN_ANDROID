@@ -218,6 +218,7 @@
     <string name="store_at_here">%1$s에서</string>
     <string name="store_neun">%1$s는 준비 중 입니다.</string>
     <string name="store_eun">%1$s은 준비 중 입니다.</string>
+    <string name="updateAt">%1$s 업데이트</string>
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>

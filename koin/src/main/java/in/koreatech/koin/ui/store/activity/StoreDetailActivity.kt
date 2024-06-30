@@ -204,6 +204,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 //계좌이체
                 setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
 
+                updateInfoTv.text = getString(R.string.updateAt, it.updateAt.replace("-", "."))
+
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
 
