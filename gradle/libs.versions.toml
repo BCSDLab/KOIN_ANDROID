@@ -162,6 +162,7 @@ koin-application = { id = "in.koreatech.plugin.application", version = "unspecif
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
+koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]

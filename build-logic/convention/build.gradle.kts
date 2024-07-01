@@ -31,5 +31,9 @@ gradlePlugin {
             id = "in.koreatech.plugin.orbit"
             implementationClass = "AndroidApplicationOrbitConventionPlugin"
         }
+        register("AndroidLibraryPlugin") {
+            id = "in.koreatech.plugin.library"
+            implementationClass = "AndroidLibraryConventionPlugin"
+        }
     }
 }
