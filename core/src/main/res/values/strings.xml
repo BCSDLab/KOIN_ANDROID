@@ -29,6 +29,7 @@
     <string name="day_off">휴일</string>
     <string name="store_open_time">개점시간</string>
     <string name="store_close_time">폐점시간</string>
+    <string name="go_to_main_screen">메인 화면 바로가기</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -126,4 +127,8 @@
 
     <string name="insert_store_check_store_info">4. 가게 정보 확인</string>
     <string name="insert_store_check_info">입력하신 정보가 맞습니까?</string>
+    <string name="insert_store_fail_register_store">가게를 등록하는데 실패하였습니다.</string>
+
+    <string name="insert_store_finish">가게 등록 완료</string>
+    <string name="insert_store_finish_guide">가게 등록이 완료되었습니다.\n업체 정보 수정은 내 상점에서 가능합니다.</string>
 </resources>
