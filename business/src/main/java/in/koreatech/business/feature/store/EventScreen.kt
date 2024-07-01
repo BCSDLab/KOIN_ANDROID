@@ -106,16 +106,16 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
-        state.storeEvent.forEachIndexed { index, item ->
+        state.storeEvent?.events?.forEachIndexed { index, item ->
             val pagerState =
-                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
+                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
             if (state.isEventExpanded[index]) {
                 EventExpandedItem(
-                    state.storeEvent[index].title,
+                    state.storeEvent.events[index].title,
                     pagerState,
                     onCollapse = { viewModel.toggleEventItem(index) })
             } else {
-                EventItem(state.storeEvent[index].title, onClicked = { viewModel.toggleEventItem(index) })
+                EventItem(state.storeEvent.events[index].title, onClicked = { viewModel.toggleEventItem(index) })
             }
 
             Divider(
