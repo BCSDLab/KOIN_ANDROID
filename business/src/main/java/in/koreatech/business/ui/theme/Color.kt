@@ -30,6 +30,7 @@ val Blue2= Color(0xFF6dbbdd)
 
 val ColorPrimary = Color(0xFF175c8e)
 val ColorTextBackgrond = Color(0xFFF6F8F9)
+val ColorCategory = Color(0xFF4590BB)
 val ColorActiveButton = Color(0xFF175c8e)
 val ColorDisabledButton = Color(0xFFC4C4C4)
 val ColorSecondary = Color(0xFFF7941E)
