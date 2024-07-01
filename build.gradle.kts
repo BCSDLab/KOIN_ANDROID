@@ -11,7 +11,7 @@ buildscript {
         set("minSdkVersion", 24)
         set("targetSdkVersion", 34)
         set("versionName", "3.4.3")
-        set("minVersionCode", 30403)
+        set("versionCode", 30403)
     }
 
     dependencies {
