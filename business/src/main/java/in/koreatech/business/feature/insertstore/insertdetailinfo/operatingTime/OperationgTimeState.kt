@@ -8,5 +8,6 @@ data class OperatingTimeState(
     val closeTime: String = "",
     val closed: Boolean = false,
     val dayOfWeek: String = "",
-    val openTime: String = ""
+    val openTime: String = "",
+    val dayOfWeekEnglish: String = ""
 ): Parcelable
