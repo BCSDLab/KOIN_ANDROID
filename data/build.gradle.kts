@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.koin.library)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.koin.hilt)
 }
 
 android {

@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.koin.library)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.koin.hilt)
 }
 
 android {
@@ -70,10 +70,6 @@ dependencies {
 
     /* Dependency - sticky scroll view */
     api(libs.stickyScrollView)
-
-    /* Dependency - hilt */
-    api(libs.hilt.android)
-    kapt(libs.hilt.compiler)
 
     /* Dependency - firebase */
     implementation(platform(libs.firebase.bom))
