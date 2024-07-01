@@ -57,9 +57,10 @@ fun FinalCheckStoreScreen(
 
     FinalCheckStoreScreenImpl(
         state = state,
-        goToFinishScreen = {
+        navigateToFinishScreen = {
             viewModel.registerStore()
-        }
+        },
+        onBackPressed = onBackPressed
     )
 
     HandleSideEffects(viewModel, navigateToFinishScreen)
@@ -69,7 +70,7 @@ fun FinalCheckStoreScreen(
 @Composable
 fun FinalCheckStoreScreenImpl(
     modifier: Modifier = Modifier,
-    goToFinishScreen: () -> Unit = {},
+    navigateToFinishScreen: () -> Unit = {},
     onBackPressed: () -> Unit  = {},
     state: FinalCheckStoreScreenState = FinalCheckStoreScreenState()
 ) {
@@ -125,7 +126,7 @@ fun FinalCheckStoreScreenImpl(
             item {
                 NameTextField(
                     textString = stringResource(id = R.string.category),
-                    outputString = state.storeCategory.toString(),
+                    outputString = state.storeCategory.toCategory(),
                     paddingTopValue = 32.dp
                 )
             }
@@ -235,7 +236,7 @@ fun FinalCheckStoreScreenImpl(
 
             item {
                 Button(
-                    onClick = goToFinishScreen,
+                    onClick = navigateToFinishScreen,
                     colors = ButtonDefaults.buttonColors(ColorPrimary),
                     shape = RectangleShape,
                     modifier = Modifier
@@ -312,8 +313,7 @@ private fun HandleSideEffects(viewModel: FinalCheckStoreScreenViewModel, navigat
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is FinalCheckStoreScreenSideEffect.GoToFinishScreen -> navigateToFinishScreen()
-            is FinalCheckStoreScreenSideEffect.GoToFinishScreen -> ToastUtil.getInstance().makeShort(R.string.insert_store_null_store_phone_number)
-            else -> {}
+            is FinalCheckStoreScreenSideEffect.FailRegisterStore -> ToastUtil.getInstance().makeShort(R.string.insert_store_fail_register_store)
         }
     }
 }
@@ -325,4 +325,19 @@ fun PreviewStartInsertScreen(){
     FinalCheckStoreScreenImpl(
         modifier = Modifier
     )
+}
+
+fun Int.toCategory() :String{
+    return when(this){
+        2 -> "치킨"
+        3 -> "피자"
+        4 -> "도시락"
+        5 -> "족발"
+        6 -> "중국집"
+        7 -> "일반음식점"
+        8 -> "카페"
+        9 -> "뷰"
+        10 -> "기타/콜벤"
+        else -> "전체보기"
+    }
 }

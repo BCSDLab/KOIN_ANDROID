@@ -36,7 +36,7 @@ class UploadImageLocalDataSource @Inject constructor(
                                 ExifInterface.ORIENTATION_ROTATE_90 -> bitmap?.rotateBitmap(90f)
                                 ExifInterface.ORIENTATION_ROTATE_180 -> bitmap?.rotateBitmap(180f)
                                 ExifInterface.ORIENTATION_ROTATE_270 -> bitmap?.rotateBitmap(270f)
-                                else -> bitmap?.rotateBitmap(90f)
+                                else -> bitmap
                             }
                             if(rotatedBitmap != null){
                                 imageBitmap = rotatedBitmap
