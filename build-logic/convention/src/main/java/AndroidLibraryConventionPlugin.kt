@@ -11,9 +11,8 @@ internal class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("kotlin-kapt")
                 apply("com.android.library")
-                apply("kotlin-android")
+                apply("org.jetbrains.kotlin.kapt")
                 apply("org.jetbrains.kotlin.android")
             }
             extensions.configure<LibraryExtension> {
