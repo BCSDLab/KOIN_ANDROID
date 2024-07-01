@@ -56,7 +56,9 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue2
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
+import `in`.koreatech.business.ui.theme.Gray3
 import `in`.koreatech.business.ui.theme.Shapes
+import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -66,6 +68,8 @@ fun MyStoreDetailScreen(
     modifier: Modifier,
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    val state = viewModel.collectAsState().value
+
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -86,7 +90,7 @@ fun MyStoreDetailScreen(
                 style = TextStyle(color = Color.White, fontSize = 18.sp),
             )
         }
-        MyStoreScrollScreen(viewModel)
+        MyStoreScrollScreen(state)
 
 
     }
@@ -96,6 +100,8 @@ fun MyStoreDetailScreen(
 private fun CollapsedTopBar(
     modifier: Modifier = Modifier, isCollapsed: Boolean
 ) {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    val state = viewModel.collectAsState().value
     val color: Color by animateColorAsState(
         if (isCollapsed) Color.White
         else Color.Transparent
@@ -119,7 +125,7 @@ private fun CollapsedTopBar(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = stringResource(R.string.shop_name))
+                    Text(text = state.storeInfo?.name ?: stringResource(R.string.shop_name))
                     IconButton(onClick = { /*TODO*/ }) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_setting),
@@ -189,11 +195,24 @@ fun TopBar() {
 
 }
 
-fun LazyListScope.StoreDetailInfo(
+fun LazyListScope.storeDetailInfo(
+    state: MyStoreDetailState
 ) {
     val infoList = listOf("전화번호", "운영시간", "주소정보", "배달요금", "기타정보")
     val dataList =
-        listOf("010-1234-5678", "09:00 ~ 18:00", "경기도 안양시 동안구 관양동 123-4", "3000원", "기타정보")//test용
+        listOf(
+            state.storeInfo?.phone ?: "",
+            if (state.storeInfo?.open?.openTime?.isNotEmpty() == true && state.storeInfo.open.closeTime.isNotEmpty())
+                generateOpenCloseTimeString(
+                    state.storeInfo.open.openTime,
+                    state.storeInfo.open.closeTime
+                )
+            else
+                "",
+            state.storeInfo?.address ?: "",
+            state.storeInfo?.deliveryPrice.toString() + "원",
+            state.storeInfo?.description ?: "",
+        )
     infoList.forEach {
         info(it, dataList[infoList.indexOf(it)])
     }
@@ -224,7 +243,7 @@ fun LazyListScope.info(info: String, data: String?) {
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
+fun MyStoreScrollScreen(state: MyStoreDetailState) {
     val toolBarHeight = 145.dp
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val coroutineScope = rememberCoroutineScope()
@@ -237,7 +256,11 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
     val isCollapsed: Boolean by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 5 }
     }
-    val available = listOf("배달 가능", "카드 가능", "계좌이체 가능")
+    val available = mutableMapOf(
+        "배달 가능" to state.storeInfo?.isDeliveryOk,
+        "카드 가능" to state.storeInfo?.isCardOk,
+        "계좌이체 가능" to state.storeInfo?.isBankOk
+    )
     Box {
         CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
         LazyColumn(
@@ -249,22 +272,24 @@ fun MyStoreScrollScreen(viewModel: MyStoreDetailViewModel) {
             item {
                 TopBar()
             }
-            StoreDetailInfo()
+            storeDetailInfo(state)
             item {
                 LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
                     items(3) {
                         Box(
                             modifier = Modifier
                                 .border(
-                                    width = 1.dp, color = Blue2, shape = RoundedCornerShape(8.dp)
+                                    width = 1.dp,
+                                    color = if (available[available.keys.elementAt(it)] == true) Blue2 else Gray3,
+                                    shape = RoundedCornerShape(8.dp)
                                 )
                         ) {
                             Text(
                                 modifier = Modifier.padding(6.dp),
-                                text = available[it],
+                                text = available.keys.elementAt(it),
                                 fontSize = 12.sp,
-                                style = TextStyle(color = Color.Black, fontSize = 15.sp),
-                                color = Blue2,
+                                style = TextStyle(fontSize = 15.sp),
+                                color = if (available[available.keys.elementAt(it)] == true) Blue2 else Gray3,
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
