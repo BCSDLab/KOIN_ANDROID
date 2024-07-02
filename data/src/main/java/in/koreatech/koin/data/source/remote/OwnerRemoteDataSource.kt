@@ -61,4 +61,7 @@ class OwnerRemoteDataSource(private val ownerApi: OwnerApi,
     suspend fun getOwnerShopEvents(storeUid: Int): StoreDetailEventResponse {
         return ownerAuthApi.getOwnerShopEvents(storeUid)
     }
+    suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
+        return ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
+    }
 }
