@@ -9,4 +9,7 @@ import retrofit2.http.POST
 interface UploadUrlApi {
     @POST(URLConstant.UPLOAD.OWNERURL)
     suspend fun postUploadUrl(@Body uploadUrlRequest: UploadUrlRequest): UploadUrlResponse
+
+    @POST(URLConstant.UPLOAD.MARKETURL)
+    suspend fun postUploadMarketUrl(@Body uploadUrlRequest: UploadUrlRequest): UploadUrlResponse
 }
