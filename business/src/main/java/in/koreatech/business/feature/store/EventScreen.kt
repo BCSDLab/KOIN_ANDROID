@@ -203,8 +203,7 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it))
-                ,
+                painter = rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
