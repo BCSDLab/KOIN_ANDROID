@@ -151,7 +151,7 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
                     .width(72.dp)
                     .height(80.dp)
                     .clip(RoundedCornerShape(5.dp)),
-                painter = if (item.thumbnailImages?.size != 0) painterResource(id = R.drawable.no_image) else
+                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else
                     rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(0)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
@@ -208,7 +208,7 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = if (item.thumbnailImages?.size != 0) painterResource(id = R.drawable.no_event_image) else
+                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
                     rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
