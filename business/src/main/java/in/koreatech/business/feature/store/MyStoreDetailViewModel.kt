@@ -64,12 +64,10 @@ class MyStoreDetailViewModel @Inject constructor(
                     }
                 }
             }
-            intent {
-                reduce { state.copy(storeId = state.storeList.first().uid) }
-                getOwnerShopInfo(state.storeId)
-                getShopEvents()
-                getShopMenus()
-            }
+            reduce { state.copy(storeId = state.storeList.first().uid) }
+            getOwnerShopInfo(state.storeId)
+            getShopEvents()
+            getShopMenus()
         }
     }
 
@@ -83,11 +81,13 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun getShopEvents() = intent{
+    fun getShopEvents() = intent {
         viewModelScope.launch {
             getOwnerShopEventsUseCase(state.storeId).also {
                 reduce {
-                    state.copy(storeEvent = it, isEventExpanded = List(it.events.size) { _ -> false })
+                    state.copy(
+                        storeEvent = it,
+                        isEventExpanded = List(it.events.size) { _ -> false })
                 }
             }
         }
