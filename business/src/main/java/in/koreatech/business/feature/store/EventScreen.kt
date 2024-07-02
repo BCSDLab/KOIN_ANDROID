@@ -37,14 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.domain.model.store.ShopEvent
-import `in`.koreatech.koin.domain.model.store.ShopEvents
-import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -151,7 +148,8 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
                 modifier = Modifier
                     .width(68.dp)
                     .height(68.dp),
-                painter = painterResource(id=R.drawable.no_event_image),
+                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else
+                    rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(0)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
@@ -203,7 +201,8 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
+                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
+                    rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
@@ -230,7 +229,11 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
                 }
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray1)
-            Text(text =generateOpenCloseTimeString(item.startDate, item.endDate) , fontSize = 10.sp, color = Gray6)
+            Text(
+                text = generateOpenCloseTimeString(item.startDate, item.endDate),
+                fontSize = 10.sp,
+                color = Gray6
+            )
         }
     }
 }
