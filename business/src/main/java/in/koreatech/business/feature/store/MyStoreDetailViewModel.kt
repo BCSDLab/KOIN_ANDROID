@@ -31,7 +31,7 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun initEventItem() = intent {
         reduce {
-            state.copy(isEventExpanded = state.isEventExpanded.mapIndexed { _, _ -> false })
+            state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
         }
     }
 
@@ -87,7 +87,7 @@ class MyStoreDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getOwnerShopEventsUseCase(state.storeId).also {
                 reduce {
-                    state.copy(storeEvent = it)
+                    state.copy(storeEvent = it, isEventExpanded = List(it.events.size) { _ -> false })
                 }
             }
         }
