@@ -50,10 +50,40 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
         verticalOffset,
         scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
+    val categories = listOf("추천 메뉴", "메인 메뉴", "세트 메뉴", "사이드 메뉴")
 
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 0) {
             scrollState.scrollTo(0)
+        }
+    }
+    LazyRow(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 9.dp)
+            .fillMaxWidth()
+            .height(40.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        items(4) {
+            Box(
+                modifier = Modifier
+                    .fillParentMaxWidth(0.25f)
+                    .height(40.dp)
+                    .padding(end = 10.dp)
+                    .border(
+                        width = 1.dp, color = Gray3, shape = RoundedCornerShape(4.dp)
+                    ),
+                contentAlignment = Alignment.Center
+
+            ) {
+                Text(
+                    modifier = Modifier.padding(13.dp),
+                    text = categories[it],
+                    fontSize = 12.sp,
+                    style = TextStyle(color = Gray6, fontSize = 15.sp),
+                    fontWeight = FontWeight(500),
+                )
+            }
         }
     }
 
@@ -62,44 +92,16 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
-        val categories = listOf("추천 메뉴", "메인 메뉴", "세트 메뉴", "사이드 메뉴")
-        LazyRow(
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 9.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            items(4) {
-                Box(
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.25f)
-                        .height(40.dp)
-                        .padding(end = 10.dp)
-                        .border(
-                            width = 1.dp, color = Gray3, shape = RoundedCornerShape(4.dp)
-                        ),
-                    contentAlignment = Alignment.Center
 
-                ) {
-                    Text(
-                        modifier = Modifier.padding(13.dp),
-                        text = categories[it],
-                        fontSize = 12.sp,
-                        style = TextStyle(color = Gray6, fontSize = 15.sp),
-                        fontWeight = FontWeight(500),
-                    )
-                }
-            }
-        }
         state.storeMenu?.forEach {
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 27.5.dp)
+                    .padding(horizontal = 25.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    modifier = Modifier.size(18.dp),
+                    modifier = Modifier.size(20.dp),
                     painter = painterResource(
                         id = when (it.id) {
                             1 -> R.drawable.ic_recommend
@@ -122,13 +124,13 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                        .padding(horizontal = 25.dp, vertical = 10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
                         Text(text = item.name, fontWeight = FontWeight(500))
-                        Text(text = stringResource(R.string.price), color = ColorPrimary)
+                        Text(text = item.singlePrice.toString() + "원", color = ColorPrimary)
                     }
                     Image(
                         modifier = Modifier
@@ -141,7 +143,8 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
                 Divider(
                     color = ColorTextField,
                     modifier = Modifier
-                        .width(327.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 25.dp)
                         .height(1.dp)
                 )
             }

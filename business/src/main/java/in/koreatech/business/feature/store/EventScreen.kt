@@ -16,6 +16,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -122,11 +124,11 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
                     state.storeEvent.events[index],
                     onClicked = { viewModel.toggleEventItem(index) })
             }
-
             Divider(
                 color = ColorTextField,
                 modifier = Modifier
-                    .width(327.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp)
                     .height(1.dp)
             )
         }
@@ -146,14 +148,19 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
         item.thumbnailImages?.get(0)?.let {
             Image(
                 modifier = Modifier
-                    .width(68.dp)
-                    .height(68.dp),
-                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else
+                    .width(72.dp)
+                    .height(80.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                painter = if (item.thumbnailImages?.size != 0) painterResource(id = R.drawable.no_image) else
                     rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(0)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
-        Column() {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -194,19 +201,22 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
     ) {
         HorizontalPager(
             modifier = Modifier
-                .width(327.dp)
+                .width(337.dp)
                 .height(363.dp),
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
+                painter = if (item.thumbnailImages?.size != 0) painterResource(id = R.drawable.no_event_image) else
                     rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
