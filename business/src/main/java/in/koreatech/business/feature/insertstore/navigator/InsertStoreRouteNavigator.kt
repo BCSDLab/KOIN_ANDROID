@@ -14,7 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreen
+import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreenImpl
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeSettingScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreen
@@ -103,8 +106,8 @@ fun InsertStoreNavigator(
 
                 viewModel = detailInfoScreenViewModel,
 
-                navigateToCheckScreen = {
-
+                navigateToCheckScreen = { storeInfo ->
+                    navigateToCheckScreen(navController, storeInfo)
                 }
             )
         }
@@ -118,6 +121,17 @@ fun InsertStoreNavigator(
                     navController.navigateUp()
                 },
                 viewModel = detailInfoScreenViewModel
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.CHECK_SCREEN.name
+        ){
+            FinalCheckStoreScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                navigateToFinishScreen = {}
             )
         }
     }
@@ -138,6 +152,15 @@ private fun navigateToDetailInfo(
     val bundle = Bundle()
     bundle.putParcelable("storeBasicInfo", storeBasicInfo)
     navController.navigate(InsertStoreRoute.DETAIL_INFO.name, args = bundle)
+}
+
+private fun navigateToCheckScreen(
+    navController: NavController,
+    storeInfo: InsertDetailInfoScreenState
+) {
+    val bundle = Bundle()
+    bundle.putParcelable("storeInfo", storeInfo)
+    navController.navigate(InsertStoreRoute.CHECK_SCREEN.name, args = bundle)
 }
 fun NavController.navigate(
     route: String,

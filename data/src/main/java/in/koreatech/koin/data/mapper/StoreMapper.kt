@@ -4,12 +4,14 @@ import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
+import `in`.koreatech.koin.data.response.store.StoreDayOffResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -126,3 +128,28 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
     startDate = startDate ?: "",
     endDate = endDate ?: ""
 )
+
+fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
+    val responseList = ArrayList<StoreDayOffResponse>()
+    for (dayOff in this) {
+        val response = StoreDayOffResponse(dayOff.closeTime, dayOff.closed, dayOff.dayOfWeek, dayOff.openTime)
+        responseList.add(response)
+    }
+    return responseList
+}
+
+
+fun String.toStringArray(): ArrayList<String> {
+    val responseList = ArrayList<String>()
+    responseList.add(this)
+    return responseList
+}
+
+fun Int.toCategory(): List<Int>{
+    val responseList = ArrayList<Int>()
+
+    responseList.add(1)
+    responseList.add(this)
+
+    return responseList
+}

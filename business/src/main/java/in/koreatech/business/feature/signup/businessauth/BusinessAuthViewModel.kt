@@ -19,6 +19,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -127,12 +128,12 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun uploadImage(
         url: String,
-        bitmap: String,
+        imageUri: String,
         mediaType: String,
         mediaSize: Long
     ) {
-        viewModelScope.launch(Dispatchers.IO) {
-            uploadFilesUseCase(url, bitmap, mediaType, mediaSize).onSuccess {
+        viewModelScope.launch{
+            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
                 intent {
                     reduce { state.copy(error = null) }
                 }
