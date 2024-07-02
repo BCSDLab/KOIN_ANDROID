@@ -33,7 +33,7 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
                         storeCategory = storeBasicInfo.storeCategory,
                         storeName = storeBasicInfo.storeName,
                         storeAddress = storeBasicInfo.storeAddress,
-                        storeImage = storeBasicInfo.storeImage
+                        storeImage = storeBasicInfo.storeImageFileUrl,
                     )
                 }
             }
@@ -172,7 +172,6 @@ class InsertDetailInfoScreenViewModel @Inject constructor(
                 val storeDetailInfo = state
 
                 postSideEffect(InsertDetailInfoScreenSideEffect.NavigateToCheckScreen(storeDetailInfo))
-                Log.e("로그", storeDetailInfo.toString())
                 return@intent
             }
 

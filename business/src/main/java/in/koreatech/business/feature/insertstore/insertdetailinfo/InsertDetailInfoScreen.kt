@@ -1,6 +1,7 @@
 package `in`.koreatech.business.feature.insertstore.insertdetailinfo
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -153,7 +154,7 @@ fun InsertDetailInfoScreenImpl(
         item {
             Text(
                 modifier = Modifier.padding(top = 34.dp, start = 40.dp),
-                text = stringResource(id = R.string.insert_store_main_info),
+                text = stringResource(id = R.string.insert_store_detail),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -164,7 +165,7 @@ fun InsertDetailInfoScreenImpl(
         }
 
         item {
-            NameTextField(stringResource(id = R.string.phone_number), storePhoneNumber, onStorePhoneNumberChange, 32.dp)
+            NameTextField(stringResource(id = R.string.calling_number), storePhoneNumber, onStorePhoneNumberChange, 32.dp)
         }
 
         item {
