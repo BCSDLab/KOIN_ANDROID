@@ -1,7 +1,9 @@
 package `in`.koreatech.business.feature.store
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,14 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.domain.model.store.ShopEvent
-import `in`.koreatech.koin.domain.model.store.ShopEvents
-import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -55,8 +55,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
     val scrollState = rememberScrollState()
     val state = viewModel.collectAsState().value
     val enabledScroll by remember(
-        verticalOffset,
-        scrollState.value
+        verticalOffset, scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
@@ -70,16 +69,127 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             viewModel.initEventItem()
         }
     }
+    if (state.isEditMode) {
+        EventEditToolBar()
+    } else {
+        EventToolBar()
+    }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(enabled = enabledScroll, state = scrollState)
+    ) {
+        state.storeEvent?.events?.forEachIndexed { index, item ->
+            val pagerState =
+                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
+            if (state.isEventExpanded[index]) {
+                EventExpandedItem(state.storeEvent.events[index],
+                    pagerState,
+                    onCollapse = { viewModel.toggleEventItem(index) })
+            } else {
+                EventItem(state.storeEvent.events[index],
+                    onClicked = { viewModel.toggleEventItem(index) })
+            }
+
+            Divider(
+                color = ColorTextField, modifier = Modifier
+                    .width(327.dp)
+                    .height(1.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun EventEditToolBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    val state = viewModel.collectAsState().value
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .height(52.dp)
+        .background(Gray2)) {
+
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { viewModel.onChangeAllEventSelected()},
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField,
-                contentColor = Color.Black
+                contentColor = Gray6
+            )
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = "전체"
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "전체")
+            }
+        }
+        Button(
+            onClick = {/**/},
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_edit),
+                contentDescription = "수정"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "수정")
+        }
+        Button(
+            onClick = {/*TODO*/ },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_edit),
+                contentDescription = "삭제"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "삭제")
+        }
+        Button(
+            onClick = {  viewModel.onChangeEditMode()  },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_add_box),
+                contentDescription = "완료"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "완료")
+        }
+    }
+}
+
+@Composable
+fun EventToolBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = { viewModel.onChangeEditMode() },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = ColorTextField, contentColor = Color.Black
             )
         ) {
             Image(
@@ -95,8 +205,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField,
-                contentColor = Color.Black
+                backgroundColor = ColorTextField, contentColor = Color.Black
             )
         ) {
             Image(
@@ -107,33 +216,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             Text(text = stringResource(R.string.add))
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
-    ) {
-        state.storeEvent?.events?.forEachIndexed { index, item ->
-            val pagerState =
-                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
-            if (state.isEventExpanded[index]) {
-                EventExpandedItem(
-                    state.storeEvent.events[index],
-                    pagerState,
-                    onCollapse = { viewModel.toggleEventItem(index) })
-            } else {
-                EventItem(
-                    state.storeEvent.events[index],
-                    onClicked = { viewModel.toggleEventItem(index) })
-            }
 
-            Divider(
-                color = ColorTextField,
-                modifier = Modifier
-                    .width(327.dp)
-                    .height(1.dp)
-            )
-        }
-    }
 }
 
 @Composable
@@ -151,14 +234,13 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
                 modifier = Modifier
                     .width(68.dp)
                     .height(68.dp),
-                painter = painterResource(id=R.drawable.no_event_image),
+                painter = painterResource(id = R.drawable.no_event_image),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
         Column() {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = item.title, fontWeight = FontWeight(500))
                 Row {
@@ -203,15 +285,13 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
         ) {
             Image(
                 modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it))
-                ,
+                painter = rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                 contentDescription = stringResource(R.string.event_default_image),
             )
         }
         Column {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = item.title, fontWeight = FontWeight(500))
                 Row {
@@ -231,7 +311,11 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
                 }
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray1)
-            Text(text =generateOpenCloseTimeString(item.startDate, item.endDate) , fontSize = 10.sp, color = Gray6)
+            Text(
+                text = generateOpenCloseTimeString(item.startDate, item.endDate),
+                fontSize = 10.sp,
+                color = Gray6
+            )
         }
     }
 }
