@@ -218,7 +218,9 @@
     <string name="store_at_here">%1$s에서</string>
     <string name="store_neun">%1$s는 준비 중 입니다.</string>
     <string name="store_eun">%1$s은 준비 중 입니다.</string>
-    <string name="updateAt">%1$s 업데이트</string>
+    <string name="store_update_at">%1$s 업데이트</string>
+    <string name="store_account_copy">계좌번호 복사 완료!</string>
+
 
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
@@ -435,6 +437,7 @@
     <string name="operating_time">운영시간</string>
     <string name="address">주소정보</string>
     <string name="delivery_fee">배달금액</string>
+    <string name="account_number">계좌번호</string>
     <string name="other_info">기타정보</string>
     <string name="delivery_available">#배달가능</string>
     <string name="card_available">#카드가능</string>

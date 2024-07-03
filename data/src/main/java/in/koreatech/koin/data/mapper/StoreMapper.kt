@@ -81,7 +81,9 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     }.orEmpty().getOrElse(0) {Store.OpenData(localDayOfWeekName, false, "00:00", "00,00")},
     imageUrls = imageUrls ?: emptyList(),
     shopCategories = shopCategories?.map { it.toCategory() }.orEmpty(),
-    menuCategories = menuCategories?.map { it.toCategory() }.orEmpty()
+    menuCategories = menuCategories?.map { it.toCategory() }.orEmpty(),
+    bank = bank ?: null,
+    accountNumber = accountNumber ?: null
 )
 
 fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() = StoreWithMenu.Category(
