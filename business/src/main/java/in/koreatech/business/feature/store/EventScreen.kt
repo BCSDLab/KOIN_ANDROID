@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -106,30 +105,11 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
 @Composable
 fun EventEditToolBar() {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
-    val state = viewModel.collectAsState().value
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .height(52.dp)
-        .background(Gray2)) {
-
-        Button(
-            onClick = { viewModel.onChangeAllEventSelected()},
-            modifier = Modifier
-                .weight(1f)
-                .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Gray6
-            )
-        ) {
-            Column {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "전체"
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "전체")
-            }
-        }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Gray2)
+    ) {
         Button(
             onClick = {/**/},
             modifier = Modifier
@@ -163,7 +143,7 @@ fun EventEditToolBar() {
             Text(text = "삭제")
         }
         Button(
-            onClick = {  viewModel.onChangeEditMode()  },
+            onClick = { viewModel.onChangeEditMode() },
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
@@ -184,6 +164,7 @@ fun EventEditToolBar() {
 @Composable
 fun EventToolBar() {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
+
     Row(modifier = Modifier.fillMaxWidth()) {
         Button(
             onClick = { viewModel.onChangeEditMode() },
@@ -191,7 +172,7 @@ fun EventToolBar() {
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField, contentColor = Color.Black
+              contentColor = Color.Black
             )
         ) {
             Image(
@@ -218,34 +199,8 @@ fun EventToolBar() {
             Text(text = stringResource(R.string.add))
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
-    ) {
-        state.storeEvent?.events?.forEachIndexed { index, item ->
-            val pagerState =
-                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
-            if (state.isEventExpanded[index]) {
-                EventExpandedItem(
-                    state.storeEvent.events[index],
-                    pagerState,
-                    onCollapse = { viewModel.toggleEventItem(index) })
-            } else {
-                EventItem(
-                    state.storeEvent.events[index],
-                    onClicked = { viewModel.toggleEventItem(index) })
-            }
-            Divider(
-                color = ColorTextField,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-                    .height(1.dp)
-            )
-        }
-    }
 }
+
 
 @Composable
 fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
