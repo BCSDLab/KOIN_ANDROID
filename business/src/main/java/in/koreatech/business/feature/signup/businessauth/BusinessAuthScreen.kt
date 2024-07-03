@@ -72,7 +72,6 @@ fun BusinessAuthScreen(
     onNextClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
 
