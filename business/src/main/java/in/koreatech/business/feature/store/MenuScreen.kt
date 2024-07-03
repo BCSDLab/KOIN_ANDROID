@@ -64,8 +64,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 9.dp)
             .fillMaxWidth()
-            .height(40.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .height(40.dp), verticalAlignment = Alignment.CenterVertically
     ) {
         items(4) {
             Box(
@@ -75,8 +74,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
                     .padding(end = 10.dp)
                     .border(
                         width = 1.dp, color = Gray3, shape = RoundedCornerShape(4.dp)
-                    ),
-                contentAlignment = Alignment.Center
+                    ), contentAlignment = Alignment.Center
 
             ) {
                 Text(
@@ -104,8 +102,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    modifier = Modifier.size(20.dp),
-                    painter = painterResource(
+                    modifier = Modifier.size(20.dp), painter = painterResource(
                         id = when (it.id) {
                             1 -> R.drawable.ic_recommend
                             2 -> R.drawable.ic_main
