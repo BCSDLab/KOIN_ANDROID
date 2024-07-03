@@ -18,6 +18,8 @@ data class StoreItemWithMenusResponse(
     @SerializedName("is_event") val isEvent: Boolean?,
     @SerializedName("shop_categories") val shopCategories: List<CategoriesResponseDTO>?,
     @SerializedName("menu_categories") val menuCategories: List<CategoriesResponseDTO>?,
+    @SerializedName("bank") val bank: String,
+    @SerializedName("account_number") val accountNumber: String
 ) {
     data class CategoriesResponseDTO(
         @SerializedName("id")
