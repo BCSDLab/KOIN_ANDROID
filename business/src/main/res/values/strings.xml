@@ -141,5 +141,12 @@
     <string name="deliver_available"># 배달 가능</string>
     <string name="card_available"># 카드 가능</string>
     <string name="account_transfer_available"># 계좌이체 가능</string>
-
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="main_menu">메인 메뉴</string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
+    <string name="category">카테고리</string>
+    <string name="delivery_available">배달 가능</string>
+    <string name="card_payment_available">카드 가능</string>
+    <string name="bank_transfer_available">계좌이체 가능</string>
 </resources>
