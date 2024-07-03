@@ -54,12 +54,16 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyStoreDetailScreen(
     modifier: Modifier,
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
+    val pagerState = rememberPagerState(0, 0f) { 2 }
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,7 +85,10 @@ fun MyStoreDetailScreen(
                 style = TextStyle(color = Color.White, fontSize = 18.sp),
             )
         }
-        MyStoreScrollScreen(state, listState, pagerState)
+        MyStoreScrollScreen(state, listState, pagerState, onTabSelected = {
+            coroutineScope.launch {
+            pagerState.animateScrollToPage(it)
+        } })
     }
 }
 
@@ -89,11 +96,13 @@ fun MyStoreDetailScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MyStoreScrollScreen(state: MyStoreDetailState) {
+fun MyStoreScrollScreen(
+    state: MyStoreDetailState,
+    listState: LazyListState = rememberLazyListState(),
+    pagerState: PagerState = rememberPagerState(0, 0f) { 2 },
+    onTabSelected: (Int) -> Unit = {},
+) {
     val toolBarHeight = 145.dp
-    val pagerState = rememberPagerState(0, 0f) { 2 }
-    val coroutineScope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val isCollapsedTopBar: Boolean by remember {
@@ -123,7 +132,7 @@ fun MyStoreScrollScreen(state: MyStoreDetailState) {
             item {
                 TopBar()
             }
-            storeDetailInfo(state)
+            storeDetailInfo(infoDataList)
             item {
                 LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
                     items(3) {
@@ -168,16 +177,12 @@ fun MyStoreScrollScreen(state: MyStoreDetailState) {
                         )
                     }) {
                     Tab(selected = true, onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(0)
-                        }
+                        onTabSelected(0)
                     }) {
                         Text(stringResource(R.string.menu))
                     }
                     Tab(selected = false, onClick = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(1)
-                        }
+                        onTabSelected(1)
                     }) {
                         Text(stringResource(R.string.event_notification))
                     }
