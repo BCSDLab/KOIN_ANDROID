@@ -111,10 +111,15 @@ fun MyStoreScrollScreen(state: MyStoreDetailState) {
     val isCollapsed: Boolean by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 5 }
     }
+    val infoDataList = getInfoDataList(state)
+
     val available = mutableMapOf(
-        "배달 가능" to state.storeInfo?.isDeliveryOk,
-        "카드 가능" to state.storeInfo?.isCardOk,
-        "계좌이체 가능" to state.storeInfo?.isBankOk
+        stringResource(R.string.delivery_available
+    ) to state.storeInfo?.isDeliveryOk,
+        stringResource(R.string.card_payment_available
+        ) to state.storeInfo?.isCardOk,
+        stringResource(R.string.bank_transfer_available
+        ) to state.storeInfo?.isBankOk
     )
     Box {
         CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)

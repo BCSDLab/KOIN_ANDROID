@@ -47,11 +47,14 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
     val state = viewModel.collectAsState().value
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
-        verticalOffset,
-        scrollState.value
+        verticalOffset, scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
-    val categories = listOf("추천 메뉴", "메인 메뉴", "세트 메뉴", "사이드 메뉴")
-
+    val categories = listOf(
+        stringResource(R.string.recommend_menu),
+        stringResource(R.string.main_menu),
+        stringResource(R.string.set_menu),
+        stringResource(R.string.side_menu)
+    )
     LaunchedEffect(scrollState.value) {
         if (scrollState.value != 0 && currentPage != 0) {
             scrollState.scrollTo(0)
@@ -110,7 +113,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
                             4 -> R.drawable.ic_side
                             else -> R.drawable.ic_recommend
                         }
-                    ), contentDescription = "카테고리"
+                    ), contentDescription = stringResource(R.string.category)
                 )
                 Text(
                     text = it.name ?: "",
