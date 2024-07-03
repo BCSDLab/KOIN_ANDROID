@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.insertstore.finalcheckstore
 
-import android.net.Uri
 import android.os.Parcelable
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import kotlinx.parcelize.Parcelize
@@ -9,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class FinalCheckStoreScreenState(
     val storeCategory: Int = -1,
+    val storeCategoryString: String ="",
     val storeName: String = "",
     val storeAddress: String = "",
     val storeImage: String = "",
