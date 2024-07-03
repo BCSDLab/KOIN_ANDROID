@@ -219,7 +219,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailAccountCopyButton.isVisible = false
                 }
                 else{
-                    storeDetailAccountTextview.text = it.description
+                    storeDetailAccountTextview.text = it.bank + " " + it.accountNumber
                 }
 
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
