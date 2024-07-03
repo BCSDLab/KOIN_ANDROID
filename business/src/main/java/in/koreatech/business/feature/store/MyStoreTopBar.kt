@@ -95,7 +95,7 @@ fun TopBar() {
                 .fillMaxWidth()
                 .height(255.dp)
                 .padding(bottom = 10.dp),
-            painter = state.storeInfo?.imageUrls?.get(0)
+            painter = state.storeInfo?.imageUrls?.getOrNull(0)
                 .let { painterResource(id = R.drawable.no_image) },
             contentDescription = stringResource(R.string.shop_image),
             contentScale = ContentScale.Crop,

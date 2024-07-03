@@ -145,7 +145,7 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        item.thumbnailImages?.get(0)?.let {
+        item.thumbnailImages?.getOrNull(0)?.let {
             Image(
                 modifier = Modifier
                     .width(72.dp)
