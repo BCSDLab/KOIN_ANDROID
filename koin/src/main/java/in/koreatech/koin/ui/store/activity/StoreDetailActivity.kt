@@ -222,8 +222,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailAccountTextview.text = it.description
                 }
 
-                //storeDetailAccountTextview.text = "국민은행 00000-11-2222222"
-
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
