@@ -22,7 +22,7 @@ android {
         create("release") {
             storeFile = file("./team_kap_android.jks")
             storePassword = getPropertyKey("koin_store_password")
-            keyAlias = getPropertyKey("koin_release_key")
+            keyAlias = "koin_release_key"
             keyPassword = getPropertyKey("koin_store_password")
         }
     }
