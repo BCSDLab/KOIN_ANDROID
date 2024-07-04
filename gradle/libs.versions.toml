@@ -54,6 +54,7 @@ napier = "2.6.1"
 composeNumberPickerVersion = "1.0.3"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
+kakaoShare = "2.11.2"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -146,6 +147,8 @@ coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 
 compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
+
+kakao-share = {module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

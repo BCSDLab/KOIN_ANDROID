@@ -131,4 +131,6 @@ dependencies {
 
     implementation(libs.napier)
     implementation(libs.powerSpinner)
+
+    implementation(libs.kakao.share)
 }
