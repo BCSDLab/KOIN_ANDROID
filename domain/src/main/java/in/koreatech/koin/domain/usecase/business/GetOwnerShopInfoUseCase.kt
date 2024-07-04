@@ -8,7 +8,11 @@ import javax.inject.Inject
 class GetOwnerShopInfoUseCase @Inject constructor(
     private val storeRepository: OwnerShopRepository
 ) {
-    suspend operator fun invoke(storeId: Int): StoreWithMenu {
-        return storeRepository.getOwnerShopInfo(storeId)
+    suspend operator fun invoke(storeId: Int): StoreWithMenu? {
+        return try {
+            storeRepository.getOwnerShopInfo(storeId)
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
