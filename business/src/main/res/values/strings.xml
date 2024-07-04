@@ -149,4 +149,5 @@
     <string name="delivery_available">배달 가능</string>
     <string name="card_payment_available">카드 가능</string>
     <string name="bank_transfer_available">계좌이체 가능</string>
+    <string name="error_message">상점을 불러오지 못했습니다.</string>
 </resources>
