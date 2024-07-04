@@ -41,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -54,10 +53,9 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
-    val scrollState = rememberScrollState()
+fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDetailViewModel) {
     val state = viewModel.collectAsState().value
+    val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset,
         scrollState.value
@@ -201,7 +199,12 @@ fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventExpandedItem(item: ShopEvent, eventOpenCloseTime: String, pagerState: PagerState, onCollapse: () -> Unit = {}) {
+fun EventExpandedItem(
+    item: ShopEvent,
+    eventOpenCloseTime: String,
+    pagerState: PagerState,
+    onCollapse: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 10.dp)

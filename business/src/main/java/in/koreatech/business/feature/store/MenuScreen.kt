@@ -42,9 +42,7 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 
 @Composable
-fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
-    val state = viewModel.collectAsState().value
+fun MenuScreen(verticalOffset: Boolean, currentPage: Int, state: MyStoreDetailState) {
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset, scrollState.value

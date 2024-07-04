@@ -85,10 +85,11 @@ fun MyStoreDetailScreen(
                 style = TextStyle(color = Color.White, fontSize = 18.sp),
             )
         }
-        MyStoreScrollScreen(state, listState, pagerState, onTabSelected = {
+        MyStoreScrollScreen(state, listState, pagerState, viewModel, onTabSelected = {
             coroutineScope.launch {
-            pagerState.animateScrollToPage(it)
-        } })
+                pagerState.animateScrollToPage(it)
+            }
+        })
     }
 }
 
@@ -100,6 +101,7 @@ fun MyStoreScrollScreen(
     state: MyStoreDetailState,
     listState: LazyListState = rememberLazyListState(),
     pagerState: PagerState = rememberPagerState(0, 0f) { 2 },
+    viewModel: MyStoreDetailViewModel,
     onTabSelected: (Int) -> Unit = {},
 ) {
     val toolBarHeight = 145.dp
@@ -114,11 +116,14 @@ fun MyStoreScrollScreen(
     val infoDataList = getInfoDataList(state)
 
     val available = mutableMapOf(
-        stringResource(R.string.delivery_available
-    ) to state.storeInfo?.isDeliveryOk,
-        stringResource(R.string.card_payment_available
+        stringResource(
+            R.string.delivery_available
+        ) to state.storeInfo?.isDeliveryOk,
+        stringResource(
+            R.string.card_payment_available
         ) to state.storeInfo?.isCardOk,
-        stringResource(R.string.bank_transfer_available
+        stringResource(
+            R.string.bank_transfer_available
         ) to state.storeInfo?.isBankOk
     )
     Box {
@@ -199,8 +204,8 @@ fun MyStoreScrollScreen(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         when (page) {
-                            0 -> MenuScreen(isCollapsed, pagerState.currentPage)
-                            1 -> EventScreen(isCollapsed, pagerState.currentPage)
+                            0 -> MenuScreen(isCollapsed, pagerState.currentPage, state)
+                            1 -> EventScreen(isCollapsed, pagerState.currentPage, viewModel)
                         }
                     }
                 }
