@@ -66,7 +66,7 @@ fun MenuScreen(verticalOffset: Boolean, currentPage: Int) {
             .fillMaxWidth()
             .height(40.dp), verticalAlignment = Alignment.CenterVertically
     ) {
-        items(4) {
+        items(categories.size) {
             Box(
                 modifier = Modifier
                     .fillParentMaxWidth(0.25f)
