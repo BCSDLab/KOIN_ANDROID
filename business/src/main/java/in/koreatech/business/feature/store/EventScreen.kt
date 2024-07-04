@@ -2,11 +2,14 @@ package `in`.koreatech.business.feature.store
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +46,7 @@ import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
@@ -200,18 +205,26 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
         verticalArrangement = Arrangement.Center,
     ) {
         HorizontalPager(
-            modifier = Modifier
-                .width(337.dp)
-                .height(363.dp),
+            modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
         ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
-                    rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
-                contentDescription = stringResource(R.string.event_default_image),
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(0.7f)
+                    .background(Gray2),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.test) else
+                        rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
+                    contentDescription = stringResource(R.string.event_default_image),
+                    contentScale = ContentScale.Inside
+                )
+            }
+
         }
         Column(
             modifier = Modifier
