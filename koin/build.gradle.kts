@@ -4,9 +4,8 @@ plugins {
     alias(libs.plugins.koin.compose)
     alias(libs.plugins.koin.application)
     alias(libs.plugins.koin.hilt)
+    alias(libs.plugins.koin.firebase)
     id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -85,10 +84,6 @@ dependencies {
 
     /* Dependency - naver api */
     implementation(libs.map.sdk)
-
-    /* Dependency - firebase api */
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.bundles.firebase)
 
     // https://github.com/irshuLx/Android-WYSIWYG-Editor
     implementation(libs.laser.native.editor)
