@@ -135,7 +135,7 @@ fun MyStoreScrollScreen(
             storeDetailInfo(infoDataList)
             item {
                 LazyRow(modifier = Modifier.padding(vertical = 5.dp, horizontal = 20.dp)) {
-                    items(3) {
+                    items(available.size) {
                         Box(
                             modifier = Modifier
                                 .border(
