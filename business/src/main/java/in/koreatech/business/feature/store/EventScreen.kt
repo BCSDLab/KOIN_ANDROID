@@ -117,16 +117,21 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
         state.storeEvent?.events?.forEachIndexed { index, item ->
+            val eventOpenCloseTime = remember(item.startDate, item.endDate) {
+                generateOpenCloseTimeString(item.startDate, item.endDate)
+            }
             val pagerState =
                 rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
             if (state.isEventExpanded[index]) {
                 EventExpandedItem(
                     state.storeEvent.events[index],
+                    eventOpenCloseTime,
                     pagerState,
                     onCollapse = { viewModel.toggleEventItem(index) })
             } else {
                 EventItem(
                     state.storeEvent.events[index],
+                    eventOpenCloseTime,
                     onClicked = { viewModel.toggleEventItem(index) })
             }
             Divider(
@@ -141,7 +146,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
 }
 
 @Composable
-fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
+fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .clickable(onClick = { onClicked() })
@@ -186,7 +191,7 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray6)
             Text(
-                text = generateOpenCloseTimeString(item.startDate, item.endDate),
+                text = eventOpenCloseTime,
                 fontSize = 10.sp,
                 color = Gray6
             )
@@ -196,7 +201,7 @@ fun EventItem(item: ShopEvent, onClicked: () -> Unit = {}) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () -> Unit = {}) {
+fun EventExpandedItem(item: ShopEvent, eventOpenCloseTime: String, pagerState: PagerState, onCollapse: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -253,7 +258,7 @@ fun EventExpandedItem(item: ShopEvent, pagerState: PagerState, onCollapse: () ->
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray1)
             Text(
-                text = generateOpenCloseTimeString(item.startDate, item.endDate),
+                text = eventOpenCloseTime,
                 fontSize = 10.sp,
                 color = Gray6
             )
