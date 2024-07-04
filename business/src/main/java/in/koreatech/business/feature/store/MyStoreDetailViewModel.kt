@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopMenusUseCase
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -75,7 +76,7 @@ class MyStoreDetailViewModel @Inject constructor(
         viewModelScope.launch {
             getOwnerShopMenusUseCase(state.storeId).also {
                 reduce {
-                    state.copy(storeMenu = it.menuCategories)
+                    state.copy(storeMenu = it.menuCategories?.toImmutableList())
                 }
             }
         }
@@ -86,7 +87,7 @@ class MyStoreDetailViewModel @Inject constructor(
             getOwnerShopEventsUseCase(state.storeId).also {
                 reduce {
                     state.copy(
-                        storeEvent = it,
+                        storeEvent = it.events.toImmutableList(),
                         isEventExpanded = List(it.events.size) { _ -> false })
                 }
             }
