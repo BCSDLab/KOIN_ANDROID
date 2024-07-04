@@ -114,21 +114,21 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
-        state.storeEvent?.events?.forEachIndexed { index, item ->
+        state.storeEvent?.forEachIndexed { index, item ->
             val eventOpenCloseTime = remember(item.startDate, item.endDate) {
                 generateOpenCloseTimeString(item.startDate, item.endDate)
             }
             val pagerState =
-                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
+                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
             if (state.isEventExpanded[index]) {
                 EventExpandedItem(
-                    state.storeEvent.events[index],
+                    state.storeEvent[index],
                     eventOpenCloseTime,
                     pagerState,
                     onCollapse = { viewModel.toggleEventItem(index) })
             } else {
                 EventItem(
-                    state.storeEvent.events[index],
+                    state.storeEvent[index],
                     eventOpenCloseTime,
                     onClicked = { viewModel.toggleEventItem(index) })
             }
