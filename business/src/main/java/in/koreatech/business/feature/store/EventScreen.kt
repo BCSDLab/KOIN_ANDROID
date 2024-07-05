@@ -226,7 +226,7 @@ fun EventExpandedItem(
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.test) else
+                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
                         rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
                     contentDescription = stringResource(R.string.event_default_image),
                     contentScale = ContentScale.Inside
