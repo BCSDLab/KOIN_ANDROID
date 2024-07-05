@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -50,20 +51,24 @@ import `in`.koreatech.business.ui.theme.Blue2
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray3
+import `in`.koreatech.koin.core.toast.ToastUtil
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyStoreDetailScreen(
     modifier: Modifier,
+    navigateToLoginScreen: () -> Unit = {},
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,6 +95,15 @@ fun MyStoreDetailScreen(
                 pagerState.animateScrollToPage(it)
             }
         })
+    }
+    viewModel.collectSideEffect {
+        when (it) {
+            is MyStoreDetailSideEffect.ShowErrorMessage -> {
+                ToastUtil.getInstance().makeShort(it.errorMessage)
+                navigateToLoginScreen()}
+            MyStoreDetailSideEffect.NavigateToUploadEventScreen -> TODO()
+            MyStoreDetailSideEffect.ShowDialog -> TODO()
+        }
     }
 }
 
