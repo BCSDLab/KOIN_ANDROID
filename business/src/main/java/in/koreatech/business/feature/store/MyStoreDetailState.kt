@@ -1,12 +1,16 @@
 package `in`.koreatech.business.feature.store
 
-import `in`.koreatech.koin.domain.model.store.StoreEvent
-import `in`.koreatech.koin.domain.model.store.StoreMenu
+import `in`.koreatech.koin.domain.model.store.ShopEvent
+import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import kotlinx.collections.immutable.ImmutableList
 
-data class MyStoreDetailState (
+data class MyStoreDetailState(
+    val storeList: List<Store> = mutableListOf(),
     val storeInfo: StoreWithMenu? = null,
-    val storeEvent: List<StoreEvent> = emptyList(),
-    val storeMenu: List<StoreMenu> = emptyList(),
-    val isEventExpanded: List<Boolean> = List(storeMenu.size) { false },
+    val storeId: Int = -1,
+    val storeEvent: ImmutableList<ShopEvent>? = null,
+    val storeMenu: ImmutableList<StoreMenuCategories>? = null,
+    val isEventExpanded: List<Boolean> = List(storeEvent?.size ?: 0) { false },
 )
