@@ -45,6 +45,9 @@ class MyStoreDetailViewModel @Inject constructor(
                 reduce {
                     state.copy(storeInfo = it)
                 }
+                getShopEvents()
+                getShopMenus()
+
             }.onFailure {
                 postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
             }
@@ -61,10 +64,14 @@ class MyStoreDetailViewModel @Inject constructor(
                     )
                 }
                 getOwnerShopInfo(state.storeId)
-                getShopEvents()
-                getShopMenus()
 
             }.onFailure {
+                reduce {
+                    state.copy(
+                        storeList = emptyList(),
+                        storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
+                    )
+                }
                 postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
             }
         }
