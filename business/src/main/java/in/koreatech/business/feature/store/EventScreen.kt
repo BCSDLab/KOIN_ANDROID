@@ -2,11 +2,14 @@ package `in`.koreatech.business.feature.store
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +19,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,26 +32,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
+import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
+import `in`.koreatech.koin.domain.model.store.ShopEvent
+import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
-    val scrollState = rememberScrollState()
+fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDetailViewModel) {
     val state = viewModel.collectAsState().value
+    val scrollState = rememberScrollState()
     val enabledScroll by remember(
         verticalOffset,
         scrollState.value
@@ -106,31 +114,37 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int) {
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState)
     ) {
-        state.storeEvent.forEachIndexed { index, item ->
+        state.storeEvent?.forEachIndexed { index, item ->
+            val eventOpenCloseTime = remember(item.startDate, item.endDate) {
+                generateOpenCloseTimeString(item.startDate, item.endDate)
+            }
             val pagerState =
                 rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
             if (state.isEventExpanded[index]) {
                 EventExpandedItem(
-                    state.storeEvent[index].title,
+                    state.storeEvent[index],
+                    eventOpenCloseTime,
                     pagerState,
                     onCollapse = { viewModel.toggleEventItem(index) })
             } else {
-                EventItem(state.storeEvent[index].title, onClicked = { viewModel.toggleEventItem(index) })
+                EventItem(
+                    state.storeEvent[index],
+                    eventOpenCloseTime,
+                    onClicked = { viewModel.toggleEventItem(index) })
             }
-
             Divider(
                 color = ColorTextField,
                 modifier = Modifier
-                    .width(327.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 25.dp)
                     .height(1.dp)
             )
         }
-
     }
 }
 
 @Composable
-fun EventItem(item: String, onClicked: () -> Unit = {}) {
+fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .clickable(onClick = { onClicked() })
@@ -139,19 +153,27 @@ fun EventItem(item: String, onClicked: () -> Unit = {}) {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Image(
+        item.thumbnailImages?.getOrNull(0)?.let {
+            Image(
+                modifier = Modifier
+                    .width(72.dp)
+                    .height(80.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else
+                    rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(0)),
+                contentDescription = stringResource(R.string.event_default_image),
+            )
+        }
+        Column(
             modifier = Modifier
-                .width(68.dp)
-                .height(68.dp),
-            painter = painterResource(id = R.drawable.ic_koin_logo),
-            contentDescription = stringResource(R.string.event_default_image),
-        )
-        Column() {
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = item, fontWeight = FontWeight(500))
+                Text(text = item.title, fontWeight = FontWeight(500))
                 Row {
                     Text(
                         text = stringResource(R.string.view_all),
@@ -160,21 +182,29 @@ fun EventItem(item: String, onClicked: () -> Unit = {}) {
                         color = Gray6
                     )
                     Image(
-
                         painter = painterResource(id = R.drawable.ic_arrow_down),
                         contentDescription = stringResource(R.string.view_all)
                     )
                 }
             }
-            Text(text = "", fontSize = 12.sp, color = Gray6)
-            Text(text = "", fontSize = 10.sp, color = Gray6)
+            Text(text = item.content, fontSize = 12.sp, color = Gray6)
+            Text(
+                text = eventOpenCloseTime,
+                fontSize = 10.sp,
+                color = Gray6
+            )
         }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventExpandedItem(item: String, pagerState: PagerState, onCollapse: () -> Unit = {}) {
+fun EventExpandedItem(
+    item: ShopEvent,
+    eventOpenCloseTime: String,
+    pagerState: PagerState,
+    onCollapse: () -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 10.dp)
@@ -183,24 +213,36 @@ fun EventExpandedItem(item: String, pagerState: PagerState, onCollapse: () -> Un
         verticalArrangement = Arrangement.Center,
     ) {
         HorizontalPager(
-            modifier = Modifier
-                .width(327.dp)
-                .height(363.dp),
+            modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
             state = pagerState,
         ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = painterResource(id = R.drawable.no_event_image),
-                contentDescription = stringResource(R.string.event_default_image),
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .aspectRatio(0.7f)
+                    .background(Gray2),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(
+                    modifier = Modifier.fillMaxSize(),
+                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
+                        rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
+                    contentDescription = stringResource(R.string.event_default_image),
+                    contentScale = ContentScale.Inside
+                )
+            }
+
         }
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = item, fontWeight = FontWeight(500))
+                Text(text = item.title, fontWeight = FontWeight(500))
                 Row {
                     Text(
                         text = stringResource(R.string.fold),
@@ -217,8 +259,12 @@ fun EventExpandedItem(item: String, pagerState: PagerState, onCollapse: () -> Un
                     )
                 }
             }
-            Text(text = "", fontSize = 12.sp, color = Gray1)
-            Text(text = "", fontSize = 10.sp, color = Gray6)
+            Text(text = item.content, fontSize = 12.sp, color = Gray1)
+            Text(
+                text = eventOpenCloseTime,
+                fontSize = 10.sp,
+                color = Gray6
+            )
         }
     }
 }
