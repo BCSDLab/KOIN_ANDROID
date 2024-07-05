@@ -1,15 +1,9 @@
 plugins {
-    id("java-library")
+    alias(libs.plugins.koin.java)
     id("org.jetbrains.kotlin.jvm")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.javax.inject)
     implementation(libs.napier)
 }
