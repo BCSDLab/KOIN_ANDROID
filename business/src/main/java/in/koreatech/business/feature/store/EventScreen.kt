@@ -167,7 +167,7 @@ fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp)
+                .padding(horizontal = 16.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
