@@ -8,10 +8,13 @@ import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopMenusUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -38,37 +41,32 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun getOwnerShopInfo(shopId: Int) = intent {
         viewModelScope.launch {
-            getOwnerShopInfoUseCase(shopId).let { storeInfo ->
+            getOwnerShopInfoUseCase(shopId).onSuccess {
                 reduce {
-                    state.copy(
-                        storeInfo = storeInfo
-                    )
+                    state.copy(storeInfo = it)
                 }
+            }.onFailure {
+                postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
             }
         }
     }
 
     fun initOwnerShopList() = intent {
         viewModelScope.launch {
-            getOwnerShopListUseCase().let { storeList ->
-                if (storeList.isNotEmpty()) {
-                    reduce {
-                        state.copy(
-                            storeList = storeList,
-                        )
-                    }
-                } else {
-                    reduce {
-                        state.copy(
-                            storeList = emptyList(),
-                        )
-                    }
+            getOwnerShopListUseCase().onSuccess {
+                reduce {
+                    state.copy(
+                        storeList = it,
+                        storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
+                    )
                 }
+                getOwnerShopInfo(state.storeId)
+                getShopEvents()
+                getShopMenus()
+
+            }.onFailure {
+                postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
             }
-            reduce { state.copy(storeId = state.storeList.first().uid) }
-            getOwnerShopInfo(state.storeId)
-            getShopEvents()
-            getShopMenus()
         }
     }
 
