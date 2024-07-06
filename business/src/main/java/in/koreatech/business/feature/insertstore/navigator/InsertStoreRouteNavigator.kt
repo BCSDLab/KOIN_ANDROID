@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreen
 import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreenImpl
+import `in`.koreatech.business.feature.insertstore.finishregisterstore.FinishRegisterScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
@@ -131,7 +132,22 @@ fun InsertStoreNavigator(
                 onBackPressed = {
                     navController.navigateUp()
                 },
-                navigateToFinishScreen = {}
+                navigateToFinishScreen = {
+                    navController.navigate(InsertStoreRoute.FINISH_SCREEN.name)
+                }
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.FINISH_SCREEN.name,
+        ) {
+            FinishRegisterScreen(
+                goToMainScreen = {
+
+                },
+                onBackPressed = {
+                    navController.navigateUp()
+                }
             )
         }
     }
