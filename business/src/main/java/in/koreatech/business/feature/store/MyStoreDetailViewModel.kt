@@ -105,6 +105,10 @@ class MyStoreDetailViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         storeList = it,
+                    )
+                }
+                reduce {
+                    state.copy(
                         storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
