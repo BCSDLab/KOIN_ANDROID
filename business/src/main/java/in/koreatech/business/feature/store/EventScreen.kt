@@ -76,28 +76,62 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
     } else {
         EventToolBar()
     }
+    EventItem(enabledScroll, scrollState, viewModel)
+    OwnerStoreDialog(
+        onDismissRequest = { viewModel.changeDialogVisibility() },
+        onConfirmation = { onDeleteEvent() },
+        dialogTitle = stringResource(R.string.event_delete_title),
+        dialogText = stringResource(R.string.event_delete_text),
+        positiveButtonText = stringResource(id = R.string.delete),
+        visibility = state.dialogVisibility
+    )
 
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun EventItem(
+    enabledScroll: Boolean,
+    scrollState: ScrollState,
+    viewModel: MyStoreDetailViewModel,
+) {
+    val state = viewModel.collectAsState().value
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
+            .verticalScroll(enabled = enabledScroll, state = scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        state.storeEvent?.events?.forEachIndexed { index, item ->
+        state.storeEvent?.forEachIndexed { index, item ->
+            val eventOpenCloseTime = remember(item.startDate, item.endDate) {
+                generateOpenCloseTimeString(item.startDate, item.endDate)
+            }
             val pagerState =
-                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
+                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
             if (state.isEventExpanded[index]) {
-                EventExpandedItem(state.storeEvent.events[index],
+                EventExpandedItem(state.storeEvent[index],
+                    eventOpenCloseTime,
                     pagerState,
                     onCollapse = { viewModel.toggleEventItem(index) })
             } else {
-                EventItem(state.storeEvent.events[index],
-                    onClicked = { viewModel.toggleEventItem(index) })
+                EventFoldedItem(
+                    state.storeEvent[index],
+                    eventOpenCloseTime,
+                    onClicked = {
+                        if (!state.isEditMode) viewModel.toggleEventItem(index) else viewModel.onChangeEventSelected(
+                            item.eventId
+                        )
+                    },
+                    viewModel = viewModel,
+                )
             }
-
             Divider(
-                color = ColorTextField, modifier = Modifier
-                    .width(327.dp)
-                    .height(1.dp)
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth()
+                    .height(1.dp),
+                color = ColorTextField,
             )
         }
     }
@@ -236,36 +270,80 @@ fun EventToolBar() {
 
 
 @Composable
-fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit = {}) {
+fun EventFoldedItem(
+    item: ShopEvent,
+    eventOpenCloseTime: String,
+    onClicked: () -> Unit = {},
+    viewModel: MyStoreDetailViewModel
+) {
+    val state = viewModel.collectAsState().value
     Row(
         modifier = Modifier
             .clickable(onClick = { onClicked() })
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 10.dp),
+            .height(104.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item.thumbnailImages?.getOrNull(0)?.let {
-            Image(
+            Box(
                 modifier = Modifier
-                    .width(72.dp)
-                    .height(80.dp)
-                    .clip(RoundedCornerShape(5.dp)),
-                painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_image) else
-                    rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(0)),
-                contentDescription = stringResource(R.string.event_default_image),
-            )
+                    .fillMaxHeight()
+                    .padding(4.dp),
+                contentAlignment = Alignment.TopEnd
+            ) {
+                Image(
+                    modifier = Modifier
+                        .padding(top = 4.dp, start = 10.dp)
+                        .align(Alignment.Center)
+                        .width(72.dp)
+                        .height(80.dp)
+                        .clip(RoundedCornerShape(5.dp)),
+                    contentScale = ContentScale.FillBounds,
+                    painter = if (item.thumbnailImages?.size != 0) painterResource(id = R.drawable.no_image) else rememberAsyncImagePainter(
+                        model = item.thumbnailImages?.getOrNull(0)
+                    ),
+                    contentDescription = stringResource(R.string.event_default_image),
+                )
+                if (state.isEditMode) {
+                    viewModel.initEventItem()
+                    Image(
+                        modifier = Modifier
+                            .align(TopStart)
+                            .height(24.dp)
+                            .width(24.dp)
+                            .clickable {
+                                viewModel.onChangeEventSelected(item.eventId)
+                            },
+                        painter = if (state.isAllEventSelected || state.isSelectedEvent.contains(
+                                item.eventId
+                            )
+                        ) painterResource(
+                            id = R.drawable.ic_check_selected
+                        ) else painterResource(
+                            id = R.drawable.ic_check
+                        ),
+                        contentDescription = stringResource(R.string.check),
+                    )
+                }
+            }
         }
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+            modifier = Modifier.fillMaxWidth()
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.title, fontWeight = FontWeight(500))
-                Row {
+                Text(
+                    modifier = Modifier.weight(3.5f),
+                    text = item.title,
+                    fontWeight = FontWeight(500),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Row(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.view_all),
                         fontWeight = FontWeight(500),
@@ -278,11 +356,11 @@ fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit
                     )
                 }
             }
-            Text(text = item.content, fontSize = 12.sp, color = Gray6)
             Text(
-                text = eventOpenCloseTime,
-                fontSize = 10.sp,
-                color = Gray6
+                text = item.content, maxLines = 2, fontSize = 12.sp, color = Gray6
+            )
+            Text(
+                text = eventOpenCloseTime, fontSize = 10.sp, color = Gray6
             )
         }
     }
