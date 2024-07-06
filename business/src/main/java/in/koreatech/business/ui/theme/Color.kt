@@ -20,6 +20,7 @@ val Gray5 = Color(0xFFC4C4C4)
 val Gray1 = Color(0xFF4B4B4B)
 val Gray2= Color(0xFFEEEEEE)
 val Gray3= Color(0xFFCACACA)
+val Gray4= Color(0xFFFAFAFA)
 val Red2 = Color(0xFFFF0000)
 
 val ColorError = Color(0xFFF05D3D)
