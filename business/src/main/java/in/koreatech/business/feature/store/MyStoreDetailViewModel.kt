@@ -36,11 +36,16 @@ class MyStoreDetailViewModel @Inject constructor(
     fun onChangeAllEventSelected() = intent {
         reduce {
             state.copy(
-                isAllEventSelected = !state.isAllEventSelected,
-                isSelectedEvent= if (state.isAllEventSelected) {
-                    mutableListOf<Int>().apply { state.storeEvent?.events?.forEach { add(it.eventId) } }
+                isAllEventSelected = if (state.storeEvent?.size == 0) false
+                else !state.isAllEventSelected,
+            )
+        }
+        reduce {
+            state.copy(
+                isSelectedEvent = if (state.isAllEventSelected) {
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { add(it.eventId) } }
                 } else {
-                    (0 until state.storeEvent?.events?.size!!).toMutableList()
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { remove(it.eventId) } }
                 }
             )
         }
@@ -49,19 +54,28 @@ class MyStoreDetailViewModel @Inject constructor(
     fun onChangeEventSelected(eventId: Int) = intent {
         reduce {
             if (!state.isSelectedEvent.contains(eventId)) {
-                state.copy(isSelectedEvent = state.isSelectedEvent.toMutableList().apply { add(eventId) })
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList().apply { add(eventId) },
+                )
+            } else {
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList()
+                        .apply { remove(eventId) })
             }
-            else {
-                state.copy(isSelectedEvent = state.isSelectedEvent.toMutableList().apply { remove(eventId) })
-            }
+        }
+        reduce {
+            state.copy(
+                isAllEventSelected = state.isSelectedEvent.size == state.storeEvent?.size
+            )
         }
     }
 
     fun onChangeEditMode() = intent {
         reduce {
-            state.copy(isEditMode = !state.isEditMode)
+            state.copy(isEditMode = !state.isEditMode, isSelectedEvent = mutableListOf(), isAllEventSelected = false)
         }
     }
+
     fun initEventItem() = intent {
         reduce {
             state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
@@ -123,6 +137,31 @@ class MyStoreDetailViewModel @Inject constructor(
                     state.copy(
                         storeEvent = it.events.toImmutableList(),
                         isEventExpanded = List(it.events.size) { _ -> false })
+                }
+            }
+        }
+    }
+
+    fun modifyEventError() = intent {
+        postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
+    }
+
+    fun deleteEventItem(shopId: Int, eventId: Int) = intent {
+        viewModelScope.launch {
+            deleteOwnerShopEventsUseCase(shopId, eventId).also {
+                reduce {
+                    state.copy(
+                        storeEvent = state.storeEvent?.filter { it.eventId != eventId }
+                            ?.toImmutableList(),
+                        isSelectedEvent = state.isSelectedEvent.toMutableList()
+                            .apply { remove(eventId) },
+                        dialogVisibility = false
+                    )
+                }
+                reduce {
+                    state.copy(
+                        isAllEventSelected = if (state.storeEvent?.size == 0) false else state.isAllEventSelected
+                    )
                 }
             }
         }
