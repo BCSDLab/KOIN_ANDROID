@@ -259,38 +259,6 @@ fun EventToolBar() {
             Text(text = stringResource(R.string.add))
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(enabled = enabledScroll, state = scrollState)
-    ) {
-        state.storeEvent?.forEachIndexed { index, item ->
-            val eventOpenCloseTime = remember(item.startDate, item.endDate) {
-                generateOpenCloseTimeString(item.startDate, item.endDate)
-            }
-            val pagerState =
-                rememberPagerState { state.storeEvent[index].thumbnailImages?.size ?: 1 }
-            if (state.isEventExpanded[index]) {
-                EventExpandedItem(
-                    state.storeEvent[index],
-                    eventOpenCloseTime,
-                    pagerState,
-                    onCollapse = { viewModel.toggleEventItem(index) })
-            } else {
-                EventItem(
-                    state.storeEvent[index],
-                    eventOpenCloseTime,
-                    onClicked = { viewModel.toggleEventItem(index) })
-            }
-            Divider(
-                color = ColorTextField,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 25.dp)
-                    .height(1.dp)
-            )
-        }
-    }
 }
 
 
