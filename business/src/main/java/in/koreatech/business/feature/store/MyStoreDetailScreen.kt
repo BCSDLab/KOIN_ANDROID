@@ -94,7 +94,13 @@ fun MyStoreDetailScreen(
             coroutineScope.launch {
                 pagerState.animateScrollToPage(it)
             }
-        })
+        }) {
+
+            state.isSelectedEvent.forEach {
+                viewModel.deleteEventItem(state.storeId, it)
+            }
+
+        }
     }
     viewModel.collectSideEffect {
         when (it) {
@@ -117,6 +123,7 @@ fun MyStoreScrollScreen(
     pagerState: PagerState = rememberPagerState(0, 0f) { 2 },
     viewModel: MyStoreDetailViewModel,
     onTabSelected: (Int) -> Unit = {},
+    onDeleteEvent: () -> Unit = {},
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -219,7 +226,13 @@ fun MyStoreScrollScreen(
                     ) {
                         when (page) {
                             0 -> MenuScreen(isCollapsed, pagerState.currentPage, state)
-                            1 -> EventScreen(isCollapsed, pagerState.currentPage, viewModel)
+                            1 -> EventScreen(
+                                isCollapsed,
+                                pagerState.currentPage,
+                                viewModel,
+                            ) {
+                                onDeleteEvent()
+                            }
                         }
                     }
                 }
