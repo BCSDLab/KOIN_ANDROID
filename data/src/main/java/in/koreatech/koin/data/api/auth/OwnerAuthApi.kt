@@ -28,6 +28,6 @@ interface OwnerAuthApi {
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/event")
     suspend fun getOwnerShopEvents(@Path("shopId") uid: Int): StoreDetailEventResponse
-    @DELETE(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}"+"/event" + "/{eventId}")
+    @DELETE(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}"+"/events" + "/{eventId}")
     suspend fun deleteOwnerShopEvent(@Path("shopId") uid: Int, @Path("eventId") eventId: Int)
 }
