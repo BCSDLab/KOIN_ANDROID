@@ -57,8 +57,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
     val state = viewModel.collectAsState().value
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
-        verticalOffset,
-        scrollState.value
+        verticalOffset, scrollState.value
     ) { derivedStateOf { verticalOffset || scrollState.value != 0 } }
 
     LaunchedEffect(scrollState.value) {
@@ -72,16 +71,109 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
             viewModel.initEventItem()
         }
     }
+    if (state.isEditMode) {
+        EventEditToolBar()
+    } else {
+        EventToolBar()
+    }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(enabled = enabledScroll, state = scrollState)
+    ) {
+        state.storeEvent?.events?.forEachIndexed { index, item ->
+            val pagerState =
+                rememberPagerState { state.storeEvent.events[index].thumbnailImages?.size ?: 1 }
+            if (state.isEventExpanded[index]) {
+                EventExpandedItem(state.storeEvent.events[index],
+                    pagerState,
+                    onCollapse = { viewModel.toggleEventItem(index) })
+            } else {
+                EventItem(state.storeEvent.events[index],
+                    onClicked = { viewModel.toggleEventItem(index) })
+            }
+
+            Divider(
+                color = ColorTextField, modifier = Modifier
+                    .width(327.dp)
+                    .height(1.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun EventEditToolBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Gray2)
+    ) {
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {/**/},
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField,
-                contentColor = Color.Black
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_edit),
+                contentDescription = "수정"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "수정")
+        }
+        Button(
+            onClick = {/*TODO*/ },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_edit),
+                contentDescription = "삭제"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "삭제")
+        }
+        Button(
+            onClick = { viewModel.onChangeEditMode() },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = Gray6
+            )
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_add_box),
+                contentDescription = "완료"
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = "완료")
+        }
+    }
+}
+
+@Composable
+fun EventToolBar() {
+    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = { viewModel.onChangeEditMode() },
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
+            colors = ButtonDefaults.buttonColors(
+              contentColor = Color.Black
             )
         ) {
             Image(
@@ -97,8 +189,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = ColorTextField,
-                contentColor = Color.Black
+                backgroundColor = ColorTextField, contentColor = Color.Black
             )
         ) {
             Image(
@@ -143,6 +234,7 @@ fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDet
     }
 }
 
+
 @Composable
 fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit = {}) {
     Row(
@@ -170,8 +262,7 @@ fun EventItem(item: ShopEvent, eventOpenCloseTime: String, onClicked: () -> Unit
                 .padding(horizontal = 16.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = item.title, fontWeight = FontWeight(500))
                 Row {
@@ -239,8 +330,7 @@ fun EventExpandedItem(
                 .padding(horizontal = 10.dp, vertical = 5.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = item.title, fontWeight = FontWeight(500))
                 Row {

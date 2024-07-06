@@ -10,4 +10,5 @@ interface  OwnerShopRepository {
     suspend fun getOwnerShopEvents(storeId: Int): ShopEvents
     suspend fun getOwnerShopMenus(storeId: Int): StoreMenu
     suspend fun getOwnerShopInfo(storeId: Int): StoreWithMenu
+    suspend fun deleteOwnerShopEvent(storeId: Int, eventId: Int)
 }
