@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.store
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,6 +33,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.TopStart
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
@@ -39,21 +42,28 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
+import `in`.koreatech.business.ui.theme.Gray4
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.util.StoreUtil.generateOpenCloseTimeString
 import org.orbitmvi.orbit.compose.collectAsState
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun EventScreen(verticalOffset: Boolean, currentPage: Int, viewModel: MyStoreDetailViewModel) {
+fun EventScreen(
+    verticalOffset: Boolean,
+    currentPage: Int,
+    viewModel: MyStoreDetailViewModel,
+    onDeleteEvent: () -> Unit
+) {
     val state = viewModel.collectAsState().value
     val scrollState = rememberScrollState()
     val enabledScroll by remember(
@@ -224,15 +234,18 @@ fun EventEditToolBar() {
 @Composable
 fun EventToolBar() {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
-
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(52.dp)
+    ) {
         Button(
             onClick = { viewModel.onChangeEditMode() },
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
             colors = ButtonDefaults.buttonColors(
-              contentColor = Color.Black
+                backgroundColor = ColorTextField, contentColor = Color.Black
             )
         ) {
             Image(
