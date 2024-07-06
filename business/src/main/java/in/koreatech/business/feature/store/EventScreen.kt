@@ -111,7 +111,6 @@ fun EventItem(
             .fillMaxSize()
             .verticalScroll(enabled = enabledScroll, state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
         state.storeEvent?.forEachIndexed { index, item ->
             val eventOpenCloseTime = remember(item.startDate, item.endDate) {
