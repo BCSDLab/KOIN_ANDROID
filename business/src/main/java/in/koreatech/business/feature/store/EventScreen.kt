@@ -369,10 +369,7 @@ fun EventFoldedItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventExpandedItem(
-    item: ShopEvent,
-    eventOpenCloseTime: String,
-    pagerState: PagerState,
-    onCollapse: () -> Unit = {}
+    item: ShopEvent, eventOpenCloseTime: String, pagerState: PagerState, onCollapse: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -395,8 +392,9 @@ fun EventExpandedItem(
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(),
-                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else
-                        rememberAsyncImagePainter(model = item.thumbnailImages?.getOrNull(it)),
+                    painter = if (item.thumbnailImages?.size == 0) painterResource(id = R.drawable.no_event_image) else rememberAsyncImagePainter(
+                        model = item.thumbnailImages?.getOrNull(it)
+                    ),
                     contentDescription = stringResource(R.string.event_default_image),
                     contentScale = ContentScale.Inside
                 )
@@ -404,14 +402,17 @@ fun EventExpandedItem(
 
         }
         Column(
-            modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 5.dp)
+            modifier = Modifier.padding(vertical = 5.dp)
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = item.title, fontWeight = FontWeight(500))
-                Row {
+                Text(
+                    modifier = Modifier.weight(8f), text = item.title, fontWeight = FontWeight(500)
+                )
+                Row(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(R.string.fold),
                         fontWeight = FontWeight(500),
@@ -429,9 +430,7 @@ fun EventExpandedItem(
             }
             Text(text = item.content, fontSize = 12.sp, color = Gray1)
             Text(
-                text = eventOpenCloseTime,
-                fontSize = 10.sp,
-                color = Gray6
+                text = eventOpenCloseTime, fontSize = 10.sp, color = Gray6
             )
         }
     }
