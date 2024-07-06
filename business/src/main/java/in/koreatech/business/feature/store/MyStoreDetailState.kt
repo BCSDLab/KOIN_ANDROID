@@ -12,6 +12,7 @@ data class MyStoreDetailState(
     val storeId: Int = -1,
     val storeEvent: ImmutableList<ShopEvent>? = null,
     val storeMenu: ImmutableList<StoreMenuCategories>? = null,
+    val dialogVisibility: Boolean = false,
     val isEventExpanded: List<Boolean> = List(storeEvent?.size ?: 0) { false },
     val isAllEventSelected: Boolean = false,
     val isSelectedEvent: MutableList<Int> = mutableListOf(),
