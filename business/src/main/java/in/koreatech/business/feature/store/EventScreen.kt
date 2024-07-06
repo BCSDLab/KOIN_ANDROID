@@ -140,60 +140,85 @@ fun EventItem(
 @Composable
 fun EventEditToolBar() {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
+    val state: MyStoreDetailState = viewModel.collectAsState().value
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Gray2)
+            .height(52.dp)
+            .background(Gray4),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Button(
-            onClick = {/**/},
+        Column(
             modifier = Modifier
-                .weight(1f)
                 .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Gray6
-            )
+            verticalArrangement = Arrangement.spacedBy((-6).dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_edit),
-                contentDescription = "수정"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "수정")
+            Image(painter = if (state.isAllEventSelected) painterResource(id = R.drawable.ic_check_selected) else painterResource(
+                id = R.drawable.ic_check
+            ),
+                contentDescription = stringResource(R.string.check),
+                modifier = Modifier.clickable { viewModel.onChangeAllEventSelected() })
+            Text(text = stringResource(R.string.all), color = Gray6, fontSize = 12.sp)
         }
-        Button(
-            onClick = {/*TODO*/ },
-            modifier = Modifier
-                .weight(1f)
-                .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Gray6
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_edit),
-                contentDescription = "삭제"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "삭제")
-        }
-        Button(
-            onClick = { viewModel.onChangeEditMode() },
-            modifier = Modifier
-                .weight(1f)
-                .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                contentColor = Gray6
-            )
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_add_box),
-                contentDescription = "완료"
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "완료")
+            Button(
+                onClick = { if (state.isSelectedEvent.size > 1) viewModel.modifyEventError() else viewModel.navigateToModifyScreen() },
+                modifier = Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField, contentColor = Gray6
+                )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = stringResource(R.string.modify)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(R.string.modify))
+            }
+            Button(
+                onClick = { viewModel.changeDialogVisibility() },
+                modifier = Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField, contentColor = Gray6
+                )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_delete),
+                    contentDescription = stringResource(R.string.delete)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(R.string.delete))
+            }
+            Button(
+                onClick = { viewModel.onChangeEditMode() },
+                modifier = Modifier
+                    .width(100.dp)
+                    .padding(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = ColorTextField, contentColor = Gray6
+                )
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_complete),
+                    contentDescription = stringResource(R.string.complete)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = stringResource(R.string.complete))
+            }
         }
     }
+    Divider(
+        color = Gray4, modifier = Modifier.height(1.dp)
+    )
 }
 
 @Composable
