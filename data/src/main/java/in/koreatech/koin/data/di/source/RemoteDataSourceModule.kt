@@ -34,9 +34,9 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideOwnerRemoteDataSource(
         ownerApi: OwnerApi,
-        ownerAuthApi: OwnerAuthApi
+        //ownerAuthApi: OwnerAuthApi
     ): OwnerRemoteDataSource {
-        return OwnerRemoteDataSource(ownerApi, ownerAuthApi)
+        return OwnerRemoteDataSource(ownerApi)
     }
 
     @Provides

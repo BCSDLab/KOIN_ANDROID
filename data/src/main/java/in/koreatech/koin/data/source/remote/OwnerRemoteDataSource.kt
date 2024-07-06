@@ -11,10 +11,11 @@ import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import javax.inject.Inject
 
-class OwnerRemoteDataSource(
+class OwnerRemoteDataSource @Inject constructor(
     private val ownerApi: OwnerApi,
-    private val ownerAuthApi: OwnerAuthApi
+    //private val ownerAuthApi: OwnerAuthApi
     ) {
     suspend fun postVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
         return ownerApi.postVerificationCode(ownerVerificationCode)
@@ -48,7 +49,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 
-    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
-        return ownerAuthApi.postMyStore(storeRegisterResponse)
+    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse? {
+        return null
     }
 }

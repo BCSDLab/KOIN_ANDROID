@@ -103,7 +103,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         }
 
         private fun onShare(context: Context, dining: Dining) {
-            val messageTemplate = createMessageTemplate(dining)
+            val messageTemplate = createFeedMessageTemplate(dining)
 
             if(ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
                 ShareClient.instance.shareDefault(context, messageTemplate) { sharingResult, error ->
@@ -115,48 +115,26 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
             }
         }
 
-        private fun createMessageTemplate(dining: Dining): DefaultTemplate {
-            return if(dining.imageUrl.isEmpty()) {
-                createFeedMessageTemplate(dining)
-            } else {
-                createFeedMessageTemplate(dining)
-            }
-        }
-
         private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             val executionParams = mapOf(
                 "date" to dining.date,
                 "type" to dining.type,
                 "place" to dining.place
             )
+            val link = Link(
+                androidExecutionParams = executionParams,
+                iosExecutionParams = executionParams
+            )
+
             return FeedTemplate(
                 content = Content(
                     title = "오늘의 점심 메뉴",
                     description = dining.menu.joinToString(", "),
                     imageUrl = dining.imageUrl,
-                    link = Link(
-                        androidExecutionParams = executionParams,
-                        iosExecutionParams = executionParams
-                    )
+                    link = link
                 ),
                 buttons = listOf(
-                    Button(
-                        "다른 사진 보러가기",
-                        Link(
-                            androidExecutionParams  = executionParams,
-                            iosExecutionParams  = executionParams
-                        )
-                    )
-                )
-            )
-        }
-
-        private fun createTextMessageTemplate(dining: Dining): TextTemplate {
-            return TextTemplate(
-                text = "*☆오늘의 점심 메뉴☆*\n" + dining.menu.joinToString(", "),
-                link = Link(
-                    webUrl = "https://developers.kakao.com",
-                    mobileWebUrl = "https://developers.kakao.com"
+                    Button("다른 사진 보러가기", link)
                 )
             )
         }
