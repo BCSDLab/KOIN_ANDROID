@@ -87,3 +87,6 @@
 #-keepclassmembers class android.support.design.internal.BottomNavigationMenuView {
 #    boolean mShiftingMode;
 #}
+
+-keep class com.kakao.sdk.**.model.* { <fields>; }
+-keep class * extends com.google.gson.TypeAdapter
