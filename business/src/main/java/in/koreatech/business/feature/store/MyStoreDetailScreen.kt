@@ -62,6 +62,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun MyStoreDetailScreen(
     modifier: Modifier,
     navigateToLoginScreen: () -> Unit = {},
+    navigateToUploadEventScreen: () -> Unit = {},
+    navigateToModifyScreen: () -> Unit = {},
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
@@ -106,9 +108,14 @@ fun MyStoreDetailScreen(
         when (it) {
             is MyStoreDetailSideEffect.ShowErrorMessage -> {
                 ToastUtil.getInstance().makeShort(it.errorMessage)
-                navigateToLoginScreen()}
-            MyStoreDetailSideEffect.NavigateToUploadEventScreen -> TODO()
-            MyStoreDetailSideEffect.ShowDialog -> TODO()
+                navigateToLoginScreen()
+            }
+
+            MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
+            MyStoreDetailSideEffect.NavigateToModifyScreen -> navigateToModifyScreen()
+            MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
+                context.getString(R.string.error_modify_event)
+            )
         }
     }
 }
