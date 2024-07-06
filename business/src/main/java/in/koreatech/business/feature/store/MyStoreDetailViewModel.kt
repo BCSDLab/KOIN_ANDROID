@@ -4,6 +4,7 @@ package `in`.koreatech.business.feature.store
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.business.DeleteOwnerEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
@@ -25,6 +26,7 @@ class MyStoreDetailViewModel @Inject constructor(
     private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
     private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
     private val getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
+    private val deleteOwnerShopEventsUseCase: DeleteOwnerEventsUseCase,
 ) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
     override val container =
         container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
@@ -140,6 +142,19 @@ class MyStoreDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun changeDialogVisibility() = intent {
+        reduce {
+            state.copy(
+                dialogVisibility = if (state.isSelectedEvent.size > 0) {
+                    !state.dialogVisibility
+                } else false
+            )
+        }
+    }
+    fun navigateToModifyScreen() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
     }
 
     fun modifyEventError() = intent {
