@@ -9,6 +9,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.template.model.Button
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.DefaultTemplate
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.Link
+import com.kakao.sdk.template.model.TextTemplate
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -36,6 +43,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 setDiningImageVisibility(context, dining)
                 setDiningDataText(context, dining)
                 setEmptyDataVisibility(dining)
+                initSharing(context, dining)
 
                 if(dining.imageUrl.isNotEmpty()) {
                     cardViewDining.strokeWidth = 0
@@ -86,6 +94,71 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                     textViewDiningSoldOut.visibility = View.INVISIBLE
                 }
             }
+        }
+
+        private fun initSharing(context: Context, dining: Dining) {
+            binding.buttonShare.setOnClickListener {
+                onShare(context, dining)
+            }
+        }
+
+        private fun onShare(context: Context, dining: Dining) {
+            val messageTemplate = createMessageTemplate(dining)
+
+            if(ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
+                ShareClient.instance.shareDefault(context, messageTemplate) { sharingResult, error ->
+                    error?.printStackTrace()
+                    sharingResult?.let {
+                        context.startActivity(it.intent)
+                    }
+                }
+            }
+        }
+
+        private fun createMessageTemplate(dining: Dining): DefaultTemplate {
+            return if(dining.imageUrl.isEmpty()) {
+                createFeedMessageTemplate(dining)
+            } else {
+                createFeedMessageTemplate(dining)
+            }
+        }
+
+        private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
+            val executionParams = mapOf(
+                "date" to dining.date,
+                "type" to dining.type,
+                "place" to dining.place
+            )
+            return FeedTemplate(
+                content = Content(
+                    title = "오늘의 점심 메뉴",
+                    description = dining.menu.joinToString(", "),
+                    imageUrl = dining.imageUrl,
+                    link = Link(
+                        androidExecutionParams = executionParams,
+                        iosExecutionParams = executionParams
+                    )
+                ),
+                buttons = listOf(
+                    Button(
+                        "다른 사진 보러가기",
+                        Link(
+                            androidExecutionParams  = executionParams,
+                            iosExecutionParams  = executionParams
+                        )
+                    )
+                )
+            )
+        }
+
+        private fun createTextMessageTemplate(dining: Dining): TextTemplate {
+            return TextTemplate(
+                text = "*☆오늘의 점심 메뉴☆*\n" + dining.menu.joinToString(", "),
+                link = Link(
+                    webUrl = "https://developers.kakao.com",
+                    mobileWebUrl = "https://developers.kakao.com"
+                )
+            )
         }
 
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
