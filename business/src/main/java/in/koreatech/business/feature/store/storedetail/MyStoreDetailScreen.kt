@@ -37,6 +37,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.store.AppBar
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
@@ -77,23 +79,7 @@ fun MyStoreDetailScreen(
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(ColorPrimary),
-        ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = stringResource(R.string.modify_store_info),
-                )
-            }
-            Text(
-                text = stringResource(R.string.my_shop),
-                modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 18.sp),
-            )
-        }
+        AppBar(stringResource(R.string.my_shop))
         MyStoreScrollScreen(state, listState, pagerState, viewModel, onTabSelected = {
             coroutineScope.launch {
                 pagerState.animateScrollToPage(it)
