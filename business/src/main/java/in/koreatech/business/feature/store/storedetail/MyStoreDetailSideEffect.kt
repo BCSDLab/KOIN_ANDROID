@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.storedetail
 
 sealed class MyStoreDetailSideEffect {
     data object NavigateToUploadEventScreen : MyStoreDetailSideEffect()
