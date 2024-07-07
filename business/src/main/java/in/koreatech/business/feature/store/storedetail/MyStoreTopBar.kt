@@ -88,7 +88,7 @@ fun CollapsedTopBar(
 }
 
 @Composable
-fun TopBar() {
+fun StoreInfoScreen() {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     Column(modifier = Modifier) {
