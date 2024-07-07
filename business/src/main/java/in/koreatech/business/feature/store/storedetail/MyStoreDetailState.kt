@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.storedetail
 
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.Store
