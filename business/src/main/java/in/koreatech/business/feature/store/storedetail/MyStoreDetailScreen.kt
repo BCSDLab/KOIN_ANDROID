@@ -85,7 +85,7 @@ fun MyStoreDetailScreen(
             IconButton(onClick = { /*TODO*/ }) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = stringResource(R.string.back),
+                    contentDescription = stringResource(R.string.modify_store_info),
                 )
             }
             Text(
