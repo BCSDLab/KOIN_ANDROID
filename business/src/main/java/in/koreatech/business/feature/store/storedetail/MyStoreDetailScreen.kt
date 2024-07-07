@@ -151,7 +151,7 @@ fun MyStoreScrollScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             item {
-                TopBar()
+                StoreInfoScreen()
             }
             storeDetailInfo(infoDataList)
             item {
