@@ -54,6 +54,7 @@ napier = "2.6.1"
 composeNumberPickerVersion = "1.0.3"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
+guavaVersion = "33.0.0-android"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -149,6 +150,8 @@ coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
 
+guava = {module = "com.google.guava:guava", version.ref="guavaVersion"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
@@ -161,9 +164,13 @@ koin-application = { id = "in.koreatech.plugin.application", version = "unspecif
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
+koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
+koin-firebase = {id = "in.koreatech.plugin.firebase", version="unspecified"}
+koin-java = { id = "in.koreatech.plugin.java", version="unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
+firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-analytics-ktx", "firebase-database", "firebase-perf", "firebase-messsaing"]
