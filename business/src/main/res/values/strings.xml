@@ -1,36 +1,61 @@
 <resources>
     <string name="title_activity_business_main">BusinessMainActivity</string>
 
-    <!--change_password-->
+    <!--기타-->
     <string name="master_sign_up">사장님용\n회원가입</string>
     <string name="input_email">이메일 입력</string>
     <string name="input_authentication_code">인증번호 입력</string>
     <string name="find_password">비밀번호 찾기</string>
     <string name="change_password">비밀번호 변경</string>
-    <string name="password_condition">* 특수문자 포함 영어와 숫자 조합 6~18 자리</string>
     <string name="not_coincide_password">비밀번호가 일치하지 않습니다.</string>
     <string name="please_sign_in_with_new_password">비밀번호가 변경되었습니다.\n새로운 비밀번호로 로그인 부탁드립니다.</string>
-    <string name="password_change_complete">비밀번호 변경 완료</string>
     <string name="resend">재발송</string>
-    <string name="send_authentication_code">인증번호발송</string>
-    <string name="email_certification">이메일 인증하기</string>
+    <string name="send_authentication_code">인증번호 발송</string>
     <string name="confirm_password">비밀번호 확인</string>
     <string name="new_password">새 비밀번호</string>
     <string name="changing_password">비밀번호 변경하기</string>
     <string name="go_login_activity">로그인 화면 바로가기</string>
-    <string name="title_activity_splash">SplashActivity</string>
+    <string name="back_arrow">backArrow</string>
+    <string name="error">오류가 발생하였습니다. 잠시뒤에 다시 시도해 주세요</string>
 
-    <string name="input_basic_information">1.기본 정보 입력</string>
+    <!--인증번호 관련-->
+    <string name="auth_code_input_from_email">이메일로 발송된 인증번호 6자리를 입력해 주세요.</string>
+    <string name="auth_code_not_equal">인증번호가 일치하지 않습니다.</string>
+    <string name="auth_code_insert">인증번호를 입력해주세요</string>
+    <string name="auth_code_send">인증번호발송</string>
+    <string name="auth_code_resend">재발송</string>
+    <string name="auth_code_input">인증번호 입력</string>
+
+    <!--이메일 관련-->
+    <string name="email_input">이메일 입력</string>
+    <string name="email_certification">이메일 인증하기</string>
+    <string name="email_address_insert">이메일 주소를 입력해주세요</string>
+    <string name="email_address_incorrect">이메일 주소가 올바르지 않습니다.</string>
+
+    <!--패스워드 관련-->
+    <string name="password_condition">* 특수문자 포함 영어와 숫자 조합 6~18 자리</string>
+    <string name="password_input">비밀번호를 입력해 주세요.</string>
+    <string name="password_confirm_input">확인 비밀번호를 입력해 주세요.</string>
+    <string name="password_not_coincide">비밀번호가 일치하지 않습니다.</string>
+    <string name="password_please_sign_in_with_new_password">비밀번호가 변경되었습니다.\n새로운 비밀번호로 로그인 부탁드립니다.</string>
+    <string name="password_change_complete">비밀번호 변경 완료</string>
+    <string name="password_confirm">비밀번호 확인</string>
+    <string name="password_new">새 비밀번호</string>
+    <string name="password_changing">비밀번호 변경하기</string>
+    <string name="password_find">비밀번호 찾기</string>
+    <string name="password_change">비밀번호 변경</string>
+
+    <string name="check_terms">1. 약관 동의</string>
+    <string name="input_basic_information">2.기본 정보 입력</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
-    <string name="password_confirm">비밀번호 확인</string>
     <string name="password_mismatch" >비밀번호가 일치하지 않습니다.</string>
     <string name="password_requirements">* 특수문자 포함 영어와 숫자 조합 6~18 자리 이상</string>
     <string name="email_confirm"> 본인확인 이메일</string>
     <string name="email_authentication">이메일 인증하기</string>
     <string name="account_authentication">계정 인증</string>
     <string name="verification_code_prompt">발송된 인증번호 6자리를 입력해주세요</string>
-    <string name="enter_verification_code">인증번호 입력</string>
+    <string name="enter_verification_code">인증번호 입력를 입력해주세요.</string>
     <string name="resend_verification_code">재발송</string>
 
 
@@ -44,30 +69,87 @@
     <string name="business_auth">3.사업자 인증</string>
     <string name="master_name">대표자명(실명)</string>
     <string name="enter_store_name">가게명 직접 입력하기</string>
-    <string name="search_store">가게검색</string>
-    <string name="file_upload">파일첨부</string>
+    <string name="search_store">가게 검색</string>
+    <string name="file_upload">파일 첨부</string>
     <string name="file_upload_prompt">파일을 첨부해주세요</string>
-    <string name="file_upload_instruction">사업자등록증, 영업신고증, 통장사본 이미지 첨부</string>
-    <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
+    <string name="file_upload_instruction">사업자 등록증, 영업신고증, 통장사본을 첨부하세요.</string>
+    <string name="file_upload_requirements">사업자등록증, 영업신고증, 통장사본 이미지 필수\n10mb 이하의 PDF 혹은 이미지 형식의 파일(e.g. jpg, png, gif 등)로 5개까지 업로드 가능합니다.</string>
     <string name="select_file">파일 선택하기</string>
     <string name="cancel">취소</string>
     <string name="business_registration_number">사업자 등록번호</string>
     <string name="personal_contact">개인 연락처</string>
-    <string name="search_shop">상점 검색</string>
+    <string name="search_shop">가게를 검색해보세요.</string>
     <string name="store_name">식당이름</string>
     <string name="delivery">배달</string>
     <string name="card_payment">카드결제</string>
     <string name="account_transfer">계좌이체</string>
-    <string name="phone_number">전화번호</string>
+    <string name="phone_number">휴대폰 번호</string>
     <string name="select">선택</string>
-    <string name="signup_request_complete">가입 신청 완료</string>
-    <string name="signup_request_complete_description">가입 신청이 완료되었습니다.\\n가입 허가가 승인되면 로그인이 가능합니다.</string>
-    <string name="navigate_to_login_screen">로그인 화면으로 가기</string>
+    <string name="signup_request_complete">회원가입 완료</string>
+    <string name="signup_request_complete_description">회원가입이 완료되었습니다!\n가입 승인 시 로그인이 가능합니다.</string>
+    <string name="navigate_to_login_screen">로그인 화면 바로가기</string>
     <string name="back_icon">BackArrow</string>
     <string name="check_icon">check</string>
     <string name="upload_file_icon">upload file</string>
     <string name="file_icon">upload item image</string>
     <string name="search_icon">search</string>
     <string name="email_not_validate">존재하지 않는 도메인입니다.</string>
-
+    <string name="enter_id">아이디를 입력해주세요.</string>
+    <string name="enter_password">비밀번호를 입력해주세요.</string>
+    <string name="enter_password_confirm">비밀번호를 다시 입력해주세요.</string>
+    <string name="enter_phone_number">-없이 번호를 입력해주세요.</string>
+    <string name="sign_up">회원가입</string>
+    <string name="business_number_not_validate">올바르지 않는 사업자 번호입니다..</string>
+    <string name="phone_number_not_validate">존재하지 않는 휴대폰 번호입니다.</string>
+    <string name="check_duplicate">중복 확인</string>
+    <string name="authentication_code">인증번호</string>
+    <string name="id_not_validate">중복된 아이디입니다.</string>
+    <string name="shop_name">가게이름</string>
+    <string name="enter_name">이름을 입력해주세요.</string>
+    <string name="enter_business_registration_number">사업자 등록번호를 입력해주세요.</string>
+    <string name="enter_personal_contact">-없이 번호를 입력해주세요.</string>
+    <string name="instruction_file">사업자 인증 파일</string>
+    <string name="sms_code_not_validate">인증번호가 일치하지 않습니다.</string>
+    <string name="error_phone_duplicated">중복된 휴대폰 번호입니다.</string>
+    <string name="password_not_validate">특수문자 포함 영어와 숫자 6~18 자리로 입력해주세요.</string>
+    <string name="attach_file">파일 첨부</string>
+    <string name="check_all">모두 동의 합니다.</string>
+    <string name="term_1">제1조 (목적) 코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다. \n제2조 (약관의 효력 및 변경) ① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다. ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="term_2">제1조 (목적) 코인 서비스 이용약관은 bcsd lab에서 서비스를 제공함에 있어, 이용자간의 관리, 의무 및 책임 사항 등을 목적으로 합니다. \n제2조 (약관의 효력 및 변경) ① 이 약관은 서비스 화면이나 기타의 방법으로 이용고객에게 공지함으로써 효력을 발생합니다. ② 사이트는 이 약관의 내용을 변경할 수 있으며, 변경된 약관은 제1항과 같은 방법으로 공지 또는 통지함으로써 효력을 발생합니다.</string>
+    <string name="koin_essential_term">코인 이용약관 (필수)</string>
+    <string name="private_info_term">개인정보 이용약관 (필수)</string>
+    <string name="check">확인</string>
+    <string name="price">가격</string>
+    <string name="menu_default_image">메뉴 기본 이미지</string>
+    <string name="edit">편집하기</string>
+    <string name="add">추가하기</string>
+    <string name="event_default_image">이벤트 기본 이미지</string>
+    <string name="fold">접기</string>
+    <string name="view_all">전체보기</string>
+    <string name="telephone_number">전화번호</string>
+    <string name="operating_time">운영시간</string>
+    <string name="clodsed_day">휴무일</string>
+    <string name="address">주소정보</string>
+    <string name="delivery_amount">배달금액</string>
+    <string name="other_information">기타 정보</string>
+    <string name="menu">메뉴</string>
+    <string name="event_notification">이벤트/공지</string>
+    <string name="my_shop">내 상점</string>
+    <string name="back">뒤로가기</string>
+    <string name="shop_management">가게 관리하기</string>
+    <string name="shop_image">가게 이미지</string>
+    <string name="deliver_available"># 배달 가능</string>
+    <string name="card_available"># 카드 가능</string>
+    <string name="account_transfer_available"># 계좌이체 가능</string>
+    <string name="recommend_menu">추천 메뉴</string>
+    <string name="main_menu">메인 메뉴</string>
+    <string name="set_menu">세트 메뉴</string>
+    <string name="side_menu">사이드 메뉴</string>
+    <string name="category">카테고리</string>
+    <string name="delivery_available">배달 가능</string>
+    <string name="card_payment_available">카드 가능</string>
+    <string name="bank_transfer_available">계좌이체 가능</string>
+    <string name="error_message">상점을 불러오지 못했습니다.</string>
+    <string name="error_network_unknown">알 수 없는 오류가 발생했습니다.</string>
+    <string name="error_no_store">상점이 존재하지 않습니다.</string>
 </resources>

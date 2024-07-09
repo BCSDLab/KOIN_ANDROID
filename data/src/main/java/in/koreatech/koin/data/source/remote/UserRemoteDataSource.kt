@@ -2,13 +2,13 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
-import `in`.koreatech.koin.data.response.user.AuthResponse
-import `in`.koreatech.koin.data.response.user.UserResponse
+import `in`.koreatech.koin.data.response.user.*
 
 class UserRemoteDataSource(
     private val userApi: UserApi,
@@ -50,6 +50,14 @@ class UserRemoteDataSource(
 
     suspend fun updateUser(userRequest: UserRequest): UserResponse {
         return userAuthApi.putUser(userRequest)
+    }
+
+    suspend fun updateDeviceToken(token: String) {
+        userAuthApi.updateDeviceToken(DeviceTokenRequest(token))
+    }
+
+    suspend fun deleteDeviceToken() {
+        userAuthApi.deleteDeviceToken()
     }
 
     suspend fun verifyPassword(passwordRequest: PasswordRequest) {

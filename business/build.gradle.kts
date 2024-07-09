@@ -1,4 +1,4 @@
-import `in`.koreatech.convention.kapt
+
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -11,8 +11,10 @@ plugins {
 android {
     namespace = "in.koreatech.business"
 
-    packagingOptions {
-        resources.pickFirsts.add("META-INF/gradle/incremental.annotation.processors")
+    androidComponents {
+        onVariants(selector().withBuildType("release")) {
+            it.packaging.resources.excludes.add("META-INF/**")
+        }
     }
     //  2 files found with path 'META-INF/gradle/incremental.annotation.processors' from inputs: 오류 해결
 
@@ -28,12 +30,20 @@ android {
 }
 
 dependencies {
+    implementation(libs.guava)
+    implementation(libs.kotlinxCollectionsImmutable)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.bundles.compose)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.compose.navigation)
+    implementation(libs.androidx.security.crypto)
+    implementation(libs.coil)
+    implementation(libs.coil.compose)
+    implementation(libs.compose.numberPicker)
+    implementation(libs.androidx.security.crypto)
+    implementation(libs.compose.numberPicker)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))

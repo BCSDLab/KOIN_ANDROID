@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
                 android:orientation="horizontal"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/koin_base_app_bar_dark"
                 tools:itemCount="14"
@@ -62,7 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/tabs_dining_time"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@color/background_dark"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <include layout="@layout/base_navigation_drawer_right" />
