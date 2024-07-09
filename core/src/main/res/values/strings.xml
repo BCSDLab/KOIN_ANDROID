@@ -132,4 +132,6 @@
     <string name="insert_store_finish">가게 등록 완료</string>
     <string name="insert_store_finish_guide">가게 등록이 완료되었습니다.\n업체 정보 수정은 내 상점에서 가능합니다.</string>
     <string name="close">닫기</string>
+    <string name="back">뒤로가기</string>
+    <string name="my_shop">내 상점</string>
 </resources>
