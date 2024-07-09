@@ -3,7 +3,6 @@ package `in`.koreatech.business.feature.store.modifyinfo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,7 +50,7 @@ fun ModifyOperatingTimeScreen(
                 .fillMaxWidth()
                 .background(ColorPrimary),
         ) {
-            IconButton(onClick = { viewModel.onBackButtonClicked() }) {
+            IconButton(onClick = viewModel::onBackButtonClicked) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(R.string.back),
