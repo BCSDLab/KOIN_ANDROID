@@ -19,6 +19,10 @@ class ModifyInfoViewModel @Inject constructor() : ViewModel(),
         postSideEffect(ModifyInfoSideEffect.NavigateToBackScreen)
     }
 
+    fun onSettingOperatingTimeClicked() = intent {
+        postSideEffect(ModifyInfoSideEffect.NavigateToSettingOperatingTime)
+    }
+
     fun dialogVisibility(index: Int) = intent {
         reduce {
             state.copy(
