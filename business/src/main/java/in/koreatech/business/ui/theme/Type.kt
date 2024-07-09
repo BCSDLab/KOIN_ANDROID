@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
@@ -14,7 +15,12 @@ val Rubik = FontFamily(
     Font(R.font.noto_sans_kr, FontWeight.W400),
 )
 
-// Set of Material typography styles to start with
+val Pretendard = FontFamily(
+    Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.pretendard_medium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.pretendard_regular, FontWeight.Normal, FontStyle.Normal),
+)
+
 val Typography = Typography(
     defaultFontFamily = FontFamily.Default,
     h1 = TextStyle(

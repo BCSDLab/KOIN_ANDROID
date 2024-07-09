@@ -1,8 +1,9 @@
-import com.android.build.api.dsl.ApplicationExtension
-import `in`.koreatech.convention.configureAndroidHilt
+import `in`.koreatech.convention.implementation
+import `in`.koreatech.convention.kapt
+import `in`.koreatech.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 
 internal class AndroidApplicationHiltConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -10,8 +11,9 @@ internal class AndroidApplicationHiltConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.google.dagger.hilt.android")
             }
-            extensions.configure<ApplicationExtension> {
-                configureAndroidHilt(this)
+            dependencies {
+                implementation(libs.findBundle("hilt").get())
+                kapt(libs.findLibrary("hilt-compiler").get())
             }
         }
     }

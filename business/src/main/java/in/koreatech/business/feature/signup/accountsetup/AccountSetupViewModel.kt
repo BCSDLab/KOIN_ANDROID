@@ -1,10 +1,24 @@
 package `in`.koreatech.business.feature.signup.accountsetup
 
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.internal.composableLambdaInstance
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.business.SendSignupEmailUseCase
+import `in`.koreatech.koin.domain.usecase.business.BusinessSignupCheckUseCase
+import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
+import `in`.koreatech.koin.domain.util.ext.isValidPassword
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -15,9 +29,53 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSetupViewModel @Inject constructor(
-    private val sendSignupEmailUseCase: SendSignupEmailUseCase,
-) : ViewModel(), ContainerHost<AccountAuthState, AccountAuthSideEffect> {
-    override val container = container<AccountAuthState, AccountAuthSideEffect>(AccountAuthState())
+    private val sendSignupSmsCodeUseCase: SendSignupSmsCodeUseCase,
+    private val businessSignupCheckUseCase: BusinessSignupCheckUseCase,
+) : ViewModel(), ContainerHost<AccountSetupState, AccountSetupSideEffect> {
+    override val container =
+        container<AccountSetupState, AccountSetupSideEffect>(AccountSetupState())
+
+
+    private val passwordFlow = container.stateFlow
+        .map { it.password }
+        .distinctUntilChanged()
+
+    private val idFlow = container.stateFlow
+        .map { it.id }
+        .distinctUntilChanged()
+
+    private val passwordConfirmFlow = container.stateFlow
+        .map { it.passwordConfirm }
+        .distinctUntilChanged()
+
+    private val phoneNumberFlow = container.stateFlow
+        .map { it.phoneNumber }
+        .distinctUntilChanged()
+
+    private val authCodeFlow = container.stateFlow
+        .map { it.authCode }
+        .distinctUntilChanged()
+
+    init {
+        combine(
+            passwordFlow,
+            idFlow,
+            passwordConfirmFlow,
+            phoneNumberFlow,
+            authCodeFlow
+        ) { password, id, passwordConfirm, phoneNumber, authCode ->
+            password.isNotEmpty() && id.isNotEmpty() && passwordConfirm.isNotEmpty() && phoneNumber.isNotEmpty() && authCode.isNotEmpty()
+        }.distinctUntilChanged()
+            .onEach {
+                updateButton(it)
+            }.launchIn(viewModelScope)
+    }
+
+    private fun updateButton(enabled: Boolean) = intent {
+        reduce {
+            state.copy(isButtonEnabled = enabled)
+        }
+    }
 
     fun onIdChanged(id: String) = intent {
         reduce {
@@ -27,55 +85,71 @@ class AccountSetupViewModel @Inject constructor(
 
     fun onPasswordChanged(password: String) = intent {
         reduce {
-            state.copy(password = password)
+            state.copy(password = password, isPasswordError = !password.isValidPassword())
         }
     }
 
     fun onPasswordConfirmChanged(passwordConfirm: String) = intent {
         reduce {
-            state.copy(passwordConfirm = passwordConfirm)
+            state.copy(
+                passwordConfirm = passwordConfirm,
+                isPasswordConfirmError = state.password != passwordConfirm
+            )
         }
     }
 
-    fun onEmailChanged(email: String) = intent {
+    fun onPhoneNumChanged(phoneNumber: String) = intent {
         reduce {
-            state.copy(email = email)
+            state.copy(phoneNumber = phoneNumber, isPhoneNumberError = phoneNumber.length != 11)
         }
     }
 
-    fun onNextButtonClicked() = intent {
-        postSideEffect(AccountAuthSideEffect.NavigateToNextScreen(state.email))
+    fun onAuthCodeChanged(authCode: String) = intent {
+        reduce {
+            state.copy(authCode = authCode, signUpContinuationError = null)
+        }
     }
 
     fun onBackButtonClicked() = intent {
-        postSideEffect(AccountAuthSideEffect.NavigateToBackScreen)
+        postSideEffect(AccountSetupSideEffect.NavigateToBackScreen)
     }
 
-    fun checkInfo(email: String, password: String, passwordConfirm: String) {
-        intent { reduce { state.copy(isLoading = true) } }
-        viewModelScope.launch(Dispatchers.IO) {
-            sendSignupEmailUseCase(email, password, passwordConfirm)
-                .onSuccess {
-                    intent {
-                        reduce { state.copy(signupContinuationState = it)}
-                        reduce { state.copy(signUpContinuationError = null)}
+    fun verifySmsCode(
+        password: String, passwordConfirm: String, phoneNumber: String, verifyCode: String
+    ) {
+        viewModelScope.launch {
+            businessSignupCheckUseCase(
+                password, passwordConfirm, phoneNumber, verifyCode
+            ).onSuccess {
+                intent {
+                    reduce {
+                        state.copy(
+                            signupContinuationState = it,
+                            signUpContinuationError = null
+                        )
                     }
+                    postSideEffect(AccountSetupSideEffect.NavigateToNextScreen(state.phoneNumber))
                 }
-                .onFailure {
-                    intent { reduce { state.copy(signUpContinuationError = it) } }
+            }.onFailure {
+                intent {
+                    reduce { state.copy(signUpContinuationError = it) }
                 }
-            intent { reduce { state.copy(isLoading = false) } }
+            }
         }
     }
-    fun postEmailVerification(email: String) {
-        intent { reduce { state.copy(isLoading = true) } }
+
+    fun sendSmsVerificationCode(phoneNumber: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            sendSignupEmailUseCase.sendEmail(email)
-                .onSuccess {}
-                .onFailure {
-                    intent { reduce { state.copy(signUpContinuationError = it) } }
+            sendSignupSmsCodeUseCase(phoneNumber).onSuccess {
+                intent {
+                    reduce { state.copy(signupContinuationState = it) }
+                    reduce { state.copy(signUpContinuationError = null) }
                 }
-            intent { reduce { state.copy(isLoading = false) } }
+            }.onFailure {
+                intent {
+                    reduce { state.copy(signUpContinuationError = it) }
+                }
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ object URLConstant {
     const val ADMIN = "admin/"
     const val VERSION = "versions"
     const val DINING = "dinings"
-    const val SHOPS = "shops"
     const val FAQ = "faqs"
     const val LECTURE = "lectures"
     const val TIMETABLE = "timetable"
@@ -23,6 +22,13 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+
+    object SHOPS{
+        const val OWNERSHOPS= "owner/shops"
+        const val SHOPS = "shops"
+        const val EVENTS = "$SHOPS/events"
+        const val CATERGORIES = "$SHOPS/categories"
+    }
 
     object BUS {
         const val BUS = "bus"
@@ -62,7 +68,15 @@ object URLConstant {
         const val REGISTER: String = "$OWNERS/register"
         const val CODE = "$OWNERS/$VERIFICATION/code"
         const val EMAIL = "$OWNERS/$VERIFICATION/email"
+        const val PASSWORD = "password"
+        const val RESET = "reset"
+        const val CHANGEPASSWORDEMAIL = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION"
+        const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
+        const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
+        const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
+        const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
+        const val SHOPS = "$OWNER/shops"
     }
 
     object CALLVANS {
@@ -121,5 +135,6 @@ object URLConstant {
     object UPLOAD {
         const val url = "/{domain}/upload/url"
         const val OWNERURL = "/owners/upload/url"
+        const val MARKETURL = "/market/upload/url"
     }
 }

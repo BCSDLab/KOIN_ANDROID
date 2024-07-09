@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.Koin" parent="">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextAppearance.Koin.Regular">
+        <item name="fontFamily">@font/pretendard_regular</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.18">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">28.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.16">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">25.6sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.15">
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.14">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">22.4sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.13">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">20.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.12">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">19.2sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Regular.10">
+        <item name="android:textSize">10sp</item>
+        <item name="lineHeight">16sp</item>
+    </style>
+
+    <style name="TextAppearance.Koin.Medium">
+        <item name="fontFamily">@font/pretendard_medium</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.18">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">28.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.16">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">25.6sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.15">
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.14">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">22.4sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.13">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">20.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Medium.12">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">19.2sp</item>
+    </style>
+
+    <style name="TextAppearance.Koin.Bold">
+        <item name="fontFamily">@font/pretendard_bold</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.20">
+        <item name="android:textSize">20sp</item>
+        <item name="lineHeight">12sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.18">
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">28.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.16">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">25.6sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.15">
+        <item name="android:textSize">15sp</item>
+        <item name="lineHeight">24sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.14">
+        <item name="android:textSize">14sp</item>
+        <item name="lineHeight">22.4sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.13">
+        <item name="android:textSize">13sp</item>
+        <item name="lineHeight">20.8sp</item>
+    </style>
+    <style name="TextAppearance.Koin.Bold.12">
+        <item name="android:textSize">12sp</item>
+        <item name="lineHeight">19.2sp</item>
+    </style>
+
+</resources>
