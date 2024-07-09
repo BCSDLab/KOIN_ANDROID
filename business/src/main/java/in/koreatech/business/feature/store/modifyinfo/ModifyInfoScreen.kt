@@ -58,7 +58,7 @@ fun ModifyInfoScreen(
 ) {
     val viewModel: ModifyInfoViewModel = hiltViewModel()
     val storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel()
-    val storeOperatingTime: List<OperatingTimeState> = emptyList()
+    val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
     Column {
@@ -110,6 +110,7 @@ fun ModifyInfoScreen(
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = Color.Black.copy(alpha = 0.5f),
                         ),
+                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                     ) {
                         Text(
                             modifier = Modifier.fillMaxSize(),
@@ -156,20 +157,22 @@ fun ModifyInfoScreen(
                             .padding(start = 20.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        storeOperatingTime.forEach { item ->
-                            Text(
-                                text = if (item.closed) stringResource(
-                                    id = R.string.insert_store_closed_day,
-                                    item.dayOfWeek
+                        Column {
+                            state.operatingTimeList.forEach { item ->
+                                Text(
+                                    text = if (item.closed) stringResource(
+                                        id = R.string.insert_store_closed_day,
+                                        item.dayOfWeek
+                                    )
+                                    else stringResource(
+                                        id = R.string.insert_store_operating_time,
+                                        item.dayOfWeek,
+                                        item.openTime,
+                                        item.closeTime
+                                    ),
+                                    color = ColorMinor,
                                 )
-                                else stringResource(
-                                    id = R.string.insert_store_operating_time,
-                                    item.dayOfWeek,
-                                    item.openTime,
-                                    item.closeTime
-                                ),
-                                color = ColorMinor,
-                            )
+                            }
                         }
                         Button(modifier = Modifier
                             .width(70.dp)
