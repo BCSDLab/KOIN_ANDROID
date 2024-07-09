@@ -34,12 +34,12 @@ import `in`.koreatech.business.ui.theme.Gray6
 
 @Composable
 fun OwnerStoreDialog(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
     dialogTitle: String,
     dialogText: String,
     positiveButtonText: String,
-    visibility: Boolean = false
+    visibility: Boolean = false,
+    onConfirmation: () -> Unit,
+    onDismissRequest: () -> Unit,
 ) {
     if (!visibility) {
         return
