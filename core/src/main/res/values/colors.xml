@@ -112,4 +112,15 @@
     <color name="default_sticker_font_color">#ffffff</color>
     <color name="gray">#7c9fae</color>
     <color name="black1">#222222</color>
+
+    <color name="main_main600">#10477A</color>
+    <color name="main_main500">#175C8E</color>
+    <color name="main_main400">#4590BB</color>
+
+    <color name="sub_sub500">#F7941E</color>
+
+    <color name="neutral_700">#1F1F1F</color>
+    <color name="neutral_600">#4B4B4B</color>
+    <color name="neutral_300">#E1E1E1</color>
+    <color name="neutral_0">#FFFFFF</color>
 </resources>

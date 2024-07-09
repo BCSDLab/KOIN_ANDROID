@@ -228,6 +228,7 @@
     <!-- User info check password  -->
     <string name="user_info_check_password_title">내 정보 수정하기</string>
     <string name="user_info_check_password_subtitle">보안을 위해 비밀번호 입력이 필요합니다.</string>
+    <string name="user_info_check_password_warning">비밀번호가 일치하지 않습니다.</string>
 
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
