@@ -9,4 +9,6 @@ class UploadUrlRemoteDataSource @Inject constructor(
     private val uploadUrl: UploadUrlApi
 ) {
     suspend fun postUploadUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadUrl(uploadUrlRequest)
+
+    suspend fun postUploadMarketUrl(uploadUrlRequest: UploadUrlRequest): UploadUrlResponse = uploadUrl.postUploadMarketUrl(uploadUrlRequest)
 }

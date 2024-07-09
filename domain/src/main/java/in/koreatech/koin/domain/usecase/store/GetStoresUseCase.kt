@@ -12,14 +12,10 @@ class GetStoresUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         category: StoreCategory? = null,
-        search: String? = null,
     ): List<Store> {
         return storeRepository.getStores()
             .filter {
-                if (category == null) return@filter true
                 category in it.categoryIds
             }
-            .filter { if (search != null) it.name.match(search) else true }
-            .sortedOpenStore()
     }
 }

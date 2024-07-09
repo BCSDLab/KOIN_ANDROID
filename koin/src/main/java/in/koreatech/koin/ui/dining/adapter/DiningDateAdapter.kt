@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemDiningDateBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 class DiningDateAdapter(
     private val onClick: (Date) -> Unit
@@ -22,18 +20,28 @@ class DiningDateAdapter(
 
     private var selectedPosition = 0
 
-    fun setSelectedPosition(position: Int) {
+    fun selectPosition(position: Int) {
         selectedPosition = position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return DiningDateViewHolder(
+        val holder = DiningDateViewHolder(
             ItemDiningDateBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
+
+        val displayMetrics = parent.context.resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val itemWidth = screenWidth / 7
+
+        val layoutParams = holder.itemView.layoutParams
+        layoutParams.width = itemWidth
+        holder.itemView.layoutParams = layoutParams
+
+        return holder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -48,7 +56,8 @@ class DiningDateAdapter(
                 textViewDayOfTheWeek.text = DateFormatUtil.getDayOfWeek(date)
                 textViewDay.text = date.date.toString()
 
-                if (position < itemCount / 2) {
+                groupTodayIndicator.visibility = View.INVISIBLE
+                if (position < itemCount / 2) {     // 오늘 이전
                     textViewDay.setTextColor(
                         ContextCompat.getColor(
                             context,
@@ -61,7 +70,7 @@ class DiningDateAdapter(
                             R.color.gray9
                         )
                     )
-                } else {
+                } else if (position > itemCount / 2) {  // 오늘 이후
                     textViewDay.setTextColor(Color.BLACK)
                     textViewDayOfTheWeek.setTextColor(
                         ContextCompat.getColor(
@@ -69,23 +78,26 @@ class DiningDateAdapter(
                             R.color.gray14
                         )
                     )
+                } else {    // 오늘
+                    textViewDay.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.colorPrimary
+                        )
+                    )
+                    textViewDayOfTheWeek.setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.gray9
+                        )
+                    )
+                    groupTodayIndicator.visibility = View.VISIBLE
                 }
 
                 backgroundSelectedDate.visibility = View.INVISIBLE
-                backgroundSelectedDateToday.visibility = View.INVISIBLE
                 if (position == selectedPosition) {
-                    if (DateUtils.isToday(date.time)) {
-                        textViewDay.setTextColor(Color.WHITE)
-                        backgroundSelectedDateToday.visibility = View.VISIBLE
-                    } else {
-                        textViewDay.setTextColor(
-                            ContextCompat.getColor(
-                                context,
-                                R.color.colorPrimary
-                            )
-                        )
-                        backgroundSelectedDate.visibility = View.VISIBLE
-                    }
+                    backgroundSelectedDate.visibility = View.VISIBLE
+                    textViewDay.setTextColor(Color.WHITE)
                 }
 
                 root.setOnClickListener {
@@ -97,7 +109,7 @@ class DiningDateAdapter(
                         )
                     else
                         notifyItemRangeChanged(position, selectedPosition - position + 1)
-                    setSelectedPosition(position)
+                    selectPosition(position)
                 }
             }
         }

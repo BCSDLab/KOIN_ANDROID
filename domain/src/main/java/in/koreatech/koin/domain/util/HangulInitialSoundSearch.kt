@@ -55,6 +55,7 @@ object HangulInitialSoundSearch {
         val slen = trimSearch.length
 
         if (seof < 0) return false
+        if (trimValue.contains(trimSearch)) return true
 
         for (i in 0..seof) {
             t = 0

@@ -7,13 +7,11 @@ import `in`.koreatech.koin.domain.error.user.UserErrorHandler
 import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.repository.DeptRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
 import `in`.koreatech.koin.domain.util.ext.isValidStudentId
 import javax.inject.Inject
 
 class UpdateStudentUserInfoUseCase @Inject constructor(
-    private val deptRepository: DeptRepository,
     private val userRepository: UserRepository,
     private val userErrorHandler: UserErrorHandler
 ) {
@@ -24,6 +22,7 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
         separatedPhoneNumber: List<String>?,
         gender: Gender?,
         studentId: String,
+        major: String,
         checkedEmailValidation: Boolean
     ): ErrorHandler? {
         return try {
@@ -35,15 +34,13 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                 throw IllegalStateException(ERROR_USERINFO_GENDER_NOT_SET)
             }
 
-            if(!studentId.isValidStudentId) {
+            if (!studentId.isValidStudentId) {
                 throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
 
-            val newUser: User = when(beforeUser) {
+            val newUser: User = when (beforeUser) {
                 User.Anonymous -> throw IllegalAccessException()
                 is User.Student -> {
-                    val deptString = deptRepository.getDeptNameFromDeptCode(studentId.substring(5..6))
-
                     beforeUser.copy(
                         name = name.trim(),
                         nickname = nickname.trim(),
@@ -55,7 +52,7 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
                         },
                         gender = gender,
                         studentNumber = studentId.trim().ifBlank { null },
-                        major = deptString
+                        major = major
                     )
                 }
             }
