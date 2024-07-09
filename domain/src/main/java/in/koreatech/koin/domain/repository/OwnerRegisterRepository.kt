@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
+import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 
 interface OwnerRegisterRepository {
     suspend fun ownerRegister(
@@ -10,7 +11,21 @@ interface OwnerRegisterRepository {
         name: String,
         password: String,
         phoneNumber: String,
-        shopId: Int,
+        shopId: Int?,
         shopName: String
+    ): Result<Unit>
+
+    suspend fun storeRegister(
+        name: String,
+        category: Int,
+        address: String,
+        imageUri: String,
+        phoneNumber: String,
+        deliveryPrice: String,     //배달비
+        description: String,
+        operatingTime: List<OperatingTime>,
+        isDeliveryOk: Boolean,  //배달 가능 여부
+        isCardOk: Boolean,      //카드결제 여부
+        isBankOk: Boolean       //계좌이체 여부
     ): Result<Unit>
 }

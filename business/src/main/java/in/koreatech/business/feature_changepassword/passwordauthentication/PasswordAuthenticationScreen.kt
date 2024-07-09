@@ -1,10 +1,6 @@
 package `in`.koreatech.business.feature_changepassword.passwordauthentication
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,10 +19,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,26 +32,56 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
+import `in`.koreatech.business.util.ext.clickableOnce
+import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import org.orbitmvi.orbit.viewmodel.observe
+
 
 @Composable
-fun PasswordAuthenticationScreen(
+fun PasswordAuthenticationScreenImpl(
     modifier: Modifier = Modifier,
-    onAuthenticationButtonClicked: () -> Unit,
+    navigateToChangePassword: (email: String) -> Unit = {},
     onBackPressed: () -> Unit,
     viewModel: PasswordAuthenticationViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
-    val context = LocalContext.current
 
+    PasswordAuthenticationScreen(
+        modifier = modifier,
+        email = state.email,
+        authCode = state.authenticationCode,
+        emailIsEmpty = state.emailIsEmpty(),
+        authCodeIsEmpty = state.authCodeIsEmpty(),
+        authenticationBtnIsClicked = state.authenticationBtnIsClicked,
+        onBackPressed = onBackPressed,
+        insertEmail = { email -> viewModel.insertEmail(email)},
+        insertAuthCode = {authCode -> viewModel.insertAuthCode(authCode)},
+        sendAuthCode = {viewModel.sendAuthCode(state.email.trim())},
+        authenticateCode = { viewModel.authenticateCode(state.email.trim(), state.authenticationCode.trim()) }
+    )
+
+    HandleSideEffects(viewModel, state.email.trim(), navigateToChangePassword)
+}
+@Composable
+fun PasswordAuthenticationScreen(
+    modifier: Modifier,
+    email: String,
+    authCode: String,
+    emailIsEmpty: Boolean,
+    authCodeIsEmpty: Boolean,
+    authenticationBtnIsClicked: Boolean,
+    onBackPressed: () -> Unit,
+    insertEmail: (String) -> Unit,
+    insertAuthCode: (String) -> Unit,
+    sendAuthCode: () -> Unit,
+    authenticateCode: () -> Unit
+) {
+    
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -72,25 +94,24 @@ fun PasswordAuthenticationScreen(
 
         ) {
             Image(
-                painter = painterResource(R.drawable.ic_arrow_back),
-                contentDescription = "backArrow",
+                painter = painterResource(R.drawable.back_ic),
+                contentDescription = stringResource(id = R.string.back_arrow),
                 modifier = modifier
                     .width(24.dp)
                     .height(24.dp)
             )
         }
         Text(
-            text = stringResource(R.string.find_password),
+            text = stringResource(R.string.password_find),
             fontSize = 24.sp,
+            color = Color.White,
             fontWeight = FontWeight.Bold,
             modifier = modifier.padding(top = 32.dp, start = 32.dp, bottom = 32.dp)
         )
 
         BasicTextField(
-            value = state.email,
-            onValueChange = {
-                viewModel.insertEmail(it)
-            },
+            value = email,
+            onValueChange = insertEmail,
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
             decorationBox = { innerTextField ->
@@ -102,9 +123,9 @@ fun PasswordAuthenticationScreen(
                         contentAlignment = Alignment.CenterStart,
                         modifier = modifier.padding(bottom = 7.dp)
                     ){
-                        if (state.email.isEmpty()) {
+                        if (emailIsEmpty) {
                             Text(
-                                text = stringResource(R.string.input_email),
+                                text = stringResource(R.string.email_input),
                                 color = Blue1,
                                 fontSize = 15.sp
                             )
@@ -114,7 +135,7 @@ fun PasswordAuthenticationScreen(
                     Divider(
                         modifier = modifier.fillMaxWidth(),
                         thickness = 1.dp,
-                        color = if (state.email.isEmpty()) Blue1 else Color.Black
+                        color = if (emailIsEmpty) Blue1 else Color.Black
                     )
                 }
             },
@@ -131,10 +152,8 @@ fun PasswordAuthenticationScreen(
             .height(30.dp)
         ) {
             BasicTextField(
-                value = state.authenticationCode,
-                onValueChange = {
-                    viewModel.insertAuthCode(it)
-                },
+                value = authCode,
+                onValueChange = insertAuthCode,
                 maxLines = 1,
                 textStyle = TextStyle(fontSize = 15.sp),
                 decorationBox = { innerTextField ->
@@ -143,9 +162,9 @@ fun PasswordAuthenticationScreen(
                             contentAlignment = Alignment.CenterStart,
                             modifier = modifier.padding(bottom = 7.dp)
                         ){
-                            if (state.authenticationCode.isEmpty()) {
+                            if (authCodeIsEmpty) {
                                 Text(
-                                    text = stringResource(R.string.input_authentication_code),
+                                    text = stringResource(R.string.auth_code_input),
                                     color = Blue1,
                                     fontSize = 15.sp
                                 )
@@ -155,7 +174,7 @@ fun PasswordAuthenticationScreen(
                         Divider(
                             modifier = modifier.width(220.dp),
                             thickness = 1.dp,
-                            color = if (state.authenticationCode.isEmpty()) Blue1 else Color.Black
+                            color = if (authCodeIsEmpty) Blue1 else Color.Black
                         )
                     }
 
@@ -166,26 +185,27 @@ fun PasswordAuthenticationScreen(
             )
 
             Button(
-                onClick = { viewModel.sendAuthCode(state.email) },
+                onClick =  sendAuthCode,
                 shape = RectangleShape,
                 colors = ButtonDefaults.buttonColors(ColorPrimary),
                 contentPadding = PaddingValues(1.dp),
                 modifier = modifier
                     .fillMaxSize()
                     .padding(end = 32.dp)
+                    .clickableOnce { }
             ) {
-                Text(text = if(state.authenticationBtnIsClicked)stringResource(R.string.resend) else stringResource(R.string.send_authentication_code),
+                Text(text = if(authenticationBtnIsClicked)stringResource(R.string.auth_code_resend) else stringResource(R.string.auth_code_send),
                     fontSize = 14.sp,
+                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
+
         Button(
-            onClick =  {
-                viewModel.goToPasswordChangeScreen()
-            } ,
+            onClick =  authenticateCode,
             shape = RectangleShape,
-            colors = if(state.authenticationCode.isBlank()) ButtonDefaults.buttonColors(Gray5)
+            colors = if(authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
             else ButtonDefaults.buttonColors(ColorPrimary),
             modifier = modifier
                 .padding(horizontal = 32.dp)
@@ -195,28 +215,50 @@ fun PasswordAuthenticationScreen(
         ) {
             Text(text = stringResource(R.string.email_certification),
                 fontSize = 15.sp,
+                color = Color.White,
                 fontWeight = FontWeight.Bold
             )
         }
     }
+}
 
-    viewModel.collectSideEffect{
-        when(it){
-            is PasswordAuthenticationSideEffect.AuthenticationBtnIsClicked -> viewModel.authenticationBtnClicked()
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> viewModel.goToPasswordChangeScreen()
-            else -> {}
+@Composable
+private fun HandleSideEffects(viewModel: PasswordAuthenticationViewModel, email: String, navigateToChangePassword: (email: String) -> Unit) {
+    val context = LocalContext.current
+
+    viewModel.collectSideEffect { sideEffect ->
+        when (sideEffect) {
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(email)
+            is PasswordAuthenticationSideEffect.SendAuthCode -> ToastUtil.getInstance().makeShort(context.getString(R.string.auth_code_input_from_email))
+            is PasswordAuthenticationSideEffect.ShowMessage -> {
+                val message = when (sideEffect.type) {
+                    ErrorType.NoEmail -> context.getString(R.string.email_address_insert)
+                    ErrorType.IsNotEmail -> context.getString(R.string.email_address_incorrect)
+                    ErrorType.NullAuthCode -> context.getString(R.string.auth_code_insert)
+                    ErrorType.NotCoincideAuthCode -> context.getString(R.string.auth_code_not_equal)
+                }
+                ToastUtil.getInstance().makeShort(message)
+            }
         }
     }
-
 }
 
 @Preview
 @Composable
-fun previewPasswordAuthenticationScreen() {
+fun PreviewPasswordAuthenticationScreen() {
     Surface {
         PasswordAuthenticationScreen(
-            onAuthenticationButtonClicked = {},
-            onBackPressed = {}
+            modifier = Modifier,
+            email = "",
+            authCode = "",
+            emailIsEmpty = true,
+            authCodeIsEmpty = true,
+            authenticationBtnIsClicked = true,
+            onBackPressed = {  },
+            insertEmail = { },
+            insertAuthCode = {},
+            sendAuthCode = {},
+            authenticateCode = { }
         )
     }
 }

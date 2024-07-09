@@ -1,24 +1,26 @@
 package `in`.koreatech.koin.ui.main.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.recyclerview.RecyclerViewClickListener
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
-import `in`.koreatech.koin.core.viewpager.ScaledViewPager2Transformation
+import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
+import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
-import `in`.koreatech.koin.ui.main.StoreCategoryRecyclerAdapter
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
+import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -33,21 +35,36 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private val viewModel by viewModels<MainActivityViewModel>()
 
     private val busPagerAdapter = BusPagerAdapter().apply {
-        setOnCardClickListener { callDrawerItem(R.id.navi_item_bus, Bundle()) }
-        setOnSwitchClickListener { viewModel.switchBusNode() }
+        setOnCardClickListener {
+            callDrawerItem(R.id.navi_item_bus, Bundle())
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.MAIN_BUS,
+                getString(R.string.bus)
+            )
+        }
+        setOnSwitchClickListener {
+            viewModel.switchBusNode()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
+                it.localized(this@MainActivity)
+            )
+        }
     }
+    private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
+
     private val diningContainerAdapter by lazy { DiningContainerViewPager2Adapter(this) }
 
-    private val storeCategoryRecyclerAdapter = StoreCategoryRecyclerAdapter().apply {
-        setRecyclerViewClickListener(object : RecyclerViewClickListener {
-            override fun onClick(view: View?, position: Int) {
-                gotoStoreActivity(position)
-            }
-
-            override fun onLongClick(view: View?, position: Int) {
-
-            }
-        })
+    private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
+        setOnItemClickListener { id, name ->
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
+                name
+            )
+            gotoStoreActivity(id)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +83,11 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.USER,
+                AnalyticsConstant.Label.HAMBURGER,
+                getString(R.string.hamburger)
+            )
         }
 
         busViewPager.apply {
@@ -87,7 +109,8 @@ class MainActivity : KoinNavigationDrawerActivity() {
         recyclerViewStoreCategory.apply {
             layoutManager =
                 LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-            adapter = storeCategoryRecyclerAdapter
+            //adapter = storeCategoryRecyclerAdapter
+            adapter = storeCategoriesRecyclerAdapter
         }
 
         mainSwipeRefreshLayout.setOnRefreshListener {
@@ -107,9 +130,15 @@ class MainActivity : KoinNavigationDrawerActivity() {
         tabDining.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setSelectedPosition(tab.position)
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_MENU_CORNER,
+                    tab.text.toString()
+                )
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {}
+
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
@@ -124,14 +153,44 @@ class MainActivity : KoinNavigationDrawerActivity() {
             binding.textViewDiningTodayOrTomorrow.text = it.todayOrTomorrow(this@MainActivity)
         }
 
+
         observeLiveData(busTimer) {
             busPagerAdapter.setBusTimerItems(it)
+            if (this@MainActivity::busViewPagerScrollCallback.isInitialized.not()) {
+                initBusViewPagerScrollCallback(it)
+            }
         }
+        observeLiveData(storeCategories) {
+            storeCategoriesRecyclerAdapter.submitList(it.drop(1))
+        }
+    }
+
+    private fun initBusViewPagerScrollCallback(busArrivalInfos: List<BusArrivalInfo>) {
+        busViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+            var prev = 0
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.CAMPUS,
+                    AnalyticsConstant.Label.MAIN_BUS_SCROLL,
+                    busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
+                        this@MainActivity
+                    )
+                )
+                prev = position
+            }
+        }.also { binding.busViewPager.registerOnPageChangeCallback(it) }
     }
 
     private fun gotoStoreActivity(position: Int) {
         val bundle = Bundle()
         bundle.putInt(StoreActivityContract.STORE_CATEGORY, position)
         callDrawerItem(R.id.navi_item_store, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (this@MainActivity::busViewPagerScrollCallback.isInitialized)
+            binding.busViewPager.unregisterOnPageChangeCallback(busViewPagerScrollCallback)
     }
 }

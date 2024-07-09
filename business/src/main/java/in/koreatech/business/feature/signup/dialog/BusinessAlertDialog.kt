@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.signup.dialog
 
+import android.opengl.Visibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,8 +40,11 @@ fun BusinessAlertDialog(
     dialogTitle: String,
     dialogText: String,
     positiveButtonText: String,
+    visibility: Boolean = false
 ) {
-
+    if (!visibility) {
+        return
+    }
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             modifier = Modifier

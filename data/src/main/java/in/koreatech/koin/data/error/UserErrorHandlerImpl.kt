@@ -18,6 +18,12 @@ import javax.inject.Inject
 class UserErrorHandlerImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserErrorHandler {
+    override fun handleUserError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
+
     override fun handleGetTokenError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {

@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
-    private val tokenLocalDataSource: TokenLocalDataSource
+    private val tokenLocalDataSource: TokenLocalDataSource,
 ) : UserRepository {
     override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
@@ -68,6 +68,20 @@ class UserRepositoryImpl @Inject constructor(
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> userRemoteDataSource.updateUser(user.toUserRequest())
         }
+    }
+
+    override suspend fun updateDeviceToken(token: String) {
+        if (tokenLocalDataSource.getDeviceToken()
+                .isNullOrEmpty() || (tokenLocalDataSource.getDeviceToken() != token && token.isNotEmpty())
+        ) {
+            tokenLocalDataSource.saveDeviceToken(token)
+            userRemoteDataSource.updateDeviceToken(token)
+        }
+    }
+
+    override suspend fun deleteDeviceToken() {
+        tokenLocalDataSource.removeDeviceToken()
+        userRemoteDataSource.deleteDeviceToken()
     }
 
     override suspend fun verifyPassword(hashedPassword: String) {

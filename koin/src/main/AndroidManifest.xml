@@ -36,6 +36,20 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
 
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo_color_horizontal_300x168"
+            />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/black" />
+
+        <activity
+            android:name=".ui.notification.NotificationActivity"
+            android:exported="false"
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.businesssignup.BusinessSignUpCompleteActivity"
             android:exported="false"/>
@@ -107,6 +121,14 @@
                 android:resource="@xml/filepaths"/>
         </provider>
 
+        <service
+            android:name=".firebase.KoinFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
@@ -134,12 +156,22 @@
             android:name=".ui.store.activity.StoreActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="shop"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.dining.DiningActivity"
             android:exported="false"
             android:label="@string/app_name"
-            android:theme="@style/KAPTheme.NoActionBar"/>
+            android:theme="@style/KAPTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="dining"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.bus.BusActivity"
             android:exported="false"
