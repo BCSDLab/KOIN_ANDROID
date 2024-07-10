@@ -60,7 +60,10 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
             horizontalArrangement = Arrangement.Center,
         ) {
             Button(
-                onClick = { if (state.isSelectedEvent.size > 1) viewModel.modifyEventError() else viewModel.navigateToModifyScreen() },
+                onClick = {
+                    if (state.isSelectedEvent.size > 1) viewModel.modifyEventError()
+                    else viewModel.navigateToModifyScreen()
+                },
                 modifier = Modifier
                     .width(100.dp)
                     .padding(8.dp),
@@ -76,7 +79,7 @@ fun EventEditToolbar(viewModel: MyStoreDetailViewModel, state: MyStoreDetailStat
                 Text(text = stringResource(R.string.modify))
             }
             Button(
-                onClick = { viewModel.changeDialogVisibility() },
+                onClick = viewModel::changeDialogVisibility,
                 modifier = Modifier
                     .width(100.dp)
                     .padding(8.dp),

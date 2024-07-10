@@ -74,17 +74,14 @@ fun MyStoreDetailScreen(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OwnerStoreAppBar(stringResource(R.string.my_shop))
-        MyStoreScrollScreen(state, listState, pagerState, viewModel, onTabSelected = {
-            coroutineScope.launch {
-                pagerState.animateScrollToPage(it)
-            }
-        }) {
-
-            state.isSelectedEvent.forEach {
-                viewModel.deleteEventItem(state.storeId, it)
-            }
-
-        }
+        MyStoreScrollScreen(
+            state, listState, pagerState, viewModel, onTabSelected = {
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(it)
+                }
+            },
+            viewModel::deleteEventAll
+        )
     }
     viewModel.collectSideEffect {
         when (it) {
