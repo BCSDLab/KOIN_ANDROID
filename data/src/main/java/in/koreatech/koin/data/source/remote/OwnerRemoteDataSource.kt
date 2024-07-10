@@ -71,4 +71,7 @@ class OwnerRemoteDataSource(
     suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
         return ownerAuthApi.postMyStore(storeRegisterResponse)
     }
+    suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
+        ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
+    }
 }
