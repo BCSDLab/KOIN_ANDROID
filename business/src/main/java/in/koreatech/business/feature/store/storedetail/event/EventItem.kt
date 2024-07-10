@@ -197,7 +197,10 @@ fun EventFoldedItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EventExpandedItem(
-    item: ShopEvent, eventOpenCloseTime: String, pagerState: PagerState, onCollapse: () -> Unit = {}
+    item: ShopEvent,
+    eventOpenCloseTime: String,
+    pagerState: PagerState,
+    onCollapse: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
