@@ -165,6 +165,12 @@ class MyStoreDetailViewModel @Inject constructor(
         postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
     }
 
+    fun deleteEventAll() = intent{
+        state.isSelectedEvent.forEach {
+            deleteEventItem(state.storeId, it)
+        }
+    }
+
     fun deleteEventItem(shopId: Int, eventId: Int) = intent {
         viewModelScope.launch {
             deleteOwnerShopEventsUseCase(shopId, eventId).also {
