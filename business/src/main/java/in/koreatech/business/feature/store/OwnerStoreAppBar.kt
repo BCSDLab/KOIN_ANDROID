@@ -19,7 +19,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
-fun AppBar(title: String) {
+fun OwnerStoreAppBar(title: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
