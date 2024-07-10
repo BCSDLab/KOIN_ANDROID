@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.store.AppBar
+import `in`.koreatech.business.feature.store.OwnerStoreAppBar
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
@@ -73,7 +73,7 @@ fun MyStoreDetailScreen(
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        AppBar(stringResource(R.string.my_shop))
+        OwnerStoreAppBar(stringResource(R.string.my_shop))
         MyStoreScrollScreen(state, listState, pagerState, viewModel, onTabSelected = {
             coroutineScope.launch {
                 pagerState.animateScrollToPage(it)
