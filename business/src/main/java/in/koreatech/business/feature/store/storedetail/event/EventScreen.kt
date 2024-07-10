@@ -43,7 +43,7 @@ fun EventScreen(
     }
     EventItem(enabledScroll, scrollState, viewModel, state)
     OwnerStoreDialog(
-        onDismissRequest = { viewModel.changeDialogVisibility() },
+        onDismissRequest = viewModel::changeDialogVisibility,
         onConfirmation = { onDeleteEvent() },
         dialogTitle = stringResource(R.string.event_delete_title),
         dialogText = stringResource(R.string.event_delete_text),
