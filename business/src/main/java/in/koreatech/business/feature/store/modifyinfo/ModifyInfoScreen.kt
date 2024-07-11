@@ -158,6 +158,16 @@ fun ModifyInfoScreen(
                     ) {
                         Column {
                             state.operatingTimeList.forEach { item ->
+                                val openTimeFormatted = String.format(
+                                    "%02d:%02d",
+                                    item.operatingTime.openTime.hours,
+                                    item.operatingTime.openTime.minutes
+                                )
+                                val closeTimeFormatted = String.format(
+                                    "%02d:%02d",
+                                    item.operatingTime.closeTime.hours,
+                                    item.operatingTime.closeTime.minutes
+                                )
                                 Text(
                                     text = if (item.closed) stringResource(
                                         id = R.string.insert_store_closed_day,
@@ -166,8 +176,8 @@ fun ModifyInfoScreen(
                                     else stringResource(
                                         id = R.string.insert_store_operating_time,
                                         item.dayOfWeek,
-                                        item.openTime,
-                                        item.closeTime
+                                        openTimeFormatted,
+                                        closeTimeFormatted,
                                     ),
                                     color = ColorMinor,
                                 )

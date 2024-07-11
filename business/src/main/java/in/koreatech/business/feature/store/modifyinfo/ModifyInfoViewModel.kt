@@ -43,27 +43,22 @@ class ModifyInfoViewModel @Inject constructor() : ViewModel(),
     fun dialogTimeSetting() = intent {
         reduce {
             state.copy(
-                dialogTimeState = OperatingTime(
-                    state.operatingTimeList[state.dayOfWeekIndex].openTime.split(":")
-                        .let {
-                            FullHours(
-                                it[0].toInt(), it[1].toInt()
-                            )
-                        }, state.operatingTimeList[state.dayOfWeekIndex].closeTime.split(":")
-                        .let {
-                            FullHours(it[0].toInt(), it[1].toInt())
-                        })
+                dialogTimeState = OperatingTime(state.operatingTimeList[state.dayOfWeekIndex].operatingTime.openTime.let {
+                    FullHours(it.hours, it.minutes)
+                },
+                    state.operatingTimeList[state.dayOfWeekIndex].operatingTime.closeTime.let {
+                        FullHours(it.hours, it.minutes)
+                    })
             )
         }
     }
 
-    fun onSettingStoreTime(hours: Pair<FullHours, FullHours>) = intent {
+    fun onSettingStoreTime(hours: OperatingTime) = intent {
         reduce {
             val newList = state.operatingTimeList.toMutableList()
             val currentItem = newList[state.dayOfWeekIndex]
             newList[state.dayOfWeekIndex] = currentItem.copy(
-                openTime = String.format("%02d:%02d", hours.first.hours, hours.first.minutes),
-                closeTime = String.format("%02d:%02d", hours.second.hours, hours.second.minutes),
+                operatingTime = hours,
             )
             state.copy(operatingTimeList = newList)
         }
