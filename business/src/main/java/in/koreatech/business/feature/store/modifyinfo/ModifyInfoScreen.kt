@@ -67,7 +67,7 @@ fun ModifyInfoScreen(
                 .fillMaxWidth()
                 .background(ColorPrimary),
         ) {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { viewModel.onBackButtonClicked() }) {
                 Image(
                     painter = painterResource(id = `in`.koreatech.koin.core.R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(`in`.koreatech.koin.core.R.string.back),
@@ -259,6 +259,7 @@ fun ModifyInfoScreen(
 
     viewModel.collectSideEffect {
         when (it) {
+            ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
             else-> {}
         }
