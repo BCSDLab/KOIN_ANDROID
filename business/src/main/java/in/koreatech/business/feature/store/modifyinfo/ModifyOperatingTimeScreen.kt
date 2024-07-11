@@ -114,7 +114,7 @@ fun ModifyOperatingTimeScreen(
                     OperatingTimeSetting(
                         operatingTime = item,
                         onShowOpenTimeDialog = {
-                            viewModel.dialogVisibility(index)
+                            viewModel.showAlertDialog(index)
                             viewModel.dialogTimeSetting()
                         },
                         index = index,

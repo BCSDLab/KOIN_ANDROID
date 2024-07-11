@@ -23,11 +23,19 @@ class ModifyInfoViewModel @Inject constructor() : ViewModel(),
         postSideEffect(ModifyInfoSideEffect.NavigateToSettingOperatingTime)
     }
 
-    fun dialogVisibility(index: Int) = intent {
+    fun showAlertDialog(index: Int) = intent {
         reduce {
             state.copy(
-                showDialog = !state.showDialog,
+                showDialog = true,
                 dayOfWeekIndex = index,
+            )
+        }
+    }
+
+    fun hideAlertDialog() = intent {
+        reduce {
+            state.copy(
+                showDialog = false,
             )
         }
     }
