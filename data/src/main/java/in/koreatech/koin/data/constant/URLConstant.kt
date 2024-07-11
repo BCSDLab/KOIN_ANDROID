@@ -76,6 +76,7 @@ object URLConstant {
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
         const val SHOPS = "$OWNER/shops"
+        const val EXISTS_ACCOUNT= "$OWNERS/exists/account"
     }
 
     object CALLVANS {

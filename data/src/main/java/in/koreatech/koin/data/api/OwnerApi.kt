@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.owner.CheckExistsAccount
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
@@ -10,10 +11,11 @@ import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
-import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface OwnerApi {
     @POST(URLConstant.OWNER.CODE)
@@ -33,6 +35,10 @@ interface OwnerApi {
 
     @PUT(URLConstant.OWNER.CHANGEPASSWORD)
     suspend fun changePassword(@Body ownerChangePasswordRequest: OwnerChangePasswordRequest)
+
+    @GET(URLConstant.OWNER.EXISTS_ACCOUNT)
+    suspend fun checkExistsAccount(@Query("account") account:String)
+
     @POST(URLConstant.OWNER.SMS)
     suspend fun postVerificationSms(@Body ownerVerificationSms: VerificationSmsRequest)
 
