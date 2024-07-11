@@ -48,16 +48,18 @@ fun OperatingTimeSettingDialog(
                     HoursNumberPicker(modifier = Modifier.weight(1f),
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
-                        value = state.operatingTimeList[state.dayOfWeekIndex].openTime.split(":")
-                            .let {
-                                FullHours(
-                                    it[0].toInt(), it[1].toInt()
-                                )
-                            },
+                        value = FullHours(
+                            state.dialogTimeState.openTime.hours,
+                            state.dialogTimeState.openTime.minutes
+                        ),
                         onValueChange = {
                             viewModel.onSettingStoreTime(
-                                Pair(
-                                    FullHours(it.hours, it.minutes), state.dialogTimeState.second
+                                OperatingTime(
+                                    FullHours(it.hours, it.minutes),
+                                    FullHours(
+                                        state.dialogTimeState.closeTime.hours,
+                                        state.dialogTimeState.closeTime.minutes
+                                    )
                                 )
                             )
                         },
@@ -80,11 +82,17 @@ fun OperatingTimeSettingDialog(
                     HoursNumberPicker(modifier = Modifier.weight(1f),
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
-                        value = state.dialogTimeState.second,
+                        value = FullHours(
+                            state.dialogTimeState.closeTime.hours,
+                            state.dialogTimeState.closeTime.minutes
+                        ),
                         onValueChange = {
                             viewModel.onSettingStoreTime(
-                                Pair(
-                                    state.dialogTimeState.first,
+                                OperatingTime(
+                                    FullHours(
+                                        state.dialogTimeState.openTime.hours,
+                                        state.dialogTimeState.openTime.minutes
+                                    ),
                                     FullHours(it.hours, it.minutes),
                                 )
                             )
@@ -102,9 +110,9 @@ fun OperatingTimeSettingDialog(
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.Transparent,
                         contentColor = Blue3,
-                    ), onClick = {
-                        viewModel.showAlertDialog(state.dayOfWeekIndex)
-                    }, elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
+                    ),
+                    onClick = viewModel::hideAlertDialog,
+                    elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                 ) {
                     Text(stringResource(id = R.string.positive))
                 }

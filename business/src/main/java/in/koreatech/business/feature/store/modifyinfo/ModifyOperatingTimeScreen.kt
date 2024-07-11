@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +28,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
@@ -143,11 +143,16 @@ fun ModifyOperatingTimeScreen(
 
 @Composable
 fun OperatingTimeSetting(
-    operatingTime: OperatingTimeState = OperatingTimeState(),
+    operatingTime: StoreOperatingTime = StoreOperatingTime(),
     onShowOpenTimeDialog: (Int) -> Unit = {},
     index: Int = 0,
     onCheckBoxClicked: (Int) -> Unit = {}
 ) {
+    val openTime =  operatingTime.operatingTime.openTime
+    val closeTime = operatingTime.operatingTime.closeTime
+    val formattedOpenTime = String.format("%02d:%02d", openTime.hours, openTime.minutes)
+    val formattedCloseTime = String.format("%02d:%02d", closeTime.hours, closeTime.minutes)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -163,7 +168,7 @@ fun OperatingTimeSetting(
             modifier = Modifier.clickable {
                 if (!operatingTime.closed) onShowOpenTimeDialog(index)
             },
-            text = operatingTime.openTime + " ~ " + operatingTime.closeTime,
+            text = "$formattedOpenTime ~ $formattedCloseTime",
             color = if (operatingTime.closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
