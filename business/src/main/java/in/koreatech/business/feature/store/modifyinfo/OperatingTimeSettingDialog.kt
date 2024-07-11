@@ -38,7 +38,7 @@ fun OperatingTimeSettingDialog(
         AlertDialog(modifier = Modifier
             .fillMaxWidth()
             .height(300.dp),
-            onDismissRequest = { viewModel.dialogVisibility(-1) },
+            onDismissRequest = viewModel::hideAlertDialog,
             text = {
                 Row(
                     modifier = Modifier.fillMaxSize(),
@@ -103,7 +103,7 @@ fun OperatingTimeSettingDialog(
                         backgroundColor = Color.Transparent,
                         contentColor = Blue3,
                     ), onClick = {
-                        viewModel.dialogVisibility(state.dayOfWeekIndex)
+                        viewModel.showAlertDialog(state.dayOfWeekIndex)
                     }, elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                 ) {
                     Text(stringResource(id = R.string.positive))
@@ -114,10 +114,9 @@ fun OperatingTimeSettingDialog(
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color.Transparent,
                         contentColor = Gray10,
-                    ), onClick = {
-
-                        viewModel.dialogVisibility(-1)
-                    }, elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
+                    ),
+                    onClick = viewModel::hideAlertDialog,
+                    elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                 ) {
                     Text(stringResource(id = R.string.close))
                 }
