@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.request.owner.CheckExistsAccount
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
@@ -42,6 +43,10 @@ class OwnerRemoteDataSource(
 
     suspend fun ownerChangePassword(ownerChangePasswordRequest: OwnerChangePasswordRequest) {
         return ownerApi.changePassword(ownerChangePasswordRequest)
+    }
+
+    suspend fun checkExistsAccount(account: String) {
+        ownerApi.checkExistsAccount(account)
     }
 
     suspend fun postVerificationSms(ownerVerificationEmail: VerificationSmsRequest) {
