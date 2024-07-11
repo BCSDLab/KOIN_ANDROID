@@ -54,9 +54,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
+    viewModel: ModifyInfoViewModel = hiltViewModel(),
     onSettingOperatingClicked:() -> Unit = {},
 ) {
-    val viewModel: ModifyInfoViewModel = hiltViewModel()
     val storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value

@@ -29,8 +29,9 @@ import `in`.koreatech.koin.core.R
 import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
-fun OperatingTimeSettingDialog() {
-    val viewModel: ModifyInfoViewModel = hiltViewModel()
+fun OperatingTimeSettingDialog(
+    viewModel: ModifyInfoViewModel = hiltViewModel(),
+) {
     val state = viewModel.collectAsState().value
 
     if (state.showDialog) {
