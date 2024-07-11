@@ -1,9 +1,10 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.storedetail
 
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.usecase.business.DeleteOwnerEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.GetOwnerShopListUseCase
@@ -25,12 +26,56 @@ class MyStoreDetailViewModel @Inject constructor(
     private val getOwnerShopListUseCase: GetOwnerShopListUseCase,
     private val getOwnerShopEventsUseCase: GetOwnerShopEventsUseCase,
     private val getOwnerShopMenusUseCase: GetOwnerShopMenusUseCase,
+    private val deleteOwnerShopEventsUseCase: DeleteOwnerEventsUseCase,
 ) : ContainerHost<MyStoreDetailState, MyStoreDetailSideEffect>, ViewModel() {
     override val container =
         container<MyStoreDetailState, MyStoreDetailSideEffect>(MyStoreDetailState())
 
     init {
         initOwnerShopList()
+    }
+
+    fun onChangeAllEventSelected() = intent {
+        reduce {
+            state.copy(
+                isAllEventSelected = if (state.storeEvent?.size == 0) false
+                else !state.isAllEventSelected,
+            )
+        }
+        reduce {
+            state.copy(
+                isSelectedEvent = if (state.isAllEventSelected) {
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { add(it.eventId) } }
+                } else {
+                    mutableListOf<Int>().apply { state.storeEvent?.forEach { remove(it.eventId) } }
+                }
+            )
+        }
+    }
+
+    fun onChangeEventSelected(eventId: Int) = intent {
+        reduce {
+            if (!state.isSelectedEvent.contains(eventId)) {
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList().apply { add(eventId) },
+                )
+            } else {
+                state.copy(
+                    isSelectedEvent = state.isSelectedEvent.toMutableList()
+                        .apply { remove(eventId) })
+            }
+        }
+        reduce {
+            state.copy(
+                isAllEventSelected = state.isSelectedEvent.size == state.storeEvent?.size
+            )
+        }
+    }
+
+    fun onChangeEditMode() = intent {
+        reduce {
+            state.copy(isEditMode = !state.isEditMode, isSelectedEvent = mutableListOf(), isAllEventSelected = false)
+        }
     }
 
     fun initEventItem() = intent {
@@ -122,7 +167,11 @@ class MyStoreDetailViewModel @Inject constructor(
                 reduce {
                     state.copy(
                         storeList = it,
-                        storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1
+                    )
+                }
+                reduce {
+                    state.copy(
+                        storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
                 getOwnerShopInfo(state.storeId)
@@ -156,6 +205,50 @@ class MyStoreDetailViewModel @Inject constructor(
                     state.copy(
                         storeEvent = it.events.toImmutableList(),
                         isEventExpanded = List(it.events.size) { _ -> false })
+                }
+            }
+        }
+    }
+
+    fun changeDialogVisibility() = intent {
+        reduce {
+            state.copy(
+                dialogVisibility = if (state.isSelectedEvent.size > 0) {
+                    !state.dialogVisibility
+                } else false
+            )
+        }
+    }
+    fun navigateToModifyScreen() = intent {
+        postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
+    }
+
+    fun modifyEventError() = intent {
+        postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
+    }
+
+    fun deleteEventAll() = intent{
+        state.isSelectedEvent.forEach {
+            deleteEventItem(state.storeId, it)
+        }
+    }
+
+    fun deleteEventItem(shopId: Int, eventId: Int) = intent {
+        viewModelScope.launch {
+            deleteOwnerShopEventsUseCase(shopId, eventId).also {
+                reduce {
+                    state.copy(
+                        storeEvent = state.storeEvent?.filter { it.eventId != eventId }
+                            ?.toImmutableList(),
+                        isSelectedEvent = state.isSelectedEvent.toMutableList()
+                            .apply { remove(eventId) },
+                        dialogVisibility = false
+                    )
+                }
+                reduce {
+                    state.copy(
+                        isAllEventSelected = if (state.storeEvent?.size == 0) false else state.isAllEventSelected
+                    )
                 }
             }
         }

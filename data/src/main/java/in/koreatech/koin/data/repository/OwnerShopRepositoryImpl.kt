@@ -29,4 +29,7 @@ class OwnerShopRepositoryImpl @Inject constructor(
     override suspend fun getOwnerShopEvents(storeId: Int): ShopEvents {
         return ownerRemoteDataSource.getOwnerShopEvents(storeId).toStoreDetailEvents()
     }
+    override suspend fun deleteOwnerShopEvent(storeId: Int, eventId: Int) {
+        ownerRemoteDataSource.deleteOwnerShopEvent(storeId, eventId)
+    }
 }
