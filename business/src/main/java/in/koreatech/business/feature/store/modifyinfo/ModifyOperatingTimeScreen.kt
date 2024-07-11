@@ -39,9 +39,9 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun ModifyOperatingTimeScreen(
     modifier: Modifier = Modifier,
+    viewModel: ModifyInfoViewModel = hiltViewModel(),
     onBackClicked: () -> Unit = {},
 ) {
-    val viewModel: ModifyInfoViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
 
     Column {
