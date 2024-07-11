@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.business.feature.store.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -55,7 +54,7 @@ fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
     viewModel: ModifyInfoViewModel = hiltViewModel(),
-    onSettingOperatingClicked:() -> Unit = {},
+    onSettingOperatingClicked: () -> Unit = {},
 ) {
     val storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
@@ -174,9 +173,12 @@ fun ModifyInfoScreen(
                                 )
                             }
                         }
-                        Button(modifier = Modifier
-                            .width(70.dp)
-                            .height(40.dp), onClick = viewModel::onSettingOperatingTimeClicked ) {
+                        Button(
+                            modifier = Modifier
+                                .width(70.dp)
+                                .height(40.dp),
+                            onClick = viewModel::onSettingOperatingTimeClicked
+                        ) {
                             Text(
                                 modifier = Modifier.fillMaxSize(),
                                 text = stringResource(R.string.modify),
@@ -218,15 +220,18 @@ fun ModifyInfoScreen(
                     AvailableRadioButton(
                         text = stringResource(id = R.string.delivery_available),
                         selected = storeInfoState.storeInfo?.isDeliveryOk ?: false,
-                        onClick = storeInfoViewModel::onDeliveryAvailableChanged)
+                        onClick = storeInfoViewModel::onDeliveryAvailableChanged
+                    )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.card_payment_available),
                         selected = storeInfoState.storeInfo?.isCardOk ?: false,
-                        onClick =  storeInfoViewModel::onCardAvailableChanged )
+                        onClick = storeInfoViewModel::onCardAvailableChanged
+                    )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.bank_transfer_available),
                         selected = storeInfoState.storeInfo?.isBankOk ?: false,
-                        onClick =  storeInfoViewModel::onTransferAvailableChanged)
+                        onClick = storeInfoViewModel::onTransferAvailableChanged
+                    )
                 }
             }
             item {
@@ -261,7 +266,7 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
-            else-> {}
+            else -> {}
         }
     }
 }
@@ -313,7 +318,7 @@ fun AvailableRadioButton(text: String, selected: Boolean, onClick: () -> Unit) {
     ) {
         RadioButton(
             selected = selected,
-            onClick = {onClick()},
+            onClick = { onClick() },
             colors = RadioButtonDefaults.colors(
                 ColorSecondary, Gray6
             )
