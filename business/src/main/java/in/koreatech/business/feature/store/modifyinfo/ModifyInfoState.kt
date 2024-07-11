@@ -13,7 +13,7 @@ data class ModifyInfoState(
         OperatingTimeState("00:00", false, "토", "00:00", "SATURDAY"),
         OperatingTimeState("00:00", false, "일", "00:00", "SUNDAY"),
     ),
-    val dialogTimeState: Pair<FullHours, FullHours> = Pair(FullHours(0, 0), FullHours(0, 0)),
+    val dialogTimeState: OperatingTime = OperatingTime(FullHours(0, 0), FullHours(0, 0)),
     val showDialog: Boolean = false,
     val dayOfWeekIndex: Int = -1,
 )

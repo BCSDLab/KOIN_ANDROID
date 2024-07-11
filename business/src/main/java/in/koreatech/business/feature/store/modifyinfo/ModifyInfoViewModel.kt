@@ -43,15 +43,16 @@ class ModifyInfoViewModel @Inject constructor() : ViewModel(),
     fun dialogTimeSetting() = intent {
         reduce {
             state.copy(
-                dialogTimeState = state.operatingTimeList[state.dayOfWeekIndex].openTime.split(":")
-                    .let {
-                        FullHours(
-                            it[0].toInt(), it[1].toInt()
-                        )
-                    } to state.operatingTimeList[state.dayOfWeekIndex].closeTime.split(":")
-                    .let {
-                        FullHours(it[0].toInt(), it[1].toInt())
-                    }
+                dialogTimeState = OperatingTime(
+                    state.operatingTimeList[state.dayOfWeekIndex].openTime.split(":")
+                        .let {
+                            FullHours(
+                                it[0].toInt(), it[1].toInt()
+                            )
+                        }, state.operatingTimeList[state.dayOfWeekIndex].closeTime.split(":")
+                        .let {
+                            FullHours(it[0].toInt(), it[1].toInt())
+                        })
             )
         }
     }
