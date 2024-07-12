@@ -160,4 +160,7 @@
     <string name="event_delete_title">선택한 이벤트를 삭제할까요?</string>
     <string name="event_delete_text">삭제한 이벤트는 복구할 수 없습니다.</string>
     <string name="modify_store_info">가게 관리하기</string>
+    <string name="change_image">사진변경</string>
+    <string name="save">수정완료</string>
+    <string name="modify">수정</string>
 </resources>
