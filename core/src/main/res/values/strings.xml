@@ -32,6 +32,8 @@
     <string name="store_close_time">폐점시간</string>
     <string name="go_to_main_screen">메인 화면 바로가기</string>
     <string name="add_price">가격 추가</string>
+    <string name="temp_price">TempPrice</string>
+    <string name="temp_uri">TempUri</string>
     <string name="won">원</string>
 
     <!--left drawer menu -->
