@@ -2,9 +2,11 @@ package `in`.koreatech.business.feature.textfield
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,15 +21,19 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 
 @Composable
 fun BorderTextField(
-    startPadding: Dp = 10.dp,
+    height: Dp = 37.dp,
+    width: Dp = 100.dp,
+    paddingValues: PaddingValues = PaddingValues(start = 10.dp),
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
 ){
     Box(
         modifier = Modifier
-            .padding(start = startPadding)
+            .width(width)
+            .height(height)
+            .padding(paddingValues)
             .border(width = 1.dp, color = ColorMinor)
-            .height(37.dp),
+            .height(height),
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(

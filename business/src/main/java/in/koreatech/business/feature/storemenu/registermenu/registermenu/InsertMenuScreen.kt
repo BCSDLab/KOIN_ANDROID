@@ -202,7 +202,7 @@ fun RegisterMenuScreenImpl(
                             contentAlignment = Alignment.CenterStart
                         ) {
                             BasicTextField(
-                                value = menuName,
+                                value = if(menuName != stringResource(id = R.string.temp_price)) menuName else "",
                                 onValueChange = { newValue ->
                                     changeMenuPrice(Pair(index, newValue))
                                 },
@@ -354,14 +354,14 @@ fun RegisterMenuScreenImpl(
                         .padding(top = 16.dp)
                 ){
                     itemsIndexed(registerMenuState.imageUriList){ index, item ->
-                        if(item == ""){
+                        if(item == stringResource(id = R.string.temp_uri)){
                             Image(
                                 modifier = Modifier
                                     .size(137.dp)
                                     .padding(bottom = 16.dp)
                                 ,
                                 painter = painterResource(id = R.drawable.ic_add_menu_image),
-                                contentDescription = "이미지 삽입"
+                                contentDescription = ""
                             )
                         }
                     }
@@ -370,7 +370,8 @@ fun RegisterMenuScreenImpl(
 
             item{
                 Row(
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
                         .padding(top = 24.dp, bottom = 52.dp)
                         .fillMaxWidth()
                         .height(43.dp)

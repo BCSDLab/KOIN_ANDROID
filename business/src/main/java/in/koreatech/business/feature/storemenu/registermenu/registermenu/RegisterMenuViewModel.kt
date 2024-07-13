@@ -42,7 +42,7 @@ class RegisterMenuViewModel @Inject constructor(
         intent{
             reduce {
                 val newMenuUriList = state.imageUriList.toMutableList()
-                newMenuUriList.add("")
+                newMenuUriList.add(ImageHolder.TempUri.toString())
                 state.copy(
                     imageUriList = newMenuUriList
                 )
@@ -63,7 +63,7 @@ class RegisterMenuViewModel @Inject constructor(
             if (index in state.menuPrice.indices) {
                 reduce {
                     val newMenuPrice = state.menuPrice.toMutableList()
-                    newMenuPrice[index] = price
+                    newMenuPrice[index] = PriceHolder.PriceString(price).priceString
                     state.copy(menuPrice = newMenuPrice)
                 }
             }
@@ -74,7 +74,7 @@ class RegisterMenuViewModel @Inject constructor(
         intent{
             reduce {
                 val newMenuPrice = state.menuPrice.toMutableList()
-                newMenuPrice.add("")
+                newMenuPrice.add(PriceHolder.TempPrice.toString())
                 state.copy(
                     menuPrice = newMenuPrice
                 )
