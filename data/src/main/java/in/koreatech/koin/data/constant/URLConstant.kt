@@ -24,6 +24,7 @@ object URLConstant {
     const val TERM = "term"
 
     object SHOPS{
+        const val OWNERSHOPS= "owner/shops"
         const val SHOPS = "shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
@@ -74,6 +75,7 @@ object URLConstant {
         const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
+        const val SHOPS = "$OWNER/shops"
     }
 
     object CALLVANS {
@@ -132,5 +134,6 @@ object URLConstant {
     object UPLOAD {
         const val url = "/{domain}/upload/url"
         const val OWNERURL = "/owners/upload/url"
+        const val MARKETURL = "/market/upload/url"
     }
 }

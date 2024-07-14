@@ -12,8 +12,12 @@ data class StoreWithMenu(
     val isBankOk: Boolean,
     val open: Store.OpenData,
     val imageUrls: List<String>?,
+    val updateAt: String,
+    val isEvent: Boolean?,
     val shopCategories: List<Category>?,
     val menuCategories: List<Category>?,
+    val bank: String?,
+    val accountNumber: String?
 ) {
     data class Category(
         val id: Int,

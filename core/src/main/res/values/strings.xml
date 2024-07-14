@@ -15,6 +15,21 @@
     <string name="page_two">2 / 4</string>
     <string name="page_three">3 / 4</string>
     <string name="page_four">4 / 4</string>
+    <string name="category">카테고리</string>
+    <string name="calling_number">전화번호</string>
+    <string name="delivery_fee">배달금액</string>
+    <string name="operating_time">운영시간</string>
+    <string name="other_info">기타정보</string>
+    <string name="delivery_available">배달가능</string>
+    <string name="card_available">카드가능</string>
+    <string name="account_transfer_avilable">계좌이체가능</string>
+    <string name="revise">수정</string>
+    <string name="day_of_week">요일</string>
+    <string name="open_time">시간</string>
+    <string name="day_off">휴무</string>
+    <string name="store_open_time">개점시간</string>
+    <string name="store_close_time">폐점시간</string>
+    <string name="go_to_main_screen">메인 화면 바로가기</string>
 
     <!--left drawer menu -->
     <string name="home">홈</string>
@@ -95,7 +110,28 @@
     <string name="insert_store_basic_info">2. 기본 정보 입력</string>
     <string name="insert_store_store_name">가게이름</string>
     <string name="insert_store_store_address">주소정보</string>
-    <string name="insert_store_null_store_name">가게이름을 입력해주세요.</string>
-    <string name="insert_store_null_store_address">주소정보를 입력해주세요.</string>
-    <string name="insert_store_null_store_image">가게사진을 등록해주세요.</string>
+    <string name="insert_store_null_store_name">가게 이름을 입력해 주세요.</string>
+    <string name="insert_store_null_store_address">주소 정보를 입력해 주세요.</string>
+    <string name="insert_store_null_store_image">가게 사진을 등록해 주세요.</string>
+    <string name="insert_store_fail_upload_store_image">이미지를 등록하는데 실패하였습니다.</string>
+
+    <string name="insert_store_detail_info">3. 세부 정보 입력</string>
+    <string name="insert_store_detail">등록 하시려는 업체의\n세부 정보를 입력해 주세요.</string>
+    <string name="insert_store_time_setting">시간설정</string>
+    <string name="insert_store_open_time_setting">평일/주말 운영시간</string>
+    <string name="insert_store_operating_time">%1$s: %2$s ~ %3$s</string>
+    <string name="insert_store_closed_day">매주 %1$s 정기 휴무</string>
+    <string name="insert_store_null_store_phone_number">가게 전화번호를 입력해 주세요.</string>
+    <string name="insert_store_null_store_delivery_fee">가게 배달비를 입력해 주세요.</string>
+    <string name="insert_store_null_store_other_info">가게 기타 정보를 입력해 주세요.</string>
+
+    <string name="insert_store_check_store_info">4. 가게 정보 확인</string>
+    <string name="insert_store_check_info">입력하신 정보가 맞습니까?</string>
+    <string name="insert_store_fail_register_store">가게를 등록하는데 실패하였습니다.</string>
+
+    <string name="insert_store_finish">가게 등록 완료</string>
+    <string name="insert_store_finish_guide">가게 등록이 완료되었습니다.\n업체 정보 수정은 내 상점에서 가능합니다.</string>
+    <string name="close">닫기</string>
+    <string name="back">뒤로가기</string>
+    <string name="my_shop">내 상점</string>
 </resources>

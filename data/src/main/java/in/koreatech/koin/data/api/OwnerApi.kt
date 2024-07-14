@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
+import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -37,4 +38,7 @@ interface OwnerApi {
 
     @POST(URLConstant.OWNER.CODE_SMS)
     suspend fun postVerificationCodeSms(@Body ownerVerificationCode: VerificationCodeSmsRequest): OwnerVerificationCodeResponse
+
+    @POST(URLConstant.OWNER.SHOPS)
+    suspend fun putMyStore(@Body storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse
 }
