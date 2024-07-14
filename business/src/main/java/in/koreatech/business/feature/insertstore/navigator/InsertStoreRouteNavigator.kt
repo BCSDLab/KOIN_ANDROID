@@ -1,10 +1,10 @@
 package `in`.koreatech.business.feature.insertstore.navigator
 
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -14,8 +14,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.gson.Gson
+import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreen
+import `in`.koreatech.business.feature.insertstore.finalcheckstore.FinalCheckStoreScreenImpl
+import `in`.koreatech.business.feature.insertstore.finishregisterstore.FinishRegisterScreen
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreen
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeSettingScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreen
 import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenState
 import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategoryScreen
@@ -25,7 +30,8 @@ import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 @Composable
 fun InsertStoreNavigator(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    detailInfoScreenViewModel: InsertDetailInfoScreenViewModel = hiltViewModel()
 ) {
     NavHost(
         navController = navController,
@@ -81,8 +87,65 @@ fun InsertStoreNavigator(
         composable(
             route = InsertStoreRoute.DETAIL_INFO.name
         ){
+            val bundle = it.arguments
+
+            val basicInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle?.getParcelable("storeBasicInfo", InsertBasicInfoScreenState::class.java)
+            } else {
+                bundle?.getParcelable("storeBasicInfo") as? InsertBasicInfoScreenState
+            }
+
+            detailInfoScreenViewModel.getStoreBasicInfo(basicInfo)
+
             InsertDetailInfoScreen(
-                onBackPress = {
+                reviseButtonClicked = {
+                    navController.navigate(InsertStoreRoute.OPERATING_TIME.name)
+                },
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+
+                viewModel = detailInfoScreenViewModel,
+
+                navigateToCheckScreen = { storeInfo ->
+                    navigateToCheckScreen(navController, storeInfo)
+                }
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.OPERATING_TIME.name
+
+        ){
+            OperatingTimeSettingScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                viewModel = detailInfoScreenViewModel
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.CHECK_SCREEN.name
+        ){
+            FinalCheckStoreScreen(
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                navigateToFinishScreen = {
+                    navController.navigate(InsertStoreRoute.FINISH_SCREEN.name)
+                }
+            )
+        }
+
+        composable(
+            route = InsertStoreRoute.FINISH_SCREEN.name,
+        ) {
+            FinishRegisterScreen(
+                goToMainScreen = {
+
+                },
+                onBackPressed = {
                     navController.navigateUp()
                 }
             )
@@ -97,6 +160,7 @@ private fun navigateToMainInfo(
     navController.navigate("${InsertStoreRoute.BASIC_INFO}/${categoryId}")
 }
 
+
 private fun navigateToDetailInfo(
     navController: NavController,
     storeBasicInfo: InsertBasicInfoScreenState
@@ -106,7 +170,14 @@ private fun navigateToDetailInfo(
     navController.navigate(InsertStoreRoute.DETAIL_INFO.name, args = bundle)
 }
 
-
+private fun navigateToCheckScreen(
+    navController: NavController,
+    storeInfo: InsertDetailInfoScreenState
+) {
+    val bundle = Bundle()
+    bundle.putParcelable("storeInfo", storeInfo)
+    navController.navigate(InsertStoreRoute.CHECK_SCREEN.name, args = bundle)
+}
 fun NavController.navigate(
     route: String,
     args: Bundle,

@@ -4,8 +4,7 @@ import `in`.koreatech.koin.domain.model.error.ErrorHandler
 
 interface OwnerErrorHandler {
     fun handleGetTokenError(throwable: Throwable): ErrorHandler
-    fun handleRequestPasswordResetEmailError(throwable: Throwable): ErrorHandler
     fun handleGetOwnerInfoError(throwable: Throwable): ErrorHandler
-    fun handleDeleteOwnerError(throwable: Throwable): ErrorHandler
-    fun handleUpdateOwnerError(throwable: Throwable): ErrorHandler
+    fun handleGetOwnerShopListError(throwable: Throwable): ErrorHandler
+    fun handleDeleteOwnerShopEventError(throwable: Throwable): ErrorHandler
 }

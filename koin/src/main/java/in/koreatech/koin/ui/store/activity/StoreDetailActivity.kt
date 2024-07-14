@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.Manifest
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -123,6 +126,18 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             override fun onTabReselected(p0: TabLayout.Tab?) {}
         })
 
+        binding.storeDetailAccountCopyButton.setOnClickListener {
+
+            val clipboardManager = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText(
+                getString(R.string.account_number),
+                binding.storeDetailAccountTextview.text
+            )
+            clipboardManager.setPrimaryClip(clipData)
+
+            ToastUtil.getInstance().makeShort(getString(R.string.store_account_copy))
+        }
+
         initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
@@ -198,11 +213,22 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     storeDetailEtcTextview.text = it.description
                 }
 
+                if(it.bank == null){
+                    storeDetailAccountTextview.isVisible = false
+                    storeDetailConstAccountTextview.isVisible = false
+                    storeDetailAccountCopyButton.isVisible = false
+                }
+                else{
+                    storeDetailAccountTextview.text = it.bank + " " + it.accountNumber
+                }
+
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //카드결제
                 setEtcInfo(storeDetailIsCardTextview, it.isCardOk)
                 //계좌이체
                 setEtcInfo(storeDetailIsBankTextview, it.isBankOk)
+
+                updateInfoTv.text = getString(R.string.store_update_at, it.updateAt.replace("-", "."))
 
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
