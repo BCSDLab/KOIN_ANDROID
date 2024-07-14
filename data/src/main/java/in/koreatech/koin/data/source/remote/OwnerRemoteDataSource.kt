@@ -56,7 +56,7 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.getMyShopList().shops
     }
 
-    suspend fun getOwnerShopInfo(storeUid: Int): StoreItemWithMenusResponse {
+    suspend fun getOwnerShopInfo(storeUid: Int): StoreRegisterResponse {
         return ownerAuthApi.getOwnerShopInfo(storeUid)
     }
 
