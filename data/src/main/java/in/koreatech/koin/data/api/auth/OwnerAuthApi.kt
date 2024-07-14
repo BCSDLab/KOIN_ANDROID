@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -29,6 +30,16 @@ interface OwnerAuthApi {
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/event")
     suspend fun getOwnerShopEvents(@Path("shopId") uid: Int): StoreDetailEventResponse
-    @DELETE(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}"+"/events" + "/{eventId}")
-    suspend fun deleteOwnerShopEvent(@Path("shopId") uid: Int, @Path("eventId") eventId: Int): Response<Unit>
+
+    @DELETE(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}" + "/events" + "/{eventId}")
+    suspend fun deleteOwnerShopEvent(
+        @Path("shopId") uid: Int,
+        @Path("eventId") eventId: Int
+    ): Response<Unit>
+
+    @PUT(URLConstant.SHOPS.OWNERSHOPS + "/{shopId}")
+    suspend fun modifyOwnerShopInfo(
+        @Path("shopId") uid: Int,
+        @Body storeInfo: StoreRegisterResponse
+    )
 }

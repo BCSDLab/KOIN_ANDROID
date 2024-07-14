@@ -51,8 +51,6 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
     }
 
-
-
     override suspend fun getShopMenus(storeId: Int): StoreMenu {
         return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
     }

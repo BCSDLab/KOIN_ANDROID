@@ -7,4 +7,5 @@ interface OwnerErrorHandler {
     fun handleGetOwnerInfoError(throwable: Throwable): ErrorHandler
     fun handleGetOwnerShopListError(throwable: Throwable): ErrorHandler
     fun handleDeleteOwnerShopEventError(throwable: Throwable): ErrorHandler
+    fun handleModifyOwnerShopInfoError(throwable: Throwable): ErrorHandler
 }
