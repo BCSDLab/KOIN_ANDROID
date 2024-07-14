@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.store.MyStoreDetailViewModel
+import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
@@ -54,9 +54,9 @@ fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
     viewModel: ModifyInfoViewModel = hiltViewModel(),
+    storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel(),
     onSettingOperatingClicked: () -> Unit = {},
 ) {
-    val storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
@@ -247,7 +247,12 @@ fun ModifyInfoScreen(
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Button(
-                        onClick = {/*TODO*/ },
+                        onClick = {
+                            viewModel.modifyStoreInfo(
+                                storeInfoState.storeId,
+                                storeInfoState.storeInfo ?: return@Button
+                            )
+                        },
                         modifier = Modifier
                             .width(130.dp)
                             .height(40.dp)
