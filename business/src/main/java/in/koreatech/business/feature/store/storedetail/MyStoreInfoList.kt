@@ -54,13 +54,13 @@ fun getInfoDataList(state: MyStoreDetailState): List<Pair<String, String>> {
         Pair(stringResource(id = R.string.telephone_number), state.storeInfo?.phone ?: ""),
         Pair(
             stringResource(id = R.string.operating_time),
-            if (state.storeInfo?.open?.openTime?.isNotEmpty() == true && state.storeInfo.open.closeTime.isNotEmpty())
+            state.storeInfo?.operatingTime?.joinToString(separator = "\n") {
+                it.dayOfWeek + " " +
                 StoreUtil.generateOpenCloseTimeString(
-                    state.storeInfo.open.openTime,
-                    state.storeInfo.open.closeTime
+                    it.openTime,
+                    it.closeTime
                 )
-            else
-                ""
+            } ?: ""
         ),
         Pair(stringResource(id = R.string.address), state.storeInfo?.address ?: ""),
         Pair(
