@@ -105,8 +105,8 @@ class UserInfoCheckPasswordDialog : DialogFragment(R.layout.dialog_user_info_che
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         binding.tietPassword.removeTextChangedListener(passwordWatcher)
+
+        super.onDestroyView()
     }
 }
