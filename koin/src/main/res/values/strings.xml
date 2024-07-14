@@ -450,4 +450,9 @@
     <string name="event_notification">이벤트/공지</string>
     <string name="no_event">사장님이 이벤트를 준비 중입니다.</string>
     <string name="no_event_image">사장님이 이미지를 준비 중입니다.</string>
+
+
+    <!--리뷰 기능-->
+    <string name="review">리뷰</string>
+    <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
 </resources>

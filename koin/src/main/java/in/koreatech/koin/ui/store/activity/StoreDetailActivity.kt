@@ -107,6 +107,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             tab.text = when (position) {
                 0 -> getString(R.string.menu)
                 1 -> getString(R.string.event_notification)
+                2 -> getString(R.string.review)
                 else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
