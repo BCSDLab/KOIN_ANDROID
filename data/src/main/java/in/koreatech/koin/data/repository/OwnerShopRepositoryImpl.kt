@@ -18,8 +18,9 @@ class OwnerShopRepositoryImpl @Inject constructor(
     override suspend fun getMyShopList(): List<Store> {
         return ownerRemoteDataSource.getMyShopList().map { it.toStore() }
     }
-    override suspend fun getOwnerShopInfo(storeId: Int): StoreWithMenu {
-        return ownerRemoteDataSource.getOwnerShopInfo(storeId).toStoreWithMenu()
+
+    override suspend fun getOwnerShopInfo(storeId: Int): StoreDetailInfo {
+        return ownerRemoteDataSource.getOwnerShopInfo(storeId).toStoreDetailInfo()
     }
 
     override suspend fun getOwnerShopMenus(storeId: Int): StoreMenu {

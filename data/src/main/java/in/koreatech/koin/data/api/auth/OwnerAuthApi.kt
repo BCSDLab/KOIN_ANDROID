@@ -22,7 +22,7 @@ interface OwnerAuthApi {
     suspend fun getMyShopList(): StoreResponse
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/{id}")
-    suspend fun getOwnerShopInfo(@Path("id") uid: Int): StoreItemWithMenusResponse
+    suspend fun getOwnerShopInfo(@Path("id") uid: Int): StoreRegisterResponse
 
     @GET(URLConstant.SHOPS.OWNERSHOPS + "/menus")
     suspend fun getOwnerShopMenus(@Query("shopId") uid: Int): StoreMenuResponse
