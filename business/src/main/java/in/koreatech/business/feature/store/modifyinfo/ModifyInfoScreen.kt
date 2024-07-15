@@ -52,7 +52,6 @@ import `in`.koreatech.koin.domain.util.StoreUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-
 @Composable
 fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
