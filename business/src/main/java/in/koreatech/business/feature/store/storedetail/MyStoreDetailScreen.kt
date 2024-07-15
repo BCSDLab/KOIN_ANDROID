@@ -64,6 +64,7 @@ fun MyStoreDetailScreen(
     navigateToModifyScreen: () -> Unit = {},
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
+
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val listState = rememberLazyListState()
@@ -75,12 +76,16 @@ fun MyStoreDetailScreen(
     ) {
         OwnerStoreAppBar(stringResource(R.string.my_shop))
         MyStoreScrollScreen(
-            state, listState, pagerState, viewModel, onTabSelected = {
+            state = state,
+            listState = listState,
+            pagerState = pagerState,
+            viewModel = viewModel,
+            onTabSelected = {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(it)
                 }
             },
-            viewModel::deleteEventAll
+            onDeleteEvent = viewModel::deleteEventAll,
         )
     }
     viewModel.collectSideEffect {
@@ -134,7 +139,11 @@ fun MyStoreScrollScreen(
         ) to state.storeInfo?.isBankOk
     )
     Box {
-        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
+        CollapsedTopBar(
+            modifier = Modifier.zIndex(2f),
+            isCollapsed = isCollapsedTopBar,
+            viewModel = viewModel,
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -142,7 +151,7 @@ fun MyStoreScrollScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             item {
-                StoreInfoScreen()
+                StoreInfoScreen(viewModel)
             }
             storeDetailInfo(infoDataList)
             item {

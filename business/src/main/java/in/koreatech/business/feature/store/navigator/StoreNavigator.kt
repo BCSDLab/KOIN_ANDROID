@@ -1,5 +1,6 @@
-package `in`.koreatech.business.feature.store.modifyinfo.navigator
+package `in`.koreatech.business.feature.store.navigator
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -9,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoScreen
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.modifyinfo.ModifyOperatingTimeScreen
+import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailScreen
+import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 
 
 @Composable
@@ -17,23 +20,33 @@ fun ModifyInfoNavigator(
 ) {
     val navController = rememberNavController()
     val modifyInfoViewModel = hiltViewModel<ModifyInfoViewModel>()
+    val myStoreInfoViewModel = hiltViewModel<MyStoreDetailViewModel>()
     NavHost(
         navController = navController,
-        startDestination = ModifyInfoRoute.MODIFY_INFO.name,
+        startDestination = StoreRoute.MY_STORE.name,
         modifier = modifier
     ) {
 
         composable(
-            route = ModifyInfoRoute.MODIFY_INFO.name,
+            route = StoreRoute.MY_STORE.name,
         ) {
-            ModifyInfoScreen(
-                viewModel = modifyInfoViewModel,
-                onSettingOperatingClicked = { navController.navigate(ModifyInfoRoute.SETTING_OPERATING_TIME.name) }
+            MyStoreDetailScreen(
+                modifier = Modifier.fillMaxSize(),
+                navigateToModifyScreen = { navController.navigate(StoreRoute.MODIFY_INFO.name) },
             )
         }
 
         composable(
-            route = ModifyInfoRoute.SETTING_OPERATING_TIME.name,
+            route = StoreRoute.MODIFY_INFO.name,
+        ) {
+            ModifyInfoScreen(
+                viewModel = modifyInfoViewModel,
+                onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) }
+            )
+        }
+
+        composable(
+            route = StoreRoute.SETTING_OPERATING_TIME.name,
         ) {
             ModifyOperatingTimeScreen(
                 viewModel = modifyInfoViewModel,
