@@ -1,16 +1,13 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.storedetail
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -23,7 +20,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -39,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -47,6 +42,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.store.OwnerStoreAppBar
+import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
+import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -62,6 +60,8 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun MyStoreDetailScreen(
     modifier: Modifier,
     navigateToLoginScreen: () -> Unit = {},
+    navigateToUploadEventScreen: () -> Unit = {},
+    navigateToModifyScreen: () -> Unit = {},
 ) {
     val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
@@ -73,36 +73,28 @@ fun MyStoreDetailScreen(
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(ColorPrimary),
-        ) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_setting),
-                    contentDescription = stringResource(R.string.back),
-                )
-            }
-            Text(
-                text = stringResource(R.string.my_shop),
-                modifier = Modifier.align(Alignment.Center),
-                style = TextStyle(color = Color.White, fontSize = 18.sp),
-            )
-        }
-        MyStoreScrollScreen(state, listState, pagerState, viewModel, onTabSelected = {
-            coroutineScope.launch {
-                pagerState.animateScrollToPage(it)
-            }
-        })
+        OwnerStoreAppBar(stringResource(R.string.my_shop))
+        MyStoreScrollScreen(
+            state, listState, pagerState, viewModel, onTabSelected = {
+                coroutineScope.launch {
+                    pagerState.animateScrollToPage(it)
+                }
+            },
+            viewModel::deleteEventAll
+        )
     }
     viewModel.collectSideEffect {
         when (it) {
             is MyStoreDetailSideEffect.ShowErrorMessage -> {
                 ToastUtil.getInstance().makeShort(it.errorMessage)
-                navigateToLoginScreen()}
-            MyStoreDetailSideEffect.NavigateToUploadEventScreen -> TODO()
-            MyStoreDetailSideEffect.ShowDialog -> TODO()
+                navigateToLoginScreen()
+            }
+
+            MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
+            MyStoreDetailSideEffect.NavigateToModifyScreen -> navigateToModifyScreen()
+            MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
+                context.getString(R.string.error_modify_event)
+            )
         }
     }
 }
@@ -117,6 +109,7 @@ fun MyStoreScrollScreen(
     pagerState: PagerState = rememberPagerState(0, 0f) { 2 },
     viewModel: MyStoreDetailViewModel,
     onTabSelected: (Int) -> Unit = {},
+    onDeleteEvent: () -> Unit = {},
 ) {
     val toolBarHeight = 145.dp
     val configuration = LocalConfiguration.current
@@ -149,7 +142,7 @@ fun MyStoreScrollScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             item {
-                TopBar()
+                StoreInfoScreen()
             }
             storeDetailInfo(infoDataList)
             item {
@@ -219,7 +212,14 @@ fun MyStoreScrollScreen(
                     ) {
                         when (page) {
                             0 -> MenuScreen(isCollapsed, pagerState.currentPage, state)
-                            1 -> EventScreen(isCollapsed, pagerState.currentPage, viewModel)
+                            1 -> EventScreen(
+                                isCollapsed,
+                                pagerState.currentPage,
+                                viewModel,
+                                state,
+                            ) {
+                                onDeleteEvent()
+                            }
                         }
                     }
                 }
