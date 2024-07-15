@@ -68,7 +68,28 @@ class ModifyInfoViewModel @Inject constructor(
 
     fun onSettingStoreTime(openTime: FullHours, closeTime: FullHours) = intent {
         reduce {
-            state.copy(dialogTimeState = OperatingTime(openTime, closeTime))
+            state.copy(dialogTimeState = OperatingTime(openTime, closeTime),
+                storeInfo = state.storeInfo.copy(
+                    operatingTime = state.storeInfo.operatingTime.mapIndexed { index, operatingTime ->
+                        if (index == state.dayOfWeekIndex) {
+                            operatingTime.copy(
+                                openTime = String.format(
+                                    "%02d:%02d",
+                                    openTime.hours,
+                                    openTime.minutes
+                                ),
+                                closeTime = String.format(
+                                    "%02d:%02d",
+                                    closeTime.hours,
+                                    closeTime.minutes
+                                )
+                            )
+                        } else {
+                            operatingTime
+                        }
+                    }
+                )
+            )
         }
     }
 
