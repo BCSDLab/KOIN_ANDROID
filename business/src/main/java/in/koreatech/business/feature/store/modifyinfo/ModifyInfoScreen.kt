@@ -24,6 +24,8 @@ import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,8 +66,13 @@ fun ModifyInfoScreen(
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
     val context = LocalContext.current
-    LaunchedEffect(storeInfoState.storeInfo) {
-        viewModel.initStoreInfo(storeInfoState.storeInfo ?: return@LaunchedEffect)
+    val isInit = rememberSaveable { mutableStateOf(true) }
+
+    if (isInit.value) {
+        LaunchedEffect(storeInfoState.storeInfo) {
+            viewModel.initStoreInfo(storeInfoState.storeInfo ?: return@LaunchedEffect)
+            isInit.value = false
+        }
     }
 
     Column {
