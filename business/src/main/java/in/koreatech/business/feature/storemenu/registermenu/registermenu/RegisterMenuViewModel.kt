@@ -28,7 +28,8 @@ class RegisterMenuViewModel @Inject constructor(
     private fun getStoreMenuCategory(){
         intent {
             viewModelScope.launch {
-                val menuCategory = getMenuCategoryUseCase(197)
+                val storeId = 197
+                val menuCategory = getMenuCategoryUseCase(storeId)
                 reduce {
                     state.copy(
                         menuCategory = menuCategory

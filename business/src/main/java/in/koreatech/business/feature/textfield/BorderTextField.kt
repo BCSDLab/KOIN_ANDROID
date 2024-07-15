@@ -21,19 +21,13 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 
 @Composable
 fun BorderTextField(
-    height: Dp = 37.dp,
-    width: Dp = 100.dp,
-    paddingValues: PaddingValues = PaddingValues(start = 10.dp),
+    modifier: Modifier = Modifier,
     inputString: String = "",
     onStringChange: (String) -> Unit = {},
 ){
     Box(
-        modifier = Modifier
-            .width(width)
-            .height(height)
-            .padding(paddingValues)
-            .border(width = 1.dp, color = ColorMinor)
-            .height(height),
+        modifier = modifier
+            .border(width = 1.dp, color = ColorMinor),
         contentAlignment = Alignment.CenterStart
     ) {
         BasicTextField(
