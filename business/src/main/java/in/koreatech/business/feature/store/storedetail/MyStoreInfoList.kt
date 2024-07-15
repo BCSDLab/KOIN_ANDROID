@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature.store
+package `in`.koreatech.business.feature.store.storedetail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
