@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
@@ -21,6 +20,12 @@ class ModifyInfoViewModel @Inject constructor(
 ) : ViewModel(),
     ContainerHost<ModifyInfoState, ModifyInfoSideEffect> {
     override val container = container<ModifyInfoState, ModifyInfoSideEffect>(ModifyInfoState()) {}
+
+    fun initStoreInfo(storeInfo: StoreDetailInfo) = intent {
+        reduce {
+            state.copy(storeInfo = storeInfo)
+        }
+    }
 
     fun onBackButtonClicked() = intent {
         postSideEffect(ModifyInfoSideEffect.NavigateToBackScreen)
@@ -47,40 +52,96 @@ class ModifyInfoViewModel @Inject constructor(
         }
     }
 
-    fun dialogTimeSetting() = intent {
+    fun initDialogTimeSetting(openTime: String, closeTime: String) = intent {
         reduce {
-            if(state.dayOfWeekIndex<0) return@reduce state
+            if (state.dayOfWeekIndex < 0) return@reduce state
+            val openTimeParts = openTime.split(":").map { it.toInt() }
+            val closeTimeParts = closeTime.split(":").map { it.toInt() }
             state.copy(
-                dialogTimeState = OperatingTime(state.operatingTimeList[state.dayOfWeekIndex].operatingTime.openTime.let {
-                    FullHours(it.hours, it.minutes)
-                },
-                    state.operatingTimeList[state.dayOfWeekIndex].operatingTime.closeTime.let {
-                        FullHours(it.hours, it.minutes)
-                    })
+                dialogTimeState = OperatingTime(
+                    FullHours(openTimeParts[0], openTimeParts[1]),
+                    FullHours(closeTimeParts[0], closeTimeParts[1])
+                )
             )
         }
     }
 
-    fun onSettingStoreTime(hours: OperatingTime) = intent {
+    fun onSettingStoreTime(openTime: FullHours, closeTime: FullHours) = intent {
         reduce {
-            val newList = state.operatingTimeList.toMutableList()
-            val currentItem = newList[state.dayOfWeekIndex]
-            newList[state.dayOfWeekIndex] = currentItem.copy(
-                operatingTime = hours,
-            )
-            state.copy(operatingTimeList = newList)
+            state.copy(dialogTimeState = OperatingTime(openTime, closeTime))
         }
-        dialogTimeSetting()
+    }
+
+    fun onCardAvailableChanged() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    isCardOk = !(state.storeInfo.isCardOk)
+                )
+            )
+
+        }
+    }
+
+    fun onDeliveryAvailableChanged() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    isDeliveryOk = !(state.storeInfo.isDeliveryOk)
+                )
+            )
+        }
+    }
+
+    fun onTransferAvailableChanged() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    isBankOk = !(state.storeInfo.isBankOk)
+                )
+            )
+        }
+    }
+
+    fun onStoreNameChanged(storeName: String) = intent {
+        reduce {
+            state.copy(storeInfo = state.storeInfo.copy(name = storeName))
+        }
+    }
+
+    fun onPhoneNumberChanged(phone: String) = intent {
+        reduce {
+            state.copy(storeInfo = state.storeInfo.copy(phone = phone))
+        }
+    }
+
+    fun onAddressChanged(address: String) = intent {
+
+        reduce {
+            state.copy(storeInfo = state.storeInfo.copy(address = address))
+        }
+    }
+
+    fun onDeliveryPriceChanged(price: Int) = intent {
+        reduce {
+            state.copy(storeInfo = state.storeInfo.copy(deliveryPrice = price))
+        }
+    }
+
+    fun onDescriptionChanged(description: String) = intent {
+        reduce {
+            state.copy(storeInfo = state.storeInfo.copy(description = description))
+        }
     }
 
     fun isClosedDay(index: Int) {
         intent {
-            if (index >= 0 && index <= state.operatingTimeList.size) {
-                val newList = state.operatingTimeList.toMutableList()
+            if (index >= 0 && index <= state.storeInfo.operatingTime.size) {
+                val newList = state.storeInfo.operatingTime.toMutableList()
                 val currentItem = newList[index]
                 newList[index] = currentItem.copy(closed = !currentItem.closed)
                 reduce {
-                    state.copy(operatingTimeList = newList)
+                    state.copy(storeInfo = state.storeInfo.copy(operatingTime = newList))
                 }
             }
         }

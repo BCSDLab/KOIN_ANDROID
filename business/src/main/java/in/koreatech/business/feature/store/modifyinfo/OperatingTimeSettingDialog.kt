@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
+import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.Blue3
 import `in`.koreatech.business.ui.theme.Gray10
 import `in`.koreatech.koin.core.R
@@ -31,9 +32,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 @Composable
 fun OperatingTimeSettingDialog(
     viewModel: ModifyInfoViewModel = hiltViewModel(),
+    myStoreDetailViewModel: MyStoreDetailViewModel,
 ) {
     val state = viewModel.collectAsState().value
-
+    val myStoreDetailState = myStoreDetailViewModel.collectAsState().value
     if (state.showDialog) {
         AlertDialog(modifier = Modifier
             .fillMaxWidth()
@@ -54,12 +56,10 @@ fun OperatingTimeSettingDialog(
                         ),
                         onValueChange = {
                             viewModel.onSettingStoreTime(
-                                OperatingTime(
-                                    FullHours(it.hours, it.minutes),
-                                    FullHours(
-                                        state.dialogTimeState.closeTime.hours,
-                                        state.dialogTimeState.closeTime.minutes
-                                    )
+                                FullHours(it.hours, it.minutes),
+                                FullHours(
+                                    state.dialogTimeState.closeTime.hours,
+                                    state.dialogTimeState.closeTime.minutes
                                 )
                             )
                         },
@@ -88,13 +88,12 @@ fun OperatingTimeSettingDialog(
                         ),
                         onValueChange = {
                             viewModel.onSettingStoreTime(
-                                OperatingTime(
-                                    FullHours(
-                                        state.dialogTimeState.openTime.hours,
-                                        state.dialogTimeState.openTime.minutes
-                                    ),
-                                    FullHours(it.hours, it.minutes),
-                                )
+                                FullHours(
+                                    state.dialogTimeState.openTime.hours,
+                                    state.dialogTimeState.openTime.minutes
+                                ),
+                                FullHours(it.hours, it.minutes),
+
                             )
                         },
                         minutesRange = (0..59 step 5),

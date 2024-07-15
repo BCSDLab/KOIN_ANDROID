@@ -84,67 +84,6 @@ class MyStoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun onCardAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isCardOk = !(state.storeInfo?.isCardOk ?: false)
-                )
-            )
-
-        }
-    }
-
-    fun onDeliveryAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isDeliveryOk = !(state.storeInfo?.isDeliveryOk ?: false)
-                )
-            )
-        }
-    }
-
-    fun onTransferAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isBankOk = !(state.storeInfo?.isBankOk ?: false)
-                )
-            )
-        }
-    }
-
-    fun onStoreNameChanged(storeName: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(name = storeName))
-        }
-    }
-
-    fun onPhoneNumberChanged(phone: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(phone = phone))
-        }
-    }
-
-    fun onAddressChanged(address: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(address = address))
-        }
-    }
-
-    fun onDeliveryPriceChanged(price: Int) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(deliveryPrice = price))
-        }
-    }
-
-    fun onDescriptionChanged(description: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(description = description))
-        }
-    }
-
 
     fun getOwnerShopInfo(shopId: Int) = intent {
         viewModelScope.launch {
