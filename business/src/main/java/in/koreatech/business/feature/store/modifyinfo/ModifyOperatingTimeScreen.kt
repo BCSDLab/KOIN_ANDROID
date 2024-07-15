@@ -110,16 +110,19 @@ fun ModifyOperatingTimeScreen(
                     .padding(top = 25.dp)
                     .padding(horizontal = 6.dp)
             ) {
-                itemsIndexed(state.operatingTimeList) { index, item ->
-                    OperatingTimeSetting(
-                        operatingTime = item,
-                        onShowOpenTimeDialog = {
-                            viewModel.showAlertDialog(index)
-                            viewModel.dialogTimeSetting()
-                        },
-                        index = index,
-                    ) {
-                        viewModel.isClosedDay(index)
+                state.storeInfo.operatingTime.forEachIndexed { index, item ->
+                    item {
+                        OperatingTimeSetting(
+                            state = state,
+                            onShowOpenTimeDialog = {
+                                viewModel.showAlertDialog(index)
+                                viewModel.initDialogTimeSetting(item.openTime, item.closeTime)
+                            },
+                            operatingTime = item,
+                            index = index,
+                        ) {
+                            viewModel.isClosedDay(index)
+                        }
                     }
                 }
             }
@@ -143,16 +146,16 @@ fun ModifyOperatingTimeScreen(
 
 @Composable
 fun OperatingTimeSetting(
-    operatingTime: StoreOperatingTime = StoreOperatingTime(),
+    state: ModifyInfoState,
+    operatingTime: OperatingTime,
     onShowOpenTimeDialog: (Int) -> Unit = {},
     index: Int = 0,
     onCheckBoxClicked: (Int) -> Unit = {}
 ) {
-    val openTime =  operatingTime.operatingTime.openTime
-    val closeTime = operatingTime.operatingTime.closeTime
-    val formattedOpenTime = String.format("%02d:%02d", openTime.hours, openTime.minutes)
-    val formattedCloseTime = String.format("%02d:%02d", closeTime.hours, closeTime.minutes)
-
+    val context = LocalContext.current
+    val dayOfWeekIndex = DateFormatUtil.dayOfWeekToIndex(operatingTime.dayOfWeek)
+    val dayOfWeekKorean =
+        if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else operatingTime.dayOfWeek
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -160,21 +163,20 @@ fun OperatingTimeSetting(
             .padding(bottom = 18.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = operatingTime.dayOfWeek, fontSize = 15.sp)
-
+        Text(text = dayOfWeekKorean, fontSize = 15.sp)
         Spacer(modifier = Modifier.weight(1f))
-
         Text(
             modifier = Modifier.clickable {
-                if (!operatingTime.closed) onShowOpenTimeDialog(index)
+                if (!state.storeInfo.operatingTime.get(index).closed)
+                    onShowOpenTimeDialog(index)
             },
-            text = "$formattedOpenTime ~ $formattedCloseTime",
-            color = if (operatingTime.closed) ColorMinor else Color.Black,
+            text = "${state.storeInfo.operatingTime[index].openTime} ~ ${
+                state.storeInfo.operatingTime[index].closeTime
+            }",
+            color = if (state.storeInfo.operatingTime[index].closed) ColorMinor else Color.Black,
             fontSize = 15.sp
         )
-
         Spacer(modifier = Modifier.weight(1f))
-
         Image(
             modifier = Modifier.clickable {
                 onCheckBoxClicked(index)

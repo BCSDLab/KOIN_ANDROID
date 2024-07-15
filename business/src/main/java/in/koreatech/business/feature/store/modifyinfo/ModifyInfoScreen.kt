@@ -60,6 +60,11 @@ fun ModifyInfoScreen(
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
+    val context = LocalContext.current
+    LaunchedEffect(storeInfoState.storeInfo) {
+        viewModel.initStoreInfo(storeInfoState.storeInfo ?: return@LaunchedEffect)
+    }
+
     Column {
         Box(
             modifier = Modifier
@@ -157,28 +162,20 @@ fun ModifyInfoScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column {
-                            state.operatingTimeList.forEach { item ->
-                                val openTimeFormatted = String.format(
-                                    "%02d:%02d",
-                                    item.operatingTime.openTime.hours,
-                                    item.operatingTime.openTime.minutes
-                                )
-                                val closeTimeFormatted = String.format(
-                                    "%02d:%02d",
-                                    item.operatingTime.closeTime.hours,
-                                    item.operatingTime.closeTime.minutes
-                                )
+                            state.storeInfo?.operatingTime?.forEach { item ->
+                                val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
+                                val dayOfWeekKorean =
+                                    if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else item.dayOfWeek
                                 Text(
                                     text = if (item.closed) stringResource(
                                         id = R.string.insert_store_closed_day,
-                                        item.dayOfWeek
+                                        dayOfWeekKorean
                                     )
-                                    else stringResource(
-                                        id = R.string.insert_store_operating_time,
-                                        item.dayOfWeek,
-                                        openTimeFormatted,
-                                        closeTimeFormatted,
-                                    ),
+                                    else "$dayOfWeekKorean " +
+                                            StoreUtil.generateOpenCloseTimeString(
+                                                item.openTime,
+                                                item.closeTime
+                                            ),
                                     color = ColorMinor,
                                 )
                             }

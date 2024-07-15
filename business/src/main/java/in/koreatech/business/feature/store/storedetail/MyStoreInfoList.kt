@@ -10,11 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.business.R
+import `in`.koreatech.koin.domain.util.DateFormatUtil.dayOfWeekToIndex
 import `in`.koreatech.koin.domain.util.StoreUtil
 
 
@@ -50,16 +52,28 @@ fun LazyListScope.info(info: String, data: String?) {
 
 @Composable
 fun getInfoDataList(state: MyStoreDetailState): List<Pair<String, String>> {
+    val context = LocalContext.current
+
     return listOf(
         Pair(stringResource(id = R.string.telephone_number), state.storeInfo?.phone ?: ""),
         Pair(
             stringResource(id = R.string.operating_time),
             state.storeInfo?.operatingTime?.joinToString(separator = "\n") {
-                it.dayOfWeek + " " +
-                StoreUtil.generateOpenCloseTimeString(
-                    it.openTime,
-                    it.closeTime
+                val dayOfWeekIndex = dayOfWeekToIndex(it.dayOfWeek)
+                val dayOfWeekKorean =
+                    if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else it.dayOfWeek
+
+                if (it.closed) context.resources.getString(
+                    R.string.insert_store_closed_day,
+                    dayOfWeekKorean,
                 )
+                else {
+                    "$dayOfWeekKorean " +
+                            StoreUtil.generateOpenCloseTimeString(
+                                it.openTime,
+                                it.closeTime
+                            )
+                }
             } ?: ""
         ),
         Pair(stringResource(id = R.string.address), state.storeInfo?.address ?: ""),
