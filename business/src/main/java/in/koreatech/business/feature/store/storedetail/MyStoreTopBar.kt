@@ -40,9 +40,10 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun CollapsedTopBar(
-    modifier: Modifier = Modifier, isCollapsed: Boolean
+    modifier: Modifier = Modifier,
+    isCollapsed: Boolean,
+    viewModel: MyStoreDetailViewModel,
 ) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val color: Color by animateColorAsState(
         if (isCollapsed) Color.White
@@ -68,13 +69,12 @@ fun CollapsedTopBar(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(text = state.storeInfo?.name ?: stringResource(R.string.shop_name))
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = viewModel::navigateToModifyScreen ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_setting),
                             contentDescription = stringResource(R.string.shop_management)
                         )
                     }
-
                 }
                 Divider(
                     color = ColorTextField,
@@ -88,8 +88,9 @@ fun CollapsedTopBar(
 }
 
 @Composable
-fun StoreInfoScreen() {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
+fun StoreInfoScreen(
+    viewModel: MyStoreDetailViewModel,
+) {
     val state = viewModel.collectAsState().value
     Column(modifier = Modifier) {
         Box(
@@ -112,7 +113,7 @@ fun StoreInfoScreen() {
                 .background(Color.White)
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = {},
+            onClick = viewModel::navigateToModifyScreen,
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = Color.White,
                 contentColor = ColorPrimary,
