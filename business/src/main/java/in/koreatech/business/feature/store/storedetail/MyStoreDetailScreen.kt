@@ -41,9 +41,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.OwnerStoreAppBar
+import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
@@ -60,12 +60,12 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun MyStoreDetailScreen(
     modifier: Modifier,
+    viewModel: MyStoreDetailViewModel,
+    modifyInfoViewModel: ModifyInfoViewModel,
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: () -> Unit = {},
 ) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
-
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val listState = rememberLazyListState()
@@ -73,7 +73,8 @@ fun MyStoreDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(state.storeInfo) {
-       viewModel.initOwnerShopList()
+        viewModel.initOwnerShopList()
+        modifyInfoViewModel.initStoreInfo(state.storeInfo ?: return@LaunchedEffect)
     }
 
     Column(
