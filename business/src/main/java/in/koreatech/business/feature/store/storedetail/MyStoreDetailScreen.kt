@@ -147,7 +147,8 @@ fun MyStoreScrollScreen(
         CollapsedTopBar(
             modifier = Modifier.zIndex(2f),
             isCollapsed = isCollapsedTopBar,
-            viewModel = viewModel,
+            onNavigateToModifyScreen = viewModel::navigateToModifyScreen,
+            state = state,
         )
         LazyColumn(
             modifier = Modifier
