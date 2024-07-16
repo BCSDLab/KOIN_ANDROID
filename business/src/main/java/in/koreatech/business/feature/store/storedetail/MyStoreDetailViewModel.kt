@@ -74,7 +74,11 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun onChangeEditMode() = intent {
         reduce {
-            state.copy(isEditMode = !state.isEditMode, isSelectedEvent = mutableListOf(), isAllEventSelected = false)
+            state.copy(
+                isEditMode = !state.isEditMode,
+                isSelectedEvent = mutableListOf(),
+                isAllEventSelected = false
+            )
         }
     }
 
@@ -93,9 +97,10 @@ class MyStoreDetailViewModel @Inject constructor(
                 }
                 getShopEvents()
                 getShopMenus()
-
             }.onFailure {
-                postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
+                reduce {
+                    state.copy(storeInfo = null)
+                }
             }
         }
     }
@@ -110,7 +115,7 @@ class MyStoreDetailViewModel @Inject constructor(
                 }
                 reduce {
                     state.copy(
-                        storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
+                        storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
                 getOwnerShopInfo(state.storeId)
@@ -158,6 +163,7 @@ class MyStoreDetailViewModel @Inject constructor(
             )
         }
     }
+
     fun navigateToModifyScreen() = intent {
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
     }
@@ -166,7 +172,7 @@ class MyStoreDetailViewModel @Inject constructor(
         postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
     }
 
-    fun deleteEventAll() = intent{
+    fun deleteEventAll() = intent {
         state.isSelectedEvent.forEach {
             deleteEventItem(state.storeId, it)
         }
