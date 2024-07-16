@@ -14,8 +14,6 @@ import `in`.koreatech.koin.domain.usecase.presignedurl.UploadPreSignedUrlUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import java.io.InputStream
 import javax.inject.Inject
 
