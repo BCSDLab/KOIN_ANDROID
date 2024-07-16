@@ -33,6 +33,8 @@ fun ModifyInfoNavigator(
             MyStoreDetailScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigateToModifyScreen = { navController.navigate(StoreRoute.MODIFY_INFO.name) },
+                viewModel = myStoreInfoViewModel,
+                modifyInfoViewModel = modifyInfoViewModel
             )
         }
 
@@ -42,7 +44,7 @@ fun ModifyInfoNavigator(
             ModifyInfoScreen(
                 viewModel = modifyInfoViewModel,
                 onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
-                onBackClicked = { navController.popBackStack()  }
+                onBackClicked = { navController.popBackStack() }
             )
         }
 
