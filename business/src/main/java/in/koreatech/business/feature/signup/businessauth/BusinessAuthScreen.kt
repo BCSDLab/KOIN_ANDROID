@@ -79,7 +79,6 @@ fun BusinessAuthScreen(
         onResult = { uriList ->
             var fileName = ""
             var fileSize = 0L
-            businessAuthState.bitmap.clear()
             businessAuthState.fileInfo.clear()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
@@ -110,7 +109,6 @@ fun BusinessAuthScreen(
                         fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
-                        bitmap = decodeStream(inputStream)
                     )
 
                 }

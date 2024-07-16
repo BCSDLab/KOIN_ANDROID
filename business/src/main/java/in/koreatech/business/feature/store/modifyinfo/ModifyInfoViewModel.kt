@@ -1,11 +1,16 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
+import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.business.store.ModifyShopInfoUseCase
+import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -16,6 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModifyInfoViewModel @Inject constructor(
+    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
+    private val uploadFilesUseCase: UploadFileUseCase,
     private val modifyInfoUseCase: ModifyShopInfoUseCase,
 ) : ViewModel(),
     ContainerHost<ModifyInfoState, ModifyInfoSideEffect> {
@@ -174,6 +181,65 @@ class ModifyInfoViewModel @Inject constructor(
                 storeId,
                 storeDetailInfo,
             )
+        }
+    }
+
+    fun getPreSignedUrl(
+        uri: Uri,
+        fileSize: Long,
+        fileType: String,
+        fileName: String,
+    ) {
+        viewModelScope.launch {
+            getPresignedUrlUseCase(
+                fileSize, fileType, fileName
+            ).onSuccess {
+                intent {
+                    reduce {
+                        state.copy(
+                            storeInfo = state.storeInfo.copy(
+
+                            ),
+                            fileInfo = state.fileInfo.toMutableList().apply {
+                                add(
+                                    StoreUrl(
+                                        uri.toString(),
+                                        it.first,
+                                        fileName,
+                                        fileType,
+                                        it.second,
+                                        fileSize
+                                    )
+                                )
+                            },
+
+                        )
+                    }
+                }
+            }.onFailure {
+                intent {
+                  //  reduce { state.copy(error = it) }
+                }
+            }
+        }
+    }
+
+    fun uploadImage(
+        url: String,
+        imageUri: String,
+        mediaType: String,
+        mediaSize: Long
+    ) {
+        viewModelScope.launch{
+            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
+                intent {
+              //      reduce { state.copy(error = null) }
+                }
+            }.onFailure {
+                intent {
+                  //  reduce { state.copy(error = it) }
+                }
+            }
         }
     }
 }
