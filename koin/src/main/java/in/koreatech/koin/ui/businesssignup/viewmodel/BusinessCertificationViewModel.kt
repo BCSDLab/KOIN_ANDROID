@@ -4,7 +4,7 @@ import android.net.Uri
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.store.AttachStore
-import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
+import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusinessCertificationViewModel @Inject constructor(
-    private val attachStoreFileUseCase: AttachStoreFileUseCase,
+    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
     private val uploadPreSignedUrlUseCase: UploadPreSignedUrlUseCase
 ): BaseViewModel() {
     private val _saveImageList = MutableLiveData<List<AttachStore>>(emptyList())
@@ -68,7 +68,7 @@ class BusinessCertificationViewModel @Inject constructor(
         fileName: String
     ) {
         viewModelScope.launch {
-            attachStoreFileUseCase(
+            getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
                 _shopImageUrlAndSize.value = StoreUrl(uri.toString(), it.first, fileName, fileType, it.second, fileSize)

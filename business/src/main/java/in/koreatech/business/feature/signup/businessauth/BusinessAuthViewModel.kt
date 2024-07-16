@@ -9,10 +9,9 @@ import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
+import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -24,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BusinessAuthViewModel @Inject constructor(
-    private val getPresignedUrlUseCase: AttachStoreFileUseCase,
+    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val ownerRegisterUseCase: OwnerRegisterUseCase
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
