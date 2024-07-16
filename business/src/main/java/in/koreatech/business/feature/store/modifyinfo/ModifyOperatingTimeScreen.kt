@@ -130,8 +130,10 @@ fun ModifyOperatingTimeScreen(
                 }
             }
             OperatingTimeSettingDialog(
-                viewModel = viewModel,
-                myStoreDetailViewModel = myStoreDetailViewModel,
+                onDismiss = viewModel::hideAlertDialog,
+                onSettingStoreTime = viewModel::onSettingStoreTime,
+                visibility = state.showDialog,
+                operatingTime = state.dialogTimeState
             )
         }
 
