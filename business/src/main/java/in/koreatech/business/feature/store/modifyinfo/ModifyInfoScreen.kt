@@ -259,6 +259,7 @@ fun ModifyInfoScreen(
                                 storeInfoState.storeId,
                                 state.storeInfo ?: return@Button
                             )
+                            viewModel.onBackButtonClicked()
                         },
                         modifier = Modifier
                             .width(130.dp)

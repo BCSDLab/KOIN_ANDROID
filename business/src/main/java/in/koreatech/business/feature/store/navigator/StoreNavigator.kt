@@ -41,7 +41,8 @@ fun ModifyInfoNavigator(
         ) {
             ModifyInfoScreen(
                 viewModel = modifyInfoViewModel,
-                onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) }
+                onSettingOperatingClicked = { navController.navigate(StoreRoute.SETTING_OPERATING_TIME.name) },
+                onBackClicked = { navController.popBackStack()  }
             )
         }
 
