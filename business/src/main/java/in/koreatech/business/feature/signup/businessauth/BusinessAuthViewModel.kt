@@ -18,7 +18,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -89,7 +88,6 @@ class BusinessAuthViewModel @Inject constructor(
         fileSize: Long,
         fileType: String,
         fileName: String,
-        bitmap: Bitmap
     ) {
         viewModelScope.launch {
             getPresignedUrlUseCase(
@@ -102,16 +100,13 @@ class BusinessAuthViewModel @Inject constructor(
                                 add(
                                     StoreUrl(
                                         uri.toString(),
-                                        it.first,
+                                        it.first,//result url
                                         fileName,
                                         fileType,
                                         it.second,
                                         fileSize
                                     )
                                 )
-                            },
-                            bitmap = state.bitmap.toMutableList().apply {
-                                add(bitmap)
                             },
                             error = null
                         )
