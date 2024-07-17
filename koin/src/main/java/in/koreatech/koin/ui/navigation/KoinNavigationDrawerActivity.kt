@@ -197,7 +197,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
                                         getString(R.string.navigation_drawer_right_myinfo)
                                     )
-                                    goToUserInfoActivity()
                                 }
                             }
 

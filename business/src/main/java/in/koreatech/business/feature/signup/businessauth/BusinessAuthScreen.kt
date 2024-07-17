@@ -72,7 +72,6 @@ fun BusinessAuthScreen(
     onNextClicked: () -> Unit = {},
 ) {
     val context = LocalContext.current
-    val scrollState = rememberScrollState()
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
 
@@ -362,7 +361,7 @@ fun BusinessAuthScreen(
                         businessAuthState.fileInfo.forEach {
                             businessAuthViewModel.uploadImage(
                                 it.preSignedUrl,
-                                businessAuthState.bitmap[businessAuthState.fileInfo.indexOf(it)].toString(),
+                                it.uri,
                                 it.mediaType,
                                 it.fileSize,
                             )

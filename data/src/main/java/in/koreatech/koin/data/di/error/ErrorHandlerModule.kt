@@ -14,6 +14,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.error.OwnerErrorHandlerImpl
+import `in`.koreatech.koin.domain.error.owner.OwnerErrorHandler
 import javax.inject.Singleton
 
 @Module
@@ -43,4 +45,10 @@ object ErrorHandlerModule {
     fun provideBusErrorHandler(
         @ApplicationContext applicationContext: Context
     ): BusErrorHandler = BusErrorHandlerImpl(applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideOwnerErrorHandler(
+        @ApplicationContext applicationContext: Context
+    ): OwnerErrorHandler = OwnerErrorHandlerImpl(applicationContext)
 }
