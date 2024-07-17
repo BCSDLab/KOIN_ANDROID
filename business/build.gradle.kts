@@ -30,6 +30,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.guava)
+    implementation(libs.kotlinxCollectionsImmutable)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

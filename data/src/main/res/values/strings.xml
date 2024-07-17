@@ -78,4 +78,6 @@
     <string name="dining_dinner">저녁</string>
     <string name="dining_today">오늘</string>
     <string name="dining_tomorrow">내일</string>
+    <string name="error_owner_info">내 상점 정보를 불러오지 못했습니다.</string>
+    <string name="error_empty_owner_info">상점이 존재하지 않습니다.</string>
 </resources>

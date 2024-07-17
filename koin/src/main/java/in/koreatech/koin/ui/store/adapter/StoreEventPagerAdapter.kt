@@ -53,7 +53,7 @@ class StoreEventPagerAdapter(): ListAdapter<StoreEvent,StoreEventPagerAdapter.St
             }
             else{
                 Glide.with(eventStoreImage)
-                    .load(event.thumbnailImages?.get(0))
+                    .load(event.thumbnailImages?.getOrNull(0))
                     .override(100, 100)
                     .apply(RequestOptions.bitmapTransform(RoundedCorners(20)))
                     .into(eventStoreImage)

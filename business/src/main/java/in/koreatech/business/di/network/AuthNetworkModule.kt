@@ -1,7 +1,6 @@
 package `in`.koreatech.business.di.network
 
 import android.content.Context
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -176,12 +175,10 @@ object BusinessAuthNetworkModule {
     @Singleton
     fun provideOwnerAuthApi(
         @OwnerAuth retrofit: Retrofit
-    ):OwnerAuthApi {
+    ): OwnerAuthApi {
         return retrofit.create(OwnerAuthApi::class.java)
     }
 }
-
-
 
 
 @Module

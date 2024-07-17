@@ -318,6 +318,7 @@ private fun HandleSideEffects(viewModel: InsertDetailInfoScreenViewModel, naviga
                 }
                 ToastUtil.getInstance().makeShort(message)
             }
+            else -> {}
         }
     }
 }
