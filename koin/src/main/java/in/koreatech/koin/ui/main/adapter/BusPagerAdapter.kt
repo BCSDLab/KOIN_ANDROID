@@ -38,28 +38,28 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
                 textViewRemainingTime.text =
                     busArrivalInfo.nowBusRemainTime.toBusRemainTimeFormatted(root.context)
 
-                when (busArrivalInfo) {
-                    is BusArrivalInfo.CityBusArrivalInfo -> {
-                        val info = busArrivalInfo.busNumber?.busNumberFormatted(
-                            root.context
-                        )
-                        if(info == null) {
-                            textViewBusInfo.isVisible = false
-                        } else {
-                            textViewBusInfo.isVisible = true
-                            textViewBusInfo.text = info
-                        }
-                    }
-                    else -> {
-                        val info = busArrivalInfo.nowBusArrivalTime?.toBusArrivalTimeFormatted(root.context)
-                        if(info == null) {
-                            textViewBusInfo.isVisible = false
-                        } else {
-                            textViewBusInfo.isVisible = true
-                            textViewBusInfo.text = info
-                        }
-                    }
-                }
+//                when (busArrivalInfo) {
+//                    is BusArrivalInfo.CityBusArrivalInfo -> {
+//                        val info = busArrivalInfo.busNumber?.busNumberFormatted(
+//                            root.context
+//                        )
+//                        if(info == null) {
+//                            textViewBusInfo.isVisible = false
+//                        } else {
+//                            textViewBusInfo.isVisible = true
+//                            textViewBusInfo.text = info
+//                        }
+//                    }
+//                    else -> {
+//                        val info = busArrivalInfo.nowBusArrivalTime?.toBusArrivalTimeFormatted(root.context)
+//                        if(info == null) {
+//                            textViewBusInfo.isVisible = false
+//                        } else {
+//                            textViewBusInfo.isVisible = true
+//                            textViewBusInfo.text = info
+//                        }
+//                    }
+//                }
 
                 busTypeLayout.setBackgroundColor(
                     when (busArrivalInfo) {
