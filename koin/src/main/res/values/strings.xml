@@ -456,4 +456,5 @@
     <string name="kakao_scheme">kakao056b03b730cafd51c05d7564f884b330</string>
     <string name="kakaolink_host">kakaolink</string>
     <string name="action_share">공유하기</string>
+    <string name="action_like">좋아요</string>
 </resources>
