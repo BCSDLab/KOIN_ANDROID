@@ -97,7 +97,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         }
 
         private fun initSharing(context: Context, dining: Dining) {
-            binding.buttonShare.setOnClickListener {
+            binding.linearLayoutShare.setOnClickListener {
                 onShare(context, dining)
             }
         }
