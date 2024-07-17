@@ -2,8 +2,12 @@ package `in`.koreatech.business.feature.insertstore.insertmaininfo
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -47,9 +51,11 @@ import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.upload.toResizeBitmap
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import java.io.InputStream
 
 
 @Composable
@@ -72,6 +78,10 @@ fun InsertBasicInfoScreen(
         onStoreNameChange = {
             viewModel.insertStoreName(it)
         },
+        onUploadImage = {
+            viewModel.getPreSignedUrl(it.first.first, it.first.second, it.second.first, it.second.second)
+        },
+
         onStoreAddressChange = {
             viewModel.insertStoreAddress(it)
         },
@@ -93,18 +103,49 @@ fun InsertBasicInfoScreenImpl(
     storeAddress: String = "",
     isBasicInfoValid: Boolean = false,
     onStoreImageChange: (Uri) -> Unit = {},
+    onUploadImage:(Pair<Pair<Long, String>, Pair<String, String>>) -> Unit = {},
     onStoreNameChange: (String) -> Unit = {},
     onStoreAddressChange: (String) -> Unit = {},
     onNextButtonClicked: () -> Unit = {},
     onBackPressed: () -> Unit = {}
 ) {
 
+    val context = LocalContext.current
+
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
-                onStoreImageChange(it)
+            result.data?.data?.let { uri ->
+
+                val inputStream = context.contentResolver.openInputStream(uri)
+
+                if (uri.scheme.equals("content")) {
+                    val cursor = context.contentResolver.query(uri, null, null, null, null)
+                    cursor.use {
+                        if (cursor != null && cursor.moveToFirst()) {
+                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+
+                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                val fileName = cursor.getString(fileNameIndex)
+                                val fileSize = cursor.getLong(fileSizeIndex)
+
+                                if (inputStream != null) {
+                                    onUploadImage(
+                                        Pair(
+                                            Pair(fileSize, "image/" + fileName.split(".")[1]),
+                                            Pair(fileName, uri.toString())
+                                        )
+                                    )
+                                }
+                                inputStream?.close()
+                            }
+                        }
+                    }
+                }
+
+                onStoreImageChange(uri)
             }
         }
     }
@@ -131,13 +172,15 @@ fun InsertBasicInfoScreenImpl(
         Text(
             modifier = modifier.padding(top = 35.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store),
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
         )
 
         Text(
-            modifier = modifier.padding(top = 34.dp, start = 32.dp),
+            modifier = modifier.padding(top = 34.dp, start = 40.dp),
             text = stringResource(id = R.string.insert_store_main_info),
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
         )
 
         InsertStoreProgressBar(modifier, 0.50f, R.string.insert_store_basic_info, R.string.page_two)
@@ -161,7 +204,7 @@ fun InsertBasicInfoScreenImpl(
                     modifier = Modifier
                         .padding(horizontal = 71.dp, vertical = 53.dp),
                     painter = painterResource(R.drawable.ic_no_store_image),
-                    contentDescription = "enptyStoreImage"
+                    contentDescription = "emptyStoreImage"
                 )
             }
             else{
@@ -224,6 +267,7 @@ private fun HandleSideEffects(viewModel: InsertBasicInfoScreenViewModel, navigat
                     BasicInfoErrorType.NullStoreName -> context.getString(R.string.insert_store_null_store_name)
                     BasicInfoErrorType.NullStoreAddress -> context.getString(R.string.insert_store_null_store_address)
                     BasicInfoErrorType.NullStoreImage -> context.getString(R.string.insert_store_null_store_image)
+                    BasicInfoErrorType.FailUploadImage -> context.getString(R.string.insert_store_fail_upload_store_image)
                 }
                 ToastUtil.getInstance().makeShort(message)
             }

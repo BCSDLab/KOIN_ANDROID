@@ -4,5 +4,8 @@ enum class InsertStoreRoute(){
     START,
     SELECT_CATEGORY,
     BASIC_INFO,
-    DETAIL_INFO
+    DETAIL_INFO,
+    OPERATING_TIME,
+    CHECK_SCREEN,
+    FINISH_SCREEN
 }

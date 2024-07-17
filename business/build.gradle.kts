@@ -30,6 +30,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.guava)
+    implementation(libs.kotlinxCollectionsImmutable)
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -39,7 +41,9 @@ dependencies {
     implementation(libs.androidx.security.crypto)
     implementation(libs.coil)
     implementation(libs.coil.compose)
+    implementation(libs.compose.numberPicker)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.compose.numberPicker)
     implementation(project(mapOf("path" to ":domain")))
     implementation(project(mapOf("path" to ":data")))
     implementation(project(mapOf("path" to ":core")))

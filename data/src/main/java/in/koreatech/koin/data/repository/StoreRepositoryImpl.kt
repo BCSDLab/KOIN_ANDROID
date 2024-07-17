@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreEvent
@@ -52,6 +51,8 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
     }
 
+
+
     override suspend fun getShopMenus(storeId: Int): StoreMenu {
         return storeRemoteDataSource.getShopMenus(storeId).toStoreMenu()
     }
@@ -59,6 +60,7 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun getShopEvents(storeId: Int): ShopEvents {
         return storeRemoteDataSource.getShopEvents(storeId).toStoreDetailEvents()
     }
+
     override suspend fun invalidateStores() {
         stores = null
     }
