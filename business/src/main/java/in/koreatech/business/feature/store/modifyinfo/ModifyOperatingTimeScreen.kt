@@ -113,19 +113,17 @@ fun ModifyOperatingTimeScreen(
                     .padding(top = 25.dp)
                     .padding(horizontal = 6.dp)
             ) {
-                state.storeInfo.operatingTime.forEachIndexed { index, item ->
-                    item {
-                        OperatingTimeSetting(
-                            state = state,
-                            onShowOpenTimeDialog = {
-                                viewModel.showAlertDialog(index)
-                                viewModel.initDialogTimeSetting(item.openTime, item.closeTime)
-                            },
-                            operatingTime = item,
-                            index = index,
-                        ) {
-                            viewModel.isClosedDay(index)
-                        }
+                itemsIndexed(state.storeInfo.operatingTime) { index, item ->
+                    OperatingTimeSetting(
+                        state = state,
+                        onShowOpenTimeDialog = {
+                            viewModel.showAlertDialog(index)
+                            viewModel.initDialogTimeSetting(item.openTime, item.closeTime)
+                        },
+                        operatingTime = item,
+                        index = index,
+                    ) {
+                        viewModel.isClosedDay(index)
                     }
                 }
             }
