@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.*
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
+import `in`.koreatech.koin.data.api.auth.StoreAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.*
 import javax.inject.Singleton
@@ -83,8 +84,9 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideStoreRemoteDataSource(
         storeApi: StoreApi,
+        storeAuthApi: StoreAuthApi,
     ): StoreRemoteDataSource {
-        return StoreRemoteDataSource(storeApi)
+        return StoreRemoteDataSource(storeApi, storeAuthApi)
     }
 
     @Provides

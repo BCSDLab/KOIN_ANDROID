@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.response.store.StoreCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreEventResponse
@@ -9,7 +10,10 @@ import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
 import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface StoreApi {

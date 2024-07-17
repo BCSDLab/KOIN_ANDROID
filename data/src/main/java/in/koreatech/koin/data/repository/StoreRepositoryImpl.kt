@@ -3,12 +3,14 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreCategories
-import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
+import `in`.koreatech.koin.data.mapper.toStoreEvent
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
+import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -35,7 +37,7 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getStoreEvents(): List<StoreEvent> {
         if (storeEvents == null) {
-            storeEvents = storeRemoteDataSource.getStoreEvents().map{it.toStoreEvent()}
+            storeEvents = storeRemoteDataSource.getStoreEvents().map { it.toStoreEvent() }
         }
 
         return storeEvents!!
@@ -43,7 +45,8 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun getStoreCategories(): List<StoreCategories> {
         if (storeCategories == null) {
-            storeCategories = storeRemoteDataSource.getStoreCategories().map{it.toStoreCategories()}
+            storeCategories =
+                storeRemoteDataSource.getStoreCategories().map { it.toStoreCategories() }
         }
 
         return storeCategories!!
@@ -53,7 +56,7 @@ class StoreRepositoryImpl @Inject constructor(
         return storeRemoteDataSource.getStoreMenu(storeId).toStoreWithMenu()
     }
 
-    override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory>{
+    override suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory> {
         return storeRemoteDataSource.getStoreMenuCategory(storeId).toCategory()
     }
 
@@ -67,5 +70,16 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun invalidateStores() {
         stores = null
+    }
+
+    override suspend fun writeReview(shopId: Int, content: Review) {
+        storeRemoteDataSource.writeReview(
+            shopId, ReviewRequest(
+                content = content.content,
+                rating = content.rating,
+                imageUrls = content.imageUrls,
+                menuNames = content.menuNames,
+            )
+        )
     }
 }
