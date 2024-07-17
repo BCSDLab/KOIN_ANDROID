@@ -100,7 +100,7 @@ class BusinessAuthViewModel @Inject constructor(
                                 add(
                                     StoreUrl(
                                         uri.toString(),
-                                        it.first,//result url
+                                        it.first,
                                         fileName,
                                         fileType,
                                         it.second,

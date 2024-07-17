@@ -218,7 +218,6 @@ class ModifyInfoViewModel @Inject constructor(
                 }
             }.onFailure {
                 intent {
-                  //  reduce { state.copy(error = it) }
                 }
             }
         }
@@ -233,11 +232,9 @@ class ModifyInfoViewModel @Inject constructor(
         viewModelScope.launch{
             uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
                 intent {
-              //      reduce { state.copy(error = null) }
                 }
             }.onFailure {
                 intent {
-                  //  reduce { state.copy(error = it) }
                 }
             }
         }
