@@ -9,7 +9,9 @@ import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
@@ -89,6 +91,13 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     accountNumber = accountNumber ?: null
 )
 
+fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory>{
+    val responseList = ArrayList<StoreMenuCategory>()
+    for (category in this){
+        responseList.add(StoreMenuCategory(category.id, category.name))
+    }
+    return responseList
+}
 fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() = StoreWithMenu.Category(
     id = id,
     name = name

@@ -328,7 +328,7 @@ fun ShowOpenTimeDialog(
                     onClick = {
                         operatingTimeDialog.closeDialog()
                     }) {
-                    Text(stringResource(id = R.string.neutral))
+                    Text(stringResource(id = R.string.cancel))
                 }
             }
         )
@@ -387,7 +387,7 @@ fun ShowCloseTimeDialog(
                     onClick = {
                         operatingTimeDialog.closeDialog()
                     }) {
-                    Text(stringResource(id = R.string.neutral))
+                    Text(stringResource(id = R.string.cancel))
                 }
             }
         )
