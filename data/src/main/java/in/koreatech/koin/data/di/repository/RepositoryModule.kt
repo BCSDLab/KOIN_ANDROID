@@ -155,4 +155,12 @@ object RepositoryModule {
     ): OwnerChangePasswordRepository {
         return OwnerChangePasswordRepositoryImpl(ownerRemoteDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideOwnerShopRepository(
+        ownerRemoteDataSource: OwnerRemoteDataSource
+    ): OwnerShopRepository {
+        return OwnerShopRepositoryImpl(ownerRemoteDataSource)
+    }
 }

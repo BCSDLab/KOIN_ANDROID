@@ -54,6 +54,7 @@ napier = "2.6.1"
 composeNumberPickerVersion = "1.0.3"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
+guavaVersion = "33.0.0-android"
 kakaoShare = "2.11.2"
 
 [libraries]
@@ -114,6 +115,7 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
+kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.3.6" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
@@ -148,6 +150,7 @@ coil-svg = {module = "io.coil-kt:coil-svg", version.ref ="coilVersion"}
 compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.ref = "composeNumberPickerVersion"}
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
 
+guava = {module = "com.google.guava:guava", version.ref="guavaVersion"}
 kakao-share = {module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare"}
 
 [plugins]
@@ -162,9 +165,13 @@ koin-application = { id = "in.koreatech.plugin.application", version = "unspecif
 koin-compose = { id = "in.koreatech.plugin.compose", version = "unspecified" }
 koin-orbit = { id = "in.koreatech.plugin.orbit", version = "unspecified" }
 koin-hilt = { id = "in.koreatech.plugin.hilt", version = "unspecified" }
+koin-library = { id = "in.koreatech.plugin.library", version = "unspecified" }
+koin-firebase = {id = "in.koreatech.plugin.firebase", version="unspecified"}
+koin-java = { id = "in.koreatech.plugin.java", version="unspecified" }
 
 [bundles]
 compose = ["compose-ui", "compose-graphics", "compose-graphics", "compose-preview", "compose-material2", "activity-compose", "compose-ui-tooling"]
 compose_debug_test = ["compose-ui-tooling", "compose-ui-test-manifest"]
 hilt = ["hilt-compose", "hilt-android"]
 orbit = ["orbit-core", "orbit-viewmodel", "orbit-compose"]
+firebase = ["firebase-crashlytics", "firebase-analytics", "firebase-analytics-ktx", "firebase-database", "firebase-perf", "firebase-messsaing"]

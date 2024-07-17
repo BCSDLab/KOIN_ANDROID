@@ -4,12 +4,13 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chargemap.compose.numberpicker.Hours
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenState
 import `in`.koreatech.business.feature.insertstore.insertdetailinfo.operatingTime.OperatingTimeState
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.usecase.business.store.RegisterStoreUseCase
+import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FinalCheckStoreScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val registerStoreUseCase : RegisterStoreUseCase
+    private val registerStoreUseCase : RegisterStoreUseCase,
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
 ): ViewModel(), ContainerHost<FinalCheckStoreScreenState, FinalCheckStoreScreenSideEffect> {
     override val container: Container<FinalCheckStoreScreenState, FinalCheckStoreScreenSideEffect> =
         container(FinalCheckStoreScreenState(), savedStateHandle = savedStateHandle) {
@@ -63,6 +65,7 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
                     operatingTimeList = storeInfo.operatingTimeList
                 )
             }
+            getCategory()
         }
     }
 
@@ -87,6 +90,19 @@ class FinalCheckStoreScreenViewModel @Inject constructor(
             }.onFailure {
                 intent{
                     postSideEffect(FinalCheckStoreScreenSideEffect.FailRegisterStore)
+                }
+            }
+        }
+    }
+
+    private fun getCategory() {
+        intent {
+            viewModelScope.launch {
+                val categories = getStoreCategoriesUseCase()
+                reduce {
+                    state.copy(
+                        storeCategoryString = categories[state.storeCategory - 1].name
+                    )
                 }
             }
         }

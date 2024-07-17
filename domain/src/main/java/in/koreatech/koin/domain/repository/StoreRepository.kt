@@ -12,7 +12,10 @@ interface StoreRepository {
     suspend fun getStoreEvents(): List<StoreEvent>
     suspend fun getStoreCategories(): List<StoreCategories>
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
+
     suspend fun getShopMenus(storeId: Int): StoreMenu
+
     suspend fun getShopEvents(storeId: Int): ShopEvents
+
     suspend fun invalidateStores()
 }

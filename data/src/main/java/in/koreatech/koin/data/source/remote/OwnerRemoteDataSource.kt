@@ -10,12 +10,16 @@ import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
 import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
+import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
+import `in`.koreatech.koin.data.response.store.StoreItemResponse
+import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
 class OwnerRemoteDataSource(
     private val ownerApi: OwnerApi,
     private val ownerAuthApi: OwnerAuthApi
-    ) {
+) {
     suspend fun postVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest): OwnerVerificationCodeResponse {
         return ownerApi.postVerificationCode(ownerVerificationCode)
     }
@@ -48,7 +52,26 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationCodeSms(ownerVerificationCode)
     }
 
+    suspend fun getMyShopList(): List<StoreItemResponse> {
+        return ownerAuthApi.getMyShopList().shops
+    }
+
+    suspend fun getOwnerShopInfo(storeUid: Int): StoreItemWithMenusResponse {
+        return ownerAuthApi.getOwnerShopInfo(storeUid)
+    }
+
+    suspend fun getOwnerShopMenus(storeUid: Int): StoreMenuResponse {
+        return ownerAuthApi.getOwnerShopMenus(storeUid)
+    }
+
+    suspend fun getOwnerShopEvents(storeUid: Int): StoreDetailEventResponse {
+        return ownerAuthApi.getOwnerShopEvents(storeUid)
+    }
+
     suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
         return ownerAuthApi.postMyStore(storeRegisterResponse)
+    }
+    suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
+        ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
     }
 }
