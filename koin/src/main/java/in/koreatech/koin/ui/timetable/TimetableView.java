@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import in.koreatech.koin.R;
+import in.koreatech.koin.core.util.FontManager;
 import in.koreatech.koin.data.network.entity.Lecture;
 import in.koreatech.koin.data.network.entity.TimeTable;
 import in.koreatech.koin.data.network.entity.TimeTable.TimeTableItem;
@@ -445,7 +446,7 @@ public class TimetableView extends LinearLayout {
             tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, DEFAULT_HEADER_FONT_SIZE_DP);
             tv.setText(headerTitle[i]);
             tv.setIncludeFontPadding(false);
-            tv.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/notosans_regular.ttf"));
+            tv.setTypeface(FontManager.INSTANCE.getTypeface(context, FontManager.KoinFontType.PRETENDARD_REGULAR));
             tv.setGravity(Gravity.CENTER);
 
             tableRow.addView(tv);
@@ -528,7 +529,8 @@ public class TimetableView extends LinearLayout {
 
     private void setBlockLinearLayoutTextView(TextView textView, String text, int textColorId, int textSize, int color) {
         textView.setText(text);
-        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/notosans_regular.ttf"));
+//        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/notosans_regular.ttf"));
+        textView.setTypeface(FontManager.INSTANCE.getTypeface(context, FontManager.KoinFontType.PRETENDARD_REGULAR));
         textView.setTextColor(getResources().getColor(textColorId));
         textView.setIncludeFontPadding(false);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
