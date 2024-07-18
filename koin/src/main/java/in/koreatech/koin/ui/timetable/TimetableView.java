@@ -529,7 +529,6 @@ public class TimetableView extends LinearLayout {
 
     private void setBlockLinearLayoutTextView(TextView textView, String text, int textColorId, int textSize, int color) {
         textView.setText(text);
-//        textView.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/notosans_regular.ttf"));
         textView.setTypeface(FontManager.INSTANCE.getTypeface(context, FontManager.KoinFontType.PRETENDARD_REGULAR));
         textView.setTextColor(getResources().getColor(textColorId));
         textView.setIncludeFontPadding(false);
