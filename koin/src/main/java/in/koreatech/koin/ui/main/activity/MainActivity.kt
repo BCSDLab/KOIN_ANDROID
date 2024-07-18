@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,15 +10,19 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
 import `in`.koreatech.koin.databinding.ActivityMainBinding
+import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
@@ -50,6 +55,29 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
                 it.localized(this@MainActivity)
             )
+        }
+        setOnGotoClickListener { type ->
+            when (type) {
+                BusType.Shuttle -> {
+                    Intent(this@MainActivity, WebViewActivity::class.java).apply {
+                        putExtra("url", URLConstant.UNIBUS)
+                    }.run(::startActivity)
+                }
+
+                BusType.Express -> {
+                    Intent(this@MainActivity, BusActivity::class.java).apply {
+                        putExtra("tab", 2)
+                    }.run(::startActivity)
+                }
+
+                BusType.City -> {
+                    Intent(this@MainActivity, BusActivity::class.java).apply {
+                        putExtra("tab", 2)
+                    }.run(::startActivity)
+                }
+
+                else -> {}
+            }
         }
     }
     private lateinit var busViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
@@ -95,9 +123,9 @@ class MainActivity : KoinNavigationDrawerActivity() {
             offscreenPageLimit = 3
             currentItem = Int.MAX_VALUE / 2
 
-            // val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
-            // val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
-            // setPageTransformer(ScaledViewPager2Transformation(currentItemMarginPx, nextItemPx))
+            val nextItemPx = resources.getDimension(R.dimen.view_pager_next_item_visible_dp)
+            val currentItemMarginPx = resources.getDimension(R.dimen.view_pager_item_margin)
+
             addItemDecoration(
                 HorizontalMarginItemDecoration(
                     this@MainActivity,
