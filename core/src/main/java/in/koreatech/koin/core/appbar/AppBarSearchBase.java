@@ -19,6 +19,7 @@ import androidx.annotation.AttrRes;
 import com.google.android.material.appbar.AppBarLayout;
 
 import in.koreatech.koin.core.R;
+import in.koreatech.koin.core.util.FontManager;
 
 public class AppBarSearchBase extends AppBarLayout {
     public AppBarLayout background;
@@ -29,7 +30,7 @@ public class AppBarSearchBase extends AppBarLayout {
     private SearchTextChange searchTextChange;
     private SearchEditorAction searchEditorAction;
 
-    final Typeface textFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/notosans_medium.ttf");
+    final Typeface textFont = FontManager.INSTANCE.getTypeface(getContext(), FontManager.KoinFontType.PRETENDARD_MEDIUM);
     public OnClickListener onClickListener;
 
 

@@ -104,7 +104,7 @@ public class Typekit {
     }
 
     public static Typeface createFromAsset(Context context, String path){
+        // TODO::클래스 제거 예정
         return Typeface.createFromAsset(context.getAssets(), path);
     }
-
 }
