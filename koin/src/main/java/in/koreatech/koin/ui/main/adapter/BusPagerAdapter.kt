@@ -23,6 +23,7 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
 
     var onSwitchClickListener: OnSwitchClickListener? = null
     var onCardClickListener: OnCardClickListener? = null
+    var onGotoClickListener: OnGotoClickListener? = null
 
     inner class MainCardBusViewHolder(
         val binding: MainCardBusBinding
@@ -31,6 +32,7 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
             with(binding) {
                 root.setOnClickListener { onCardClickListener?.onCardClick(busArrivalInfo.busType) }
                 imageButtonSwitch.setOnClickListener { onSwitchClickListener?.onSwitchClick(busArrivalInfo) }
+                busGotoLayout.setOnClickListener { onGotoClickListener?.onGotoClick(busArrivalInfo.busType) }
 
                 textViewDepartures.text = busArrivalInfo.departure.localized(root.context)
                 textViewArrival.text = busArrivalInfo.arrival.localized(root.context)
@@ -38,8 +40,15 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
                 textViewRemainingTime.text =
                     busArrivalInfo.nowBusRemainTime.toBusRemainTimeFormatted(root.context)
 
-//                when (busArrivalInfo) {
-//                    is BusArrivalInfo.CityBusArrivalInfo -> {
+                when (busArrivalInfo) {
+                    is BusArrivalInfo.ShuttleBusArrivalInfo -> {
+                        textViewBusGoto.setText(R.string.bus_goto_unibus)
+                    }
+                    is BusArrivalInfo.ExpressBusArrivalInfo -> {
+                        textViewBusGoto.setText(R.string.bus_goto_timetable)
+                    }
+                    is BusArrivalInfo.CityBusArrivalInfo -> {
+                        textViewBusGoto.setText(R.string.bus_goto_timetable)
 //                        val info = busArrivalInfo.busNumber?.busNumberFormatted(
 //                            root.context
 //                        )
@@ -49,8 +58,9 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
 //                            textViewBusInfo.isVisible = true
 //                            textViewBusInfo.text = info
 //                        }
-//                    }
-//                    else -> {
+                    }
+                    else -> {
+                        textViewBusGoto.setText(R.string.bus_goto_timetable)
 //                        val info = busArrivalInfo.nowBusArrivalTime?.toBusArrivalTimeFormatted(root.context)
 //                        if(info == null) {
 //                            textViewBusInfo.isVisible = false
@@ -58,8 +68,8 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
 //                            textViewBusInfo.isVisible = true
 //                            textViewBusInfo.text = info
 //                        }
-//                    }
-//                }
+                    }
+                }
 
                 busTypeLayout.setBackgroundColor(
                     when (busArrivalInfo) {
@@ -110,11 +120,23 @@ class BusPagerAdapter : RecyclerView.Adapter<BusPagerAdapter.MainCardBusViewHold
         }
     }
 
+    inline fun setOnGotoClickListener(crossinline onGotoClick: (BusType) -> Unit) {
+        onGotoClickListener = object : OnGotoClickListener {
+            override fun onGotoClick(busType: BusType) {
+                onGotoClick(busType)
+            }
+        }
+    }
+
     interface OnSwitchClickListener {
         fun onSwitchClick(busArrivalInfo: BusArrivalInfo)
     }
 
     interface OnCardClickListener {
         fun onCardClick(busType: BusType)
+    }
+
+    interface OnGotoClickListener {
+        fun onGotoClick(busType: BusType)
     }
 }

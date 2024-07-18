@@ -1,5 +1,13 @@
 package `in`.koreatech.koin.ui.bus
 
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
@@ -38,6 +46,8 @@ class BusActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initView() = with(binding) {
+        val tabStartPosition = intent.getIntExtra("tab", 0)
+
         koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> callDrawerItem(R.id.navi_item_home)
@@ -56,12 +66,17 @@ class BusActivity : KoinNavigationDrawerActivity() {
                 else -> throw IllegalArgumentException("Position must be lower than ${busMainViewPager2Adapter.itemCount}")
             }
         }.attach()
+        if (tabStartPosition != 0) {
+            busMainTabs.getTabAt(tabStartPosition)?.select()
+            busMainViewpager.currentItem = tabStartPosition
+        }
         changeFont(busMainTabs.getChildAt(0))
     }
 
     override fun onStart() {
         super.onStart()
-        binding.busMainViewpager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        binding.busMainViewpager.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 hideSoftKeyboard()

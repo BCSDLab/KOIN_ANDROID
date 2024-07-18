@@ -107,6 +107,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/bus_goto_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -118,6 +119,7 @@
                 android:paddingVertical="8dp">
 
                 <TextView
+                    android:id="@+id/text_view_bus_goto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_vertical"
