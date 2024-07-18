@@ -12,6 +12,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.BusActivityMainBinding
+import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.ui.bus.adpater.timetable.pager.BusMainViewPager2Adapter
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -31,7 +32,7 @@ import `in`.koreatech.koin.core.util.FontManager
 class BusActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<BusActivityMainBinding>(R.layout.bus_activity_main)
     override val screenTitle = "버스"
-    private val busMainViewPager2Adapter = BusMainViewPager2Adapter(this)
+    private lateinit var busMainViewPager2Adapter : BusMainViewPager2Adapter
     private val firebasePerformanceUtil by lazy {
         FirebasePerformanceUtil("Bus_Activity")
     }
@@ -47,6 +48,9 @@ class BusActivity : KoinNavigationDrawerActivity() {
 
     private fun initView() = with(binding) {
         val tabStartPosition = intent.getIntExtra("tab", 0)
+        val timetableMenu = intent.getStringExtra("timetableMenu") ?: BusType.Shuttle.busTypeString
+
+        busMainViewPager2Adapter = BusMainViewPager2Adapter(this@BusActivity, timetableMenu)
 
         koinBaseAppbar.setOnClickListener {
             when (it.id) {

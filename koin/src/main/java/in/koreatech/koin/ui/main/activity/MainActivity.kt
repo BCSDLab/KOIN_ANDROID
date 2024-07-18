@@ -67,12 +67,14 @@ class MainActivity : KoinNavigationDrawerActivity() {
                 BusType.Express -> {
                     Intent(this@MainActivity, BusActivity::class.java).apply {
                         putExtra("tab", 2)
+                        putExtra("timetableMenu", type.busTypeString)
                     }.run(::startActivity)
                 }
 
                 BusType.City -> {
                     Intent(this@MainActivity, BusActivity::class.java).apply {
                         putExtra("tab", 2)
+                        putExtra("timetableMenu", type.busTypeString)
                     }.run(::startActivity)
                 }
 
