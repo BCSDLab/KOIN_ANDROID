@@ -4,6 +4,7 @@ import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -43,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -57,6 +61,7 @@ import `in`.koreatech.koin.domain.util.StoreUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
@@ -69,6 +74,7 @@ fun ModifyInfoScreen(
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
     val context = LocalContext.current
+    val pagerState = rememberPagerState { state.storeInfo.imageUrls.size }
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(3)
     ) { uriList ->
@@ -139,14 +145,20 @@ fun ModifyInfoScreen(
                         .background(Gray2),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Image(
-                        modifier = Modifier.height(255.dp),
-                        painter = rememberAsyncImagePainter(
-                            model = state.storeInfo.imageUrls.getOrNull(0) ?: R.drawable.no_image
-                        ),
-                        contentDescription = stringResource(R.string.shop_image),
-                        contentScale = ContentScale.Crop,
-                    )
+                    HorizontalPager(
+                        state = pagerState,
+                        modifier = Modifier.height(255.dp)
+                    ) { page ->
+                        Image(
+                            modifier = Modifier.fillMaxSize(),
+                            painter = rememberAsyncImagePainter(
+                                model = if (state.storeInfo.imageUrls.isEmpty()) state.storeInfo.imageUrls[page] else R.drawable.no_image
+                            ),
+                            contentDescription = stringResource(R.string.shop_image),
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
+
                     Button(
                         onClick = {
                             galleryLauncher.launch(
