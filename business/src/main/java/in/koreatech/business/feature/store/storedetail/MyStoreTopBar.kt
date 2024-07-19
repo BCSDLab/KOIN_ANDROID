@@ -30,7 +30,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorTextField
@@ -101,8 +101,9 @@ fun StoreInfoScreen(
         ) {
             Image(
                 modifier = Modifier.height(255.dp),
-                painter = state.storeInfo?.imageUrls?.getOrNull(0)
-                    .let { painterResource(id = R.drawable.no_image) },
+                painter = rememberAsyncImagePainter(
+                    model = state.storeInfo?.imageUrls?.getOrNull(0) ?: R.drawable.no_image
+                ),
                 contentDescription = stringResource(R.string.shop_image),
                 contentScale = ContentScale.Crop,
             )

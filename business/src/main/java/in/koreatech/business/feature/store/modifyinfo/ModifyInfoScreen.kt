@@ -1,5 +1,11 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
+import android.app.Activity
+import android.content.Intent
+import android.provider.MediaStore
+import android.provider.OpenableColumns
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -46,6 +53,7 @@ import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray9
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.util.DateFormatUtil.dayOfWeekToIndex
 import `in`.koreatech.koin.domain.util.StoreUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -63,6 +71,40 @@ fun ModifyInfoScreen(
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
     val context = LocalContext.current
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let { uri ->
+                val inputStream = context.contentResolver.openInputStream(uri)
+                if (uri.scheme.equals("content")) {
+                    val cursor = context.contentResolver.query(uri, null, null, null, null)
+                    cursor.use {
+                        if (cursor != null && cursor.moveToFirst()) {
+                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+
+                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                val fileName = cursor.getString(fileNameIndex)
+                                val fileSize = cursor.getLong(fileSizeIndex)
+
+                                if (inputStream != null) {
+                                    viewModel.getPreSignedUrl(
+                                        fileSize,
+                                        "image/" + fileName.split(".")[1],
+                                        fileName,
+                                        uri.toString()
+                                    )
+
+                                }
+                                inputStream?.close()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Column {
         Box(
@@ -98,13 +140,14 @@ fun ModifyInfoScreen(
                 ) {
                     Image(
                         modifier = Modifier.height(255.dp),
-                        painter = state.storeInfo?.imageUrls?.getOrNull(0)
-                            .let { painterResource(id = R.drawable.no_image) },
+                        painter = rememberAsyncImagePainter(
+                            model = state.storeInfo.imageUrls.getOrNull(0) ?: R.drawable.no_image
+                        ),
                         contentDescription = stringResource(R.string.shop_image),
                         contentScale = ContentScale.Crop,
                     )
                     Button(
-                        onClick = {},
+                        onClick = { galleryLauncher.launch(takePhotoFromAlbumIntent) },
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .width(100.dp)
@@ -278,6 +321,7 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
+            ModifyInfoSideEffect.ShowToastMessage -> { ToastUtil.getInstance().makeShort(R.string.error_image_upload) }
             else -> {}
         }
     }
@@ -345,3 +389,15 @@ fun AvailableRadioButton(text: String, selected: Boolean, onClick: () -> Unit) {
     }
 
 }
+
+
+private val takePhotoFromAlbumIntent =
+    Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+        type = "image/*"
+        action = Intent.ACTION_GET_CONTENT
+        putExtra(
+            Intent.EXTRA_MIME_TYPES,
+            arrayOf("image/jpeg", "image/png", "image/bmp", "image/webp")
+        )
+        putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+    }
