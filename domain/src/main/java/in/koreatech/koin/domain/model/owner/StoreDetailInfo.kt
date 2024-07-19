@@ -8,7 +8,7 @@ data class StoreDetailInfo (
     val isDeliveryOk: Boolean,
     val deliveryPrice: Int,
     val description: String,
-    val imageUrls: List<String>?,
+    val imageUrls: List<String>,
     val name: String,
     val operatingTime: List<OperatingTime>,
     val isBankOk: Boolean,
