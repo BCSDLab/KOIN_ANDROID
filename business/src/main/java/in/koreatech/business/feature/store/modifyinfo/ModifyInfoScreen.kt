@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -147,16 +146,25 @@ fun ModifyInfoScreen(
                 ) {
                     HorizontalPager(
                         state = pagerState,
-                        modifier = Modifier.height(255.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(255.dp)
+                            .align(Alignment.Center),
                     ) { page ->
-                        Image(
-                            modifier = Modifier.fillMaxSize(),
-                            painter = rememberAsyncImagePainter(
-                                model = if (state.storeInfo.imageUrls.isEmpty()) state.storeInfo.imageUrls[page] else R.drawable.no_image
-                            ),
-                            contentDescription = stringResource(R.string.shop_image),
-                            contentScale = ContentScale.Crop,
-                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Image(
+                                modifier = Modifier.height(255.dp),
+                                painter = rememberAsyncImagePainter(
+                                    model = if (state.storeInfo.imageUrls.isNotEmpty()) state.storeInfo.imageUrls[page] else R.drawable.no_image
+                                ),
+                                contentDescription = stringResource(R.string.shop_image),
+                                contentScale = ContentScale.Crop,
+                            )
+                        }
                     }
 
                     Button(

@@ -107,16 +107,24 @@ fun StoreInfoScreen(
         ) {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.height(255.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(255.dp)
             ) { page ->
-                Image(
-                    modifier = Modifier.fillMaxSize(),
-                    painter = rememberAsyncImagePainter(
-                        model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image
-                    ),
-                    contentDescription = stringResource(R.string.shop_image),
-                    contentScale = ContentScale.Crop,
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        modifier = Modifier.height(255.dp),
+                        painter = rememberAsyncImagePainter(
+                            model = if (state.storeInfo != null) state.storeInfo.imageUrls[page] else R.drawable.no_image
+                        ),
+                        contentDescription = stringResource(R.string.shop_image),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
             }
         }
         Button(
