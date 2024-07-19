@@ -219,6 +219,7 @@ class ModifyInfoViewModel @Inject constructor(
                 }
             }.onFailure {
                 intent {
+                    postSideEffect(ModifyInfoSideEffect.ShowToastMessage)
                 }
             }
         }
@@ -252,10 +253,22 @@ class ModifyInfoViewModel @Inject constructor(
             reduce {
                 state.copy(
                     storeInfo = state.storeInfo.copy(
-                        imageUrls = listOf(url)
+                        imageUrls = state.storeInfo.imageUrls.toMutableList().apply {
+                            add(url)
+                        }
                     ),
                 )
             }
+        }
+    }
+
+    fun initStoreImageUrls() = intent {
+        reduce {
+            state.copy(
+                storeInfo = state.storeInfo.copy(
+                    imageUrls = emptyList()
+                )
+            )
         }
     }
 }
