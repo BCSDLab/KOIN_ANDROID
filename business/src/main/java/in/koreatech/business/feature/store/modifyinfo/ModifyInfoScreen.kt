@@ -1,10 +1,8 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
-import android.app.Activity
-import android.content.Intent
-import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -72,36 +70,39 @@ fun ModifyInfoScreen(
     val listState = rememberLazyListState()
     val context = LocalContext.current
     val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let { uri ->
-                val inputStream = context.contentResolver.openInputStream(uri)
-                if (uri.scheme.equals("content")) {
-                    val cursor = context.contentResolver.query(uri, null, null, null, null)
-                    cursor.use {
-                        if (cursor != null && cursor.moveToFirst()) {
-                            val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                            val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+        contract = ActivityResultContracts.PickMultipleVisualMedia(3)
+    ) { uriList ->
+        state.fileInfo.clear()
+        viewModel.initStoreImageUrls()
+        uriList.forEach {
+            var fileName = ""
+            var fileSize = 0L
+            val inputStream = context.contentResolver.openInputStream(it)
+            if (it.scheme.equals("content")) {
+                val cursor = context.contentResolver.query(it, null, null, null, null)
+                cursor.use {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                        val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
 
-                            if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                val fileName = cursor.getString(fileNameIndex)
-                                val fileSize = cursor.getLong(fileSizeIndex)
+                        if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                            fileName = cursor.getString(fileNameIndex)
+                            fileSize = cursor.getLong(fileSizeIndex)
 
-                                if (inputStream != null) {
-                                    viewModel.getPreSignedUrl(
-                                        fileSize,
-                                        "image/" + fileName.split(".")[1],
-                                        fileName,
-                                        uri.toString()
-                                    )
 
-                                }
-                                inputStream?.close()
-                            }
                         }
                     }
                 }
+                if (inputStream != null) {
+                    viewModel.getPreSignedUrl(
+                        fileSize,
+                        "image/" + fileName.split(".")[1],
+                        fileName,
+                        it.toString()
+                    )
+
+                }
+                inputStream?.close()
             }
         }
     }
@@ -147,7 +148,14 @@ fun ModifyInfoScreen(
                         contentScale = ContentScale.Crop,
                     )
                     Button(
-                        onClick = { galleryLauncher.launch(takePhotoFromAlbumIntent) },
+                        onClick = {
+                            galleryLauncher.launch(
+                                PickVisualMediaRequest(
+                                    ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                            )
+
+                        },
                         modifier = Modifier
                             .align(Alignment.BottomEnd)
                             .width(100.dp)
@@ -321,7 +329,9 @@ fun ModifyInfoScreen(
         when (it) {
             ModifyInfoSideEffect.NavigateToBackScreen -> onBackClicked()
             ModifyInfoSideEffect.NavigateToSettingOperatingTime -> onSettingOperatingClicked()
-            ModifyInfoSideEffect.ShowToastMessage -> { ToastUtil.getInstance().makeShort(R.string.error_image_upload) }
+            ModifyInfoSideEffect.ShowToastMessage -> {
+                ToastUtil.getInstance().makeShort(R.string.error_image_upload)
+            }
             else -> {}
         }
     }
