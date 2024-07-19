@@ -178,6 +178,19 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_chainStyle="packed" />
 
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_image_loading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:lottie_rawRes="@raw/lottie_loading"
+                        android:visibility="gone"
+                        app:lottie_autoPlay="true"
+                        app:lottie_loop="true"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
                     <TextView
                         android:id="@+id/text_view_sold_out"
                         android:layout_width="wrap_content"
@@ -217,7 +230,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="7dp"
@@ -254,7 +267,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="7dp"
@@ -279,7 +292,7 @@
             android:id="@+id/view_dining_divider"
             android:layout_width="match_parent"
             android:layout_height="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:background="@color/background_dark"
             app:layout_constraintTop_toBottomOf="@id/linear_layout_share" />
 

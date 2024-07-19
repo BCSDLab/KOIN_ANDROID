@@ -96,4 +96,5 @@ dependencies {
     implementation(libs.napier)
 
     implementation(libs.kakao.share)
+    implementation(libs.lottie)
 }

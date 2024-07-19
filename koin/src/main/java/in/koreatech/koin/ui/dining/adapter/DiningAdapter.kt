@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -9,13 +10,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.template.model.Button
 import com.kakao.sdk.template.model.Content
-import com.kakao.sdk.template.model.DefaultTemplate
 import com.kakao.sdk.template.model.FeedTemplate
 import com.kakao.sdk.template.model.Link
-import com.kakao.sdk.template.model.TextTemplate
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -46,12 +49,34 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 initSharing(context, dining)
 
                 if(dining.imageUrl.isNotEmpty()) {
+                    lottieImageLoading.visibility = View.VISIBLE
                     cardViewDining.strokeWidth = 0
                     textViewNoPhoto.visibility = View.INVISIBLE
                     imageViewNoPhoto.visibility = View.INVISIBLE
                     imageViewDining.visibility = View.VISIBLE
                     Glide.with(context)
                         .load(dining.imageUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                binding.lottieImageLoading.visibility = View.GONE
+                                return false
+                            }
+                        })
                         .into(imageViewDining)
 
                     val dialog = ImageZoomableDialog(context, dining.imageUrl)
