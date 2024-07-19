@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chargemap.compose.numberpicker.FullHours
@@ -143,7 +142,6 @@ class ModifyInfoViewModel @Inject constructor(
     }
 
     fun onAddressChanged(address: String) = intent {
-
         reduce {
             state.copy(storeInfo = state.storeInfo.copy(address = address))
         }
@@ -216,7 +214,6 @@ class ModifyInfoViewModel @Inject constructor(
                                     )
                                 )
                             },
-
                         )
                     }
                 }
