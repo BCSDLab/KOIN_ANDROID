@@ -7,6 +7,8 @@ import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.domain.model.store.StoreReview
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(
@@ -32,5 +34,9 @@ class StoreRemoteDataSource @Inject constructor(
     }
     suspend fun getShopEvents(storeUid: Int): StoreDetailEventResponse {
         return storeApi.getShopEvents(storeUid)
+    }
+
+    suspend fun getStoreReviews(storeUid: Int): StoreReviewResponse {
+        return storeApi.getShopReviews(storeUid)
     }
 }

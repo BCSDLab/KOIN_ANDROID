@@ -10,6 +10,9 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -18,6 +21,9 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
+import `in`.koreatech.koin.domain.model.store.StoreReview
+import `in`.koreatech.koin.domain.model.store.StoreReviewContent
+import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.domain.util.ext.localDayOfWeekName
@@ -130,3 +136,31 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
     startDate = startDate ?: "",
     endDate = endDate ?: ""
 )
+
+fun StoreReviewStatisticsResponse.toStoreReviewStatistics() = StoreReviewStatistics(
+        averageRating = averageRating,
+        ratings = ratings
+    )
+fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreReviewContent> =
+    this.map { response ->
+        StoreReviewContent(
+            reviewId = response.reviewId ?: 0,
+            rating = response.rating ?: 0,
+            nickName = response.nickName ?: "",
+            content = response.content?: "",
+            imageUrls = response.imageUrls ?: emptyList(),
+            menuNames = response.menuNames ?: emptyList(),
+            isMine = response.isMine ?: false,
+            isModified = response.isModified ?: false,
+            createdAt = response.createdAt ?: ""
+        )
+    }
+fun StoreReviewResponse.toStoreReview() = StoreReview(
+    totalCount = totalCount,
+    currentCount = currentCount,
+    totalPage= totalPage,
+    currentPage= currentPage,
+    statistics = statistics.toStoreReviewStatistics(),
+    reviews = reviews.toStoreReviewContentList()
+)
+
