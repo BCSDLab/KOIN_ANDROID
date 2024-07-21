@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.response.store.StoreEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
+import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -30,4 +31,7 @@ interface StoreApi {
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/events")
     suspend fun getShopEvents(@Path("id") uid: Int): StoreDetailEventResponse
+
+    @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
+    suspend fun getShopReviews(@Path("id") uid: Int): StoreReviewResponse
 }
