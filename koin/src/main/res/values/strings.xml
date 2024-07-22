@@ -450,4 +450,14 @@
     <string name="event_notification">이벤트/공지</string>
     <string name="no_event">사장님이 이벤트를 준비 중입니다.</string>
     <string name="no_event_image">사장님이 이미지를 준비 중입니다.</string>
+    <string name="write_review">리뷰 작성하기</string>
+    <string name="upload_review_image">리뷰와 관련된 사진을 업로드해주세요.</string>
+    <string name="image">사진</string>
+    <string name="write_more_info">더 많은 정보를 작성해보세요!</string>
+    <string name="review_notice">리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다. 또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.</string>
+    <string name="write">작성하기</string>
+    <string name="content">내용</string>
+    <string name="write_review_content">리뷰를 작성해주세요.</string>
+    <string name="upload_image">사진 등록하기</string>
+    <string name="add_menu">메뉴 추가하기</string>
 </resources>
