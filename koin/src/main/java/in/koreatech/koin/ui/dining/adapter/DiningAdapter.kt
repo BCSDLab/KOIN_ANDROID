@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,20 +15,25 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.kakao.sdk.share.ShareClient
-import com.kakao.sdk.template.model.Button
-import com.kakao.sdk.template.model.Content
-import com.kakao.sdk.template.model.FeedTemplate
-import com.kakao.sdk.template.model.Link
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.util.ext.toStringWithComma
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
+class DiningAdapter(
+    private val onLikeClickResult: suspend (Dining) -> LikeActionType,
+    private val onShareClick: (Dining) -> Unit,
+    private val coroutineScope: CoroutineScope
+) : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as DiningViewHolder).bind(getItem(position))
@@ -37,16 +43,17 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         return DiningViewHolder(ItemDiningBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DiningViewHolder(private val binding: ItemDiningBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dining: Dining) {
             with(binding) {
                 val context = root.context
 
                 setDiningImageVisibility(context, dining)
-                setDiningDataText(context, dining)
+                setDiningData(context, dining)
                 setEmptyDataVisibility(dining)
-                initSharing(context, dining)
+                initShareAction(dining)
+                initLikeAction(dining)
 
                 if(dining.imageUrl.isNotEmpty()) {
                     lottieImageLoading.visibility = View.VISIBLE
@@ -121,46 +128,54 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
             }
         }
 
-        private fun initSharing(context: Context, dining: Dining) {
-            binding.linearLayoutShare.setOnClickListener {
-                onShare(context, dining)
-            }
-        }
-
-        private fun onShare(context: Context, dining: Dining) {
-            val messageTemplate = createFeedMessageTemplate(dining)
-
-            if(ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
-                ShareClient.instance.shareDefault(context, messageTemplate) { sharingResult, error ->
-                    error?.printStackTrace()
-                    sharingResult?.let {
-                        context.startActivity(it.intent)
+        private fun initLikeAction(dining: Dining) {
+            binding.linearLayoutLike.setOnClickListener {
+                coroutineScope.launch {
+                    withContext(Dispatchers.Main) {
+                        val result = onLikeClickResult(dining)
+                        when(result) {
+                            LikeActionType.LIKE -> {
+                                dining.isLiked = true
+                                ++dining.likes
+                                setLikeUI(dining)
+                            }
+                            LikeActionType.UNLIKE -> {
+                                dining.isLiked = false
+                                --dining.likes
+                                setLikeUI(dining)
+                            }
+                            LikeActionType.LOGIN_REQUIRED -> {
+                                Toast.makeText(binding.root.context, "로그인하셈", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
             }
         }
 
-        private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
-            val executionParams = mapOf(
-                "date" to dining.date,
-                "type" to dining.type,
-                "place" to dining.place
-            )
-            val link = Link(
-                androidExecutionParams = executionParams,
-                iosExecutionParams = executionParams
-            )
-            return FeedTemplate(
-                content = Content(
-                    title = "오늘의 점심 메뉴",
-                    description = dining.menu.joinToString(", "),
-                    imageUrl = dining.imageUrl,
-                    link = link
-                ),
-                buttons = listOf(
-                    Button("다른 사진 보러가기", link)
-                )
-            )
+        private fun initShareAction(dining: Dining) {
+            binding.linearLayoutShare.setOnClickListener {
+                onShareClick(dining)
+            }
+        }
+
+        private fun setLikeUI(dining: Dining) {
+            with(binding) {
+                if (dining.likes > 0) {
+                    textViewLike.visibility = View.INVISIBLE
+                    textViewLikeCount.visibility = View.VISIBLE
+                    textViewLikeCount.text = dining.likes.toStringWithComma()
+                } else {
+                    textViewLike.visibility = View.VISIBLE
+                    textViewLikeCount.visibility = View.INVISIBLE
+                }
+
+                if(dining.isLiked) {
+                    imageViewLike.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    imageViewLike.setImageResource(R.drawable.ic_like)
+                }
+            }
         }
 
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
@@ -195,7 +210,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 }
             }
         }
-        private fun setDiningDataText(context: Context, dining: Dining) {
+        private fun setDiningData(context: Context, dining: Dining) {
             with(binding) {
                 textViewDiningCorner.text = dining.place
                 textViewKcal.text =
@@ -205,6 +220,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
                 textViewDiningMenuItems.text = dining.menu.joinToString("\n")
+                setLikeUI(dining)
             }
         }
     }

@@ -55,7 +55,6 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         selectInitialPositions()
 
         withLoading(this, viewModel)
-        viewModel.getDining()
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
