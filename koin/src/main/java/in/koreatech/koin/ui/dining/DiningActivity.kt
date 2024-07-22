@@ -43,6 +43,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private lateinit var diningViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
     private var initialDateTab = 0
     private var initialDiningTab = 0
+    private val diningOnBoardingBottomSheet by lazy {
+        DiningNotificationOnBoardingFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         initViewPager()
         onActionView()
         selectInitialPositions()
+        diningOnBoardingBottomSheet.show(supportFragmentManager, diningOnBoardingBottomSheet.tag)
 
         withLoading(this, viewModel)
         viewModel.getDining()
