@@ -1,7 +1,5 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
-import android.provider.OpenableColumns
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -47,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.launchImagePicker
 import `in`.koreatech.business.feature.store.storedetail.MyStoreDetailViewModel
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -74,51 +73,27 @@ fun ModifyInfoScreen(
     val listState = rememberLazyListState()
     val context = LocalContext.current
     val pagerState = rememberPagerState { state.storeInfo.imageUrls.size }
-    val galleryLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickMultipleVisualMedia(3)
-    ) { uriList ->
-        state.fileInfo.clear()
-        viewModel.initStoreImageUrls()
-        uriList.forEach {
-            var fileName = ""
-            var fileSize = 0L
-            val inputStream = context.contentResolver.openInputStream(it)
-            if (it.scheme.equals("content")) {
-                val cursor = context.contentResolver.query(it, null, null, null, null)
-                cursor.use {
-                    if (cursor != null && cursor.moveToFirst()) {
-                        val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                        if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                            fileName = cursor.getString(fileNameIndex)
-                            fileSize = cursor.getLong(fileSizeIndex)
-
-
-                        }
-                    }
-                }
-                if (inputStream != null) {
-                    viewModel.getPreSignedUrl(
-                        fileSize,
-                        "image/" + fileName.split(".")[1],
-                        fileName,
-                        it.toString()
-                    )
-
-                }
-                inputStream?.close()
-            }
-        }
-    }
-
+    val galleryLauncher = launchImagePicker(
+        contentResolver = context.contentResolver,
+        initImageUrls = viewModel::initStoreImageUrls,
+        getPreSignedUrl = {
+            viewModel.getPreSignedUrl(
+                it.first.first,
+                it.first.second,
+                it.second.first,
+                it.second.second
+            )
+        },
+        clearFileInfo = { state.fileInfo.clear() }
+    )
+    
     Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(ColorPrimary),
         ) {
-            IconButton(onClick = { viewModel.onBackButtonClicked() }) {
+            IconButton(onClick = viewModel::onBackButtonClicked) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
                     contentDescription = stringResource(R.string.back),
