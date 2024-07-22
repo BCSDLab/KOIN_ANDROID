@@ -458,4 +458,8 @@
     <string name="kakaolink_host">kakaolink</string>
     <string name="action_share">공유하기</string>
     <string name="action_like">좋아요</string>
+    <string name="dining_notification_on_boarding">알림 설정을 허용하고\n식단 품절 알림을 받아보세요!</string>
+    <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
+    <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
+    <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
 </resources>
