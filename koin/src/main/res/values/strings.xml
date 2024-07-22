@@ -295,6 +295,7 @@
     <string name="store_detail_wrong_store_id_message">잘못된 진입입니다.</string>
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
+    <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
 
     <!-- Notification -->
     <string name="notification_appbar_title">알림 설정</string>
