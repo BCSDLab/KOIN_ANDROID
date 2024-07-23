@@ -56,7 +56,6 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         initViewPager()
         onActionView()
         selectInitialPositions()
-        diningOnBoardingBottomSheet.show(supportFragmentManager, diningOnBoardingBottomSheet.tag)
 
         withLoading(this, viewModel)
         viewModel.getDining()
@@ -65,6 +64,17 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedDate.collect {
                     viewModel.getDining(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showDiningNotificationOnBoarding.collect {
+                    if(it) {
+                        diningOnBoardingBottomSheet.show(supportFragmentManager, diningOnBoardingBottomSheet.tag)
+                        viewModel.updateShouldShowNotificationOnBoarding(false)
+                    }
                 }
             }
         }
