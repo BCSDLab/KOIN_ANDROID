@@ -239,7 +239,7 @@
                 android:id="@+id/image_view_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="6dp"
                 app:layout_constraintEnd_toStartOf="@id/text_view_like"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -291,13 +291,14 @@
                 android:id="@+id/image_view_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="6dp"
                 android:src="@drawable/ic_share" />
 
             <TextView
                 android:id="@+id/text_view_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAlignment="gravity"
                 android:text="@string/action_share" />
         </LinearLayout>
 
