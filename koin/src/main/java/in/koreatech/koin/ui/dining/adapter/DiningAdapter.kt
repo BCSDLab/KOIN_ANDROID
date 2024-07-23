@@ -1,12 +1,12 @@
 package `in`.koreatech.koin.ui.dining.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +18,14 @@ import com.bumptech.glide.request.target.Target
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.dialog.AlertModalDialog
+import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.toStringWithComma
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -139,13 +142,32 @@ class DiningAdapter(
                                 ++dining.likes
                                 setLikeUI(dining)
                             }
+
                             LikeActionType.UNLIKE -> {
                                 dining.isLiked = false
                                 --dining.likes
                                 setLikeUI(dining)
                             }
+
                             LikeActionType.LOGIN_REQUIRED -> {
-                                Toast.makeText(binding.root.context, "로그인하셈", Toast.LENGTH_SHORT).show()
+                                val dialog =
+                                    AlertModalDialog(binding.root.context, AlertModalDialogData(
+                                        R.string.recommend_login_to_like_dining,
+                                        R.string.recommend_like_dining,
+                                        R.string.action_login,
+                                    ),
+                                        onPositiveButtonClicked = {
+                                            val intent = Intent(
+                                                binding.root.context,
+                                                LoginActivity::class.java
+                                            )
+                                            binding.root.context.startActivity(intent)
+                                        },
+                                        onNegativeButtonClicked = {
+                                            it.dismiss()
+                                        }
+                                    )
+                                dialog.show()
                             }
                         }
                     }
