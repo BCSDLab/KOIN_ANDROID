@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.dining
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.DiningNotificationOnBoardingBottomSheetBinding
+import `in`.koreatech.koin.ui.notification.NotificationActivity
 
 @AndroidEntryPoint
 class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
@@ -33,7 +35,9 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding?.apply {
             btnNavigateToNotificationSetting.setOnClickListener {
-
+                dismiss()
+                val intent = Intent(requireContext(), NotificationActivity::class.java)
+                startActivity(intent)
             }
             textButtonClose.setOnClickListener {
                 dismiss()
