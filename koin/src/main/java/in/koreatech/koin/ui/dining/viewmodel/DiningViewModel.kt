@@ -3,17 +3,18 @@ package `in`.koreatech.koin.ui.dining.viewmodel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.constant.BREAKFAST
-import `in`.koreatech.koin.domain.constant.DINNER
-import `in`.koreatech.koin.domain.constant.LUNCH
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.dining.GetDiningUseCase
 import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowNotificationOnBoarding
 import `in`.koreatech.koin.domain.usecase.onboarding.dining.UpdateShouldShowNotificationOnBoarding
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Date
 import javax.inject.Inject
 
@@ -21,8 +22,12 @@ import javax.inject.Inject
 class DiningViewModel @Inject constructor(
     private val getDiningUseCase: GetDiningUseCase,
     private val getShouldShowNotiOnBoardingUseCase: GetShouldShowNotificationOnBoarding,
-    private val updateShouldShowNotiOnBoardingUseCase: UpdateShouldShowNotificationOnBoarding
+    private val updateShouldShowNotiOnBoardingUseCase: UpdateShouldShowNotificationOnBoarding,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : BaseViewModel() {
+
+    private val _userState = MutableStateFlow<User?>(null)
+    val userState: StateFlow<User?> get() = _userState
 
     private val _showDiningNotificationOnBoarding = MutableStateFlow(false)
     val showDiningNotificationOnBoarding: StateFlow<Boolean> get() = _showDiningNotificationOnBoarding
@@ -35,7 +40,7 @@ class DiningViewModel @Inject constructor(
     val dining: StateFlow<List<Dining>> get() = _dining
 
     init {
-        getShouldShowNotificationOnBoarding()
+        getUser()
     }
 
     fun getShouldShowNotificationOnBoarding() {
@@ -74,6 +79,15 @@ class DiningViewModel @Inject constructor(
 
                     }
             }
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch {
+            getUserInfoUseCase()
+                .onSuccess {
+                    _userState.value = it
+                }
         }
     }
 }

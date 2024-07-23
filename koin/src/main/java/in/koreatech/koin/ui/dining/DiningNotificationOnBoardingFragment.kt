@@ -31,8 +31,13 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.textButtonClose?.setOnClickListener {
-            dismiss()
+        binding?.apply {
+            btnNavigateToNotificationSetting.setOnClickListener {
+
+            }
+            textButtonClose.setOnClickListener {
+                dismiss()
+            }
         }
     }
 
