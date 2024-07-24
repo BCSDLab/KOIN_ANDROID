@@ -43,7 +43,9 @@ object AuthNetworkModule {
     ): Interceptor {
         return Interceptor { chain: Interceptor.Chain ->
             runBlocking {
-                val accessToken = tokenLocalDataSource.getAccessToken() ?: ""
+                val accessToken =
+                    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJpZCI6NDI5OSwiZXhwIjoxNzIxNzk3OTE5fQ.aJ0J0d1aso2GLjmQz6qWBY1UFxVDzuIaRYJxECA84TNAzNpGK-RvUyVBiDkKS_WO"
+                    //tokenLocalDataSource.getAccessToken() ?: ""
                 val newRequest: Request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer $accessToken")
                     .build()
