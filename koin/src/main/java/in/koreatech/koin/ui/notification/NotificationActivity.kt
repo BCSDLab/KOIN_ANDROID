@@ -97,6 +97,13 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                         }
                                     }
 
+                                    SubscribesType.DINING_IMAGE_UPLOAD -> {
+                                        if (binding.notificationDiningPhotoUpload.isChecked != it.isPermit) {
+                                            binding.notificationDiningPhotoUpload.fakeChecked = it.isPermit
+                                            binding.notificationDiningPhotoUpload.isChecked = it.isPermit
+                                        }
+                                    }
+
                                     SubscribesType.NOTHING -> Unit
                                 }
                             }
@@ -150,6 +157,9 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         }
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
+        }
+        binding.notificationDiningPhotoUpload.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
     }
 

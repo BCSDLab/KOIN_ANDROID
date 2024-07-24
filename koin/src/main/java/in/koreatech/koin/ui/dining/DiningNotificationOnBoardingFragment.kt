@@ -6,15 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.DiningNotificationOnBoardingBottomSheetBinding
+import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 
 @AndroidEntryPoint
 class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
     private var binding: DiningNotificationOnBoardingBottomSheetBinding? = null
+    private val viewModel by viewModels<NotificationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +46,21 @@ class DiningNotificationOnBoardingFragment : BottomSheetDialogFragment() {
             }
             textButtonClose.setOnClickListener {
                 dismiss()
+            }
+
+            notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
+                if (isChecked) {
+                    viewModel.updateSubscription(SubscribesType.DINING_SOLD_OUT)
+                    viewModel.updateSubscriptionDetail(SubscribesDetailType.BREAKFAST)
+                    viewModel.updateSubscriptionDetail(SubscribesDetailType.LUNCH)
+                    viewModel.updateSubscriptionDetail(SubscribesDetailType.DINNER)
+                }
+                else viewModel.deleteSubscription(SubscribesType.DINING_SOLD_OUT)
+            }
+
+            notificationSetImageUploadNotification.setOnSwitchClickListener { isChecked ->
+                if (isChecked) viewModel.updateSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
+                else viewModel.deleteSubscription(SubscribesType.DINING_IMAGE_UPLOAD)
             }
         }
     }
