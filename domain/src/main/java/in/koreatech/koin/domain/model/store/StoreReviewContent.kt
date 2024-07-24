@@ -1,0 +1,13 @@
+package `in`.koreatech.koin.domain.model.store
+
+data class StoreReviewContent(
+    val reviewId: Int,
+    val rating: Int,
+    val nickName: String,
+    val content: String,
+    val imageUrls: List<String>,
+    val menuNames: List<String>,
+    val isMine: Boolean,
+    val isModified: Boolean,
+    val createdAt: String
+)
