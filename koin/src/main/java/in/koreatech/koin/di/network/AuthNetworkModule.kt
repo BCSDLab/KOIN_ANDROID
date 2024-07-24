@@ -15,7 +15,6 @@ import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
-import `in`.koreatech.koin.data.api.auth.StoreAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.domain.usecase.user.DeleteUserRefreshTokenUseCase
@@ -106,13 +105,6 @@ object AuthNetworkModule {
         return retrofit.create(UserAuthApi::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideStoreAuthApi(
-        @Auth retrofit: Retrofit
-    ) : StoreAuthApi {
-        return retrofit.create(StoreAuthApi::class.java)
-    }
 }
 
 @Module

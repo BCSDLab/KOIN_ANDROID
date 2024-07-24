@@ -107,6 +107,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             tab.text = when (position) {
                 0 -> getString(R.string.menu)
                 1 -> getString(R.string.event_notification)
+                2 -> getString(R.string.review)
                 else -> throw IllegalArgumentException("Invalid position")
             }
         }.attach()
@@ -148,6 +149,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         viewModel.getStoreWithMenu(storeId!!)
         viewModel.getShopMenus(storeId)
         viewModel.getShopEvents(storeId)
+        viewModel.getShopReviews(storeId)
     }
 
     override fun onBackPressed() {
