@@ -27,9 +27,8 @@ public class AppBarBase extends AppBarLayout {
     public TextView leftButton;
     public TextView rightButton;
     public TextView title;
-    final Typeface textFont = FontManager.INSTANCE.getTypeface(getContext(), FontManager.KoinFontType.PRETENDARD_MEDIUM);
+    final Typeface textFont = FontManager.getTypeface(getContext(), FontManager.KoinFontType.PRETENDARD_MEDIUM);
     public OnClickListener onClickListener;
-
 
     public AppBarBase(Context context) {
         super(context);

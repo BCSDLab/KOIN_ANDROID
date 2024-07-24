@@ -26,6 +26,7 @@ object FontManager {
     private val PRETENDARD_MEDIUM_ID = R.font.pretendard_medium
     private val PRETENDARD_REGULAR_ID = R.font.pretendard_regular
 
+    @JvmStatic
     fun getTypeface(context: Context, fontType: KoinFontType): Typeface {
         return cache[fontType] ?: run {
             val font = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
