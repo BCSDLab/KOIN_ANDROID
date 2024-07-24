@@ -33,8 +33,6 @@
                     app:titleText="@string/nearby_store" />
 
 
-
-
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/callvan_layout"
                     android:layout_width="fill_parent"
@@ -90,14 +88,12 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="9sp"
                                     android:maxLines="1"
                                     android:paddingTop="20dp"
                                     android:paddingBottom="20dp"
+                                    android:textAppearance="@style/TextAppearance.Koin.Medium"
                                     android:textColor="@color/black"
                                     android:textSize="20sp"
-                                    app:fontName="Custom5"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/store_detail_imageview"
@@ -108,12 +104,9 @@
                                     android:id="@+id/store_detail_const_phone_num"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="7sp"
                                     android:text="@string/telephone"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/store_detail_title_textview" />
 
@@ -122,11 +115,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="5sp"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_phone_num"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_const_phone_num"
@@ -144,12 +134,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="7sp"
                                     android:text="@string/operating_time"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_phone" />
 
@@ -158,11 +145,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="5sp"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_time_textview"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_const_time_textview"
@@ -180,12 +164,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="7sp"
                                     android:text="@string/address"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_time" />
 
@@ -194,10 +175,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_address_textview"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintHorizontal_bias="0"
@@ -217,11 +196,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:includeFontPadding="false"
                                     android:text="@string/delivery_fee"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_address" />
 
@@ -230,11 +207,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="5sp"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_deliver_textview"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintHorizontal_bias="0"
@@ -253,11 +227,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:includeFontPadding="false"
                                     android:text="@string/account_number"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_deliver" />
 
@@ -266,11 +238,8 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="5sp"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_account_textview"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintHorizontal_bias="0"
@@ -281,12 +250,11 @@
                                     android:id="@+id/store_detail_account_copy_button"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_copy"
                                     android:layout_marginStart="10dp"
-                                    app:layout_constraintTop_toTopOf="@id/store_detail_account_textview"
+                                    android:src="@drawable/ic_copy"
                                     app:layout_constraintBottom_toBottomOf="@id/store_detail_account_textview"
                                     app:layout_constraintStart_toEndOf="@id/store_detail_account_textview"
-                                    />
+                                    app:layout_constraintTop_toTopOf="@id/store_detail_account_textview" />
 
                                 <androidx.constraintlayout.widget.Barrier
                                     android:id="@+id/barrier_account"
@@ -300,12 +268,9 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="4dp"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="7sp"
                                     android:text="@string/other_info"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/gray9"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_account" />
 
@@ -315,10 +280,8 @@
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
-                                    android:includeFontPadding="false"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                     android:textColor="@color/black"
-                                    android:textSize="15sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintBaseline_toBaselineOf="@id/store_detail_const_etc_textview"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                                     app:layout_constraintHorizontal_bias="0"
@@ -340,12 +303,9 @@
                                     android:layout_marginTop="12dp"
                                     android:background="@drawable/button_rect_blue_line_radius_5dp"
                                     android:gravity="center"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="6sp"
                                     android:text="@string/delivery_available"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.12"
                                     android:textColor="@color/blue_alpha20"
-                                    android:textSize="12sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
 
@@ -357,12 +317,9 @@
                                     android:layout_marginTop="12dp"
                                     android:background="@drawable/button_rect_blue_line_radius_5dp"
                                     android:gravity="center"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="6sp"
                                     android:text="@string/card_available"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.12"
                                     android:textColor="@color/blue_alpha20"
-                                    android:textSize="12sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_delivery_textview"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
 
@@ -374,12 +331,9 @@
                                     android:layout_marginTop="12dp"
                                     android:background="@drawable/button_rect_blue_line_radius_5dp"
                                     android:gravity="center"
-                                    android:includeFontPadding="false"
-                                    android:lineSpacingExtra="6sp"
                                     android:text="@string/account_transfer_avilable"
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.12"
                                     android:textColor="@color/blue_alpha20"
-                                    android:textSize="12sp"
-                                    app:fontName="Custom6"
                                     app:layout_constraintStart_toEndOf="@+id/store_detail_is_card_textview"
                                     app:layout_constraintTop_toBottomOf="@+id/barrier_etc" />
 
@@ -387,25 +341,23 @@
                                     android:id="@+id/update_info"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/fi_info"
                                     android:layout_marginTop="45dp"
+                                    android:src="@drawable/fi_info"
                                     app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_delivery_textview"
-                                    />
+                                    app:layout_constraintTop_toBottomOf="@+id/store_detail_is_delivery_textview" />
 
                                 <TextView
                                     android:id="@+id/update_info_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="2024.03.09 업데이트"
-                                    android:textSize="12dp"
-                                    android:textColor="@color/gray15"
-                                    android:gravity="center"
                                     android:layout_marginStart="4dp"
-                                    app:layout_constraintStart_toEndOf="@+id/update_info"
-                                    app:layout_constraintTop_toTopOf="@+id/update_info"
+                                    android:gravity="center"
+                                    android:text="2024.03.09 업데이트"
+                                    android:textColor="@color/gray15"
+                                    android:textSize="12dp"
                                     app:layout_constraintBottom_toBottomOf="@+id/update_info"
-                                    />
+                                    app:layout_constraintStart_toEndOf="@+id/update_info"
+                                    app:layout_constraintTop_toTopOf="@+id/update_info" />
 
                                 <FrameLayout
                                     android:id="@+id/border_frameLayout"
@@ -434,8 +386,7 @@
                             android:id="@+id/store_detail_tab_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_collapseMode="pin"
-                            />
+                            app:layout_collapseMode="pin" />
 
 
                     </com.google.android.material.appbar.AppBarLayout>
@@ -451,6 +402,7 @@
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             </LinearLayout>
+
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/store_detail_call_button"
                 android:layout_width="56dp"
