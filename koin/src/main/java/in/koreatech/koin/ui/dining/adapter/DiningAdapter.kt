@@ -241,7 +241,8 @@ class DiningAdapter(
                     context.getString(R.string.price, dining.priceCash)
                 textViewCardPrice.text =
                     context.getString(R.string.price, dining.priceCard)
-                textViewDiningMenuItems.text = dining.menu.joinToString("\n")
+                textViewDiningMenuItems1.text = dining.menu.subList(0, dining.menu.size / 2).joinToString("\n")
+                textViewDiningMenuItems2.text = dining.menu.subList(dining.menu.size / 2, dining.menu.size).joinToString("\n")
                 setLikeUI(dining)
             }
         }
