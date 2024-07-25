@@ -27,6 +27,7 @@ import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.bus.BusActivity
@@ -366,7 +367,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun changeMenuFont(view: View) {
         if (view is TextView) {
-            view.typeface = Typeface.createFromAsset(assets, "fonts/notosanscjkkr_regular.otf")
+            view.typeface = FontManager.getTypeface(this, FontManager.KoinFontType.PRETENDARD_REGULAR)
         }
     }
 
