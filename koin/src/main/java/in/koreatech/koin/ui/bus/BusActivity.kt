@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.core.util.FontManager
 
 @AndroidEntryPoint
 class BusActivity : KoinNavigationDrawerActivity() {
@@ -74,7 +75,7 @@ class BusActivity : KoinNavigationDrawerActivity() {
         for (i in 0 until childCount) {
             val viewChild = viewGroup.getChildAt(i)
             if (viewChild is TextView) {
-                viewChild.setTypeface(Typeface.createFromAsset(assets, TABLAYOUT_FONT_NAME))
+                viewChild.typeface = FontManager.getTypeface(this, FontManager.KoinFontType.PRETENDARD_REGULAR)
             } else (viewChild as? ViewGroup)?.let { changeFont(it) }
         }
     }
@@ -82,9 +83,5 @@ class BusActivity : KoinNavigationDrawerActivity() {
     override fun onDestroy() {
         firebasePerformanceUtil.stop()
         super.onDestroy()
-    }
-
-    companion object {
-        private const val TABLAYOUT_FONT_NAME = "fonts/notosanscjkkr_regular.otf"
     }
 }
