@@ -465,4 +465,5 @@
     <string name="write_review_content">리뷰를 작성해주세요.</string>
     <string name="upload_image">사진 등록하기</string>
     <string name="add_menu">메뉴 추가하기</string>
+    <string name="delete">삭제</string>
 </resources>
