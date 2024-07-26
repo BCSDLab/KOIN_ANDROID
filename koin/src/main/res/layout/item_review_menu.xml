@@ -24,15 +24,17 @@
 
 
         <ImageButton
+            android:id="@+id/delete_menu_button"
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_margin="6dp"
             android:background="@android:color/transparent"
+            android:contentDescription="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/menu_name_edit_text"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/trashcan" />
+            android:src="@drawable/trashcan" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
