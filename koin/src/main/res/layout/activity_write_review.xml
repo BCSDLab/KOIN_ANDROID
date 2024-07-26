@@ -65,12 +65,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:numStars="5"
-                    android:rating="3"
-                    android:stepSize="3"
+                    android:rating="0"
+                    android:stepSize="1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notice" />
 
                 <TextView
+                    android:id="@+id/rating_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
@@ -233,7 +234,7 @@
                     android:id="@+id/menu_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/gray_border_button"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_menu_button"
