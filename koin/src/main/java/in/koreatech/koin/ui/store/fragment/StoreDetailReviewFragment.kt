@@ -9,11 +9,9 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
-import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
+import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -46,6 +44,13 @@ class StoreDetailReviewFragment : Fragment() {
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter
+            }
+
+            storeDetailReviewButton.setOnClickListener {
+                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+                startActivity(goToReviewScreen)
             }
 
             observeLiveData(viewModel.storeReview) {
