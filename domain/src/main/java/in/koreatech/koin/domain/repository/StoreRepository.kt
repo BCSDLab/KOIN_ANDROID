@@ -17,4 +17,6 @@ interface StoreRepository {
     suspend fun getShopEvents(storeId: Int): ShopEvents
     suspend fun getStoreReviews(storeId: Int): StoreReview
     suspend fun invalidateStores()
+
+    suspend fun reportReview(storeId: Int?, reviewId: Int?, reportTitle: String, reportReason: String): Result<Unit>
 }

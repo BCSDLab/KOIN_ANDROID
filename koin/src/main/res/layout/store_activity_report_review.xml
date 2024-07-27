@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <in.koreatech.koin.core.appbar.AppBarBase
+            android:id="@+id/report_appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:leftButtonBackground="@drawable/ic_back_arrow"
+            app:leftButtonHeight="14dp"
+            app:leftButtonWidth="14dp"
+            app:rightButtonHeight="18dp"
+            app:rightButtonWidth="12dp"
+            app:titleText="@string/review_report"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <ScrollView
+            android:id="@+id/report_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/report_appbar"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/choose_report_reason_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/review_report_reason_choose"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="74dp"
+                    android:layout_marginStart="24dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/review_will_be_blinded_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/review_will_be_blinded"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="24dp"
+                    android:textSize="14dp"
+                    app:layout_constraintTop_toBottomOf="@id/choose_report_reason_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/no_relation_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="48dp"
+                    android:src="@drawable/radio_button_checked_24dp"
+                    android:checked="true"
+                    app:layout_constraintTop_toBottomOf="@id/review_will_be_blinded_textview"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="@id/no_relation_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/no_relation_radio_button"
+                    app:layout_constraintStart_toEndOf="@id/no_relation_radio_button"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="@string/review_not_relation"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="@string/review_not_relation_explain"
+                        />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/no_relation_divide_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/gray17"
+                    app:layout_constraintTop_toBottomOf="@id/no_relation_radio_button"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/spam_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/radio_button_checked_24dp"
+                    app:layout_constraintTop_toBottomOf="@id/no_relation_divide_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="@id/spam_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/spam_radio_button"
+                    app:layout_constraintStart_toEndOf="@id/spam_radio_button"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="@string/review_spam"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="@string/review_spam_explain"
+                        />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/spam_divide_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/gray17"
+                    app:layout_constraintTop_toBottomOf="@id/spam_radio_button"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/abuse_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/radio_button_checked_24dp"
+                    app:layout_constraintTop_toBottomOf="@id/spam_divide_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="@id/abuse_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/abuse_radio_button"
+                    app:layout_constraintStart_toEndOf="@id/abuse_radio_button"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="@string/review_abuse"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="@string/review_abuse_explain"
+                        />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/abuse_divide_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/gray17"
+                    app:layout_constraintTop_toBottomOf="@id/abuse_radio_button"
+                    />
+
+                <ImageView
+                    android:id="@+id/private_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/radio_button_checked_24dp"
+                    app:layout_constraintTop_toBottomOf="@id/abuse_divide_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="@id/private_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/private_radio_button"
+                    app:layout_constraintStart_toEndOf="@id/private_radio_button"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="@string/review_private"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:text="@string/review_private_explain"
+                        />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/private_divide_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/gray17"
+                    app:layout_constraintTop_toBottomOf="@id/private_radio_button"
+                    />
+
+
+                <ImageView
+                    android:id="@+id/etc_radio_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="30dp"
+                    android:src="@drawable/radio_button_checked_24dp"
+                    app:layout_constraintTop_toBottomOf="@id/private_divide_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기타"
+                    android:textSize="16dp"
+                    android:layout_marginStart="16dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintTop_toTopOf="@id/etc_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/etc_radio_button"
+                    app:layout_constraintStart_toEndOf="@id/etc_radio_button"
+                    />
+
+                <TextView
+                    android:id="@+id/character_range_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0/150"
+                    android:textSize="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="34dp"
+                    app:layout_constraintTop_toTopOf="@id/etc_radio_button"
+                    app:layout_constraintBottom_toBottomOf="@id/etc_radio_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <EditText
+                    android:id="@+id/input_report_reason_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edittext_border_5dp_radius"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:textSize="14dp"
+                    android:maxLength="150"
+                    android:hint="@string/review_report_reason_input"
+                    app:layout_constraintTop_toBottomOf="@id/etc_radio_button"
+                    />
+
+                <Button
+                    android:id="@+id/report_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="@string/report"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/input_report_reason_edittext"
+                    android:layout_marginHorizontal="24dp"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

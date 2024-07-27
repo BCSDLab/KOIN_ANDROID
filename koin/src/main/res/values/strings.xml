@@ -455,4 +455,20 @@
     <!--리뷰 기능-->
     <string name="review">리뷰</string>
     <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
+    <string name="review_report">리뷰 신고하기</string>
+    <string name="review_report_reason_choose">신고 이유를 선택해주세요.</string>
+    <string name="review_report_reason_input">신고 사유를 입력해주세요.</string>
+    <string name="review_will_be_blinded">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
+    <string name="review_not_relation">주제에 맞지 않음</string>
+    <string name="review_not_relation_explain">해당 음식점과 관련 없는 리뷰입니다.</string>
+    <string name="review_spam">스팸</string>
+    <string name="review_spam_explain">광고가 포함된 리뷰입니다.</string>
+    <string name="review_abuse">욕설</string>
+    <string name="review_abuse_explain">욕설, 성적인 언어, 비방하는 글이 포함된 리뷰입니다.</string>
+    <string name="review_private">개인정보</string>
+    <string name="review_private_explain">개인정보가 포함된 리뷰입니다.</string>
+    <string name="report">신고하기</string>
+
+    <string name="review_null_check_box">1개 이상의 신고 이유를 선택해주세요.</string>
+    <string name="review_report_complete">해당 리뷰의 신고가 완료되었습니다.</string>
 </resources>
