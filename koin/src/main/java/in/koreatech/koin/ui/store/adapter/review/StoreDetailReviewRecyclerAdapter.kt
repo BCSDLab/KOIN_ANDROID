@@ -1,9 +1,13 @@
 package `in`.koreatech.koin.ui.store.adapter.review
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
@@ -14,8 +18,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
+import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 
 
 class StoreDetailReviewRecyclerAdapter ():
@@ -26,6 +32,7 @@ class StoreDetailReviewRecyclerAdapter ():
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
+    var storeId: Int? = null
 
     inner class StoreDetailReviewViewHolder(val binding: ItemStoreDetailReviewBinding) : RecyclerView.ViewHolder(binding.root){
         val isMineIcon = binding.iconMyReview
@@ -35,6 +42,7 @@ class StoreDetailReviewRecyclerAdapter ():
         val reviewContent = binding.reviewContentTextview
         val reviewImageRecyclerView = binding.reviewImageRecyclerview
         val reviewMenuRecyclerview = binding.reviewMenuRecyclerview
+        val iconKebab = binding.iconKebab
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder {
@@ -48,14 +56,61 @@ class StoreDetailReviewRecyclerAdapter ():
 
         with(holder){
 
+            if(review.isMine) {
+                isMineIcon.isVisible = true
+
+                iconKebab.setOnClickListener {
+
+                    val popup = PopupMenu(iconKebab.context, iconKebab)
+                    popup.menuInflater.inflate(R.menu.review_mine_kebab_menu, popup.menu)
+
+                    // 메뉴 아이템 클릭 리스너 설정
+                    popup.setOnMenuItemClickListener { item: MenuItem ->
+                        when (item.itemId) {
+                            R.id.action_modify -> {
+
+                                true
+                            }
+                            R.id.action_delete -> {
+
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+
+                    // 팝업 메뉴 표시
+                    popup.show()
+                }
+            }
+            else{
+                iconKebab.setOnClickListener {
+
+                    val popup = PopupMenu(iconKebab.context, iconKebab)
+                    popup.menuInflater.inflate(R.menu.review_other_kebab_menu, popup.menu)
+
+                    popup.setOnMenuItemClickListener { item: MenuItem ->
+                        when (item.itemId) {
+                            R.id.action_report -> {
+                                val context = iconKebab.context
+                                val intent = Intent(context, StoreReviewReportActivity::class.java)
+                                intent.putExtra("storeId", storeId)
+                                intent.putExtra("reviewId", review.reviewId)
+                                context.startActivity(intent)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    popup.show()
+                }
+            }
 
             val storeDetailReviewImageRecyclerAdapter = StoreDetailReviewImageRecyclerAdapter()
             storeDetailReviewImageRecyclerAdapter.submitList(review.imageUrls)
 
             val storeDetailReviewMenuRecyclerAdapter = StoreDetailReviewMenuRecyclerAdapter()
             storeDetailReviewMenuRecyclerAdapter.submitList(review.menuNames)
-
-            if(review.isMine) isMineIcon.isVisible = true
 
             nickName.text = review.nickName
             rating.rating = review.rating.toFloat()

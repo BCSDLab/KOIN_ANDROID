@@ -85,6 +85,7 @@ class StoreDetailReviewFragment : Fragment() {
     private fun initViewModel() {
         observeLiveData(viewModel.storeReview) {
             storeDetailReviewRecyclerAdapter.submitList(it.reviews)
+            storeDetailReviewRecyclerAdapter.storeId = viewModel.store.value?.uid
         }
 
     }

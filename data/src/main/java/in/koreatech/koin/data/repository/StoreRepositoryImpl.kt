@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import android.util.Log
+import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreEvent
@@ -8,7 +9,9 @@ import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreReview
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
+import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
+import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -17,6 +20,7 @@ import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.repository.StoreRepository
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class StoreRepositoryImpl @Inject constructor(
@@ -68,5 +72,28 @@ class StoreRepositoryImpl @Inject constructor(
 
     override suspend fun invalidateStores() {
         stores = null
+    }
+
+    override suspend fun reportReview(
+        storeId: Int?,
+        reviewId: Int?,
+        reportTitle: String,
+        reportReason: String
+    ): Result<Unit> {
+        return try {
+            if (storeId != null && reviewId != null) {
+                storeRemoteDataSource.postReviewReports(
+                    storeId,reviewId, reportTitle, reportReason
+                )
+            }
+            Result.success(Unit)
+        }
+        catch (e: HttpException) {
+            if (e.code() == 204) Result.success(Unit)
+            else Result.failure(e)
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

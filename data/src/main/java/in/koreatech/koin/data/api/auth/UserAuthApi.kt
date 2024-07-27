@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
@@ -52,4 +53,11 @@ interface UserAuthApi {
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
     suspend fun getShopReviewsWithAuth(@Path("id") uid: Int): StoreReviewResponse
+
+    @POST(URLConstant.SHOPS.SHOPS +"/{storeId}" + "/reviews" + "/{reviewId}" + "/reports")
+    suspend fun postStoreReviewReports(
+        @Path("storeId") storeId: Int,
+        @Path("reviewId") reviewId: Int,
+        @Body storeReviewReportsRequest: StoreReviewReportsRequest
+    ):Response<Unit?>
 }
