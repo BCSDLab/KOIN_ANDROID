@@ -97,28 +97,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }.toMap()
     }
 
-    private val menuTextViews by lazy {
-        listOf(
-            R.id.navi_item_store_textview,
-            R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
-            R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
-        ).map {
-            findViewById<TextView>(it).apply {
-                changeMenuFont(this)
-            }
-        }.zip(
-            listOf(
-                MenuState.Store,
-                MenuState.Bus,
-                MenuState.Dining,
-                MenuState.Timetable,
-                MenuState.Land
-            )
-        ) { view, state ->
-            state to view
-        }.toMap()
-    }
-
     private val requestMainPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permission ->
@@ -225,7 +203,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         initDrawerViewModel()
         koinNavigationDrawerViewModel.getUser()
-        koinNavigationDrawerViewModel.initMenu(menuState)
     }
 
     override fun onAttachedToWindow() {
@@ -266,16 +243,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         }
                         else -> Unit
                     }
-                }
-            }
-        }
-
-        observeLiveData(selectedMenu) {
-            menuTextViews.forEach { (state, textView) ->
-                if (menuState == state) {
-                    textView.selected
-                } else {
-                    textView.normal
                 }
             }
         }
