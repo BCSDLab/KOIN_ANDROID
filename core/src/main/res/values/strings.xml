@@ -38,40 +38,23 @@
     <string name="close">닫기</string>
     <string name="my_shop">내 상점</string>
 
-    <!--left drawer menu -->
+    <!-- drawer menu -->
     <string name="home">홈</string>
 
-    <!--학교 정보-->
-    <string name="navigation_item_store">상점</string>
-    <string name="navigation_item_bus">버스/교통</string>
+    <string name="navigation_hello_message">님, 안녕하세요!</string>
+    <string name="navigation_item_my_info">내 정보</string>
+    <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_item_login">로그인</string>
+
+    <string name="navigation_item_store">주변 상점</string>
+    <string name="navigation_item_bus">버스 / 교통</string>
     <string name="navigation_item_dining">식단</string>
-    <string name="navigation_item_circle">동아리</string>
-    <!--<string name="navigation_item_faq">FAQ</string>-->
-
-    <!--커뮤니티-->
-    <string name="navigation_item_free_board">자유게시판</string>
-    <string name="navigation_item_anonymous_board">익명게시판</string>
-    <string name="navigation_item_recruit_board">취업게시판</string>
-
-    <!--부가서비스-->
-    <string name="navigation_item_callvan_sharing">콜밴쉐어링</string>
-    <!--<string name="navigation_item_real_estate">복덕방</string>-->
-    <string name="navigation_item_usedmarket">중고장터</string>
+    <string name="navigation_item_land">복덕방</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
-
-    <!--right drawer menu-->
-    <string name="navigation_item_user_info">회원 정보</string>
-    <!--<string name="navigation_item_setting">설정</string>-->
-    <string name="navigation_item_koin_page">코인 사이트</string>
-    <!--<string name="navigation_item_user_request">문의 사항</string>-->
-    <string name="navigation_item_kakao_talk">카카오톡 대화</string>
-    <string name="navigation_item_version_info">버전 정보</string>
-    <string name="navigation_item_developer">만든 이</string>
-    <string name="navigation_item_open_source">오픈소스</string>
-    <string name="navigation_item_login">로그인</string>
-    <string name="navigation_item_logout">로그아웃</string>
-
+    <string name="navigation_item_owner">코인 사장님</string>
+    <string name="navigation_item_ask_bcsd">문의하기</string>
+    <!--End left drawer menu -->
 
     <!-- Server Messages -->
     <string name="server_failed">서버와 연결에 실패하였습니다</string>
@@ -100,9 +83,6 @@
 
     <string name="fail_upload">업로드에 실패하였습니다.</string>
     <string name="uploading_image_now">이미지 업로드 중입니다.</string>
-    <string name="navigation_drawer_right_button_ask">문의하기</string>
-    <string name="navigation_drawer_right_hello_message">님, 안녕하세요!</string>
-    <string name="navigation_drawer_right_myinfo">내 정보</string>
     <string name="hamburger">햄버거</string>
 
     <!-- 가게 등록 -->

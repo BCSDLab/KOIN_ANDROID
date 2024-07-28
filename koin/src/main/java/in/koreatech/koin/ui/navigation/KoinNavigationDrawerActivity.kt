@@ -3,13 +3,10 @@ package `in`.koreatech.koin.ui.navigation
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -35,7 +32,6 @@ import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.notification.NotificationActivity
@@ -62,7 +58,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
 
-    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
+//    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
 
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(drawerLayoutId)
@@ -167,14 +163,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
-                                        getString(R.string.navigation_drawer_right_myinfo)
+                                        getString(R.string.navigation_item_my_info)
                                     )
                                     showLoginRequestDialog()
                                 } else {
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
-                                        getString(R.string.navigation_drawer_right_myinfo)
+                                        getString(R.string.navigation_item_my_info)
                                     )
                                 }
                             }
@@ -191,15 +187,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             drawerLayout.closeDrawer()
         }
 
-        val logoImageView = findViewById<View>(R.id.bcsd_logo)
-        logoImageView.setOnClickListener {
-            goToNavigationDeveloper()
-        }
-
-        val askButton = findViewById<Button>(R.id.button_ask)
-        askButton.setOnClickListener {
-            gotoAskForm.launch(Unit)
-        }
+//        val askButton = findViewById<TextView>(R.id.tv_ask)
+//        askButton.setOnClickListener {
+//            gotoAskForm.launch(Unit)
+//        }
 
         initDrawerViewModel()
         koinNavigationDrawerViewModel.getUser()
@@ -231,7 +222,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(userState) { user ->
-            val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
+            val nameTextview = findViewById<TextView>(R.id.navi_user_nickname)
             when (user) {
                 User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
                 is User.Student -> {
