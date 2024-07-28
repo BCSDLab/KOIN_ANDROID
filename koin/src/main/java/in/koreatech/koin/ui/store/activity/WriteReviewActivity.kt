@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.widget.RatingBar
@@ -7,10 +8,13 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.internal.TextWatcherAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
@@ -71,8 +75,7 @@ class WriteReviewActivity : AppCompatActivity() {
         val storeId = intent.getIntExtra("storeId", -1)
         with(binding) {
             storeNameTextView.text = storeName
-            menuRecyclerView.adapter = menuRecyclerViewAdapter
-            imageRecyclerView.adapter = menuImageRecyclerViewAdapter
+
 
             starRating.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
@@ -92,6 +95,51 @@ class WriteReviewActivity : AppCompatActivity() {
             addMenuButton.setOnClickListener {
                 menuRecyclerViewAdapter.addMenu()
             }
+            menuRecyclerView.adapter = menuRecyclerViewAdapter
+            imageRecyclerView.adapter = menuImageRecyclerViewAdapter
+
+            reviewEditText.addTextChangedListener(@SuppressLint("RestrictedApi")
+            object : TextWatcherAdapter() {
+                var maxText = ""
+                override fun beforeTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                    super.beforeTextChanged(s, start, count, after)
+                    maxText = s.toString()
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence,
+                    start: Int,
+                    before: Int,
+                    count: Int
+                ) {
+                    super.onTextChanged(s, start, before, count)
+                    charactersNumber.text = "${reviewEditText.length()}/500"
+                    if (s.length > 500) {
+                        reviewEditText.setText(maxText)
+                        reviewEditText.setSelection(maxText.length - 1)
+                        charactersNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.colorAccent
+                            )
+                        )
+                    } else {
+                        charactersNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray18
+                            )
+                        )
+                    }
+
+                }
+            })
+
         }
     }
 
@@ -104,6 +152,15 @@ class WriteReviewActivity : AppCompatActivity() {
                     if (it.isNotEmpty()) binding.imageContainer.visibility =
                         android.view.View.VISIBLE else binding.imageContainer.visibility =
                         android.view.View.GONE
+
+                    binding.imageNumber.text = "${it.size}/3"
+                    binding.imageNumber.setTextColor(
+                        if (it.size == 3)
+                            ContextCompat.getColor(this@WriteReviewActivity, R.color.colorAccent)
+                        else
+                            ContextCompat.getColor(this@WriteReviewActivity, R.color.gray18)
+                    )
+
                 }
             }
         }
