@@ -105,6 +105,15 @@ object AuthNetworkModule {
         return retrofit.create(UserAuthApi::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideUploadUrlApi(
+        @Auth retrofit: Retrofit
+    ): UploadUrlApi {
+        return retrofit.create(UploadUrlApi::class.java)
+    }
+
+
 }
 
 @Module
@@ -165,14 +174,6 @@ object OwnerAuthNetworkModule {
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideUploadUrlApi(
-        @OwnerAuth retrofit: Retrofit
-    ): UploadUrlApi {
-        return retrofit.create(UploadUrlApi::class.java)
     }
 
     @Provides
