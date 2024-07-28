@@ -46,7 +46,12 @@
 
         <activity
             android:name=".ui.store.activity.WriteReviewActivity"
-            android:exported="false" />
+            android:exported="false">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+        </intent-filter>
+        </activity>
+        
 
         <activity
             android:name=".ui.notification.NotificationActivity"
