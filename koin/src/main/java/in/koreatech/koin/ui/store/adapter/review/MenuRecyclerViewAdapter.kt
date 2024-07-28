@@ -12,24 +12,29 @@ import `in`.koreatech.koin.databinding.ItemReviewMenuBinding
 class MenuRecyclerViewAdapter() :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val menuList: ArrayList<String> = ArrayList()
-    private val textWatcherMap: MutableMap<Int, TextWatcher> = mutableMapOf()
+    private val textWatcherMap: ArrayList<TextWatcher> = ArrayList()
 
     inner class MenuViewHolder(val binding: ItemReviewMenuBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             binding.deleteMenuButton.setOnClickListener {
+                textWatcherMap.removeAt(position)
                 menuList.removeAt(position)
                 notifyItemRemoved(position)
                 notifyItemRangeChanged(position, itemCount)
+                textWatcherMap.forEach {
+                    binding.menuNameEditText.addTextChangedListener(it)
+                }
             }
-            binding.menuNameEditText.removeTextChangedListener(textWatcherMap[position])
-            textWatcherMap[position] = @SuppressLint("RestrictedApi")
+            val textWatcher = @SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
                 @SuppressLint("RestrictedApi")
                 override fun afterTextChanged(s: Editable) {
-                    menuList[position] = s.toString()
+                    if(position<menuList.size)
+                        menuList[position] = s.toString()
                 }
             }
+            textWatcherMap.add(textWatcher)
             binding.menuNameEditText.addTextChangedListener(textWatcherMap[position])
             binding.menuNameEditText.setText(menuList[position])
         }
@@ -56,7 +61,7 @@ class MenuRecyclerViewAdapter() :
 
     fun addMenu() {
         menuList.add("")
-        notifyItemInserted(menuList.size - 1)
+        notifyItemInserted(menuList.size)
     }
 
     fun getMenuList(): ArrayList<String> {

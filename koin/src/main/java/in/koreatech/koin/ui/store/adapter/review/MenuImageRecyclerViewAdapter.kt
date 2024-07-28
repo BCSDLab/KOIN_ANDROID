@@ -44,11 +44,12 @@ class MenuImageRecyclerViewAdapter(
                 .into(binding.writeReviewImageView)
 
             binding.deleteImageButton.setOnClickListener {
-                val newList = currentList.filterIndexed { index, _ -> index != position }
-                submitList(newList)
-                onDeleteClick(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, itemCount)
+                val updatedList = currentList.filterIndexed { index, _ -> index != position }
+                submitList(updatedList) {
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, itemCount)
+                    onDeleteClick(position)
+                }
             }
         }
     }
