@@ -122,11 +122,11 @@
                     android:id="@+id/image_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0/3"
                     android:textColor="@color/gray18"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/image"
-                    tools:text="1/3" />
+                    app:layout_constraintTop_toTopOf="@+id/image" />
 
                 <TextView
                     android:id="@+id/upload_review_image"
@@ -176,11 +176,11 @@
                     android:id="@+id/characters_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0/500"
                     android:textColor="@color/gray18"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/content"
-                    tools:text="1/500" />
+                    app:layout_constraintTop_toTopOf="@+id/content" />
 
                 <TextView
                     android:id="@+id/content"

@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
