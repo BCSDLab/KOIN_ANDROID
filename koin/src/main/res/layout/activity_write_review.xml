@@ -151,6 +151,7 @@
                     app:layout_constraintTop_toBottomOf="@id/upload_review_image">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/image_recycler_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
