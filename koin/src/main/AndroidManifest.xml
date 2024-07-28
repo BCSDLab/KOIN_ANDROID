@@ -45,7 +45,7 @@
             android:resource="@color/black" />
 
         <activity
-            android:name=".ui.store.activity.ActivityWriteReview"
+            android:name=".ui.store.activity.WriteReviewActivity"
             android:exported="false" />
 
         <activity
