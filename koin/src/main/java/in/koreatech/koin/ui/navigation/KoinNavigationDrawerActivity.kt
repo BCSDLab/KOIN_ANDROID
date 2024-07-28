@@ -70,7 +70,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
-            R.id.navi_item_myinfo, R.id.navi_item_notification,
+            R.id.navi_item_notification,
+            R.id.navi_item_myinfo,
+            R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
             R.id.navi_item_bus, R.id.navi_item_dining,
             R.id.navi_item_timetable, R.id.navi_item_land,
@@ -79,8 +81,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             findViewById<View>(it)
         }.zip(
             listOf(
-                MenuState.UserInfo,
                 MenuState.Notification,
+                MenuState.UserInfo,
+                MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
@@ -165,7 +168,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
                                         getString(R.string.navigation_item_my_info)
                                     )
-                                    showLoginRequestDialog()
                                 } else {
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
@@ -174,6 +176,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                     )
                                 }
                             }
+
+                            MenuState.LoginOrLogout -> {}
 
                             else -> Unit
                         }
@@ -222,16 +226,28 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
         observeLiveData(userState) { user ->
-            val nameTextview = findViewById<TextView>(R.id.navi_user_nickname)
+            val nameTextView = findViewById<TextView>(R.id.navi_user_nickname)
+            val helloMessageTextView = findViewById<TextView>(R.id.navi_hello_message)
+            val loginOrLogoutTextView = menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
             when (user) {
-                User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
+                User.Anonymous -> {
+                    nameTextView.visibility = View.GONE
+                    helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                    loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                }
+
                 is User.Student -> {
-                    nameTextview.text = user.name
+                    nameTextView.text = user.name
+                    nameTextView.visibility = View.VISIBLE
+                    helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                    loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+
                     when (menuState) {
                         MenuState.Main, MenuState.Notification -> {
                             if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
                             koinNavigationDrawerViewModel.updateDeviceToken()
                         }
+
                         else -> Unit
                     }
                 }
@@ -267,6 +283,13 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     } else {
                         goToNotificationActivity()
                     }
+                }
+
+                MenuState.LoginOrLogout -> {
+                    if (userState.value != null && userState.value?.isAnonymous != true) {
+                        logout()
+                    }
+                    goToLoginActivity()
                 }
 
                 else -> Unit
@@ -422,12 +445,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             .setMessage(getString(R.string.login_request))
             .setCancelable(false)
             .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
-                val intent = Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-                intent.putExtra("FIRST_LOGIN", false)
-                startActivity(intent)
+                goToLoginActivity()
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.USER,
                     AnalyticsConstant.Label.USER_ONLY_OK,
@@ -452,6 +470,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         val intent = Intent(this, WebViewActivity::class.java)
         intent.putExtra("title", getString(R.string.bcsd_webpage_name))
         intent.putExtra("url", "https://bcsdlab.com/")
+        startActivity(intent)
+    }
+
+    private fun goToLoginActivity() {
+        val intent = Intent(
+            this,
+            LoginActivity::class.java
+        )
         startActivity(intent)
     }
 
@@ -488,5 +514,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }.toTypedArray()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

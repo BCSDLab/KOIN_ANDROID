@@ -42,6 +42,8 @@
     <string name="home">홈</string>
 
     <string name="navigation_hello_message">님, 안녕하세요!</string>
+    <string name="navigation_hello_message_anonymous">로그인 후 더 많은 기능을 사용하세요.</string>
+
     <string name="navigation_item_my_info">내 정보</string>
     <string name="navigation_item_logout">로그아웃</string>
     <string name="navigation_item_login">로그인</string>
