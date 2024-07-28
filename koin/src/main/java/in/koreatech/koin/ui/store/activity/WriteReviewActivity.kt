@@ -95,6 +95,15 @@ class WriteReviewActivity : AppCompatActivity() {
             addMenuButton.setOnClickListener {
                 menuRecyclerViewAdapter.addMenu()
             }
+            writeReviewButton.setOnClickListener{
+                viewModel.writeReview(
+                    storeId, Review(
+                        starRating.rating.toInt(), reviewEditText.text.toString(),
+                        viewModel.menuImageUrls.value, viewModel.menuList.value,
+                    )
+                )
+                finish();
+            }
             menuRecyclerView.adapter = menuRecyclerViewAdapter
             imageRecyclerView.adapter = menuImageRecyclerViewAdapter
 
