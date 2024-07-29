@@ -27,7 +27,6 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.withLoading
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -72,7 +71,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         lifecycleScope.launch {
             viewModel.userState.collect {
                 if(it != null && it.isAnonymous.not()) {
-                    viewModel.getShouldShowNotificationOnBoarding()
+                    viewModel.shouldShowNotificationOnBoarding()
                 }
             }
         }
