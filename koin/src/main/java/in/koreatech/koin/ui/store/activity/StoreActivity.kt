@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -48,6 +49,9 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
+
+    private var startTime: Long = 0
+    private var elapsedTime: Long = 0
 
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
 
@@ -307,10 +311,22 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     override fun onPause() {
         super.onPause()
         viewPagerHandler.removeCallbacks(runnable)
+        elapsedTime += SystemClock.elapsedRealtime() - startTime
     }
 
     override fun onResume() {
         super.onResume()
         startAutoScroll()
+        startTime = SystemClock.elapsedRealtime()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong("elapsedTime" , elapsedTime)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        elapsedTime = savedInstanceState.getLong("elapsedTime")
     }
 }
