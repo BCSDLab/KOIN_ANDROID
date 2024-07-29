@@ -284,6 +284,8 @@
     <string name="bus_timetable_city_ride_time">종합터미널 - 병천</string>
     <string name="bus_timetable_shuttle_time_format">HH:mm</string>
     <string name="bus_timetable_search_result_dialog_close">닫기</string>
+    <string name="bus_goto_timetable">시간표 보러가기</string>
+    <string name="bus_goto_unibus">유니버스 바로가기</string>
     <string name="store_empty_detail">-</string>
     <string name="store_open_close_time_mark">" ~ "</string>
     <string name="store_delivery_free">무료</string>
