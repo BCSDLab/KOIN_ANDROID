@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/btn_dining_notice_topbar"
+            android:id="@+id/btn_dining_notice_topbar_back"
             android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
