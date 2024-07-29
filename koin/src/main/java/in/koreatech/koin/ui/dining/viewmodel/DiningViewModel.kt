@@ -43,7 +43,7 @@ class DiningViewModel @Inject constructor(
         getUser()
     }
 
-    fun getShouldShowNotificationOnBoarding() {
+    fun shouldShowNotificationOnBoarding() {
         viewModelScope.launchWithLoading {
             getShouldShowNotiOnBoardingUseCase()
                 .onSuccess {
