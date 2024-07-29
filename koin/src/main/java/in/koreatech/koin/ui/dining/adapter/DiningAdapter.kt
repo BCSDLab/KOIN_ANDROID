@@ -16,6 +16,7 @@ import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 
 class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
@@ -58,7 +59,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         private fun setDiningCard(context: Context, dining: Dining) {
             with (dining) {
                 // 능수관, 2캠퍼스일 때 이미지 카드 노출 X
-                if (place == context.getString(R.string.dining_nungsu) || place == context.getString(R.string.dining_2campus)) {
+                if (place == DiningPlace.Nungsu.place || place == DiningPlace.Campus2.place) {
                     binding.cardViewDining.visibility = View.GONE
                 }
                 // 아침 이미지 분기처리
