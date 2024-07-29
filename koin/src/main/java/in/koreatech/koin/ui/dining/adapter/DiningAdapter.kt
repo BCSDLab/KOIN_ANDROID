@@ -75,26 +75,28 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
         }
 
         private fun showDiningImage(context: Context, dining: Dining){
-            binding.cardViewDining.visibility = View.VISIBLE
-            binding.cardViewDining.strokeWidth = 0
-            binding.textViewNoPhoto.visibility = View.INVISIBLE
-            binding.imageViewNoPhoto.visibility = View.INVISIBLE
-            binding.imageViewDining.visibility = View.VISIBLE
+            with(binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth = 0
+                textViewNoPhoto.visibility = View.INVISIBLE
+                imageViewNoPhoto.visibility = View.INVISIBLE
+                imageViewDining.visibility = View.VISIBLE
 
-            Glide.with(context)
-                .load(dining.imageUrl)
-                .into(binding.imageViewDining)
-            
-            // 이미지 클릭시 dialog 형태로 노출
-            val dialog = ImageZoomableDialog(context, dining.imageUrl)
-            dialog.initialScale = 0.75f
-            binding.cardViewDining.setOnClickListener {
-                dialog.show()
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
-                    AnalyticsConstant.Label.MENU_IMAGE,
-                    DiningUtil.getKoreanName(dining.type) + "_" + dining.place
-                )
+                Glide.with(context)
+                    .load(dining.imageUrl)
+                    .into(imageViewDining)
+
+                // 이미지 클릭시 dialog 형태로 노출
+                val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                dialog.initialScale = 0.75f
+                cardViewDining.setOnClickListener {
+                    dialog.show()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
             }
         }
 
