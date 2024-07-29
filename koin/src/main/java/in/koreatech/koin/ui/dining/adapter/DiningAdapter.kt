@@ -25,6 +25,7 @@ import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.util.ext.toStringWithComma
 import kotlinx.coroutines.CoroutineScope
@@ -161,6 +162,7 @@ class DiningAdapter(
                                                 binding.root.context,
                                                 LoginActivity::class.java
                                             )
+                                            intent.putExtra("activity", DiningActivity::class.java)
                                             binding.root.context.startActivity(intent)
                                         },
                                         onNegativeButtonClicked = {
