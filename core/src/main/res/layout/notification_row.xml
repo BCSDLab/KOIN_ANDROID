@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/gray12"
-        android:textSize="16sp"
+        android:textColor="@color/neutral_600"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_switch"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/btn_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="26dp"
         android:background="@null"
         android:thumb="@drawable/selector_thumb"
         app:layout_constraintBottom_toBottomOf="@id/tv_title"
@@ -34,7 +34,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/btn_switch_fake"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="26dp"
         android:background="@null"
         android:checked="true"
         android:thumb="@drawable/selector_thumb"
