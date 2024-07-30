@@ -64,22 +64,15 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
             notificationShopEvent.isEnabled = true
             notificationDiningImageUpload.isEnabled = true
         }
-
     }
 
     private fun permissionDenied() {
         updateDiningSoldOutVisibility(false)
         with(binding) {
             textViewNotificationSetting.isVisible = true
-            notificationDiningSoldOut.isEnabled = false
-            notificationDiningSoldOut.isChecked = false
-            notificationDiningSoldOut.fakeChecked = false
-            notificationShopEvent.isEnabled = false
-            notificationShopEvent.isChecked = false
-            notificationShopEvent.fakeChecked = false
-            notificationDiningImageUpload.isEnabled = false
-            notificationDiningImageUpload.isChecked = false
-            notificationDiningImageUpload.fakeChecked = false
+            notificationDiningSoldOut.disableAll()
+            notificationShopEvent.disableAll()
+            notificationDiningImageUpload.disableAll()
         }
     }
 
@@ -91,25 +84,25 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                         is NotificationUiState.Success -> {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 when (it.type) {
-                                    SubscribesType.SHOP_EVENT -> {
-                                        if (binding.notificationShopEvent.isChecked != it.isPermit) {
-                                            binding.notificationShopEvent.fakeChecked = it.isPermit
-                                            binding.notificationShopEvent.isChecked = it.isPermit
+                                    SubscribesType.SHOP_EVENT -> with(binding.notificationShopEvent) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
                                         }
                                     }
 
-                                    SubscribesType.DINING_SOLD_OUT -> {
-                                        if (binding.notificationDiningSoldOut.isChecked != it.isPermit) {
-                                            binding.notificationDiningSoldOut.fakeChecked = it.isPermit
-                                            binding.notificationDiningSoldOut.isChecked = it.isPermit
-                                            updateDiningSoldOutVisibility(it.isPermit)
+                                    SubscribesType.DINING_SOLD_OUT -> with(binding.notificationDiningSoldOut) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
+                                            updateDiningSoldOutVisibility (it.isPermit)
                                         }
                                     }
 
-                                    SubscribesType.DINING_IMAGE_UPLOAD -> {
-                                        if (binding.notificationDiningImageUpload.isChecked != it.isPermit) {
-                                            binding.notificationDiningImageUpload.fakeChecked = it.isPermit
-                                            binding.notificationDiningImageUpload.isChecked = it.isPermit
+                                    SubscribesType.DINING_IMAGE_UPLOAD -> with(binding.notificationDiningImageUpload) {
+                                        if (isChecked != it.isPermit) {
+                                            fakeChecked = it.isPermit
+                                            isChecked = it.isPermit
                                         }
                                     }
 
@@ -119,24 +112,24 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                             uiState.notificationPermissionInfo.subscribes.forEach {
                                 it.detailSubscribes.forEach { detail ->
                                     when (detail.type) {
-                                        SubscribesDetailType.BREAKFAST -> {
-                                            if (binding.notificationDiningBreakfastSoldOut.isChecked != detail.isPermit) {
-                                                binding.notificationDiningBreakfastSoldOut.fakeChecked = detail.isPermit
-                                                binding.notificationDiningBreakfastSoldOut.isChecked = detail.isPermit
+                                        SubscribesDetailType.BREAKFAST -> with(binding.notificationDiningBreakfastSoldOut) {
+                                            if (isChecked != detail.isPermit) {
+                                                fakeChecked = detail.isPermit
+                                                isChecked = detail.isPermit
                                             }
                                         }
 
-                                        SubscribesDetailType.LUNCH -> {
-                                            if (binding.notificationDiningLunchSoldOut.isChecked != detail.isPermit) {
-                                                binding.notificationDiningLunchSoldOut.fakeChecked = detail.isPermit
-                                                binding.notificationDiningLunchSoldOut.isChecked = detail.isPermit
+                                        SubscribesDetailType.LUNCH -> with(binding.notificationDiningLunchSoldOut) {
+                                            if (isChecked != detail.isPermit) {
+                                                fakeChecked = detail.isPermit
+                                                isChecked = detail.isPermit
                                             }
                                         }
 
-                                        SubscribesDetailType.DINNER -> {
-                                            if (binding.notificationDiningDinnerSoldOut.isChecked != detail.isPermit) {
-                                                binding.notificationDiningDinnerSoldOut.fakeChecked = detail.isPermit
-                                                binding.notificationDiningDinnerSoldOut.isChecked = detail.isPermit
+                                        SubscribesDetailType.DINNER -> with(binding.notificationDiningDinnerSoldOut) {
+                                            if (isChecked != detail.isPermit) {
+                                                fakeChecked = detail.isPermit
+                                                isChecked = detail.isPermit
                                             }
                                         }
 
