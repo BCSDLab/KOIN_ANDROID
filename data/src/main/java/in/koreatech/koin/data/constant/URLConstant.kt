@@ -23,6 +23,9 @@ object URLConstant {
     const val LAND = "lands"
     const val TERM = "term"
 
+    // external url
+    const val UNIBUS = "koreatech.unibus.kr"
+
     object SHOPS{
         const val OWNERSHOPS= "owner/shops"
         const val SHOPS = "shops"
