@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Spinner
-            android:id="@+id/bus_timetable_courses_spinner"
-            style="@style/TextAppearance.Koin.Medium.16"
-            android:layout_width="0dp"
+        <ToggleButton
+            android:id="@+id/bus_timetable_city_course_toggle"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/spinner_default"
-            android:lineSpacingExtra="6sp"
-            android:overlapAnchor="false"
-            app:layout_constraintEnd_toStartOf="@id/bus_timetable_routes_spinner"
+            android:background="@drawable/bg_gray18_border_gray16_radius_8"
+            android:checked="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.16"
+            android:textOff="터미널 -> 병천"
+            android:textOn="병천 -> 터미널"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:entries="@array/bus_stop_cheonan_start_end_season" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/bus_timetable_routes_spinner"
+            android:id="@+id/bus_timetable_city_bus_number_spinner"
             style="@style/TextAppearance.Koin.Medium.16"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:paddingEnd="36dp"
             android:background="@drawable/spinner_default"
             android:lineSpacingExtra="6sp"
             android:overlapAnchor="false"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bus_timetable_courses_spinner"
             app:layout_constraintTop_toTopOf="parent"
             tools:entries="@array/bus_stop_cheonan_start_end" />
 
@@ -46,7 +45,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bus_timetable_courses_spinner" />
+            app:layout_constraintTop_toBottomOf="@id/bus_timetable_city_course_toggle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
