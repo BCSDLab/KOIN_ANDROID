@@ -138,7 +138,7 @@
                     app:layout_constraintTop_toBottomOf="@id/notification_dining_photo_upload" />
 
                 <in.koreatech.koin.core.view.notificaiton.NotificationHeader
-                    android:id="@+id/notification_dining_photo_upload"
+                    android:id="@+id/notification_dining_image_upload"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:description="@string/notification_dining_photo_description"
@@ -151,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gray2"
-                    app:layout_constraintTop_toBottomOf="@id/notification_dining_photo_upload" />
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_image_upload" />
 
                 <TextView
                     android:id="@+id/text_view_store"
@@ -165,7 +165,7 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_photo_upload" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_image_upload" />
 
                 <in.koreatech.koin.core.view.notificaiton.NotificationHeader
                     android:id="@+id/notification_shop_event"

@@ -58,20 +58,29 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun permissionGranted() {
         viewModel.getPermissionInfo()
-        binding.notificationDiningSoldOut.isEnabled = true
-        binding.notificationShopEvent.isEnabled = true
-        binding.textViewNotificationSetting.isVisible = false
+        with(binding) {
+            textViewNotificationSetting.isVisible = false
+            notificationDiningSoldOut.isEnabled = true
+            notificationShopEvent.isEnabled = true
+            notificationDiningImageUpload.isEnabled = true
+        }
+
     }
 
     private fun permissionDenied() {
         updateDiningSoldOutVisibility(false)
-        binding.notificationDiningSoldOut.isEnabled = false
-        binding.notificationShopEvent.isEnabled = false
-        binding.notificationDiningSoldOut.isChecked = false
-        binding.notificationDiningSoldOut.fakeChecked = false
-        binding.notificationShopEvent.isChecked = false
-        binding.notificationShopEvent.fakeChecked = false
-        binding.textViewNotificationSetting.isVisible = true
+        with(binding) {
+            textViewNotificationSetting.isVisible = true
+            notificationDiningSoldOut.isEnabled = false
+            notificationDiningSoldOut.isChecked = false
+            notificationDiningSoldOut.fakeChecked = false
+            notificationShopEvent.isEnabled = false
+            notificationShopEvent.isChecked = false
+            notificationShopEvent.fakeChecked = false
+            notificationDiningImageUpload.isEnabled = false
+            notificationDiningImageUpload.isChecked = false
+            notificationDiningImageUpload.fakeChecked = false
+        }
     }
 
     private fun observeData() {
@@ -98,9 +107,9 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                     }
 
                                     SubscribesType.DINING_IMAGE_UPLOAD -> {
-                                        if (binding.notificationDiningPhotoUpload.isChecked != it.isPermit) {
-                                            binding.notificationDiningPhotoUpload.fakeChecked = it.isPermit
-                                            binding.notificationDiningPhotoUpload.isChecked = it.isPermit
+                                        if (binding.notificationDiningImageUpload.isChecked != it.isPermit) {
+                                            binding.notificationDiningImageUpload.fakeChecked = it.isPermit
+                                            binding.notificationDiningImageUpload.isChecked = it.isPermit
                                         }
                                     }
 
@@ -157,9 +166,6 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         }
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
-        }
-        binding.notificationDiningPhotoUpload.setOnSwitchClickListener { isChecked ->
-            handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
     }
 
