@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -45,21 +46,24 @@ import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray9
+import `in`.koreatech.koin.domain.util.DateFormatUtil.dayOfWeekToIndex
+import `in`.koreatech.koin.domain.util.StoreUtil
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-
 
 @Composable
 fun ModifyInfoScreen(
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
     viewModel: ModifyInfoViewModel = hiltViewModel(),
+    storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel(),
     onSettingOperatingClicked: () -> Unit = {},
 ) {
-    val storeInfoViewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val storeInfoState = storeInfoViewModel.collectAsState().value
     val listState = rememberLazyListState()
+    val context = LocalContext.current
+
     Column {
         Box(
             modifier = Modifier
@@ -68,13 +72,13 @@ fun ModifyInfoScreen(
         ) {
             IconButton(onClick = { viewModel.onBackButtonClicked() }) {
                 Image(
-                    painter = painterResource(id = `in`.koreatech.koin.core.R.drawable.ic_flyer_before_arrow),
-                    contentDescription = stringResource(`in`.koreatech.koin.core.R.string.back),
+                    painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
+                    contentDescription = stringResource(R.string.back),
                     colorFilter = ColorFilter.tint(Color.White),
                 )
             }
             Text(
-                text = stringResource(id = `in`.koreatech.koin.core.R.string.my_shop),
+                text = stringResource(id = R.string.my_shop),
                 modifier = Modifier.align(Alignment.Center),
                 style = TextStyle(color = Color.White, fontSize = 18.sp),
             )
@@ -94,7 +98,7 @@ fun ModifyInfoScreen(
                 ) {
                     Image(
                         modifier = Modifier.height(255.dp),
-                        painter = storeInfoState.storeInfo?.imageUrls?.getOrNull(0)
+                        painter = state.storeInfo?.imageUrls?.getOrNull(0)
                             .let { painterResource(id = R.drawable.no_image) },
                         contentDescription = stringResource(R.string.shop_image),
                         contentScale = ContentScale.Crop,
@@ -123,15 +127,15 @@ fun ModifyInfoScreen(
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.shop_name),
-                    data = storeInfoState.storeInfo?.name ?: "",
-                    onValueChange = { storeInfoViewModel.onStoreNameChanged(it) }
+                    data = state.storeInfo?.name ?: "",
+                    onValueChange = { viewModel.onStoreNameChanged(it) }
                 )
             }
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.telephone_number),
-                    data = storeInfoState.storeInfo?.phone ?: "",
-                    onValueChange = { storeInfoViewModel.onPhoneNumberChanged(it) }
+                    data = state.storeInfo?.phone ?: "",
+                    onValueChange = { viewModel.onPhoneNumberChanged(it) }
                 )
             }
             item {
@@ -157,28 +161,20 @@ fun ModifyInfoScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Column {
-                            state.operatingTimeList.forEach { item ->
-                                val openTimeFormatted = String.format(
-                                    "%02d:%02d",
-                                    item.operatingTime.openTime.hours,
-                                    item.operatingTime.openTime.minutes
-                                )
-                                val closeTimeFormatted = String.format(
-                                    "%02d:%02d",
-                                    item.operatingTime.closeTime.hours,
-                                    item.operatingTime.closeTime.minutes
-                                )
+                            state.storeInfo?.operatingTime?.forEach { item ->
+                                val dayOfWeekIndex = dayOfWeekToIndex(item.dayOfWeek)
+                                val dayOfWeekKorean =
+                                    if (dayOfWeekIndex != -1) context.resources.getStringArray(R.array.days_one_letter)[dayOfWeekIndex] else item.dayOfWeek
                                 Text(
                                     text = if (item.closed) stringResource(
                                         id = R.string.insert_store_closed_day,
-                                        item.dayOfWeek
+                                        dayOfWeekKorean
                                     )
-                                    else stringResource(
-                                        id = R.string.insert_store_operating_time,
-                                        item.dayOfWeek,
-                                        openTimeFormatted,
-                                        closeTimeFormatted,
-                                    ),
+                                    else "$dayOfWeekKorean " +
+                                            StoreUtil.generateOpenCloseTimeString(
+                                                item.openTime,
+                                                item.closeTime
+                                            ),
                                     color = ColorMinor,
                                 )
                             }
@@ -202,23 +198,23 @@ fun ModifyInfoScreen(
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.address),
-                    data = storeInfoState.storeInfo?.address ?: "",
-                    onValueChange = { storeInfoViewModel.onAddressChanged(it) }
+                    data = state.storeInfo?.address ?: "",
+                    onValueChange = { viewModel.onAddressChanged(it) }
                 )
             }
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.delivery_fee),
-                    data = storeInfoState.storeInfo?.deliveryPrice?.toString() ?: "",
-                    onValueChange = { storeInfoViewModel.onDeliveryPriceChanged(it.toInt()) }
+                    data = state.storeInfo?.deliveryPrice?.toString() ?: "",
+                    onValueChange = { viewModel.onDeliveryPriceChanged(it.toInt()) }
                 )
             }
 
             item {
                 InputStoreInfo(
                     info = stringResource(R.string.other_info),
-                    data = storeInfoState.storeInfo?.description ?: "",
-                    onValueChange = { storeInfoViewModel.onDescriptionChanged(it) }
+                    data = state.storeInfo?.description ?: "",
+                    onValueChange = { viewModel.onDescriptionChanged(it) }
                 )
             }
             item {
@@ -229,25 +225,31 @@ fun ModifyInfoScreen(
                 ) {
                     AvailableRadioButton(
                         text = stringResource(id = R.string.delivery_available),
-                        selected = storeInfoState.storeInfo?.isDeliveryOk ?: false,
-                        onClick = storeInfoViewModel::onDeliveryAvailableChanged
+                        selected = state.storeInfo?.isDeliveryOk ?: false,
+                        onClick = viewModel::onDeliveryAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.card_payment_available),
-                        selected = storeInfoState.storeInfo?.isCardOk ?: false,
-                        onClick = storeInfoViewModel::onCardAvailableChanged
+                        selected = state.storeInfo?.isCardOk ?: false,
+                        onClick = viewModel::onCardAvailableChanged
                     )
                     AvailableRadioButton(
                         text = stringResource(id = R.string.bank_transfer_available),
-                        selected = storeInfoState.storeInfo?.isBankOk ?: false,
-                        onClick = storeInfoViewModel::onTransferAvailableChanged
+                        selected = state.storeInfo?.isBankOk ?: false,
+                        onClick = viewModel::onTransferAvailableChanged
                     )
                 }
             }
             item {
                 Box(modifier = Modifier.fillMaxWidth()) {
                     Button(
-                        onClick = {/*TODO*/ },
+                        onClick = {
+                            viewModel.modifyStoreInfo(
+                                storeInfoState.storeId,
+                                state.storeInfo ?: return@Button
+                            )
+                            viewModel.onBackButtonClicked()
+                        },
                         modifier = Modifier
                             .width(130.dp)
                             .height(40.dp)

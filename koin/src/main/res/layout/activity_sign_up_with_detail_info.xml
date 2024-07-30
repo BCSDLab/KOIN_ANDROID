@@ -381,7 +381,7 @@
             app:spinner_arrow_drawable="@drawable/ic_arrow_down_3"
             app:spinner_arrow_gravity="end"
             app:spinner_arrow_padding="5dp"
-            app:spinner_divider_color="@color/neutral_500"
+            app:spinner_divider_color="@color/neutral_450"
             app:spinner_divider_show="true"
             app:spinner_divider_size="1dp"
             app:spinner_item_height="40dp"

@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.usecase.owner
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import javax.inject.Inject
 
-class AttachStoreFileUseCase @Inject constructor(
+class GetPresignedUrlUseCase @Inject constructor(
     private val uploadUrlRepository: UploadUrlRepository
 ) {
     suspend operator fun invoke(
