@@ -113,6 +113,25 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
+    private val loginAlertDialog: AlertDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.user_only))
+            .setMessage(getString(R.string.login_request))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
+                dialog.dismiss()
+                goToLoginActivity()
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.USER_ONLY_OK,
+                    getString(R.string.user_only_ok)
+                )
+            }
+            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
+                dialog.cancel()
+            }.create()
+    }
+
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
 
@@ -271,7 +290,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                 MenuState.UserInfo -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
-                        showLoginRequestDialog()
+                        loginAlertDialog.show()
                     } else {
                         goToUserInfoActivity()
                     }
@@ -279,7 +298,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                 MenuState.Notification -> {
                     if (userState.value == null || userState.value?.isAnonymous == true) {
-                        showLoginRequestDialog()
+                        loginAlertDialog.show()
                     } else {
                         goToNotificationActivity()
                     }
@@ -439,27 +458,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         startActivity(intent)
     }
 
-    fun showLoginRequestDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.user_only))
-            .setMessage(getString(R.string.login_request))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
-                goToLoginActivity()
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
-                    AnalyticsConstant.Label.USER_ONLY_OK,
-                    getString(R.string.user_only_ok)
-                )
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
-            }
-            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
-                dialog.cancel()
-            }
-        val dialog = builder.create() // 알림창 객체 생성
-        dialog.show() // 알림창 띄우기
-    }
-
     private fun goToActivityFinish(intent: Intent) {
         startActivity(intent)
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
@@ -478,6 +476,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             this,
             LoginActivity::class.java
         )
+        finishAffinity()
         startActivity(intent)
     }
 
@@ -517,6 +516,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     override fun onDestroy() {
+        loginAlertDialog.dismiss()
         super.onDestroy()
     }
 }
