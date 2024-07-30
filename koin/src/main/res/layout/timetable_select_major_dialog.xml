@@ -15,13 +15,9 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
-        android:includeFontPadding="false"
-        android:letterSpacing="-0.04"
-        android:lineSpacingExtra="7sp"
         android:text="전공선택"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.15"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        app:fontName="Custom6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,13 +30,10 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_computer_science_and_engineering"
         android:textOn="@string/major_computer_science_and_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -54,13 +47,10 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_electrical_electronics_and_communication_engineering"
-        android:textOn="@string/major_electrical_electronics_and_communication_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_electrical_electronics_and_communication_engineering" />
 
     <ToggleButton
         android:id="@+id/select_major_industrial_management"
@@ -72,13 +62,10 @@
         android:layout_marginTop="13dp"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_industrial_management"
-        android:textOn="@string/major_industrial_management"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_industrial_management" />
 
     <ToggleButton
         android:id="@+id/select_major_design_engineering"
@@ -90,13 +77,10 @@
         android:layout_marginTop="14dp"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_industrial_design_and_architectural_engineering"
-        android:textOn="@string/major_industrial_design_and_architectural_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_industrial_design_and_architectural_engineering" />
 
     <ToggleButton
         android:id="@+id/select_major_hrd"
@@ -109,13 +93,10 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_hrd"
-        android:textOn="@string/major_hrd"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_hrd" />
 
     <ToggleButton
         android:id="@+id/select_major_mechanical_engineering"
@@ -127,13 +108,10 @@
         android:layout_toEndOf="@+id/select_major_computer_engineering"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_mechanical_engineering"
-        android:textOn="@string/major_mechanical_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_mechanical_engineering" />
 
     <ToggleButton
         android:id="@+id/select_major_chemical_engineering"
@@ -145,13 +123,10 @@
         android:layout_toEndOf="@+id/select_major_electonic_engineering"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_energy_meterials_chemical_engineering"
         android:textOn="@string/major_energy_meterials_chemical_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -165,13 +140,10 @@
         android:layout_toEndOf="@+id/select_major_design_engineering"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_mechatronics_engineering"
         android:textOn="@string/major_mechatronics_engineering"
-        android:textSize="12sp"
-        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -185,13 +157,10 @@
         android:layout_toEndOf="@+id/select_major_design_engineering"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_liberal_arts"
         android:textOn="@string/major_liberal_arts"
-        android:textSize="12sp"
-        app:fontName="Custom6"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -205,13 +174,10 @@
         android:layout_toEndOf="@+id/select_major_hrd"
         android:background="@drawable/button_rect_white_radius_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="12sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
         android:textColor="@color/gray7"
         android:textOff="@string/major_department_of_future_technology"
-        android:textOn="@string/major_department_of_future_technology"
-        android:textSize="12sp"
-        app:fontName="Custom6" />
+        android:textOn="@string/major_department_of_future_technology" />
 
     <Button
         android:id="@+id/select_major_button"
@@ -228,13 +194,9 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/button_rect_no_stroke_13dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:letterSpacing="-0.04"
-        android:lineSpacingExtra="7sp"
         android:text="@string/timetable_select_success"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:fontName="Custom6" />
+        android:textAppearance="@style/TextAppearance.Koin.Regular.15"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/textSpace"
