@@ -134,7 +134,4 @@
     <string name="close">닫기</string>
     <string name="back">뒤로가기</string>
     <string name="my_shop">내 상점</string>
-    <string name="recommend_login_to_like_dining">더 맛있는 학식을 먹는 방법,\n로그인하고 좋아요를 남겨주세요!</string>
-    <string name="recommend_like_dining">여러분의 좋아요가 영양사님이 더 나은\n식단을 제공할 수 있도록 도와줍니다.</string>
-    <string name="action_login">로그인하기</string>
 </resources>

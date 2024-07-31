@@ -49,5 +49,4 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
 
     implementation(libs.androidx.security.crypto)
-    implementation(libs.dataStore)
 }
