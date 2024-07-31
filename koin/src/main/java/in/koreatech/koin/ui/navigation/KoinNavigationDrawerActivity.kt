@@ -58,8 +58,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
 
-//    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
-
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(drawerLayoutId)
     }
@@ -209,11 +207,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         leftArrowButton.setOnClickListener { //왼쪽화살표  클릭리스너 등록
             drawerLayout.closeDrawer()
         }
-
-//        val askButton = findViewById<TextView>(R.id.tv_ask)
-//        askButton.setOnClickListener {
-//            gotoAskForm.launch(Unit)
-//        }
 
         initDrawerViewModel()
         koinNavigationDrawerViewModel.getUser()
