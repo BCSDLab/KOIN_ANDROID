@@ -24,6 +24,7 @@ import `in`.koreatech.koin.BuildConfig
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -162,7 +163,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         when (state) {
                             MenuState.Store -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.BUSINESS,
+                                    EventAction.BUSINESS,
                                     AnalyticsConstant.Label.HAMBURGER_SHOP,
                                     getString(R.string.nearby_stores)
                                 )

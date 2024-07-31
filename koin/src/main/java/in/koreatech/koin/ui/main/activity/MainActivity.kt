@@ -11,6 +11,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.WebViewActivity
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -27,13 +29,13 @@ import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.contract.StoreActivityContract
 import `in`.koreatech.koin.util.ext.observeLiveData
 
 @AndroidEntryPoint
-class MainActivity : KoinNavigationDrawerActivity() {
+class MainActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Main
     private val binding by dataBinding<ActivityMainBinding>(R.layout.activity_main)
     override val screenTitle = "코인 - 메인"
@@ -89,9 +91,12 @@ class MainActivity : KoinNavigationDrawerActivity() {
     private val storeCategoriesRecyclerAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener { id, name ->
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.MAIN_SHOP_CATEGORIES,
-                name
+                name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
             )
             gotoStoreActivity(id)
         }
