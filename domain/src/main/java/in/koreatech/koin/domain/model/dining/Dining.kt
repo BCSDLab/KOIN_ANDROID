@@ -14,6 +14,5 @@ data class Dining(
     val updatedAt: String,
     val soldoutAt: String,
     val changedAt: String,
-    var likes: Int,
-    var isLiked: Boolean
+    val error: String
 )

@@ -14,6 +14,7 @@ object URLConstant {
 
     const val ADMIN = "admin/"
     const val VERSION = "versions"
+    const val DINING = "dinings"
     const val FAQ = "faqs"
     const val LECTURE = "lectures"
     const val TIMETABLE = "timetable"
@@ -21,13 +22,6 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
-
-    object DINING {
-        const val DINING = "dining"
-        const val DININGS = "dinings"
-        const val LIKE = "${DINING}/like"
-        const val UNLIKE = "${LIKE}/cancel"
-    }
 
     object SHOPS{
         const val OWNERSHOPS= "owner/shops"
