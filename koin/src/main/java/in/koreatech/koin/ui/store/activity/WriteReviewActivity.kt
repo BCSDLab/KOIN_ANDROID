@@ -95,15 +95,6 @@ class WriteReviewActivity : AppCompatActivity() {
             addMenuButton.setOnClickListener {
                 menuRecyclerViewAdapter.addMenu()
             }
-            writeReviewButton.setOnClickListener{
-                viewModel.writeReview(
-                    storeId, Review(
-                        starRating.rating.toInt(), reviewEditText.text.toString(),
-                        viewModel.menuImageUrls.value, viewModel.menuList.value,
-                    )
-                )
-                finish();
-            }
             menuRecyclerView.adapter = menuRecyclerViewAdapter
             imageRecyclerView.adapter = menuImageRecyclerViewAdapter
 
@@ -157,19 +148,17 @@ class WriteReviewActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 menuImageUrls.collect {
                     menuImageRecyclerViewAdapter.submitList(it)
-
                     if (it.isNotEmpty()) binding.imageContainer.visibility =
-                        android.view.View.VISIBLE else binding.imageContainer.visibility =
-                        android.view.View.GONE
+                        View.VISIBLE else binding.imageContainer.visibility =
+                        View.GONE
 
                     binding.imageNumber.text = "${it.size}/3"
                     binding.imageNumber.setTextColor(
-                        if (it.size == 3)
+                        if (it.size > 3)
                             ContextCompat.getColor(this@WriteReviewActivity, R.color.colorAccent)
                         else
                             ContextCompat.getColor(this@WriteReviewActivity, R.color.gray18)
                     )
-
                 }
             }
         }
