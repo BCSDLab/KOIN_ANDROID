@@ -4,24 +4,24 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
@@ -35,7 +35,7 @@ import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
 
-class StoreDetailActivity : KoinNavigationDrawerActivity() {
+class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Store
 
     private val binding by dataBinding<StoreActivityDetailBinding>(R.layout.store_activity_detail)
@@ -66,7 +66,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment?.initialPosition = position
             flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_PICTURE,
                 viewModel.store.value?.name ?: "Unknown"
             )
@@ -94,9 +94,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         binding.storeDetailCallButton.setOnClickListener {
             showCallDialog()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown"
+                viewModel.store.value?.name ?: "Unknown",
+                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
             )
         }
 
@@ -115,7 +116,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab?.position == 1)
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
                         viewModel.store.value?.name ?: "Unknown"
                     )

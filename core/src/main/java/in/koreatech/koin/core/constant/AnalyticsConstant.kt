@@ -48,4 +48,7 @@ object AnalyticsConstant {
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
     }
 
+    const val PREVIOUS_PAGE = "previous_page"
+    const val CURRENT_PAGE = "current_page"
+    const val DURATION_TIME = "duration_time"
 }

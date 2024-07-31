@@ -20,6 +20,8 @@ import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
@@ -28,7 +30,7 @@ import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
+import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.store.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreEventPagerAdapter
@@ -43,15 +45,12 @@ import `in`.koreatech.koin.util.ext.showSoftKeyboard
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StoreActivity : KoinNavigationDrawerActivity() {
+class StoreActivity : KoinNavigationDrawerTimeActivity() {
     override val menuState = MenuState.Store
 
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
-
-    private var startTime: Long = 0
-    private var elapsedTime: Long = 0
 
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
 
@@ -64,9 +63,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         setOnItemClickListener {
             storeDetailContract.launch(it.uid)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
-                it.name
+                it.name,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
+                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
             )
         }
     }
@@ -74,7 +76,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     private val storeEventPagerAdapter = StoreEventPagerAdapter().apply {
         setOnItemClickListener {
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
@@ -88,9 +90,12 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             binding.searchEditText.text.clear()
             val eventValue = getStoreCategoryName(viewModel.category.value)
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
+                EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES,
-                eventValue
+                eventValue,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, eventValue),
+                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
             )
         }
     }
@@ -174,7 +179,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         binding.searchEditText.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.BUSINESS,
+                    EventAction.BUSINESS,
                     AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH,
                     "search in " + getStoreCategoryName(viewModel.category.value)
                 )
@@ -241,7 +246,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                     scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
                 if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
                     EventLogger.logScrollEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
+                        EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,
                         "scroll in " + getStoreCategoryName(viewModel.category.value)
                     )
@@ -311,22 +316,10 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     override fun onPause() {
         super.onPause()
         viewPagerHandler.removeCallbacks(runnable)
-        elapsedTime += SystemClock.elapsedRealtime() - startTime
     }
 
     override fun onResume() {
         super.onResume()
         startAutoScroll()
-        startTime = SystemClock.elapsedRealtime()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putLong("elapsedTime" , elapsedTime)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        elapsedTime = savedInstanceState.getLong("elapsedTime")
     }
 }
