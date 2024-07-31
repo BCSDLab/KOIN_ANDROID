@@ -5,7 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.api.*
-import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.remote.*
@@ -68,9 +67,8 @@ object RemoteDataSourceModule {
     @Singleton
     fun provideDiningRemoteDataSource(
         diningApi: DiningApi,
-        diningAuthApi: DiningAuthApi
     ): DiningRemoteDataSource {
-        return DiningRemoteDataSource(diningApi, diningAuthApi)
+        return DiningRemoteDataSource(diningApi)
     }
 
     @Provides
