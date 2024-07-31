@@ -29,7 +29,8 @@ fun List<Dining>.arrange() = this.let {
             updatedAt = "",
             soldoutAt = "",
             changedAt = "",
-            error = ""
+            likes = 0,
+            isLiked = false
         )
     }
 }
