@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.domain.util
 
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,15 +40,6 @@ object TimeUtil {
 
     fun stringToDateYYYYMMDD(date: String): Date {
         simpleDateFormat.applyPattern("yyyy-MM-dd")
-        return try {
-            simpleDateFormat.parse(date)
-        } catch (e: ParseException) {
-            stringToDateYYMMDD(date)
-        }
-    }
-
-    fun stringToDateYYMMDD(date: String): Date {
-        simpleDateFormat.applyPattern("yyMMdd")
         return simpleDateFormat.parse(date)
     }
 
@@ -61,27 +51,6 @@ object TimeUtil {
 
     fun getDateDifferenceWithToday(date: Date): Int {
         return ((date.time - getCurrentTime().time) / (60 * 60 * 24 * 1000)).toInt()
-    }
-
-    fun getDateDifferenceInDays(date1: Date, date2: Date): Int {
-        val calendar1 = Calendar.getInstance().apply {
-            time = date1
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val calendar2 = Calendar.getInstance().apply {
-            time = date2
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-        }
-
-        val diffInMillis = calendar1.timeInMillis - calendar2.timeInMillis
-        return (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
     }
 
     fun isBetweenCurrentTime(starTime: String, endTime: String): Boolean {
