@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.mapper
 
-import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -10,7 +9,11 @@ import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
+import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
@@ -88,6 +91,13 @@ fun StoreItemWithMenusResponse.toStoreWithMenu(): StoreWithMenu = StoreWithMenu(
     accountNumber = accountNumber ?: null
 )
 
+fun List<StoreMenuCategoryResponse.MenuCategory>.toCategory(): List<StoreMenuCategory>{
+    val responseList = ArrayList<StoreMenuCategory>()
+    for (category in this){
+        responseList.add(StoreMenuCategory(category.id, category.name))
+    }
+    return responseList
+}
 fun StoreItemWithMenusResponse.CategoriesResponseDTO.toCategory() = StoreWithMenu.Category(
     id = id,
     name = name
@@ -102,13 +112,14 @@ fun StoreMenuCategoriesResponse.toStoreMenuCategories() = StoreMenuCategories(
     name = name,
     menus = menus?.map { it.toShopMenus() }.orEmpty()
 )
+
 fun ShopMenusResponse.toShopMenus() = ShopMenus(
     id = id,
     name = name,
     isHidden = isHidden,
     isSingle = isSingle,
     singlePrice = singlePrice,
-    optionPrices =  optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
+    optionPrices = optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
     description = description,
     imageUrls = imageUrls.orEmpty()
 )
@@ -120,6 +131,22 @@ fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
 
 fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents = ShopEvents(
     events = events?.map { it.toStoreDetailEvent() }.orEmpty()
+)
+
+fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo = StoreDetailInfo(
+    address = address ?: "",
+    categoryIds = categoryIds ?: emptyList(),
+    deliveryPrice = delivery_price ?: 0,
+    description = description ?: "",
+    imageUrls = imageUrls ?: emptyList(),
+    isBankOk = payBank ?: false,
+    isCardOk = payCard ?: false,
+    isDeliveryOk = delivery ?: false,
+    name = name ?: "",
+    operatingTime = open?.toOperatingTime() ?: emptyList(),
+    phone = phone ?: "",
+    bank = null,
+    accountNumber = null,
 )
 
 fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
@@ -136,7 +163,8 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
     val responseList = ArrayList<StoreDayOffResponse>()
     for (dayOff in this) {
-        val response = StoreDayOffResponse(dayOff.closeTime, dayOff.closed, dayOff.dayOfWeek, dayOff.openTime)
+        val response =
+            StoreDayOffResponse(dayOff.closeTime, dayOff.closed, dayOff.dayOfWeek, dayOff.openTime)
         responseList.add(response)
     }
     return responseList
@@ -149,11 +177,25 @@ fun String.toStringArray(): ArrayList<String> {
     return responseList
 }
 
-fun Int.toCategory(): List<Int>{
+fun Int.toCategory(): List<Int> {
     val responseList = ArrayList<Int>()
 
     responseList.add(1)
     responseList.add(this)
 
+    return responseList
+}
+
+fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
+    val responseList = ArrayList<OperatingTime>()
+    for (dayOff in this) {
+        val response = OperatingTime(
+            dayOff.closeTime ?: "",
+            dayOff.closed,
+            dayOff.dayOfWeek,
+            dayOff.openTime ?: "",
+        )
+        responseList.add(response)
+    }
     return responseList
 }
