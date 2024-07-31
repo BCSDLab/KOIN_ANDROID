@@ -43,6 +43,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private lateinit var diningViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
     private var initialDateTab = 0
     private var initialDiningTab = 0
+    private val diningOnBoardingBottomSheet by lazy {
+        DiningNotificationOnBoardingFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +63,28 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedDate.collect {
                     viewModel.getDining(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.userState.collect {
+                if(it != null && it.isAnonymous.not()) {
+                    viewModel.shouldShowNotificationOnBoarding()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showDiningNotificationOnBoarding.collect { shouldShowOnBoarding ->
+                    if (shouldShowOnBoarding) {
+                        diningOnBoardingBottomSheet.show(
+                            supportFragmentManager,
+                            diningOnBoardingBottomSheet.tag
+                        )
+                        viewModel.updateShouldShowNotificationOnBoarding(false)
+                    }
                 }
             }
         }

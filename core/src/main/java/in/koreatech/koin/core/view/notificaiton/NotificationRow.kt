@@ -45,6 +45,11 @@ class NotificationRow @JvmOverloads constructor(
             attributeSet, R.styleable.Notification, 0, 0
         ).apply {
             binding.tvTitle.text = getString(R.styleable.Notification_text)
+            val pt = getDimensionPixelSize(R.styleable.Notification_paddingTop, 0)
+            val pb = getDimensionPixelSize(R.styleable.Notification_paddingBottom, 0)
+            val ps = getDimensionPixelSize(R.styleable.Notification_paddingStart, 0)
+            val pe = getDimensionPixelSize(R.styleable.Notification_paddingEnd, 0)
+            this@NotificationRow.setPadding(ps, pt, pe, pb)
             recycle()
         }
 
