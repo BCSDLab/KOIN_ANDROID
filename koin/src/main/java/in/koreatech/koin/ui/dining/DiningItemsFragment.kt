@@ -17,6 +17,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentDiningItemsBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
@@ -84,8 +85,8 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         )
         return FeedTemplate(
             content = Content(
-                title = "오늘의 점심 메뉴",
-                description = dining.menu.joinToString(", "),
+                title = "",
+                description = "${dining.place} ${DiningUtil.getKoreanName(dining.type)}메뉴\n" + dining.menu.joinToString(", "),
                 imageUrl = dining.imageUrl,
                 link = link
             ),

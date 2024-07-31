@@ -88,7 +88,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                 val dateString = it.getQueryParameter("date")
                 dateString?.let { ds ->
                     val date = TimeUtil.stringToDateYYYYMMDD(ds)
-                    val diff = TimeUtil.getDateDifferenceWithToday(date)
+                    val diff = TimeUtil.getDateDifferenceInDays(date, dates[dates.size/2])
                     initialDateTab = dates.size / 2 + diff
                 }
             }
