@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.store.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.view.View
 import android.widget.RatingBar
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,6 +21,9 @@ import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -32,7 +36,7 @@ class WriteReviewActivity : AppCompatActivity() {
         viewModel.deleteMenuImage(position)
     }
     private val pickMultipleMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
             uris.forEach { uri ->
                 val inputStream = this.contentResolver.openInputStream(uri)
                 if (uri.scheme.equals("content")) {
@@ -75,21 +79,17 @@ class WriteReviewActivity : AppCompatActivity() {
         val storeId = intent.getIntExtra("storeId", -1)
         with(binding) {
             storeNameTextView.text = storeName
-
-
             starRating.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
-                    binding.ratingNumber.text = rating.toString()
+                    if (rating < 1) {
+                        starRating.rating = 1f
+                        binding.ratingNumber.text = "1"
+
+                    }
+                    binding.ratingNumber.text = rating.toInt().toString()
                 }
-            writeReviewButton.setOnClickListener {
-                viewModel.writeReview(
-                    storeId, Review(
-                        starRating.rating.toInt(), reviewEditText.text.toString(),
-                        viewModel.menuImageUrls.value, viewModel.menuList.value,
-                    )
-                )
-            }
-            uploadImageButton.setOnClickListener {
+
+            uploadImageButton.debounce(300, lifecycleScope) {
                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             addMenuButton.setOnClickListener {
@@ -118,6 +118,18 @@ class WriteReviewActivity : AppCompatActivity() {
                     count: Int
                 ) {
                     super.onTextChanged(s, start, before, count)
+                    writeReviewButton.isEnabled = reviewEditText.text.isNotEmpty()
+                    writeReviewButton.background =
+                        ContextCompat.getDrawable(
+                            this@WriteReviewActivity,
+                            if (s.isNotEmpty()) R.drawable.blue_border_4dp_button else R.drawable.gray_border_button
+                        )
+                    writeReviewButton.setTextColor(
+                        ContextCompat.getColor(
+                            this@WriteReviewActivity,
+                            if (s.isNotEmpty()) R.color.white else R.color.gray18
+                        )
+                    )
                     charactersNumber.text = "${reviewEditText.length()}/500"
                     if (s.length > 500) {
                         reviewEditText.setText(maxText)
@@ -139,7 +151,15 @@ class WriteReviewActivity : AppCompatActivity() {
 
                 }
             })
-
+            writeReviewButton.debounce(300, lifecycleScope) {
+                viewModel.writeReview(
+                    storeId, Review(
+                        starRating.rating.toInt(), reviewEditText.text.toString(),
+                        viewModel.menuImageUrls.value, menuRecyclerViewAdapter.getMenuList()
+                    )
+                )
+                finish()
+            }
         }
     }
 
@@ -160,6 +180,21 @@ class WriteReviewActivity : AppCompatActivity() {
                             ContextCompat.getColor(this@WriteReviewActivity, R.color.gray18)
                     )
                 }
+            }
+        }
+    }
+
+    fun View.debounce(
+        delayMillis: Long = 300L,
+        scope: CoroutineScope,
+        action: (Unit) -> Unit
+    ) {
+        var job: Job? = null
+        this.setOnClickListener {
+            job?.cancel()
+            job = scope.launch {
+                delay(delayMillis)
+                action(Unit)
             }
         }
     }
