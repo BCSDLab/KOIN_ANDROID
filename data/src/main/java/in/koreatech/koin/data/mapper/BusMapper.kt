@@ -1,18 +1,30 @@
 package `in`.koreatech.koin.data.mapper
 
+import android.content.Context
 import `in`.koreatech.koin.data.R
-import `in`.koreatech.koin.data.response.bus.*
+import `in`.koreatech.koin.data.response.bus.BusCourseResponse
+import `in`.koreatech.koin.data.response.bus.BusResponse
+import `in`.koreatech.koin.data.response.bus.BusSearchResponse
+import `in`.koreatech.koin.data.response.bus.CityBusDepartTimesResponse
+import `in`.koreatech.koin.data.response.bus.CityBusInfoResponse
+import `in`.koreatech.koin.data.response.bus.CityBusTimetableResponse
+import `in`.koreatech.koin.data.response.bus.ExpressBusRouteResponse
+import `in`.koreatech.koin.data.response.bus.ExpressBusTimetableResponse
+import `in`.koreatech.koin.data.response.bus.ShuttleBusRouteResponse
+import `in`.koreatech.koin.data.response.bus.ShuttleBusTimetableResponse
 import `in`.koreatech.koin.data.util.nowTime
 import `in`.koreatech.koin.domain.model.bus.BusNode
+import `in`.koreatech.koin.domain.model.bus.city.toCityBusDayType
+import `in`.koreatech.koin.domain.model.bus.city.toCityBusGeneralDestination
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
+import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
 import `in`.koreatech.koin.domain.model.bus.toBusDirection
 import `in`.koreatech.koin.domain.model.bus.toBusType
-import android.content.Context
-import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
+import java.time.LocalDate
 
 fun BusCourseResponse.toBusCourse() = BusCourse(
     busType = busType.toBusType(),
@@ -32,6 +44,14 @@ fun ShuttleBusTimetableResponse.toShuttleBusTimetable(): BusTimetable.ShuttleBus
 fun ExpressBusTimetableResponse.toExpressBusTimetable(): BusTimetable.ExpressBusTimetable {
     return BusTimetable.ExpressBusTimetable(
         routes = this.routes.toExpressBusRoute(),
+        updatedAt = updatedAt
+    )
+}
+
+fun CityBusTimetableResponse.toCityBusTimetable(): BusTimetable.CityBusTimetable {
+    return BusTimetable.CityBusTimetable(
+        busInfos = busInfo.toCityBusNodeInfo(),
+        departTimes = departTimes.getTodayDepartTimes(),
         updatedAt = updatedAt
     )
 }
@@ -60,10 +80,23 @@ fun List<ExpressBusRouteResponse>.toExpressBusRoute(): BusRoute.ExpressBusRoute 
     )
 }
 
-fun List<CityBusRouteResponse>.toCityBusRoute(): BusRoute.CityBusRoute {
-    return BusRoute.CityBusRoute(
-        arrivalInfo = map { BusNodeInfo.CitybusNodeInfo(it.startBusNode, it.timeInfo) }
+fun CityBusInfoResponse.toCityBusNodeInfo(): BusNodeInfo.CityBusNodeInfo {
+    return BusNodeInfo.CityBusNodeInfo(
+        busNumber = number,
+        departNode = departNode.toCityBusGeneralDestination,
+        arrivalNode = arrivalNode.toCityBusGeneralDestination
     )
+}
+
+fun List<CityBusDepartTimesResponse>.getTodayDepartTimes(): List<String> {
+    this.map { times ->
+        val dayType = times.dayOfWeek.toCityBusDayType
+        // 평일 or 주말
+        if (dayType.daysOfWeek.contains(LocalDate.now().dayOfWeek)) {
+            return times.departInfo
+        }
+    }
+    return this.first().departInfo  // 기본으로 평일 리스트 반환
 }
 
 fun BusResponse.toShuttleBusArrivalInfo(
