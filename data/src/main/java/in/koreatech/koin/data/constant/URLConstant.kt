@@ -28,6 +28,9 @@ object URLConstant {
         const val LIKE = "${DINING}/like"
         const val UNLIKE = "${LIKE}/cancel"
     }
+    // external url
+    const val UNIBUS = "koreatech.unibus.kr"
+
 
     object SHOPS{
         const val OWNERSHOPS= "owner/shops"

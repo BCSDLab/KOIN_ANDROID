@@ -22,8 +22,10 @@ import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
+import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.model.dining.LikeActionType
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
@@ -132,6 +134,25 @@ class DiningAdapter(
             }
         }
 
+        private fun setDiningCard(context: Context, dining: Dining) {
+            with(dining) {
+                // 능수관, 2캠퍼스일 때 이미지 카드 노출 X
+                if (place == DiningPlace.Nungsu.place || place == DiningPlace.Campus2.place) {
+                    binding.cardViewDining.visibility = View.GONE
+                }
+                // 아침 이미지 분기처리
+                else if (type == BREAKFAST) {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else binding.cardViewDining.visibility = View.GONE
+                }
+                // 점심, 저녁
+                else {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else showEmptyDiningImage(context, dining)
+                }
+            }
+        }
+
         private fun initLikeAction(dining: Dining) {
             binding.linearLayoutLike.setOnClickListener {
                 coroutineScope.launch {
@@ -209,6 +230,51 @@ class DiningAdapter(
                 else -> binding.cardViewDining.visibility = View.VISIBLE
             }
         }
+
+        private fun showDiningImage(context: Context, dining: Dining){
+            with(binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth = 0
+                textViewNoPhoto.visibility = View.INVISIBLE
+                imageViewNoPhoto.visibility = View.INVISIBLE
+                imageViewDining.visibility = View.VISIBLE
+
+                Glide.with(context)
+                    .load(dining.imageUrl)
+                    .into(imageViewDining)
+
+                // 이미지 클릭시 dialog 형태로 노출
+                val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                dialog.initialScale = 0.75f
+                cardViewDining.setOnClickListener {
+                    dialog.show()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
+        private fun showEmptyDiningImage(context: Context, dining: Dining) {
+            with (binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth =
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                textViewNoPhoto.visibility = View.VISIBLE
+                imageViewNoPhoto.visibility = View.VISIBLE
+                imageViewDining.visibility = View.INVISIBLE
+                cardViewDining.setOnClickListener {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
         private fun setEmptyDataVisibility(dining: Dining) {
             with(binding) {
                 textViewKcal.visibility = View.VISIBLE
