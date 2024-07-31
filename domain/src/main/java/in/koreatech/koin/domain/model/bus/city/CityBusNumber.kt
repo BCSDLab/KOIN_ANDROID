@@ -15,10 +15,18 @@ val CityBusNumber.spinnerSelection
         CityBusNumber.Bus405 -> 2
     }
 
-val Int.toCityBusNumber
+val Int.posToCityBusNumber
     get() = when (this) {
         0 -> CityBusNumber.Bus400
         1 -> CityBusNumber.Bus402
         2 -> CityBusNumber.Bus405
+        else -> throw IllegalArgumentException("Not supported selection.")
+    }
+
+val Int.numberToCityBusNumber
+    get() = when (this) {
+        400 -> CityBusNumber.Bus400
+        402 -> CityBusNumber.Bus402
+        405 -> CityBusNumber.Bus405
         else -> throw IllegalArgumentException("Not supported selection.")
     }
