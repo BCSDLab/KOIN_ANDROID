@@ -49,7 +49,7 @@ class CityBusTimetableAdapter : BusTimetableAdapter<CityBusTimetableUiItem>(item
                 oldItem: CityBusTimetableUiItem,
                 newItem: CityBusTimetableUiItem
             ): Boolean {
-                return oldItem.timeInfo == newItem.timeInfo
+                return oldItem.am == newItem.am
             }
 
             override fun areContentsTheSame(

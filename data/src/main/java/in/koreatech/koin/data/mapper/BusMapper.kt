@@ -14,6 +14,7 @@ import `in`.koreatech.koin.data.response.bus.ShuttleBusRouteResponse
 import `in`.koreatech.koin.data.response.bus.ShuttleBusTimetableResponse
 import `in`.koreatech.koin.data.util.nowTime
 import `in`.koreatech.koin.domain.model.bus.BusNode
+import `in`.koreatech.koin.domain.model.bus.city.numberToCityBusNumber
 import `in`.koreatech.koin.domain.model.bus.city.toCityBusDayType
 import `in`.koreatech.koin.domain.model.bus.city.toCityBusGeneralDestination
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
@@ -82,7 +83,7 @@ fun List<ExpressBusRouteResponse>.toExpressBusRoute(): BusRoute.ExpressBusRoute 
 
 fun CityBusInfoResponse.toCityBusNodeInfo(): BusNodeInfo.CityBusNodeInfo {
     return BusNodeInfo.CityBusNodeInfo(
-        busNumber = number,
+        busNumber = number.numberToCityBusNumber,
         departNode = departNode.toCityBusGeneralDestination,
         arrivalNode = arrivalNode.toCityBusGeneralDestination
     )
