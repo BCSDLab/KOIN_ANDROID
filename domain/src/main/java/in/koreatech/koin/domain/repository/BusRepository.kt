@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.bus.*
+import `in`.koreatech.koin.domain.model.bus.city.CityBusInfo
 import `in`.koreatech.koin.domain.model.bus.course.BusCourse
 import `in`.koreatech.koin.domain.model.bus.search.BusSearchResult
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
@@ -13,7 +14,7 @@ interface BusRepository {
     suspend fun getExpressBusCourses(): List<Pair<BusCourse, String>>
     suspend fun getShuttleBusTimetable(busCourse: BusCourse): BusTimetable.ShuttleBusTimetable
     suspend fun getExpressBusTimetable(busCourse: BusCourse): BusTimetable.ExpressBusTimetable
-    suspend fun getCityBusTimetable(): BusRoute.CityBusRoute
+    suspend fun getCityBusTimetable(cityBusInfo: CityBusInfo): BusTimetable.CityBusTimetable
 
     suspend fun getShuttleBusRemainTime(
         departure: BusNode,
