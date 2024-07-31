@@ -106,16 +106,18 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         if(Intent.ACTION_VIEW == intent.action) {
             val uri = intent.data
             uri?.let {
-                it.getQueryParameter("type")?.let { type ->
-                    initialDiningTab = getDiningTabByType(DiningUtil.getTypeByString(type))
+                try {
+                    val dateString = it.getQueryParameter("date")
+                    dateString?.let { ds ->
+                        val date = TimeUtil.stringToDateYYYYMMDD(ds)
+                        val diff = TimeUtil.getDateDifferenceInDays(date, dates[dates.size / 2])
+                        initialDateTab = dates.size / 2 + diff
+                    }
 
-                }
-                val dateString = it.getQueryParameter("date")
-                dateString?.let { ds ->
-                    val date = TimeUtil.stringToDateYYYYMMDD(ds)
-                    val diff = TimeUtil.getDateDifferenceInDays(date, dates[dates.size/2])
-                    initialDateTab = dates.size / 2 + diff
-                }
+                    it.getQueryParameter("type")?.let { type ->
+                        initialDiningTab = getDiningTabByType(DiningUtil.getTypeByString(type))
+                    }
+                } catch (_: Exception) { }
             }
         }
     }
