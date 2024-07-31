@@ -30,7 +30,7 @@ class MenuRecyclerViewAdapter() :
             object : TextWatcherAdapter() {
                 @SuppressLint("RestrictedApi")
                 override fun afterTextChanged(s: Editable) {
-                    if(position<menuList.size)
+                    if (position < menuList.size)
                         menuList[position] = s.toString()
                 }
             }
@@ -65,7 +65,6 @@ class MenuRecyclerViewAdapter() :
     }
 
     fun getMenuList(): ArrayList<String> {
-        return menuList
+        return menuList.filter { it.isNotEmpty() }.toCollection(ArrayList())
     }
-
 }

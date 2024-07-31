@@ -21,8 +21,6 @@ class WriteReviewViewModel @Inject constructor(
 ) : BaseViewModel() {
     private val _review = MutableStateFlow<Review?>(null)
     val review = _review.asStateFlow()
-    private val _menuList = MutableStateFlow<List<String>>(emptyList())
-    val menuList: StateFlow<List<String>> get() = _menuList
 
     private val _menuImageUrls = MutableStateFlow<List<String>>(emptyList())
     val menuImageUrls: StateFlow<List<String>> get() = _menuImageUrls.asStateFlow()
