@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.main.viewmodel
 
+import android.util.Log
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.error.bus.BusErrorHandler
 import `in`.koreatech.koin.domain.model.bus.BusNode
@@ -12,9 +13,13 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
+import `in`.koreatech.koin.domain.usecase.onboarding.dining.GetShouldShowDiningTooltipUseCase
+import `in`.koreatech.koin.domain.usecase.onboarding.dining.UpdateShouldShowDiningTooltipUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import `in`.koreatech.koin.domain.util.TimeUtil
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -25,7 +30,9 @@ class MainActivityViewModel @Inject constructor(
     private val getBusTimerUseCase: GetBusTimerUseCase,
     private val busErrorHandler: BusErrorHandler,
     private val getDiningUseCase: GetDiningUseCase,
-    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase
+    private val getStoreCategoriesUseCase: GetStoreCategoriesUseCase,
+    private val getShouldShowDiningTooltipUseCase: GetShouldShowDiningTooltipUseCase,
+    private val updateShouldShowDiningTooltipUseCase: UpdateShouldShowDiningTooltipUseCase
 ) : BaseViewModel() {
     private val _busNode =
         MutableLiveData<Pair<BusNode, BusNode>>(BusNode.Koreatech to BusNode.Terminal)
@@ -40,9 +47,13 @@ class MainActivityViewModel @Inject constructor(
     private val _storeCategories = MutableLiveData<List<StoreCategories>>(emptyList())
     val storeCategories: LiveData<List<StoreCategories>> get() = _storeCategories
 
+    private val _showDiningTooltip: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val showDiningTooltip: StateFlow<Boolean> get() = _showDiningTooltip
+
     init {
         updateDining()
         getStoreCategories()
+        getShouldShowDiningTooltip()
     }
 
     val busTimer = liveData {
@@ -101,6 +112,22 @@ class MainActivityViewModel @Inject constructor(
     fun getStoreCategories(){
         viewModelScope.launchWithLoading {
             _storeCategories.value = getStoreCategoriesUseCase()
+        }
+    }
+
+    fun getShouldShowDiningTooltip() {
+        viewModelScope.launchWithLoading {
+            getShouldShowDiningTooltipUseCase()
+                .onSuccess {
+                    _showDiningTooltip.value = it
+                }
+        }
+    }
+
+    fun updateShouldShowDiningTooltip(shouldShow: Boolean = false) {
+        viewModelScope.launchWithLoading {
+            updateShouldShowDiningTooltipUseCase(shouldShow)
+            _showDiningTooltip.value = shouldShow
         }
     }
 }

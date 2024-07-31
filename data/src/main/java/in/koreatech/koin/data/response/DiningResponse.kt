@@ -16,5 +16,6 @@ data class DiningResponse(
     @SerializedName("updated_at") val updatedAt: String,
     @SerializedName("soldout_at") val soldoutAt: String?,
     @SerializedName("changed_at") val changedAt: String?,
-    @SerializedName("error") val error: String?
+    @SerializedName("likes") val likes: Int?,
+    @SerializedName("is_liked") val isLiked: Boolean?
 )
