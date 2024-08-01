@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.store.activity
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.text.InputFilter
 import android.view.View
 import android.widget.RatingBar
 import androidx.activity.result.PickVisualMediaRequest
@@ -97,6 +98,7 @@ class WriteReviewActivity : AppCompatActivity() {
             }
             menuRecyclerView.adapter = menuRecyclerViewAdapter
             imageRecyclerView.adapter = menuImageRecyclerViewAdapter
+            reviewEditText.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(500))
 
             reviewEditText.addTextChangedListener(@SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
