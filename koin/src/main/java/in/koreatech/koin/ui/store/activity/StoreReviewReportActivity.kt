@@ -131,15 +131,14 @@ class StoreReviewReportActivity:  ActivityBase() {
                 inputReportReasonEdittext.background = getDrawable(R.drawable.selected_edittext_border_5dp_radius)
                 inputReportReasonEdittext.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        // Do something before text changes
+
                     }
 
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        // Do something as text is changing
+
                     }
 
                     override fun afterTextChanged(s: Editable?) {
-                        // Update TextView with the character count
                         characterRangeTextview.text = "${s?.length ?: 0}/150"
                         if(s?.length == 150)
                             characterRangeTextview.setTextColor(ContextCompat.getColor(this@StoreReviewReportActivity, R.color.colorAccent))

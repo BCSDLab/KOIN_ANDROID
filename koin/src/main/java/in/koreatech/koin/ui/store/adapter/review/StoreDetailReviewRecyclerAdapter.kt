@@ -60,11 +60,10 @@ class StoreDetailReviewRecyclerAdapter ():
                 isMineIcon.isVisible = true
 
                 iconKebab.setOnClickListener {
-
                     val popup = PopupMenu(iconKebab.context, iconKebab)
                     popup.menuInflater.inflate(R.menu.review_mine_kebab_menu, popup.menu)
+                    iconKebab.setImageResource(R.drawable.ic_kebab_clicked)
 
-                    // 메뉴 아이템 클릭 리스너 설정
                     popup.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
                             R.id.action_modify -> {
@@ -79,15 +78,21 @@ class StoreDetailReviewRecyclerAdapter ():
                         }
                     }
 
-                    // 팝업 메뉴 표시
                     popup.show()
+
+                    popup.setOnDismissListener {
+                        iconKebab.setImageResource(R.drawable.ic_kebab)
+                    }
                 }
+
+
             }
             else{
                 iconKebab.setOnClickListener {
 
                     val popup = PopupMenu(iconKebab.context, iconKebab)
                     popup.menuInflater.inflate(R.menu.review_other_kebab_menu, popup.menu)
+                    iconKebab.setImageResource(R.drawable.ic_kebab_clicked)
 
                     popup.setOnMenuItemClickListener { item: MenuItem ->
                         when (item.itemId) {
@@ -103,6 +108,10 @@ class StoreDetailReviewRecyclerAdapter ():
                         }
                     }
                     popup.show()
+
+                    popup.setOnDismissListener {
+                        iconKebab.setImageResource(R.drawable.ic_kebab)
+                    }
                 }
             }
 

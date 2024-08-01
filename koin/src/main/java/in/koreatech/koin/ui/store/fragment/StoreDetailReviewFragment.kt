@@ -3,8 +3,10 @@ package `in`.koreatech.koin.ui.store.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -12,7 +14,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
+import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
@@ -43,6 +47,7 @@ class StoreDetailReviewFragment : Fragment() {
     private fun initViews() {
 
         with(binding){
+
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter
@@ -73,21 +78,63 @@ class StoreDetailReviewFragment : Fragment() {
                     yesReviewLayout.isGone= true
                     noReviewLayout.isVisible = true
                 }
-                else{
-                    yesReviewLayout.isVisible= true
+                else {
+                    yesReviewLayout.isVisible = true
                     noReviewLayout.isGone = true
                 }
             }
+
+            filterLayout.setOnClickListener {
+                val popup = PopupMenu(filterLayout.context, filterLayout)
+                popup.menuInflater.inflate(R.menu.review_filter_menu, popup.menu)
+
+                popup.setOnMenuItemClickListener { item: MenuItem ->
+                    when (item.itemId) {
+                        R.id.action_latest -> {
+                            viewModel.filterReview(ReviewFilterEnum.LATEST)
+                            filterTextview.text = getString(R.string.latest)
+                            true
+                        }
+                        R.id.action_oldest -> {
+                            viewModel.filterReview(ReviewFilterEnum.OLDEST)
+                            filterTextview.text = getString(R.string.oldest)
+                            true
+                        }
+                        R.id.action_high_rating -> {
+                            viewModel.filterReview(ReviewFilterEnum.HIGH_RATTING)
+                            filterTextview.text = getString(R.string.high_rating)
+                            true
+                        }
+                        R.id.action_low_rating -> {
+                            viewModel.filterReview(ReviewFilterEnum.LOW_RATIONG)
+                            filterTextview.text = getString(R.string.low_rating)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+
+                popup.show()
+            }
+
+            isMineCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.checkShowMyReview(isChecked)
+            }
+
         }
 
     }
 
     private fun initViewModel() {
-        observeLiveData(viewModel.storeReview) {
-            storeDetailReviewRecyclerAdapter.submitList(it.reviews)
-            storeDetailReviewRecyclerAdapter.storeId = viewModel.store.value?.uid
-        }
+        with(viewModel){
+            observeLiveData(storeReviewContent) {
+                storeDetailReviewRecyclerAdapter.submitList(it)
+            }
 
+            observeLiveData(store){
+                storeDetailReviewRecyclerAdapter.storeId = store.value?.uid
+            }
+        }
     }
 
     private fun calculateScore(total: Int, count: Int?) = count?.let { ((it.toFloat() / total) * 100).toInt() } ?: 0

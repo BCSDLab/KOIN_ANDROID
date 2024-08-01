@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
+import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.usecase.store.GetRecommendStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
@@ -37,6 +39,9 @@ class StoreDetailViewModel @Inject constructor(
 
     val storeReview: LiveData<StoreReview> get() = _storeReview
     private val _storeReview = MutableLiveData<StoreReview>()
+
+    val storeReviewContent: LiveData<List<StoreReviewContent>>  get() = _storeReviewContent
+    private val _storeReviewContent = MutableLiveData<List<StoreReviewContent>>()
 
     val recommendStores: LiveData<List<Store>?> get() = _recommendStores
     private val _recommendStores = MutableLiveData<List<Store>?>()
@@ -71,6 +76,43 @@ class StoreDetailViewModel @Inject constructor(
     fun getShopReviews(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreReviewUseCase(storeId).also { reviews ->
             _storeReview.value = reviews
+            _storeReviewContent.value = reviews.reviews.sortedByDescending {
+                it.createdAt
+            }
+        }
+    }
+
+    fun checkShowMyReview(isChecked: Boolean){
+        if(isChecked){
+            _storeReviewContent.value = _storeReview.value?.reviews?.filter {
+                it.isMine
+            }
+        }
+        else _storeReviewContent.value = _storeReview.value?.reviews
+    }
+
+    fun filterReview(filter: ReviewFilterEnum){
+        when(filter){
+            ReviewFilterEnum.LATEST -> {
+                _storeReviewContent.value = _storeReview.value?.reviews?.sortedByDescending {
+                    it.createdAt
+                }
+            }
+            ReviewFilterEnum.OLDEST -> {
+                _storeReviewContent.value = _storeReview.value?.reviews?.sortedBy {
+                    it.createdAt
+                }
+            }
+            ReviewFilterEnum.HIGH_RATTING -> {
+                _storeReviewContent.value = _storeReview.value?.reviews?.sortedByDescending {
+                    it.rating
+                }
+            }
+            ReviewFilterEnum.LOW_RATIONG -> {
+                _storeReviewContent.value = _storeReview.value?.reviews?.sortedBy {
+                    it.rating
+                }
+            }
         }
     }
 }
