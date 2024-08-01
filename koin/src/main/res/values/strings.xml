@@ -468,7 +468,10 @@
     <string name="review_private">개인정보</string>
     <string name="review_private_explain">개인정보가 포함된 리뷰입니다.</string>
     <string name="report">신고하기</string>
-
+    <string name="latest">최신순</string>
+    <string name="oldest">오래된순</string>
+    <string name="high_rating">별점높은순</string>
+    <string name="low_rating">별점낮은순</string>
     <string name="review_null_check_box">1개 이상의 신고 이유를 선택해주세요.</string>
     <string name="review_report_complete">해당 리뷰의 신고가 완료되었습니다.</string>
 </resources>
