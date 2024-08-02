@@ -83,11 +83,9 @@ class WriteReviewActivity : AppCompatActivity() {
             starRating.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
                     if (rating < 1) {
-                        starRating.rating = 1f
                         binding.ratingNumber.text = "1"
-
-                    }
-                    binding.ratingNumber.text = rating.toInt().toString()
+                        starRating.rating = 1f
+                    } else binding.ratingNumber.text = rating.toInt().toString()
                 }
 
             uploadImageButton.debounce(300, lifecycleScope) {
@@ -122,7 +120,7 @@ class WriteReviewActivity : AppCompatActivity() {
                         )
                     )
                     charactersNumber.text = "${reviewEditText.length()}/500"
-                    if (s.length > 500) {
+                    if (s.length >= 500) {
                         charactersNumber.setTextColor(
                             ContextCompat.getColor(
                                 this@WriteReviewActivity,
