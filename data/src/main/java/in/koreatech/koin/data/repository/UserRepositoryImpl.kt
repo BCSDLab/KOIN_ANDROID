@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.source.datastore.UserDataStore
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val tokenLocalDataSource: TokenLocalDataSource,
+    private val userDataStore: UserDataStore,
 ) : UserRepository {
     override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
@@ -25,7 +27,9 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserInfo(): User {
-        return userRemoteDataSource.getUserInfo().toUser()
+        return userRemoteDataSource.getUserInfo().toUser().also {
+            userDataStore.updateUserInfo(it)
+        }
     }
 
     override suspend fun requestPasswordResetEmail(email: String) {
@@ -65,7 +69,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUser(user: User) {
         when (user) {
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
-            is User.Student -> userRemoteDataSource.updateUser(user.toUserRequest())
+            is User.Student -> {
+                userRemoteDataSource.updateUser(user.toUserRequest())
+                userDataStore.updateUserInfo(user)
+            }
         }
     }
 
