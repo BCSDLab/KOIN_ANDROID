@@ -59,4 +59,9 @@ interface UserAuthApi {
         @Path("shopId") shopId: Int,
         @Body reviewRequest: ReviewRequest
     ): Response<Unit?>
+
+    suspend fun deleteReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int,
+    )
 }

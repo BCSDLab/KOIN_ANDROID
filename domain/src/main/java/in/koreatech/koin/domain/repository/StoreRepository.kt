@@ -23,5 +23,6 @@ interface StoreRepository {
     suspend fun getStoreReviews(storeId: Int): StoreReview
     suspend fun invalidateStores()
     suspend fun writeReview(shopId: Int, content: Review)
+    suspend fun deleteReview(reviewId: Int, shopId: Int)
 
 }
