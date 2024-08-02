@@ -88,4 +88,8 @@ class StoreRepositoryImpl @Inject constructor(
             )
         )
     }
+
+    override suspend fun deleteReview(reviewId: Int, shopId: Int) {
+        storeRemoteDataSource.deleteReview(reviewId, shopId)
+    }
 }
