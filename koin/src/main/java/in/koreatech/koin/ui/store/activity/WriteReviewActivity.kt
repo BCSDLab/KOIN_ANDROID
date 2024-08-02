@@ -9,7 +9,6 @@ import android.widget.RatingBar
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,20 +16,22 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.internal.TextWatcherAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
+import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WriteReviewActivity : AppCompatActivity() {
-
+class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
     private lateinit var binding: ActivityWriteReviewBinding
+    override val screenTitle = "리뷰 작성"
     private val viewModel by viewModels<WriteReviewViewModel>()
     private val menuRecyclerViewAdapter = MenuRecyclerViewAdapter()
     private val menuImageRecyclerViewAdapter = MenuImageRecyclerViewAdapter { position ->
@@ -151,6 +152,7 @@ class WriteReviewActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        withLoading(this@WriteReviewActivity, this)
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 menuImageUrls.collect {

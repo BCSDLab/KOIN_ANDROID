@@ -40,7 +40,7 @@ class WriteReviewViewModel @Inject constructor(
         fileName: String,
         imageUri: String
     ) {
-        viewModelScope.launch {
+        viewModelScope.launchWithLoading{
             getMarketPreSignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
@@ -66,7 +66,7 @@ class WriteReviewViewModel @Inject constructor(
         mediaSize: Long,
         imageUri: String
     ) {
-        viewModelScope.launch {
+        viewModelScope.launchWithLoading {
             uploadFilesUseCase(
                 preSignedUrl,
                 mediaType,
