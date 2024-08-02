@@ -102,17 +102,6 @@ class WriteReviewActivity : AppCompatActivity() {
 
             reviewEditText.addTextChangedListener(@SuppressLint("RestrictedApi")
             object : TextWatcherAdapter() {
-                var maxText = ""
-                override fun beforeTextChanged(
-                    s: CharSequence,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                    super.beforeTextChanged(s, start, count, after)
-                    maxText = s.toString()
-                }
-
                 override fun onTextChanged(
                     s: CharSequence,
                     start: Int,
@@ -134,8 +123,6 @@ class WriteReviewActivity : AppCompatActivity() {
                     )
                     charactersNumber.text = "${reviewEditText.length()}/500"
                     if (s.length > 500) {
-                        reviewEditText.setText(maxText)
-                        reviewEditText.setSelection(maxText.length - 1)
                         charactersNumber.setTextColor(
                             ContextCompat.getColor(
                                 this@WriteReviewActivity,
