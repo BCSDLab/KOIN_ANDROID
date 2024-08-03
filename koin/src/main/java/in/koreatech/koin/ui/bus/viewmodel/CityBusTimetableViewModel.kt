@@ -26,6 +26,8 @@ class CityBusTimetableViewModel @Inject constructor(
     val destination: LiveData<CityBusGeneralDestination> get() = _destination
     private val _busDepartTimes = MutableLiveData<List<String>>()
     val busDepartTimes: LiveData<List<String>> get() = _busDepartTimes
+    private val _updatedAt = MutableLiveData<String>()
+    val updatedAt: LiveData<String> get() = _updatedAt
 
     init {
         viewModelScope.launchWithLoading {
@@ -50,6 +52,7 @@ class CityBusTimetableViewModel @Inject constructor(
                 _busNumber.value = it.busInfos.busNumber
                 _destination.value = it.busInfos.arrivalNode
                 _busDepartTimes.value = it.departTimes
+                _updatedAt.value = it.updatedAt
             }
             .onFailure {
                 _errorToast.value = it.message
