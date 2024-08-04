@@ -21,7 +21,26 @@ class StoreDetailReviewFragment : Fragment() {
     private var _binding: FragmentStoreDetailReviewBinding? = null
     private val binding: FragmentStoreDetailReviewBinding get() = _binding!!
     private val viewModel by activityViewModels<StoreDetailViewModel>()
-    private val storeDetailReviewRecyclerAdapter = StoreDetailReviewRecyclerAdapter()
+    private val storeDetailReviewRecyclerAdapter by lazy {
+        StoreDetailReviewRecyclerAdapter(
+            onModifyItem = {
+                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+                goToReviewScreen.putExtra("review", it)
+                startActivity(goToReviewScreen)
+
+            },
+            onDeleteItem = {
+                val reviewDeleteDialog = ReviewDeleteCheckDialog(
+                    onDelete = {
+                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                    }
+                )
+                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +58,14 @@ class StoreDetailReviewFragment : Fragment() {
         initViewModel()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getShopReviews(viewModel.store.value!!.uid)
+    }
+
     private fun initViews() {
 
-        with(binding){
+        with(binding) {
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter

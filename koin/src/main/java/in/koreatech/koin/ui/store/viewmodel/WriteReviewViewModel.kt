@@ -6,6 +6,7 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.store.ModifyReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.WriteReviewUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WriteReviewViewModel @Inject constructor(
     private val writeReviewUseCase: WriteReviewUseCase,
+    private val modifyReviewUseCase: ModifyReviewUseCase,
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase
 ) : BaseViewModel() {
@@ -31,7 +33,18 @@ class WriteReviewViewModel @Inject constructor(
                 _review.value = content
             }
         }
+    }
 
+    fun setImage(imageUri: List<String>){
+        _menuImageUrls.value = imageUri
+    }
+
+    fun modifyReview(reviewId: Int, storeId: Int, content: Review) {
+        viewModelScope.launch {
+            modifyReviewUseCase(reviewId, storeId, content).also {
+                _review.value = content
+            }
+        }
     }
 
     fun getPreSignedUrl(

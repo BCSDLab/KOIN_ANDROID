@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.store.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.text.InputFilter
@@ -19,6 +21,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
+import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.ui.store.adapter.review.MenuImageRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.MenuRecyclerViewAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.WriteReviewViewModel
@@ -27,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 @AndroidEntryPoint
 class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
@@ -79,6 +83,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
     private fun initView() {
         val storeName = intent.getStringExtra("storeName")
         val storeId = intent.getIntExtra("storeId", -1)
+        val review = intent.intentSerializable("review", StoreReviewContent::class.java)
         with(binding) {
             storeNameTextView.text = storeName
             starRating.onRatingBarChangeListener =
@@ -88,6 +93,13 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         starRating.rating = 1f
                     } else binding.ratingNumber.text = rating.toInt().toString()
                 }
+
+            if (review != null) {
+                starRating.rating = review.rating.toFloat()
+                reviewEditText.setText(review.content)
+                menuRecyclerViewAdapter.submitList(review.menuNames)
+                viewModel.setImage(review.imageUrls)
+            }
 
             uploadImageButton.debounce(300, lifecycleScope) {
                 pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
@@ -109,17 +121,6 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 ) {
                     super.onTextChanged(s, start, before, count)
                     writeReviewButton.isEnabled = reviewEditText.text.isNotEmpty()
-                    writeReviewButton.background =
-                        ContextCompat.getDrawable(
-                            this@WriteReviewActivity,
-                            if (s.isNotEmpty()) R.drawable.blue_border_4dp_button else R.drawable.gray_border_button
-                        )
-                    writeReviewButton.setTextColor(
-                        ContextCompat.getColor(
-                            this@WriteReviewActivity,
-                            if (s.isNotEmpty()) R.color.white else R.color.gray18
-                        )
-                    )
                     charactersNumber.text = "${reviewEditText.length()}/500"
                     if (s.length >= 500) {
                         charactersNumber.setTextColor(
@@ -140,12 +141,21 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 }
             })
             writeReviewButton.debounce(300, lifecycleScope) {
-                viewModel.writeReview(
-                    storeId, Review(
-                        starRating.rating.toInt(), reviewEditText.text.toString(),
-                        viewModel.menuImageUrls.value, menuRecyclerViewAdapter.getMenuList()
+                if (review?.reviewId != null) {
+                    viewModel.modifyReview(
+                        review.reviewId, storeId, Review(
+                            starRating.rating.toInt(), reviewEditText.text.toString(),
+                            viewModel.menuImageUrls.value, menuRecyclerViewAdapter.getMenuList()
+                        )
                     )
-                )
+                } else {
+                    viewModel.writeReview(
+                        storeId, Review(
+                            starRating.rating.toInt(), reviewEditText.text.toString(),
+                            viewModel.menuImageUrls.value, menuRecyclerViewAdapter.getMenuList()
+                        )
+                    )
+                }
                 finish()
             }
         }
@@ -185,6 +195,14 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 delay(delayMillis)
                 action(Unit)
             }
+        }
+    }
+
+    fun <T : Serializable> Intent.intentSerializable(key: String, clazz: Class<T>): T? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            this.getSerializableExtra(key, clazz)
+        } else {
+            this.getSerializableExtra(key) as T?
         }
     }
 }

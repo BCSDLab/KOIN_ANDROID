@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
+import `in`.koreatech.koin.domain.usecase.store.DeleteReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetRecommendStoresUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
@@ -24,7 +25,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getRecommendStoresUseCase: GetRecommendStoresUseCase,
     private val getShopMenusUseCase: GetShopMenusUseCase,
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
-    private val getStoreEventsUseCase: GetShopEventsUseCase
+    private val getStoreEventsUseCase: GetShopEventsUseCase,
+    private val deleteReviewUseCase: DeleteReviewUseCase,
 ) : BaseViewModel() {
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
@@ -73,4 +75,9 @@ class StoreDetailViewModel @Inject constructor(
             _storeReview.value = reviews
         }
     }
+
+    fun deleteReview(reviewId: Int, storeId: Int) = viewModelScope.launchWithLoading {
+        deleteReviewUseCase(reviewId, storeId)
+    }
+
 }
