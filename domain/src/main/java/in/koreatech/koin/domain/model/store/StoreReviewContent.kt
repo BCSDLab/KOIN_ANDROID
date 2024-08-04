@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.domain.model.store
 
+import java.io.Serializable
+
 data class StoreReviewContent(
     val reviewId: Int,
     val rating: Int,
@@ -10,4 +12,4 @@ data class StoreReviewContent(
     val isMine: Boolean,
     val isModified: Boolean,
     val createdAt: String
-)
+): Serializable
