@@ -92,4 +92,15 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun deleteReview(reviewId: Int, shopId: Int) {
         storeRemoteDataSource.deleteReview(reviewId, shopId)
     }
+
+    override suspend fun modifyReview(reviewId: Int, shopId: Int, content: Review) {
+        storeRemoteDataSource.modifyReview(
+            reviewId, shopId, ReviewRequest(
+                content = content.content,
+                rating = content.rating,
+                imageUrls = content.imageUrls,
+                menuNames = content.menuNames,
+            )
+        )
+    }
 }

@@ -60,8 +60,18 @@ interface UserAuthApi {
         @Body reviewRequest: ReviewRequest
     ): Response<Unit?>
 
+    @DELETE("/shops/{shopId}/reviews/{reviewId}")
     suspend fun deleteReview(
         @Path("reviewId") reviewId: Int,
         @Path("shopId") shopId: Int,
-    )
+    ):Response<Unit?>
+
+    @PUT("/shops/{shopId}/reviews/{reviewId}")
+    suspend fun modifyReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int,
+        @Body reviewRequest: ReviewRequest,
+    ):Response<Unit?>
+
+
 }

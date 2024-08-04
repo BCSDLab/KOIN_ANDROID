@@ -56,4 +56,8 @@ class StoreRemoteDataSource @Inject constructor(
     suspend fun deleteReview(reviewId: Int, shopId:Int) {
         userAuthApi.deleteReview(reviewId, shopId)
     }
+
+    suspend fun modifyReview(reviewId: Int, shopId: Int, reviewRequest: ReviewRequest) {
+        userAuthApi.modifyReview(reviewId, shopId, reviewRequest)
+    }
 }
