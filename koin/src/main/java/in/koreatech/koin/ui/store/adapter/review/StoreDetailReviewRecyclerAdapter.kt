@@ -18,10 +18,13 @@ import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 
 
-class StoreDetailReviewRecyclerAdapter ():
+class StoreDetailReviewRecyclerAdapter(
+    val onModifyItem: (StoreReviewContent) -> Unit,
+    val onDeleteItem: (Int) -> Unit
+) :
     ListAdapter<StoreReviewContent, StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder>(
-    diffCallback
-){
+        diffCallback
+    ) {
 
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
@@ -35,6 +38,7 @@ class StoreDetailReviewRecyclerAdapter ():
         val reviewContent = binding.reviewContentTextview
         val reviewImageRecyclerView = binding.reviewImageRecyclerview
         val reviewMenuRecyclerview = binding.reviewMenuRecyclerview
+        val iconKebab = binding.iconKebab
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder {
@@ -68,10 +72,36 @@ class StoreDetailReviewRecyclerAdapter ():
             }
 
             reviewMenuRecyclerview.apply {
-                layoutManager =  LinearLayoutManager(reviewImageRecyclerView.context, RecyclerView.HORIZONTAL, false)
-                adapter =storeDetailReviewMenuRecyclerAdapter
+                layoutManager = LinearLayoutManager(
+                    reviewImageRecyclerView.context,
+                    RecyclerView.HORIZONTAL,
+                    false
+                )
+                adapter = storeDetailReviewMenuRecyclerAdapter
             }
 
+            iconKebab.setOnClickListener {
+                if (review.isMine) {
+                    val popupMenu = PopupMenu(holder.itemView.context, it)
+                    popupMenu.inflate(R.menu.menu_review_option)
+                    popupMenu.show()
+                    popupMenu.setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.edit_item -> {
+                                onModifyItem(review)
+                                true
+                            }
+
+                            R.id.delete_item -> {
+                                onDeleteItem(review.reviewId)
+                                true
+                            }
+
+                            else -> false
+                        }
+                    }
+                }
+            }
         }
     }
 
