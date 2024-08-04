@@ -67,4 +67,11 @@ class MenuRecyclerViewAdapter() :
     fun getMenuList(): ArrayList<String> {
         return menuList.filter { it.isNotEmpty() }.toCollection(ArrayList())
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(menuList: List<String>) {
+        this.menuList.clear()
+        this.menuList.addAll(menuList)
+        notifyDataSetChanged()
+    }
 }
