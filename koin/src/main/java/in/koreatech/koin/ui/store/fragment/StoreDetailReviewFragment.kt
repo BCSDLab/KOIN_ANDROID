@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
+import `in`.koreatech.koin.ui.store.dialog.ReviewDeleteCheckDialog
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 
@@ -35,6 +36,7 @@ class StoreDetailReviewFragment : Fragment() {
                 val reviewDeleteDialog = ReviewDeleteCheckDialog(
                     onDelete = {
                         viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                        viewModel.getShopReviews(viewModel.store.value!!.uid)
                     }
                 )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
@@ -60,7 +62,6 @@ class StoreDetailReviewFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getShopReviews(viewModel.store.value!!.uid)
     }
 
     private fun initViews() {

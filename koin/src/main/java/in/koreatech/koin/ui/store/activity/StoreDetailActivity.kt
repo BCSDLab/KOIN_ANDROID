@@ -255,6 +255,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 viewModel.getShopReviews(it.uid)
             }
         }
+        if(viewModel.store.value != null) viewModel.getShopReviews(viewModel.store.value!!.uid)
     }
 
     private fun showCallDialog() {
