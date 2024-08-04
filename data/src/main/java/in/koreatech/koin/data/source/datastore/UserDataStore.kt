@@ -2,30 +2,54 @@ package `in`.koreatech.koin.data.source.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import com.google.gson.Gson
+import `in`.koreatech.koin.data.mapper.toUser
+import `in`.koreatech.koin.data.mapper.toUserRequest
+import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
 class UserDataStore @Inject constructor(
     private val userDataStore: DataStore<Preferences>
 ) {
-    fun updateIsLogin(isLogin: Boolean) {
-//        TODO::구현
+    // Exception 이 발생할 경우 null 반환
+    val user: Flow<User?> = userDataStore.data.map { pref ->
+        try {
+            pref[PREF_KEY_USER_INFO]?.let {
+                if (!it.equals("Anonymous") && pref[PREF_KEY_IS_LOGIN] == true) {
+                    return@map Gson().fromJson(it, UserResponse::class.java).toUser()
+                }
+            }
+            return@map User.Anonymous
+        } catch (e: Exception) {
+            return@map null
+        }
     }
 
-    fun updateUserInfo(user: User) {
-//        TODO::구현
+    suspend fun updateIsLogin(isLogin: Boolean) {
+        userDataStore.edit { pref ->
+            pref[PREF_KEY_IS_LOGIN] = isLogin
+        }
     }
 
-    fun getUserInfo(): Flow<User> {
-//        TODO::구현
-        return flow { }
+    suspend fun updateUserInfo(user: User) {
+        userDataStore.edit { pref ->
+            pref[PREF_KEY_USER_INFO] = if (user is User.Student) {
+                Gson().toJson(user.toUserRequest())
+            } else {
+                "Anonymous"
+            }
+        }
     }
 
     private companion object {
-        val PREF_KEY_IS_LOGIN = "KEY_USER_IS_LOGIN"
-        val PREF_KEY_USER_INFO = "KEY_USER_INFO"
+        val PREF_KEY_IS_LOGIN = booleanPreferencesKey("KEY_USER_IS_LOGIN")
+        val PREF_KEY_USER_INFO = stringPreferencesKey("KEY_USER_INFO")
     }
 }

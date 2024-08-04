@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import android.util.Log
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -10,6 +11,8 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.UserRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import javax.inject.Inject
 
@@ -28,8 +31,13 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser().also {
+            Log.d("dhk", "UserRepositoryImpl| getUserInfo(), user: ${it}")
             userDataStore.updateUserInfo(it)
         }
+    }
+
+    override fun getUserInfoFlow(): Flow<User> {
+        return userDataStore.user.map { it ?: getUserInfo() }
     }
 
     override suspend fun requestPasswordResetEmail(email: String) {
