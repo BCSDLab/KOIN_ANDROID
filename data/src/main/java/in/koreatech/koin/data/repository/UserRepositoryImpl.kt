@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
@@ -31,7 +30,6 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser().also {
-            Log.d("dhk", "UserRepositoryImpl| getUserInfo(), user: ${it}")
             userDataStore.updateUserInfo(it)
         }
     }

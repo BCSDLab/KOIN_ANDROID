@@ -283,7 +283,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userInfoFlow.value.isAnonymous) {
+                    if (userInfoFlow.value.isStudent) {
                         logout()
                     }
                     goToLoginActivity()
@@ -296,29 +296,27 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    userInfoFlow.collect { user ->
-                        when (user) {
-                            User.Anonymous -> {
-                                nameTextView.visibility = View.GONE
-                                helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
-                                loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
-                            }
+                userInfoFlow.collect { user ->
+                    when (user) {
+                        User.Anonymous -> {
+                            nameTextView.visibility = View.GONE
+                            helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                            loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                        }
 
-                            is User.Student -> {
-                                nameTextView.text = user.name
-                                nameTextView.visibility = View.VISIBLE
-                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
-                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                        is User.Student -> {
+                            nameTextView.text = user.name
+                            nameTextView.visibility = View.VISIBLE
+                            helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                            loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
 
-                                when (menuState) {
-                                    MenuState.Main, MenuState.Notification -> {
-                                        if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
-                                        koinNavigationDrawerViewModel.updateDeviceToken()
-                                    }
-
-                                    else -> Unit
+                            when (menuState) {
+                                MenuState.Main, MenuState.Notification -> {
+                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                                    koinNavigationDrawerViewModel.updateDeviceToken()
                                 }
+
+                                else -> Unit
                             }
                         }
                     }
