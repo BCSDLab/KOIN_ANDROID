@@ -7,11 +7,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.user.DeleteDeviceTokenUseCase
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCaseFlow
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
+import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,10 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class KoinNavigationDrawerViewModel @Inject constructor(
-    private val getUserInfoUseCase: GetUserInfoUseCase,
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
-    private val deleteDeviceTokenUseCase: DeleteDeviceTokenUseCase,
     private val getUserInfoUseCaseFlow: GetUserInfoUseCaseFlow
 ) : BaseViewModel() {
 
@@ -52,11 +49,8 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch {
-        deleteDeviceTokenUseCase()
-        userLogoutUseCase()?.let { errorHandler ->
-            _errorToast.value = errorHandler.message
-        } ?: run {
-//            _userState.value = User.Anonymous
+        userLogoutUseCase().onFailure {
+            _errorToast.value = it.message
         }
     }
 }
