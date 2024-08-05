@@ -160,6 +160,9 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
+        binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
+            handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
+        }
     }
 
     private fun subscribeDetailNotification() {
