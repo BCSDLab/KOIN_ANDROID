@@ -15,6 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
@@ -47,6 +50,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.windowWidth
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
@@ -93,6 +97,17 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             state to view
         }.toMap()
     }
+
+    private val nameTextView by lazy {
+        findViewById<TextView>(R.id.navi_user_nickname)
+    }
+    private val helloMessageTextView by lazy {
+        findViewById<TextView>(R.id.navi_hello_message)
+    }
+    private val loginOrLogoutTextView by lazy {
+        menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
+    }
+
 
     private val requestMainPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -179,7 +194,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
 
                             MenuState.UserInfo -> {
-                                if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
@@ -209,7 +224,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
 
         initDrawerViewModel()
-        koinNavigationDrawerViewModel.getUser()
     }
 
     override fun onAttachedToWindow() {
@@ -237,35 +251,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
-        observeLiveData(userState) { user ->
-            val nameTextView = findViewById<TextView>(R.id.navi_user_nickname)
-            val helloMessageTextView = findViewById<TextView>(R.id.navi_hello_message)
-            val loginOrLogoutTextView = menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
-            when (user) {
-                User.Anonymous -> {
-                    nameTextView.visibility = View.GONE
-                    helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
-                    loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
-                }
-
-                is User.Student -> {
-                    nameTextView.text = user.name
-                    nameTextView.visibility = View.VISIBLE
-                    helloMessageTextView.text = getString(R.string.navigation_hello_message)
-                    loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
-
-                    when (menuState) {
-                        MenuState.Main, MenuState.Notification -> {
-                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
-                            koinNavigationDrawerViewModel.updateDeviceToken()
-                        }
-
-                        else -> Unit
-                    }
-                }
-            }
-        }
-
         observeLiveData(menuEvent) { menuState ->
             when (menuState) {
                 MenuState.Bus -> goToBusActivity()
@@ -274,7 +259,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Timetable -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                    if (userInfoFlow.value.isAnonymous) {
                         goToAnonymousTimeTableActivity()
                     } else {
                         goToTimetableActivty()
@@ -282,7 +267,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.UserInfo -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                    if (userInfoFlow.value.isAnonymous) {
                         loginAlertDialog.show()
                     } else {
                         goToUserInfoActivity()
@@ -290,7 +275,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Notification -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                    if (userInfoFlow.value.isAnonymous) {
                         loginAlertDialog.show()
                     } else {
                         goToNotificationActivity()
@@ -298,7 +283,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.LoginOrLogout -> {
-                    if (userState.value != null && userState.value?.isAnonymous != true) {
+                    if (userInfoFlow.value.isAnonymous) {
                         logout()
                     }
                     goToLoginActivity()
@@ -307,6 +292,38 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 else -> Unit
             }
             drawerLayout.closeDrawer()
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    userInfoFlow.collect { user ->
+                        when (user) {
+                            User.Anonymous -> {
+                                nameTextView.visibility = View.GONE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                            }
+
+                            is User.Student -> {
+                                nameTextView.text = user.name
+                                nameTextView.visibility = View.VISIBLE
+                                helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                                loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+
+                                when (menuState) {
+                                    MenuState.Main, MenuState.Notification -> {
+                                        if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                                        koinNavigationDrawerViewModel.updateDeviceToken()
+                                    }
+
+                                    else -> Unit
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -469,7 +486,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             this,
             LoginActivity::class.java
         )
-        finishAffinity()
+//        finishAffinity()
         startActivity(intent)
     }
 
