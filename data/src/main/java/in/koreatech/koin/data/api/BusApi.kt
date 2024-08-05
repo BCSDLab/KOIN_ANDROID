@@ -22,6 +22,12 @@ interface BusApi {
         @Query("region") region: String //courses의 region
     ) : ExpressBusTimetableResponse
 
+    @GET(URLConstant.BUS.CITY)
+    suspend fun getCityBusTimetable(
+        @Query("bus_number") busNumber: Int,
+        @Query("direction") direction: String
+    ): CityBusTimetableResponse
+
     @GET(URLConstant.BUS.BUS)
     suspend fun getBus(
         @Query("bus_type") busType: String, //shuttle, commuting, express, city

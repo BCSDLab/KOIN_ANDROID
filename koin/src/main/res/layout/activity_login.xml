@@ -182,10 +182,9 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingLeft="10dp"
+                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                 android:textColor="@color/black"
-                android:textColorHint="@color/blue1"
-                android:textSize="15sp"
-                app:fontName="Normal" />
+                android:textColorHint="@color/blue1" />
 
             <TextView
                 android:layout_width="0dp"
@@ -225,10 +224,9 @@
             android:maxLength="18"
             android:maxLines="1"
             android:paddingLeft="10dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.15"
             android:textColor="@color/black"
             android:textColorHint="@color/blue1"
-            android:textSize="15sp"
-            app:fontName="Normal"
             app:layout_constraintBottom_toBottomOf="@+id/login_password_border"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -252,9 +250,8 @@
             android:layout_height="0dp"
             android:background="@color/colorAccent"
             android:text="로그인"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.15"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            app:fontName="Normal"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.584"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -266,9 +263,8 @@
             android:layout_height="0dp"
             android:background="@color/colorPrimary"
             android:text="@string/sign_up"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.15"
             android:textColor="@color/white"
-            android:textSize="15sp"
-            app:fontName="Normal"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.666"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_0.889"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical_0.111"
@@ -289,9 +285,7 @@
                 android:id="@+id/forgot_password_linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-
-                >
+                android:layout_gravity="center">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -304,9 +298,8 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:text="비밀번호 찾기"
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="13sp"
-                    app:fontName="Normal" />
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+                    android:textColor="@color/colorSecondaryText" />
             </LinearLayout>
 
             <TextView
@@ -338,9 +331,8 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:text="둘러보기"
-                    android:textColor="@color/colorSecondaryText"
-                    android:textSize="13sp"
-                    app:fontName="Normal" />
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+                    android:textColor="@color/colorSecondaryText" />
             </LinearLayout>
 
         </LinearLayout>
@@ -352,10 +344,10 @@
             android:text="@string/are_you_boss"
             android:textColor="@color/colorAccent"
             android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@+id/guideline_horizental_0.87"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizental_0.90"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/guideline_horizental_0.87" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -371,33 +363,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:lineSpacingExtra="5sp"
                 android:text="Copyright @ "
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:fontName="Custom4" />
+                android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:lineSpacingExtra="5sp"
                 android:text="BCSD Lab "
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:fontName="Custom3" />
+                android:textAppearance="@style/TextAppearance.Koin.Medium.12"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
-                android:lineSpacingExtra="5sp"
                 android:text="All rights reserved."
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:fontName="Custom4" />
+                android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 

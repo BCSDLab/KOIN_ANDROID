@@ -133,7 +133,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         charactersNumber.setTextColor(
                             ContextCompat.getColor(
                                 this@WriteReviewActivity,
-                                R.color.gray18
+                                R.color.gray19
                             )
                         )
                     }
@@ -176,7 +176,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         if (it.size > 3)
                             ContextCompat.getColor(this@WriteReviewActivity, R.color.colorAccent)
                         else
-                            ContextCompat.getColor(this@WriteReviewActivity, R.color.gray18)
+                            ContextCompat.getColor(this@WriteReviewActivity, R.color.gray19)
                     )
                 }
             }

@@ -12,8 +12,4 @@ sealed class BusRoute {
     data class ExpressBusRoute(
         val arrivalInfo: List<BusNodeInfo.ExpressNodeInfo>
     ): BusRoute()
-
-    data class CityBusRoute(
-        val arrivalInfo: List<BusNodeInfo.CitybusNodeInfo>
-    ): BusRoute()
 }

@@ -74,6 +74,10 @@
                     android:id="@+id/notification_dining_breakfast_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:paddingTop="16dp"
+                    app:paddingBottom="16dp"
+                    app:paddingStart="24dp"
+                    app:paddingEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notification_dining_sold_out"
@@ -89,6 +93,10 @@
                     android:id="@+id/notification_dining_lunch_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:paddingTop="16dp"
+                    app:paddingBottom="16dp"
+                    app:paddingStart="24dp"
+                    app:paddingEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notification_dining_breakfast_sold_out"
@@ -104,16 +112,30 @@
                     android:id="@+id/notification_dining_dinner_sold_out"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:paddingTop="16dp"
+                    app:paddingBottom="16dp"
+                    app:paddingStart="24dp"
+                    app:paddingEnd="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notification_dining_lunch_sold_out"
                     app:text="@string/notification_dining_dinner_sold_out" />
 
+                <in.koreatech.koin.core.view.notificaiton.NotificationHeader
+                    android:id="@+id/notification_dining_photo_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:text="@string/notification_dining_photo_upload"
+                    app:description="@string/notification_dining_photo_upload_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_dinner_sold_out" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/gray2"
-                    app:layout_constraintTop_toBottomOf="@id/notification_dining_dinner_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@id/notification_dining_photo_upload" />
 
 
                 <TextView
@@ -128,7 +150,7 @@
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_dinner_sold_out" />
+                    app:layout_constraintTop_toBottomOf="@+id/notification_dining_photo_upload" />
 
                 <in.koreatech.koin.core.view.notificaiton.NotificationHeader
                     android:id="@+id/notification_shop_event"
