@@ -457,13 +457,15 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      * right navigation drawer 서비스 메뉴 호출
      */
     private fun goToUserInfoActivity() {
-        val intent = Intent(this, UserInfoActivity::class.java)
-        startActivity(intent)
+        Intent(this, UserInfoActivity::class.java).apply {
+            startActivity(intent)
+        }
     }
 
     private fun goToNotificationActivity() {
-        val intent = Intent(this, NotificationActivity::class.java)
-        startActivity(intent)
+        Intent(this, NotificationActivity::class.java).apply {
+            startActivity(intent)
+        }
     }
 
     private fun goToActivityFinish(intent: Intent) {
@@ -473,19 +475,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToNavigationDeveloper() {
-        val intent = Intent(this, WebViewActivity::class.java)
-        intent.putExtra("title", getString(R.string.bcsd_webpage_name))
-        intent.putExtra("url", "https://bcsdlab.com/")
-        startActivity(intent)
+        Intent(this, WebViewActivity::class.java).apply {
+            putExtra("title", getString(R.string.bcsd_webpage_name))
+            putExtra("url", "https://bcsdlab.com/")
+            startActivity(this)
+        }
     }
 
     private fun goToLoginActivity() {
-        val intent = Intent(
+        Intent(
             this,
             LoginActivity::class.java
-        )
-//        finishAffinity()
-        startActivity(intent)
+        ).apply {
+            startActivity(this)
+        }
     }
 
     fun toggleNavigationDrawer() {
