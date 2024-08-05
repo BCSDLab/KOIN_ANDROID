@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
+import `in`.koreatech.koin.ui.store.adapter.review.menu.ReviewPopupMenu
 
 
 class StoreDetailReviewRecyclerAdapter(
@@ -83,24 +84,15 @@ class StoreDetailReviewRecyclerAdapter(
 
             iconKebab.setOnClickListener {
                 if (review.isMine) {
-                    val popupMenu = PopupMenu(holder.itemView.context, it)
-                    popupMenu.inflate(R.menu.menu_review_option)
-                    popupMenu.show()
-                    popupMenu.setOnMenuItemClickListener {
-                        when (it.itemId) {
-                            R.id.edit_item -> {
-                                onModifyItem(review)
-                                true
-                            }
-
-                            R.id.delete_item -> {
-                                onDeleteItem(review.reviewId)
-                                true
-                            }
-
-                            else -> false
+                    val popupMenu = ReviewPopupMenu(holder.itemView.context,
+                        onModify = {
+                            onModifyItem(review)
+                        },
+                        onDelete = {
+                            onDeleteItem(review.reviewId)
                         }
-                    }
+                    )
+                    popupMenu.show(it)
                 }
             }
         }
