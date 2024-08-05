@@ -6,8 +6,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
+import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toUser
-import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.response.user.UserResponse
 import `in`.koreatech.koin.domain.model.user.User
 import kotlinx.coroutines.flow.Flow
@@ -41,7 +41,18 @@ class UserDataStore @Inject constructor(
     suspend fun updateUserInfo(user: User) {
         userDataStore.edit { pref ->
             pref[PREF_KEY_USER_INFO] = if (user is User.Student) {
-                Gson().toJson(user.toUserRequest())
+                Gson().toJson(
+                    UserResponse(
+                        anonymousNickname = user.anonymousNickname,
+                        email = user.email,
+                        gender = user.gender.toInt(),
+                        major = user.major,
+                        name = user.name!!,
+                        nickname = user.nickname,
+                        phoneNumber = user.phoneNumber,
+                        studentNumber = user.studentNumber
+                    )
+                )
             } else {
                 "Anonymous"
             }
