@@ -21,6 +21,7 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+    const val COOPSHOP = "coopshop"
 
     object DINING {
         const val DINING = "dining"
