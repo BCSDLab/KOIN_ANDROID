@@ -458,13 +458,13 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      */
     private fun goToUserInfoActivity() {
         Intent(this, UserInfoActivity::class.java).apply {
-            startActivity(intent)
+            startActivity(this)
         }
     }
 
     private fun goToNotificationActivity() {
         Intent(this, NotificationActivity::class.java).apply {
-            startActivity(intent)
+            startActivity(this)
         }
     }
 
