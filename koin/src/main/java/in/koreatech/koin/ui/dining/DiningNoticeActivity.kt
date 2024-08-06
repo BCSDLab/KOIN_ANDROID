@@ -5,11 +5,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivityDiningNoticeBinding
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningNoticeViewModel
+import `in`.koreatech.koin.util.ext.observeLiveData
 
+@AndroidEntryPoint
 class DiningNoticeActivity : ActivityBase() {
     private lateinit var binding: ActivityDiningNoticeBinding
     private val viewModel by viewModels<DiningNoticeViewModel>()
@@ -30,12 +33,26 @@ class DiningNoticeActivity : ActivityBase() {
         }
 
         initView()
+        initViewModel()
     }
 
     private fun initView() {
         with(binding) {
             btnDiningNoticeTopbarBack.setOnClickListener {
                 finish()
+            }
+        }
+    }
+
+    private fun initViewModel() = with(viewModel) {
+        observeLiveData(diningNotice) {
+            with(binding) {
+                tvDiningNoticeTitle.text =
+                    getString(R.string.dining_notice_title_format, it.name, it.semester)
+                tvDiningNoticeLocationValue.text = it.location
+                tvDiningNoticeTelValue.text = it.phone
+                tvDiningNoticeUpdate.text =
+                    getString(R.string.dining_notice_updated_at_format, it.updatedAt)
             }
         }
     }
