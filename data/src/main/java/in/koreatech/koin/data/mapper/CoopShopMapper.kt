@@ -6,7 +6,6 @@ import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseInfo
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseTimeInfo
 import `in`.koreatech.koin.domain.model.coopshop.toCoopShopDayType
-import `in`.koreatech.koin.domain.util.ext.YYYYMMDD
 
 fun CoopShopResponse.toCoopShop(): CoopShop {
     return CoopShop(
@@ -17,7 +16,7 @@ fun CoopShopResponse.toCoopShop(): CoopShop {
         phone = phone.orEmpty(),
         location = location,
         remarks = remarks.orEmpty(),
-        updatedAt = updatedAt.YYYYMMDD
+        updatedAt = updatedAt
     )
 }
 

@@ -11,7 +11,7 @@ data class CoopShopResponse(
     @SerializedName("phone") val phone: String?,
     @SerializedName("location") val location: String,
     @SerializedName("remarks") val remarks: String?,
-    @SerializedName("updated_at") val updatedAt: LocalDateTime
+    @SerializedName("updated_at") val updatedAt: String
 )
 
 data class OpenCloseInfoResponse(

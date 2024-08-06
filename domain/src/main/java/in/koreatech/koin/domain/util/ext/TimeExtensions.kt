@@ -20,8 +20,6 @@ val localDayOfWeekName get() = when(localDateTimeNow.dayOfWeek.value) {
 
 val LocalTime.HHMM get() = this.format(DateTimeFormatter.ofPattern("HH:mm"))
 
-val LocalDateTime.YYYYMMDD get() = this.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-
 // this >= time (17:00 >= 15:00)
 fun LocalTime.isEqualOrBigger(time: LocalTime): Boolean =
     this.isAfter(time) || this.equals(time)
