@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.repository
 
 import android.util.Log
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
+import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreCategories
 import `in`.koreatech.koin.data.mapper.toStoreEvent
@@ -12,12 +13,14 @@ import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
+import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import retrofit2.HttpException
@@ -30,9 +33,20 @@ class StoreRepositoryImpl @Inject constructor(
     private var storeEvents: List<StoreEvent>? = null
     private var storeCategories: List<StoreCategories>? = null
 
-    override suspend fun getStores(): List<Store> {
+    override suspend fun getStores(
+        storeSorter: StoreSorter?,
+        isOperating: Boolean?,
+        isDelivery: Boolean?
+    ): List<Store> {
         if (stores == null) {
-            stores = storeRemoteDataSource.getStoreItems().map { it.toStore() }
+            stores = if(isOperating == true && isDelivery == true){
+                storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter).map { it.toStore() }
+            } else if(isOperating == false && isDelivery == false) {
+                storeRemoteDataSource.getStoreItemsWithSorting(storeSorter).map { it.toStore() }
+            } else{
+                if(isOperating == true) storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "OPEN").map { it.toStore() }
+                else storeRemoteDataSource.getStoreItemsWithOneFilter(storeSorter, "DELIVERY").map { it.toStore() }
+            }
         }
 
         return stores!!

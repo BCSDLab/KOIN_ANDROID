@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import javax.inject.Inject
 
 class StoreRemoteDataSource @Inject constructor(
@@ -19,6 +20,30 @@ class StoreRemoteDataSource @Inject constructor(
 ) {
     suspend fun getStoreItems() : List<StoreItemResponse> {
         return storeApi.getShopList().shops
+    }
+
+    suspend fun getStoreItemsWithSorting(storeSorter: StoreSorter?) : List<StoreItemResponse> {
+        return if (storeSorter != null) {
+            storeApi.getShopListWithSorting(storeSorter.name).shops
+        } else{
+            storeApi.getShopListWithSorting(StoreSorter.NONE.name).shops
+        }
+    }
+
+    suspend fun getStoreItemsWithOneFilter(storeSorter: StoreSorter?, filter: String) : List<StoreItemResponse> {
+        return if (storeSorter != null) {
+            storeApi.getShopListWithOneFilter(storeSorter.name, filter).shops
+        } else{
+            storeApi.getShopListWithOneFilter(StoreSorter.NONE.name, filter).shops
+        }
+    }
+
+    suspend fun getStoreItemsWithTwoFilter(storeSorter: StoreSorter?) : List<StoreItemResponse> {
+        return if (storeSorter != null) {
+            storeApi.getShopListWithTwoFilter(storeSorter.name).shops
+        } else{
+            storeApi.getShopListWithTwoFilter(StoreSorter.NONE.name).shops
+        }
     }
 
     suspend fun getStoreEvents(): List<StoreEventItemReponse>{
