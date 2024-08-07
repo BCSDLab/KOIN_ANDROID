@@ -6,7 +6,7 @@ import `in`.koreatech.koin.databinding.BusTimetableCityFooterBinding
 import `in`.koreatech.koin.databinding.BusTimetableExpressFooterBinding
 import `in`.koreatech.koin.databinding.BusTimetableShuttleFooterBinding
 
-abstract class BusTimetableFooterViewHolder(protected val binding: ViewDataBinding)
+abstract class TableFooterViewHolder(protected val binding: ViewDataBinding)
     : RecyclerView.ViewHolder(binding.root) {
         fun setUpdatedAt(date: String?) {
             when(binding) {

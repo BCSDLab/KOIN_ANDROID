@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.response.coopshop.OpenCloseInfoResponse
 import `in`.koreatech.koin.domain.model.coopshop.CoopShop
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseInfo
 import `in`.koreatech.koin.domain.model.coopshop.OpenCloseTimeInfo
+import `in`.koreatech.koin.domain.model.coopshop.checkIfNotOpen
 import `in`.koreatech.koin.domain.model.coopshop.toCoopShopDayType
 
 fun CoopShopResponse.toCoopShop(): CoopShop {
@@ -27,8 +28,8 @@ fun List<OpenCloseInfoResponse>.groupByDayOfWeek(): List<OpenCloseInfo> =
             opensByDayType = infoList.map { info ->
                 OpenCloseTimeInfo(
                     type = info.type.orEmpty(),
-                    openTime = info.openTime.orEmpty(),
-                    closeTime = info.closeTime.orEmpty()
+                    openTime = info.openTime.orEmpty().checkIfNotOpen,
+                    closeTime = info.closeTime.orEmpty().checkIfNotOpen
                 )
             }
         )

@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tv_day_type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="8dp"
-        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
-        app:layout_constraintEnd_toStartOf="@id/tv_open_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="아침" />
-
-
-    <TextView
-        android:id="@+id/tv_open_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="8dp"
-        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
-        app:layout_constraintEnd_toStartOf="@id/tv_close_time"
-        app:layout_constraintStart_toEndOf="@id/tv_day_type"
-        app:layout_constraintTop_toTopOf="@id/tv_day_type"
-        tools:text="09:00" />
-
-    <TextView
-        android:id="@+id/tv_close_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingVertical="8dp"
-        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_open_time"
-        app:layout_constraintTop_toTopOf="@id/tv_open_time"
-        tools:text="11:00" />
-
-    <View
-        android:id="@+id/bottom_divider"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/gray16"
-        app:layout_constraintTop_toBottomOf="@id/tv_day_type" />
+        android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_day_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toStartOf="@id/tv_open_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="아침" />
+
+
+        <TextView
+            android:id="@+id/tv_open_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toStartOf="@id/tv_close_time"
+            app:layout_constraintStart_toEndOf="@id/tv_day_type"
+            app:layout_constraintTop_toTopOf="@id/tv_day_type"
+            tools:text="09:00" />
+
+        <TextView
+            android:id="@+id/tv_close_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_open_time"
+            app:layout_constraintTop_toTopOf="@id/tv_open_time"
+            tools:text="11:00" />
+
+        <View
+            android:id="@+id/bottom_divider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray16"
+            app:layout_constraintTop_toBottomOf="@id/tv_day_type" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,10 +5,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.databinding.ActivityDiningNoticeBinding
+import `in`.koreatech.koin.ui.dining.adapter.DiningNoticeAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningNoticeViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 
@@ -16,6 +18,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 class DiningNoticeActivity : ActivityBase() {
     private lateinit var binding: ActivityDiningNoticeBinding
     private val viewModel by viewModels<DiningNoticeViewModel>()
+    private val diningNoticeAdapter = DiningNoticeAdapter()
     override val screenTitle: String
         get() = "학생식당정보"
 
@@ -41,6 +44,11 @@ class DiningNoticeActivity : ActivityBase() {
             btnDiningNoticeTopbarBack.setOnClickListener {
                 finish()
             }
+            rvDiningNotice.apply {
+                layoutManager = LinearLayoutManager(this@DiningNoticeActivity)
+                adapter = diningNoticeAdapter
+                itemAnimator = null
+            }
         }
     }
 
@@ -54,6 +62,7 @@ class DiningNoticeActivity : ActivityBase() {
                 tvDiningNoticeUpdate.text =
                     getString(R.string.dining_notice_updated_at_format, it.updatedAt)
             }
+            diningNoticeAdapter.submitList(it.opens)
         }
     }
 }
