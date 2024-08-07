@@ -23,13 +23,6 @@ object URLConstant {
     const val LAND = "lands"
     const val TERM = "term"
 
-    object DINING {
-        const val DINING = "dining"
-        const val DININGS = "dinings"
-        const val LIKE = "${DINING}/like"
-        const val UNLIKE = "${LIKE}/cancel"
-    }
-    // external url
     const val UNIBUS = "koreatech.unibus.kr"
 
 

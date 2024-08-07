@@ -6,6 +6,7 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
+import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
 interface StoreRepository {
@@ -19,6 +20,8 @@ interface StoreRepository {
     suspend fun getShopMenus(storeId: Int): StoreMenu
 
     suspend fun getShopEvents(storeId: Int): ShopEvents
-
+    suspend fun getStoreReviews(storeId: Int): StoreReview
     suspend fun invalidateStores()
+
+    suspend fun reportReview(storeId: Int?, reviewId: Int?, reportTitle: String, reportReason: String): Result<Unit>
 }

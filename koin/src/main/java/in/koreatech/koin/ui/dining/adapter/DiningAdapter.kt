@@ -16,7 +16,6 @@ import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
 import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
-import `in`.koreatech.koin.domain.model.dining.LikeActionType
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 
@@ -106,76 +105,6 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 else {
                     if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
                     else showEmptyDiningImage(context, dining)
-                }
-            }
-        }
-
-        private fun initLikeAction(dining: Dining) {
-            binding.linearLayoutLike.setOnClickListener {
-                coroutineScope.launch {
-                    withContext(Dispatchers.Main) {
-                        val result = onLikeClickResult(dining)
-                        when(result) {
-                            LikeActionType.LIKE -> {
-                                dining.isLiked = true
-                                ++dining.likes
-                                setLikeUI(dining)
-                            }
-
-                            LikeActionType.UNLIKE -> {
-                                dining.isLiked = false
-                                --dining.likes
-                                setLikeUI(dining)
-                            }
-
-                            LikeActionType.LOGIN_REQUIRED -> {
-                                val dialog =
-                                    AlertModalDialog(binding.root.context, AlertModalDialogData(
-                                        R.string.recommend_login_to_like_dining,
-                                        R.string.recommend_like_dining,
-                                        R.string.action_login,
-                                    ),
-                                        onPositiveButtonClicked = {
-                                            val intent = Intent(
-                                                binding.root.context,
-                                                LoginActivity::class.java
-                                            )
-                                            intent.putExtra("activity", DiningActivity::class.java)
-                                            binding.root.context.startActivity(intent)
-                                        },
-                                        onNegativeButtonClicked = {
-                                            it.dismiss()
-                                        }
-                                    )
-                                dialog.show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private fun initShareAction(dining: Dining) {
-            binding.linearLayoutShare.setOnClickListener {
-                onShareClick(dining)
-            }
-        }
-
-        private fun setLikeUI(dining: Dining) {
-            with(binding) {
-                if (dining.likes > 0) {
-                    textViewLike.visibility = View.INVISIBLE
-                    textViewLikeCount.visibility = View.VISIBLE
-                    textViewLikeCount.text = dining.likes.toStringWithComma()
-                } else {
-                    textViewLike.visibility = View.VISIBLE
-                    textViewLikeCount.visibility = View.INVISIBLE
-                }
-
-                if(dining.isLiked) {
-                    imageViewLike.setImageResource(R.drawable.ic_like_filled)
-                } else {
-                    imageViewLike.setImageResource(R.drawable.ic_like)
                 }
             }
         }

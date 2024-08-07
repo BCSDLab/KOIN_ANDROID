@@ -193,6 +193,12 @@
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
+            android:windowSoftInputMode="adjustPan"
+            android:name=".ui.store.activity.StoreReviewReportActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/KAPTheme.NoActionBar" />
+        <activity
             android:name=".ui.timetable.TimetableActivity"
             android:exported="false"
             android:label="@string/app_name"
