@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.model.coopshop
 
 enum class CoopShopDayType(
-    value: String
+    val value: String
 ) {
     Weekday("평일"),
     Weekend("주말")
