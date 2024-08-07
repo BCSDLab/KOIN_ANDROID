@@ -50,12 +50,11 @@ class StoreReviewReportActivity:  ActivityBase() {
 
     private fun initView() = with(binding){
 
-//        report_appbar.setOnClickListener {
-//            when (it.id) {
-//                AppBarBase.getLeftButtonId() -> onBackPressed()
-//                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
-//            }
-//        }
+        reportAppbar.setOnClickListener {
+            when (it.id) {
+                AppBarBase.getLeftButtonId() -> onBackPressed()
+            }
+        }
 
         storeId = intent.extras?.getInt("storeId")
         reviewId = intent.extras?.getInt("reviewId")
