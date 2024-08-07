@@ -27,35 +27,29 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:includeFontPadding="false"
             android:text="삭제"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp"
-            app:fontName="Custom6" />
+            android:textAppearance="@style/TextAppearance.Koin.Regular.15"
+            android:textColor="@color/colorAccent" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_center_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:includeFontPadding="false"
             android:gravity="center"
             android:text="수업상세"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
-            app:fontName="Custom5" />
+            android:textAppearance="@style/TextAppearance.Koin.Medium.15"
+            android:textColor="@color/colorPrimary" />
 
         <TextView
             android:id="@+id/timetable_detail_schedule_bottom_sheet_right_textview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:includeFontPadding="false"
             android:gravity="center"
             android:text="완료"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            app:fontName="Custom6" />
+            android:textAppearance="@style/TextAppearance.Koin.Regular.15"
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -69,14 +63,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textColor="@color/black"
             android:layout_marginStart="16dp"
-            android:includeFontPadding="false"
             android:layout_marginEnd="16dp"
-            android:letterSpacing="-0.03"
-            android:lineSpacingExtra="3sp"
-            android:textSize="15sp"
-            app:fontName="Bold"
+            android:textAppearance="@style/TextAppearance.Koin.Bold.15"
+            android:textColor="@color/black"
             tools:text="영어1" />
 
 
@@ -92,15 +82,11 @@
             android:id="@+id/timetable_detail_schedule_bottom_sheet_class_detail_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
-            android:includeFontPadding="false"
             android:layout_marginEnd="16dp"
-            android:letterSpacing="-0.03"
-            android:lineSpacingExtra="3sp"
-            android:textSize="12sp"
-            app:fontName="Custom6"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+            android:textColor="@color/black"
             tools:text="detail" />
 
 

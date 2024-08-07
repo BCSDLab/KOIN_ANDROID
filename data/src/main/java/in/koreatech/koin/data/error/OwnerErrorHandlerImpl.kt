@@ -60,4 +60,10 @@ class OwnerErrorHandlerImpl @Inject constructor(
             unknownErrorHandler(context)
         }
     }
+
+    override fun handleModifyOwnerShopInfoError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
 }

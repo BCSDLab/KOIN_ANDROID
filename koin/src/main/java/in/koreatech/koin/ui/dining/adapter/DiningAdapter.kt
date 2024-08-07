@@ -14,7 +14,10 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemDiningBinding
+import `in`.koreatech.koin.domain.constant.BREAKFAST
 import `in`.koreatech.koin.domain.model.dining.Dining
+import `in`.koreatech.koin.domain.model.dining.LikeActionType
+import `in`.koreatech.koin.domain.model.dining.DiningPlace
 import `in`.koreatech.koin.domain.util.DiningUtil
 
 class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback) {
@@ -88,6 +91,95 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
             }
         }
 
+        private fun setDiningCard(context: Context, dining: Dining) {
+            with(dining) {
+                // 능수관, 2캠퍼스일 때 이미지 카드 노출 X
+                if (place == DiningPlace.Nungsu.place || place == DiningPlace.Campus2.place) {
+                    binding.cardViewDining.visibility = View.GONE
+                }
+                // 아침 이미지 분기처리
+                else if (type == BREAKFAST) {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else binding.cardViewDining.visibility = View.GONE
+                }
+                // 점심, 저녁
+                else {
+                    if (imageUrl.isNotEmpty()) showDiningImage(context, dining)
+                    else showEmptyDiningImage(context, dining)
+                }
+            }
+        }
+
+        private fun initLikeAction(dining: Dining) {
+            binding.linearLayoutLike.setOnClickListener {
+                coroutineScope.launch {
+                    withContext(Dispatchers.Main) {
+                        val result = onLikeClickResult(dining)
+                        when(result) {
+                            LikeActionType.LIKE -> {
+                                dining.isLiked = true
+                                ++dining.likes
+                                setLikeUI(dining)
+                            }
+
+                            LikeActionType.UNLIKE -> {
+                                dining.isLiked = false
+                                --dining.likes
+                                setLikeUI(dining)
+                            }
+
+                            LikeActionType.LOGIN_REQUIRED -> {
+                                val dialog =
+                                    AlertModalDialog(binding.root.context, AlertModalDialogData(
+                                        R.string.recommend_login_to_like_dining,
+                                        R.string.recommend_like_dining,
+                                        R.string.action_login,
+                                    ),
+                                        onPositiveButtonClicked = {
+                                            val intent = Intent(
+                                                binding.root.context,
+                                                LoginActivity::class.java
+                                            )
+                                            intent.putExtra("activity", DiningActivity::class.java)
+                                            binding.root.context.startActivity(intent)
+                                        },
+                                        onNegativeButtonClicked = {
+                                            it.dismiss()
+                                        }
+                                    )
+                                dialog.show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun initShareAction(dining: Dining) {
+            binding.linearLayoutShare.setOnClickListener {
+                onShareClick(dining)
+            }
+        }
+
+        private fun setLikeUI(dining: Dining) {
+            with(binding) {
+                if (dining.likes > 0) {
+                    textViewLike.visibility = View.INVISIBLE
+                    textViewLikeCount.visibility = View.VISIBLE
+                    textViewLikeCount.text = dining.likes.toStringWithComma()
+                } else {
+                    textViewLike.visibility = View.VISIBLE
+                    textViewLikeCount.visibility = View.INVISIBLE
+                }
+
+                if(dining.isLiked) {
+                    imageViewLike.setImageResource(R.drawable.ic_like_filled)
+                } else {
+                    imageViewLike.setImageResource(R.drawable.ic_like)
+                }
+            }
+        }
+
         private fun setDiningImageVisibility(context: Context, dining: Dining) {
             when(dining.place) {
                 context.getString(R.string.dining_nungsu),
@@ -95,6 +187,51 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 else -> binding.cardViewDining.visibility = View.VISIBLE
             }
         }
+
+        private fun showDiningImage(context: Context, dining: Dining){
+            with(binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth = 0
+                textViewNoPhoto.visibility = View.INVISIBLE
+                imageViewNoPhoto.visibility = View.INVISIBLE
+                imageViewDining.visibility = View.VISIBLE
+
+                Glide.with(context)
+                    .load(dining.imageUrl)
+                    .into(imageViewDining)
+
+                // 이미지 클릭시 dialog 형태로 노출
+                val dialog = ImageZoomableDialog(context, dining.imageUrl)
+                dialog.initialScale = 0.75f
+                cardViewDining.setOnClickListener {
+                    dialog.show()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
+        private fun showEmptyDiningImage(context: Context, dining: Dining) {
+            with (binding) {
+                cardViewDining.visibility = View.VISIBLE
+                cardViewDining.strokeWidth =
+                    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1f, context.resources.displayMetrics).toInt()
+                textViewNoPhoto.visibility = View.VISIBLE
+                imageViewNoPhoto.visibility = View.VISIBLE
+                imageViewDining.visibility = View.INVISIBLE
+                cardViewDining.setOnClickListener {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.CAMPUS,
+                        AnalyticsConstant.Label.MENU_IMAGE,
+                        DiningUtil.getKoreanName(dining.type) + "_" + dining.place
+                    )
+                }
+            }
+        }
+
         private fun setEmptyDataVisibility(dining: Dining) {
             with(binding) {
                 textViewKcal.visibility = View.VISIBLE

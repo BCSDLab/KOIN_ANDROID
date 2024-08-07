@@ -6,22 +6,22 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:cardCornerRadius="0dp"
+        android:layout_marginBottom="9dp"
+        android:outlineSpotShadowColor="#0000000F"
+        app:cardCornerRadius="8dp"
         app:cardElevation="@dimen/normal_card_elevation">
 
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/bus_type_layout"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:background="@android:color/black"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -30,62 +30,61 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_bus03" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_main_bus" />
 
                 <TextView
                     android:id="@+id/text_view_bus_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="4dp"
+                    android:textAppearance="@style/TextAppearance.Koin.Medium.12"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     tools:text="학교셔틀" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:clickable="false"
                 android:focusable="false"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingTop="10dp">
+                android:paddingTop="8dp">
 
-                <TextView
-                    android:id="@+id/text_view_bus_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="4dp"
-                    android:textColor="@color/gray8"
-                    android:textSize="12sp"
-                    tools:text="400번 버스" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/text_view_bus_info"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:paddingBottom="4dp"-->
+                <!--                    android:textColor="@color/gray8"-->
+                <!--                    android:textSize="12sp"-->
+                <!--                    tools:text="400번 버스" />-->
 
                 <TextView
                     android:id="@+id/text_view_remaining_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="운행정보없음"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.Koin.Medium.16"
+                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp">
 
                     <TextView
                         android:id="@+id/text_view_departures"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="한기대"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
+                        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+                        android:textColor="@color/black" />
 
                     <ImageButton
                         android:id="@+id/image_button_switch"
@@ -93,19 +92,54 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:padding="11dp"
-                        android:src="@drawable/image_view_switch" />
+                        android:padding="8dp"
+                        android:src="@drawable/ic_switch" />
 
                     <TextView
                         android:id="@+id/text_view_arrival"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="야우리"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
+                        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bus_goto_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bus_link_fill_radius_8"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/text_view_bus_goto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:text="@string/bus_goto_timetable"
+                    android:textAppearance="@style/TextAppearance.Koin.Medium.12"
+                    android:textColor="@color/neutral_500" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_arrow_goto" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

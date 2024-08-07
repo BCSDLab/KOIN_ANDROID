@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.transition.Visibility
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
 import `in`.koreatech.business.ui.theme.Blue3
@@ -30,15 +31,16 @@ import org.orbitmvi.orbit.compose.collectAsState
 
 @Composable
 fun OperatingTimeSettingDialog(
-    viewModel: ModifyInfoViewModel = hiltViewModel(),
+    onSettingStoreTime: (FullHours, FullHours) -> Unit,
+    onDismiss: () -> Unit,
+    visibility: Boolean,
+    operatingTime: OperatingTime,
 ) {
-    val state = viewModel.collectAsState().value
-
-    if (state.showDialog) {
+    if (visibility) {
         AlertDialog(modifier = Modifier
             .fillMaxWidth()
             .height(300.dp),
-            onDismissRequest = viewModel::hideAlertDialog,
+            onDismissRequest = onDismiss,
             text = {
                 Row(
                     modifier = Modifier.fillMaxSize(),
@@ -49,17 +51,15 @@ fun OperatingTimeSettingDialog(
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
                         value = FullHours(
-                            state.dialogTimeState.openTime.hours,
-                            state.dialogTimeState.openTime.minutes
+                            operatingTime.openTime.hours,
+                            operatingTime.openTime.minutes
                         ),
                         onValueChange = {
-                            viewModel.onSettingStoreTime(
-                                OperatingTime(
-                                    FullHours(it.hours, it.minutes),
-                                    FullHours(
-                                        state.dialogTimeState.closeTime.hours,
-                                        state.dialogTimeState.closeTime.minutes
-                                    )
+                            onSettingStoreTime(
+                                FullHours(it.hours, it.minutes),
+                                FullHours(
+                                    operatingTime.closeTime.hours,
+                                    operatingTime.closeTime.minutes
                                 )
                             )
                         },
@@ -83,18 +83,17 @@ fun OperatingTimeSettingDialog(
                         dividersColor = MaterialTheme.colors.primary,
                         leadingZero = true,
                         value = FullHours(
-                            state.dialogTimeState.closeTime.hours,
-                            state.dialogTimeState.closeTime.minutes
+                            operatingTime.closeTime.hours,
+                            operatingTime.closeTime.minutes
                         ),
                         onValueChange = {
-                            viewModel.onSettingStoreTime(
-                                OperatingTime(
-                                    FullHours(
-                                        state.dialogTimeState.openTime.hours,
-                                        state.dialogTimeState.openTime.minutes
-                                    ),
-                                    FullHours(it.hours, it.minutes),
-                                )
+                            onSettingStoreTime(
+                                FullHours(
+                                    operatingTime.openTime.hours,
+                                    operatingTime.openTime.minutes
+                                ),
+                                FullHours(it.hours, it.minutes),
+
                             )
                         },
                         minutesRange = (0..59 step 5),
@@ -111,7 +110,7 @@ fun OperatingTimeSettingDialog(
                         backgroundColor = Color.Transparent,
                         contentColor = Blue3,
                     ),
-                    onClick = viewModel::hideAlertDialog,
+                    onClick = onDismiss,
                     elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                 ) {
                     Text(stringResource(id = R.string.positive))
@@ -123,7 +122,7 @@ fun OperatingTimeSettingDialog(
                         backgroundColor = Color.Transparent,
                         contentColor = Gray10,
                     ),
-                    onClick = viewModel::hideAlertDialog,
+                    onClick = onDismiss,
                     elevation = ButtonDefaults.elevation(defaultElevation = 0.dp)
                 ) {
                     Text(stringResource(id = R.string.close))
