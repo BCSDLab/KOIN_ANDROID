@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -87,18 +88,28 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     )
                     onBackPressed()
                 }
-                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                AppBarBase.getRightButtonId() -> {
+                    showCallDialog()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CALL,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                }
             }
         }
         binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
-        binding.storeDetailCallButton.setOnClickListener {
-            showCallDialog()
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown"
-            )
+
+        binding.scrollUpButton.setOnClickListener {
+            viewModel.scrollUp()
         }
+
+        binding.storeDetailViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.settingFragmentIndex(position)
+            }
+        })
 
         TabLayoutMediator(
             binding.storeDetailTabLayout,

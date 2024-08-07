@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.ScrollView
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
@@ -133,6 +135,13 @@ class StoreDetailReviewFragment : Fragment() {
 
             observeLiveData(store){
                 storeDetailReviewRecyclerAdapter.storeId = store.value?.uid
+            }
+
+            observeLiveData(scrollUp){
+                if(it == StoreDetailScrollType.REVIEW){
+                    binding.reviewScrollView.fullScroll(ScrollView.FOCUS_UP)
+                    viewModel.scrollReset()
+                }
             }
         }
     }

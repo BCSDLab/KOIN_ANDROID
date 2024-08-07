@@ -14,8 +14,6 @@
             app:leftButtonBackground="@drawable/ic_back_arrow"
             app:leftButtonHeight="14dp"
             app:leftButtonWidth="14dp"
-            app:rightButtonHeight="18dp"
-            app:rightButtonWidth="12dp"
             app:titleText="@string/review_report"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -9,6 +9,7 @@ import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.Store
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
@@ -45,6 +46,11 @@ class StoreDetailViewModel @Inject constructor(
 
     val recommendStores: LiveData<List<Store>?> get() = _recommendStores
     private val _recommendStores = MutableLiveData<List<Store>?>()
+
+    val fragementIndex: LiveData<Int> get() = _fragementIndex
+    private val _fragementIndex = MutableLiveData<Int>()
+    val scrollUp: LiveData<StoreDetailScrollType> get() = _scrollUp
+    private val _scrollUp = MutableLiveData<StoreDetailScrollType>()
 
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
@@ -114,5 +120,20 @@ class StoreDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun settingFragmentIndex(index: Int){
+        _fragementIndex.value = index
+    }
+    fun scrollUp(){
+        when(_fragementIndex.value){
+            0 -> _scrollUp.value = StoreDetailScrollType.MENU
+            1 -> _scrollUp.value = StoreDetailScrollType.EVENT
+            2 -> _scrollUp.value = StoreDetailScrollType.REVIEW
+        }
+    }
+
+    fun scrollReset(){
+        _scrollUp.value = StoreDetailScrollType.NONE
     }
 }
