@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityDiningNoticeBinding
 import `in`.koreatech.koin.ui.dining.adapter.DiningNoticeAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningNoticeViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.withLoading
 
 @AndroidEntryPoint
 class DiningNoticeActivity : ActivityBase() {
@@ -37,6 +39,8 @@ class DiningNoticeActivity : ActivityBase() {
 
         initView()
         initViewModel()
+
+        withLoading(this, viewModel)
     }
 
     private fun initView() {
@@ -63,6 +67,9 @@ class DiningNoticeActivity : ActivityBase() {
                     getString(R.string.dining_notice_updated_at_format, it.updatedAt)
             }
             diningNoticeAdapter.submitList(it.opens)
+        }
+        observeLiveData(toastErrorMessage) {
+            ToastUtil.getInstance().makeShort(it)
         }
     }
 }
