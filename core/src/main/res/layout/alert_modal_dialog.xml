@@ -37,7 +37,6 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textAlignment="center"
-            android:textColor="@color/gray18"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/text_view_alert_modal_title"
             app:layout_constraintStart_toStartOf="@id/text_view_alert_modal_title"
