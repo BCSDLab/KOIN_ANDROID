@@ -453,17 +453,28 @@
     <string name="event_notification">이벤트/공지</string>
     <string name="no_event">사장님이 이벤트를 준비 중입니다.</string>
     <string name="no_event_image">사장님이 이미지를 준비 중입니다.</string>
-    <string name="bus_timetable_city_am">오전</string>
-    <string name="bus_timetable_city_pm">오후</string>
 
-    <!-- Kakao link setting -->
-    <string name="kakao_app_key">056b03b730cafd51c05d7564f884b330</string>
-    <string name="kakao_scheme">kakao056b03b730cafd51c05d7564f884b330</string>
-    <string name="kakaolink_host">kakaolink</string>
-    <string name="action_share">공유하기</string>
-    <string name="action_like">좋아요</string>
-    <string name="dining_notification_on_boarding">알림 설정을 허용하고\n식단 품절 알림을 받아보세요!</string>
-    <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
-    <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
-    <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
+
+    <!--리뷰 기능-->
+    <string name="review">리뷰</string>
+    <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
+    <string name="review_report">리뷰 신고하기</string>
+    <string name="review_report_reason_choose">신고 이유를 선택해주세요.</string>
+    <string name="review_report_reason_input">신고 사유를 입력해주세요.</string>
+    <string name="review_will_be_blinded">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
+    <string name="review_not_relation">주제에 맞지 않음</string>
+    <string name="review_not_relation_explain">해당 음식점과 관련 없는 리뷰입니다.</string>
+    <string name="review_spam">스팸</string>
+    <string name="review_spam_explain">광고가 포함된 리뷰입니다.</string>
+    <string name="review_abuse">욕설</string>
+    <string name="review_abuse_explain">욕설, 성적인 언어, 비방하는 글이 포함된 리뷰입니다.</string>
+    <string name="review_private">개인정보</string>
+    <string name="review_private_explain">개인정보가 포함된 리뷰입니다.</string>
+    <string name="report">신고하기</string>
+    <string name="latest">최신순</string>
+    <string name="oldest">오래된순</string>
+    <string name="high_rating">별점높은순</string>
+    <string name="low_rating">별점낮은순</string>
+    <string name="review_null_check_box">1개 이상의 신고 이유를 선택해주세요.</string>
+    <string name="review_report_complete">해당 리뷰의 신고가 완료되었습니다.</string>
 </resources>
