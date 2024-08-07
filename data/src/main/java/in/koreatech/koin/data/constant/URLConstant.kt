@@ -29,6 +29,7 @@ object URLConstant {
     object SHOPS{
         const val OWNERSHOPS= "owner/shops"
         const val SHOPS = "shops"
+        const val SHOPS_V2 = "/v2/shops"
         const val EVENTS = "$SHOPS/events"
         const val CATERGORIES = "$SHOPS/categories"
     }

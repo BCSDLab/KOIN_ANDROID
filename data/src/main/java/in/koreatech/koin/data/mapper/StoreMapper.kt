@@ -42,6 +42,8 @@ fun StoreItemResponse.toStore(): Store = Store(
     isBankOk = isBankOk ?: false,
     isEvent = isEvent ?: false,
     isOpen = isOpen ?: false,
+    averageRate = averageRate ?: 0.0,
+    reviewCount = reviewCount ?: 0,
     open = open?.filter { it.dayOfWeek == localDayOfWeekName }?.map {
         Store.OpenData(
             dayOfWeek = it.dayOfWeek ?: "",

@@ -13,11 +13,27 @@ import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StoreApi {
     //Get Shop list API
-    @GET(URLConstant.SHOPS.SHOPS)
+    @GET(URLConstant.SHOPS.SHOPS_V2)
     suspend fun getShopList(): StoreResponse
+
+    @GET(URLConstant.SHOPS.SHOPS_V2)
+    suspend fun getShopListWithSorting(@Query("sorter") sorter: String): StoreResponse
+
+    @GET(URLConstant.SHOPS.SHOPS_V2)
+    suspend fun getShopListWithOneFilter(
+        @Query("sorter") sorter: String,
+        @Query("filter") filter: String
+    ): StoreResponse
+    @GET(URLConstant.SHOPS.SHOPS_V2)
+    suspend fun getShopListWithTwoFilter(
+        @Query("sorter") sorter: String,
+        @Query("filter") OPEN: String = "OPEN",
+        @Query("filter") DELIVERY: String = "DELIVERY"
+    ): StoreResponse
 
     @GET(URLConstant.SHOPS.EVENTS)
     suspend fun getEventShopList(): StoreEventResponse

@@ -26,6 +26,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
 import `in`.koreatech.koin.databinding.StoreActivityMainBinding
 import `in`.koreatech.koin.domain.model.store.StoreCategory
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.toStoreCategory
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
@@ -241,6 +242,55 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                         "scroll in " + getStoreCategoryName(viewModel.category.value)
                     )
                 }
+            }
+        }
+
+        with(binding){
+            storeManyReviewCheckbox.setOnClickListener {
+
+                if(storeManyReviewCheckbox.isChecked){
+                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20))
+                    viewModel.settingStoreSorter(StoreSorter.COUNT)
+
+                    storeHighRatingCheckbox.isChecked = false
+                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                }
+                else{
+                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                    viewModel.settingStoreSorter(StoreSorter.NONE)
+                }
+            }
+
+            storeHighRatingCheckbox.setOnClickListener {
+                if(storeHighRatingCheckbox.isChecked){
+                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20))
+                    viewModel.settingStoreSorter(StoreSorter.RATING)
+
+                    storeManyReviewCheckbox.isChecked = false
+                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                }
+                else{
+                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                    viewModel.settingStoreSorter(StoreSorter.NONE)
+                }
+            }
+
+            storeIsOperatingCheckbox.setOnClickListener {
+                storeIsOperatingCheckbox.setTextColor(
+                    if(storeIsOperatingCheckbox.isChecked) ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20)
+                    else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                )
+
+                viewModel.filterStoreIsOpen(storeIsOperatingCheckbox.isChecked)
+            }
+
+            storeIsDeliveryCheckbox.setOnClickListener {
+                storeIsDeliveryCheckbox.setTextColor(
+                    if(storeIsDeliveryCheckbox.isChecked) ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20)
+                    else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
+                )
+
+                viewModel.filterStoreIsDelivery(storeIsDeliveryCheckbox.isChecked)
             }
         }
     }

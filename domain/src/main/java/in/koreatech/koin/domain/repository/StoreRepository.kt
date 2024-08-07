@@ -7,10 +7,15 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreReview
+import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
 
 interface StoreRepository {
-    suspend fun getStores(): List<Store>
+    suspend fun getStores(
+        storeSorter: StoreSorter? = null,
+        isOperating: Boolean? = null,
+        isDelivery: Boolean? = null
+    ): List<Store>
     suspend fun getStoreEvents(): List<StoreEvent>
     suspend fun getStoreCategories(): List<StoreCategories>
     suspend fun getStoreWithMenu(storeId: Int): StoreWithMenu
