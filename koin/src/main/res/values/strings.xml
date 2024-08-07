@@ -306,6 +306,7 @@
     <!-- Dining Notice -->
     <string name="dining_notice_title_format">%1$s %2$s 운영시간</string>
     <string name="dining_notice_updated_at_format">%1$s 업데이트</string>
+    <string name="dining_notice_subtitle_time_format">%1$s 운영시간</string>
 
     <!-- Notification -->
     <string name="notification_appbar_title">알림 설정</string>
