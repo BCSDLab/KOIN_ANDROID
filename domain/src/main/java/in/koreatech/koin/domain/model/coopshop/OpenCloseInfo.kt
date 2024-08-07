@@ -10,3 +10,6 @@ data class OpenCloseTimeInfo(
     val openTime: String,
     val closeTime: String
 )
+
+val String.checkIfNotOpen get() =
+    if (this == "휴점(예약)") "미운영" else this
