@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.source.datastore
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -22,7 +21,8 @@ class UserDataStore @Inject constructor(
     // Exception 이 발생할 경우 null 반환
     val user: Flow<User?> = userDataStore.data.map { pref ->
         try {
-            pref[PREF_KEY_USER_INFO]?.let {
+            pref[PREF_KEY_USER_INFO].let {
+                if (it == null) return@map null
                 if (!it.equals("Anonymous") && pref[PREF_KEY_IS_LOGIN] == true) {
                     return@map Gson().fromJson(it, UserResponse::class.java).toUser()
                 }
