@@ -7,7 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCaseFlow
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.domain.usecase.user.UpdateDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.domain.util.onFailure
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class KoinNavigationDrawerViewModel @Inject constructor(
     private val updateDeviceTokenUseCase: UpdateDeviceTokenUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
-    private val getUserInfoUseCaseFlow: GetUserInfoUseCaseFlow
+    private val getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
 
     private val _getUserInfoErrorMessage = SingleLiveEvent<String>()
@@ -31,7 +31,7 @@ class KoinNavigationDrawerViewModel @Inject constructor(
     private val _menuEvent = SingleLiveEvent<MenuState>()
     val menuEvent: LiveData<MenuState> get() = _menuEvent
 
-    val userInfoFlow: StateFlow<User> = getUserInfoUseCaseFlow()
+    val userInfoFlow: StateFlow<User> = getUserStatusUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), User.Anonymous)
 
     fun selectMenu(menuState: MenuState) {

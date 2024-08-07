@@ -5,7 +5,7 @@ import `in`.koreatech.koin.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetUserInfoUseCaseFlow @Inject constructor(
+class GetUserStatusUseCase @Inject constructor(
    private val userRepository: UserRepository
 ) {
     operator fun invoke(): Flow<User> =
