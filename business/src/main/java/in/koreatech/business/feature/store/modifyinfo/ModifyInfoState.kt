@@ -1,17 +1,27 @@
 package `in`.koreatech.business.feature.store.modifyinfo
 
 import com.chargemap.compose.numberpicker.FullHours
+import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
+import `in`.koreatech.koin.domain.model.store.AttachStore
+import `in`.koreatech.koin.domain.model.store.StoreUrl
 
 data class ModifyInfoState(
-    val operatingTimeList: List<StoreOperatingTime> = listOf(
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "월", "MONDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "화", "TUESDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "수", "WEDNESDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "목", "THURSDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "금", "FRIDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "토", "SATURDAY"),
-        StoreOperatingTime(OperatingTime(FullHours(0, 0), FullHours(0, 0)), false, "일", "SUNDAY"),
+    val storeInfo: StoreDetailInfo = StoreDetailInfo(
+        address = "",
+        categoryIds = listOf(),
+        isDeliveryOk = false,
+        deliveryPrice = 0,
+        description = "",
+        imageUrls = listOf(),
+        name = "",
+        operatingTime = listOf(),
+        isBankOk = false,
+        isCardOk = false,
+        phone = "",
+        bank = "",
+        accountNumber = "",
     ),
+    val fileInfo: MutableList<StoreUrl> = mutableListOf(),
     val dialogTimeState: OperatingTime = OperatingTime(FullHours(0, 0), FullHours(0, 0)),
     val showDialog: Boolean = false,
     val dayOfWeekIndex: Int = -1,

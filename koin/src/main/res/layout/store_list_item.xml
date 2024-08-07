@@ -46,8 +46,7 @@
                     android:gravity="center_vertical"
                     android:text="shop name"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:fontName="Custom5" />
+                    android:textAppearance="@style/TextAppearance.Koin.Medium.15" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -64,8 +63,7 @@
                         android:gravity="center"
                         android:text="배달"
                         android:textColor="@color/blue1"
-                        android:textSize="12sp"
-                        app:fontName="Custom6" />
+                        android:textAppearance="@style/TextAppearance.Koin.Regular.12" />
 
                     <TextView
                         android:id="@+id/store_card_textview"
@@ -75,8 +73,7 @@
                         android:gravity="center_vertical"
                         android:text="카드결제"
                         android:textColor="@color/blue1"
-                        android:textSize="12sp"
-                        app:fontName="Custom6" />
+                        android:textAppearance="@style/TextAppearance.Koin.Regular.12" />
 
                     <TextView
                         android:id="@+id/store_account_textview"
@@ -86,8 +83,7 @@
                         android:gravity="right|center_vertical"
                         android:text="계좌이체"
                         android:textColor="@color/blue1"
-                        android:textSize="12sp"
-                        app:fontName="Custom6" />
+                        android:textAppearance="@style/TextAppearance.Koin.Regular.12" />
                 </LinearLayout>
             </LinearLayout>
 

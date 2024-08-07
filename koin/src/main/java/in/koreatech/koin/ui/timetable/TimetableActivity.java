@@ -633,7 +633,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                     }
                     this.timetablePresenter.addTimeTableItem(new TimeTable.TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                 });
-        builder.setNegativeButton(R.string.neutral,
+        builder.setNegativeButton(R.string.cancel,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -646,7 +646,7 @@ public class TimetableActivity extends KoinNavigationDrawerActivity implements T
                 (dialog, which) -> {
                     this.timetablePresenter.deleteItem(index);
                 });
-        builder.setNegativeButton(R.string.neutral,
+        builder.setNegativeButton(R.string.cancel,
                 (dialog, which) -> {
                 });
         builder.show();
