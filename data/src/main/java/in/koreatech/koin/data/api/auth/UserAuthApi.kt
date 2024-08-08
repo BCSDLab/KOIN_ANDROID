@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
+import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
@@ -53,6 +54,26 @@ interface UserAuthApi {
 
     @GET(URLConstant.SHOPS.SHOPS + "/{id}" + "/reviews")
     suspend fun getShopReviewsWithAuth(@Path("id") uid: Int): StoreReviewResponse
+
+    @POST("/shops/{shopId}/reviews")
+    suspend fun writeReview(
+        @Path("shopId") shopId: Int,
+        @Body reviewRequest: ReviewRequest
+    ): Response<Unit?>
+
+    @DELETE("/shops/{shopId}/reviews/{reviewId}")
+    suspend fun deleteReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int,
+    ):Response<Unit?>
+
+    @PUT("/shops/{shopId}/reviews/{reviewId}")
+    suspend fun modifyReview(
+        @Path("reviewId") reviewId: Int,
+        @Path("shopId") shopId: Int,
+        @Body reviewRequest: ReviewRequest,
+    ):Response<Unit?>
+
 
     @POST(URLConstant.SHOPS.SHOPS +"/{storeId}" + "/reviews" + "/{reviewId}" + "/reports")
     suspend fun postStoreReviewReports(

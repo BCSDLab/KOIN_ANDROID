@@ -4,13 +4,13 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
@@ -35,6 +35,7 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.launch
 
 class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
@@ -257,6 +258,16 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         flyerDialogFragment?.dismiss()
         flyerDialogFragment = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            observeLiveData(viewModel.store) {
+                viewModel.getShopReviews(it.uid)
+            }
+        }
+        if(viewModel.store.value != null) viewModel.getShopReviews(viewModel.store.value!!.uid)
     }
 
     private fun showCallDialog() {

@@ -455,10 +455,32 @@
     <string name="bus_timetable_city_am">오전</string>
     <string name="bus_timetable_city_pm">오후</string>
 
+    <!-- Kakao link setting -->
+    <string name="kakao_app_key">056b03b730cafd51c05d7564f884b330</string>
+    <string name="kakao_scheme">kakao056b03b730cafd51c05d7564f884b330</string>
+    <string name="kakaolink_host">kakaolink</string>
+    <string name="action_share">공유하기</string>
+    <string name="action_like">좋아요</string>
+    <string name="dining_notification_on_boarding">알림 설정을 허용하고\n식단 품절 알림을 받아보세요!</string>
+    <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
+    <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
+    <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
+
 
     <!--리뷰 기능-->
     <string name="review">리뷰</string>
     <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
+    <string name="write_review">리뷰 작성하기</string>
+    <string name="upload_review_image">리뷰와 관련된 사진을 업로드해주세요.</string>
+    <string name="image">사진</string>
+    <string name="write_more_info">더 많은 정보를 작성해보세요!</string>
+    <string name="review_notice">리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다. 또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.</string>
+    <string name="write">작성하기</string>
+    <string name="content">내용</string>
+    <string name="write_review_content">리뷰를 작성해주세요.</string>
+    <string name="upload_image">사진 등록하기</string>
+    <string name="add_menu">메뉴 추가하기</string>
+    <string name="delete">삭제</string>
     <string name="review_report">리뷰 신고하기</string>
     <string name="review_report_reason_choose">신고 이유를 선택해주세요.</string>
     <string name="review_report_reason_input">신고 사유를 입력해주세요.</string>
