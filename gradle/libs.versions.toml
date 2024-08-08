@@ -13,8 +13,8 @@ firebaseAppdistributionGradleVersion = "4.2.0"
 javaxInjectVersion = "1"
 jsr250ApiVersion = "1.0"
 kotlinVersion = "1.9.22"
-androidGradleVersion = "7.2.1"
-firebaseGradleVersion = "2.4.1"
+androidGradleVersion = "7.4.2"
+firebaseGradleVersion = "2.5.2"
 hiltVersion = "2.50"
 kotlinxCoroutinesAndroidVersion = "1.6.3"
 kotlinxCoroutinesCoreVersion = "1.6.3"
@@ -55,6 +55,8 @@ composeNumberPickerVersion = "1.0.3"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 guavaVersion = "33.0.0-android"
+datastoreCoreAndroidVersion = "1.1.1"
+datastorePreferencesCoreJvmVersion = "1.1.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -150,6 +152,8 @@ compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.r
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
 
 guava = {module = "com.google.guava:guava", version.ref="guavaVersion"}
+androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroidVersion" }
+androidx-datastore-preferences-core-jvm = { group = "androidx.datastore", name = "datastore-preferences-core-jvm", version.ref = "datastorePreferencesCoreJvmVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }
