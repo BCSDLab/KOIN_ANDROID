@@ -19,6 +19,7 @@ import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
+import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import `in`.koreatech.koin.domain.model.store.StoreWithMenu
@@ -95,20 +96,19 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun reportReview(
         storeId: Int?,
         reviewId: Int?,
-        reportTitle: String,
-        reportReason: String
+        reportList: List<StoreReport>?
     ): Result<Unit> {
         return try {
-            if (storeId != null && reviewId != null) {
+            if (storeId != null && reviewId != null && reportList != null) {
                 storeRemoteDataSource.postReviewReports(
-                    storeId,reviewId, reportTitle, reportReason
+                    storeId,reviewId, reportList
                 )
             }
+            Log.e("로그", reportList.toString())
             Result.success(Unit)
         }
         catch (e: HttpException) {
-            if (e.code() == 204) Result.success(Unit)
-            else Result.failure(e)
+            Result.failure(e)
         }
         catch (e: Exception) {
             Result.failure(e)
