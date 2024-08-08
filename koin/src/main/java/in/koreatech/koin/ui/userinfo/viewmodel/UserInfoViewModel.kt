@@ -7,10 +7,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.common.UiStatus
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.user.DeleteDeviceTokenUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserLogoutUseCase
 import `in`.koreatech.koin.domain.usecase.user.UserRemoveUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import `in`.koreatech.koin.ui.userinfo.UserInfoState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +24,6 @@ class UserInfoViewModel @Inject constructor(
     private val userInfoUseCase: GetUserInfoUseCase,
     private val userLogoutUseCase: UserLogoutUseCase,
     private val userRemoveUseCase: UserRemoveUseCase,
-    private val deleteDeviceTokenUseCase: DeleteDeviceTokenUseCase,
 ) : BaseViewModel() {
 
     private val _user = MutableLiveData<User?>()
@@ -42,16 +42,22 @@ class UserInfoViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launchWithLoading {
-        deleteDeviceTokenUseCase()
-        userLogoutUseCase()?.let { errorHandler ->
-            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
+        userLogoutUseCase()
+            .onSuccess {
+                _userInfoState.update { it.copy(status = UiStatus.Success) }
+            }
+            .onFailure { errorHandler ->
+                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+            }
     }
 
     fun removeUser() = viewModelScope.launchWithLoading {
-        deleteDeviceTokenUseCase()
-        userRemoveUseCase().second?.let { errorHandler ->
-            _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
-        } ?: _userInfoState.update { it.copy(status = UiStatus.Success) }
+        userRemoveUseCase()
+            .onSuccess {
+                _userInfoState.update { it.copy(status = UiStatus.Success) }
+            }
+            .onFailure { errorHandler ->
+                _userInfoState.update { it.copy(status = UiStatus.Failed(errorHandler.message)) }
+            }
     }
 }
