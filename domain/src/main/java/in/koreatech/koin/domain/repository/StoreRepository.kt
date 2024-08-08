@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
@@ -24,10 +25,12 @@ interface StoreRepository {
     suspend fun getStoreMenuCategory(storeId: Int): List<StoreMenuCategory>
 
     suspend fun getShopMenus(storeId: Int): StoreMenu
-
     suspend fun getShopEvents(storeId: Int): ShopEvents
     suspend fun getStoreReviews(storeId: Int): StoreReview
     suspend fun invalidateStores()
+    suspend fun writeReview(shopId: Int, content: Review)
+    suspend fun deleteReview(reviewId: Int, shopId: Int)
+    suspend fun modifyReview(reviewId: Int, shopId: Int, content: Review)
 
     suspend fun reportReview(
         storeId: Int?,
