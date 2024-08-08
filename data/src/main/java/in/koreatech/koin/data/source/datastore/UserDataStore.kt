@@ -39,6 +39,7 @@ class UserDataStore @Inject constructor(
         }
     }
 
+    // TODO::유저 정보 중 필수 값 확인 후 수정
     suspend fun updateUserInfo(user: User) {
         userDataStore.edit { pref ->
             pref[PREF_KEY_USER_INFO] = if (user is User.Student) {
@@ -48,7 +49,7 @@ class UserDataStore @Inject constructor(
                         email = user.email,
                         gender = user.gender.toInt(),
                         major = user.major,
-                        name = user.name!!,
+                        name = user.name ?: "",
                         nickname = user.nickname,
                         phoneNumber = user.phoneNumber,
                         studentNumber = user.studentNumber
