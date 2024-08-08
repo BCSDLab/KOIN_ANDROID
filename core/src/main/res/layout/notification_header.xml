@@ -7,25 +7,24 @@
     android:paddingHorizontal="24dp"
     android:paddingVertical="16dp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray14"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.18"
+        android:textColor="@color/neutral_800"
         app:layout_constraintEnd_toStartOf="@id/btn_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="식단 알림" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="@color/gray10"
-        android:textSize="13sp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+        android:textColor="@color/neutral_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
@@ -34,7 +33,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/btn_switch"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="26dp"
         android:background="@null"
         android:thumb="@drawable/selector_thumb"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +46,7 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/btn_switch_fake"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="26dp"
         android:background="@null"
         android:checked="true"
         android:thumb="@drawable/selector_thumb"

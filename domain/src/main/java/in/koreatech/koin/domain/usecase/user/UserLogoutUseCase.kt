@@ -8,14 +8,16 @@ import javax.inject.Inject
 
 class UserLogoutUseCase @Inject constructor(
     private val tokenRepository: TokenRepository,
+    private val userRepository: UserRepository,
     private val tokenErrorHandler: TokenErrorHandler
 ){
-    suspend operator fun invoke() : ErrorHandler? {
+    suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
         return try {
+            userRepository.deleteDeviceToken()
             tokenRepository.removeToken()
-            null
+            Unit to null
         } catch (t: Throwable) {
-            tokenErrorHandler.handleLogoutError(t)
+            Unit to tokenErrorHandler.handleLogoutError(t)
         }
     }
 }
