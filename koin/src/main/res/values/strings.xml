@@ -477,6 +477,7 @@
     <string name="high_rating">별점높은순</string>
     <string name="low_rating">별점낮은순</string>
     <string name="review_null_check_box">1개 이상의 신고 이유를 선택해주세요.</string>
+    <string name="review_null_etc_reason">기타항목의 신고 사유를 작성해주세요</string>
     <string name="review_report_complete">해당 리뷰의 신고가 완료되었습니다.</string>
     <string name="store_no_review">첫 번째 리뷰를 작성해보세요 :)</string>
     <string name="store_many_review">( 리뷰 10+개 )</string>

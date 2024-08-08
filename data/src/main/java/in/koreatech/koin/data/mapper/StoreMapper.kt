@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.mapper
 
+import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -26,6 +27,7 @@ import `in`.koreatech.koin.domain.model.store.StoreCategories
 import `in`.koreatech.koin.domain.model.store.StoreEvent
 import `in`.koreatech.koin.domain.model.store.StoreMenu
 import `in`.koreatech.koin.domain.model.store.StoreMenuCategories
+import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreReview
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.domain.model.store.StoreReviewStatistics
@@ -233,4 +235,13 @@ fun StoreReviewResponse.toStoreReview() = StoreReview(
     statistics = statistics.toStoreReviewStatistics(),
     reviews = reviews.toStoreReviewContentList()
 )
+
+fun List<StoreReport>.toReportContent(): List<StoreReviewReportsRequest.ReportContent> {
+    val responseList = ArrayList<StoreReviewReportsRequest.ReportContent>()
+    for (report in this) {
+        val response = StoreReviewReportsRequest.ReportContent(report.title, report.content)
+        responseList.add(response)
+    }
+    return responseList
+}
 

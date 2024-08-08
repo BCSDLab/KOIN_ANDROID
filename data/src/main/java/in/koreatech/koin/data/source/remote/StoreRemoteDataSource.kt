@@ -2,6 +2,7 @@ package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
+import `in`.koreatech.koin.data.mapper.toReportContent
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
@@ -11,6 +12,7 @@ import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
+import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.model.store.StoreSorter
 import javax.inject.Inject
 
@@ -70,14 +72,11 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getShopEvents(storeUid)
     }
 
-    suspend fun postReviewReports(storeUid: Int, reviewId: Int, title: String, content: String){
+    suspend fun postReviewReports(storeUid: Int, reviewId: Int, reportList:List<StoreReport>){
         userAuthApi.postStoreReviewReports(
             storeUid,
             reviewId,
-            StoreReviewReportsRequest(
-                title,
-                content
-            )
+            StoreReviewReportsRequest(reportList.toReportContent())
         )
     }
 

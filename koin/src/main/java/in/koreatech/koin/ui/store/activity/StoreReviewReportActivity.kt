@@ -168,6 +168,7 @@ class StoreReviewReportActivity:  ActivityBase() {
             viewModel.storeReviewExceptionState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect {
                 when(it){
                     StoreReviewExceptionState.ToastNullCheckBox ->  ToastUtil.getInstance().makeShort(getString(R.string.review_null_check_box))
+                    StoreReviewExceptionState.ToastNullEtcReason -> ToastUtil.getInstance().makeShort(getString(R.string.review_null_etc_reason))
                 }
             }
         }

@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.StoreReport
 import `in`.koreatech.koin.domain.state.store.StoreReviewExceptionState
 import `in`.koreatech.koin.domain.state.store.StoreReviewState
 import `in`.koreatech.koin.domain.usecase.store.ReportStoreReviewUseCase
@@ -40,6 +42,9 @@ class StoreReviewReportViewModel @Inject constructor(
     private val _storeReviewExceptionState = MutableSharedFlow<Throwable>()
     val storeReviewExceptionState: SharedFlow<Throwable> = _storeReviewExceptionState.asSharedFlow()
 
+    val storeReport: LiveData<ArrayList<StoreReport>> get() = _storeReport
+    private val _storeReport = MutableLiveData<ArrayList<StoreReport>>()
+
     fun reportReasonClicked(id: Int){
         when(id){
             0 ->{
@@ -61,45 +66,65 @@ class StoreReviewReportViewModel @Inject constructor(
     }
 
     fun reportReviewButtonClicked(storeId: Int?, reviewId: Int?, etcReason: String){
-        var reportTitle: String = ""
-        var reportContent: String = ""
+
+        val reportList:ArrayList<StoreReport> = ArrayList<StoreReport>()
 
         if(_isNotRelation.value == true){
-            reportTitle += "주제에 맞지 않음 "
-            reportContent += "해당 음식점과 관련 없는 리뷰입니다.\n"
+            reportList.add(
+                StoreReport(
+                    title = "주제에 맞지 않음",
+                    content = "해당 음식점과 관련 없는 리뷰입니다."
+                ))
         }
 
         if(_isSpam.value == true){
-            reportTitle += "스팸 "
-            reportContent += "광고가 포함된 리뷰입니다\n"
+
+            reportList.add(
+                StoreReport(
+                    title = "스팸",
+                    content = "광고가 포함된 리뷰입니다"
+                ))
         }
 
         if(_isAbuse.value == true){
-            reportTitle += "욕설 "
-            reportContent += "욕설, 성적인 언어, 비방하는 글이 포함된 리뷰입니다.\n"
+
+            reportList.add(
+                StoreReport(
+                    title = "욕설",
+                    content = "욕설, 성적인 언어, 비방하는 글이 포함된 리뷰입니다."
+                ))
         }
 
         if(_isPrivate.value == true){
-            reportTitle += "개인정보 "
-            reportContent += "개인정보가 포함된 리뷰입니다.\n"
+
+            reportList.add(
+                StoreReport(
+                    title = "개인정보",
+                    content = "개인정보가 포함된 리뷰입니다."
+                ))
         }
 
         if(_isEtc.value == true){
-            reportTitle += "주제에 맞지 않음 "
-            reportContent += etcReason
+            reportList.add(
+                StoreReport(
+                    title = "기타",
+                    content = etcReason
+                ))
         }
+
+        _storeReport.value = reportList
 
         viewModelScope.launch {
             reportStoreReviewUseCase(
                 storeId = storeId,
                 reviewId = reviewId,
-                reportTitle = reportTitle,
-                reportReason = reportContent,
+                reportList = _storeReport.value,
                 isNotRelation = _isNotRelation.value,
                 isSpam = _isSpam.value,
                 isAbuse = _isAbuse.value,
                 isPrivate = _isPrivate.value,
-                isEtc = _isEtc.value
+                isEtc = _isEtc.value,
+                etcReason = etcReason
             ).onSuccess {
                 _storeReviewState.emit(it)
             }.onFailure{
