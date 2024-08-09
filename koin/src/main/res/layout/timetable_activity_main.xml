@@ -20,7 +20,7 @@
                 android:id="@+id/koin_base_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:fontName="Bold"
+                android:textAppearance="@style/TextAppearance.Koin.Bold"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:leftButtonHeight="14dp"
                 app:leftButtonWidth="14dp"

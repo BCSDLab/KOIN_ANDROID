@@ -217,7 +217,7 @@ fun AccountSetupScreen(
                         .width(115.dp)
                         .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.authCode.length == 6,
+                    enabled = state.authCode.isNotEmpty(),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
                         contentColor = Color.White,

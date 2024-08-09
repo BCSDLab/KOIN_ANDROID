@@ -7,9 +7,10 @@
 
     <!--common-->
     <string name="need_permission">권한이 필요합니다.</string>
+    <string name="back">뒤로가기</string>
     <string name="positive">확인</string>
     <string name="negative">아니오</string>
-    <string name="neutral">취소</string>
+    <string name="cancel">취소</string>
     <string name="next">다음</string>
     <string name="page_one">1 / 4</string>
     <string name="page_two">2 / 4</string>
@@ -26,45 +27,36 @@
     <string name="revise">수정</string>
     <string name="day_of_week">요일</string>
     <string name="open_time">시간</string>
-    <string name="day_off">휴일</string>
+    <string name="day_off">휴무</string>
     <string name="store_open_time">개점시간</string>
     <string name="store_close_time">폐점시간</string>
     <string name="go_to_main_screen">메인 화면 바로가기</string>
+    <string name="add_price">가격 추가</string>
+    <string name="temp_price">TempPrice</string>
+    <string name="temp_uri">TempUri</string>
+    <string name="won">원</string>
+    <string name="close">닫기</string>
+    <string name="my_shop">내 상점</string>
 
-    <!--left drawer menu -->
+    <!-- drawer menu -->
     <string name="home">홈</string>
 
-    <!--학교 정보-->
-    <string name="navigation_item_store">상점</string>
-    <string name="navigation_item_bus">버스/교통</string>
+    <string name="navigation_hello_message">님, 안녕하세요!</string>
+    <string name="navigation_hello_message_anonymous">로그인 후 더 많은 기능을 사용하세요.</string>
+
+    <string name="navigation_item_my_info">내 정보</string>
+    <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_item_login">로그인</string>
+
+    <string name="navigation_item_store">주변 상점</string>
+    <string name="navigation_item_bus">버스 / 교통</string>
     <string name="navigation_item_dining">식단</string>
-    <string name="navigation_item_circle">동아리</string>
-    <!--<string name="navigation_item_faq">FAQ</string>-->
-
-    <!--커뮤니티-->
-    <string name="navigation_item_free_board">자유게시판</string>
-    <string name="navigation_item_anonymous_board">익명게시판</string>
-    <string name="navigation_item_recruit_board">취업게시판</string>
-
-    <!--부가서비스-->
-    <string name="navigation_item_callvan_sharing">콜밴쉐어링</string>
-    <!--<string name="navigation_item_real_estate">복덕방</string>-->
-    <string name="navigation_item_usedmarket">중고장터</string>
+    <string name="navigation_item_land">복덕방</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
-
-    <!--right drawer menu-->
-    <string name="navigation_item_user_info">회원 정보</string>
-    <!--<string name="navigation_item_setting">설정</string>-->
-    <string name="navigation_item_koin_page">코인 사이트</string>
-    <!--<string name="navigation_item_user_request">문의 사항</string>-->
-    <string name="navigation_item_kakao_talk">카카오톡 대화</string>
-    <string name="navigation_item_version_info">버전 정보</string>
-    <string name="navigation_item_developer">만든 이</string>
-    <string name="navigation_item_open_source">오픈소스</string>
-    <string name="navigation_item_login">로그인</string>
-    <string name="navigation_item_logout">로그아웃</string>
-
+    <string name="navigation_item_owner">코인 사장님</string>
+    <string name="navigation_item_ask_bcsd">문의하기</string>
+    <!--End left drawer menu -->
 
     <!-- Server Messages -->
     <string name="server_failed">서버와 연결에 실패하였습니다</string>
@@ -93,9 +85,6 @@
 
     <string name="fail_upload">업로드에 실패하였습니다.</string>
     <string name="uploading_image_now">이미지 업로드 중입니다.</string>
-    <string name="navigation_drawer_right_button_ask">문의하기</string>
-    <string name="navigation_drawer_right_hello_message">님, 안녕하세요!</string>
-    <string name="navigation_drawer_right_myinfo">내 정보</string>
     <string name="hamburger">햄버거</string>
 
     <!-- 가게 등록 -->
@@ -131,4 +120,22 @@
 
     <string name="insert_store_finish">가게 등록 완료</string>
     <string name="insert_store_finish_guide">가게 등록이 완료되었습니다.\n업체 정보 수정은 내 상점에서 가능합니다.</string>
+
+    <string name="recommend_login_to_like_dining">더 맛있는 학식을 먹는 방법,\n로그인하고 좋아요를 남겨주세요!</string>
+    <string name="recommend_like_dining">여러분의 좋아요가 영양사님이 더 나은\n식단을 제공할 수 있도록 도와줍니다.</string>
+    <string name="action_login">로그인하기</string>
+
+
+    <!-- 메뉴 등록 -->
+    <string name="menu_add">메뉴 추가</string>
+    <string name="menu_info">메뉴 정보</string>
+    <string name="menu_name">메뉴명</string>
+    <string name="menu_price">가격</string>
+    <string name="menu_category">메뉴 카테고리</string>
+    <string name="menu_detail">메뉴 세부</string>
+    <string name="menu_composition">메뉴구성</string>
+    <string name="menu_description_example">보쌈 + 막국수 (1인 세트) / 음료 별도</string>
+    <string name="menu_image">메뉴 사진</string>
+    <string name="menu_image_maximum">(최대 이미지 3장)</string>
+
 </resources>

@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:fontName="Bold"
+                android:textAppearance="@style/TextAppearance.Koin.Medium.18"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:leftButtonHeight="14dp"
                 app:leftButtonWidth="14dp"

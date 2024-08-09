@@ -55,6 +55,10 @@ composeNumberPickerVersion = "1.0.3"
 powerSpinner = "1.2.7"
 firebaseCrashlyticsBuildtoolsVersion = "2.9.9"
 guavaVersion = "33.0.0-android"
+kakaoShare = "2.11.2"
+lottie = "6.4.0"
+balloon = "1.5.0"
+dataStore = "1.0.0"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -114,7 +118,6 @@ lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", v
 map-sdk = { module = "com.naver.maps:map-sdk", version.ref = "mapSdkVersion" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoviewVersion" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
-guava = { group = "com.google.guava", name = "guava", version = "31.0.1-jre" }
 kotlinxCollectionsImmutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version = "0.3.6" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
@@ -151,6 +154,11 @@ compose-numberPicker = {module = "com.chargemap.compose:numberpicker", version.r
 powerSpinner = {module = "com.github.skydoves:powerspinner", version.ref = "powerSpinner"}
 
 guava = {module = "com.google.guava:guava", version.ref="guavaVersion"}
+kakao-share = {module = "com.kakao.sdk:v2-share", version.ref = "kakaoShare"}
+
+lottie = {module = "com.airbnb.android:lottie", version.ref = "lottie"}
+balloon = {module = "com.github.skydoves:balloon", version.ref = "balloon"}
+dataStore = {module = "androidx.datastore:datastore-preferences", version.ref = "dataStore"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

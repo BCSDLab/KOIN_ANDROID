@@ -3,13 +3,10 @@ package `in`.koreatech.koin.ui.navigation
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -18,6 +15,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.BuildConfig
@@ -27,6 +27,7 @@ import `in`.koreatech.koin.core.activity.WebViewActivity
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.ui.bus.BusActivity
@@ -34,7 +35,6 @@ import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
 import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
-import `in`.koreatech.koin.ui.navigation.contract.GotoAskFormContract
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
 import `in`.koreatech.koin.ui.notification.NotificationActivity
@@ -50,6 +50,7 @@ import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.windowWidth
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
@@ -61,8 +62,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private var pressTime = System.currentTimeMillis()
     private val koinNavigationDrawerViewModel by viewModels<KoinNavigationDrawerViewModel>()
 
-    private val gotoAskForm = registerForActivityResult(GotoAskFormContract()) {}
-
     private val drawerLayout by lazy {
         findViewById<DrawerLayout>(drawerLayoutId)
     }
@@ -73,7 +72,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
-            R.id.navi_item_myinfo, R.id.navi_item_notification,
+            R.id.navi_item_notification,
+            R.id.navi_item_myinfo,
+            R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
             R.id.navi_item_bus, R.id.navi_item_dining,
             R.id.navi_item_timetable, R.id.navi_item_land,
@@ -82,8 +83,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             findViewById<View>(it)
         }.zip(
             listOf(
-                MenuState.UserInfo,
                 MenuState.Notification,
+                MenuState.UserInfo,
+                MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
@@ -96,27 +98,16 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }.toMap()
     }
 
-    private val menuTextViews by lazy {
-        listOf(
-            R.id.navi_item_store_textview,
-            R.id.navi_item_bus_textview, R.id.navi_item_dining_textview,
-            R.id.navi_item_timetable_textview, R.id.navi_item_land_textview
-        ).map {
-            findViewById<TextView>(it).apply {
-                changeMenuFont(this)
-            }
-        }.zip(
-            listOf(
-                MenuState.Store,
-                MenuState.Bus,
-                MenuState.Dining,
-                MenuState.Timetable,
-                MenuState.Land
-            )
-        ) { view, state ->
-            state to view
-        }.toMap()
+    private val nameTextView by lazy {
+        findViewById<TextView>(R.id.navi_user_nickname)
     }
+    private val helloMessageTextView by lazy {
+        findViewById<TextView>(R.id.navi_hello_message)
+    }
+    private val loginOrLogoutTextView by lazy {
+        menus.get(MenuState.LoginOrLogout) as TextView? ?: findViewById(R.id.navi_item_login_or_logout)
+    }
+
 
     private val requestMainPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -133,6 +124,25 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         } else {
             // handle permission denied
         }
+    }
+
+    private val loginAlertDialog: AlertDialog by lazy {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.user_only))
+            .setMessage(getString(R.string.login_request))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
+                dialog.dismiss()
+                goToLoginActivity()
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.USER,
+                    AnalyticsConstant.Label.USER_ONLY_OK,
+                    getString(R.string.user_only_ok)
+                )
+            }
+            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
+                dialog.cancel()
+            }.create()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -184,21 +194,22 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
 
                             MenuState.UserInfo -> {
-                                if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
-                                        getString(R.string.navigation_drawer_right_myinfo)
+                                        getString(R.string.navigation_item_my_info)
                                     )
-                                    showLoginRequestDialog()
                                 } else {
                                     EventLogger.logClickEvent(
                                         AnalyticsConstant.Domain.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
-                                        getString(R.string.navigation_drawer_right_myinfo)
+                                        getString(R.string.navigation_item_my_info)
                                     )
                                 }
                             }
+
+                            MenuState.LoginOrLogout -> {}
 
                             else -> Unit
                         }
@@ -212,19 +223,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             drawerLayout.closeDrawer()
         }
 
-        val logoImageView = findViewById<View>(R.id.bcsd_logo)
-        logoImageView.setOnClickListener {
-            goToNavigationDeveloper()
-        }
-
-        val askButton = findViewById<Button>(R.id.button_ask)
-        askButton.setOnClickListener {
-            gotoAskForm.launch(Unit)
-        }
-
         initDrawerViewModel()
-        koinNavigationDrawerViewModel.getUser()
-        koinNavigationDrawerViewModel.initMenu(menuState)
     }
 
     override fun onAttachedToWindow() {
@@ -252,33 +251,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun initDrawerViewModel() = with(koinNavigationDrawerViewModel) {
-        observeLiveData(userState) { user ->
-            val nameTextview = findViewById<TextView>(R.id.base_naviagtion_drawer_nickname_textview)
-            when (user) {
-                User.Anonymous -> nameTextview.text = getString(R.string.user_anon)
-                is User.Student -> {
-                    nameTextview.text = user.name
-                    when (menuState) {
-                        MenuState.Main, MenuState.Notification -> {
-                            if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
-                            koinNavigationDrawerViewModel.updateDeviceToken()
-                        }
-                        else -> Unit
-                    }
-                }
-            }
-        }
-
-        observeLiveData(selectedMenu) {
-            menuTextViews.forEach { (state, textView) ->
-                if (menuState == state) {
-                    textView.selected
-                } else {
-                    textView.normal
-                }
-            }
-        }
-
         observeLiveData(menuEvent) { menuState ->
             when (menuState) {
                 MenuState.Bus -> goToBusActivity()
@@ -287,7 +259,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
                 MenuState.Timetable -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
+                    if (userInfoFlow.value.isAnonymous) {
                         goToAnonymousTimeTableActivity()
                     } else {
                         goToTimetableActivty()
@@ -295,24 +267,61 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.UserInfo -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
-                        showLoginRequestDialog()
+                    if (userInfoFlow.value.isAnonymous) {
+                        loginAlertDialog.show()
                     } else {
                         goToUserInfoActivity()
                     }
                 }
 
                 MenuState.Notification -> {
-                    if (userState.value == null || userState.value?.isAnonymous == true) {
-                        showLoginRequestDialog()
+                    if (userInfoFlow.value.isAnonymous) {
+                        loginAlertDialog.show()
                     } else {
                         goToNotificationActivity()
                     }
                 }
 
+                MenuState.LoginOrLogout -> {
+                    if (userInfoFlow.value.isStudent) {
+                        logout()
+                    }
+                    goToLoginActivity()
+                }
+
                 else -> Unit
             }
             drawerLayout.closeDrawer()
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                userInfoFlow.collect { user ->
+                    when (user) {
+                        User.Anonymous -> {
+                            nameTextView.visibility = View.GONE
+                            helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
+                            loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                        }
+
+                        is User.Student -> {
+                            nameTextView.text = user.name
+                            nameTextView.visibility = View.VISIBLE
+                            helloMessageTextView.text = getString(R.string.navigation_hello_message)
+                            loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+
+                            when (menuState) {
+                                MenuState.Main, MenuState.Notification -> {
+                                    if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
+                                    koinNavigationDrawerViewModel.updateDeviceToken()
+                                }
+
+                                else -> Unit
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -366,7 +375,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private fun changeMenuFont(view: View) {
         if (view is TextView) {
-            view.typeface = Typeface.createFromAsset(assets, "fonts/notosanscjkkr_regular.otf")
+            view.typeface = FontManager.getTypeface(this, FontManager.KoinFontType.PRETENDARD_REGULAR)
         }
     }
 
@@ -448,39 +457,15 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
      * right navigation drawer 서비스 메뉴 호출
      */
     private fun goToUserInfoActivity() {
-        val intent = Intent(this, UserInfoActivity::class.java)
-        startActivity(intent)
+        Intent(this, UserInfoActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun goToNotificationActivity() {
-        val intent = Intent(this, NotificationActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun showLoginRequestDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.user_only))
-            .setMessage(getString(R.string.login_request))
-            .setCancelable(false)
-            .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
-                val intent = Intent(
-                    this,
-                    LoginActivity::class.java
-                )
-                intent.putExtra("FIRST_LOGIN", false)
-                startActivity(intent)
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
-                    AnalyticsConstant.Label.USER_ONLY_OK,
-                    getString(R.string.user_only_ok)
-                )
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
-            }
-            .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
-                dialog.cancel()
-            }
-        val dialog = builder.create() // 알림창 객체 생성
-        dialog.show() // 알림창 띄우기
+        Intent(this, NotificationActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun goToActivityFinish(intent: Intent) {
@@ -490,10 +475,20 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     }
 
     private fun goToNavigationDeveloper() {
-        val intent = Intent(this, WebViewActivity::class.java)
-        intent.putExtra("title", getString(R.string.bcsd_webpage_name))
-        intent.putExtra("url", "https://bcsdlab.com/")
-        startActivity(intent)
+        Intent(this, WebViewActivity::class.java).apply {
+            putExtra("title", getString(R.string.bcsd_webpage_name))
+            putExtra("url", "https://bcsdlab.com/")
+            startActivity(this)
+        }
+    }
+
+    private fun goToLoginActivity() {
+        Intent(
+            this,
+            LoginActivity::class.java
+        ).apply {
+            startActivity(this)
+        }
     }
 
     fun toggleNavigationDrawer() {
@@ -529,5 +524,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }.toTypedArray()
+    }
+
+    override fun onDestroy() {
+        loginAlertDialog.dismiss()
+        super.onDestroy()
     }
 }

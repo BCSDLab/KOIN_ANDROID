@@ -618,7 +618,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                         this.timetablePresenter.deleteItem(semester, timeTableItem.getId());
                     }
                 });
-        builder.setNegativeButton(R.string.neutral,
+        builder.setNegativeButton(R.string.cancel,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -631,7 +631,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 (dialog, which) -> {
                     this.timetablePresenter.deleteItem(semester, index);
                 });
-        builder.setNegativeButton(R.string.neutral,
+        builder.setNegativeButton(R.string.cancel,
                 (dialog, which) -> {
                 });
         builder.show();
