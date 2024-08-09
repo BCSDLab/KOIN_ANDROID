@@ -61,7 +61,7 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.getMyShopList().shops
     }
 
-    suspend fun getOwnerShopInfo(storeUid: Int): StoreItemWithMenusResponse {
+    suspend fun getOwnerShopInfo(storeUid: Int): StoreRegisterResponse {
         return ownerAuthApi.getOwnerShopInfo(storeUid)
     }
 
@@ -75,5 +75,13 @@ class OwnerRemoteDataSource(
 
     suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
         return ownerAuthApi.postMyStore(storeRegisterResponse)
+    }
+
+    suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
+        ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
+    }
+
+    suspend fun modifyOwnerShopInfo(storeUid: Int, storeInfo: StoreRegisterResponse) {
+        ownerAuthApi.modifyOwnerShopInfo(storeUid, storeInfo)
     }
 }

@@ -28,6 +28,12 @@ fun LocalTime.isEqualOrBigger(time: LocalTime): Boolean =
 fun LocalTime.isEqualOrSmaller(time: LocalTime): Boolean =
     this.isBefore(time) || this.equals(time)
 
+fun LocalTime.isAm(): Boolean =
+    this.isBefore(LocalTime.of(12, 0))
+
+fun LocalTime.isPm(): Boolean =
+    this.isAfter(LocalTime.of(12, 0)) || this.equals(LocalTime.of(12, 0))
+
 val Int.second get() = this * 1000L
 val Int.minute get() = this * 60 * 1000L
 val Int.hour get() = this * 60 * 60 * 1000L

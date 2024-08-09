@@ -164,12 +164,21 @@
         </activity>
         <activity
             android:name=".ui.dining.DiningActivity"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/KAPTheme.NoActionBar">
             <intent-filter>
                 <action android:name="dining"/>
                 <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <!-- 카카오 스킴 설정-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/kakao_scheme"
+                    android:host="@string/kakaolink_host" />
             </intent-filter>
         </activity>
         <activity
