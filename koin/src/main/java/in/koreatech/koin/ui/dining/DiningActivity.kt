@@ -56,6 +56,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         initViewPager()
         onActionView()
         selectInitialPositions()
+        initOnRefreshDiningList()
 
         withLoading(this, viewModel)
 
@@ -218,5 +219,12 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     override fun onDestroy() {
         super.onDestroy()
         binding.diningViewPager.unregisterOnPageChangeCallback(diningViewPagerScrollCallback)
+    }
+
+    private fun initOnRefreshDiningList() {
+        binding.swipeRefreshLayoutDining.setOnRefreshListener {
+            viewModel.getDining(viewModel.selectedDate.value)
+            binding.swipeRefreshLayoutDining.isRefreshing = false
+        }
     }
 }
