@@ -70,6 +70,12 @@ class NotificationHeader @JvmOverloads constructor(
         }
     }
 
+    fun disableAll() {
+        isEnabled = false
+        isChecked = false
+        fakeChecked = false
+    }
+
     interface OnSwitchClickListener {
         fun onSwitch(isChecked: Boolean)
     }

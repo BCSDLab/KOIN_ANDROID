@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import `in`.koreatech.koin.data.repository.*
 import `in`.koreatech.koin.data.source.local.*
+import `in`.koreatech.koin.data.source.datastore.UserDataStore
 import `in`.koreatech.koin.data.source.remote.*
 import `in`.koreatech.koin.domain.repository.*
 import javax.inject.Singleton
@@ -25,18 +26,20 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideTokenRepository(
-        tokenLocalDataSource: TokenLocalDataSource
+        tokenLocalDataSource: TokenLocalDataSource,
+        userDataStore: UserDataStore
     ) : TokenRepository {
-        return TokenRepositoryImpl(tokenLocalDataSource)
+        return TokenRepositoryImpl(tokenLocalDataSource, userDataStore)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(
         userRemoteDataSource: UserRemoteDataSource,
-        tokenLocalDataSource: TokenLocalDataSource
+        tokenLocalDataSource: TokenLocalDataSource,
+        userDataStore: UserDataStore
     ) : UserRepository {
-        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource)
+        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource, userDataStore)
     }
 
     @Provides
@@ -162,5 +165,13 @@ object RepositoryModule {
         ownerRemoteDataSource: OwnerRemoteDataSource
     ): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOnBoardingRepository(
+        onBoardingLocalDataSource: OnBoardingLocalDataSource
+    ): OnBoardingRepository {
+        return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
     }
 }

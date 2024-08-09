@@ -9,22 +9,20 @@ import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
+import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class BusinessAuthViewModel @Inject constructor(
-    private val getPresignedUrlUseCase: AttachStoreFileUseCase,
+    private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
     private val ownerRegisterUseCase: OwnerRegisterUseCase
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
@@ -90,7 +88,6 @@ class BusinessAuthViewModel @Inject constructor(
         fileSize: Long,
         fileType: String,
         fileName: String,
-        bitmap: Bitmap
     ) {
         viewModelScope.launch {
             getPresignedUrlUseCase(
@@ -110,9 +107,6 @@ class BusinessAuthViewModel @Inject constructor(
                                         fileSize
                                     )
                                 )
-                            },
-                            bitmap = state.bitmap.toMutableList().apply {
-                                add(bitmap)
                             },
                             error = null
                         )

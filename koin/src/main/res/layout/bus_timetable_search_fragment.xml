@@ -39,10 +39,10 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/bus_search_bus_departure_spinner"
                     android:layout_width="90dp"
-                    android:overlapAnchor="false"
                     android:layout_height="match_parent"
                     android:background="@drawable/spinner_no_border"
                     android:entries="@array/bus_place"
+                    android:overlapAnchor="false"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -51,21 +51,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:lineSpacingExtra="9sp"
                     android:text="에서"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    app:fontName="Custom2" />
+                    android:textSize="20sp" />
 
                 <Spinner
                     android:id="@+id/bus_search_bus_arrival_spinner"
                     android:layout_width="90dp"
-                    android:overlapAnchor="false"
                     android:layout_height="match_parent"
                     android:background="@drawable/spinner_no_border"
                     android:entries="@array/bus_place"
                     android:lineSpacingExtra="9sp"
+                    android:overlapAnchor="false"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -75,12 +73,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:lineSpacingExtra="9sp"
                     android:text="갑니다"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    app:fontName="Custom2" />
+                    android:textSize="20sp" />
 
 
             </LinearLayout>
@@ -105,12 +101,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="16dp"
-                    android:lineSpacingExtra="6sp"
                     android:text="날짜 선택"
-                    app:fontName="Custom2"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/gray9"
-                    android:textSize="13sp" />
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+                    android:textColor="@color/gray9"/>
             </FrameLayout>
 
 
@@ -163,12 +156,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center"
                     android:layout_marginStart="16dp"
-                    android:lineSpacingExtra="6sp"
                     android:text="시간 선택"
-                    app:fontName="Custom2"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/gray9"
-                    android:textSize="13sp" />
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+                    android:textColor="@color/gray9" />
             </FrameLayout>
 
             <LinearLayout
@@ -186,10 +176,9 @@
                     android:layout_height="168dp"
                     android:amPmTextColor="@color/black"
                     android:numbersTextColor="@color/black"
+                    android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                     android:theme="@style/KAPTimePicker"
                     android:timePickerMode="spinner"
-                    app:fontName="Custom2"
-                    android:includeFontPadding="false"
                     app:layout_constraintStart_toStartOf="parent" />
 
             </LinearLayout>
@@ -240,16 +229,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
-                android:lineSpacingExtra="7sp"
                 android:text=""
+                android:textAppearance="@style/TextAppearance.Koin.Medium.15"
                 android:textColor="@color/colorAccent"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/bus_timetable_search_fragment_search_button"
-                app:fontName="Custom5"
-                android:includeFontPadding="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="2019 /3 /24 오후 3시 55분" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -260,13 +246,10 @@
                 android:background="@color/colorAccent"
                 android:elevation="0dp"
                 android:gravity="center"
-                android:lineSpacingExtra="7sp"
                 android:stateListAnimator="@null"
                 android:text="조회"
+                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:fontName="Custom2"
-                android:includeFontPadding="false"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHeight_percent="0.43"

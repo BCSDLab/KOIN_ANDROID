@@ -54,6 +54,7 @@
     <color name="gray15">#cacaca</color>
     <color name="gray16">#e1e1e1</color>
     <color name="gray17">#eeeeee</color>
+    <color name="gray18">#fafafa</color>
 
 
     <color name="black_alpha12">#1f252525</color>
@@ -125,14 +126,33 @@
     <color name="event_card_neutral_100">#F5F5F5</color>
     <color name="closed_store_name">#FCCC77</color>
 
-    <color name="main_main600">#10477A</color>
-    <color name="main_main500">#175C8E</color>
-    <color name="main_main400">#4590BB</color>
-
+    <!-- Figma Color Style -->
+    <!-- Primary -->
+    <color name="primary_900">#041A44</color>
+    <color name="primary_800">#072552</color>
+    <color name="primary_700">#0B3566</color>
+    <color name="primary_600">#10477A</color>
+    <color name="primary_500">#175C8E</color>
+    <color name="primary_400">#4590BB</color>
+    <color name="primary_300">#6DBBDD</color>
+    <color name="primary_200">#A2DFF3</color>
+    <color name="primary_100">#CFF1F9</color>
+    <!-- Sub -->
     <color name="sub_sub500">#F7941E</color>
-
+    <!-- Neutral -->
+    <color name="neutral_800">#000000</color>
     <color name="neutral_700">#1F1F1F</color>
     <color name="neutral_600">#4B4B4B</color>
+    <color name="neutral_500">#8E8E8E</color>
+    <color name="neutral_400">#CACACA</color>
     <color name="neutral_300">#E1E1E1</color>
+    <color name="neutral_200">#EEEEEE</color>
+    <color name="neutral_100">#F5F5F5</color>
+    <color name="neutral_50">#FAFAFA</color>
     <color name="neutral_0">#FFFFFF</color>
+    <!-- Danger -->
+    <!-- Warning -->
+    <!-- Success -->
+    <!-- Info -->
+
 </resources>

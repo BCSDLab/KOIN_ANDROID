@@ -54,4 +54,16 @@ class OwnerErrorHandlerImpl @Inject constructor(
             }.withUnknown(context)
         }
     }
+
+    override fun handleDeleteOwnerShopEventError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
+
+    override fun handleModifyOwnerShopInfoError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            unknownErrorHandler(context)
+        }
+    }
 }
