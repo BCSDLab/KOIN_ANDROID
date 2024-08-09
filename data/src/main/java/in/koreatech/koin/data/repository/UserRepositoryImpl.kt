@@ -4,7 +4,8 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.source.datastore.UserDataStore
+ import `in`.koreatech.koin.data.source.datastore.UserDataStore
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
@@ -94,5 +95,9 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun deleteDeviceToken() {
         tokenLocalDataSource.removeDeviceToken()
         userRemoteDataSource.deleteDeviceToken()
+    }
+
+    override suspend fun verifyPassword(hashedPassword: String) {
+        userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
     }
 }
