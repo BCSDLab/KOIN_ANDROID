@@ -1,18 +1,18 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
-import `in`.koreatech.koin.data.source.datastore.UserDataStore
+import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.domain.repository.TokenRepository
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class TokenRepositoryImpl @Inject constructor(
     private val tokenLocalDataSource: TokenLocalDataSource,
-    private val userDataStore: UserDataStore
+    private val userLocalDataSource: UserLocalDataSource
 ) : TokenRepository {
     override suspend fun saveAccessToken(token: String) {
         tokenLocalDataSource.saveAccessToken(token)
-        userDataStore.updateIsLogin(true)
+        userLocalDataSource.updateIsLogin(true)
     }
 
     override suspend fun saveRefreshToken(token: String) {
@@ -33,7 +33,7 @@ class TokenRepositoryImpl @Inject constructor(
 
     override suspend fun removeToken() {
         tokenLocalDataSource.removeAccessToken()
-        userDataStore.updateIsLogin(false)
+        userLocalDataSource.updateIsLogin(false)
     }
 
     override suspend fun saveOwnerAccessToken(token: String) {

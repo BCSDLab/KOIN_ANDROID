@@ -4,8 +4,8 @@ import `in`.koreatech.koin.data.mapper.toUser
 import `in`.koreatech.koin.data.mapper.toUserRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
-import `in`.koreatech.koin.data.source.datastore.UserDataStore
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.User
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userRemoteDataSource: UserRemoteDataSource,
     private val tokenLocalDataSource: TokenLocalDataSource,
-    private val userDataStore: UserDataStore,
+    private val userLocalDataSource: UserLocalDataSource,
 ) : UserRepository {
     override suspend fun getToken(email: String, hashedPassword: String): AuthToken {
         val authResponse = userRemoteDataSource.getToken(
@@ -30,12 +30,12 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(): User {
         return userRemoteDataSource.getUserInfo().toUser().also {
-            userDataStore.updateUserInfo(it)
+            userLocalDataSource.updateUserInfo(it)
         }
     }
 
     override fun getUserInfoFlow(): Flow<User> {
-        return userDataStore.user.map { it ?: getUserInfo() }
+        return userLocalDataSource.user.map { it ?: getUserInfo() }
     }
 
     override suspend fun requestPasswordResetEmail(email: String) {
@@ -77,7 +77,7 @@ class UserRepositoryImpl @Inject constructor(
             User.Anonymous -> throw IllegalAccessException("Updating anonymous user is not supported")
             is User.Student -> {
                 userRemoteDataSource.updateUser(user.toUserRequest())
-                userDataStore.updateUserInfo(user)
+                userLocalDataSource.updateUserInfo(user)
             }
         }
     }
