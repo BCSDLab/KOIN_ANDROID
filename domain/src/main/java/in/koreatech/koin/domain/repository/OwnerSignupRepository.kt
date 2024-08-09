@@ -11,4 +11,8 @@ interface OwnerSignupRepository {
     suspend fun requestSmsVerificationCode(
         phoneNumber: String,
     ): Result<Unit>
+
+    suspend fun getExistsAccount(
+        phoneNumber: String
+    ): Pair<Boolean, String?>
 }
