@@ -30,6 +30,6 @@
     <dimen name="toolbar_main_elevation">8dp</dimen>
 
     <!-- Normal Cards -->
-    <dimen name="normal_card_elevation">4dp</dimen>
+    <dimen name="normal_card_elevation">9dp</dimen>
 
 </resources>

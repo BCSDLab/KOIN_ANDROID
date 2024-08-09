@@ -11,8 +11,8 @@ class CityBusTimetableItemViewHolder(private val binding: BusTimetableCityItemBi
     BusTimetableItemViewHolder<CityBusTimetableUiItem>(binding) {
     override fun bind(item: CityBusTimetableUiItem) {
         with(binding) {
-            textViewBusLocation.text = item.startLocation
-            textViewBusRideTime.text = item.timeInfo
+            textViewBusLocation.text = item.am
+            textViewBusRideTime.text = item.pm
         }
     }
 }
