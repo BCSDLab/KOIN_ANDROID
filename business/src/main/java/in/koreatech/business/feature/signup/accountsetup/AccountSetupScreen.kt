@@ -41,6 +41,7 @@ import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
 import `in`.koreatech.business.ui.theme.KOIN_ANDROIDTheme
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -131,13 +132,19 @@ fun AccountSetupScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp).verticalScroll(scrollState),
+                .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
         ) {
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Text(text = stringResource(id = R.string.id), fontSize = 14.sp, fontWeight = Bold)
+            Text(
+                text = stringResource(id = R.string.phone_number),
+                fontSize = 14.sp,
+                fontWeight = Bold
+            )
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -146,20 +153,20 @@ fun AccountSetupScreen(
             ) {
 
                 LinedTextField(
-                    value = state.id,
-                    onValueChange = { viewModel.onIdChanged(it) },
-                    modifier = Modifier
-                        .width(203.dp),
-                    label = stringResource(id = R.string.enter_id),
-                    errorText = stringResource(id = R.string.id_not_validate),
+                    value = state.phoneNumber,
+                    onValueChange = { viewModel.onPhoneNumChanged(it) },
+                    modifier = Modifier.width(203.dp),
+                    label = stringResource(id = R.string.enter_phone_number),
                     textStyle = TextStyle.Default.copy(fontSize = 15.sp),
+                    errorText = state.isPhoneNumberErrorMessage ?: "알 수 없는 오류가 발생했습니다.",
+                    isError = state.signupContinuationState == SignupContinuationState.PhoneNumberDuplicated,
                 )
 
                 Button(modifier = Modifier
                     .width(115.dp)
                     .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.id.isNotEmpty(),
+                    enabled = state.phoneNumber.isNotEmpty() && state.signupContinuationState!= SignupContinuationState.PhoneNumberDuplicated,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
                         contentColor = Color.White,
@@ -167,16 +174,71 @@ fun AccountSetupScreen(
                         disabledContentColor = Gray1,
                     ),
                     onClick = {
-                        TODO("아이디 중복 확인")
+                        viewModel.sendSmsVerificationCode(
+                            state.phoneNumber
+                        )
                     }) {
                     Text(
-                        text = stringResource(id = R.string.check_duplicate),
-                        fontSize = 13.sp,
+                        text = stringResource(id = R.string.send_authentication_code),
                         fontWeight = Bold,
+                        fontSize = 13.sp,
+                    )
+                }
+
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = stringResource(id = R.string.authentication_code),
+                fontSize = 14.sp,
+                fontWeight = Bold
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                LinedTextField(
+                    modifier = Modifier
+                        .width(203.dp),
+                    value = state.authCode,
+                    onValueChange = { viewModel.onAuthCodeChanged(it) },
+                    label = stringResource(id = R.string.enter_verification_code),
+                    textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+                    errorText = stringResource(id = R.string.sms_code_not_validate),
+                    isError =  state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate,
+                )
+
+                Button(
+                    modifier = Modifier
+                        .width(115.dp)
+                        .height(41.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    enabled = state.authCode.length == 6,
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = ColorPrimary,
+                        contentColor = Color.White,
+                        disabledBackgroundColor = Gray2,
+                        disabledContentColor = Gray1,
+                    ),
+                    onClick = {
+                        viewModel.verifySmsCode(
+                            state.phoneNumber,
+                            state.authCode
+                        )
+                    }
+                ) {
+                    Text(
+                        text = stringResource(R.string.verify_sms),
+                        fontWeight = Bold,
+                        fontSize = 13.sp,
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+
 
             Text(text = stringResource(id = R.string.password), fontSize = 14.sp, fontWeight = Bold)
             LinedTextField(
@@ -207,93 +269,24 @@ fun AccountSetupScreen(
                 isError = state.isPasswordConfirmError,
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
 
-            Text(
-                text = stringResource(id = R.string.phone_number),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
 
-            LinedTextField(
-                value = state.phoneNumber,
-                onValueChange = { viewModel.onPhoneNumChanged(it) },
-                modifier = Modifier.fillMaxWidth(),
-                label = stringResource(id = R.string.enter_phone_number),
-                textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                errorText = stringResource(id = R.string.phone_number_not_validate),
-                isError = state.isPhoneNumberError,
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = stringResource(id = R.string.authentication_code),
-                fontSize = 14.sp,
-                fontWeight = Bold
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                LinedTextField(
-                    modifier = Modifier
-                        .width(203.dp),
-                    value = state.authCode,
-                    onValueChange = { viewModel.onAuthCodeChanged(it) },
-                    label = stringResource(id = R.string.enter_verification_code),
-                    textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-                    errorText = stringResource(id = R.string.sms_code_not_validate),
-                    isError = state.signUpContinuationError != null,
-                )
-
-                Button(modifier = Modifier
-                    .width(115.dp)
-                    .height(41.dp),
-                    shape = RoundedCornerShape(4.dp),
-                    enabled = state.phoneNumber.isNotEmpty(),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
-                        contentColor = Color.White,
-                        disabledBackgroundColor = Gray2,
-                        disabledContentColor = Gray1,
-                    ),
-                    onClick = {
-                        viewModel.sendSmsVerificationCode(
-                            state.phoneNumber
-                        )
-                    }) {
-                    Text(
-                        text = stringResource(id = R.string.send_authentication_code),
-                        fontWeight = Bold,
-                        fontSize = 13.sp,
-                    )
-                }
-            }
 
             Spacer(modifier = Modifier.height(55.dp))
-            Button(modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp),
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isButtonEnabled,
+                enabled = state.isButtonEnabled && state.signupContinuationState==SignupContinuationState.CheckComplete,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,
                     disabledBackgroundColor = Gray2,
                     disabledContentColor = Gray1,
                 ),
-                onClick = {
-                    viewModel.verifySmsCode(
-                        state.password,
-                        state.passwordConfirm,
-                        state.phoneNumber,
-                        state.authCode,
-                    )
-                }) {
+                onClick = viewModel::onNavigateToNextScreen
+            ) {
                 Text(
                     text = stringResource(id = R.string.next),
                     fontSize = 13.sp,
