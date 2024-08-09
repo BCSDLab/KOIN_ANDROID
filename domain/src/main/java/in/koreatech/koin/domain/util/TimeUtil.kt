@@ -59,6 +59,13 @@ object TimeUtil {
         return simpleDateFormat.parse(compareTimeString).time - getCurrentTime().time
     }
 
+    fun formatDateToKorean(dateString: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd")
+        val outputFormat = SimpleDateFormat("M월 d일")
+        val date: Date = inputFormat.parse(dateString)
+        return outputFormat.format(date)
+    }
+
     fun getDateDifferenceWithToday(date: Date): Int {
         return ((date.time - getCurrentTime().time) / (60 * 60 * 24 * 1000)).toInt()
     }
@@ -82,6 +89,24 @@ object TimeUtil {
 
         val diffInMillis = calendar1.timeInMillis - calendar2.timeInMillis
         return (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
+    }
+
+    fun isToday(dateString: String): Boolean {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date = inputFormat.parse(dateString)
+        val today = Calendar.getInstance().time
+        val todayString = inputFormat.format(today)
+        return dateString == todayString
+    }
+
+    fun isTomorrow(dateString: String): Boolean {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date = inputFormat.parse(dateString)
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE, 1)
+        val tomorrow = calendar.time
+        val tomorrowString = inputFormat.format(tomorrow)
+        return dateString == tomorrowString
     }
 
     fun isBetweenCurrentTime(starTime: String, endTime: String): Boolean {
