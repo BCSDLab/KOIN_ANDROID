@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.dining.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
@@ -68,16 +69,20 @@ class DiningViewModel @Inject constructor(
 
     fun setSelectedDate(date: Date) {
         _selectedDate.value = TimeUtil.dateFormatToYYMMDD(date)
+        getDining(selectedDate.value)
     }
 
     fun getDining(
         date: String = selectedDate.value
     ) {
+        Log.d("dddddddddddddddd555555555", date)
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 getDiningUseCase(date)
                     .onSuccess {
-                        _dining.value = it
+                        _dining.value = it.also {
+                            Log.d("dddddddddddddddd6666666", it.toString())
+                        }
                     }
                     .onFailure {
 
