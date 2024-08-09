@@ -12,6 +12,8 @@ import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.template.model.Button
 import com.kakao.sdk.template.model.Content
 import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.ItemContent
+import com.kakao.sdk.template.model.ItemInfo
 import com.kakao.sdk.template.model.Link
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
@@ -19,6 +21,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentDiningItemsBinding
 import `in`.koreatech.koin.domain.model.dining.Dining
 import `in`.koreatech.koin.domain.util.DiningUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.domain.util.ext.arrange
 import `in`.koreatech.koin.ui.dining.adapter.DiningAdapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
@@ -86,13 +89,24 @@ class DiningItemsFragment : Fragment(R.layout.fragment_dining_items) {
         )
         return FeedTemplate(
             content = Content(
-                title = "",
-                description = "${dining.place} ${DiningUtil.getKoreanName(dining.type)}메뉴\n" + dining.menu.joinToString(", "),
+                title = "ㅤ",
                 imageUrl = dining.imageUrl,
                 link = link
             ),
+            itemContent = ItemContent(
+                profileText = "${
+                    if (TimeUtil.isToday(dining.date)) "오늘" else if (TimeUtil.isTomorrow(dining.date)) "내일" else
+                        TimeUtil.formatDateToKorean(dining.date)
+                } ${DiningUtil.getKoreanName(dining.type)} 식단",
+                items = listOf(
+                    ItemInfo(
+                        item = dining.place,
+                        itemOp = dining.menu.joinToString(", ")
+                    )
+                )
+            ),
             buttons = listOf(
-                Button("다른 사진 보러가기", link)
+                Button("코인에서 식단 전체보기", link)
             )
         )
     }
