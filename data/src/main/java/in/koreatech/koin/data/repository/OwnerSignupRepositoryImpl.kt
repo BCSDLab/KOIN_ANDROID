@@ -7,9 +7,9 @@ import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.repository.OwnerSignupRepository
+import org.json.JSONObject
 import retrofit2.HttpException
 import javax.inject.Inject
-import kotlin.coroutines.cancellation.CancellationException
 
 class OwnerSignupRepositoryImpl @Inject constructor(
     private val ownerRemoteDataSource: OwnerRemoteDataSource,
@@ -51,5 +51,23 @@ class OwnerSignupRepositoryImpl @Inject constructor(
                 )
             )
         }
+    }
+
+
+    override suspend fun getExistsAccount(phoneNumber: String): Pair<Boolean, String?> {
+        return try {
+            ownerRemoteDataSource.checkExistsAccount(phoneNumber)
+            Pair(false, null)
+        } catch (e: HttpException) {
+            if (e.code() == 409 || e.code() == 400) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val message = JSONObject(errorBody).getString("message")
+                Pair(true, message)
+            } else {
+                Pair(true, null)
+            }
+
+        }
+
     }
 }
