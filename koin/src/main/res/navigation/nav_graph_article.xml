@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_article"
+    app:startDestination="@id/articleListFragment">
+
+    <fragment
+        android:id="@+id/articleListFragment"
+        android:name="in.koreatech.koin.ui.article.ArticleListFragment"
+        android:label="fragment_article_list"
+        tools:layout="@layout/fragment_article_list">
+        <action
+            android:id="@+id/action_articleListFragment_to_articleKeywordFragment"
+            app:destination="@id/articleKeywordFragment" />
+        <action
+            android:id="@+id/action_articleListFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleKeywordFragment"
+        android:name="in.koreatech.koin.ui.article.ArticleKeywordFragment"
+        android:label="ArticleKeywordFragment">
+        <action
+            android:id="@+id/action_articleKeywordFragment_to_articleListFragment"
+            app:destination="@id/articleListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleDetailFragment"
+        android:name="in.koreatech.koin.ui.article.ArticleDetailFragment"
+        android:label="ArticleDetailFragment">
+        <action
+            android:id="@+id/action_articleDetailFragment_to_articleListFragment"
+            app:destination="@id/articleListFragment" />
+    </fragment>
+</navigation>
