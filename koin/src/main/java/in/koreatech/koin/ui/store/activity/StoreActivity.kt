@@ -1,10 +1,8 @@
 package `in`.koreatech.koin.ui.store.activity
 
-import android.graphics.Rect
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -23,6 +21,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
@@ -42,6 +41,7 @@ import `in`.koreatech.koin.util.ext.dpToPx
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
+import `in`.koreatech.koin.util.ext.statusBarHeight
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -235,16 +235,14 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
         }
 
         binding.root.post {
-            val rect = Rect()
-            window!!.decorView.getWindowVisibleDisplayFrame(rect)
-            val statusBarHeight = rect.top
+            val statusBarHeight = this.statusBarHeight
 
             binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val oldScrollRatio =
                     oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
                 val scrollRatio =
                     scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
-                if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
+                if (EventUtils.didCrossedScrollThreshold(oldScrollRatio, scrollRatio)) {
                     EventLogger.logScrollEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_CATEGORIES,

@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.bus
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.BusActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
@@ -18,15 +18,6 @@ import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.FirebasePerformanceUtil
 import `in`.koreatech.koin.util.ext.hideSoftKeyboard
-import android.graphics.Typeface
-import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayoutMediator
-import dagger.hilt.android.AndroidEntryPoint
-import `in`.koreatech.koin.core.util.FontManager
 
 @AndroidEntryPoint
 class BusActivity : KoinNavigationDrawerActivity() {
