@@ -44,6 +44,33 @@ class OwnerRegisterRepositoryImpl(
         }
     }
 
+    override suspend fun ownerRegister(
+        attachments: List<OwnerRegisterUrl>,
+        companyNumber: String,
+        name: String,
+        password: String,
+        phoneNumber: String,
+        shopId: Int?,
+        shopName: String
+    ): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.postOwnerRegister(
+                OwnerRegisterRequest(
+                    attachments.toFileUrlList(), companyNumber, name, password, phoneNumber, shopId, shopName
+                )
+            )
+
+            Result.success(Unit)
+        } catch (e: EOFException) {
+            Result.success(Unit)
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
+
+
     override suspend fun storeRegister(
         name: String,
         category: Int,

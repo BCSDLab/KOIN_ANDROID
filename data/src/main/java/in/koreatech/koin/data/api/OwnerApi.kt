@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.data.api
 
+import OwnerRegisterRequest
 import `in`.koreatech.koin.data.constant.URLConstant
-import `in`.koreatech.koin.data.request.owner.CheckExistsAccount
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
-import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
+import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -25,6 +25,9 @@ interface OwnerApi {
     suspend fun postVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest)
 
     @POST(URLConstant.OWNER.REGISTER)
+    suspend fun postOwnerEmailRegister(@Body ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse
+
+    @POST(URLConstant.OWNER.REGISTER_PHONE)
     suspend fun postOwnerRegister(@Body ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse
 
     @POST(URLConstant.OWNER.CHANGEPASSWORDEMAIL)

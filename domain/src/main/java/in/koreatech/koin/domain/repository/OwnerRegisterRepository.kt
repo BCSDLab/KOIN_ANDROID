@@ -15,6 +15,16 @@ interface OwnerRegisterRepository {
         shopName: String
     ): Result<Unit>
 
+    suspend fun ownerRegister(
+        attachments: List<OwnerRegisterUrl>,
+        companyNumber: String,
+        name: String,
+        password: String,
+        phoneNumber: String,
+        shopId: Int?,
+        shopName: String
+    ): Result<Unit>
+
     suspend fun storeRegister(
         name: String,
         category: Int,

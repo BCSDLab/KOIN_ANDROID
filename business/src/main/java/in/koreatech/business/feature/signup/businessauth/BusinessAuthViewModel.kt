@@ -142,10 +142,9 @@ class BusinessAuthViewModel @Inject constructor(
     fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
-        email: String,
+        phoneNumber: String,
         name: String,
         password: String,
-        phoneNumber: String,
         shopId: Int?,
         shopName: String
     ) {
@@ -153,7 +152,6 @@ class BusinessAuthViewModel @Inject constructor(
             ownerRegisterUseCase(
                 fileUrls.strToOwnerRegisterUrl(),
                 companyNumber.formatBusinessNumber(),
-                email,
                 name,
                 password,
                 phoneNumber,
