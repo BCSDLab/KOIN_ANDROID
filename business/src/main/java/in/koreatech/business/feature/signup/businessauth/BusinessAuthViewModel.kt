@@ -1,7 +1,7 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
+import `in`.koreatech.koin.domain.usecase.owner.OwnerEmailRegisterUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
 import kotlinx.coroutines.launch
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class BusinessAuthViewModel @Inject constructor(
     private val getPresignedUrlUseCase: GetPresignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
-    private val ownerRegisterUseCase: OwnerRegisterUseCase
+    private val ownerRegisterUseCase: OwnerRegisterUseCase,
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
     override val container =
         container<BusinessAuthState, BusinessAuthSideEffect>(BusinessAuthState())
@@ -50,12 +51,6 @@ class BusinessAuthViewModel @Inject constructor(
     fun onStoreNumberChanged(storeNumber: String) = intent {
         reduce {
             state.copy(shopNumber = storeNumber)
-        }
-    }
-
-    fun onPhoneNumberChanged(phoneNumber: String) = intent {
-        reduce {
-            state.copy(phoneNumber = phoneNumber)
         }
     }
 
