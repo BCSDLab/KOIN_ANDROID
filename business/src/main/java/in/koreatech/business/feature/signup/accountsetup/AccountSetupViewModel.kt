@@ -97,7 +97,11 @@ class AccountSetupViewModel @Inject constructor(
 
     fun onAuthCodeChanged(authCode: String) = intent {
         reduce {
-            state.copy(authCode = authCode, signUpContinuationError = null)
+            state.copy(
+                authCode = authCode,
+                signUpContinuationError = null,
+                signupContinuationState = SignupContinuationState.AvailablePhoneNumber
+            )
         }
     }
 

@@ -37,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray2
@@ -166,7 +167,7 @@ fun AccountSetupScreen(
                     .width(115.dp)
                     .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.phoneNumber.isNotEmpty() && state.signupContinuationState!= SignupContinuationState.PhoneNumberDuplicated,
+                    enabled = state.phoneNumber.isNotEmpty() && state.signupContinuationState != SignupContinuationState.PhoneNumberDuplicated,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
                         contentColor = Color.White,
@@ -209,7 +210,9 @@ fun AccountSetupScreen(
                     label = stringResource(id = R.string.enter_verification_code),
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                     errorText = stringResource(id = R.string.sms_code_not_validate),
-                    isError =  state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate,
+                    successText = stringResource(id = R.string.auth_code_equal),
+                    isError = state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate,
+                    isSuccess = state.signupContinuationState == SignupContinuationState.CheckComplete,
                 )
 
                 Button(
@@ -217,9 +220,9 @@ fun AccountSetupScreen(
                         .width(115.dp)
                         .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.authCode.isNotEmpty(),
+                    enabled = state.authCode.isNotEmpty() && state.signupContinuationState != SignupContinuationState.CheckComplete,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = ColorPrimary,
+                        backgroundColor = if(state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate) ColorSecondary else ColorPrimary,
                         contentColor = Color.White,
                         disabledBackgroundColor = Gray2,
                         disabledContentColor = Gray1,
@@ -278,7 +281,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isButtonEnabled && state.signupContinuationState==SignupContinuationState.CheckComplete,
+                enabled = state.isButtonEnabled && state.signupContinuationState == SignupContinuationState.CheckComplete,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,
