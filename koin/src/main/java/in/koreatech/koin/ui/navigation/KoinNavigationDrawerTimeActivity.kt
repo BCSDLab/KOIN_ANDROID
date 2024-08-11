@@ -7,13 +7,20 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerTimeActivity : KoinNavigationDrawerActivity() {
 
-    private var startTime: Long = 0
+    private var startTime = 0L
+    private var resumedTime = 0L
     protected var elapsedTime: Long = 0
-        get() = field + SystemClock.elapsedRealtime() - startTime
+        get() {
+            val time = SystemClock.elapsedRealtime() - startTime + resumedTime
+            startTime = SystemClock.elapsedRealtime()
+            resumedTime = 0
+            return time
+        }
+
 
     override fun onPause() {
         super.onPause()
-        elapsedTime += SystemClock.elapsedRealtime() - startTime
+        resumedTime += SystemClock.elapsedRealtime() - startTime
     }
 
     override fun onResume() {

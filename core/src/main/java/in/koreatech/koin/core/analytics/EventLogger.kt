@@ -18,18 +18,18 @@ object EventLogger {
      * @param label: 이벤트 소분류
      * @param value: 이벤트 값
      */
-//    fun logClickEvent(action: String, label: String, value: String) {
-//        logEvent(action, AnalyticsConstant.Category.CLICK, label, value)
-//    }
+    fun logClickEvent(action: String, label: String, value: String) {
+        logEvent(action, AnalyticsConstant.Category.CLICK, label, value)
+    }
 
     /**
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param label: 이벤트 소분류
      * @param value: 이벤트 값
      */
-//    fun logScrollEvent(action: String, label: String, value: String) {
-//        logEvent(action, AnalyticsConstant.Category.SCROLL, label, value)
-//    }
+    fun logScrollEvent(action: String, label: String, value: String) {
+        logEvent(action, AnalyticsConstant.Category.SCROLL, label, value)
+    }
 
     /**
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
@@ -54,7 +54,7 @@ object EventLogger {
      * @param value: 이벤트 값
      */
     fun logClickEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
-        logEvent(action, EventCategory.CLICK, label, value)
+        logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
 
     /**
@@ -63,7 +63,7 @@ object EventLogger {
      * @param value: 이벤트 값
      */
     fun logScrollEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
-        logEvent(action, EventCategory.SCROLL, label, value)
+        logEvent(action, EventCategory.SCROLL, label, value, *extras)
     }
 
     /**
@@ -75,7 +75,7 @@ object EventLogger {
      */
     private fun logEvent(action: EventAction, category: EventCategory, label: String, value: String, vararg extras: EventExtra) {
         if (BuildConfig.IS_DEBUG)
-            Log.d("EventLogger", "[action: ${action.value}, category: ${category.value}, label: $label, value: $value" + extras.joinToString { it.toString() } + "]")
+            Log.d("EventLogger", "[action: ${action.value}, category: ${category.value}, label: $label, value: $value " + extras.joinToString { it.toString() } + "]")
         else {
             Firebase.analytics.logEvent(action.value) {
                 param(EVENT_CATEGORY, category.value)

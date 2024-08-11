@@ -5,6 +5,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -18,6 +19,7 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
@@ -77,16 +79,12 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        onBackPressedDispatcher.addCallback {
+
+        }
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> {
-                    EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.BUSINESS,
-                        AnalyticsConstant.Label.SHOP_BACK_BUTTON,
-                        viewModel.store.value?.name ?: "Unknown"
-                    )
-                    onBackPressed()
-                }
+                AppBarBase.getLeftButtonId() -> onBackPressed()
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
@@ -232,7 +230,15 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
                 updateInfoTv.text = getString(R.string.store_update_at, it.updateAt.replace("-", "."))
 
                 binding.storeDetailImageview.apply {
-                    adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
+                    adapter = StoreDetailImageViewpagerAdapter(it.imageUrls) {
+                        it?.let { ImageZoomableDialog(context, it) }
+                            .also { it?.show() }
+                        EventLogger.logClickEvent(
+                            EventAction.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_PICTURE,
+                            viewModel.store.value?.name ?: "Unknown"
+                        )
+                    }
 
                 }
 
