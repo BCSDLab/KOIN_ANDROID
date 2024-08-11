@@ -1,11 +1,12 @@
 package `in`.koreatech.koin.data.repository
 
+import OwnerRegisterRequest
 import `in`.koreatech.koin.data.mapper.toCategory
 import `in`.koreatech.koin.data.mapper.toFileUrlList
 import `in`.koreatech.koin.data.mapper.toMyStoreDayOffResponse
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.mapper.toStringArray
-import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
+import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
@@ -17,7 +18,7 @@ import java.io.EOFException
 class OwnerRegisterRepositoryImpl(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
 ): OwnerRegisterRepository {
-    override suspend fun ownerRegister(
+    override suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
         companyNumber: String,
         email: String,
@@ -28,8 +29,8 @@ class OwnerRegisterRepositoryImpl(
         shopName: String
     ): Result<Unit> {
         return try {
-            ownerRemoteDataSource.postOwnerRegister(
-                OwnerRegisterRequest(
+            ownerRemoteDataSource.postOwnerEmailRegister(
+                OwnerEmailRegisterRequest(
                     attachments.toFileUrlList(), companyNumber, email, name, password, phoneNumber, shopId, shopName
                 )
             )

@@ -4,7 +4,7 @@ import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 
 interface OwnerRegisterRepository {
-    suspend fun ownerRegister(
+    suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
         companyNumber: String,
         email: String,

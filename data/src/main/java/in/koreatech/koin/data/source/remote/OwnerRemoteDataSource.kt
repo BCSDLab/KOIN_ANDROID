@@ -1,10 +1,10 @@
 package `in`.koreatech.koin.data.source.remote
 
+import OwnerRegisterRequest
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
-import `in`.koreatech.koin.data.request.owner.CheckExistsAccount
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
-import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
+import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -13,7 +13,6 @@ import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
-import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
@@ -35,6 +34,10 @@ class OwnerRemoteDataSource(
 
     suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
         return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
+    }
+
+    suspend fun postOwnerEmailRegister(ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse {
+        return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }
 
     suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
