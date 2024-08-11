@@ -9,7 +9,6 @@ data class BusinessAuthState(
     val shopName: String = "",
     val shopNumber: String = "",
     val shopId: Int? = null,
-    val phoneNumber: String = "",
     val openAlertDialog: Boolean = false,
     val selectedImages :MutableList<AttachStore> = mutableListOf(),
     val dialogVisibility:Boolean = false,
@@ -19,5 +18,5 @@ data class BusinessAuthState(
     val error: Throwable? = null,
 ){
     val isButtonEnabled: Boolean
-        get() = name.isNotEmpty() && shopName.isNotEmpty() && shopNumber.isNotEmpty() && phoneNumber.isNotEmpty() && selectedImages.isNotEmpty()
+        get() = name.isNotEmpty() && shopName.isNotEmpty() && shopNumber.isNotEmpty() && selectedImages.isNotEmpty()
 }
