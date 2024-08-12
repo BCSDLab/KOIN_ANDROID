@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment" />
+        <action
+            android:id="@+id/action_articleListFragment_to_articleSearchFragment"
+            app:destination="@id/articleSearchFragment" />
     </fragment>
 
     <fragment
@@ -34,5 +37,17 @@
         <action
             android:id="@+id/action_articleDetailFragment_to_articleListFragment"
             app:destination="@id/articleListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleSearchFragment"
+        android:name="in.koreatech.koin.ui.article.ArticleSearchFragment"
+        android:label="ArticleSearchFragment">
+        <action
+            android:id="@+id/action_articleSearchFragment_to_articleListFragment"
+            app:destination="@id/articleListFragment" />
+        <action
+            android:id="@+id/action_articleSearchFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment" />
     </fragment>
 </navigation>
