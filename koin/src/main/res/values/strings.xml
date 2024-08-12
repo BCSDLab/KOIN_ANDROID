@@ -477,4 +477,25 @@
     <string name="set_dining_sold_out_notification">식단 품절 알림 받기</string>
     <string name="set_image_upload_notification">식단 사진 업로드 알림 받기</string>
     <string name="navigate_to_notification_setting">알림 설정 바로가기</string>
+    
+    <!-- Koreatech 공지사항 -->
+    <string name="title_article">공지사항</string>
+    <string name="navigation_title_article">공지사항</string>
+    <string name="navigation_title_article_search">공지글 검색</string>
+    <string name="navigation_title_article_keyword">키워드 관리</string>
+
+    <string name="article_free">자유게시판</string>
+    <string name="article_employment">취업게시판</string>
+    <string name="article_anonymous">익명게시판</string>
+    <string name="article_all">전체공지</string>
+    <string name="article_normal">일반공지</string>
+    <string name="article_school">학사공지</string>
+    <string name="article_scholarship">장학공지</string>
+    <string name="article_recruit">채용공지</string>
+    <string name="article_koin">코인공지</string>
+    <string name="article_qna">질문게시판</string>
+    <string name="article_promotion">홍보게시판</string>
+    <string name="article_ipp">현장실습</string>
+    <string name="article_student">학생생활</string>
+
 </resources>
