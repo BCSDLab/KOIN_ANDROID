@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:id="@+id/text_view_article_board_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="일반공지" />
+
+        <TextView
+            android:id="@+id/text_view_article_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/text_view_article_board_name"
+            app:layout_constraintTop_toBottomOf="@id/text_view_article_board_name"
+            tools:text="(끌올) [LINC 3.0] 2024학년도 특허 교육 (캡스톤디자인 특허출원, 특허 경진대회 참가 등) 교육생 모집(~07.26)" />
+
+        <TextView
+            android:id="@+id/text_view_article_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/text_view_article_title"
+            app:layout_constraintTop_toBottomOf="@id/text_view_article_title"
+            tools:text="LINC 3.0사업단" />
+
+        <TextView
+            android:id="@+id/divider_author_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="•"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/text_view_article_author"
+            app:layout_constraintStart_toEndOf="@id/text_view_article_author"
+            app:layout_constraintTop_toTopOf="@id/text_view_article_author" />
+
+        <TextView
+            android:id="@+id/text_view_article_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/divider_author_date"
+            app:layout_constraintTop_toTopOf="@id/text_view_article_author"
+            tools:text="07.24 토" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
