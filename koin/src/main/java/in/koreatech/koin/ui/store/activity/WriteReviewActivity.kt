@@ -85,6 +85,10 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         val storeId = intent.getIntExtra("storeId", -1)
         val review = intent.intentSerializable("review", StoreReviewContent::class.java)
         with(binding) {
+            koinBaseAppBar.leftButton.setOnClickListener {
+                finish()
+            }
+
             storeNameTextView.text = storeName
             starRating.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
@@ -96,6 +100,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
 
             if (review != null) {
                 starRating.rating = review.rating.toFloat()
+                charactersNumber.text = "${review.content.length}/500"
                 reviewEditText.setText(review.content)
                 menuRecyclerViewAdapter.submitList(review.menuNames)
                 viewModel.setImage(review.imageUrls)
@@ -120,7 +125,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                     count: Int
                 ) {
                     super.onTextChanged(s, start, before, count)
-                    writeReviewButton.isEnabled = reviewEditText.text.isNotEmpty()
+
                     charactersNumber.text = "${reviewEditText.length()}/500"
                     if (s.length >= 500) {
                         charactersNumber.setTextColor(

@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:numStars="5"
-                    android:rating="5"
+                    android:rating="0"
                     android:stepSize="1"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notice" />
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="5"
+                    android:text="0"
                     android:textColor="@color/gray14"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -202,8 +202,10 @@
                     android:hint="@string/write_review_content"
                     android:minHeight="40dp"
                     android:textSize="14sp"
+                    android:padding="9dp"
+                    android:lineSpacingMultiplier="1.1"
                     app:layout_constraintTop_toBottomOf="@+id/content"
-                    tools:text="으아아아ㅏㅇ" />
+                    tools:text="족발이 진짜 맛있었습니다. 굳굳. 족발이 진짜 맛있었습니다. 굳굳. 족발이 진짜 맛있었습니다. 굳굳." />
 
 
                 <TextView
