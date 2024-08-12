@@ -174,4 +174,12 @@ object RepositoryModule {
     ): OnBoardingRepository {
         return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideArticleRepository(
+        articleRemoteDataSource: ArticleRemoteDataSource
+    ): ArticleRepository {
+        return ArticleRepositoryImpl(articleRemoteDataSource)
+    }
 }
