@@ -34,28 +34,12 @@ class ArticleListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         initTabSelectedListener()
-        viewLifecycleOwner.lifecycleScope.run {
-            this.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.currentBoard.collect { board ->
-                        viewModel.fetchArticles(board)
-                    }
-                }
-            }
-            this.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.articles.collect { articles ->
-                        articleAdapter.submitList(articles)
-                    }
-                }
-            }
-        }
+        collectData()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        articleAdapter.submitList(viewModel.articles.value)
     }
 
     private fun initTabSelectedListener() {
@@ -77,6 +61,25 @@ class ArticleListFragment : Fragment() {
                 putParcelable("article", article)
             }
         )
+    }
+
+    private fun collectData() {
+        viewLifecycleOwner.lifecycleScope.run {
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.currentBoard.collect { board ->
+                        viewModel.fetchArticles(board, viewModel.articlePage.value.currentPage)
+                    }
+                }
+            }
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.articlePage.collect {
+                        articleAdapter.submitList(it.articles)
+                    }
+                }
+            }
+        }
     }
 
     companion object {
