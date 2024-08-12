@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -76,7 +77,56 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_article_keywords"
                     android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_article_header"
+                    tools:itemCount="10"/>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_article_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_article_list">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_page1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        tools:text="1" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_page2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="2" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_page3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="3" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_page4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="4" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_page5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="5" />
+
+                </com.google.android.material.chip.ChipGroup>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
