@@ -1,16 +1,14 @@
 package `in`.koreatech.koin.ui.bus.adpater.timetable
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableHeaderViewHolder
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableItemViewHolder
-import android.view.LayoutInflater
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableFooterViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableFooterViewHolder
 
-abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
+abstract class TableAdapter<T>(itemCallback: ItemCallback<T>) :
     ListAdapter<T, ViewHolder>(itemCallback) {
 
     private var updatedAt: String? = null
@@ -35,14 +33,15 @@ abstract class BusTimetableAdapter<T>(itemCallback: ItemCallback<T>) :
 
     final override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            ITEM -> (holder as BusTimetableItemViewHolder<T>).bind(getItem(position))
-            FOOTER -> (holder as BusTimetableFooterViewHolder).setUpdatedAt(updatedAt)
+            ITEM -> (holder as TableItemViewHolder<T>).bind(getItem(position))
+            FOOTER -> (holder as TableFooterViewHolder).setUpdatedAt(updatedAt)
         }
     }
 
-    abstract fun onCreateHeaderViewHolder(parent: ViewGroup): BusTimetableHeaderViewHolder
-    abstract fun onCreateItemViewHolder(parent: ViewGroup): BusTimetableItemViewHolder<T>
-    abstract fun onCreateFooterViewHolder(parent: ViewGroup): BusTimetableFooterViewHolder
+
+    abstract fun onCreateHeaderViewHolder(parent: ViewGroup): TableHeaderViewHolder
+    abstract fun onCreateItemViewHolder(parent: ViewGroup): TableItemViewHolder<T>
+    abstract fun onCreateFooterViewHolder(parent: ViewGroup): TableFooterViewHolder
 
     fun setUpdatedAt(date: String?) {
         updatedAt = date
