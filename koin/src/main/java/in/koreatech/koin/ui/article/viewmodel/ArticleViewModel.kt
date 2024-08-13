@@ -16,8 +16,8 @@ class ArticleViewModel @Inject constructor(
     private val fetchArticleUseCase: FetchArticleUseCase
 ) : BaseViewModel() {
 
-    private val _articlePage = MutableStateFlow(ArticlePaginationState(emptyList(), 0, 0, 1, 1))
-    val articlePage = _articlePage.asStateFlow()
+    private val _articlePagination = MutableStateFlow(ArticlePaginationState(emptyList(), 0, 0, 1, 1))
+    val articlePagination = _articlePagination.asStateFlow()
 
     private val _currentBoard = MutableStateFlow(BoardType.ALL)
     val currentBoard = _currentBoard.asStateFlow()
@@ -29,9 +29,9 @@ class ArticleViewModel @Inject constructor(
         _currentPage.value = page
         viewModelScope.launchWithLoading {
             fetchArticleUseCase.fetchArticlePagination(board.id, page, PAGE_LIMIT).onSuccess {
-                _articlePage.emit(it.toArticlePaginationState())
+                _articlePagination.emit(it.toArticlePaginationState())
             }.onFailure {
-                TODO("Handle error")
+                // TODO("Handle error")
             }
         }
     }

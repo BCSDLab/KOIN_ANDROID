@@ -483,19 +483,24 @@
     <string name="navigation_title_article">공지사항</string>
     <string name="navigation_title_article_search">공지글 검색</string>
     <string name="navigation_title_article_keyword">키워드 관리</string>
-
     <string name="article_free">자유게시판</string>
     <string name="article_employment">취업게시판</string>
     <string name="article_anonymous">익명게시판</string>
     <string name="article_all">전체공지</string>
     <string name="article_normal">일반공지</string>
+    <string name="article_normal_simple">일반</string>
     <string name="article_school">학사공지</string>
+    <string name="article_school_simple">학사</string>
     <string name="article_scholarship">장학공지</string>
-    <string name="article_recruit">채용공지</string>
+    <string name="article_scholarship_simple">장학</string>
+    <string name="article_recruit">취업공지</string>
+    <string name="article_recruit_simple">취업</string>
     <string name="article_koin">코인공지</string>
     <string name="article_qna">질문게시판</string>
     <string name="article_promotion">홍보게시판</string>
     <string name="article_ipp">현장실습</string>
     <string name="article_student">학생생활</string>
+    <string name="previous_page">이전</string>
+    <string name="next_page">다음</string>
 
 </resources>

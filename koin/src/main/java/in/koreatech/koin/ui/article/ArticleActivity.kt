@@ -6,6 +6,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
@@ -16,8 +17,8 @@ import `in`.koreatech.koin.databinding.ActivityArticleBinding
 class ArticleActivity : ActivityBase() {
 
     private val binding by dataBinding<ActivityArticleBinding>()
-    private val navController: NavController by lazy { findNavController(R.id.nav_host_article_fragment) }
-    override val screenTitle: String = applicationContext.getString(R.string.title_article)
+    private lateinit var navController: NavController
+    override val screenTitle: String = "공지사항"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,9 @@ class ArticleActivity : ActivityBase() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_article_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, dest, _ ->
             when (dest.id) {
