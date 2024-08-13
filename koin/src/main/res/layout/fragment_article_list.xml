@@ -22,22 +22,22 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/article_normal" />
+                android:text="@string/article_normal_simple" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/article_school" />
+                android:text="@string/article_school_simple" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/article_scholarship" />
+                android:text="@string/article_scholarship_simple" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/article_recruit" />
+                android:text="@string/article_recruit_simple" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
@@ -49,12 +49,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/article_student" />
 
-
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tab_layout_article_board">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,17 +74,28 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_article_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="1dp"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_article_keywords"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_article_header"
                     tools:itemCount="10"/>
 
+                <TextView
+                    android:id="@+id/text_view_previous_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/previous_page"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toStartOf="@id/chip_group_article_page"
+                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page"
+                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page" />
+
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_article_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="32dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_article_list">
@@ -126,6 +137,16 @@
                         tools:text="5" />
 
                 </com.google.android.material.chip.ChipGroup>
+
+                <TextView
+                    android:id="@+id/text_view_next_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/next_page"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintStart_toEndOf="@id/chip_group_article_page"
+                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page"
+                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

@@ -30,6 +30,7 @@ import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.FontManager
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
+import `in`.koreatech.koin.ui.article.ArticleActivity
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.dining.DiningActivity
 import `in`.koreatech.koin.ui.land.LandActivity
@@ -78,7 +79,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             R.id.navi_item_store,
             R.id.navi_item_bus, R.id.navi_item_dining,
             R.id.navi_item_timetable, R.id.navi_item_land,
-            R.id.navi_item_owner
+            R.id.navi_item_owner,
+            R.id.navi_item_article
         ).map {
             findViewById<View>(it)
         }.zip(
@@ -91,7 +93,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Dining,
                 MenuState.Timetable,
                 MenuState.Land,
-                MenuState.Owner
+                MenuState.Owner,
+                MenuState.Article
             )
         ) { view, state ->
             state to view
@@ -211,6 +214,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             MenuState.LoginOrLogout -> {}
 
+                            MenuState.Article -> {
+
+                            }
+
                             else -> Unit
                         }
                     }
@@ -288,6 +295,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     }
                     goToLoginActivity()
                 }
+
+                MenuState.Article -> goToArticleActivity()
 
                 else -> Unit
             }
@@ -421,6 +430,16 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     private fun goToBusActivity(bundle: Bundle?) {
         val intent = Intent(this, BusActivity::class.java)
         intent.putExtras(bundle!!)
+
+        if (menuState != MenuState.Main) {
+            goToActivityFinish(intent)
+        } else {
+            startActivity(intent)
+        }
+    }
+
+    private fun goToArticleActivity() {
+        val intent = Intent(this, ArticleActivity::class.java)
 
         if (menuState != MenuState.Main) {
             goToActivityFinish(intent)

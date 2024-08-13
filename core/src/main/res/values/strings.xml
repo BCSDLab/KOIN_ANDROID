@@ -69,6 +69,7 @@
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>
     <string name="navigation_item_owner">코인 사장님</string>
+    <string name="navigation_item_article">공지사항</string>
     <string name="navigation_item_ask_bcsd">문의하기</string>
     <!--End left drawer menu -->
 

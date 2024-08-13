@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleState
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ArticleListFragment : Fragment() {
 
-    private val binding by dataBinding<FragmentArticleListBinding>()
+    private lateinit var binding: FragmentArticleListBinding
     private val navController by lazy { findNavController() }
     private val viewModel by activityViewModels<ArticleViewModel>()
 
@@ -33,13 +32,14 @@ class ArticleListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        initTabSelectedListener()
-        collectData()
+        binding = FragmentArticleListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initTabSelectedListener()
+        collectData()
     }
 
     private fun initTabSelectedListener() {
@@ -68,17 +68,37 @@ class ArticleListFragment : Fragment() {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentBoard.collect { board ->
-                        viewModel.fetchArticles(board, viewModel.articlePage.value.currentPage)
+                        viewModel.fetchArticles(board, 1)
                     }
                 }
             }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.articlePage.collect {
+                    viewModel.articlePagination.collect {
                         articleAdapter.submitList(it.articles)
                     }
                 }
             }
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.currentPage.collect { page ->
+                        setPagingButtonVisibility(page)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setPagingButtonVisibility(currentPage: Int) {
+        if (currentPage == viewModel.articlePagination.value.totalPage) {
+            binding.textViewNextPage.visibility = View.GONE
+        } else {
+            binding.textViewNextPage.visibility = View.VISIBLE
+        }
+        if (currentPage == 1) {
+            binding.textViewPreviousPage.visibility = View.GONE
+        } else {
+            binding.textViewPreviousPage.visibility = View.VISIBLE
         }
     }
 

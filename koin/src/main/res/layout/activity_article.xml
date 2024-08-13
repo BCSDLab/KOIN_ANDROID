@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:defaultNavHost="true"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar_article_list"
             app:navGraph="@navigation/nav_graph_article" />
