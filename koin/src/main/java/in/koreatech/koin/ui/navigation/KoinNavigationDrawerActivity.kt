@@ -171,7 +171,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             MenuState.Bus -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.CAMPUS,
+                                    EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_BUS,
                                     getString(R.string.bus)
                                 )
@@ -179,7 +179,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
                             MenuState.Dining -> {
                                 EventLogger.logClickEvent(
-                                    AnalyticsConstant.Domain.CAMPUS,
+                                    EventAction.CAMPUS,
                                     AnalyticsConstant.Label.HAMBURGER_DINING,
                                     getString(R.string.navigation_item_dining)
                                 )
@@ -188,14 +188,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             MenuState.UserInfo -> {
                                 if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
                                     EventLogger.logClickEvent(
-                                        AnalyticsConstant.Domain.USER,
+                                        EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
                                         getString(R.string.navigation_drawer_right_myinfo)
                                     )
                                     showLoginRequestDialog()
                                 } else {
                                     EventLogger.logClickEvent(
-                                        AnalyticsConstant.Domain.USER,
+                                        EventAction.USER,
                                         AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
                                         getString(R.string.navigation_drawer_right_myinfo)
                                     )
@@ -472,7 +472,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
+                    EventAction.USER,
                     AnalyticsConstant.Label.USER_ONLY_OK,
                     getString(R.string.user_only_ok)
                 )

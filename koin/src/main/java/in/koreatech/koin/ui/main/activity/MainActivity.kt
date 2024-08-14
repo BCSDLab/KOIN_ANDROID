@@ -45,7 +45,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setOnCardClickListener {
             callDrawerItem(R.id.navi_item_bus, Bundle())
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS,
                 getString(R.string.bus)
             )
@@ -53,7 +53,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         setOnSwitchClickListener {
             viewModel.switchBusNode()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.CAMPUS,
+                EventAction.CAMPUS,
                 AnalyticsConstant.Label.MAIN_BUS_CHANGETOFROM,
                 it.localized(this@MainActivity)
             )
@@ -119,7 +119,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
             EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.USER,
+                EventAction.USER,
                 AnalyticsConstant.Label.HAMBURGER,
                 getString(R.string.hamburger)
             )
@@ -166,7 +166,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setSelectedPosition(tab.position)
                 EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_MENU_CORNER,
                     tab.text.toString()
                 )
@@ -206,7 +206,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 EventLogger.logScrollEvent(
-                    AnalyticsConstant.Domain.CAMPUS,
+                    EventAction.CAMPUS,
                     AnalyticsConstant.Label.MAIN_BUS_SCROLL,
                     busArrivalInfos[prev % 3].localized(this@MainActivity) + ">" + busArrivalInfos[position % 3].localized(
                         this@MainActivity
