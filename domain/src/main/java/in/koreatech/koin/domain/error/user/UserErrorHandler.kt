@@ -10,4 +10,5 @@ interface UserErrorHandler {
     fun handleDeleteUserError(throwable: Throwable): ErrorHandler
     fun handleUsernameDuplicatedError(throwable: Throwable): ErrorHandler
     fun handleUpdateUserError(throwable: Throwable): ErrorHandler
+    fun handleVerifyUserPasswordError(throwable: Throwable): ErrorHandler
 }

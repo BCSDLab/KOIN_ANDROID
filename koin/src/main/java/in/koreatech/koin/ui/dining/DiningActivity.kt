@@ -87,7 +87,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.koinBaseAppBarDark.setOnClickListener {
             when(it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> binding.drawerLayout.toggleDrawer()
+                AppBarBase.getRightButtonId() -> startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
             }
         }
 
