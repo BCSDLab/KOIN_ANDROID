@@ -61,7 +61,7 @@ class StoreViewModel @Inject constructor(
         _storeSorter.value = StoreSorter.NONE
         getStoreCategories()
         getStoreEvents()
-        changeCategory()
+        //changeCategory()
         searchStore()
     }
 

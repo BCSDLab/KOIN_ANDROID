@@ -353,6 +353,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
         }
     }
 
+    override fun onRestart() {
+        viewModel.refreshStores()
+        super.onRestart()
+    }
+
     override fun onPause() {
         super.onPause()
         viewPagerHandler.removeCallbacks(runnable)
