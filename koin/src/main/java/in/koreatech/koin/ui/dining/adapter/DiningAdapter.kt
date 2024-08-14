@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
@@ -93,7 +94,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 cardViewDining.setOnClickListener {
                     dialog.show()
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
                         DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )
@@ -111,7 +112,7 @@ class DiningAdapter : ListAdapter<Dining, RecyclerView.ViewHolder>(diffCallback)
                 imageViewDining.visibility = View.INVISIBLE
                 cardViewDining.setOnClickListener {
                     EventLogger.logClickEvent(
-                        AnalyticsConstant.Domain.CAMPUS,
+                        EventAction.CAMPUS,
                         AnalyticsConstant.Label.MENU_IMAGE,
                         DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                     )
