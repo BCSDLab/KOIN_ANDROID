@@ -168,6 +168,7 @@
                     android:background="@drawable/gray_border_button"
                     android:text="@string/upload_image"
                     android:textColor="@color/gray14"
+                    android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/image_container" />
@@ -200,10 +201,10 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_write_review"
                     android:hint="@string/write_review_content"
-                    android:minHeight="40dp"
-                    android:textSize="14sp"
-                    android:padding="9dp"
                     android:lineSpacingMultiplier="1.1"
+                    android:minHeight="40dp"
+                    android:padding="9dp"
+                    android:textSize="14sp"
                     app:layout_constraintTop_toBottomOf="@+id/content"
                     tools:text="족발이 진짜 맛있었습니다. 굳굳. 족발이 진짜 맛있었습니다. 굳굳. 족발이 진짜 맛있었습니다. 굳굳." />
 

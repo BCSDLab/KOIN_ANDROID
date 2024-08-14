@@ -176,13 +176,38 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         View.VISIBLE else binding.imageContainer.visibility =
                         View.GONE
 
+                    if (viewModel.menuImageUrls.value.size >= 3) {
+                        binding.uploadImageButton.isEnabled = false
+                        binding.uploadImageButton.alpha = 0.5f
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.colorAccent
+                            )
+                        )
+                    } else {
+                        binding.uploadImageButton.isEnabled = true
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray14
+                            )
+                        )
+                        binding.uploadImageButton.alpha = 1f
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                    }
                     binding.imageNumber.text = "${it.size}/3"
-                    binding.imageNumber.setTextColor(
-                        if (it.size > 3)
-                            ContextCompat.getColor(this@WriteReviewActivity, R.color.colorAccent)
-                        else
-                            ContextCompat.getColor(this@WriteReviewActivity, R.color.gray19)
-                    )
                 }
             }
         }
