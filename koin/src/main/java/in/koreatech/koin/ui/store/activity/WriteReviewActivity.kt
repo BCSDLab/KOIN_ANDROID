@@ -42,8 +42,8 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         viewModel.deleteMenuImage(position)
     }
     private val pickMultipleMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
-            uris.forEach { uri ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            uris.take(3 - viewModel.menuImageUrls.value.size).forEach { uri ->
                 val inputStream = this.contentResolver.openInputStream(uri)
                 if (uri.scheme.equals("content")) {
                     val cursor = this.contentResolver.query(uri, null, null, null, null)
@@ -85,6 +85,10 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         val storeId = intent.getIntExtra("storeId", -1)
         val review = intent.intentSerializable("review", StoreReviewContent::class.java)
         with(binding) {
+            koinBaseAppBar.leftButton.setOnClickListener {
+                finish()
+            }
+
             storeNameTextView.text = storeName
             starRating.onRatingBarChangeListener =
                 RatingBar.OnRatingBarChangeListener { _, rating, _ ->
@@ -96,6 +100,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
 
             if (review != null) {
                 starRating.rating = review.rating.toFloat()
+                charactersNumber.text = "${review.content.length}/500"
                 reviewEditText.setText(review.content)
                 menuRecyclerViewAdapter.submitList(review.menuNames)
                 viewModel.setImage(review.imageUrls)
@@ -120,7 +125,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                     count: Int
                 ) {
                     super.onTextChanged(s, start, before, count)
-                    writeReviewButton.isEnabled = reviewEditText.text.isNotEmpty()
+
                     charactersNumber.text = "${reviewEditText.length()}/500"
                     if (s.length >= 500) {
                         charactersNumber.setTextColor(
@@ -171,13 +176,38 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         View.VISIBLE else binding.imageContainer.visibility =
                         View.GONE
 
+                    if (viewModel.menuImageUrls.value.size >= 3) {
+                        binding.uploadImageButton.isEnabled = false
+                        binding.uploadImageButton.alpha = 0.5f
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.colorAccent
+                            )
+                        )
+                    } else {
+                        binding.uploadImageButton.isEnabled = true
+                        binding.uploadImageButton.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray14
+                            )
+                        )
+                        binding.uploadImageButton.alpha = 1f
+                        binding.imageNumber.setTextColor(
+                            ContextCompat.getColor(
+                                this@WriteReviewActivity,
+                                R.color.gray19
+                            )
+                        )
+                    }
                     binding.imageNumber.text = "${it.size}/3"
-                    binding.imageNumber.setTextColor(
-                        if (it.size > 3)
-                            ContextCompat.getColor(this@WriteReviewActivity, R.color.colorAccent)
-                        else
-                            ContextCompat.getColor(this@WriteReviewActivity, R.color.gray19)
-                    )
                 }
             }
         }
