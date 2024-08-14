@@ -41,6 +41,7 @@ class StoreRepositoryImpl @Inject constructor(
         isOperating: Boolean?,
         isDelivery: Boolean?
     ): List<Store> {
+
         if (stores == null) {
             stores = if(isOperating == true && isDelivery == true){
                 storeRemoteDataSource.getStoreItemsWithTwoFilter(storeSorter).map { it.toStore() }

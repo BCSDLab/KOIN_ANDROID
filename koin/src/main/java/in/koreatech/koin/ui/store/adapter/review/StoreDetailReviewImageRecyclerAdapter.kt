@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.databinding.ItemImageBinding
 import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
@@ -56,6 +57,11 @@ class StoreDetailReviewImageRecyclerAdapter ():
                 .error(R.drawable.image_no_image)
                 .apply(RequestOptions.bitmapTransform(RoundedCorners(10)))
                 .into(imageView)
+
+            imageView.setOnClickListener {
+                imageUri?.let { ImageZoomableDialog(itemView.context, imageUri) }
+                    .also { it?.show() }
+            }
         }
     }
 
@@ -64,7 +70,7 @@ class StoreDetailReviewImageRecyclerAdapter ():
     }
 
     inline fun setOnItemClickListener(crossinline onItemClick: (Id: Int) -> Unit) {
-        onItemClickListener = object : StoreDetailReviewImageRecyclerAdapter.OnItemClickListener {
+        onItemClickListener = object : OnItemClickListener {
             override fun onItemClick(id: Int) {
                 onItemClick(id)
             }

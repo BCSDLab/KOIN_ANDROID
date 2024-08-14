@@ -1,6 +1,8 @@
 package `in`.koreatech.koin.ui.store.adapter.review
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.ViewGroup
@@ -15,12 +17,14 @@ import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 import `in`.koreatech.koin.ui.store.adapter.review.menu.ReviewPopupMenu
+import `in`.koreatech.koin.ui.store.adapter.review.menu.ReviewReportPopupMenu
 
 
-class StoreDetailReviewRecyclerAdapter(
+class StoreDetailReviewRecyclerAdapter (
     val onModifyItem: (StoreReviewContent) -> Unit,
-    val onDeleteItem: (Int) -> Unit
-) :
+    val onDeleteItem: (Int) -> Unit,
+    val onReportItem: (StoreReviewContent) -> Unit
+):
     ListAdapter<StoreReviewContent, StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder>(
         diffCallback
     ) {
@@ -40,6 +44,7 @@ class StoreDetailReviewRecyclerAdapter(
         val reviewImageRecyclerView = binding.reviewImageRecyclerview
         val reviewMenuRecyclerview = binding.reviewMenuRecyclerview
         val iconKebab = binding.iconKebab
+        val container = binding.storeReviewContainer
     }
 
     override fun onCreateViewHolder(
@@ -62,7 +67,12 @@ class StoreDetailReviewRecyclerAdapter(
             if (review.isMine) {
                 isMineIcon.isVisible = true
 
+                container.background = ColorDrawable(ContextCompat.getColor(itemView.context, R.color.my_review))
+
                 iconKebab.setOnClickListener {
+
+                    iconKebab.setImageResource(R.drawable.ic_kebab_clicked)
+
                     val popupMenu = ReviewPopupMenu(holder.itemView.context,
                         onModify = {
                             onModifyItem(review)
@@ -79,28 +89,16 @@ class StoreDetailReviewRecyclerAdapter(
                 }
             } else {
                 iconKebab.setOnClickListener {
-
-                    val popup = PopupMenu(iconKebab.context, iconKebab)
-                    popup.menuInflater.inflate(R.menu.review_other_kebab_menu, popup.menu)
                     iconKebab.setImageResource(R.drawable.ic_kebab_clicked)
 
-                    popup.setOnMenuItemClickListener { item: MenuItem ->
-                        when (item.itemId) {
-                            R.id.action_report -> {
-                                val context = iconKebab.context
-                                val intent = Intent(context, StoreReviewReportActivity::class.java)
-                                intent.putExtra("storeId", storeId)
-                                intent.putExtra("reviewId", review.reviewId)
-                                context.startActivity(intent)
-                                true
-                            }
-
-                            else -> false
+                    val popupMenu = ReviewReportPopupMenu(holder.itemView.context,
+                        onReport = {
+                            onReportItem(review)
                         }
-                    }
-                    popup.show()
+                    )
+                    popupMenu.show(it)
 
-                    popup.setOnDismissListener {
+                    popupMenu.setOnDismissListener {
                         iconKebab.setImageResource(R.drawable.ic_kebab)
                     }
                 }
@@ -114,7 +112,8 @@ class StoreDetailReviewRecyclerAdapter(
 
             nickName.text = review.nickName
             rating.rating = review.rating.toFloat()
-            updateAt.text = review.createdAt.replace("-", ".")
+            updateAt.text = if(review.isModified) String.format(ContextCompat.getString(itemView.context, R.string.store_review_is_modify),review.createdAt.replace("-", "."))
+                            else review.createdAt.replace("-", ".")
             reviewContent.text = review.content
 
             reviewImageRecyclerView.apply {
