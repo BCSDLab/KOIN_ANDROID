@@ -58,15 +58,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/store_name_text_view" />
 
-
-                <RatingBar
+                <in.koreatech.koin.ui.store.ratingbar.StarRatingBar
                     android:id="@+id/star_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
                     android:numStars="5"
                     android:rating="0"
-                    android:stepSize="1"
+                    android:stepSize="1.0"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/notice" />
 
@@ -75,13 +74,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
+                    android:layout_marginStart="52dp"
                     android:text="0"
                     android:textColor="@color/gray14"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/star_rating"
                     app:layout_constraintStart_toEndOf="@id/star_rating"
-                    app:layout_constraintTop_toTopOf="@+id/star_rating" />
+                    app:layout_constraintTop_toTopOf="@+id/star_rating"
+                    app:layout_constraintVertical_bias="1.0" />
 
 
                 <View
@@ -165,10 +166,10 @@
                     android:id="@+id/upload_image_button"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/gray_border_button"
                     android:text="@string/upload_image"
                     android:textColor="@color/gray14"
-                    android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/image_container" />
