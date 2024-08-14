@@ -52,7 +52,12 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
 
-    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
+    fun interface StoreCategoryFactory {
+        fun getCurrentCategory(): String
+    }
+    private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract {
+        viewModel.category.value?.let { getStoreCategoryName(it) } ?: "Unknown"
+    }) {
 
     }
 

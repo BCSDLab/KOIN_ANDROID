@@ -49,21 +49,36 @@ object EventLogger {
 
 
     /**
+     * 클릭 이벤트 로깅
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param label: 이벤트 소분류
      * @param value: 이벤트 값
+     * @param extras: 추가 이벤트 값
      */
     fun logClickEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.CLICK, label, value, *extras)
     }
 
     /**
+     * 스크롤 이벤트 로깅
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param label: 이벤트 소분류
      * @param value: 이벤트 값
+     * @param extras: 추가 이벤트 값
      */
     fun logScrollEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
         logEvent(action, EventCategory.SCROLL, label, value, *extras)
+    }
+
+    /**
+     * 하단 뒤로가기 이벤트 로깅
+     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label: 이벤트 소분류
+     * @param value: 이벤트 값
+     * @param extras: 추가 이벤트 값
+     */
+    fun logSwipeEvent(action: EventAction, label: String, value: String, vararg extras: EventExtra) {
+        logEvent(action, EventCategory.SWIPE, label, value, *extras)
     }
 
     /**
@@ -97,7 +112,8 @@ enum class EventAction(val value: String) {
 
 enum class EventCategory(val value: String) {
     CLICK("click"),
-    SCROLL("scroll")
+    SCROLL("scroll"),
+    SWIPE("swipe")      // 하단 뒤로가기(아이폰의 swipe 뒤로가기와 대응)
 }
 
 data class EventExtra(val key: String, val value: String)
