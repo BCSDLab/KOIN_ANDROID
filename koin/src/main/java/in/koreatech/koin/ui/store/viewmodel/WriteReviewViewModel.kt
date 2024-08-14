@@ -57,7 +57,6 @@ class WriteReviewViewModel @Inject constructor(
             getMarketPreSignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
-                _menuImageUrls.value = emptyList()
                 uploadImage(
                     preSignedUrl = it.second,
                     fileUrl = it.first,
