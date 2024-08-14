@@ -42,8 +42,8 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
         viewModel.deleteMenuImage(position)
     }
     private val pickMultipleMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
-            uris.forEach { uri ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+            uris.take(3 - viewModel.menuImageUrls.value.size).forEach { uri ->
                 val inputStream = this.contentResolver.openInputStream(uri)
                 if (uri.scheme.equals("content")) {
                     val cursor = this.contentResolver.query(uri, null, null, null, null)
