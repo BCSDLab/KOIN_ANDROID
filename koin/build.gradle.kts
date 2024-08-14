@@ -56,6 +56,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -94,4 +95,9 @@ dependencies {
     implementation(libs.powerSpinner)
     implementation(libs.viewpager2)
     implementation(libs.napier)
+
+    implementation(libs.kakao.share)
+    implementation(libs.lottie)
+    implementation(libs.balloon)
+    implementation(libs.dataStore)
 }

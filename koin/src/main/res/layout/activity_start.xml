@@ -39,33 +39,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:lineSpacingExtra="2sp"
             android:text="Copyright "
-            android:textColor="#5a5a5a"
-            android:textSize="13sp"
-            app:fontName="Custom4" />
+            android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+            android:textColor="#5a5a5a" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:lineSpacingExtra="2sp"
             android:text=" @ BCSD Lab "
-            android:textColor="#5a5a5a"
-            android:textSize="13sp"
-            app:fontName="Custom3" />
+            android:textAppearance="@style/TextAppearance.Koin.Medium.13"
+            android:textColor="#5a5a5a" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:lineSpacingExtra="2sp"
             android:text="All rights reserved."
-            android:textColor="#5a5a5a"
-            android:textSize="13sp"
-            app:fontName="Custom4" />
+            android:textAppearance="@style/TextAppearance.Koin.Regular.13"
+            android:textColor="#5a5a5a" />
 
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

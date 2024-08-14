@@ -28,11 +28,13 @@
     </string-array>
 
     <string-array name="days_one_letter">
+        <item >일</item>
         <item >월</item>
         <item >화</item>
         <item >수</item>
         <item >목</item>
         <item >금</item>
+        <item >토</item>
     </string-array>
 
     <string-array name="timetable_time">

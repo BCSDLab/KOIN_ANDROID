@@ -13,6 +13,7 @@ data class Subscribes(
     companion object {
         const val SHOP_EVENT = "SHOP_EVENT"
         const val DINING_SOLD_OUT = "DINING_SOLD_OUT"
+        const val DINING_IMAGE_UPLOAD = "DINING_IMAGE_UPLOAD"
     }
 }
 
@@ -28,7 +29,7 @@ data class SubscribesDetail(
 }
 
 enum class SubscribesType {
-    SHOP_EVENT, DINING_SOLD_OUT, NOTHING
+    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING
 }
 
 enum class SubscribesDetailType {

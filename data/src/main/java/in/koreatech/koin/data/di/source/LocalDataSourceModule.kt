@@ -11,6 +11,7 @@ import `in`.koreatech.koin.data.source.local.BusLocalDataSource
 import `in`.koreatech.koin.data.source.local.DeptLocalDataSource
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
+import `in`.koreatech.koin.data.source.local.UserLocalDataSource
 import `in`.koreatech.koin.data.source.local.VersionLocalDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
@@ -22,7 +23,7 @@ object LocalDataSourceModule {
     @Singleton
     fun provideSignupLocalDataSource(
         @ApplicationContext applicationContext: Context
-    ) : SignupTermsLocalDataSource {
+    ): SignupTermsLocalDataSource {
         return SignupTermsLocalDataSource(applicationContext)
     }
 
@@ -31,7 +32,7 @@ object LocalDataSourceModule {
     fun provideTokenLocalDataSource(
         @ApplicationContext applicationContext: Context,
         @IoDispatcher dispatcherIO: CoroutineDispatcher
-    ) : TokenLocalDataSource {
+    ): TokenLocalDataSource {
         return TokenLocalDataSource(applicationContext, dispatcherIO)
     }
 
@@ -39,7 +40,7 @@ object LocalDataSourceModule {
     @Singleton
     fun provideVersionLocalDataSource(
         @ApplicationContext applicationContext: Context
-    ) : VersionLocalDataSource {
+    ): VersionLocalDataSource {
         return VersionLocalDataSource(applicationContext)
     }
 
@@ -47,7 +48,7 @@ object LocalDataSourceModule {
     @Singleton
     fun provideBusLocalDataSource(
         @ApplicationContext applicationContext: Context
-    ) : BusLocalDataSource {
+    ): BusLocalDataSource {
         return BusLocalDataSource(applicationContext)
     }
 
@@ -55,7 +56,15 @@ object LocalDataSourceModule {
     @Singleton
     fun provideDeptLocalDataSource(
         @ApplicationContext applicationContext: Context
-    ) : DeptLocalDataSource {
+    ): DeptLocalDataSource {
         return DeptLocalDataSource(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserLocalDataSource(
+        @ApplicationContext applicationContext: Context,
+    ): UserLocalDataSource {
+        return UserLocalDataSource(applicationContext)
     }
 }

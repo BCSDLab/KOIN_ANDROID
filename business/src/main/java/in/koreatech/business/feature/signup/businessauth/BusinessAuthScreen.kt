@@ -74,14 +74,11 @@ fun BusinessAuthScreen(
     val context = LocalContext.current
     val businessAuthState = businessAuthViewModel.collectAsState().value
     val accountSetupState = accountSetupViewModel.collectAsState().value
-
-
     val multiplePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(5),
         onResult = { uriList ->
             var fileName = ""
             var fileSize = 0L
-            businessAuthState.bitmap.clear()
             businessAuthState.fileInfo.clear()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
@@ -112,7 +109,6 @@ fun BusinessAuthScreen(
                         fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
-                        bitmap = decodeStream(inputStream)
                     )
 
                 }
