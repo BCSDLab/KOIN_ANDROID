@@ -23,9 +23,9 @@
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:leftButtonHeight="14dp"
                 app:leftButtonWidth="14dp"
-                app:rightButtonBackground="@drawable/ic_hamburger_button"
-                app:rightButtonHeight="18dp"
-                app:rightButtonWidth="12dp"
+                app:rightButtonBackground="@drawable/ic_notice"
+                app:rightButtonHeight="24dp"
+                app:rightButtonWidth="24dp"
                 app:titleText="@string/navigation_item_dining"/>
 
             <androidx.recyclerview.widget.RecyclerView

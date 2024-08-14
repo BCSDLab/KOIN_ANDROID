@@ -103,4 +103,12 @@ object RemoteDataSourceModule {
     ): PreSignedUrlRemoteDataSource {
         return PreSignedUrlRemoteDataSource(preSignedUrlApi)
     }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRemoteDataSource(
+        coopShopApi: CoopShopApi,
+    ): CoopShopRemoteDataSource {
+        return CoopShopRemoteDataSource(coopShopApi)
+    }
 }
