@@ -78,6 +78,9 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        initViewModel()
+
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
@@ -111,7 +114,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             }
         })
 
-        TabLayoutMediator(
+        val tabLayoutMediator = TabLayoutMediator(
             binding.storeDetailTabLayout,
             binding.storeDetailViewPager
         ) { tab, position ->
@@ -121,7 +124,9 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                 2 -> getString(R.string.review)
                 else -> throw IllegalArgumentException("Invalid position")
             }
-        }.attach()
+        }
+
+        tabLayoutMediator.attach()
 
         binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -150,7 +155,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             ToastUtil.getInstance().makeShort(getString(R.string.store_account_copy))
         }
 
-        initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
             ToastUtil.getInstance()
@@ -175,6 +179,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     private fun initViewModel() {
         withLoading(this@StoreDetailActivity, viewModel)
+
+        observeLiveData(viewModel.storeReview){
+            binding.storeDetailTabLayout.getTabAt(2)?.text = getString(R.string.review, it.totalCount.toString())
+        }
 
         observeLiveData(viewModel.store) {
             with(binding) {
@@ -245,12 +253,19 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
-
                 }
 
             }
         }
 
+    }
+
+    override fun onRestart() {
+        val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
+        if (storeId != null) {
+            viewModel.getShopReviews(storeId)
+        }
+        super.onRestart()
     }
 
     override fun onDestroy() {

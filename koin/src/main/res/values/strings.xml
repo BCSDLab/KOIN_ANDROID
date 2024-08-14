@@ -457,7 +457,7 @@
 
 
     <!--리뷰 기능-->
-    <string name="review">리뷰</string>
+    <string name="review">리뷰 (%1$s)</string>
     <string name="no_review">작성된 리뷰가 없습니다.\n첫 번째 리뷰를 작성해보세요 :)</string>
     <string name="review_report">리뷰 신고하기</string>
     <string name="review_report_reason_choose">신고 이유를 선택해주세요.</string>
@@ -482,4 +482,5 @@
     <string name="store_no_review">첫 번째 리뷰를 작성해보세요 :)</string>
     <string name="store_many_review">( 리뷰 10+개 )</string>
     <string name="store_review_count">( 리뷰 %1$s개 )</string>
+    <string name="store_review_is_modify">%1$s (수정됨)</string>
 </resources>

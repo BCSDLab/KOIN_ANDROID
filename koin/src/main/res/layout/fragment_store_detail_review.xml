@@ -26,6 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintTop_toBottomOf="@id/store_detail_review_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:foregroundGravity="center_horizontal"
                 >
 
@@ -73,6 +75,7 @@
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
+                    android:progressTint="@color/colorAccent"
                     style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="50"
                     app:layout_constraintTop_toTopOf="@id/rating_five"
@@ -107,6 +110,7 @@
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
+                    android:progressTint="@color/colorAccent"
                     style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="40"
                     app:layout_constraintTop_toTopOf="@id/rating_four"
@@ -141,6 +145,7 @@
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
+                    android:progressTint="@color/colorAccent"
                     style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="30"
                     app:layout_constraintTop_toTopOf="@id/rating_three"
@@ -175,6 +180,7 @@
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
+                    android:progressTint="@color/colorAccent"
                     style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="20"
                     app:layout_constraintTop_toTopOf="@id/rating_two"
@@ -209,6 +215,7 @@
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
+                    android:progressTint="@color/colorAccent"
                     style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="10"
                     app:layout_constraintTop_toTopOf="@id/rating_one"
@@ -244,6 +251,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/divide_line"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:foregroundGravity="center_horizontal"
                 >
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -376,6 +385,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/divide_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:foregroundGravity="center_horizontal"
                 >
                 <ImageView
@@ -387,7 +398,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:src="@drawable/no_event" />
+                    android:src="@drawable/no_review" />
 
                 <TextView
                     android:id="@+id/store_detail_no_review_text_view"
