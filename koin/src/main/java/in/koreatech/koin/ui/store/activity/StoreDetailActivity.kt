@@ -62,29 +62,39 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
     private val callContract = registerForActivityResult(StoreCallContract()) {}
 
     private val storeMenuAdapter = StoreDetailMenuRecyclerAdapter()
-    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
-        setOnItemClickListener { position, _ ->
-            flyerDialogFragment = StoreFlyerDialogFragment()
-            flyerDialogFragment?.initialPosition = position
-            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
-            EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_PICTURE,
-                viewModel.store.value?.name ?: "Unknown"
-            )
-        }
-    }
+//    private val storeDetailFlyerRecyclerAdapter = StoreDetailFlyerRecyclerAdapter().apply {
+//        setOnItemClickListener { position, _ ->
+//            flyerDialogFragment = StoreFlyerDialogFragment()
+//            flyerDialogFragment?.initialPosition = position
+//            flyerDialogFragment?.show(supportFragmentManager, DIALOG_TAG)
+//            EventLogger.logClickEvent(
+//                EventAction.BUSINESS,
+//                AnalyticsConstant.Label.SHOP_PICTURE,
+//                viewModel.store.value?.name ?: "Unknown"
+//            )
+//        }
+//    }
     private val storeDetailViewpagerAdapter = StoreDetailViewpagerAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        onBackPressedDispatcher.addCallback {
-
+        onBackPressedDispatcher.addCallback(this) {
+            intent.putExtra(BACK_ACTION, "swipe")
+            intent.putExtra(ELAPSED_TIME, elapsedTime)
+            intent.putExtra(STORE_NAME, viewModel.store.value?.name)
+            setResult(RESULT_OK, intent)
+            finish()
         }
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
-                AppBarBase.getLeftButtonId() -> onBackPressed()
+                AppBarBase.getLeftButtonId() -> {
+                    intent.putExtra(BACK_ACTION, "click")
+                    intent.putExtra(ELAPSED_TIME, elapsedTime)
+                    intent.putExtra(STORE_NAME, viewModel.store.value?.name)
+                    setResult(RESULT_OK, intent)
+                    finish()
+                }
                 AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
             }
         }
@@ -149,15 +159,15 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
         viewModel.getShopEvents(storeId)
     }
 
-    override fun onBackPressed() {
-        if (flyerDialogFragment?.isVisible == true) {
-            flyerDialogFragment!!.dismiss()
-            flyerDialogFragment = null
-            return
-        }
-
-        super.onBackPressed()
-    }
+//    override fun onBackPressed() {
+//        if (flyerDialogFragment?.isVisible == true) {
+//            flyerDialogFragment!!.dismiss()
+//            flyerDialogFragment = null
+//            return
+//        }
+//
+//        super.onBackPressed()
+//    }
 
     private fun initViewModel() {
         withLoading(this@StoreDetailActivity, viewModel)
@@ -294,5 +304,8 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
 
     companion object {
         private const val DIALOG_TAG = "flyer_dialog"
+        const val ELAPSED_TIME = "elapsedTime"
+        const val STORE_NAME = "storeName"
+        const val BACK_ACTION = "back_action"
     }
 }
