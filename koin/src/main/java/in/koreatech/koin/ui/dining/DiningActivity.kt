@@ -23,6 +23,7 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.adapter.DiningDateAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.toggleDrawer
@@ -92,7 +93,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.koinBaseAppBarDark.setOnClickListener {
             when(it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> binding.drawerLayout.toggleDrawer()
+                AppBarBase.getRightButtonId() -> startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
             }
         }
     }

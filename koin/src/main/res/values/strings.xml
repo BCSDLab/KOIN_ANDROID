@@ -55,7 +55,6 @@
     <!-- 로그인 -->
     <string name="login_required_field_not_filled">아이디와 비밀번호를 입력해주세요</string>
 
-
     <!-- URL -->
     <string name="koreatech_email_postfix">%1$s\u0040koreatech.ac.kr</string>
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
@@ -221,7 +220,6 @@
     <string name="store_update_at">%1$s 업데이트</string>
     <string name="store_account_copy">계좌번호 복사 완료!</string>
 
-
     <!-- version update -->
     <string name="version_update_message_required">필수 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
     <string name="version_update_message_recommended">최신 업데이트가 있습니다.\n업데이트 하시겠습니까?</string>
@@ -253,6 +251,11 @@
 
     <!-- edit user -->
     <string name="edit_user_error_same_as_before">기존의 닉네임과 동일합니다</string>
+
+    <!-- User info check password  -->
+    <string name="user_info_check_password_title">내 정보 수정하기</string>
+    <string name="user_info_check_password_subtitle">보안을 위해 비밀번호 입력이 필요합니다.</string>
+    <string name="user_info_check_password_warning">비밀번호가 일치하지 않습니다.</string>
 
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>
@@ -299,6 +302,11 @@
     <string name="store_last_updated_message">%1$s 업데이트됨</string>
     <string name="store_last_updated_format">yyyy년 MM월 dd일 a hh:mm:ss에 업데이트됨</string>
     <string name="dining_image_tooltip">식단 사진을 확인해보세요!</string>
+
+    <!-- Dining Notice -->
+    <string name="dining_notice_title_format">%1$s %2$s 운영시간</string>
+    <string name="dining_notice_updated_at_format">%1$s 업데이트</string>
+    <string name="dining_notice_subtitle_time_format">%1$s 운영시간</string>
 
     <!-- Notification -->
     <string name="notification_appbar_title">알림 설정</string>
