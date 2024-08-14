@@ -22,6 +22,7 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+    const val COOPSHOP = "coopshop"
 
     const val UNIBUS = "koreatech.unibus.kr"
 
@@ -54,6 +55,7 @@ object URLConstant {
         const val REFRESH: String = "$USER/refresh"
         const val CHECKNICKNAME: String = "$USER/check/nickname"
         const val CHECKEMAIL: String = "$USER/check/email"
+        const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val ID = "portal_account"
         const val EMAIL = "email"

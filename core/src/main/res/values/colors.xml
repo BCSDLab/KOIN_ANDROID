@@ -139,6 +139,7 @@
     <color name="primary_200">#A2DFF3</color>
     <color name="primary_100">#CFF1F9</color>
     <!-- Sub -->
+    <color name="sub_sub500">#F7941E</color>
     <!-- Neutral -->
     <color name="neutral_800">#000000</color>
     <color name="neutral_700">#1F1F1F</color>
