@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.dining
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle

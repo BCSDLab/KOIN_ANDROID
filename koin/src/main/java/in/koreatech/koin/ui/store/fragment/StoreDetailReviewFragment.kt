@@ -34,21 +34,21 @@ class StoreDetailReviewFragment : Fragment() {
     private val storeDetailReviewRecyclerAdapter by lazy {
         StoreDetailReviewRecyclerAdapter(
             onModifyItem = {
-//                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
-//                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
-//                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
-//                goToReviewScreen.putExtra("review", it)
-//                startActivity(goToReviewScreen)
+                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+                goToReviewScreen.putExtra("review", it)
+                startActivity(goToReviewScreen)
 
             },
             onDeleteItem = {
-//                val reviewDeleteDialog = ReviewDeleteCheckDialog(
-//                    onDelete = {
-//                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
-//                        viewModel.getShopReviews(viewModel.store.value!!.uid)
-//                    }
-//                )
-//                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+                val reviewDeleteDialog = ReviewDeleteCheckDialog(
+                    onDelete = {
+                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                        viewModel.getShopReviews(viewModel.store.value!!.uid)
+                    }
+                )
+                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
                 val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
