@@ -125,4 +125,5 @@
     <color name="event_card_color_4">#10477A</color>
     <color name="event_card_neutral_100">#F5F5F5</color>
     <color name="closed_store_name">#FCCC77</color>
+    <color name="my_review">#F8FAFB</color>
 </resources>

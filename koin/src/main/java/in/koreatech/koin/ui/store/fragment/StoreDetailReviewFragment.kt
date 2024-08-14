@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.store.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
+import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
@@ -28,7 +30,33 @@ class StoreDetailReviewFragment : Fragment() {
     private var _binding: FragmentStoreDetailReviewBinding? = null
     private val binding: FragmentStoreDetailReviewBinding get() = _binding!!
     private val viewModel by activityViewModels<StoreDetailViewModel>()
-    private val storeDetailReviewRecyclerAdapter = StoreDetailReviewRecyclerAdapter()
+    private val storeDetailReviewRecyclerAdapter by lazy {
+        StoreDetailReviewRecyclerAdapter(
+            onModifyItem = {
+//                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+//                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+//                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+//                goToReviewScreen.putExtra("review", it)
+//                startActivity(goToReviewScreen)
+
+            },
+            onDeleteItem = {
+//                val reviewDeleteDialog = ReviewDeleteCheckDialog(
+//                    onDelete = {
+//                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
+//                        viewModel.getShopReviews(viewModel.store.value!!.uid)
+//                    }
+//                )
+//                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+            },
+            onReportItem ={
+                val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                intent.putExtra("storeId", viewModel.store.value?.uid)
+                intent.putExtra("reviewId", it.reviewId)
+                startActivity(intent)
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,22 +121,22 @@ class StoreDetailReviewFragment : Fragment() {
                 popup.setOnMenuItemClickListener { item: MenuItem ->
                     when (item.itemId) {
                         R.id.action_latest -> {
-                            viewModel.filterReview(ReviewFilterEnum.LATEST)
+                            viewModel.filterReview(ReviewFilterEnum.LATEST, isMineCheckbox.isChecked)
                             filterTextview.text = getString(R.string.latest)
                             true
                         }
                         R.id.action_oldest -> {
-                            viewModel.filterReview(ReviewFilterEnum.OLDEST)
+                            viewModel.filterReview(ReviewFilterEnum.OLDEST, isMineCheckbox.isChecked)
                             filterTextview.text = getString(R.string.oldest)
                             true
                         }
                         R.id.action_high_rating -> {
-                            viewModel.filterReview(ReviewFilterEnum.HIGH_RATTING)
+                            viewModel.filterReview(ReviewFilterEnum.HIGH_RATTING, isMineCheckbox.isChecked)
                             filterTextview.text = getString(R.string.high_rating)
                             true
                         }
                         R.id.action_low_rating -> {
-                            viewModel.filterReview(ReviewFilterEnum.LOW_RATIONG)
+                            viewModel.filterReview(ReviewFilterEnum.LOW_RATIONG, isMineCheckbox.isChecked)
                             filterTextview.text = getString(R.string.low_rating)
                             true
                         }

@@ -97,28 +97,20 @@ class StoreDetailViewModel @Inject constructor(
         else _storeReviewContent.value = _storeReview.value?.reviews
     }
 
-    fun filterReview(filter: ReviewFilterEnum){
-        when(filter){
-            ReviewFilterEnum.LATEST -> {
-                _storeReviewContent.value = _storeReview.value?.reviews?.sortedByDescending {
-                    it.createdAt
-                }
-            }
-            ReviewFilterEnum.OLDEST -> {
-                _storeReviewContent.value = _storeReview.value?.reviews?.sortedBy {
-                    it.createdAt
-                }
-            }
-            ReviewFilterEnum.HIGH_RATTING -> {
-                _storeReviewContent.value = _storeReview.value?.reviews?.sortedByDescending {
-                    it.rating
-                }
-            }
-            ReviewFilterEnum.LOW_RATIONG -> {
-                _storeReviewContent.value = _storeReview.value?.reviews?.sortedBy {
-                    it.rating
-                }
-            }
+    fun filterReview(filter: ReviewFilterEnum, isMine: Boolean) {
+        val reviews = _storeReview.value?.reviews ?: return
+
+        val sortedReviews = when (filter) {
+            ReviewFilterEnum.LATEST -> reviews.sortedByDescending { it.createdAt }
+            ReviewFilterEnum.OLDEST -> reviews.sortedBy { it.createdAt }
+            ReviewFilterEnum.HIGH_RATTING -> reviews.sortedByDescending { it.rating }
+            ReviewFilterEnum.LOW_RATIONG -> reviews.sortedBy { it.rating }
+        }
+
+        _storeReviewContent.value = if (isMine) {
+            sortedReviews.filter { it.isMine }
+        } else {
+            sortedReviews
         }
     }
 
