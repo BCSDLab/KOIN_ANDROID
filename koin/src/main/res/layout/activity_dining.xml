@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawer_layout"
@@ -18,8 +17,8 @@
                 android:id="@+id/koin_base_app_bar_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
                 android:textAppearance="@style/TextAppearance.Koin.Medium.18"
+                app:layout_constraintTop_toTopOf="parent"
                 app:leftButtonBackground="@drawable/ic_back_arrow"
                 app:leftButtonHeight="14dp"
                 app:leftButtonWidth="14dp"
@@ -37,36 +36,43 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/koin_base_app_bar_dark"
                 tools:itemCount="14"
-                tools:listitem="@layout/item_dining_date"/>
+                tools:listitem="@layout/item_dining_date" />
 
             <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
                 android:background="@color/background_dark"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_calendar"/>
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_calendar" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs_dining_time"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/recycler_view_calendar"
+                android:background="@drawable/date_tablayout_selector"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recycler_view_calendar"
                 app:tabIndicatorColor="@color/dark_blue"
-                android:background="@drawable/date_tablayout_selector"
                 app:tabSelectedTextColor="@color/colorPrimary" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/dining_view_pager"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout_dining"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@id/tabs_dining_time"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/background_dark"/>
+                app:layout_constraintTop_toBottomOf="@id/tabs_dining_time">
 
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/dining_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/background_dark"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tabs_dining_time" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <include layout="@layout/base_navigation_drawer_right" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
