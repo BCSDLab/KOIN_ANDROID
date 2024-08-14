@@ -6,6 +6,11 @@
     <string name="error_network">네트워크 환경을 확인해주세요</string>
 
     <!--common-->
+    <string name="common_need_permission">권한이 필요합니다.</string>
+    <string name="common_confirmation">확인</string>
+    <string name="common_confirm">확인하기</string>
+    <string name="common_negative">아니오</string>
+    <string name="common_cancellation">취소</string>
     <string name="need_permission">권한이 필요합니다.</string>
     <string name="back">뒤로가기</string>
     <string name="positive">확인</string>
@@ -44,6 +49,15 @@
     <string name="navigation_hello_message">님, 안녕하세요!</string>
     <string name="navigation_hello_message_anonymous">로그인 후 더 많은 기능을 사용하세요.</string>
 
+    <!--right drawer menu-->
+    <string name="navigation_item_user_info">회원 정보</string>
+    <!--<string name="navigation_item_setting">설정</string>-->
+    <string name="navigation_item_koin_page">코인 사이트</string>
+    <!--<string name="navigation_item_user_request">문의 사항</string>-->
+    <string name="navigation_item_kakao_talk">카카오톡 대화</string>
+    <string name="navigation_item_version_info">버전 정보</string>
+    <string name="navigation_item_developer">만든 이</string>
+    <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_my_info">내 정보</string>
     <string name="navigation_item_logout">로그아웃</string>
     <string name="navigation_item_login">로그인</string>
@@ -58,12 +72,14 @@
     <string name="navigation_item_ask_bcsd">문의하기</string>
     <!--End left drawer menu -->
 
+
     <!-- Server Messages -->
     <string name="server_failed">서버와 연결에 실패하였습니다</string>
     <string name="upcoming_launch_service">"준비중입니다. 조금만 기다려주세요"</string>
     <string name="version_check_success">최신 버전을 사용하고 있습니다.</string>
     <string name="version_check_failed">버전 정보를 불러오지 못하였습니다. 네트워크 연결을 확인해주세요.</string>
     <string name="token_out_dated">인증 정보가 만료되었습니다. 다시 로그인해 주세요.</string>
+
     <!-- URL -->
     <string name="koreatech_email">\u0040 koreatech.ac.kr</string>
     <string name="koreatech_url">https://portal.koreatech.ac.kr/</string>

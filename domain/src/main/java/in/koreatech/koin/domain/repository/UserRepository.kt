@@ -19,4 +19,5 @@ interface UserRepository {
     suspend fun updateUser(user: User)
     suspend fun updateDeviceToken(token: String)
     suspend fun deleteDeviceToken()
+    suspend fun verifyPassword(hashedPassword: String)
 }

@@ -174,4 +174,12 @@ object RepositoryModule {
     ): OnBoardingRepository {
         return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
     }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRepository(
+        coopShopRemoteDataSource: CoopShopRemoteDataSource
+    ): CoopShopRepository {
+        return CoopShopRepositoryImpl(coopShopRemoteDataSource)
+    }
 }
