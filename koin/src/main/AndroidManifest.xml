@@ -36,12 +36,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:name">
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo_color_horizontal_300x168"
-            />
-
+            android:resource="@drawable/logo_color_horizontal_300x168" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/black" />
@@ -182,6 +179,11 @@
                     android:host="@string/kakaolink_host" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.dining.DiningNoticeActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/KAPTheme.NoActionBar"/>
         <activity
             android:name=".ui.bus.BusActivity"
             android:exported="false"
