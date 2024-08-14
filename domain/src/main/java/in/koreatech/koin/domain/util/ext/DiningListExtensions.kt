@@ -12,7 +12,7 @@ fun List<Dining>.typeFilter(type: DiningType) = this.filter {
 fun List<Dining>.arrange() = this.let {
     val campus1 = this.filter { it.place != "2캠퍼스" }
     campus1.sortedBy { it.place }
-    val allPlaces = DiningPlace.entries.map { it.place }
+    val allPlaces = DiningPlace.entries.map { it.place }.filter { it != "2캠퍼스" }
 
     allPlaces.map { place ->
         campus1.find { it.place == place } ?: Dining(
@@ -29,7 +29,8 @@ fun List<Dining>.arrange() = this.let {
             updatedAt = "",
             soldoutAt = "",
             changedAt = "",
-            error = ""
+            likes = 0,
+            isLiked = false
         )
     }
 }

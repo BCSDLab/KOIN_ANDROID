@@ -2,7 +2,6 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,44 +11,21 @@
             android:id="@+id/text_view_bus_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="5"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            tools:text="시간표(터미널)"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:layout_weight="4"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_ride_time"
-            app:layout_constraintHorizontal_weight="4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/text_view_bus_ride_time"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_location"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            tools:text="시간표(터미널)" />
 
         <TextView
             android:id="@+id/text_view_bus_ride_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="5"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            tools:text="약 40분"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:layout_weight="6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="6"
-            app:layout_constraintStart_toEndOf="@id/text_view_bus_location"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            tools:text="약 40분" />
 
     </LinearLayout>
 </layout>

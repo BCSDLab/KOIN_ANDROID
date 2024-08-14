@@ -22,21 +22,24 @@ object RepositoryModule {
     ): NotificationRepository {
         return NotificationRepositoryImpl(notificationRemoteDataSource)
     }
+
     @Provides
     @Singleton
     fun provideTokenRepository(
-        tokenLocalDataSource: TokenLocalDataSource
-    ) : TokenRepository {
-        return TokenRepositoryImpl(tokenLocalDataSource)
+        tokenLocalDataSource: TokenLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
+    ): TokenRepository {
+        return TokenRepositoryImpl(tokenLocalDataSource, userLocalDataSource)
     }
 
     @Provides
     @Singleton
     fun provideUserRepository(
         userRemoteDataSource: UserRemoteDataSource,
-        tokenLocalDataSource: TokenLocalDataSource
-    ) : UserRepository {
-        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource)
+        tokenLocalDataSource: TokenLocalDataSource,
+        userLocalDataSource: UserLocalDataSource
+    ): UserRepository {
+        return UserRepositoryImpl(userRemoteDataSource, tokenLocalDataSource, userLocalDataSource)
     }
 
     @Provides
@@ -44,7 +47,7 @@ object RepositoryModule {
     fun provideSignupRepository(
         userRemoteDataSource: UserRemoteDataSource,
         signupTermsLocalDataSource: SignupTermsLocalDataSource
-    ) : SignupRepository {
+    ): SignupRepository {
         return SignupRepositoryImpl(userRemoteDataSource, signupTermsLocalDataSource)
     }
 
@@ -87,7 +90,7 @@ object RepositoryModule {
     fun provideVersionRepository(
         versionLocalDataSource: VersionLocalDataSource,
         versionRemoteDataSource: VersionRemoteDataSource
-    ) : VersionRepository {
+    ): VersionRepository {
         return VersionRepositoryImpl(
             versionLocalDataSource,
             versionRemoteDataSource
@@ -99,7 +102,7 @@ object RepositoryModule {
     fun provideDeptRepository(
         deptRemoteDataSource: DeptRemoteDataSource,
         deptLocalDataSource: DeptLocalDataSource
-    ) : DeptRepository {
+    ): DeptRepository {
         return DeptRepositoryImpl(
             deptRemoteDataSource, deptLocalDataSource
         )
@@ -143,7 +146,7 @@ object RepositoryModule {
     @Singleton
     fun providePreSignedUrlRepository(
         preSignedUrlRemoteDataSource: PreSignedUrlRemoteDataSource,
-        uploadImageLocalDataSource :UploadImageLocalDataSource
+        uploadImageLocalDataSource: UploadImageLocalDataSource
     ): PreSignedUrlRepository {
         return PreSignedUrlRepositoryImpl(preSignedUrlRemoteDataSource, uploadImageLocalDataSource)
     }
@@ -162,5 +165,21 @@ object RepositoryModule {
         ownerRemoteDataSource: OwnerRemoteDataSource
     ): OwnerShopRepository {
         return OwnerShopRepositoryImpl(ownerRemoteDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOnBoardingRepository(
+        onBoardingLocalDataSource: OnBoardingLocalDataSource
+    ): OnBoardingRepository {
+        return OnBoardingRepositoryImpl(onBoardingLocalDataSource)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopRepository(
+        coopShopRemoteDataSource: CoopShopRemoteDataSource
+    ): CoopShopRepository {
+        return CoopShopRepositoryImpl(coopShopRemoteDataSource)
     }
 }
