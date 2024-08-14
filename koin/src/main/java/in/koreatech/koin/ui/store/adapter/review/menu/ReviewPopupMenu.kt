@@ -21,8 +21,7 @@ class ReviewPopupMenu(
 
     init {
         contentView = binding.root
-        width = 370
-        height = 90 * menuList.size
+        width = 350
         isOutsideTouchable = true
         isFocusable = true
 
@@ -40,6 +39,8 @@ class ReviewPopupMenu(
             }
             binding.menuContainer.addView(itemBinding.root)
         }
+        contentView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        height = contentView.measuredHeight
     }
 
     fun show(anchor: View) {

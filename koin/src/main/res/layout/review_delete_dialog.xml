@@ -38,7 +38,7 @@
 
         <android.widget.Button
             android:id="@+id/button_delete"
-            android:layout_width="125dp"
+            android:layout_width="115dp"
             android:layout_height="50dp"
             android:layout_marginVertical="24dp"
             android:background="@drawable/bg_rect_accent_radius_4dp"
@@ -50,7 +50,7 @@
 
         <android.widget.Button
             android:id="@+id/button_cancle"
-            android:layout_width="125dp"
+            android:layout_width="115dp"
             android:layout_height="50dp"
             android:layout_marginVertical="24dp"
             android:background="@drawable/bg_rect_gray19_radius_4dp"
