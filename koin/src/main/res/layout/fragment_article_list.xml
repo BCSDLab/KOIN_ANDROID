@@ -64,44 +64,66 @@
                     android:layout_height="wrap_content"
                     app:singleSelection="true"
                     android:paddingVertical="32dp"
+                    app:chipSpacingHorizontal="4dp"
+                    app:selectionRequired="true"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_article_list">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page1"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:chipCornerRadius="10dp"
+                        app:textStartPadding="10dp"
+                        app:textEndPadding="8dp"
                         android:checked="true"
+                        app:ensureMinTouchTargetSize="false"
                         tools:text="1" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page2"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
+                        app:chipCornerRadius="10dp"
+                        app:textStartPadding="10dp"
+                        app:textEndPadding="8dp"
                         android:layout_height="wrap_content"
+                        app:ensureMinTouchTargetSize="false"
                         tools:text="2" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page3"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:textStartPadding="10dp"
+                        app:textEndPadding="8dp"
+                        app:ensureMinTouchTargetSize="false"
+                        app:chipCornerRadius="10dp"
                         tools:text="3" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page4"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:textStartPadding="10dp"
+                        app:textEndPadding="8dp"
+                        app:ensureMinTouchTargetSize="false"
+                        app:chipCornerRadius="10dp"
                         tools:text="4" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page5"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:textStartPadding="10dp"
+                        app:textEndPadding="8dp"
+                        app:ensureMinTouchTargetSize="false"
+                        app:chipCornerRadius="10dp"
                         tools:text="5" />
 
                 </com.google.android.material.chip.ChipGroup>

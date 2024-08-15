@@ -118,4 +118,9 @@
     <style name="CustomBottomSheet" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_rect_white_radius_20dp</item>
     </style>
+
+    <style name="RectangleChoiceChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/color_chip_background</item>
+        <item name="android:textColor">@color/color_chip_text</item>
+    </style>
 </resources>

@@ -3,7 +3,9 @@ package `in`.koreatech.koin.ui.article
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
@@ -15,33 +17,77 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.util.dataBinding
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
+import `in`.koreatech.koin.util.ext.toStringWithComma
+import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ArticleListFragment : Fragment(R.layout.fragment_article_list) {
+class ArticleListFragment : Fragment() {
 
-    private val binding by dataBinding<FragmentArticleListBinding>()
+    private var _binding: FragmentArticleListBinding? = null
+    private val binding get() = _binding!!
     private val navController by lazy { findNavController() }
+
     private val viewModel by viewModels<ArticleListViewModel>()
+
+    private val onTabSelectedListener =
+        object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    viewModel.setCurrentBoard(BoardType.entries[it.position])
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        }
+
+    private val pageChips: ArrayList<Chip> by lazy {
+        arrayListOf(
+            binding.chipPage1,
+            binding.chipPage2,
+            binding.chipPage3,
+            binding.chipPage4,
+            binding.chipPage5
+        )
+    }
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        if (_binding == null) {
+            _binding = FragmentArticleListBinding.inflate(inflater, container, false)
+            initArticleRecyclerView()
+            initPageButtonSelectedListener()
+            addCategoryTabs()
+        }
+        collectData()
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
+    }
 
-        addCategoryTabs()
-        initArticleRecyclerView()
-        initTabSelectedListener()
-        collectData()
-
+    private fun initPageButtonSelectedListener() {
+        binding.chipGroupArticlePage.setOnCheckedStateChangeListener { _, checkedIds ->
+            binding.root.findViewById<Chip>(checkedIds.first()).let {
+                viewModel.setCurrentPage(pageChips.indexOf(it) + 1)
+            }
+        }
     }
 
     private fun initArticleRecyclerView() {
@@ -53,21 +99,10 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list) {
         })
     }
 
-    private fun initTabSelectedListener() {
-        binding.tabLayoutArticleBoard.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    viewModel.setCurrentBoard(BoardType.entries[it.position])
-                }
-            }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
-    }
-
     private fun addCategoryTabs() {
         BoardType.entries.forEach {
             binding.tabLayoutArticleBoard.addTab(binding.tabLayoutArticleBoard.newTab().apply {
+                id = View.generateViewId()
                 text = getString(it.simpleKoreanName)
             })
         }
@@ -81,11 +116,14 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list) {
     }
 
     private fun collectData() {
+        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
         viewLifecycleOwner.lifecycleScope.run {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.currentBoard.collect { board ->
-                        viewModel.fetchArticles(board, 1)
+                    viewModel.currentBoard.collect {
+                        viewModel.setCurrentPage(1)
+                        binding.chipPage1.isChecked = true
+                        binding.tabLayoutArticleBoard.getTabAt(it.ordinal)?.select()
                     }
                 }
             }
@@ -93,20 +131,37 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list) {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.articlePagination.collect {
                         articleAdapter.submitList(it.articles)
+                        binding.recyclerViewArticleList.scrollToPosition(0)
+                        viewModel.calculatePageNumber()
                     }
                 }
             }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentPage.collect { page ->
-                        setPagingButtonVisibility(page)
+                        setPagingTextButtonVisibility(page)
+                    }
+                }
+            }
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.pageNumbers.collect { pageNumbers ->
+                        pageChips.forEachIndexed { i, chip ->
+                            if (pageNumbers[i] != null) {
+                                chip.text = pageNumbers[i]!!.toStringWithComma()
+                                chip.visibility = View.VISIBLE
+                                chip.isChecked = pageNumbers[i] == viewModel.currentPage.value
+                            } else {
+                                chip.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun setPagingButtonVisibility(currentPage: Int) {
+    private fun setPagingTextButtonVisibility(currentPage: Int) {
         if (currentPage == viewModel.articlePagination.value.totalPage) {
             binding.textViewNextPage.visibility = View.GONE
         } else {
@@ -134,7 +189,15 @@ class ArticleListFragment : Fragment(R.layout.fragment_article_list) {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.tabLayoutArticleBoard.removeOnTabSelectedListener(onTabSelectedListener)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
     companion object {
 
         @JvmStatic
