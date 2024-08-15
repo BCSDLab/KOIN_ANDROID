@@ -502,5 +502,6 @@
     <string name="article_student">학생생활</string>
     <string name="previous_page">이전</string>
     <string name="next_page">다음</string>
+    <string name="divider_dot">•</string>
 
 </resources>

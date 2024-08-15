@@ -9,7 +9,7 @@ data class ArticleResponse(
     @SerializedName("title") val title: String?,
     @SerializedName("content") val content: String?,
     @SerializedName("nickname") val author: String?,
-    @SerializedName("hit") val views: Int?,
+    @SerializedName("hit") val viewCount: Int?,
     @SerializedName("created_at") val createdAt: String?,
     @SerializedName("updated_at") val updatedAt: String?
 ) {
@@ -19,7 +19,7 @@ data class ArticleResponse(
         title = title ?: "",
         content = content ?: "",
         author = author ?: "",
-        views = views ?: 0,
+        viewCount = viewCount ?: 0,
         createdAt = createdAt ?: "",
         updatedAt = updatedAt ?: ""
     )
