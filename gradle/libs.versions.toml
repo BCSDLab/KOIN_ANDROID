@@ -60,6 +60,7 @@ lottie = "6.4.0"
 balloon = "1.5.0"
 dataStore = "1.0.0"
 navigation = "2.7.7"
+jsoup = "1.18.1"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtxVersion" }
@@ -164,6 +165,8 @@ dataStore = {module = "androidx.datastore:datastore-preferences", version.ref = 
 nav-fragment-ktx = {module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation"}
 nav-ui-ktx = {module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation"}
 nav-dynamic-features-fragment = {module = "androidx.navigation:navigation-dynamic-features-fragment", version.ref = "navigation"}
+
+jsoup = {module = "org.jsoup:jsoup", version.ref = "jsoup"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradleVersion" }

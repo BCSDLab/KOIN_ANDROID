@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -25,7 +26,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private val viewModel: ArticleDetailViewModel by viewModels {
         ArticleDetailViewModel.provideFactory(
             articleDetailViewModelFactory,
-            requireArguments().getParcelableExtraCompat<ArticleState>("article") ?: throw IllegalArgumentException("ArticleState is required")
+            requireArguments().getParcelableExtraCompat<ArticleState>("article") ?: throw IllegalArgumentException("ArticleState is required"),
         )
     }
 
@@ -35,6 +36,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
         initHeader()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initHeader() {
         binding.articleHeader.apply {
             textViewArticleBoardName.text = getString(viewModel.article.boardName)

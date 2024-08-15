@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.ItemArticleHeaderBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleState
 
 class ArticleAdapter(
