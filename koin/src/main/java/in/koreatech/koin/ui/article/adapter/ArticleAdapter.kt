@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.ItemArticleHeaderBinding
+import `in`.koreatech.koin.domain.util.DateFormatUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleState
 
@@ -31,7 +33,8 @@ class ArticleAdapter(
                 textViewArticleBoardName.text = root.context.getString(article.boardName)
                 textViewArticleTitle.text = article.title.trim()
                 textViewArticleAuthor.text = article.author
-                textViewArticleDate.text = article.createdAt
+                textViewArticleDate.text = DateFormatUtil.getSimpleMonthAndDay(article.createdAt) +
+                        " " + DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.createdAt))
                 textViewArticleViewCount.text = article.viewCount.toString()
                 root.setOnClickListener { onClick(article) }
             }
