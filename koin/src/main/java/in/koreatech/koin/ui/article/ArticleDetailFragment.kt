@@ -8,6 +8,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
+import `in`.koreatech.koin.domain.util.DateFormatUtil
+import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleDetailViewModel
 import `in`.koreatech.koin.util.ext.getParcelableExtraCompat
@@ -38,7 +40,8 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
             textViewArticleBoardName.text = getString(viewModel.article.boardName)
             textViewArticleTitle.text = viewModel.article.title
             textViewArticleAuthor.text = viewModel.article.author
-            textViewArticleDate.text = viewModel.article.createdAt
+            textViewArticleDate.text = DateFormatUtil.getSimpleMonthAndDay(viewModel.article.createdAt) +
+                    " " + DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(viewModel.article.createdAt))
             textViewArticleViewCount.text = viewModel.article.viewCount.toString()
         }
     }
