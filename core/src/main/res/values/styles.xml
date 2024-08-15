@@ -123,4 +123,8 @@
         <item name="chipBackgroundColor">@color/color_chip_background</item>
         <item name="android:textColor">@color/color_chip_text</item>
     </style>
+
+    <style name="WhiteToolbarIconTheme" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/black</item>
+    </style>
 </resources>

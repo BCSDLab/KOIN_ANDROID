@@ -46,6 +46,7 @@ class ArticleActivity : ActivityBase() {
     private fun setToolbar(state: ArticleToolbarState) {
         binding.toolbarArticleList.apply {
             title = getString(state.title)
+            menu.clear()
             state.menuRes?.let { inflateMenu(it) }
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
