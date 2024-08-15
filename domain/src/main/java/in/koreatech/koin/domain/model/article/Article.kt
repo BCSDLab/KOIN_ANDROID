@@ -6,7 +6,7 @@ data class Article(
     val title: String,
     val content: String,
     val author: String,
-    val views: Int,
+    val viewCount: Int,
     val createdAt: String,
     val updatedAt: String
 )

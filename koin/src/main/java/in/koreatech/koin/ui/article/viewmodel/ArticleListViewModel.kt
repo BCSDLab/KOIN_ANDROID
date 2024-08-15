@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class ArticleViewModel @Inject constructor(
+class ArticleListViewModel @Inject constructor(
     private val fetchArticleUseCase: FetchArticleUseCase
 ) : BaseViewModel() {
 

@@ -10,17 +10,16 @@ import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleState
 
 class ArticleAdapter(
-    private val board: BoardType,
     private val onClick: (ArticleState) -> Unit
-) : ListAdapter<ArticleState, ArticleAdapter.ArticleViewHolder>(diffUtil) {
+) : ListAdapter<ArticleState, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val binding = ItemArticleHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ArticleViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        (holder as ArticleViewHolder).bind(getItem(position))
     }
 
     inner class ArticleViewHolder(
@@ -29,10 +28,11 @@ class ArticleAdapter(
 
         fun bind(article: ArticleState) {
             binding.apply {
-                textViewArticleBoardName.text = root.context.getString(board.koreanName)
-                textViewArticleTitle.text = article.title
+                textViewArticleBoardName.text = root.context.getString(article.boardName)
+                textViewArticleTitle.text = article.title.trim()
                 textViewArticleAuthor.text = article.author
                 textViewArticleDate.text = article.createdAt
+                textViewArticleViewCount.text = article.viewCount.toString()
                 root.setOnClickListener { onClick(article) }
             }
             binding.executePendingBindings()

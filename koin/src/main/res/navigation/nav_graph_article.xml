@@ -12,13 +12,24 @@
         tools:layout="@layout/fragment_article_list">
         <action
             android:id="@+id/action_articleListFragment_to_articleKeywordFragment"
-            app:destination="@id/articleKeywordFragment" />
+            app:destination="@id/articleListFragment"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_right_fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailFragment"
-            app:destination="@id/articleDetailFragment" />
+            app:destination="@id/articleDetailFragment"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_articleListFragment_to_articleSearchFragment"
-            app:destination="@id/articleSearchFragment" />
+            app:destination="@id/articleSearchFragment"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/slide_in_from_right_fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment

@@ -55,7 +55,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:tabIndicatorColor="@color/dark_blue"
-                android:background="@drawable/date_tablayout_selector"
+                android:background="@drawable/tab_layout_underline"
                 app:tabSelectedTextColor="@color/colorPrimary" />
 
             <androidx.viewpager2.widget.ViewPager2

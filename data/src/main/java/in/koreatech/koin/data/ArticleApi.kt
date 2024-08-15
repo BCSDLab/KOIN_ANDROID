@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface ArticleApi {
 
@@ -14,7 +15,11 @@ interface ArticleApi {
      * @param limit 페이지 당 게시글 수
      */
     @GET("articles")
-    suspend fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): ArticlePaginationResponse
+    suspend fun fetchArticlePagination(
+        @Query("boardId") boardId: Int,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): ArticlePaginationResponse
 
     @GET("articles/{articleId}")
     suspend fun fetchArticle(articleId: Int): ArticleResponse
@@ -27,12 +32,16 @@ interface ArticleApi {
      * @param query 검색어
      */
     @GET("articles/search")
-    suspend fun fetchSearchedArticles(query: String, page: Int, limit: Int): ArticlePaginationResponse
+    suspend fun fetchSearchedArticles(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): ArticlePaginationResponse
 
     /**
      * 많이 검색되는 키워드
      * @param count 키워드 수
      */
     @GET("articles/hot/keyword")
-    suspend fun fetchHotKeywords(count: Int): KeywordsResponse
+    suspend fun fetchHotKeywords(@Query("count") count: Int): KeywordsResponse
 }
