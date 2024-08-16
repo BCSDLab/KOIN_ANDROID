@@ -7,6 +7,7 @@ enum class CssAttribute {
     TEXT_DECORATION,
     TEXT_ALIGN,
     COLOR,
+    BACKGROUND,
     BACKGROUND_COLOR,
     MARGIN,
     PADDING,
