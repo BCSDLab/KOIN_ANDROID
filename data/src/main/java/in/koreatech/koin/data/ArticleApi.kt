@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ArticleApi {
@@ -22,7 +23,7 @@ interface ArticleApi {
     ): ArticlePaginationResponse
 
     @GET("articles/{articleId}")
-    suspend fun fetchArticle(articleId: Int): ArticleResponse
+    suspend fun fetchArticle(@Path("articleId") articleId: Int): ArticleResponse
 
     @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>

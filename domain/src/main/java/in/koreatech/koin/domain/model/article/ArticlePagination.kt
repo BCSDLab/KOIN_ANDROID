@@ -1,7 +1,7 @@
 package `in`.koreatech.koin.domain.model.article
 
 data class ArticlePagination(
-    val articles: List<Article>,
+    val articleHeaders: List<ArticleHeader>,
     val totalCount: Int,
     val currentCount: Int,
     val totalPage: Int,
