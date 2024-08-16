@@ -39,7 +39,7 @@ fun Document.toHtmlModel(): HtmlModel {
     return this.body().toHtmlModel()
 }
 
-fun Element.toHtmlModel(): HtmlModel {
+fun Element.toHtmlModel(parentStyles: Map<CssAttribute, String> = mapOf()): HtmlModel {
     val selfTag = try {
         this.tagName().toHtmlTag()
     } catch (e: IllegalArgumentException) {
@@ -58,22 +58,15 @@ fun Element.toHtmlModel(): HtmlModel {
         }
     }
 
+    // 부모 스타일을 상속한 후 자신의 스타일을 적용 --> 자신의 스타일이 우선 적용됨
+    selfStyles.putAll(parentStyles)
     if (selfAttributes.containsKey(HtmlAttribute.STYLE)) {
         val styleValue = selfAttributes[HtmlAttribute.STYLE]?.split(";")
-        styleValue?.forEach {
-            val styleKeyValue = it.split(":")
-            if (styleKeyValue.size == 2) {
-                try {
-                    selfStyles[styleKeyValue[0].toCssAttribute()] = styleKeyValue[1].trim()
-                } catch(e: IllegalArgumentException) {
-                    // 지정되지 않은 속성 무시
-                }
-            }
-        }
+        selfStyles.applySelfStyles(styleValue)
     }
 
     this.children().forEach { child ->
-        selfChildren.add(child.toHtmlModel())
+        selfChildren.add(child.toHtmlModel(selfStyles))
     }
 
     return HtmlModel(
@@ -83,4 +76,17 @@ fun Element.toHtmlModel(): HtmlModel {
         children = selfChildren,
         styles = selfStyles
     )
+}
+
+private fun MutableMap<CssAttribute, String>.applySelfStyles(styles: List<String>?) {
+    styles?.forEach {
+        val styleKeyValue = it.split(":")
+        if (styleKeyValue.size == 2) {
+            try {
+                this[styleKeyValue[0].toCssAttribute()] = styleKeyValue[1].trim()
+            } catch(e: IllegalArgumentException) {
+                // 지정되지 않은 속성 무시
+            }
+        }
+    }
 }
