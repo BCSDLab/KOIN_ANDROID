@@ -24,7 +24,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
-import `in`.koreatech.koin.ui.article.state.ArticleState
+import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.toStringWithComma
 import `in`.koreatech.koin.util.ext.withLoading
@@ -108,7 +108,7 @@ class ArticleListFragment : Fragment() {
         }
     }
 
-    private fun onArticleClicked(article: ArticleState) {
+    private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
             bundleOf("article" to article)
