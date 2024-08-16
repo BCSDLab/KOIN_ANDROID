@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.ItemArticleHeaderBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
-import `in`.koreatech.koin.ui.article.state.ArticleState
+import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 
 class ArticleAdapter(
-    private val onClick: (ArticleState) -> Unit
-) : ListAdapter<ArticleState, RecyclerView.ViewHolder>(diffUtil) {
+    private val onClick: (ArticleHeaderState) -> Unit
+) : ListAdapter<ArticleHeaderState, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
         val binding = ItemArticleHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -27,7 +27,7 @@ class ArticleAdapter(
         private val binding: ItemArticleHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: ArticleState) {
+        fun bind(article: ArticleHeaderState) {
             binding.apply {
                 textViewArticleBoardName.text = root.context.getString(article.boardName)
                 textViewArticleTitle.text = article.title.trim()
@@ -42,12 +42,12 @@ class ArticleAdapter(
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<ArticleState>() {
-            override fun areItemsTheSame(oldItem: ArticleState, newItem: ArticleState): Boolean {
+        private val diffUtil = object : DiffUtil.ItemCallback<ArticleHeaderState>() {
+            override fun areItemsTheSame(oldItem: ArticleHeaderState, newItem: ArticleHeaderState): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ArticleState, newItem: ArticleState): Boolean {
+            override fun areContentsTheSame(oldItem: ArticleHeaderState, newItem: ArticleHeaderState): Boolean {
                 return oldItem == newItem
             }
         }
