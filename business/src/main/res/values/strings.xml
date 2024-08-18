@@ -100,7 +100,7 @@
     <string name="enter_password_confirm">비밀번호를 다시 입력해주세요.</string>
     <string name="enter_phone_number">-없이 번호를 입력해주세요.</string>
     <string name="sign_up">회원가입</string>
-    <string name="business_number_not_validate">올바르지 않는 사업자 번호입니다..</string>
+    <string name="business_number_not_validate">올바르지 않는 사업자 번호입니다.</string>
     <string name="phone_number_not_validate">존재하지 않는 휴대폰 번호입니다.</string>
     <string name="check_duplicate">중복 확인</string>
     <string name="authentication_code">인증번호</string>
@@ -164,4 +164,5 @@
     <string name="change_image">사진변경</string>
     <string name="save">수정완료</string>
     <string name="verify_sms">인증하기</string>
+    <string name="success_send_sms_code">인증번호를 발송했습니다.</string>
 </resources>
