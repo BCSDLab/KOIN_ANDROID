@@ -80,4 +80,10 @@
     <string name="dining_tomorrow">내일</string>
     <string name="error_owner_info">내 상점 정보를 불러오지 못했습니다.</string>
     <string name="error_empty_owner_info">상점이 존재하지 않습니다.</string>
+
+    <!-- owner -->
+    <string name="error_sms_code_not_match">인증번호가 일치하지 않습니다.</string>
+    <string name="error_company_number_duplicated">이미 존재하는 사업자 등록 번호입니다.</string>
+    <string name="error_account_duplicated">이미 존재하는 휴대폰 번호입니다.</string>
+    <string name="error_invalid_phone_number">전화번호 형식이 올바르지 않습니다. 11자리 숫자로 입력해 주세요.</string>
 </resources>
