@@ -1,0 +1,187 @@
+package `in`.koreatech.business.feature.store.modifyinfo
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.business.ui.theme.ColorMinor
+import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorSecondaryText
+import `in`.koreatech.business.ui.theme.ColorTextBackgrond
+import `in`.koreatech.koin.core.R
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
+
+@Composable
+fun ModifyOperatingTimeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ModifyInfoViewModel = hiltViewModel(),
+    onBackClicked: () -> Unit = {},
+) {
+    val state = viewModel.collectAsState().value
+
+    Column {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ColorPrimary),
+        ) {
+            IconButton(onClick = viewModel::onBackButtonClicked) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_flyer_before_arrow),
+                    contentDescription = stringResource(R.string.back),
+                    colorFilter = ColorFilter.tint(Color.White),
+                )
+            }
+            Text(
+                text = stringResource(id = R.string.operating_time),
+                modifier = Modifier.align(Alignment.Center),
+                style = TextStyle(color = Color.White, fontSize = 18.sp),
+            )
+        }
+
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, top = 20.dp),
+            text = stringResource(id = R.string.insert_store_time_setting),
+            fontSize = 18.sp,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight(500),
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+                .height(35.dp)
+                .background(ColorTextBackgrond), contentAlignment = Alignment.CenterStart
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 16.dp),
+                text = stringResource(id = R.string.insert_store_open_time_setting),
+                color = ColorSecondaryText
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp)
+                .padding(horizontal = 24.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.day_of_week), fontSize = 18.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = stringResource(id = R.string.open_time), fontSize = 18.sp
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = stringResource(id = R.string.day_off), fontSize = 18.sp
+            )
+        }
+        Box {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 25.dp)
+                    .padding(horizontal = 6.dp)
+            ) {
+                itemsIndexed(state.operatingTimeList) { index, item ->
+                    OperatingTimeSetting(
+                        operatingTime = item,
+                        onShowOpenTimeDialog = {
+                            viewModel.showAlertDialog(index)
+                            viewModel.dialogTimeSetting()
+                        },
+                        index = index,
+                    ) {
+                        viewModel.isClosedDay(index)
+                    }
+                }
+            }
+            OperatingTimeSettingDialog(
+            )
+        }
+
+    }
+
+    viewModel.collectSideEffect {
+        when (it) {
+            is ModifyInfoSideEffect.NavigateToBackScreen -> {
+                onBackClicked()
+            }
+
+            else -> {}
+        }
+
+    }
+}
+
+@Composable
+fun OperatingTimeSetting(
+    operatingTime: StoreOperatingTime = StoreOperatingTime(),
+    onShowOpenTimeDialog: (Int) -> Unit = {},
+    index: Int = 0,
+    onCheckBoxClicked: (Int) -> Unit = {}
+) {
+    val openTime =  operatingTime.operatingTime.openTime
+    val closeTime = operatingTime.operatingTime.closeTime
+    val formattedOpenTime = String.format("%02d:%02d", openTime.hours, openTime.minutes)
+    val formattedCloseTime = String.format("%02d:%02d", closeTime.hours, closeTime.minutes)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .padding(bottom = 18.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = operatingTime.dayOfWeek, fontSize = 15.sp)
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Text(
+            modifier = Modifier.clickable {
+                if (!operatingTime.closed) onShowOpenTimeDialog(index)
+            },
+            text = "$formattedOpenTime ~ $formattedCloseTime",
+            color = if (operatingTime.closed) ColorMinor else Color.Black,
+            fontSize = 15.sp
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Image(
+            modifier = Modifier.clickable {
+                onCheckBoxClicked(index)
+            },
+            painter = if (operatingTime.closed) painterResource(R.drawable.ic_insert_store_time_setting_checked)
+            else painterResource(id = R.drawable.ic_insert_store_time_setting_unchecked),
+            contentDescription = "checkBox"
+        )
+    }
+}
