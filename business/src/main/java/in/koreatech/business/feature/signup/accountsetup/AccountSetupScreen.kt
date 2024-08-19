@@ -159,15 +159,19 @@ fun AccountSetupScreen(
                     modifier = Modifier.width(203.dp),
                     label = stringResource(id = R.string.enter_phone_number),
                     textStyle = TextStyle.Default.copy(fontSize = 15.sp),
-                    errorText = state.isPhoneNumberErrorMessage ?: "알 수 없는 오류가 발생했습니다.",
-                    isError = state.signupContinuationState == SignupContinuationState.PhoneNumberDuplicated,
+                    errorText = if (state.phoneNumberState is SignupContinuationState.Failed) state.phoneNumberState.message else stringResource(
+                        R.string.error_network_unknown
+                    ),
+                    successText = stringResource(R.string.success_send_sms_code),
+                    isError = state.phoneNumberState is SignupContinuationState.Failed,
+                    isSuccess = state.phoneNumberState == SignupContinuationState.RequestedSmsValidation,
                 )
 
                 Button(modifier = Modifier
                     .width(115.dp)
                     .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.phoneNumber.isNotEmpty() && state.signupContinuationState != SignupContinuationState.PhoneNumberDuplicated,
+                    enabled = state.phoneNumber.isNotEmpty() && state.phoneNumberState !is SignupContinuationState.Failed,
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = ColorPrimary,
                         contentColor = Color.White,
@@ -175,9 +179,8 @@ fun AccountSetupScreen(
                         disabledContentColor = Gray1,
                     ),
                     onClick = {
-                        viewModel.sendSmsVerificationCode(
-                            state.phoneNumber
-                        )
+                        viewModel.checkExistsAccount(state.phoneNumber)
+
                     }) {
                     Text(
                         text = stringResource(id = R.string.send_authentication_code),

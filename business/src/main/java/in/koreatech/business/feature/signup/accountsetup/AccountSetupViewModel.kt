@@ -90,7 +90,7 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(
                 phoneNumber = phoneNumber,
-                signupContinuationState = SignupContinuationState.AvailablePhoneNumber
+                phoneNumberState = SignupContinuationState.AvailablePhoneNumber
             )
         }
     }
@@ -152,33 +152,35 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    private fun checkExistsAccount(phoneNumber: String) {
+    fun checkExistsAccount(phoneNumber: String) {
         viewModelScope.launch {
             getOwnerExistsAccountUseCase(phoneNumber).let { (isDuplicated, error) ->
                 intent {
-                    if (isDuplicated == true) reduce {
-                        state.copy(
-                            signupContinuationState = SignupContinuationState.PhoneNumberDuplicated,
-                            isPhoneNumberErrorMessage = error
-                        )
-                    }
-                    else if (isDuplicated == false) reduce {
-                        state.copy(
-                            signupContinuationState = SignupContinuationState.AvailablePhoneNumber,
-                            isPhoneNumberErrorMessage = null
-                        )
-                    }
-                    else {
-                        reduce {
+                    when (isDuplicated) {
+                        true -> reduce {
                             state.copy(
-                                signupContinuationState = SignupContinuationState.Failed(
-                                    error ?: "알 수 없는 오류가 발생했습니다."
-                                )
+                                phoneNumberState = SignupContinuationState.Failed(error!!.message),
                             )
+                        }
+
+                        false -> {
+                            reduce {
+                                state.copy(
+                                    phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
+                                )
+                            }
+                            sendSmsVerificationCode(phoneNumber)
+                        }
+
+                        else -> {
+                            reduce {
+                                state.copy(
+                                    phoneNumberState = SignupContinuationState.Failed(error!!.message),
+                                )
+                            }
                         }
                     }
                 }
-
             }
         }
     }
