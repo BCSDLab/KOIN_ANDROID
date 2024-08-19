@@ -1,18 +1,19 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.GetPresignedUrlUseCase
-import `in`.koreatech.koin.domain.usecase.owner.OwnerEmailRegisterUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -50,7 +51,11 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun onStoreNumberChanged(storeNumber: String) = intent {
         reduce {
-            state.copy(shopNumber = storeNumber)
+            state.copy(
+                shopNumber = storeNumber,
+                signupContinuationState = if (storeNumber.length != 10) SignupContinuationState.BusinessNumberIsNotValidate
+                else SignupContinuationState.RequestedSmsValidation
+            )
         }
     }
 
@@ -121,7 +126,7 @@ class BusinessAuthViewModel @Inject constructor(
         mediaType: String,
         mediaSize: Long
     ) {
-        viewModelScope.launch{
+        viewModelScope.launch {
             uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
                 intent {
                     reduce { state.copy(error = null) }
@@ -155,14 +160,13 @@ class BusinessAuthViewModel @Inject constructor(
             ).onSuccess {
                 onNavigateToNextScreen()
                 intent {
-                    reduce { state.copy(continuation = true) }
+                    reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedOwnerRegister) }
                 }
             }.onFailure {
                 intent {
-                    reduce { state.copy(error = it) }
+                    reduce { state.copy(signupContinuationState = SignupContinuationState.Failed(it.message)) }
                 }
             }
-
         }
     }
 }

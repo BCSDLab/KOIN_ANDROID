@@ -28,7 +28,7 @@ interface OwnerApi {
     suspend fun postOwnerEmailRegister(@Body ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse
 
     @POST(URLConstant.OWNER.REGISTER_PHONE)
-    suspend fun postOwnerRegister(@Body ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse
+    suspend fun postOwnerRegister(@Body ownerRegisterRequest: OwnerRegisterRequest)
 
     @POST(URLConstant.OWNER.CHANGEPASSWORDEMAIL)
     suspend fun changePasswordVerificationEmail(@Body ownerVerificationEmail: OwnerVerificationEmailRequest)

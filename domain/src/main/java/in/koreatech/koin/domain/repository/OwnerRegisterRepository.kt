@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 
@@ -23,7 +24,7 @@ interface OwnerRegisterRepository {
         phoneNumber: String,
         shopId: Int?,
         shopName: String
-    ): Result<Unit>
+    )
 
     suspend fun storeRegister(
         name: String,

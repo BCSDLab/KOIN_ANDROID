@@ -17,7 +17,7 @@ import java.io.EOFException
 
 class OwnerRegisterRepositoryImpl(
     private val ownerRemoteDataSource: OwnerRemoteDataSource
-): OwnerRegisterRepository {
+) : OwnerRegisterRepository {
     override suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
         companyNumber: String,
@@ -31,33 +31,14 @@ class OwnerRegisterRepositoryImpl(
         return try {
             ownerRemoteDataSource.postOwnerEmailRegister(
                 OwnerEmailRegisterRequest(
-                    attachments.toFileUrlList(), companyNumber, email, name, password, phoneNumber, shopId, shopName
-                )
-            )
-
-            Result.success(Unit)
-        } catch (e: EOFException) {
-            Result.success(Unit)
-        } catch (e: HttpException) {
-            Result.failure(e)
-        } catch (t: Throwable) {
-                Result.failure(t)
-        }
-    }
-
-    override suspend fun ownerRegister(
-        attachments: List<OwnerRegisterUrl>,
-        companyNumber: String,
-        name: String,
-        password: String,
-        phoneNumber: String,
-        shopId: Int?,
-        shopName: String
-    ): Result<Unit> {
-        return try {
-            ownerRemoteDataSource.postOwnerRegister(
-                OwnerRegisterRequest(
-                    attachments.toFileUrlList(), companyNumber, name, password, phoneNumber, shopId, shopName
+                    attachments.toFileUrlList(),
+                    companyNumber,
+                    email,
+                    name,
+                    password,
+                    phoneNumber,
+                    shopId,
+                    shopName
                 )
             )
 
@@ -69,6 +50,28 @@ class OwnerRegisterRepositoryImpl(
         } catch (t: Throwable) {
             Result.failure(t)
         }
+    }
+
+    override suspend fun ownerRegister(
+        attachments: List<OwnerRegisterUrl>,
+        companyNumber: String,
+        name: String,
+        password: String,
+        phoneNumber: String,
+        shopId: Int?,
+        shopName: String
+    ) {
+        ownerRemoteDataSource.postOwnerRegister(
+            OwnerRegisterRequest(
+                attachments.toFileUrlList(),
+                companyNumber,
+                name,
+                password,
+                phoneNumber,
+                shopId,
+                shopName
+            )
+        )
     }
 
 
