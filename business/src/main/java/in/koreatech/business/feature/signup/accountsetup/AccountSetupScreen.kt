@@ -214,8 +214,8 @@ fun AccountSetupScreen(
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
                     errorText = stringResource(id = R.string.sms_code_not_validate),
                     successText = stringResource(id = R.string.auth_code_equal),
-                    isError = state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate,
-                    isSuccess = state.signupContinuationState == SignupContinuationState.CheckComplete,
+                    isError = state.verifyState is SignupContinuationState.Failed,
+                    isSuccess = state.verifyState == SignupContinuationState.CheckComplete,
                 )
 
                 Button(
@@ -223,9 +223,9 @@ fun AccountSetupScreen(
                         .width(115.dp)
                         .height(41.dp),
                     shape = RoundedCornerShape(4.dp),
-                    enabled = state.authCode.isNotEmpty() && state.signupContinuationState != SignupContinuationState.CheckComplete,
+                    enabled = state.authCode.isNotEmpty() && state.verifyState != SignupContinuationState.CheckComplete,
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = if(state.signupContinuationState == SignupContinuationState.SmsCodeIsNotValidate) ColorSecondary else ColorPrimary,
+                        backgroundColor = if ( state.verifyState is SignupContinuationState.Failed) ColorSecondary else ColorPrimary,
                         contentColor = Color.White,
                         disabledBackgroundColor = Gray2,
                         disabledContentColor = Gray1,
@@ -284,7 +284,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isButtonEnabled && state.signupContinuationState == SignupContinuationState.CheckComplete,
+                enabled = state.isButtonEnabled && state.verifyState == SignupContinuationState.CheckComplete,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,

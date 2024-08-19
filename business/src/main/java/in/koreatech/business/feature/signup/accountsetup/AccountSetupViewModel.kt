@@ -8,6 +8,8 @@ import `in`.koreatech.koin.domain.usecase.business.GetOwnerExistsAccountUseCase
 import `in`.koreatech.koin.domain.usecase.business.OwnerVerificationCodeUseCase
 import `in`.koreatech.koin.domain.usecase.business.SendSignupSmsCodeUseCase
 import `in`.koreatech.koin.domain.util.ext.isValidPassword
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
@@ -118,8 +120,7 @@ class AccountSetupViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            signupContinuationState = it,
-                            signUpContinuationError = null
+                            verifyState = SignupContinuationState.CheckComplete,
                         )
                     }
                 }
@@ -127,8 +128,9 @@ class AccountSetupViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            signupContinuationState = SignupContinuationState.SmsCodeIsNotValidate,
-                            signUpContinuationError = it
+                            verifyState = SignupContinuationState.Failed(
+                                it.message,
+                            ),
                         )
                     }
                 }
