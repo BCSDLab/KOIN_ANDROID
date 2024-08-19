@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
+import `in`.koreatech.business.feature.launchImagePicker
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
@@ -80,6 +81,7 @@ fun BusinessAuthScreen(
             var fileName = ""
             var fileSize = 0L
             businessAuthState.fileInfo.clear()
+            businessAuthViewModel.initStoreImageUrls()
             uriList.forEach {
                 val inputStream = context.contentResolver.openInputStream(it)
                 businessAuthViewModel.onImageUrlsChanged(mutableListOf())
@@ -97,18 +99,12 @@ fun BusinessAuthScreen(
                         }
                     }
                 }
-                businessAuthViewModel.onImageUrlsChanged(uriList.map {
-                    AttachStore(
-                        it.toString(),
-                        fileName
-                    )
-                }.toMutableList())
                 if (inputStream != null) {
                     businessAuthViewModel.getPreSignedUrl(
-                        uri = it,
                         fileName = fileName,
                         fileSize = fileSize,
                         fileType = "image/" + fileName.split(".")[1],
+                        imageUri = it.toString()
                     )
 
                 }
@@ -344,14 +340,6 @@ fun BusinessAuthScreen(
                     ),
 
                     onClick = {
-                        businessAuthState.fileInfo.forEach {
-                            businessAuthViewModel.uploadImage(
-                                it.preSignedUrl,
-                                it.uri,
-                                it.mediaType,
-                                it.fileSize,
-                            )
-                        }
                         businessAuthViewModel.sendRegisterRequest(
                             fileUrls = businessAuthState.fileInfo.map { it.resultUrl },
                             companyNumber = businessAuthState.shopNumber,
