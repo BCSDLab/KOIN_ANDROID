@@ -40,7 +40,7 @@ class OwnerRemoteDataSource(
         return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }
 
-    suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
+    suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest){
         return ownerApi.postOwnerRegister(ownerRegisterRequest)
     }
 

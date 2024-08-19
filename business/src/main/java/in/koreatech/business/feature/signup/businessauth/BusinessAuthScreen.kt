@@ -56,8 +56,8 @@ import `in`.koreatech.business.ui.theme.ColorTextField
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray3
-import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.domain.model.store.AttachStore
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -260,8 +260,11 @@ fun BusinessAuthScreen(
                     value = businessAuthState.shopNumber,
                     onValueChange = { businessAuthViewModel.onStoreNumberChanged(it) },
                     label = stringResource(id = R.string.enter_business_registration_number),
-                    isError = businessAuthState.shopNumber.length != 10 && businessAuthState.shopNumber.isNotEmpty(),
-                    errorText = stringResource(id = R.string.business_number_not_validate)
+                    isError = businessAuthState.signupContinuationState == SignupContinuationState.BusinessNumberIsNotValidate ||
+                            businessAuthState.signupContinuationState is SignupContinuationState.Failed,
+                    errorText = if (businessAuthState.signupContinuationState is SignupContinuationState.Failed)
+                        businessAuthState.signupContinuationState.message
+                    else stringResource(id = R.string.business_number_not_validate)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
 

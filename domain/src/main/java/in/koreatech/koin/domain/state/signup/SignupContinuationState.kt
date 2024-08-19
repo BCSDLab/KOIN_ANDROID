@@ -11,6 +11,8 @@ sealed class SignupContinuationState {
 
     object RequestedEmailValidation: SignupContinuationState()
     object RequestedSmsValidation: SignupContinuationState()
+    object RequestedOwnerRegister: SignupContinuationState() // 사장님 회원가입 요청
+
     object CheckNickName: SignupContinuationState() // 닉네임 중복버튼 눌렀는지 확인
     object CheckGender: SignupContinuationState() // 성별 라디오 버튼 눌렀는지 확인
     object CheckGraduate: SignupContinuationState() // 졸업생 라디오 버튼을 눌렀는지 확인
