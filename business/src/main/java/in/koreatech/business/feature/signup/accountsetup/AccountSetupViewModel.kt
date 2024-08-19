@@ -99,8 +99,7 @@ class AccountSetupViewModel @Inject constructor(
         reduce {
             state.copy(
                 authCode = authCode,
-                signUpContinuationError = null,
-                signupContinuationState = SignupContinuationState.AvailablePhoneNumber
+                verifyState = SignupContinuationState.AvailablePhoneNumber
             )
         }
     }
@@ -137,16 +136,18 @@ class AccountSetupViewModel @Inject constructor(
         }
     }
 
-    fun sendSmsVerificationCode(phoneNumber: String) {
-        checkExistsAccount(phoneNumber)
+    private fun sendSmsVerificationCode(phoneNumber: String) {
         viewModelScope.launch {
-            sendSignupSmsCodeUseCase(phoneNumber).onSuccess {
+            sendSignupSmsCodeUseCase(phoneNumber).let { error ->
                 intent {
-                    reduce { state.copy(signUpContinuationError = null) }
-                }
-            }.onFailure {
-                intent {
-                    reduce { state.copy(signUpContinuationError = it) }
+                    reduce {
+                        state.copy(
+                            phoneNumberState = if (error == null) SignupContinuationState.RequestedSmsValidation else SignupContinuationState.Failed(
+                                error.message
+                            ),
+                        )
+                    }
+
                 }
             }
         }

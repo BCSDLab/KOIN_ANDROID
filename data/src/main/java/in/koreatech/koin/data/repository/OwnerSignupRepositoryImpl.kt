@@ -43,31 +43,31 @@ class OwnerSignupRepositoryImpl @Inject constructor(
 
     override suspend fun requestSmsVerificationCode(
         phoneNumber: String
-    ): Result<Unit> {
-        return safeApiCall {
-            ownerRemoteDataSource.postVerificationSms(
-                VerificationSmsRequest(
-                    phoneNumber = phoneNumber
+    ): Pair<Result<Unit>, String?> {
+        return try {
+            Pair(safeApiCall {
+                ownerRemoteDataSource.postVerificationSms(
+                    VerificationSmsRequest(
+                        phoneNumber = phoneNumber
+                    )
                 )
-            )
+            }, null)
+
+        } catch (e: HttpException) {
+            if (e.code() == 500) {
+                val errorBody = e.response()?.errorBody()?.string()
+                val message = errorBody?.let { JSONObject(it).getString("message") }
+                Pair(Result.failure(e), message)
+            } else {
+                Pair(Result.failure(e), null)
+            }
+        } catch (t: Throwable) {
+            Pair(Result.failure(t), null)
         }
     }
 
 
-    override suspend fun getExistsAccount(phoneNumber: String): Pair<Boolean, String?> {
-        return try {
-            ownerRemoteDataSource.checkExistsAccount(phoneNumber)
-            Pair(false, null)
-        } catch (e: HttpException) {
-            if (e.code() == 409 || e.code() == 400) {
-                val errorBody = e.response()?.errorBody()?.string()
-                val message = JSONObject(errorBody).getString("message")
-                Pair(true, message)
-            } else {
-                Pair(true, null)
-            }
-
-        }
-
+    override suspend fun getExistsAccount(phoneNumber: String) {
+        return ownerRemoteDataSource.checkExistsAccount(phoneNumber)
     }
 }
