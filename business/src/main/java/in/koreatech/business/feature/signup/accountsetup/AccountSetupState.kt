@@ -9,9 +9,7 @@ data class AccountSetupState(
     val authCode: String = "",
     val isPasswordError: Boolean = false,
     val isPasswordConfirmError: Boolean = false,
-    val isPhoneNumberErrorMessage: String? = null,
-    val signupContinuationState: SignupContinuationState = SignupContinuationState.RequestedEmailValidation,
-    val signUpContinuationError: Throwable? = null,
-    val isLoading: Boolean = false,
+    val verifyState : SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
+    val phoneNumberState: SignupContinuationState = SignupContinuationState.AvailablePhoneNumber,
     val isButtonEnabled: Boolean = false
 )
