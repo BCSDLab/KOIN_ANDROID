@@ -54,11 +54,11 @@ class HtmlView @JvmOverloads constructor(
                             HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> "\n"
                             else -> ""
                         }
-                        val originalText = (lastAddedView as TextView).text
+                        val originalText = SpannableStringBuilder((lastAddedView as TextView).text)
                         val newTextBuilder = SpannableStringBuilder(lineBreak + child.content)
                         val newSpanned = newTextBuilder.getStyledText(0, newTextBuilder.length, child.styles)
 
-                        (lastAddedView as TextView).text = TextUtils.concat(originalText, newSpanned)
+                        (lastAddedView as TextView).text = originalText.append(newSpanned)
                     } else {
                         val textView = TextView(context).apply {
                             setTextIsSelectable(true)
