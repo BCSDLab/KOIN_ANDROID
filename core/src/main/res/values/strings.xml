@@ -153,5 +153,13 @@
     <string name="menu_description_example">보쌈 + 막국수 (1인 세트) / 음료 별도</string>
     <string name="menu_image">메뉴 사진</string>
     <string name="menu_image_maximum">(최대 이미지 3장)</string>
-
+    <string name="menu_image_add">이미지 추가</string>
+    <string name="menu_image_can_input">메뉴 사진을 추가할 수 있습니다.</string>
+    <string name="menu_change">변 경</string>
+    <string name="menu_serving_example">예) 소 (1~2인분)</string>
+    <string name="menu_null_name">메뉴 이름을 입력해 주세요.</string>
+    <string name="menu_null_price">메뉴 가격을 입력해 주세요.</string>
+    <string name="menu_null_category">메뉴 카테고리를 선택해 주세요.</string>
+    <string name="menu_null_description">메뉴 설명을 작성해 주세요.</string>
+    <string name="menu_null_image">메뉴 사진을 등록해 주세요.</string>
 </resources>
