@@ -157,31 +157,20 @@ class AccountSetupViewModel @Inject constructor(
 
     fun checkExistsAccount(phoneNumber: String) {
         viewModelScope.launch {
-            getOwnerExistsAccountUseCase(phoneNumber).let { (isDuplicated, error) ->
+            getOwnerExistsAccountUseCase(phoneNumber).onSuccess {
                 intent {
-                    when (isDuplicated) {
-                        true -> reduce {
-                            state.copy(
-                                phoneNumberState = SignupContinuationState.Failed(error!!.message),
-                            )
-                        }
+                    reduce {
+                        state.copy(phoneNumberState = SignupContinuationState.AvailablePhoneNumber)
+                    }
+                    sendSmsVerificationCode(phoneNumber)
+                }
 
-                        false -> {
-                            reduce {
-                                state.copy(
-                                    phoneNumberState = SignupContinuationState.AvailablePhoneNumber,
-                                )
-                            }
-                            sendSmsVerificationCode(phoneNumber)
-                        }
-
-                        else -> {
-                            reduce {
-                                state.copy(
-                                    phoneNumberState = SignupContinuationState.Failed(error!!.message),
-                                )
-                            }
-                        }
+            }.onFailure {
+                intent {
+                    reduce {
+                        state.copy(
+                            phoneNumberState = SignupContinuationState.Failed(it.message),
+                        )
                     }
                 }
             }
