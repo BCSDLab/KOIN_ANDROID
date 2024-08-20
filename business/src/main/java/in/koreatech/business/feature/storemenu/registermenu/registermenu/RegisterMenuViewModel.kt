@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuCategoryUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -21,6 +22,7 @@ class RegisterMenuViewModel @Inject constructor(
     private val getMenuCategoryUseCase : GetMenuCategoryUseCase
 ): ViewModel(), ContainerHost<RegisterMenuState, RegisterMenuSideEffect> {
     override val container = container<RegisterMenuState,RegisterMenuSideEffect>(RegisterMenuState())
+
 
     init {
         getStoreMenuCategory()
@@ -56,7 +58,7 @@ class RegisterMenuViewModel @Inject constructor(
     fun changeMenuImageUri(uriList: List<Uri>){
         intent {
             reduce {
-                if(uriList.size < 3){
+                if(uriList.size < STORE_MENU_IMAGE_MAX){
                     val newMenuUriList = state.imageUriList.toMutableList()
 
                     newMenuUriList.removeAt(newMenuUriList.lastIndex)
@@ -64,7 +66,7 @@ class RegisterMenuViewModel @Inject constructor(
                     for(imageUri in uriList)
                         newMenuUriList.add(imageUri)
 
-                    if(newMenuUriList.size != 3)newMenuUriList.add(Uri.EMPTY)
+                    if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(Uri.EMPTY)
 
                     state.copy(
                         imageUriList = newMenuUriList
