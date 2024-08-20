@@ -3,7 +3,7 @@ package `in`.koreatech.koin.domain.model.article.html
 enum class CssAttribute {
     FONT_SIZE,
     DEFAULT_FONT_SIZE,
-    FONT_WEIGHT,
+    FONT_WEIGHT,    // FONT_STYLE로 변환. 즉 UI 단에서 실제 사용은 X
     FONT_STYLE,
     TEXT_DECORATION,
     TEXT_ALIGN,

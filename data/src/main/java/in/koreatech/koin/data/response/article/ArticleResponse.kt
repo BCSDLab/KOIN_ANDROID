@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.constant.BOLD
 import `in`.koreatech.koin.domain.constant.BOLD_ITALIC
 import `in`.koreatech.koin.domain.constant.ITALIC
 import `in`.koreatech.koin.domain.constant.LINE_THROUGH
+import `in`.koreatech.koin.domain.constant.NORMAL
 import `in`.koreatech.koin.domain.constant.UNDERLINE
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.html.ArticleContent
@@ -91,31 +92,37 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
 
             HtmlTag.H1 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "2em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
             HtmlTag.H2 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "1.5em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
             HtmlTag.H3 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "1.17em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
             HtmlTag.H4 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "1em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
             HtmlTag.H5 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "0.83em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
             HtmlTag.H6 -> {
                 selfStyles[CssAttribute.FONT_SIZE] = "0.67em"
+                selfStyles[CssAttribute.FONT_STYLE] = BOLD
                 HtmlTag.SPAN
             }
 
@@ -163,5 +170,28 @@ private fun MutableMap<CssAttribute, String>.applySelfStyles(styles: List<String
                 // 지정되지 않은 속성 무시
             }
         }
+    }
+    this.convertFontWeightToFontStyle()
+}
+
+private fun MutableMap<CssAttribute, String>.convertFontWeightToFontStyle() {
+    this[CssAttribute.FONT_WEIGHT]?.let {
+        when (it) {
+            "bold", "bolder" -> {
+                this[CssAttribute.FONT_STYLE] = BOLD
+            }
+            "lighter", "normal" -> {
+                this[CssAttribute.FONT_STYLE] = NORMAL
+            }
+        }
+        try {
+            if (it.toInt() <= 500) {
+                this[CssAttribute.FONT_STYLE] = NORMAL
+            } else {
+                this[CssAttribute.FONT_STYLE] = BOLD
+            }
+        } catch (e: NumberFormatException) { }
+    }.also {
+        this.remove(CssAttribute.FONT_WEIGHT)
     }
 }
