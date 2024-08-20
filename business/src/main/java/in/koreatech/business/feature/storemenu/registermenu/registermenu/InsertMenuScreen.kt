@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorMinor
 import `in`.koreatech.business.ui.theme.ColorPrimary
@@ -273,7 +274,6 @@ fun RegisterMenuScreenImpl(
                     modifier = Modifier
                         .padding(top = 16.dp, bottom = 48.dp)
                         .clickable {
-                            Log.e("로그 클릭", "사진 클릭")
                             coroutineScope.launch {
                                 sheetState.hide()
                             }
@@ -833,74 +833,24 @@ fun DetailMenuTextField(
             .fillMaxWidth()
             .padding(bottom = 8.dp)
     ) {
-        Box(
-            modifier = modifier
-                .border(width = 1.dp, color = ColorMinor)
-                .height(37.dp)
-                .width(170.dp)
-            ,
-            contentAlignment = Alignment.CenterStart
-        ) {
-            BasicTextField(
-                modifier = Modifier.padding(start = 8.dp),
-                value = if(menuServing != stringResource(id = R.string.temp_price))menuServing else "",
-                onValueChange = { newValue ->
-                    onChangeMenuServing(Pair(index, newValue))
-                },
-                textStyle = TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp
-                ),
-                decorationBox = { innerTextField ->
-                    if (menuServing == stringResource(id = R.string.temp_price)) {
-                        Text(
-                            text = stringResource(id = R.string.menu_serving_example),
-                            style = TextStyle(
-                                color = Color.Gray,
-                                fontSize = 14.sp
-                            )
-                        )
-                    }
-                    innerTextField()
-                }
-            )
-        }
+
+        MenuBorderTextField(
+            modifier = modifier,
+            inputString = menuServing,
+            index = index,
+            getStringResource = R.string.menu_serving_example,
+            onStringChange = onChangeMenuServing,
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Box(
-            modifier = modifier
-                .border(width = 1.dp, color = ColorMinor)
-                .height(37.dp)
-                .width(170.dp)
-            ,
-            contentAlignment = Alignment.CenterStart
-        ) {
-            BasicTextField(
-                modifier = Modifier.padding(start = 8.dp),
-                value = if(menuPrice != stringResource(id = R.string.temp_price))menuPrice else "",
-                onValueChange = { newValue ->
-                    onChangeMenuPrice(Pair(index, newValue))
-                },
-                textStyle = TextStyle(
-                    color = Color.Black,
-                    fontSize = 14.sp
-                ),
-                decorationBox = { innerTextField ->
-                    if (menuPrice == stringResource(id = R.string.temp_price)) {
-                        Text(
-                            text = stringResource(id = R.string.won),
-                            style = TextStyle(
-                                color = Color.Gray,
-                                fontSize = 14.sp
-                            )
-                        )
-                    }
-                    innerTextField()
-                }
-
-            )
-        }
+        MenuBorderTextField(
+            modifier = modifier,
+            inputString = menuPrice,
+            index = index,
+            getStringResource = R.string.won,
+            onStringChange = onChangeMenuPrice,
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
