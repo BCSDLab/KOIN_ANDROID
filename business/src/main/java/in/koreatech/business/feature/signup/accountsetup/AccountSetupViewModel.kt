@@ -65,7 +65,7 @@ class AccountSetupViewModel @Inject constructor(
 
     private fun updateButton(enabled: Boolean) = intent {
         reduce {
-            state.copy(isButtonEnabled = enabled)
+            state.copy(isButtonEnabled = enabled && state.verifyState == SignupContinuationState.CheckComplete)
         }
     }
 
