@@ -46,6 +46,7 @@ class StoreDetailReviewRecyclerAdapter (
         val nickName = binding.userIdTextview
         val rating = binding.userRatingBar
         val updateAt = binding.reviewUpdateDataTextview
+        val reviewReportMessage = binding.reviewReportImageview
         val reviewContent = binding.reviewContentTextview
         val reviewImageRecyclerView = binding.reviewImageRecyclerview
         val reviewMenuRecyclerview = binding.reviewMenuRecyclerview
@@ -128,6 +129,11 @@ class StoreDetailReviewRecyclerAdapter (
                 layoutManager =  LinearLayoutManager(reviewImageRecyclerView.context, RecyclerView.HORIZONTAL, false)
                 adapter =storeDetailReviewMenuRecyclerAdapter
             }
+
+            reviewReportMessage.isVisible = review.isReported
+            reviewContent.isGone = review.isReported || review.content.isBlank()
+            reviewImageRecyclerView.isGone = review.isReported || review.imageUrls.isEmpty()
+            reviewMenuRecyclerview.isGone = review.isReported || review.menuNames.isEmpty()
 
         }
     }

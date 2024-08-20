@@ -68,21 +68,42 @@ class StoreReviewReportActivity:  ActivityBase() {
         storeId = intent.extras?.getInt("storeId")
         reviewId = intent.extras?.getInt("reviewId")
 
+        notRelationLayout.setOnClickListener {
+            viewModel.reportReasonClicked(0)
+        }
+
         noRelationRadioButton.setOnClickListener {
             viewModel.reportReasonClicked(0)
+        }
+
+        spamLayout.setOnClickListener {
+            viewModel.reportReasonClicked(1)
         }
 
         spamRadioButton.setOnClickListener {
             viewModel.reportReasonClicked(1)
         }
 
+        abuseLayout.setOnClickListener {
+            viewModel.reportReasonClicked(2)
+        }
+
         abuseRadioButton.setOnClickListener {
             viewModel.reportReasonClicked(2)
+        }
+
+        privateLayout.setOnClickListener {
+            viewModel.reportReasonClicked(3)
         }
 
         privateRadioButton.setOnClickListener {
             viewModel.reportReasonClicked(3)
         }
+
+        etcTextview.setOnClickListener {
+            viewModel.reportReasonClicked(4)
+        }
+
         etcRadioButton.setOnClickListener {
             viewModel.reportReasonClicked(4)
         }
