@@ -11,5 +11,6 @@ data class StoreReviewContentResponse(
     @SerializedName("menu_names") val menuNames: List<String>,
     @SerializedName("is_mine") val isMine: Boolean,
     @SerializedName("is_modified") val isModified: Boolean,
+    @SerializedName("is_reported") val isReported: Boolean,
     @SerializedName("created_at") val createdAt: String
 )

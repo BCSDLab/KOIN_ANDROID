@@ -4,6 +4,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/store_review_container"
+        android:layout_marginBottom="24dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
@@ -69,6 +70,18 @@
             app:layout_constraintBottom_toBottomOf="@id/user_rating_bar"
             />
 
+        <ImageView
+            android:id="@+id/review_report_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="24dp"
+            android:src="@drawable/ic_report_error"
+            app:layout_constraintTop_toBottomOf="@id/user_rating_bar"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+
         <TextView
             android:id="@+id/review_content_textview"
             android:layout_width="match_parent"
@@ -100,7 +113,6 @@
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/review_image_recyclerview"
             app:layout_constraintStart_toStartOf="parent"
-            tools:listitem="@layout/item_store_detail_review_menu"
             />
 
 

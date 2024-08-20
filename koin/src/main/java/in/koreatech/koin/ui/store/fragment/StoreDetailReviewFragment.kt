@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
@@ -50,10 +51,15 @@ class StoreDetailReviewFragment : Fragment() {
 //                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
-                val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
-                intent.putExtra("storeId", viewModel.store.value?.uid)
-                intent.putExtra("reviewId", it.reviewId)
-                startActivity(intent)
+                if(it.isReported){
+                    ToastUtil.getInstance().makeShort(getString(R.string.review_already_reported))
+                }
+                else{
+                    val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                    intent.putExtra("storeId", viewModel.store.value?.uid)
+                    intent.putExtra("reviewId", it.reviewId)
+                    startActivity(intent)
+                }
             }
         )
     }
@@ -170,6 +176,10 @@ class StoreDetailReviewFragment : Fragment() {
                     binding.reviewScrollView.fullScroll(ScrollView.FOCUS_UP)
                     viewModel.scrollReset()
                 }
+            }
+
+            observeLiveData(storeReviewContent){
+                binding.noReviewLayout.isVisible = it.isEmpty()
             }
         }
     }
