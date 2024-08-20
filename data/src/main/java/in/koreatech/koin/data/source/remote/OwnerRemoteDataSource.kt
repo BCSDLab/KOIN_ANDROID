@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
+import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
 import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
@@ -28,24 +29,40 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
-    suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest) {
-        return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
-    }
-
-    suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
-        return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
-    }
-
     suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
         return ownerApi.postOwnerRegister(ownerRegisterRequest)
     }
 
+
+
+    //비밀번호 변경 인증번호 발송
+    suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
+        return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
+    }
+    suspend fun changePasswordVerificationSms(ownerVerificationSms: VerificationSmsRequest) {
+        return ownerApi.changePasswordVerificationSms(ownerVerificationSms)
+    }
+
+    //비밀번호 변경 인증번호 확인
+    suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest) {
+        return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
+    }
+    suspend fun changePasswordVerificationSmsCode(ownerVerificationCode: VerificationCodeSmsRequest) {
+        return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
+    }
+
+    //비밀번호 변경
     suspend fun ownerChangePassword(ownerChangePasswordRequest: OwnerChangePasswordRequest) {
         return ownerApi.changePassword(ownerChangePasswordRequest)
     }
 
-    suspend fun postVerificationSms(ownerVerificationEmail: VerificationSmsRequest) {
-        return ownerApi.postVerificationSms(ownerVerificationEmail)
+    suspend fun ownerChangePasswordSms(ownerChangePasswordSmsRequest: OwnerChangePasswordSmsRequest) {
+        return ownerApi.changePasswordSms(ownerChangePasswordSmsRequest)
+    }
+
+
+    suspend fun postVerificationSms(ownerVerificationSms: VerificationSmsRequest) {
+        return ownerApi.postVerificationSms(ownerVerificationSms)
     }
 
     suspend fun postVerificationCodeSms(ownerVerificationCode: VerificationCodeSmsRequest): OwnerVerificationCodeResponse {

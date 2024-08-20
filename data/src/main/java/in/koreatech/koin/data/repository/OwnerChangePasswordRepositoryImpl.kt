@@ -3,8 +3,11 @@ package `in`.koreatech.koin.data.repository
 import android.util.Log
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
+import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
+import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
+import `in`.koreatech.koin.data.request.owner.VerificationSmsRequest
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.repository.OwnerChangePasswordRepository
 import kotlinx.coroutines.CancellationException
@@ -23,7 +26,6 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
                     address = email
                 )
             )
-
             Result.success(Unit)
         }
         catch (e: HttpException) {
@@ -72,7 +74,69 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
                     password = password
                 )
             )
+            Result.success(Unit)
+        }
+        catch (e: HttpException) {
+            e.httpExceptionMapper()
+        }
+        catch (t: CancellationException) {
+            throw t
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
+    override suspend fun requestSmsVerification(phoneNumber: String): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.changePasswordVerificationSms (
+                VerificationSmsRequest(
+                    phoneNumber = phoneNumber
+                )
+            )
+            Result.success(Unit)
+        }
+        catch (e: HttpException) {
+            e.httpExceptionMapper()
+        }
+        catch (t: CancellationException) {
+            throw t
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun authenticateSmsCode(phoneNumber: String, authCode: String): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.changePasswordVerificationSmsCode (
+                VerificationCodeSmsRequest(
+                    phoneNumber = phoneNumber,
+                    certificationCode = authCode
+                )
+            )
+
+            Result.success(Unit)
+        }
+        catch (e: HttpException) {
+            e.httpExceptionMapper()
+        }
+        catch (t: CancellationException) {
+            throw t
+        }
+        catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun changePasswordSms(phoneNumber: String, password: String): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.ownerChangePasswordSms (
+                OwnerChangePasswordSmsRequest(
+                    phoneNumber = phoneNumber,
+                    password = password
+                )
+            )
             Result.success(Unit)
         }
         catch (e: HttpException) {
