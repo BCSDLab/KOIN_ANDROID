@@ -284,7 +284,7 @@ fun AccountSetupScreen(
                     .fillMaxWidth()
                     .height(44.dp),
                 shape = RectangleShape,
-                enabled = state.isButtonEnabled && state.verifyState == SignupContinuationState.CheckComplete,
+                enabled = state.isButtonEnabled,
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = ColorPrimary,
                     contentColor = Color.White,
