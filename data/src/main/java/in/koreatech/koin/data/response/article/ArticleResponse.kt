@@ -47,10 +47,10 @@ data class ArticleResponse(
 }
 
 fun Document.toHtmlModel(): HtmlModel {
-    return this.body().toHtmlModel()
+    return this.body().toHtmlModel(mapOf(CssAttribute.DEFAULT_FONT_SIZE to "12px"))
 }
 
-fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String> = mapOf()): HtmlModel {
+fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
     val selfAttributes = mutableMapOf<HtmlAttribute, String>()
     val selfChildren = mutableListOf<HtmlModel>()
     val selfStyles = mutableMapOf<CssAttribute, String>()
@@ -89,6 +89,36 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String> = mapOf()): HtmlMod
                 HtmlTag.SPAN
             }
 
+            HtmlTag.H1 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "2em"
+                HtmlTag.SPAN
+            }
+
+            HtmlTag.H2 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "1.5em"
+                HtmlTag.SPAN
+            }
+
+            HtmlTag.H3 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "1.17em"
+                HtmlTag.SPAN
+            }
+
+            HtmlTag.H4 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "1em"
+                HtmlTag.SPAN
+            }
+
+            HtmlTag.H5 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "0.83em"
+                HtmlTag.SPAN
+            }
+
+            HtmlTag.H6 -> {
+                selfStyles[CssAttribute.FONT_SIZE] = "0.67em"
+                HtmlTag.SPAN
+            }
+
             else -> {
                 selfTag
             }
@@ -122,65 +152,6 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String> = mapOf()): HtmlMod
         styles = selfStyles
     )
 }
-//fun Element.toHtmlModel(parentStyles: Map<CssAttribute, String> = mapOf()): HtmlModel {
-//    var selfTag = try {
-//        this.tagName().toHtmlTag()
-//    } catch (e: IllegalArgumentException) {
-//        HtmlTag.UNKNOWN
-//    }
-//    val selfContent = this.wholeOwnText()
-//    val selfAttributes = mutableMapOf<HtmlAttribute, String>()
-//    val selfChildren = mutableListOf<HtmlModel>()
-//    val selfStyles = mutableMapOf<CssAttribute, String>()
-//
-//    this.attributes().forEach { attribute ->
-//        try {
-//            selfAttributes[attribute.key.toHtmlAttribute()] = attribute.value
-//        } catch(e: IllegalArgumentException) {
-//            // 지정되지 않은 속성 무시
-//        }
-//    }
-//
-//    // 부모 스타일을 상속한 후 자신의 스타일을 적용 --> 자신의 스타일이 우선 적용됨
-//    // HTML 스타일 태그는 CSS Style로 변환 후 Span 태그로 변경
-//    selfStyles.putAll(parentStyles)
-//    selfTag = when (selfTag) {
-//        HtmlTag.B, HtmlTag.STRONG -> {
-//            selfStyles[CssAttribute.FONT_STYLE] = BOLD
-//            HtmlTag.SPAN
-//        }
-//        HtmlTag.I, HtmlTag.EM, HtmlTag.DFN -> {
-//            selfStyles[CssAttribute.FONT_STYLE] = if(selfStyles[CssAttribute.FONT_STYLE] == BOLD) BOLD_ITALIC else ITALIC
-//            HtmlTag.SPAN
-//        }
-//        HtmlTag.U -> {
-//            selfStyles[CssAttribute.TEXT_DECORATION] = UNDERLINE
-//            HtmlTag.SPAN
-//        }
-//        HtmlTag.STRIKE, HtmlTag.DEL, HtmlTag.S -> {
-//            selfStyles[CssAttribute.TEXT_DECORATION] = LINE_THROUGH
-//            HtmlTag.SPAN
-//        }
-//        else -> { selfTag }
-//    }
-//
-//    if (selfAttributes.containsKey(HtmlAttribute.STYLE)) {
-//        val styleValue = selfAttributes[HtmlAttribute.STYLE]?.split(";")
-//        selfStyles.applySelfStyles(styleValue)
-//    }
-//
-//    this.children().forEach { child ->
-//        selfChildren.add(child.toHtmlModel(selfStyles))
-//    }
-//
-//    return HtmlModel(
-//        tag = selfTag,
-//        content = selfContent,
-//        attributes = selfAttributes,
-//        children = selfChildren,
-//        styles = selfStyles
-//    )
-//}
 
 private fun MutableMap<CssAttribute, String>.applySelfStyles(styles: List<String>?) {
     styles?.forEach {

@@ -85,55 +85,11 @@ fun SpannableStringBuilder.getStyledText(
 ): SpannableStringBuilder {
     if (start == end) return this
 
-    styles[CssAttribute.FONT_STYLE]?.let {
-        setSpan(
-            when(it) {
-                BOLD -> StyleSpan(Typeface.BOLD)
-                ITALIC -> StyleSpan(Typeface.ITALIC)
-                BOLD_ITALIC -> StyleSpan(Typeface.BOLD_ITALIC)
-                else -> StyleSpan(Typeface.NORMAL)
-            },
-            0,
-            end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
-    styles[CssAttribute.TEXT_DECORATION]?.let {
-        setSpan(
-            when(it) {
-                UNDERLINE -> UnderlineSpan()
-                LINE_THROUGH -> StrikethroughSpan()
-                else -> null
-            },
-            start,
-            end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
-    styles[CssAttribute.COLOR]?.let {
-        setSpan(
-            ForegroundColorSpan(it.parseColor(Color.BLACK)),
-            start,
-            end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
-    styles[CssAttribute.BACKGROUND_COLOR]?.let {
-        setSpan(
-            BackgroundColorSpan(it.parseColor(Color.WHITE)),
-            start,
-            end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
-    styles[CssAttribute.BACKGROUND]?.let {
-        setSpan(
-            BackgroundColorSpan(it.parseColor(Color.WHITE)),
-            start,
-            end,
-            SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
+    setFontStyle(start, end, styles)
+    setTextDecoration(start, end, styles)
+    setTextColor(start, end, styles)
+    setBackgroundColor(start, end, styles)
+    setFontSize(start, end, styles)
 
     return this
 }
@@ -144,24 +100,4 @@ private class HtmlTableView(
     html: HtmlElement
 ) : AppCompatTextView(context) {
 
-}
-
-private fun String.parseColor(default: Int): Int {
-    return try {
-        Color.parseColor(this)
-    } catch (e: IllegalArgumentException) {
-        parseRgbColor(this, default)
-    }
-}
-
-private fun parseRgbColor(rgbString: String, default: Int): Int {
-    val regex = """rgb\((\d+), (\d+), (\d+)\)""".toRegex()
-    val matchResult = regex.matchEntire(rgbString)
-
-    return if (matchResult != null) {
-        val (r, g, b) = matchResult.destructured
-        Color.rgb(r.toInt(), g.toInt(), b.toInt())
-    } else {
-        default
-    }
 }

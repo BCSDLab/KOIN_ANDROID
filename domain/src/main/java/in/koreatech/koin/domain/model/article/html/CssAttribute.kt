@@ -2,6 +2,7 @@ package `in`.koreatech.koin.domain.model.article.html
 
 enum class CssAttribute {
     FONT_SIZE,
+    DEFAULT_FONT_SIZE,
     FONT_WEIGHT,
     FONT_STYLE,
     TEXT_DECORATION,
