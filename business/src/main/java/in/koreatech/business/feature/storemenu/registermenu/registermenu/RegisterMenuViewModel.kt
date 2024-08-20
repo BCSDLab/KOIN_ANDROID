@@ -1,13 +1,18 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
+import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuCategoryUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -21,14 +26,13 @@ class RegisterMenuViewModel @Inject constructor(
 
     init {
         getStoreMenuCategory()
-        addPrice()
-        addImage()
+        addDefaultImage()
     }
 
     private fun getStoreMenuCategory(){
         intent {
             viewModelScope.launch {
-                val storeId = 197
+                val storeId = 139
                 val menuCategory = getMenuCategoryUseCase(storeId)
                 reduce {
                     state.copy(
@@ -39,11 +43,64 @@ class RegisterMenuViewModel @Inject constructor(
         }
     }
 
-    private fun addImage(){
+    private fun addDefaultImage(){
         intent{
             reduce {
                 val newMenuUriList = state.imageUriList.toMutableList()
-                newMenuUriList.add(ImageHolder.TempUri.toString())
+                newMenuUriList.add(Uri.EMPTY)
+                state.copy(
+                    imageUriList = newMenuUriList
+                )
+            }
+        }
+    }
+
+    fun changeMenuImageUri(uriList: List<Uri>){
+        intent {
+            reduce {
+                if(uriList.size < STORE_MENU_IMAGE_MAX){
+                    val newMenuUriList = state.imageUriList.toMutableList()
+
+                    newMenuUriList.removeAt(newMenuUriList.lastIndex)
+
+                    for(imageUri in uriList)
+                        newMenuUriList.add(imageUri)
+
+                    if(newMenuUriList.size != STORE_MENU_IMAGE_MAX)newMenuUriList.add(Uri.EMPTY)
+
+                    state.copy(
+                        imageUriList = newMenuUriList
+                    )
+                }
+                else{
+                    state.copy(
+                        imageUriList = uriList
+                    )
+                }
+            }
+        }
+    }
+
+    fun deleteMenuImageUri(index: Int) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList.removeAt(index)
+            if(newMenuUriList.last() != Uri.EMPTY) {
+                newMenuUriList.add(Uri.EMPTY)
+            }
+            reduce {
+                    state.copy(
+                        imageUriList = newMenuUriList
+                    )
+            }
+        }
+    }
+
+    fun modifyMenuImageUri(modifyUri: Uri) {
+        intent {
+            val newMenuUriList = state.imageUriList.toMutableList()
+            newMenuUriList[state.imageIndex] = modifyUri
+            reduce {
                 state.copy(
                     imageUriList = newMenuUriList
                 )
@@ -59,13 +116,33 @@ class RegisterMenuViewModel @Inject constructor(
         }
     }
 
-    fun changeMenuPrice(index: Int, price: String){
+    fun changeMenuPrice(price: String){
         intent{
-            if (index in state.menuPrice.indices) {
+            reduce {
+                state.copy(menuPrice = price)
+            }
+        }
+    }
+
+    fun changeDetailMenuServing(index: Int, serving: String){
+        intent{
+            if (index in state.menuDetailPrice.indices) {
                 reduce {
-                    val newMenuPrice = state.menuPrice.toMutableList()
-                    newMenuPrice[index] = PriceHolder.PriceString(price).priceString
-                    state.copy(menuPrice = newMenuPrice)
+                    val newMenuPrice = state.menuDetailPrice.toMutableList()
+                    newMenuPrice[index] = Pair(PriceHolder.PriceString(serving).priceString, newMenuPrice[index].second)
+                    state.copy(menuDetailPrice = newMenuPrice)
+                }
+            }
+        }
+    }
+
+    fun changeDetailMenuPrice(index: Int, price: String){
+        intent{
+            if (index in state.menuDetailPrice.indices) {
+                reduce {
+                    val newMenuPrice = state.menuDetailPrice.toMutableList()
+                    newMenuPrice[index] = Pair(newMenuPrice[index].first ,PriceHolder.PriceString(price).priceString)
+                    state.copy(menuDetailPrice = newMenuPrice)
                 }
             }
         }
@@ -74,10 +151,22 @@ class RegisterMenuViewModel @Inject constructor(
     fun addPrice(){
         intent{
             reduce {
-                val newMenuPrice = state.menuPrice.toMutableList()
-                newMenuPrice.add(PriceHolder.TempPrice.toString())
+                val newMenuPrice = state.menuDetailPrice.toMutableList()
+                newMenuPrice.add(Pair(PriceHolder.TempPrice.toString(), PriceHolder.TempPrice.toString()))
                 state.copy(
-                    menuPrice = newMenuPrice
+                    menuDetailPrice = newMenuPrice
+                )
+            }
+        }
+    }
+
+    fun deleteMenuPrice(index: Int){
+        intent {
+            val newMenuPrice = state.menuDetailPrice.toMutableList()
+            newMenuPrice.removeAt(index)
+            reduce {
+                state.copy(
+                    menuDetailPrice = newMenuPrice
                 )
             }
         }
@@ -123,11 +212,40 @@ class RegisterMenuViewModel @Inject constructor(
         }
     }
 
+    fun isImageModify(isModify: Boolean)=intent{
+        reduce {
+            state.copy(
+                isModify = isModify
+            )
+        }
+    }
+
+    fun setImageIndex(index: Int)= intent{
+        reduce {
+            state.copy(
+                imageIndex = index
+            )
+        }
+    }
+
     fun changeMenuDetail(menuDetail: String) = intent{
         reduce {
             state.copy(
                 description = menuDetail
             )
+        }
+    }
+
+    fun onNextButtonClick(){
+        intent{
+            when {
+                state.menuName.isBlank()-> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuName))
+                state.menuPrice.isBlank() && state.menuDetailPrice.isEmpty()-> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuPrice))
+                !(state.isMainMenu || state.isRecommendMenu || state.isSideMenu || state.isSetMenu)
+                -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuCategory))
+                state.description.isBlank() -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuDescription))
+                state.imageUriList.size == 1 && state.imageUriList[0] == Uri.EMPTY -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuImage))
+            }
         }
     }
 }
