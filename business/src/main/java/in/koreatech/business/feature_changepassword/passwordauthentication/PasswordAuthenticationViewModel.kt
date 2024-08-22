@@ -6,11 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
-import `in`.koreatech.koin.domain.usecase.business.SendAuthCodeUseCase
-import `in`.koreatech.koin.domain.usecase.owner.OwnerAuthenticateCode
+import `in`.koreatech.koin.domain.usecase.business.changepassword.AuthenticateSmsCodeUseCase
+import `in`.koreatech.koin.domain.usecase.business.changepassword.SendAuthSmsCodeUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -22,10 +20,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PasswordAuthenticationViewModel @Inject constructor(
-    private val sendAuthCodeUseCase: SendAuthCodeUseCase,
-    private val ownerAuthenticateCode: OwnerAuthenticateCode
-): ViewModel() , ContainerHost<PasswordAuthenticationState, PasswordAuthenticationSideEffect> {
-    override val container = container<PasswordAuthenticationState, PasswordAuthenticationSideEffect>(PasswordAuthenticationState())
+    private val sendAuthCodeUseCase: SendAuthSmsCodeUseCase,
+    private val ownerAuthenticateCode: AuthenticateSmsCodeUseCase
+) : ViewModel(), ContainerHost<PasswordAuthenticationState, PasswordAuthenticationSideEffect> {
+    override val container =
+        container<PasswordAuthenticationState, PasswordAuthenticationSideEffect>(
+            PasswordAuthenticationState()
+        )
 
     private val sendAuthCodeFlow = MutableSharedFlow<String>()
     private val authenticateCodeFlow = MutableSharedFlow<Pair<String, String>>()
@@ -53,16 +54,16 @@ class PasswordAuthenticationViewModel @Inject constructor(
         }
     }
 
-    fun insertEmail(email: String) = intent{
-        reduce { state.copy(email = email) }
+    fun insertPhoneNumber(phoneNumber: String) = intent {
+        reduce { state.copy(phoneNumber = phoneNumber) }
     }
 
-    fun insertAuthCode(authCode: String) = intent{
+    fun insertAuthCode(authCode: String) = intent {
         reduce { state.copy(authenticationCode = authCode) }
     }
 
     private fun goToPasswordChangeScreen() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.GotoChangePasswordScreen(state.email))
+        postSideEffect(PasswordAuthenticationSideEffect.GotoChangePasswordScreen(state.phoneNumber))
     }
 
     private fun toastNullEmail() = intent {
@@ -85,40 +86,40 @@ class PasswordAuthenticationViewModel @Inject constructor(
         postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NotCoincideAuthCode))
     }
 
-    fun sendAuthCode(email: String){
+    fun sendAuthCode(phoneNumber: String) {
         viewModelScope.launch {
-            sendAuthCodeFlow.emit(email)
+            sendAuthCodeFlow.emit(phoneNumber)
         }
     }
 
-    fun authenticateCode(email: String, authCode: String){
+    fun authenticateCode(email: String, authCode: String) {
         viewModelScope.launch {
             authenticateCodeFlow.emit(email to authCode)
         }
     }
 
-    private suspend fun performSendAuthCode(email: String) {
-        sendAuthCodeUseCase(email = email)
+    private suspend fun performSendAuthCode(phoneNumber: String) {
+        sendAuthCodeUseCase(phoneNumber = phoneNumber)
             .onSuccess {
                 authenticationBtnClicked()
                 sendAuthCode()
             }
             .onFailure {
-                when (it) {
-                    ChangePasswordExceptionState.ToastNullEmail -> toastNullEmail()
-                    ChangePasswordExceptionState.ToastIsNotEmail -> toastIsNotEmail()
-                    else -> {}
-                }
+                  when (it) {
+                      ChangePasswordExceptionState.ToastNullPhoneNumber -> toastNullEmail()
+                      ChangePasswordExceptionState.ToastIsNotPhoneNumber -> toastIsNotEmail()
+                      else -> {}
+                  }
             }
     }
 
     private suspend fun performAuthenticateCode(
-        email: String,
+        phoneNumber: String,
         authCode: String
     ){
         viewModelScope.launch {
             ownerAuthenticateCode(
-                email = email,
+                phoneNumber = phoneNumber,
                 authCode = authCode
             )   .onSuccess {
                     goToPasswordChangeScreen()
