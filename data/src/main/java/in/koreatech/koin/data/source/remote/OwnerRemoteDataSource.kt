@@ -1,10 +1,11 @@
 package `in`.koreatech.koin.data.source.remote
 
+import OwnerRegisterRequest
 import `in`.koreatech.koin.data.api.OwnerApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
-import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
+import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -13,7 +14,6 @@ import `in`.koreatech.koin.data.response.owner.OwnerResponse
 import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
-import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
@@ -29,16 +29,21 @@ class OwnerRemoteDataSource(
         return ownerApi.postVerificationEmail(ownerVerificationEmail)
     }
 
-    suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest): OwnerResponse {
-        return ownerApi.postOwnerRegister(ownerRegisterRequest)
+
+    suspend fun postOwnerEmailRegister(ownerEmailRegisterRequest: OwnerEmailRegisterRequest): OwnerResponse {
+        return ownerApi.postOwnerEmailRegister(ownerEmailRegisterRequest)
     }
 
+    suspend fun postOwnerRegister(ownerRegisterRequest: OwnerRegisterRequest) {
+        return ownerApi.postOwnerRegister(ownerRegisterRequest)
+    }
 
 
     //비밀번호 변경 인증번호 발송
     suspend fun changePasswordVerificationEmail(ownerVerificationEmail: OwnerVerificationEmailRequest) {
         return ownerApi.changePasswordVerificationEmail(ownerVerificationEmail)
     }
+
     suspend fun changePasswordVerificationSms(ownerVerificationSms: VerificationSmsRequest) {
         return ownerApi.changePasswordVerificationSms(ownerVerificationSms)
     }
@@ -47,6 +52,7 @@ class OwnerRemoteDataSource(
     suspend fun changePasswordVerificationCode(ownerVerificationCode: OwnerVerificationCodeRequest) {
         return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
     }
+
     suspend fun changePasswordVerificationSmsCode(ownerVerificationCode: VerificationCodeSmsRequest) {
         return ownerApi.changePasswordVerificationCode(ownerVerificationCode)
     }
@@ -63,6 +69,10 @@ class OwnerRemoteDataSource(
 
     suspend fun postVerificationSms(ownerVerificationSms: VerificationSmsRequest) {
         return ownerApi.postVerificationSms(ownerVerificationSms)
+    }
+
+    suspend fun checkExistsAccount(account: String) {
+        ownerApi.checkExistsAccount(account)
     }
 
     suspend fun postVerificationCodeSms(ownerVerificationCode: VerificationCodeSmsRequest): OwnerVerificationCodeResponse {
