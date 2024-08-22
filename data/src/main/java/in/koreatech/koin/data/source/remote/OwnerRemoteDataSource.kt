@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.response.owner.OwnerVerificationCodeResponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
 import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 
@@ -71,6 +72,11 @@ class OwnerRemoteDataSource(
     suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
         return ownerAuthApi.postMyStore(storeRegisterResponse)
     }
+
+    suspend fun postStoreMenu(storeId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse): StoreMenuRegisterResponse {
+        return ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
+    }
+
     suspend fun deleteOwnerShopEvent(storeUid: Int, eventId: Int) {
         ownerAuthApi.deleteOwnerShopEvent(storeUid, eventId)
     }
