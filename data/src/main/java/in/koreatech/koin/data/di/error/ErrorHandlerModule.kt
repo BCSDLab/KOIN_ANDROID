@@ -14,7 +14,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import `in`.koreatech.koin.data.error.CoopShopErrorHandlerImpl
 import `in`.koreatech.koin.data.error.OwnerErrorHandlerImpl
+import `in`.koreatech.koin.domain.error.coopshop.CoopShopErrorHandler
 import `in`.koreatech.koin.domain.error.owner.OwnerErrorHandler
 import javax.inject.Singleton
 
@@ -51,4 +53,10 @@ object ErrorHandlerModule {
     fun provideOwnerErrorHandler(
         @ApplicationContext applicationContext: Context
     ): OwnerErrorHandler = OwnerErrorHandlerImpl(applicationContext)
+
+    @Provides
+    @Singleton
+    fun provideCoopShopErrorHandler(
+        @ApplicationContext applicationContext: Context
+    ): CoopShopErrorHandler = CoopShopErrorHandlerImpl(applicationContext)
 }

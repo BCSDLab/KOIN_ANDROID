@@ -47,7 +47,9 @@ fun LinedTextField(
     isPassword: Boolean = false,
     helperText: String = "",
     errorText: String = "",
+    successText: String = "",
     isError: Boolean = false,
+    isSuccess: Boolean = false,
 ) {
     var focused by remember { mutableStateOf(false) }
     BasicTextField(
@@ -90,7 +92,7 @@ fun LinedTextField(
                         color = ColorHelper,
                     )
                     if (isError) Text(text = errorText, fontSize = 11.sp, color = ColorSecondary)
-
+                    else if(isSuccess) Text(text = successText, fontSize = 11.sp, color = ColorPrimary)
                 }
 
             }

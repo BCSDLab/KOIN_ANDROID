@@ -9,3 +9,7 @@ data class OwnerVerificationEmailRequest(
 data class VerificationSmsRequest(
     @SerializedName("phone_number") val phoneNumber: String?
 )
+
+data class CheckExistsAccount(
+    @SerializedName("account") val phoneNumber: String?,
+)

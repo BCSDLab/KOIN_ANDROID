@@ -11,6 +11,7 @@ class UserRemoveUseCase @Inject constructor(
 ) {
     suspend operator fun invoke() : Pair<Unit, ErrorHandler?> {
         return Unit to try {
+            userRepository.deleteDeviceToken()
             userRepository.deleteUser()
             null
         } catch (t: Throwable) {

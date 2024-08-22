@@ -13,6 +13,8 @@ import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
+import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
+import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
@@ -112,13 +114,14 @@ fun StoreMenuCategoriesResponse.toStoreMenuCategories() = StoreMenuCategories(
     name = name,
     menus = menus?.map { it.toShopMenus() }.orEmpty()
 )
+
 fun ShopMenusResponse.toShopMenus() = ShopMenus(
     id = id,
     name = name,
     isHidden = isHidden,
     isSingle = isSingle,
     singlePrice = singlePrice,
-    optionPrices =  optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
+    optionPrices = optionPrices?.map { it.toShopMenuOptions() }.orEmpty(),
     description = description,
     imageUrls = imageUrls.orEmpty()
 )
@@ -130,6 +133,22 @@ fun ShopMenuOptionsResponse.toShopMenuOptions() = ShopMenus.ShopMenuOptions(
 
 fun StoreDetailEventResponse.toStoreDetailEvents(): ShopEvents = ShopEvents(
     events = events?.map { it.toStoreDetailEvent() }.orEmpty()
+)
+
+fun StoreRegisterResponse.toStoreDetailInfo(): StoreDetailInfo = StoreDetailInfo(
+    address = address ?: "",
+    categoryIds = categoryIds ?: emptyList(),
+    deliveryPrice = delivery_price ?: 0,
+    description = description ?: "",
+    imageUrls = imageUrls ?: emptyList(),
+    isBankOk = payBank ?: false,
+    isCardOk = payCard ?: false,
+    isDeliveryOk = delivery ?: false,
+    name = name ?: "",
+    operatingTime = open?.toOperatingTime() ?: emptyList(),
+    phone = phone ?: "",
+    bank = null,
+    accountNumber = null,
 )
 
 fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
@@ -146,7 +165,8 @@ fun StoreDetailEventResponse.StoreEventDTO.toStoreDetailEvent() = ShopEvent(
 fun List<OperatingTime>.toMyStoreDayOffResponse(): ArrayList<StoreDayOffResponse> {
     val responseList = ArrayList<StoreDayOffResponse>()
     for (dayOff in this) {
-        val response = StoreDayOffResponse(dayOff.closeTime, dayOff.closed, dayOff.dayOfWeek, dayOff.openTime)
+        val response =
+            StoreDayOffResponse(dayOff.closeTime, dayOff.closed, dayOff.dayOfWeek, dayOff.openTime)
         responseList.add(response)
     }
     return responseList
@@ -159,7 +179,7 @@ fun String.toStringArray(): ArrayList<String> {
     return responseList
 }
 
-fun Int.toCategory(): List<Int>{
+fun Int.toCategory(): List<Int> {
     val responseList = ArrayList<Int>()
 
     responseList.add(1)
@@ -168,10 +188,25 @@ fun Int.toCategory(): List<Int>{
     return responseList
 }
 
+fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
+    val responseList = ArrayList<OperatingTime>()
+    for (dayOff in this) {
+        val response = OperatingTime(
+            dayOff.closeTime ?: "",
+            dayOff.closed,
+            dayOff.dayOfWeek,
+            dayOff.openTime ?: "",
+        )
+        responseList.add(response)
+    }
+    return responseList
+}
+
 fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice>{
     val responseList = ArrayList<StoreMenuRegisterResponse.OptionPrice>()
     for (option in this){
         val response = StoreMenuRegisterResponse.OptionPrice(option.option, option.price.toInt())
+
         responseList.add(response)
     }
     return responseList

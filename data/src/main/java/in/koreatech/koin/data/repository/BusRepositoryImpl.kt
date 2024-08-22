@@ -13,6 +13,7 @@ import `in`.koreatech.koin.domain.model.bus.timetable.BusRoute
 import `in`.koreatech.koin.domain.repository.BusRepository
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import `in`.koreatech.koin.domain.model.bus.city.CityBusInfo
 import `in`.koreatech.koin.domain.model.bus.timetable.BusTimetable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -54,8 +55,11 @@ class BusRepositoryImpl @Inject constructor(
         ).toExpressBusTimetable()
     }
 
-    override suspend fun getCityBusTimetable(): BusRoute.CityBusRoute {
-        return busLocalDataSource.getCityBusTimetable().toCityBusRoute()
+    override suspend fun getCityBusTimetable(cityBusInfo: CityBusInfo): BusTimetable.CityBusTimetable {
+        return busRemoteDataSource.getCityBusTimetable(
+            number = cityBusInfo.busNumber,
+            direction = cityBusInfo.direction
+        ).toCityBusTimetable()
     }
 
     override suspend fun getShuttleBusRemainTime(

@@ -1,32 +1,31 @@
 package `in`.koreatech.business.feature.signup.businessauth
 
-import android.graphics.Bitmap
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.data.mapper.strToOwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.store.AttachStore
 import `in`.koreatech.koin.domain.model.store.StoreUrl
+import `in`.koreatech.koin.domain.state.signup.SignupContinuationState
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
-import `in`.koreatech.koin.domain.usecase.owner.AttachStoreFileUseCase
 import `in`.koreatech.koin.domain.usecase.owner.OwnerRegisterUseCase
+import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.util.ext.formatBusinessNumber
-import kotlinx.coroutines.Dispatchers
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class BusinessAuthViewModel @Inject constructor(
-    private val getPresignedUrlUseCase: AttachStoreFileUseCase,
+    private val getPresignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
-    private val ownerRegisterUseCase: OwnerRegisterUseCase
+    private val ownerRegisterUseCase: OwnerRegisterUseCase,
 ) : ContainerHost<BusinessAuthState, BusinessAuthSideEffect>, ViewModel() {
     override val container =
         container<BusinessAuthState, BusinessAuthSideEffect>(BusinessAuthState())
@@ -51,13 +50,11 @@ class BusinessAuthViewModel @Inject constructor(
 
     fun onStoreNumberChanged(storeNumber: String) = intent {
         reduce {
-            state.copy(shopNumber = storeNumber)
-        }
-    }
-
-    fun onPhoneNumberChanged(phoneNumber: String) = intent {
-        reduce {
-            state.copy(phoneNumber = phoneNumber)
+            state.copy(
+                shopNumber = storeNumber,
+                signupContinuationState = if (storeNumber.length != 10) SignupContinuationState.BusinessNumberIsNotValidate
+                else SignupContinuationState.RequestedSmsValidation
+            )
         }
     }
 
@@ -86,23 +83,30 @@ class BusinessAuthViewModel @Inject constructor(
     }
 
     fun getPreSignedUrl(
-        uri: Uri,
         fileSize: Long,
         fileType: String,
         fileName: String,
-        bitmap: Bitmap
+        imageUri: String,
     ) {
         viewModelScope.launch {
             getPresignedUrlUseCase(
                 fileSize, fileType, fileName
             ).onSuccess {
+                uploadImage(
+                    title = fileName.substringAfterLast("/"),
+                    preSignedUrl = it.second,
+                    mediaType = fileType,
+                    mediaSize = fileSize,
+                    imageUri = imageUri,
+                    fileUrl = it.first,
+                )
                 intent {
                     reduce {
                         state.copy(
                             fileInfo = state.fileInfo.toMutableList().apply {
                                 add(
                                     StoreUrl(
-                                        uri.toString(),
+                                        imageUri,
                                         it.first,
                                         fileName,
                                         fileType,
@@ -110,9 +114,6 @@ class BusinessAuthViewModel @Inject constructor(
                                         fileSize
                                     )
                                 )
-                            },
-                            bitmap = state.bitmap.toMutableList().apply {
-                                add(bitmap)
                             },
                             error = null
                         )
@@ -126,14 +127,22 @@ class BusinessAuthViewModel @Inject constructor(
         }
     }
 
-    fun uploadImage(
-        url: String,
-        imageUri: String,
+    private fun uploadImage(
+        title: String,
+        fileUrl: String,
+        preSignedUrl: String,
         mediaType: String,
-        mediaSize: Long
+        mediaSize: Long,
+        imageUri: String
     ) {
-        viewModelScope.launch{
-            uploadFilesUseCase(url, imageUri, mediaSize, mediaType).onSuccess {
+        viewModelScope.launch {
+            uploadFilesUseCase(
+                preSignedUrl,
+                mediaType,
+                mediaSize,
+                imageUri
+            ).onSuccess {
+                insertStoreFileUrl(title, fileUrl)
                 intent {
                     reduce { state.copy(error = null) }
                 }
@@ -148,10 +157,9 @@ class BusinessAuthViewModel @Inject constructor(
     fun sendRegisterRequest(
         fileUrls: List<String>,
         companyNumber: String,
-        email: String,
+        phoneNumber: String,
         name: String,
         password: String,
-        phoneNumber: String,
         shopId: Int?,
         shopName: String
     ) {
@@ -159,7 +167,6 @@ class BusinessAuthViewModel @Inject constructor(
             ownerRegisterUseCase(
                 fileUrls.strToOwnerRegisterUrl(),
                 companyNumber.formatBusinessNumber(),
-                email,
                 name,
                 password,
                 phoneNumber,
@@ -168,14 +175,35 @@ class BusinessAuthViewModel @Inject constructor(
             ).onSuccess {
                 onNavigateToNextScreen()
                 intent {
-                    reduce { state.copy(continuation = true) }
+                    reduce { state.copy(signupContinuationState = SignupContinuationState.RequestedOwnerRegister) }
                 }
             }.onFailure {
                 intent {
-                    reduce { state.copy(error = it) }
+                    reduce { state.copy(signupContinuationState = SignupContinuationState.Failed(it.message)) }
                 }
             }
+        }
+    }
 
+
+    private fun insertStoreFileUrl(title: String, url: String) {
+        intent {
+            reduce {
+                state.copy(
+                    selectedImages = state.selectedImages.apply {
+                        add(AttachStore(url, title))
+                    },
+                )
+            }
+        }
+    }
+
+
+    fun initStoreImageUrls() = intent {
+        reduce {
+            state.copy(
+                fileInfo = mutableListOf()
+            )
         }
     }
 }
