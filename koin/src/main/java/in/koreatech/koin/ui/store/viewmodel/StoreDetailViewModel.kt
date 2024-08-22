@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.core.viewmodel.SingleLiveEvent
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -20,6 +21,9 @@ import `in`.koreatech.koin.domain.usecase.store.GetShopEventsUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetShopMenusUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreReviewUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreWithMenuUseCase
+import `in`.koreatech.koin.domain.usecase.token.IsTokenSavedInDeviceUseCase
+import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +34,8 @@ class StoreDetailViewModel @Inject constructor(
     private val getStoreReviewUseCase: GetStoreReviewUseCase,
     private val getStoreEventsUseCase: GetShopEventsUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase,
+    private val isTokenSavedInDeviceUseCase: IsTokenSavedInDeviceUseCase,
 ) : BaseViewModel() {
     val store: LiveData<StoreWithMenu> get() = _store
     private val _store = MutableLiveData<StoreWithMenu>()
@@ -43,7 +49,7 @@ class StoreDetailViewModel @Inject constructor(
     val storeReview: LiveData<StoreReview> get() = _storeReview
     private val _storeReview = MutableLiveData<StoreReview>()
 
-    val storeReviewContent: LiveData<List<StoreReviewContent>>  get() = _storeReviewContent
+    val storeReviewContent: LiveData<List<StoreReviewContent>> get() = _storeReviewContent
     private val _storeReviewContent = MutableLiveData<List<StoreReviewContent>>()
 
     val recommendStores: LiveData<List<Store>?> get() = _recommendStores
@@ -53,6 +59,9 @@ class StoreDetailViewModel @Inject constructor(
     private val _fragementIndex = MutableLiveData<Int>()
     val scrollUp: LiveData<StoreDetailScrollType> get() = _scrollUp
     private val _scrollUp = MutableLiveData<StoreDetailScrollType>()
+
+    private val _tokenState = SingleLiveEvent<TokenState>()
+    val tokenState: LiveData<TokenState> get() = _tokenState
 
     fun getStoreWithMenu(storeId: Int) = viewModelScope.launchWithLoading {
         getStoreWithMenuUseCase(storeId).also { store ->
@@ -94,13 +103,12 @@ class StoreDetailViewModel @Inject constructor(
         deleteReviewUseCase(reviewId, storeId)
     }
 
-    fun checkShowMyReview(isChecked: Boolean){
-        if(isChecked){
+    fun checkShowMyReview(isChecked: Boolean) {
+        if (isChecked) {
             _storeReviewContent.value = _storeReview.value?.reviews?.filter {
                 it.isMine
             }
-        }
-        else _storeReviewContent.value = _storeReview.value?.reviews
+        } else _storeReviewContent.value = _storeReview.value?.reviews
     }
 
     fun filterReview(filter: ReviewFilterEnum, isMine: Boolean) {
@@ -120,18 +128,35 @@ class StoreDetailViewModel @Inject constructor(
         }
     }
 
-    fun settingFragmentIndex(index: Int){
+    fun settingFragmentIndex(index: Int) {
         _fragementIndex.value = index
     }
-    fun scrollUp(){
-        when(_fragementIndex.value){
+
+    fun scrollUp() {
+        when (_fragementIndex.value) {
             0 -> _scrollUp.value = StoreDetailScrollType.MENU
             1 -> _scrollUp.value = StoreDetailScrollType.EVENT
             2 -> _scrollUp.value = StoreDetailScrollType.REVIEW
         }
     }
 
-    fun scrollReset(){
+    fun scrollReset() {
         _scrollUp.value = StoreDetailScrollType.NONE
+    }
+
+    fun checkToken() {
+        viewModelScope.launchIgnoreCancellation {
+            isTokenSavedInDeviceUseCase().also {
+                if (it) getUserInfoUseCase().let { (user, error) ->
+                    if (error != null) {
+                        _tokenState.value = TokenState.Invalid
+                    } else {
+                        _tokenState.value = TokenState.Valid
+                    }
+                } else {
+                    _tokenState.value = TokenState.Invalid
+                }
+            }
+        }
     }
 }
