@@ -1,40 +1,41 @@
 package `in`.koreatech.business.feature_changepassword.passwordauthentication
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.Blue1
+import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.util.ext.clickableOnce
@@ -54,24 +55,30 @@ fun PasswordAuthenticationScreenImpl(
 
     PasswordAuthenticationScreen(
         modifier = modifier,
-        email = state.phoneNumber,
+        phoneNumber = state.phoneNumber,
         authCode = state.authenticationCode,
         emailIsEmpty = state.phoneNumberIsEmpty(),
         authCodeIsEmpty = state.authCodeIsEmpty(),
         authenticationBtnIsClicked = state.authenticationBtnIsClicked,
         onBackPressed = onBackPressed,
-        insertPhoneNumber = { email -> viewModel.insertPhoneNumber(email)},
-        insertAuthCode = {authCode -> viewModel.insertAuthCode(authCode)},
-        sendAuthCode = {viewModel.sendAuthCode(state.phoneNumber.trim())},
-        authenticateCode = { viewModel.authenticateCode(state.phoneNumber.trim(), state.authenticationCode.trim()) }
+        insertPhoneNumber = { email -> viewModel.insertPhoneNumber(email) },
+        insertAuthCode = { authCode -> viewModel.insertAuthCode(authCode) },
+        sendAuthCode = { viewModel.sendAuthCode(state.phoneNumber.trim()) },
+        authenticateCode = {
+            viewModel.authenticateCode(
+                state.phoneNumber.trim(),
+                state.authenticationCode.trim()
+            )
+        }
     )
 
     HandleSideEffects(viewModel, state.phoneNumber.trim(), navigateToChangePassword)
 }
+
 @Composable
 fun PasswordAuthenticationScreen(
     modifier: Modifier,
-    email: String,
+    phoneNumber: String,
     authCode: String,
     emailIsEmpty: Boolean,
     authCodeIsEmpty: Boolean,
@@ -82,155 +89,173 @@ fun PasswordAuthenticationScreen(
     sendAuthCode: () -> Unit,
     authenticateCode: () -> Unit
 ) {
-    
+
+
     Column(
         modifier = modifier.fillMaxSize(),
     ) {
-        Box(
-            modifier = modifier
-                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                .width(40.dp)
-                .height(40.dp)
-                .clickable { onBackPressed() }
-
-        ) {
-            Image(
-                painter = painterResource(R.drawable.back_ic),
-                contentDescription = stringResource(id = R.string.back_arrow),
-                modifier = modifier
-                    .width(24.dp)
-                    .height(24.dp)
-            )
-        }
-        Text(
-            text = stringResource(R.string.password_find),
-            fontSize = 24.sp,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(top = 32.dp, start = 32.dp, bottom = 32.dp)
-        )
-
-        BasicTextField(
-            value = email,
-            onValueChange = insertPhoneNumber,
-            maxLines = 1,
-            textStyle = TextStyle(fontSize = 15.sp),
-            decorationBox = { innerTextField ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                IconButton(
+                    onClick = { onBackPressed() },
+                    modifier = Modifier.align(Alignment.CenterStart)
                 ) {
-                    Box(
-                        contentAlignment = Alignment.CenterStart,
-                        modifier = modifier.padding(bottom = 7.dp)
-                    ){
-                        if (emailIsEmpty) {
-                            Text(
-                                text = stringResource(R.string.enter_phone_number),
-                                color = Blue1,
-                                fontSize = 15.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                    Divider(
-                        modifier = modifier.fillMaxWidth(),
-                        thickness = 1.dp,
-                        color = if (emailIsEmpty) Blue1 else Color.Black
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(id = R.string.back_icon),
                     )
                 }
-            },
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 20.dp)
-                .height(30.dp)
-        )
 
-        Row(modifier = modifier
-            .padding(bottom = 252.dp)
-            .fillMaxWidth()
-            .height(30.dp)
-        ) {
-            BasicTextField(
-                value = authCode,
-                onValueChange = insertAuthCode,
-                maxLines = 1,
-                textStyle = TextStyle(fontSize = 15.sp),
-                decorationBox = { innerTextField ->
-                    Column() {
-                        Box(
-                            contentAlignment = Alignment.CenterStart,
-                            modifier = modifier.padding(bottom = 7.dp)
-                        ){
-                            if (authCodeIsEmpty) {
-                                Text(
-                                    text = stringResource(R.string.auth_code_insert),
-                                    color = Blue1,
-                                    fontSize = 15.sp
-                                )
-                            }
-                            innerTextField()
-                        }
-                        Divider(
-                            modifier = modifier.width(220.dp),
-                            thickness = 1.dp,
-                            color = if (authCodeIsEmpty) Blue1 else Color.Black
-                        )
-                    }
-
-                },
-                modifier = modifier
-                    .padding(start = 32.dp, end = 16.dp)
-                    .fillMaxHeight()
-            )
-
-            Button(
-                onClick =  sendAuthCode,
-                shape = RectangleShape,
-                colors = ButtonDefaults.buttonColors(ColorPrimary),
-                contentPadding = PaddingValues(1.dp),
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(end = 32.dp)
-                    .clickableOnce { }
-            ) {
-                Text(text = if(authenticationBtnIsClicked)stringResource(R.string.auth_code_resend) else stringResource(R.string.auth_code_send),
-                    fontSize = 14.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
+                Text(
+                    text = stringResource(id = R.string.password_find),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.Center)
                 )
             }
-        }
 
-        Button(
-            onClick =  authenticateCode,
-            shape = RectangleShape,
-            colors = if(authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
-            else ButtonDefaults.buttonColors(ColorPrimary),
-            modifier = modifier
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 80.dp)
-                .fillMaxWidth()
-                .height(44.dp)
-        ) {
-            Text(text = stringResource(R.string.next),
-                fontSize = 15.sp,
-                color = if(authCodeIsEmpty)Gray1 else Color.White,
-                fontWeight = FontWeight.Bold
-            )
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
+                        text = stringResource(R.string.account_verification_step)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.one_half),
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    drawLine(
+                        color = ColorUnarchived,
+                        start = Offset(0f, 0f),
+                        end = Offset(size.width, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                    drawLine(
+                        color = ColorPrimary,
+                        start = Offset(0f, 0f),
+                        end = Offset(size.width / 2, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                Text(
+                    text = stringResource(R.string.phone_number),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                )
+
+                LinedTextField(
+                    value = phoneNumber,
+                    onValueChange = insertPhoneNumber,
+                    label = stringResource(R.string.enter_phone_number)
+                )
+
+                Text(
+                    text = stringResource(R.string.authentication_code),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                )
+
+                Row(
+                    modifier = modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    LinedTextField(
+                        modifier = Modifier.width(200.dp),
+                        value = authCode,
+                        onValueChange = insertAuthCode,
+                        label = "인증번호를 입력해주세요."
+                    )
+
+                    Button(
+                        onClick = sendAuthCode,
+                        colors = ButtonDefaults.buttonColors(ColorPrimary),
+                        modifier = modifier
+                            .width(124.dp)
+                            .height(41.dp)
+                            .clickableOnce { }
+                    ) {
+                        Text(
+                            modifier = Modifier.fillMaxSize(),
+                            text = if (authenticationBtnIsClicked) stringResource(R.string.auth_code_resend) else stringResource(
+                                R.string.auth_code_send
+                            ),
+                            letterSpacing = (-0.3).sp,
+                            fontSize = 14.sp,
+                            color = Color.White,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(200.dp))
+                Button(
+                    onClick = authenticateCode,
+                    colors = if (authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
+                    else ButtonDefaults.buttonColors(ColorPrimary),
+                    modifier = modifier
+                        .padding(bottom = 80.dp)
+                        .fillMaxWidth()
+                        .height(44.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.next),
+                        fontSize = 15.sp,
+                        color = if (authCodeIsEmpty) Gray1 else Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun HandleSideEffects(viewModel: PasswordAuthenticationViewModel, email: String, navigateToChangePassword: (email: String) -> Unit) {
+private fun HandleSideEffects(
+    viewModel: PasswordAuthenticationViewModel,
+    email: String,
+    navigateToChangePassword: (email: String) -> Unit
+) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(email)
-            is PasswordAuthenticationSideEffect.SendAuthCode -> ToastUtil.getInstance().makeShort(context.getString(R.string.auth_code_input_from_email))
+            is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(
+                email
+            )
+
+            is PasswordAuthenticationSideEffect.SendAuthCode -> ToastUtil.getInstance()
+                .makeShort(context.getString(R.string.auth_code_input_from_email))
+
             is PasswordAuthenticationSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
                     ErrorType.NoEmail -> context.getString(R.string.email_address_insert)
@@ -250,12 +275,12 @@ fun PreviewPasswordAuthenticationScreen() {
     Surface {
         PasswordAuthenticationScreen(
             modifier = Modifier,
-            email = "",
+            phoneNumber = "",
             authCode = "",
             emailIsEmpty = true,
             authCodeIsEmpty = true,
             authenticationBtnIsClicked = true,
-            onBackPressed = {  },
+            onBackPressed = { },
             insertPhoneNumber = { },
             insertAuthCode = {},
             sendAuthCode = {},
