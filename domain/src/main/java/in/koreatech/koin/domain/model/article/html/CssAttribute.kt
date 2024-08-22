@@ -15,6 +15,7 @@ enum class CssAttribute {
     BORDER,
     BORDER_RADIUS,
     BORDER_COLOR,
+    BORDER_STYLE,
     BORDER_WIDTH,
     DISPLAY,
     WIDTH,

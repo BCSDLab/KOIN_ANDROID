@@ -12,6 +12,7 @@ enum class HtmlTag(
     H4,
     H5,
     H6,
+    HR,
     TITLE(ViewType.TEXT_VIEW),
     P(ViewType.TEXT_VIEW),
     A(ViewType.TEXT_VIEW),
@@ -50,7 +51,6 @@ enum class HtmlTag(
     TH,
     TD,
     UNKNOWN,
-    NONE    // TextNode
 }
 
 enum class ViewType {
@@ -62,5 +62,9 @@ enum class ViewType {
 }
 
 fun String.toHtmlTag(): HtmlTag {
-    return HtmlTag.valueOf(this.uppercase())
+    return try {
+        HtmlTag.valueOf(this.uppercase())
+    } catch (e: IllegalArgumentException) {
+        HtmlTag.UNKNOWN
+    }
 }
