@@ -1,38 +1,40 @@
 package `in`.koreatech.business.feature_changepassword.changepassword
 
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.ui.theme.Blue1
+import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.Gray5
@@ -56,27 +58,32 @@ fun ChangePasswordScreenImpl(
         fillAllPasswords = state.fillAllPasswords,
         passwordIsEmpty = state.passwordIsBlank(),
         passwordCheckedIsEmpty = state.passwordCheckedIsBlank(),
-        onPasswordChange = {
-                newPassword -> viewModel.insertPassword(newPassword)
-                           },
-        onPasswordCheckedChange = {
-                newCheckedPassword -> viewModel.insertPasswordChecked(newCheckedPassword)
-                                  },
+        onPasswordChange = { newPassword ->
+            viewModel.insertPassword(newPassword)
+        },
+        onPasswordCheckedChange = { newCheckedPassword ->
+            viewModel.insertPasswordChecked(newCheckedPassword)
+        },
         onBackPressed = onBackPressed,
         onChangePasswordClick = {
-            viewModel.changePassword(state.phoneNumber.trim(), state.password.trim(), state.passwordChecked.trim())
+            viewModel.changePassword(
+                state.phoneNumber.trim(),
+                state.password.trim(),
+                state.passwordChecked.trim()
+            )
         },
         modifier = modifier
     )
 
     HandleSideEffects(viewModel, navigateToFinish)
 }
+
 @Composable
 fun ChangePasswordScreen(
     password: String,
     passwordChecked: String,
     notCoincidePassword: Boolean,
-    fillAllPasswords :Boolean,
+    fillAllPasswords: Boolean,
     passwordIsEmpty: Boolean,
     passwordCheckedIsEmpty: Boolean,
     onPasswordChange: (String) -> Unit,
@@ -85,135 +92,126 @@ fun ChangePasswordScreen(
     onChangePasswordClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
-        Box(
-            modifier = modifier
-                .padding(top = 56.dp, start = 10.dp, bottom = 18.dp)
-                .size(40.dp)
-                .clickable { onBackPressed() }
-
-        ) {
-            Image(
-                painter = painterResource(R.drawable.back_ic),
-                contentDescription = stringResource(id = R.string.back_arrow),
-                modifier = modifier
-                    .size(24.dp)
-            )
-        }
-
-        Text(
-            text = stringResource(R.string.password_change),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = modifier.padding(top = 32.dp, start = 32.dp, bottom = 32.dp)
-        )
-
-        BasicTextField(
-            value =  password,
-            onValueChange = onPasswordChange,
-            maxLines = 1,
-            textStyle = TextStyle(fontSize = 15.sp),
-            visualTransformation = PasswordVisualTransformation(),
-            decorationBox = { innerTextField ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp)
+            ) {
+                IconButton(
+                    onClick = { onBackPressed() },
+                    modifier = Modifier.align(Alignment.CenterStart)
                 ) {
-                    Box(
-                        contentAlignment = Alignment.CenterStart,
-                        modifier = modifier.padding(bottom = 7.dp)
-                    ){
-                        if (passwordIsEmpty) {
-                            Text(
-                                text = stringResource(id = R.string.password_new),
-                                color = Blue1,
-                                fontSize = 15.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                    Divider(
-                        modifier = Modifier.fillMaxWidth(),
-                        thickness = 1.dp,
-                        color = if (passwordIsEmpty) Blue1 else Color.Black
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = stringResource(id = R.string.back_icon),
                     )
                 }
-            },
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 8.dp)
-                .height(30.dp)
-        )
 
-        Text(
-            text = stringResource(R.string.password_condition),
-            fontSize = 11.sp,
-            color = Blue1,
-            modifier = modifier
-                .padding(start = 32.dp, bottom = 12.dp)
-        )
+                Text(
+                    text = stringResource(id = R.string.password_find),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
 
-        BasicTextField(
-            value = passwordChecked,
-            onValueChange = onPasswordCheckedChange,
-            maxLines = 1,
-            textStyle = TextStyle(fontSize = 15.sp),
-            visualTransformation = PasswordVisualTransformation(),
-            decorationBox = { innerTextField ->
-                Column(
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Row(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Box(
-                        contentAlignment = Alignment.CenterStart,
-                        modifier = modifier.padding(bottom = 7.dp)
-                    ){
-                        if (passwordCheckedIsEmpty) {
-                            Text(
-                                text = stringResource(id = R.string.password_confirm),
-                                color = Blue1,
-                                fontSize = 15.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                    Divider(
-                        modifier = Modifier.fillMaxWidth(),
-                        thickness = 1.dp,
-                        color = if (passwordCheckedIsEmpty) Blue1 else Color.Black
+                    Text(
+                        modifier = Modifier,
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
+                        text = stringResource(R.string.change_password_step)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.two_half),
+                        color = ColorPrimary,
+                        fontWeight = FontWeight.Bold,
                     )
                 }
-            },
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 8.dp)
-                .height(30.dp)
-        )
 
-        if(notCoincidePassword) {
-            WaringNotCoincidePW(modifier)
-        }
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
 
-        Button(
-            onClick = onChangePasswordClick,
-            shape = RectangleShape,
-            colors = if(fillAllPasswords) ButtonDefaults.buttonColors(ColorPrimary)
-            else ButtonDefaults.buttonColors(Gray5),
-            modifier = modifier
-                .padding(horizontal = 32.dp)
-                .padding(bottom = 80.dp, top = 217.5.dp)
-                .fillMaxWidth()
-                .height(44.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.password_changing),
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
+                    drawLine(
+                        color = ColorPrimary,
+                        start = Offset(0f, 0f),
+                        end = Offset(size.width, size.height),
+                        strokeWidth = 4.dp.toPx(),
+                        cap = StrokeCap.Round
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                Text(
+                    text = stringResource(R.string.new_password),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                )
+
+
+                LinedTextField(
+                    value = password,
+                    onValueChange = onPasswordChange,
+                    isPassword = true,
+                    helperText = stringResource(R.string.password_condition),
+                    label = stringResource(R.string.input_new_password)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Text(
+                    text = stringResource(R.string.confirm_password),
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                )
+
+                LinedTextField(
+                    value = passwordChecked,
+                    onValueChange = onPasswordCheckedChange,
+                    isPassword = true,
+                    isError = notCoincidePassword,
+                    errorText = stringResource(R.string.password_not_coincide),
+                    label = stringResource(R.string.input_new_password_again)
+                )
+
+                Button(
+                    onClick = onChangePasswordClick,
+                    colors = if (fillAllPasswords) ButtonDefaults.buttonColors(ColorPrimary)
+                    else ButtonDefaults.buttonColors(Gray5),
+                    modifier = modifier
+                        .padding(bottom = 80.dp, top = 217.5.dp)
+                        .fillMaxWidth()
+                        .height(44.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.complete),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (fillAllPasswords) Color.White else Color.Gray
+                    )
+                }
+            }
         }
     }
 }
@@ -222,14 +220,21 @@ fun ChangePasswordScreen(
 fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -> Unit) {
     val context = LocalContext.current
 
-    viewModel.collectSideEffect{
-        when(it){
+    viewModel.collectSideEffect {
+        when (it) {
             is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
             is ChangePasswordSideEffect.NotCoincidePassword -> viewModel.viewNotCoincidePassword()
-            is ChangePasswordSideEffect.ToastNullEmail -> ToastUtil.getInstance().makeShort(context.getString(R.string.email_address_insert))
-            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_condition))
-            is ChangePasswordSideEffect.ToastNullPassword -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_input))
-            is ChangePasswordSideEffect.ToastNullPasswordChecked -> ToastUtil.getInstance().makeShort(context.getString(R.string.password_confirm_input))
+            is ChangePasswordSideEffect.ToastNullEmail -> ToastUtil.getInstance()
+                .makeShort(context.getString(R.string.email_address_insert))
+
+            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> ToastUtil.getInstance()
+                .makeShort(context.getString(R.string.password_condition))
+
+            is ChangePasswordSideEffect.ToastNullPassword -> ToastUtil.getInstance()
+                .makeShort(context.getString(R.string.password_input))
+
+            is ChangePasswordSideEffect.ToastNullPasswordChecked -> ToastUtil.getInstance()
+                .makeShort(context.getString(R.string.password_confirm_input))
         }
     }
 }
@@ -242,7 +247,7 @@ fun WaringNotCoincidePW(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 32.dp)
-    ){
+    ) {
         Image(
             painter = painterResource(id = R.drawable.exclamation),
             contentDescription = "examationMark",
@@ -273,6 +278,6 @@ fun PreviewChangePassswordScreen() {
         onPasswordCheckedChange = {},
         onBackPressed = {},
         onChangePasswordClick = {},
-        modifier = Modifier
+        modifier = Modifier.background(Color.White)
     )
 }
