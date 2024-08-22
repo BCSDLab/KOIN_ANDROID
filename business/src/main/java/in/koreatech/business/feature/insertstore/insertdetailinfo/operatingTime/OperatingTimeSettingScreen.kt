@@ -41,13 +41,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.chargemap.compose.numberpicker.FullHours
 import com.chargemap.compose.numberpicker.Hours
 import com.chargemap.compose.numberpicker.HoursNumberPicker
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
+import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
+import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
 import `in`.koreatech.koin.core.R
 import org.orbitmvi.orbit.compose.collectAsState
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.InsertDetailInfoScreenViewModel
-import `in`.koreatech.business.feature.insertstore.insertdetailinfo.dialog.OperatingTimeDialog
-import `in`.koreatech.business.ui.theme.ColorPrimary
 
 @Composable
 fun OperatingTimeSettingScreen(

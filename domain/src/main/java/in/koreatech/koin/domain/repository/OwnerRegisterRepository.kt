@@ -1,11 +1,12 @@
 package `in`.koreatech.koin.domain.repository
 
+import `in`.koreatech.koin.domain.model.error.ErrorHandler
 import `in`.koreatech.koin.domain.model.owner.OwnerRegisterUrl
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 
 interface OwnerRegisterRepository {
-    suspend fun ownerRegister(
+    suspend fun ownerEmailRegister(
         attachments: List<OwnerRegisterUrl>,
         companyNumber: String,
         email: String,
@@ -15,6 +16,16 @@ interface OwnerRegisterRepository {
         shopId: Int?,
         shopName: String
     ): Result<Unit>
+
+    suspend fun ownerRegister(
+        attachments: List<OwnerRegisterUrl>,
+        companyNumber: String,
+        name: String,
+        password: String,
+        phoneNumber: String,
+        shopId: Int?,
+        shopName: String
+    )
 
     suspend fun storeRegister(
         name: String,

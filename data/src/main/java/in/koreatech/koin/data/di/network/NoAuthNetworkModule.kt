@@ -111,4 +111,12 @@ object NoAuthNetworkModule {
     ): LandApi {
         return retrofit.create(LandApi::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideCoopShopApi(
+        @NoAuth retrofit: Retrofit
+    ): CoopShopApi {
+        return retrofit.create(CoopShopApi::class.java)
+    }
 }
