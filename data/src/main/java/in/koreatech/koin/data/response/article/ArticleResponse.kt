@@ -65,7 +65,9 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
         }
     }
 
-    selfStyles.putAll(parentStyles)
+    selfStyles.putAll(parentStyles)     // 부모 스타일 상속
+    selfStyles.removeNonInheritableStyles() // 상속되지 않는 스타일 제거
+
     if (this is Element) {
         selfTag = this.tagName().toHtmlTag()
         selfTag = when (selfTag) {
@@ -194,4 +196,20 @@ private fun MutableMap<CssAttribute, String>.convertFontWeightToFontStyle() {
     }.also {
         this.remove(CssAttribute.FONT_WEIGHT)
     }
+}
+
+private fun MutableMap<CssAttribute, String>.removeNonInheritableStyles() {
+    this.remove(CssAttribute.WIDTH)
+    this.remove(CssAttribute.HEIGHT)
+    this.remove(CssAttribute.MARGIN)
+    this.remove(CssAttribute.PADDING)
+    this.remove(CssAttribute.BORDER)
+    this.remove(CssAttribute.BORDER_RADIUS)
+    this.remove(CssAttribute.BORDER_COLOR)
+    this.remove(CssAttribute.BORDER_WIDTH)
+    this.remove(CssAttribute.DISPLAY)
+    this.remove(CssAttribute.BACKGROUND)
+    this.remove(CssAttribute.BACKGROUND_COLOR)
+    this.remove(CssAttribute.BACKGROUND_IMAGE)
+    this.remove(CssAttribute.BACKGROUND_SIZE)
 }

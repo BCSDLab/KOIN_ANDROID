@@ -14,15 +14,18 @@ import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.net.toUri
 import `in`.koreatech.koin.domain.constant.BOLD
 import `in`.koreatech.koin.domain.constant.BOLD_ITALIC
 import `in`.koreatech.koin.domain.constant.ITALIC
 import `in`.koreatech.koin.domain.constant.LINE_THROUGH
 import `in`.koreatech.koin.domain.constant.UNDERLINE
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
+import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 
@@ -46,17 +49,17 @@ class HtmlView @JvmOverloads constructor(
     }
 
     private fun addHtmlView(html: HtmlElement) {
-        html.children.forEach { child ->
-            when (child.tag) {
+        html.children.forEach { self ->
+            when (self.tag) {
                 HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR -> {
                     if (lastAddedView is TextView) {    // 직전 View가 TextView일 경우 재활용
-                        val lineBreak = when(child.tag) {
+                        val lineBreak = when(self.tag) {
                             HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> "\n"
                             else -> ""
                         }
                         val originalText = SpannableStringBuilder((lastAddedView as TextView).text)
-                        val newTextBuilder = SpannableStringBuilder(lineBreak + child.content)
-                        val newSpanned = newTextBuilder.getStyledText(0, newTextBuilder.length, child.styles)
+                        val newTextBuilder = SpannableStringBuilder(lineBreak + self.content)
+                        val newSpanned = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
 
                         (lastAddedView as TextView).text = originalText.append(newSpanned)
                     } else {
@@ -64,13 +67,29 @@ class HtmlView @JvmOverloads constructor(
                             setTextIsSelectable(true)
                             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                         }
-                        val newTextBuilder = SpannableStringBuilder(child.content)
-                        textView.text = newTextBuilder.getStyledText(0, newTextBuilder.length, child.styles)
+                        val newTextBuilder = SpannableStringBuilder(self.content)
+                        textView.text = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
                         addView(textView)
 
                         lastAddedView = textView
                     }
-                    addHtmlView(child)
+                    addHtmlView(self)
+                }
+                HtmlTag.HR -> {
+                    val hr = View(context).apply {
+                        //layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, 1)
+                        //setBackgroundColor(Color.BLACK)
+                    }
+                    addView(hr)
+                    lastAddedView = hr
+                }
+                HtmlTag.IMG -> {
+                    val imageView = ImageView(context).apply {
+                        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                        setImageURI(self.attributes[HtmlAttribute.SRC]?.toUri())
+                    }
+                    addView(imageView)
+                    lastAddedView = imageView
                 }
                 else -> {}
             }
