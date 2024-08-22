@@ -21,7 +21,7 @@
     <!--인증번호 관련-->
     <string name="auth_code_input_from_email">이메일로 발송된 인증번호 6자리를 입력해 주세요.</string>
     <string name="auth_code_not_equal">인증번호가 일치하지 않습니다.</string>
-    <string name="auth_code_insert">인증번호를 입력해주세요</string>
+    <string name="auth_code_insert">인증번호를 입력해주세요.</string>
     <string name="auth_code_send">인증번호발송</string>
     <string name="auth_code_resend">재발송</string>
     <string name="auth_code_input">인증번호 입력</string>

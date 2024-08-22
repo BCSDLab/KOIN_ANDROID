@@ -35,6 +35,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.ui.theme.Blue1
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.util.ext.clickableOnce
 import `in`.koreatech.koin.core.toast.ToastUtil
@@ -53,19 +54,19 @@ fun PasswordAuthenticationScreenImpl(
 
     PasswordAuthenticationScreen(
         modifier = modifier,
-        email = state.email,
+        email = state.phoneNumber,
         authCode = state.authenticationCode,
-        emailIsEmpty = state.emailIsEmpty(),
+        emailIsEmpty = state.phoneNumberIsEmpty(),
         authCodeIsEmpty = state.authCodeIsEmpty(),
         authenticationBtnIsClicked = state.authenticationBtnIsClicked,
         onBackPressed = onBackPressed,
-        insertEmail = { email -> viewModel.insertEmail(email)},
+        insertPhoneNumber = { email -> viewModel.insertPhoneNumber(email)},
         insertAuthCode = {authCode -> viewModel.insertAuthCode(authCode)},
-        sendAuthCode = {viewModel.sendAuthCode(state.email.trim())},
-        authenticateCode = { viewModel.authenticateCode(state.email.trim(), state.authenticationCode.trim()) }
+        sendAuthCode = {viewModel.sendAuthCode(state.phoneNumber.trim())},
+        authenticateCode = { viewModel.authenticateCode(state.phoneNumber.trim(), state.authenticationCode.trim()) }
     )
 
-    HandleSideEffects(viewModel, state.email.trim(), navigateToChangePassword)
+    HandleSideEffects(viewModel, state.phoneNumber.trim(), navigateToChangePassword)
 }
 @Composable
 fun PasswordAuthenticationScreen(
@@ -76,7 +77,7 @@ fun PasswordAuthenticationScreen(
     authCodeIsEmpty: Boolean,
     authenticationBtnIsClicked: Boolean,
     onBackPressed: () -> Unit,
-    insertEmail: (String) -> Unit,
+    insertPhoneNumber: (String) -> Unit,
     insertAuthCode: (String) -> Unit,
     sendAuthCode: () -> Unit,
     authenticateCode: () -> Unit
@@ -104,14 +105,14 @@ fun PasswordAuthenticationScreen(
         Text(
             text = stringResource(R.string.password_find),
             fontSize = 24.sp,
-            color = Color.White,
+            color = Color.Black,
             fontWeight = FontWeight.Bold,
             modifier = modifier.padding(top = 32.dp, start = 32.dp, bottom = 32.dp)
         )
 
         BasicTextField(
             value = email,
-            onValueChange = insertEmail,
+            onValueChange = insertPhoneNumber,
             maxLines = 1,
             textStyle = TextStyle(fontSize = 15.sp),
             decorationBox = { innerTextField ->
@@ -125,7 +126,7 @@ fun PasswordAuthenticationScreen(
                     ){
                         if (emailIsEmpty) {
                             Text(
-                                text = stringResource(R.string.email_input),
+                                text = stringResource(R.string.enter_phone_number),
                                 color = Blue1,
                                 fontSize = 15.sp
                             )
@@ -164,7 +165,7 @@ fun PasswordAuthenticationScreen(
                         ){
                             if (authCodeIsEmpty) {
                                 Text(
-                                    text = stringResource(R.string.auth_code_input),
+                                    text = stringResource(R.string.auth_code_insert),
                                     color = Blue1,
                                     fontSize = 15.sp
                                 )
@@ -213,9 +214,9 @@ fun PasswordAuthenticationScreen(
                 .fillMaxWidth()
                 .height(44.dp)
         ) {
-            Text(text = stringResource(R.string.email_certification),
+            Text(text = stringResource(R.string.next),
                 fontSize = 15.sp,
-                color = Color.White,
+                color = if(authCodeIsEmpty)Gray1 else Color.White,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -255,7 +256,7 @@ fun PreviewPasswordAuthenticationScreen() {
             authCodeIsEmpty = true,
             authenticationBtnIsClicked = true,
             onBackPressed = {  },
-            insertEmail = { },
+            insertPhoneNumber = { },
             insertAuthCode = {},
             sendAuthCode = {},
             authenticateCode = { }
