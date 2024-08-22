@@ -153,10 +153,15 @@
     <string name="menu_image_add">이미지 추가</string>
     <string name="menu_image_can_input">메뉴 사진을 추가할 수 있습니다.</string>
     <string name="menu_change">변 경</string>
+    <string name="menu_price_won">%1$s원</string>
+    <string name="menu_price_many_won">%1$s / %2$s원</string>
     <string name="menu_serving_example">예) 소 (1~2인분)</string>
     <string name="menu_null_name">메뉴 이름을 입력해 주세요.</string>
     <string name="menu_null_price">메뉴 가격을 입력해 주세요.</string>
     <string name="menu_null_category">메뉴 카테고리를 선택해 주세요.</string>
     <string name="menu_null_description">메뉴 설명을 작성해 주세요.</string>
     <string name="menu_null_image">메뉴 사진을 등록해 주세요.</string>
+    <string name="menu_fail_upload_image">메뉴 사진 업로드 실패</string>
+    <string name="menu_fail_register_menu">메뉴 등록 실패</string>
+    <string name="menu_success_register_menu">메뉴가 정상적으로 등록되었습니다.</string>
 </resources>

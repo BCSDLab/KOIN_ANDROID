@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.mapper
 
-import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.data.response.store.ShopMenuOptionsResponse
 import `in`.koreatech.koin.data.response.store.ShopMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
@@ -11,9 +10,11 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -164,5 +165,14 @@ fun Int.toCategory(): List<Int>{
     responseList.add(1)
     responseList.add(this)
 
+    return responseList
+}
+
+fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice>{
+    val responseList = ArrayList<StoreMenuRegisterResponse.OptionPrice>()
+    for (option in this){
+        val response = StoreMenuRegisterResponse.OptionPrice(option.option, option.price.toInt())
+        responseList.add(response)
+    }
     return responseList
 }

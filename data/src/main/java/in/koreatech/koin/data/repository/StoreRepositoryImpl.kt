@@ -8,7 +8,7 @@ import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
 import `in`.koreatech.koin.data.mapper.toStoreMenu
 import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreCategories
