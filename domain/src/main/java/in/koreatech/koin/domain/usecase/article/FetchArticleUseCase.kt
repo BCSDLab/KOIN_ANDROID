@@ -17,10 +17,6 @@ class FetchArticleUseCase @Inject constructor(
         return runCatching { articleRepository.fetchArticle(articleId) }
     }
 
-    suspend fun fetchHotArticles() : Result<List<ArticleHeader>> {
-        return runCatching { articleRepository.fetchHotArticles() }
-    }
-
     suspend fun fetchSearchedArticles(query: String, page: Int, limit: Int) : Result<ArticlePagination> {
         return runCatching { articleRepository.fetchSearchedArticles(query, page, limit) }
     }

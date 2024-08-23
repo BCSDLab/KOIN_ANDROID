@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_article_list">
         <action
             android:id="@+id/action_articleListFragment_to_articleKeywordFragment"
-            app:destination="@id/articleListFragment"
+            app:destination="@id/articleKeywordFragment"
             app:enterAnim="@anim/slide_in_from_left_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/slide_in_from_right_fade_in"
@@ -36,9 +36,6 @@
         android:id="@+id/articleKeywordFragment"
         android:name="in.koreatech.koin.ui.article.ArticleKeywordFragment"
         android:label="ArticleKeywordFragment">
-        <action
-            android:id="@+id/action_articleKeywordFragment_to_articleListFragment"
-            app:destination="@id/articleListFragment" />
     </fragment>
 
     <fragment
@@ -46,17 +43,18 @@
         android:name="in.koreatech.koin.ui.article.ArticleDetailFragment"
         android:label="ArticleDetailFragment">
         <action
-            android:id="@+id/action_articleDetailFragment_to_articleListFragment"
-            app:destination="@id/articleListFragment" />
+            android:id="@+id/action_articleDetailFragment_to_articleDetailFragment"
+            app:destination="@id/articleDetailFragment"
+            app:launchSingleTop="false"
+            app:enterAnim="@anim/slide_in_from_left_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
 
     <fragment
         android:id="@+id/articleSearchFragment"
         android:name="in.koreatech.koin.ui.article.ArticleSearchFragment"
         android:label="ArticleSearchFragment">
-        <action
-            android:id="@+id/action_articleSearchFragment_to_articleListFragment"
-            app:destination="@id/articleListFragment" />
         <action
             android:id="@+id/action_articleSearchFragment_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment" />
