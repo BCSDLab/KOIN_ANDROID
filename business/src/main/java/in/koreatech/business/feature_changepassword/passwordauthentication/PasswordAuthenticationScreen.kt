@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -90,150 +92,147 @@ fun PasswordAuthenticationScreen(
     authenticateCode: () -> Unit
 ) {
 
-
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(top = 12.dp),
     ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp)
-            ) {
-                IconButton(
-                    onClick = { onBackPressed() },
-                    modifier = Modifier.align(Alignment.CenterStart)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        contentDescription = stringResource(id = R.string.back_icon),
-                    )
-                }
 
-                Text(
-                    text = stringResource(id = R.string.password_find),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.Center)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            IconButton(
+                onClick = { onBackPressed() },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back),
+                    contentDescription = stringResource(id = R.string.back_icon),
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Column(
+            Text(
+                text = stringResource(id = R.string.password_find),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        Column(
+            modifier = Modifier
+                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        modifier = Modifier,
-                        color = ColorPrimary,
-                        fontWeight = FontWeight.Bold,
-                        text = stringResource(R.string.account_verification_step)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.one_half),
-                        color = ColorPrimary,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-
-                Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    drawLine(
-                        color = ColorUnarchived,
-                        start = Offset(0f, 0f),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
-                    drawLine(
-                        color = ColorPrimary,
-                        start = Offset(0f, 0f),
-                        end = Offset(size.width / 2, size.height),
-                        strokeWidth = 4.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(25.dp))
-
                 Text(
-                    text = stringResource(R.string.phone_number),
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+                    modifier = Modifier,
+                    color = ColorPrimary,
+                    text = stringResource(R.string.account_verification_step),
+                    style = MaterialTheme.typography.h6,
                 )
+                Text(
+                    text = stringResource(id = R.string.one_half),
+                    color = ColorPrimary,
+                    style = MaterialTheme.typography.h6,
+                    letterSpacing = 4.sp,
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                drawLine(
+                    color = ColorUnarchived,
+                    start = Offset(0f, 0f),
+                    end = Offset(size.width, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
+                drawLine(
+                    color = ColorPrimary,
+                    start = Offset(0f, 0f),
+                    end = Offset(size.width / 2, size.height),
+                    strokeWidth = 4.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
+            }
 
+            Spacer(modifier = Modifier.height(25.dp))
+
+            Text(
+                text = stringResource(R.string.phone_number),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
+            )
+
+            LinedTextField(
+                value = phoneNumber,
+                onValueChange = insertPhoneNumber,
+                label = stringResource(R.string.enter_phone_number),
+            )
+
+            Text(
+                text = stringResource(R.string.authentication_code),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 4.dp),
+            )
+
+            Row(
+                modifier = modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
                 LinedTextField(
-                    value = phoneNumber,
-                    onValueChange = insertPhoneNumber,
-                    label = stringResource(R.string.enter_phone_number)
+                    modifier = Modifier.width(200.dp),
+                    value = authCode,
+                    onValueChange = insertAuthCode,
+                    label = stringResource(R.string.input_auth_code)
                 )
 
-                Text(
-                    text = stringResource(R.string.authentication_code),
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold,
-                    modifier = modifier.padding(start = 8.dp, bottom = 8.dp),
-                )
-
-                Row(
-                    modifier = modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    LinedTextField(
-                        modifier = Modifier.width(200.dp),
-                        value = authCode,
-                        onValueChange = insertAuthCode,
-                        label = "인증번호를 입력해주세요."
-                    )
-
-                    Button(
-                        onClick = sendAuthCode,
-                        colors = ButtonDefaults.buttonColors(ColorPrimary),
-                        modifier = modifier
-                            .width(124.dp)
-                            .height(41.dp)
-                            .clickableOnce { }
-                    ) {
-                        Text(
-                            modifier = Modifier.fillMaxSize(),
-                            text = if (authenticationBtnIsClicked) stringResource(R.string.auth_code_resend) else stringResource(
-                                R.string.auth_code_send
-                            ),
-                            letterSpacing = (-0.3).sp,
-                            fontSize = 14.sp,
-                            color = Color.White,
-                            textAlign = TextAlign.Center,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(200.dp))
                 Button(
-                    onClick = authenticateCode,
-                    colors = if (authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
-                    else ButtonDefaults.buttonColors(ColorPrimary),
+                    onClick = sendAuthCode,
+                    colors = ButtonDefaults.buttonColors(ColorPrimary),
                     modifier = modifier
-                        .padding(bottom = 80.dp)
-                        .fillMaxWidth()
-                        .height(44.dp)
+                        .width(124.dp)
+                        .height(41.dp)
+                        .clickableOnce { }
                 ) {
                     Text(
-                        text = stringResource(R.string.next),
-                        fontSize = 15.sp,
-                        color = if (authCodeIsEmpty) Gray1 else Color.White,
-                        fontWeight = FontWeight.Bold
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(align = Alignment.Center),
+                        text = if (authenticationBtnIsClicked) stringResource(R.string.auth_code_resend) else stringResource(
+                            R.string.auth_code_send
+                        ),
+                        letterSpacing = (-0.3).sp,
+                        fontSize = 13.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
                     )
                 }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Button(
+                onClick = authenticateCode,
+                colors = if (authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
+                else ButtonDefaults.buttonColors(ColorPrimary),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(44.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.next),
+                    fontSize = 15.sp,
+                    color = if (authCodeIsEmpty) Gray1 else Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
