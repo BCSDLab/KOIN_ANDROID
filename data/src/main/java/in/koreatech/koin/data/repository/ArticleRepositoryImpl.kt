@@ -5,6 +5,9 @@ import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.model.article.html.ArticleContent
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
@@ -19,8 +22,10 @@ class ArticleRepositoryImpl @Inject constructor(
         return articleRemoteDataSource.fetchArticle(articleId).toArticleContent()
     }
 
-    override suspend fun fetchHotArticles(): List<ArticleHeader> {
-        return articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() }
+    override fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>> {
+        return flow {
+            emit(articleRemoteDataSource.fetchHotArticles().map { it.toArticleHeader() })
+        }
     }
 
     override suspend fun fetchSearchedArticles(
