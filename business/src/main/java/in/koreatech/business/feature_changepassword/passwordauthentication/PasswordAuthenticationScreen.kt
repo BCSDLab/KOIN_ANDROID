@@ -225,7 +225,7 @@ fun PasswordAuthenticationScreen(
                 else ButtonDefaults.buttonColors(ColorPrimary),
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(44.dp)
+                    .height(48.dp)
             ) {
                 Text(
                     text = stringResource(R.string.next),
