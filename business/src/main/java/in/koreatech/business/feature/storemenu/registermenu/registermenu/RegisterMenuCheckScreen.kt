@@ -84,7 +84,7 @@ fun RegisterMenuCheckScreenImpl(
     onBackPressed: () -> Unit = {},
     registerMenuState: RegisterMenuState = RegisterMenuState(),
     menuName: String = "",
-    onPositiveButtonClicked: () -> Unit= {}
+    onPositiveButtonClicked: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxSize()

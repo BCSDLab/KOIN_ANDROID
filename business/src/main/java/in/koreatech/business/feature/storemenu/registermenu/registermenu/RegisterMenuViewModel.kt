@@ -40,7 +40,7 @@ class RegisterMenuViewModel @Inject constructor(
     private fun getStoreMenuCategory(){
         intent {
             viewModelScope.launch {
-                val storeId = 163
+                val storeId = 163 //Todo: 임시 변수 이므로 수정 필요
                 val menuCategory = getMenuCategoryUseCase(storeId)
                 reduce {
                     state.copy(
