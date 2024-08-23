@@ -11,11 +11,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -46,7 +46,7 @@ fun FinishChangePasswordScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 12.dp)
+                    .padding(top = 12.dp)
             ) {
                 IconButton(
                     onClick = { /*TODO*/ },
@@ -65,9 +65,7 @@ fun FinishChangePasswordScreen(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
+            Spacer(modifier = Modifier.height(32.dp))
             Column(
                 modifier = Modifier
                     .padding(horizontal = 24.dp),
@@ -81,16 +79,17 @@ fun FinishChangePasswordScreen(
                     Text(
                         modifier = Modifier,
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.h6,
                         text = stringResource(R.string.change_password_step)
                     )
                     Text(
                         text = stringResource(id = R.string.two_half),
                         color = ColorPrimary,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.h6,
+                        letterSpacing = 4.sp,
                     )
                 }
-
+                Spacer(modifier = Modifier.height(8.dp))
                 Canvas(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -123,7 +122,6 @@ fun FinishChangePasswordScreen(
                     modifier = modifier
                         .fillMaxWidth()
                         .padding(horizontal = 46.dp)
-                        .padding(bottom = 16.dp)
                 )
                 Text(
                     text = stringResource(R.string.password_please_sign_in_with_new_password),
@@ -133,15 +131,14 @@ fun FinishChangePasswordScreen(
                     textAlign = TextAlign.Center,
                     modifier = modifier
                         .fillMaxWidth()
-                        .padding(bottom = 51.dp)
+                        .padding(top = 12.dp)
                 )
-
-
+                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = { /*TODO*/ },
                     colors = ButtonDefaults.buttonColors(ColorPrimary),
                     modifier = modifier
-                        .padding(bottom = 80.dp, top = 217.5.dp)
+                        .padding(bottom = 24.dp)
                         .fillMaxWidth()
                         .height(44.dp)
                 ) {
