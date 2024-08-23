@@ -42,6 +42,7 @@ import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedTextField
 import `in`.koreatech.business.ui.theme.ColorError
 import `in`.koreatech.business.ui.theme.ColorPrimary
+import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -181,7 +182,7 @@ fun ChangePasswordScreen(
                 text = stringResource(R.string.confirm_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 4.dp),
+                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp),
             )
             LinedTextField(
                 value = passwordChecked,
@@ -204,7 +205,7 @@ fun ChangePasswordScreen(
                     text = stringResource(id = R.string.complete),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (fillAllPasswords) Color.White else Color.Gray
+                    color = if (fillAllPasswords) Color.White else Gray1
                 )
             }
         }

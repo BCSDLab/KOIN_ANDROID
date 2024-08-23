@@ -140,7 +140,7 @@ fun FinishChangePasswordScreen(
                     modifier = modifier
                         .padding(bottom = 24.dp)
                         .fillMaxWidth()
-                        .height(44.dp)
+                        .height(48.dp)
                 ) {
                     Text(
                         text = stringResource(id = R.string.go_to_login_screen),
