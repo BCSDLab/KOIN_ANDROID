@@ -48,7 +48,7 @@ class OwnerRegisterRepositoryImpl(
 
             Result.success(Unit)
         } catch (e: EOFException) {
-            Result.success(Unit)
+            Result.failure(e)
         } catch (e: HttpException) {
             Result.failure(e)
         } catch (t: Throwable) {
@@ -110,7 +110,7 @@ class OwnerRegisterRepositoryImpl(
             )
             Result.success(Unit)
         } catch (e: EOFException) {
-            Result.success(Unit)
+            Result.failure(e)
         } catch (e: HttpException) {
             Result.failure(e)
         } catch (t: Throwable) {
@@ -144,7 +144,7 @@ class OwnerRegisterRepositoryImpl(
 
             Result.success(Unit)
         } catch (e: EOFException) {
-            Result.success(Unit)
+            Result.failure(e)
         } catch (e: HttpException) {
             Result.failure(e)
         } catch (t: Throwable) {
