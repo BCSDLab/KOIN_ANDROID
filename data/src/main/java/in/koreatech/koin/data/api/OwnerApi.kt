@@ -3,9 +3,8 @@ package `in`.koreatech.koin.data.api
 import OwnerRegisterRequest
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
-import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
-import `in`.koreatech.koin.data.request.owner.OwnerRegisterRequest
+import `in`.koreatech.koin.data.request.owner.OwnerEmailRegisterRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationCodeRequest
 import `in`.koreatech.koin.data.request.owner.OwnerVerificationEmailRequest
 import `in`.koreatech.koin.data.request.owner.VerificationCodeSmsRequest
@@ -53,7 +52,7 @@ interface OwnerApi {
 
 
     @GET(URLConstant.OWNER.EXISTS_ACCOUNT)
-    suspend fun checkExistsAccount(@Query("account") account:String)
+    suspend fun checkExistsAccount(@Query("account") account: String)
 
     @POST(URLConstant.OWNER.SMS)
     suspend fun postVerificationSms(@Body ownerVerificationSms: VerificationSmsRequest)
