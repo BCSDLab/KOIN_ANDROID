@@ -45,7 +45,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.times
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
-import `in`.koreatech.business.feature.launchImagePicker
 import `in`.koreatech.business.feature.signup.accountsetup.AccountSetupViewModel
 import `in`.koreatech.business.feature.signup.dialog.BusinessAlertDialog
 import `in`.koreatech.business.feature.textfield.LinedTextField
