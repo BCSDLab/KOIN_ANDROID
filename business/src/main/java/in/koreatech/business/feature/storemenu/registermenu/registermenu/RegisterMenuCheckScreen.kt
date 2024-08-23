@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,6 +49,7 @@ import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
 import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
+import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import org.orbitmvi.orbit.compose.collectAsState
@@ -151,7 +153,7 @@ fun RegisterMenuCheckScreenImpl(
                         .padding(horizontal = 16.dp)
                         .padding(top = 16.dp),
                     thickness = 1.dp,
-                    color = Gray6
+                    color = Gray7
                 )
 
             }
@@ -200,7 +202,7 @@ fun RegisterMenuCheckScreenImpl(
                         .padding(horizontal = 16.dp)
                         .padding(top = 16.dp),
                     thickness = 1.dp,
-                    color = Gray6
+                    color = Gray7
                 )
             }
 
@@ -226,7 +228,7 @@ fun RegisterMenuCheckScreenImpl(
                         .padding(horizontal = 16.dp)
                         .padding(top = 16.dp),
                     thickness = 1.dp,
-                    color = Gray6
+                    color = Gray7
                 )
             }
 
@@ -254,7 +256,7 @@ fun RegisterMenuCheckScreenImpl(
                         .padding(horizontal = 16.dp)
                         .padding(top = 16.dp),
                     thickness = 1.dp,
-                    color = Gray6
+                    color = Gray7
                 )
             }
             
@@ -297,16 +299,17 @@ fun RegisterMenuCheckScreenImpl(
                         .padding(horizontal = 16.dp)
                         .padding(top = 24.dp, bottom = 52.dp)
                         .fillMaxWidth()
-                        .height(43.dp)
+                        .height(43.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Button(
                         onClick = onBackPressed,
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(Color.White),
                         modifier = modifier
+                            .border(1.dp, ColorSecondary)
                             .fillMaxHeight()
-                            .width(93.dp)
-                            .border(1.dp, ColorSecondary),
+                            .width(113.dp)
                     ) {
                         Text(
                             text = stringResource(id = R.string.cancel),
@@ -316,15 +319,12 @@ fun RegisterMenuCheckScreenImpl(
                         )
                     }
 
-                    Spacer(modifier = Modifier.weight(1f))
-
                     Button(
                         onClick = onPositiveButtonClicked,
                         shape = RectangleShape,
                         colors = ButtonDefaults.buttonColors(ColorPrimary),
                         modifier = modifier
-                            .height(43.dp)
-                            .width(226.dp)
+                            .fillMaxSize()
                     ) {
                         Text(
                             text = stringResource(id = R.string.positive),
