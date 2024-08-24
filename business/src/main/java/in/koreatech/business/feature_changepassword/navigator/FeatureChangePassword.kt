@@ -1,6 +1,5 @@
 package `in`.koreatech.business.feature_changepassword.navigator
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -37,9 +36,9 @@ fun ChangePassword(
         }
 
         composable(
-            route = "${ChangePasswordRoute.ChangePassword.name}/{email}",
+            route = "${ChangePasswordRoute.ChangePassword.name}/{phoneNumber}",
             arguments = listOf(
-                navArgument("email"){
+                navArgument("phoneNumber"){
                     type = NavType.StringType
                     defaultValue = ""
                 }
@@ -63,7 +62,7 @@ fun ChangePassword(
 
 private fun navigateToRandomScreen(
     navController: NavController,
-    email: String
+    phoneNumber: String
 ) {
-    navController.navigate("${ChangePasswordRoute.ChangePassword}/${email}")
+    navController.navigate("${ChangePasswordRoute.ChangePassword}/${phoneNumber}")
 }
