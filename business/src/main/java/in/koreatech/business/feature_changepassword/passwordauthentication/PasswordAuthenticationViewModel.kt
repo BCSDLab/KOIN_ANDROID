@@ -101,15 +101,25 @@ class PasswordAuthenticationViewModel @Inject constructor(
     private suspend fun performSendAuthCode(phoneNumber: String) {
         sendAuthCodeUseCase(phoneNumber = phoneNumber)
             .onSuccess {
-                authenticationBtnClicked()
-                sendAuthCode()
+                intent {
+                    reduce {
+                        state.copy(
+                            accountContinuationState = ChangePasswordContinuationState.SendAuthCode,
+                            authenticationBtnIsClicked = true
+                        )
+                    }
+                }
             }
             .onFailure {
-                  when (it) {
-                      ChangePasswordExceptionState.ToastNullPhoneNumber -> toastNullEmail()
-                      ChangePasswordExceptionState.ToastIsNotPhoneNumber -> toastIsNotEmail()
-                      else -> {}
-                  }
+                intent {
+                    reduce {
+                        state.copy(
+                            accountContinuationState = ChangePasswordContinuationState.Failed(
+                                it.message
+                            )
+                        )
+                    }
+                }
             }
     }
 

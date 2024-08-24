@@ -119,4 +119,18 @@ class OwnerErrorHandlerImpl @Inject constructor(
         }
     }
 
+    override fun handleFindPasswordError(throwable: Throwable): ErrorHandler {
+        return throwable.handleCommonError(context) {
+            when (it) {
+                is HttpException -> {
+                    when (it.code()) {
+                        400 -> ErrorHandler(context.getString(R.string.error_invalid_phone_number))
+                        404 -> ErrorHandler(context.getString(R.string.error_account_not_exist))
+                        else -> ErrorHandler(context.getString(R.string.error_network_unknown))
+                    }
+                }
+                else -> ErrorHandler(context.getString(R.string.error_network_unknown))
+            }.withUnknown(context)
+        }
+    }
 }
