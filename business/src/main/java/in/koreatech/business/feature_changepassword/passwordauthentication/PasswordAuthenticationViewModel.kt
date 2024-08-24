@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.owner.OwnerError
-import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
+import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.usecase.business.changepassword.AuthenticateSmsCodeUseCase
 import `in`.koreatech.koin.domain.usecase.business.changepassword.SendAuthSmsCodeUseCase
+import `in`.koreatech.koin.domain.util.onFailure
+import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -48,18 +50,24 @@ class PasswordAuthenticationViewModel @Inject constructor(
                 }
         }
     }
-    private fun authenticationBtnClicked() = intent {
-        reduce{
-            state.copy(authenticationBtnIsClicked = true)
+
+    fun insertPhoneNumber(phoneNumber: String) = intent {
+        reduce {
+            state.copy(
+                phoneNumber = phoneNumber,
+                authenticationBtnIsClicked = false,
+                accountContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
+            )
         }
     }
 
-    fun insertPhoneNumber(phoneNumber: String) = intent {
-        reduce { state.copy(phoneNumber = phoneNumber) }
-    }
-
     fun insertAuthCode(authCode: String) = intent {
-        reduce { state.copy(authenticationCode = authCode) }
+        reduce {
+            state.copy(
+                authenticationCode = authCode,
+                smsAuthContinuationState = ChangePasswordContinuationState.RequestedSmsValidation,
+            )
+        }
     }
 
     private fun goToPasswordChangeScreen() = intent {
@@ -112,13 +120,18 @@ class PasswordAuthenticationViewModel @Inject constructor(
             ownerAuthenticateCode(
                 phoneNumber = phoneNumber,
                 authCode = authCode
-            )   .onSuccess {
-                    goToPasswordChangeScreen()
-                }
+            ).onSuccess {
+                goToPasswordChangeScreen()
+            }
                 .onFailure {
-                    when(it){
-                        ChangePasswordExceptionState.ToastNullAuthCode -> toastNullAuthCode()
-                        OwnerError.IncorrectParaMeter -> toastNotCoincideAuthCode()
+                    when (it) {
+                        OwnerError.IncorrectParaMeter -> intent {
+                            reduce {
+                                state.copy(
+                                    smsAuthContinuationState = ChangePasswordContinuationState.Failed()
+                                )
+                            }
+                        }
                     }
                 }
         }
