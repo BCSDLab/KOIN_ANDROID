@@ -1,13 +1,18 @@
 package `in`.koreatech.koin.domain.state.business.changepw
 
 sealed class ChangePasswordContinuationState {
+    object RequestedSmsValidation : ChangePasswordContinuationState()
     object GotoChangePasswordScreen: ChangePasswordContinuationState()
     object SendAuthCode: ChangePasswordContinuationState()
-
     object FinishedChangePassword: ChangePasswordContinuationState()
+
+    data class Failed(
+        val message: String = "",
+        val throwable: Throwable? = null
+    ) : ChangePasswordContinuationState()
 }
 
-sealed class ChangePasswordExceptionState: Throwable() {
+sealed class ChangePasswordExceptionState : Throwable() {
     object ToastNullEmail : ChangePasswordExceptionState()
     object ToastIsNotEmail : ChangePasswordExceptionState()
 
@@ -21,5 +26,5 @@ sealed class ChangePasswordExceptionState: Throwable() {
     object NotCoincidePassword: ChangePasswordExceptionState()
     object ToastNullPassword: ChangePasswordExceptionState()
     object ToastNullPasswordChecked: ChangePasswordExceptionState()
-
+    object NotExistsAccount : ChangePasswordExceptionState()
 }
