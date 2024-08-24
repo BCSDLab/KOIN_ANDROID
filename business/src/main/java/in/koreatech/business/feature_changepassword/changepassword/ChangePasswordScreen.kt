@@ -207,7 +207,7 @@ fun ChangePasswordScreen(
                     text = stringResource(id = R.string.complete),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
-                    color = if (fillAllPasswords) Color.White else Gray1
+                    color = if (fillAllPasswords && buttonEnabled) Color.White else Gray1
                 )
             }
         }

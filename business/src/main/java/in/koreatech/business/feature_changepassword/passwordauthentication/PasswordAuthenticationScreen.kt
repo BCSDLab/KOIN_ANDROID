@@ -234,16 +234,16 @@ fun PasswordAuthenticationScreen(
             Spacer(modifier = Modifier.weight(1f))
             Button(
                 onClick = authenticateCode,
-                colors = if (authCodeIsEmpty) ButtonDefaults.buttonColors(Gray5)
-                else ButtonDefaults.buttonColors(ColorPrimary),
+                colors = buttonColors(ColorPrimary),
                 modifier = modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(48.dp),
+                enabled= authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty
             ) {
                 Text(
                     text = stringResource(R.string.next),
                     fontSize = 15.sp,
-                    color = if (authCodeIsEmpty) Gray1 else Color.White,
+                    color = if (authCodeIsEmpty || authState is ChangePasswordContinuationState.Failed) Gray1 else Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
