@@ -19,6 +19,7 @@
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view_article_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,9 +76,7 @@
                         style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:chipCornerRadius="10dp"
-                        app:textStartPadding="10dp"
-                        app:textEndPadding="8dp"
+                        app:chipCornerRadius="6dp"
                         android:checked="true"
                         app:ensureMinTouchTargetSize="false"
                         tools:text="1" />
@@ -86,9 +85,7 @@
                         android:id="@+id/chip_page2"
                         style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
-                        app:chipCornerRadius="10dp"
-                        app:textStartPadding="10dp"
-                        app:textEndPadding="8dp"
+                        app:chipCornerRadius="6dp"
                         android:layout_height="wrap_content"
                         app:ensureMinTouchTargetSize="false"
                         tools:text="2" />
@@ -98,10 +95,8 @@
                         style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:textStartPadding="10dp"
-                        app:textEndPadding="8dp"
                         app:ensureMinTouchTargetSize="false"
-                        app:chipCornerRadius="10dp"
+                        app:chipCornerRadius="6dp"
                         tools:text="3" />
 
                     <com.google.android.material.chip.Chip
@@ -109,10 +104,8 @@
                         style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:textStartPadding="10dp"
-                        app:textEndPadding="8dp"
                         app:ensureMinTouchTargetSize="false"
-                        app:chipCornerRadius="10dp"
+                        app:chipCornerRadius="6dp"
                         tools:text="4" />
 
                     <com.google.android.material.chip.Chip
@@ -120,10 +113,8 @@
                         style="@style/RectangleChoiceChip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:textStartPadding="10dp"
-                        app:textEndPadding="8dp"
                         app:ensureMinTouchTargetSize="false"
-                        app:chipCornerRadius="10dp"
+                        app:chipCornerRadius="6dp"
                         tools:text="5" />
 
                 </com.google.android.material.chip.ChipGroup>
