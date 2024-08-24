@@ -15,4 +15,15 @@ interface OwnerChangePasswordRepository  {
         password: String
     ): Result<Unit>
 
+    suspend fun requestSmsVerification(
+        phoneNumber: String,
+    ): Result<Unit>
+    suspend fun authenticateSmsCode(
+        phoneNumber: String,
+        authCode: String,
+    ): Result<Unit>
+    suspend fun changePasswordSms(
+        phoneNumber: String,
+        password: String,
+    ): Result<Unit>
 }
