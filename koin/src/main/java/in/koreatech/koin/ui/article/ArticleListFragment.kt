@@ -27,8 +27,8 @@ import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_HE
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
-import `in`.koreatech.koin.util.ext.toStringWithComma
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -73,6 +73,12 @@ class ArticleListFragment : Fragment() {
             initArticleRecyclerView()
             initPageButtonSelectedListener()
             addCategoryTabs()
+            binding.textViewNextPage.setOnClickListener {
+                viewModel.setCurrentPage(viewModel.currentPage.value + 1)
+            }
+            binding.textViewPreviousPage.setOnClickListener {
+                viewModel.setCurrentPage(viewModel.currentPage.value - 1)
+            }
         }
         collectData()
         return binding.root
@@ -86,7 +92,7 @@ class ArticleListFragment : Fragment() {
     private fun initPageButtonSelectedListener() {
         binding.chipGroupArticlePage.setOnCheckedStateChangeListener { _, checkedIds ->
             binding.root.findViewById<Chip>(checkedIds.first()).let {
-                viewModel.setCurrentPage(pageChips.indexOf(it) + 1)
+                viewModel.setCurrentPage(viewModel.pageNumbers.value[pageChips.indexOf(it)] ?: 1)
             }
         }
     }
@@ -121,43 +127,44 @@ class ArticleListFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.run {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.currentBoard.collect {
-                        viewModel.setCurrentPage(1)
-                        binding.chipPage1.isChecked = true
-                        binding.tabLayoutArticleBoard.getTabAt(it.ordinal)?.select()
-                    }
-                }
-            }
-            this.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.articlePagination.collect {
+                    viewModel.articlePagination.collectLatest {
                         articleAdapter.submitList(it.articles)
-                        binding.recyclerViewArticleList.scrollToPosition(0)
-                        viewModel.calculatePageNumber()
+                        binding.nestedScrollViewArticleList.scrollTo(0, 0)
                     }
                 }
             }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentPage.collect { page ->
+                        viewModel.calculatePageNumber()
                         setPagingTextButtonVisibility(page)
+                        changeChipSelectedState(page)
                     }
                 }
             }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.pageNumbers.collect { pageNumbers ->
-                        pageChips.forEachIndexed { i, chip ->
-                            if (pageNumbers[i] != null) {
-                                chip.text = pageNumbers[i]!!.toStringWithComma()
-                                chip.visibility = View.VISIBLE
-                                chip.isChecked = pageNumbers[i] == viewModel.currentPage.value
-                            } else {
-                                chip.visibility = View.GONE
-                            }
-                        }
+                        changeChipDataState(pageNumbers)
                     }
                 }
+            }
+        }
+    }
+
+    private fun changeChipSelectedState(page: Int) {
+        pageChips.forEachIndexed { i, chip ->
+            chip.isChecked = page == viewModel.pageNumbers.value[i]
+        }
+    }
+
+    private fun changeChipDataState(pageNumbers: IntArray) {
+        pageChips.forEachIndexed { i, chip ->
+            if (pageNumbers[i] != 0) {
+                chip.text = pageNumbers[i].toString()
+                chip.visibility = View.VISIBLE
+            } else {
+                chip.visibility = View.GONE
             }
         }
     }
@@ -198,15 +205,5 @@ class ArticleListFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            ArticleListFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
     }
 }
