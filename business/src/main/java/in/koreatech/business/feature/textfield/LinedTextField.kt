@@ -78,7 +78,7 @@ fun LinedTextField(
 
                 Box(modifier = Modifier.padding(start = 8.dp, top = 1.dp)) {
                     Text(
-                        text = helperText,
+                        text = if(isError) "" else helperText,
                         fontSize = 11.sp,
                         color = ColorHelper,
                     )
