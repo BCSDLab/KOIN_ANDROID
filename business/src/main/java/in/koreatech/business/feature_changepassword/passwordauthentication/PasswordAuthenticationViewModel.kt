@@ -66,25 +66,6 @@ class PasswordAuthenticationViewModel @Inject constructor(
         postSideEffect(PasswordAuthenticationSideEffect.GotoChangePasswordScreen(state.phoneNumber))
     }
 
-    private fun toastNullEmail() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NoEmail))
-    }
-
-    private fun toastIsNotEmail() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.IsNotEmail))
-    }
-
-    private fun sendAuthCode() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.SendAuthCode)
-    }
-
-    private fun toastNullAuthCode() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NullAuthCode))
-    }
-
-    private fun toastNotCoincideAuthCode() = intent {
-        postSideEffect(PasswordAuthenticationSideEffect.ShowMessage(ErrorType.NotCoincideAuthCode))
-    }
 
     fun sendAuthCode(phoneNumber: String) {
         viewModelScope.launch {

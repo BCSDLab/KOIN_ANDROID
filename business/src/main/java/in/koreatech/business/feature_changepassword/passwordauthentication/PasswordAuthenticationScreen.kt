@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -244,26 +243,11 @@ private fun HandleSideEffects(
     email: String,
     navigateToChangePassword: (email: String) -> Unit
 ) {
-    val context = LocalContext.current
-
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(
                 email
             )
-
-            is PasswordAuthenticationSideEffect.SendAuthCode -> ToastUtil.getInstance()
-                .makeShort(context.getString(R.string.auth_code_input_from_email))
-
-            is PasswordAuthenticationSideEffect.ShowMessage -> {
-                val message = when (sideEffect.type) {
-                    ErrorType.NoEmail -> context.getString(R.string.email_address_insert)
-                    ErrorType.IsNotEmail -> context.getString(R.string.email_address_incorrect)
-                    ErrorType.NullAuthCode -> context.getString(R.string.auth_code_insert)
-                    ErrorType.NotCoincideAuthCode -> context.getString(R.string.auth_code_not_equal)
-                }
-                ToastUtil.getInstance().makeShort(message)
-            }
         }
     }
 }
