@@ -5,8 +5,6 @@ import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptio
 
 sealed class PasswordAuthenticationSideEffect {
     data class GotoChangePasswordScreen(val email: String): PasswordAuthenticationSideEffect()
-    object SendAuthCode: PasswordAuthenticationSideEffect()
-    data class ShowMessage(val type: ErrorType): PasswordAuthenticationSideEffect()
 }
 
 enum class ErrorType {

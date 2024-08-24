@@ -92,21 +92,6 @@ class ChangePasswordViewModel  @Inject constructor(
         }
     }
 
-    private fun toastNullPhoneNumber() = intent {
-       postSideEffect(ChangePasswordSideEffect.ToastNullEmail)
-    }
-
-    private fun toastNullPassword() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastNullPassword)
-    }
-
-    private fun toastIsNotPasswordForm() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastIsNotPasswordForm)
-    }
-
-    private fun toastNullPasswordChecked() = intent {
-        postSideEffect(ChangePasswordSideEffect.ToastNullPasswordChecked)
-    }
 
     private fun notCoincidePassword() = intent {
         postSideEffect(ChangePasswordSideEffect.NotCoincidePassword)

@@ -215,23 +215,11 @@ fun ChangePasswordScreen(
 
 @Composable
 fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -> Unit) {
-    val context = LocalContext.current
 
     viewModel.collectSideEffect {
         when (it) {
             is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
             is ChangePasswordSideEffect.NotCoincidePassword -> viewModel.viewNotCoincidePassword()
-            is ChangePasswordSideEffect.ToastNullEmail -> ToastUtil.getInstance()
-                .makeShort(context.getString(R.string.email_address_insert))
-
-            is ChangePasswordSideEffect.ToastIsNotPasswordForm -> ToastUtil.getInstance()
-                .makeShort(context.getString(R.string.password_condition))
-
-            is ChangePasswordSideEffect.ToastNullPassword -> ToastUtil.getInstance()
-                .makeShort(context.getString(R.string.password_input))
-
-            is ChangePasswordSideEffect.ToastNullPasswordChecked -> ToastUtil.getInstance()
-                .makeShort(context.getString(R.string.password_confirm_input))
         }
     }
 }
