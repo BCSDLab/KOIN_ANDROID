@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.data.repository
 
-import android.util.Log
 import `in`.koreatech.koin.data.mapper.httpExceptionMapper
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordSmsRequest
@@ -95,15 +94,13 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
                 )
             )
             Result.success(Unit)
-        }
-        catch (e: HttpException) {
-            e.httpExceptionMapper()
-        }
-        catch (t: CancellationException) {
+        } catch (t: CancellationException) {
             throw t
-        }
-        catch (e: Exception) {
-            Result.failure(e)
+        } catch (e: HttpException) {
+            throw e
+        } catch (e: Exception) {
+            throw e
+
         }
     }
 
