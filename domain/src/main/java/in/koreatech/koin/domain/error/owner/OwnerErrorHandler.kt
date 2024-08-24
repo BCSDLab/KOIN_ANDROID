@@ -12,4 +12,5 @@ interface OwnerErrorHandler {
     fun handleOwnerRegisterError(throwable: Throwable): ErrorHandler
     fun handleSendSmsError(throwable: Throwable): ErrorHandler
     fun handleExistsAccountError(throwable: Throwable): Pair<Boolean?, ErrorHandler>
+    fun handleFindPasswordError(throwable: Throwable): ErrorHandler
 }
