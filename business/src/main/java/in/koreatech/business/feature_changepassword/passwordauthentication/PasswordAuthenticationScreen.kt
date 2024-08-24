@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -39,7 +40,6 @@ import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
-import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.util.ext.clickableOnce
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
@@ -59,7 +59,7 @@ fun PasswordAuthenticationScreenImpl(
         modifier = modifier,
         phoneNumber = state.phoneNumber,
         authCode = state.authenticationCode,
-        emailIsEmpty = state.phoneNumberIsEmpty(),
+        phoneNumberIsEmpty = state.phoneNumberIsEmpty(),
         authCodeIsEmpty = state.authCodeIsEmpty(),
         authenticationBtnIsClicked = state.authenticationBtnIsClicked,
         onBackPressed = onBackPressed,
@@ -84,7 +84,7 @@ fun PasswordAuthenticationScreen(
     modifier: Modifier,
     phoneNumber: String,
     authCode: String,
-    emailIsEmpty: Boolean,
+    phoneNumberIsEmpty: Boolean,
     authCodeIsEmpty: Boolean,
     authenticationBtnIsClicked: Boolean,
     onBackPressed: () -> Unit,
@@ -274,7 +274,7 @@ fun PreviewPasswordAuthenticationScreen() {
             modifier = Modifier,
             phoneNumber = "",
             authCode = "",
-            emailIsEmpty = true,
+            phoneNumberIsEmpty = true,
             authCodeIsEmpty = true,
             authenticationBtnIsClicked = true,
             onBackPressed = { },
