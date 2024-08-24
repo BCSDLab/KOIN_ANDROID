@@ -35,12 +35,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.textfield.LinedTextField
+import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.ui.theme.Gray5
 import `in`.koreatech.business.util.ext.clickableOnce
-import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -70,7 +71,9 @@ fun PasswordAuthenticationScreenImpl(
                 state.phoneNumber.trim(),
                 state.authenticationCode.trim()
             )
-        }
+        },
+        accountState = state.accountContinuationState,
+        authState = state.smsAuthContinuationState,
     )
 
     HandleSideEffects(viewModel, state.phoneNumber.trim(), navigateToChangePassword)
@@ -88,7 +91,9 @@ fun PasswordAuthenticationScreen(
     insertPhoneNumber: (String) -> Unit,
     insertAuthCode: (String) -> Unit,
     sendAuthCode: () -> Unit,
-    authenticateCode: () -> Unit
+    authenticateCode: () -> Unit,
+    accountState: ChangePasswordContinuationState,
+    authState: ChangePasswordContinuationState,
 ) {
 
     Column(
@@ -175,6 +180,11 @@ fun PasswordAuthenticationScreen(
                 value = phoneNumber,
                 onValueChange = insertPhoneNumber,
                 label = stringResource(R.string.enter_phone_number),
+                isError = accountState is ChangePasswordContinuationState.Failed,
+                errorText = if (accountState is ChangePasswordContinuationState.Failed)
+                    accountState.message else stringResource(R.string.error_network_unknown),
+                isSuccess = accountState == ChangePasswordContinuationState.SendAuthCode,
+                successText = stringResource(R.string.success_send_sms_code),
             )
 
             Text(
@@ -192,12 +202,16 @@ fun PasswordAuthenticationScreen(
                     modifier = Modifier.width(200.dp),
                     value = authCode,
                     onValueChange = insertAuthCode,
-                    label = stringResource(R.string.input_auth_code)
+                    label = stringResource(R.string.input_auth_code),
+                    errorText = stringResource(R.string.auth_code_not_equal),
+                    isError = authState is ChangePasswordContinuationState.Failed,
                 )
 
                 Button(
                     onClick = sendAuthCode,
-                    colors = ButtonDefaults.buttonColors(ColorPrimary),
+                    colors = if (authState is ChangePasswordContinuationState.Failed) ButtonDefaults.buttonColors(
+                        ColorAccent
+                    ) else ButtonDefaults.buttonColors(ColorPrimary),
                     modifier = modifier
                         .width(124.dp)
                         .height(41.dp)
@@ -267,7 +281,9 @@ fun PreviewPasswordAuthenticationScreen() {
             insertPhoneNumber = { },
             insertAuthCode = {},
             sendAuthCode = {},
-            authenticateCode = { }
+            authenticateCode = { },
+            accountState = ChangePasswordContinuationState.SendAuthCode,
+            authState = ChangePasswordContinuationState.SendAuthCode,
         )
     }
 }
