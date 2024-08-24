@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState
-import `in`.koreatech.koin.domain.usecase.business.OwnerChangePasswordUseCase
+import `in`.koreatech.koin.domain.usecase.business.changepassword.ChangePasswordSmsUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -17,14 +17,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChangePasswordViewModel  @Inject constructor(
-    private val ownerChangePasswordUseCase: OwnerChangePasswordUseCase,
+    private val changePasswordSmsUseCase: ChangePasswordSmsUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), ContainerHost<ChangePasswordState, ChangePasswordSideEffect> {
     override val container: Container<ChangePasswordState, ChangePasswordSideEffect> =
         container(ChangePasswordState(), savedStateHandle = savedStateHandle){
             val email = savedStateHandle.get<String>("email")
             checkNotNull(email)
-            getEmail(email)
+            getPhoneNumber(email)
         }
 
     fun viewNotCoincidePassword() = intent {
@@ -58,13 +58,13 @@ class ChangePasswordViewModel  @Inject constructor(
     }
 
     fun changePassword(
-        email: String,
+        phoneNumber: String,
         password: String,
         passwordChecked: String
     ){
         viewModelScope.launch {
-            ownerChangePasswordUseCase(
-                email = email,
+            changePasswordSmsUseCase(
+                phoneNumber = phoneNumber,
                 password = password,
                 passwordChanged = passwordChecked
             )   .onSuccess {
@@ -72,7 +72,7 @@ class ChangePasswordViewModel  @Inject constructor(
             }
                 .onFailure {
                     when(it){
-                        ChangePasswordExceptionState.ToastNullEmail -> toastNullEmail()
+                        ChangePasswordExceptionState.ToastNullEmail -> toastNullPhoneNumber()
                         ChangePasswordExceptionState.ToastNullPassword -> toastNullPassword()
                         ChangePasswordExceptionState.ToastIsNotPasswordForm -> toastIsNotPasswordForm()
                         ChangePasswordExceptionState.ToastNullPasswordChecked -> toastNullPasswordChecked()
@@ -82,17 +82,17 @@ class ChangePasswordViewModel  @Inject constructor(
         }
     }
 
-    private fun getEmail(email: String){
+    private fun getPhoneNumber(phoneNumber: String){
         intent {
             reduce {
                 state.copy(
-                    email = email
+                    phoneNumber = phoneNumber
                 )
             }
         }
     }
 
-    private fun toastNullEmail() = intent {
+    private fun toastNullPhoneNumber() = intent {
        postSideEffect(ChangePasswordSideEffect.ToastNullEmail)
     }
 
