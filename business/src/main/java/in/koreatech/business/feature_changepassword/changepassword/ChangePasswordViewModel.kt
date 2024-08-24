@@ -22,9 +22,9 @@ class ChangePasswordViewModel  @Inject constructor(
 ) : ViewModel(), ContainerHost<ChangePasswordState, ChangePasswordSideEffect> {
     override val container: Container<ChangePasswordState, ChangePasswordSideEffect> =
         container(ChangePasswordState(), savedStateHandle = savedStateHandle){
-            val email = savedStateHandle.get<String>("email")
-            checkNotNull(email)
-            getPhoneNumber(email)
+            val phoneNumber = savedStateHandle.get<String>("phoneNumber")
+            checkNotNull(phoneNumber)
+            getPhoneNumber(phoneNumber)
         }
 
     fun viewNotCoincidePassword() = intent {
@@ -72,10 +72,6 @@ class ChangePasswordViewModel  @Inject constructor(
             }
                 .onFailure {
                     when(it){
-                        ChangePasswordExceptionState.ToastNullEmail -> toastNullPhoneNumber()
-                        ChangePasswordExceptionState.ToastNullPassword -> toastNullPassword()
-                        ChangePasswordExceptionState.ToastIsNotPasswordForm -> toastIsNotPasswordForm()
-                        ChangePasswordExceptionState.ToastNullPasswordChecked -> toastNullPasswordChecked()
                         ChangePasswordExceptionState.NotCoincidePassword -> notCoincidePassword()
                     }
                 }
