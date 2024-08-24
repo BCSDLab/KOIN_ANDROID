@@ -10,11 +10,13 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.ShopMenus
@@ -195,6 +197,16 @@ fun List<StoreDayOffResponse>.toOperatingTime(): List<OperatingTime> {
             dayOff.dayOfWeek,
             dayOff.openTime ?: "",
         )
+        responseList.add(response)
+    }
+    return responseList
+}
+
+fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterResponse.OptionPrice>{
+    val responseList = ArrayList<StoreMenuRegisterResponse.OptionPrice>()
+    for (option in this){
+        val response = StoreMenuRegisterResponse.OptionPrice(option.option, option.price.toInt())
+
         responseList.add(response)
     }
     return responseList
