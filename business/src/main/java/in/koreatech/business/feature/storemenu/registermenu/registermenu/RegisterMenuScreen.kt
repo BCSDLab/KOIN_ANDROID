@@ -1,7 +1,6 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 import android.net.Uri
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,9 +24,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -58,8 +54,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.business.feature.store.navigator.ModifyInfoNavigator
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -69,26 +65,26 @@ import `in`.koreatech.business.ui.theme.ColorSecondaryText
 import `in`.koreatech.business.ui.theme.ColorTextBackgrond
 import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
+import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.toast.ToastUtil
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RegisterMenuScreen(
     modifier: Modifier = Modifier,
+    goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
     viewModel: RegisterMenuViewModel
 ) {
     val state = viewModel.collectAsState().value
 
     RegisterMenuScreenImpl(
-        goToCheckMenuScreen = {} ,
-        onBackPressed = {},
+        onBackPressed = onBackPressed,
         registerMenuState = state,
         imageIndex = state.imageIndex,
         isModify = state.isModify,
@@ -113,17 +109,8 @@ fun RegisterMenuScreen(
         addPriceButtonClicked = {
             viewModel.addPrice()
         },
-        onRecommendMenuButtonClicked = {
-            viewModel.recommendMenuIsClicked()
-        },
-        onMainMenuButtonClicked = {
-            viewModel.mainMenuIsClicked()
-        },
-        onSetMenuButtonClicked = {
-            viewModel.setMenuIsClicked()
-        },
-        onSideMenuButtonClicked = {
-            viewModel.sideMenuIsClicked()
+        onMenuCategoryIsClicked = {
+          viewModel.menuCategoryIsClicked(it)
         },
         onChangeImage = {
             viewModel.changeMenuImageUri(it)
@@ -145,14 +132,13 @@ fun RegisterMenuScreen(
         },
     )
 
-    HandleSideEffects(viewModel, goToCheckMenuScreen = {})
+    HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RegisterMenuScreenImpl(
     modifier: Modifier = Modifier,
-    goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
     registerMenuState: RegisterMenuState = RegisterMenuState(),
     imageIndex: Int = 0,
@@ -164,10 +150,7 @@ fun RegisterMenuScreenImpl(
     onChangeDetailMenuPrice: (Pair<Int, String>) -> Unit = {},
     onDeleteMenuPrice:(Int) -> Unit = {},
     addPriceButtonClicked: () -> Unit = {},
-    onRecommendMenuButtonClicked: () -> Unit = {},
-    onMainMenuButtonClicked: () -> Unit = {},
-    onSetMenuButtonClicked: () -> Unit = {},
-    onSideMenuButtonClicked: () -> Unit = {},
+    onMenuCategoryIsClicked: (Int) -> Unit = {},
     onChangeImage: (List<Uri>) -> Unit = {},
     onDeleteImage: (Int) -> Unit ={},
     onModifyImage: (Uri) -> Unit ={},
@@ -336,7 +319,7 @@ fun RegisterMenuScreenImpl(
                             .padding(horizontal = 16.dp)
                             .padding(top = 27.dp),
                         thickness = 1.dp,
-                        color = Gray6
+                        color = Gray7
                     )
                 }
 
@@ -354,7 +337,7 @@ fun RegisterMenuScreenImpl(
                             .padding(horizontal = 16.dp)
                             .padding(top = 8.dp)
                     ){
-                        if(registerMenuState.menuDetailPrice.isEmpty()){
+                        if(registerMenuState.menuOptionPrice.isEmpty()){
                             Box(
                                 modifier = modifier
                                     .border(width = 1.dp, color = ColorMinor)
@@ -381,13 +364,13 @@ fun RegisterMenuScreenImpl(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ){
-                                registerMenuState.menuDetailPrice.forEachIndexed { index, menuDetailPrice ->
+                                registerMenuState.menuOptionPrice.forEachIndexed { index, menuDetailPrice ->
                                     DetailMenuTextField(
                                         modifier = modifier,
                                         index = index,
-                                        menuServing = menuDetailPrice.first,
+                                        menuOption = menuDetailPrice.option,
                                         onChangeMenuServing = onChangeDetailMenuServing,
-                                        menuPrice= menuDetailPrice.second,
+                                        menuPrice= menuDetailPrice.price,
                                         onChangeMenuPrice = onChangeDetailMenuPrice,
                                         onDeleteMenuPrice = onDeleteMenuPrice
                                     )
@@ -424,7 +407,7 @@ fun RegisterMenuScreenImpl(
                             .padding(horizontal = 16.dp)
                             .padding(top = 27.dp),
                         thickness = 1.dp,
-                        color = Gray6
+                        color = Gray7
                     )
                 }
 
@@ -437,16 +420,10 @@ fun RegisterMenuScreenImpl(
                         fontWeight = FontWeight.Bold
                     )
                     if (registerMenuState.menuCategory.isNotEmpty()) {
+
                         CategoryRadioButtonScreen(
                             menuCategory = registerMenuState.menuCategory,
-                            onRecommendMenuButtonClicked = onRecommendMenuButtonClicked,
-                            onMainMenuButtonClicked = onMainMenuButtonClicked,
-                            onSetMenuButtonClicked = onSetMenuButtonClicked,
-                            onSideMenuButtonClicked = onSideMenuButtonClicked,
-                            isRecommendMenu = registerMenuState.isRecommendMenu,
-                            isMainMenu = registerMenuState.isMainMenu,
-                            isSetMenu = registerMenuState.isSetMenu,
-                            isSideMenu = registerMenuState.isSideMenu
+                            onMenuCategoryIsClicked = onMenuCategoryIsClicked,
                         )
                     }
                 }
@@ -479,7 +456,7 @@ fun RegisterMenuScreenImpl(
                             ),
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(horizontal = 8.dp)
+                                .padding(horizontal = 8.dp, vertical = 8.dp)
                             ,
                             decorationBox = { innerTextField ->
                                 if (registerMenuState.description.isEmpty()) {
@@ -501,7 +478,7 @@ fun RegisterMenuScreenImpl(
                             .padding(horizontal = 16.dp)
                             .padding(top = 24.dp),
                         thickness = 1.dp,
-                        color = Gray6
+                        color = Gray7
                     )
                 }
 
@@ -553,7 +530,6 @@ fun RegisterMenuScreenImpl(
                                 )
                             }
                             else{
-
                                 Box(
                                     modifier = Modifier
                                         .size(137.dp)
@@ -616,16 +592,17 @@ fun RegisterMenuScreenImpl(
                             .padding(horizontal = 16.dp)
                             .padding(top = 24.dp, bottom = 52.dp)
                             .fillMaxWidth()
-                            .height(43.dp)
+                            .height(43.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Button(
                             onClick = {},
                             shape = RectangleShape,
                             colors = ButtonDefaults.buttonColors(Color.White),
-                            modifier = modifier
+                            modifier = Modifier
+                                .border(1.dp, ColorSecondary)
                                 .fillMaxHeight()
-                                .width(93.dp)
-                                .border(1.dp, ColorSecondary),
+                                .width(113.dp)
                         ) {
                             Text(
                                 text = stringResource(id = R.string.cancel),
@@ -635,15 +612,13 @@ fun RegisterMenuScreenImpl(
                             )
                         }
 
-                        Spacer(modifier = Modifier.weight(1f))
-
                         Button(
                             onClick = onNextButtonClicked,
                             shape = RectangleShape,
                             colors = ButtonDefaults.buttonColors(ColorPrimary),
-                            modifier = modifier
-                                .height(43.dp)
-                                .width(226.dp)
+                            modifier = Modifier
+                                .fillMaxSize()
+
                         ) {
                             Text(
                                 text = stringResource(id = R.string.next),
@@ -665,6 +640,7 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
+            is RegisterMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
             is RegisterMenuSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
                     RegisterMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
@@ -672,9 +648,12 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
                     RegisterMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
                     RegisterMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
                     RegisterMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
+                    RegisterMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
+                    RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
                 }
                 ToastUtil.getInstance().makeShort(message)
             }
+            else -> ""
         }
     }
 }
@@ -686,7 +665,8 @@ fun CategoryRadioButton(
     endDp: Dp = 0.dp,
     buttonName: String = "",
     isClicked: Boolean = false,
-    onButtonClicked: () ->Unit = {}
+    index: Int = 0,
+    onButtonClicked: (Int) ->Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -696,7 +676,7 @@ fun CategoryRadioButton(
             .border(width = 0.5.dp, color = if (isClicked) ColorSecondary else Gray6)
             .background(color = if (isClicked) ColorSecondary else ColorTransparency)
             .clickable {
-                onButtonClicked()
+                onButtonClicked(index)
             }
         ,
         contentAlignment = Alignment.Center
@@ -713,14 +693,7 @@ fun CategoryRadioButton(
 @Composable
 private fun CategoryRadioButtonScreen(
     menuCategory: List<StoreMenuCategory> = emptyList(),
-    onRecommendMenuButtonClicked: () -> Unit = {},
-    onMainMenuButtonClicked: () -> Unit = {},
-    onSetMenuButtonClicked: () -> Unit = {},
-    onSideMenuButtonClicked: () -> Unit = {},
-    isRecommendMenu : Boolean = false,
-    isMainMenu: Boolean = true,
-    isSetMenu: Boolean = true,
-    isSideMenu: Boolean = false
+    onMenuCategoryIsClicked: (Int) -> Unit ={},
 ) {
     Column(
         modifier = Modifier
@@ -734,16 +707,18 @@ private fun CategoryRadioButtonScreen(
             ){
                 CategoryRadioButton(
                     buttonName = menuCategory[0].menuCategoryName,
-                    isClicked = isRecommendMenu,
-                    onButtonClicked = onRecommendMenuButtonClicked
+                    isClicked = menuCategory[0].menuCategoryIsChecked,
+                    index = 0,
+                    onButtonClicked = onMenuCategoryIsClicked
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 CategoryRadioButton(
                     buttonName = menuCategory[1].menuCategoryName,
-                    isClicked = isMainMenu,
-                    onButtonClicked = onMainMenuButtonClicked
+                    isClicked = menuCategory[1].menuCategoryIsChecked,
+                    index = 1,
+                    onButtonClicked = onMenuCategoryIsClicked
                 )
             }
 
@@ -754,16 +729,18 @@ private fun CategoryRadioButtonScreen(
             ){
                 CategoryRadioButton(
                     buttonName = menuCategory[2].menuCategoryName,
-                    isClicked = isSetMenu,
-                    onButtonClicked = onSetMenuButtonClicked
+                    isClicked = menuCategory[2].menuCategoryIsChecked,
+                    index = 2,
+                    onButtonClicked = onMenuCategoryIsClicked
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 CategoryRadioButton(
                     buttonName = menuCategory[3].menuCategoryName,
-                    isClicked =  isSideMenu,
-                    onButtonClicked = onSideMenuButtonClicked
+                    isClicked =  menuCategory[3].menuCategoryIsChecked,
+                    index = 3,
+                    onButtonClicked = onMenuCategoryIsClicked
                 )
             }
     }
@@ -791,6 +768,7 @@ fun BorderTextField(
                 fontSize = 14.sp
             ),
             modifier = Modifier
+                .padding(horizontal = 8.dp)
                 .fillMaxWidth()
         )
     }
@@ -822,7 +800,7 @@ fun DivideOption(
 fun DetailMenuTextField(
     modifier: Modifier = Modifier,
     index: Int = 0,
-    menuServing: String = "",
+    menuOption: String = "",
     onChangeMenuServing: (Pair<Int, String>) -> Unit = {},
     menuPrice: String = "",
     onChangeMenuPrice: (Pair<Int, String>) -> Unit = {},
@@ -836,7 +814,7 @@ fun DetailMenuTextField(
 
         MenuBorderTextField(
             modifier = modifier,
-            inputString = menuServing,
+            inputString = menuOption,
             index = index,
             getStringResource = R.string.menu_serving_example,
             onStringChange = onChangeMenuServing,
@@ -875,12 +853,11 @@ fun PreviewDetailMenuTextField() {
 }
 
 
-//@Preview
-//@Composable
-//fun PreviewRegisterMenuScreen(){
-//    RegisterMenuScreenImpl(
-//        modifier = Modifier,
-//        goToSelectCategoryScreen = {} ,
-//        onBackPressed = {}
-//    )
-//}
+@Preview
+@Composable
+fun PreviewRegisterMenuScreen(){
+    RegisterMenuScreenImpl(
+        modifier = Modifier,
+        onBackPressed = {},
+    )
+}
