@@ -21,10 +21,9 @@ class StoreDetailActivityContract(
     }
 
     override fun parseResult(resultCode: Int, intent: Intent?) {
-        println("EventLogger: ${resultCode==Activity.RESULT_OK}, $intent")
         if (resultCode == Activity.RESULT_OK) {
             val category = storeCategoryFactory?.getCurrentCategory() ?: return
-            val elapsedTime = intent?.getLongExtra(StoreDetailActivity.ELAPSED_TIME, -1)
+            val elapsedTime = intent?.getDoubleExtra(StoreDetailActivity.ELAPSED_TIME, .0)
             val storeName = intent?.getStringExtra(StoreDetailActivity.STORE_NAME)
             val backAction = intent?.getStringExtra(StoreDetailActivity.BACK_ACTION)
             if (backAction == "swipe")

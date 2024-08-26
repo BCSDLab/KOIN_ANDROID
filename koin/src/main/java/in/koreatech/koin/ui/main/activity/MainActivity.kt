@@ -96,7 +96,7 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
                 name,
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, "메인"),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
             gotoStoreActivity(id)
         }
@@ -118,11 +118,6 @@ class MainActivity : KoinNavigationDrawerTimeActivity() {
     private fun initView() = with(binding) {
         buttonCategory.setOnClickListener {
             toggleNavigationDrawer()
-            EventLogger.logClickEvent(
-                EventAction.USER,
-                AnalyticsConstant.Label.HAMBURGER,
-                getString(R.string.hamburger)
-            )
         }
 
         busViewPager.apply {

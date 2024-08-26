@@ -185,6 +185,14 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
+                            MenuState.Land -> {
+                                EventLogger.logClickEvent(
+                                    EventAction.BUSINESS,
+                                    AnalyticsConstant.Label.HAMBURGER_LAND,
+                                    getString(R.string.navigation_item_land)
+                                )
+                            }
+
                             MenuState.UserInfo -> {
                                 if (koinNavigationDrawerViewModel.userState.value == null || koinNavigationDrawerViewModel.userState.value?.isAnonymous == true) {
                                     EventLogger.logClickEvent(
@@ -305,6 +313,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 }
 
                 MenuState.Notification -> {
+                    EventLogger.logClickEvent(
+                        EventAction.CAMPUS,
+                        AnalyticsConstant.Label.NOTIFICATION,
+                        getString(R.string.event_set_notification)
+                    )
                     if (userState.value == null || userState.value?.isAnonymous == true) {
                         showLoginRequestDialog()
                     } else {
@@ -471,11 +484,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 )
                 intent.putExtra("FIRST_LOGIN", false)
                 startActivity(intent)
-                EventLogger.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.USER_ONLY_OK,
-                    getString(R.string.user_only_ok)
-                )
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.fade_out)
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->

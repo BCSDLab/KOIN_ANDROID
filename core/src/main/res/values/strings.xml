@@ -151,4 +151,7 @@
     <string name="menu_image">메뉴 사진</string>
     <string name="menu_image_maximum">(최대 이미지 3장)</string>
 
+    <!-- 이벤트 로깅 -->
+    <string name="event_set_notification">알림설정</string>
+
 </resources>
