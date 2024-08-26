@@ -8,7 +8,6 @@ import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.data.response.store.StoreResponse
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import retrofit2.http.GET
 import retrofit2.http.Path
 

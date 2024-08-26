@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
-import `in`.koreatech.koin.domain.model.bus.timetable.BusNodeInfo
+import `in`.koreatech.koin.domain.model.bus.city.CityBusGeneralDestination
+import `in`.koreatech.koin.domain.model.bus.city.CityBusNumber
+import `in`.koreatech.koin.domain.model.bus.city.posToCityBusNumber
+import `in`.koreatech.koin.domain.model.bus.city.toCityBusGeneralDestination
+import `in`.koreatech.koin.domain.model.bus.city.toCityBusInfo
 import `in`.koreatech.koin.domain.usecase.bus.timetable.city.GetCityBusTimetableUseCase
 import `in`.koreatech.koin.domain.util.onFailure
 import `in`.koreatech.koin.domain.util.onSuccess
@@ -15,8 +19,15 @@ import javax.inject.Inject
 class CityBusTimetableViewModel @Inject constructor(
     private val getCityBusTimetableUseCase: GetCityBusTimetableUseCase,
 ) : BaseViewModel() {
-    private val _busTimetables = MutableLiveData<List<BusNodeInfo.CitybusNodeInfo>>()
-    val busTimetables: LiveData<List<BusNodeInfo.CitybusNodeInfo>> get() = _busTimetables
+    private val _busNumber: MutableLiveData<CityBusNumber> = MutableLiveData(CityBusNumber.Bus400)
+    val busNumber: LiveData<CityBusNumber> get() = _busNumber
+    private val _destination: MutableLiveData<CityBusGeneralDestination> =
+        MutableLiveData(CityBusGeneralDestination.Beongchon)
+    val destination: LiveData<CityBusGeneralDestination> get() = _destination
+    private val _busDepartTimes = MutableLiveData<List<String>>()
+    val busDepartTimes: LiveData<List<String>> get() = _busDepartTimes
+    private val _updatedAt = MutableLiveData<String>()
+    val updatedAt: LiveData<String> get() = _updatedAt
 
     init {
         viewModelScope.launchWithLoading {
@@ -24,10 +35,24 @@ class CityBusTimetableViewModel @Inject constructor(
         }
     }
 
+    fun setBusNumber(position: Int) = viewModelScope.launchWithLoading {
+        _busNumber.value = position.posToCityBusNumber
+        updateCityBusTimetable()
+    }
+
+    fun setDestination(position: Int) = viewModelScope.launchWithLoading {
+        _destination.value = position.toCityBusGeneralDestination
+        updateCityBusTimetable()
+    }
+
     private suspend fun updateCityBusTimetable() {
-        getCityBusTimetableUseCase()
+        val infoPair = Pair(busNumber.value!!, destination.value!!)
+        getCityBusTimetableUseCase(infoPair.toCityBusInfo())
             .onSuccess {
-                _busTimetables.value = it
+                _busNumber.value = it.busInfos.busNumber
+                _destination.value = it.busInfos.arrivalNode
+                _busDepartTimes.value = it.departTimes
+                _updatedAt.value = it.updatedAt
             }
             .onFailure {
                 _errorToast.value = it.message

@@ -14,6 +14,7 @@ import `in`.koreatech.koin.core.qualifier.ServerUrl
 import `in`.koreatech.koin.data.api.PreSignedUrlApi
 import `in`.koreatech.koin.data.api.UploadUrlApi
 import `in`.koreatech.koin.data.api.UserApi
+import `in`.koreatech.koin.data.api.auth.DiningAuthApi
 import `in`.koreatech.koin.data.api.auth.OwnerAuthApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.source.local.TokenLocalDataSource
@@ -34,6 +35,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AuthNetworkModule {
+
     @Auth
     @Provides
     @Singleton
@@ -101,6 +103,14 @@ object AuthNetworkModule {
         @Auth retrofit: Retrofit
     ) : UserAuthApi {
         return retrofit.create(UserAuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDiningAuthApi(
+        @Auth retrofit: Retrofit
+    ): DiningAuthApi {
+        return retrofit.create(DiningAuthApi::class.java)
     }
 }
 

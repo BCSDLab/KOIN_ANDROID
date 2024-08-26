@@ -64,7 +64,7 @@
                                     android:includeFontPadding="false"
                                     android:text="기본정보"
                                     android:textColor="@color/gray7"
-                                    app:fontName="Custom6" />
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15" />
                             </FrameLayout>
 
                             <TextView
@@ -73,11 +73,9 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
-                                android:includeFontPadding="false"
                                 android:text="아이디"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userinfoedited_base_info_framlayout" />
@@ -89,10 +87,8 @@
                                 android:layout_marginStart="48dp"
                                 android:layout_marginEnd="16dp"
                                 android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_id_textview"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
@@ -107,11 +103,9 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
                                 android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:text="이름"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintBottom_toTopOf="@id/userinfoedited_nickname_textview"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_id_textview" />
@@ -123,10 +117,8 @@
                                 android:layout_marginStart="61dp"
                                 android:layout_marginEnd="16dp"
                                 android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_name_textview"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
@@ -141,11 +133,9 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
                                 android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:text="닉네임"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userinfoedited_name_textview" />
 
@@ -155,14 +145,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="48dp"
                                 android:imeOptions="actionNext"
-                                android:includeFontPadding="false"
                                 android:inputType="text"
-                                android:lineSpacingExtra="7sp"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:textSize="13sp"
                                 android:theme="@style/EditTextTheme"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.13"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_nickname_textview"
                                 app:layout_constraintStart_toEndOf="@id/userinfoedited_nickname_textview"
                                 app:layout_constraintTop_toTopOf="@+id/userinfoedited_nickname_textview"
@@ -188,11 +175,10 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:lineSpacingExtra="4sp"
                                     android:text="중복확인"
                                     android:textColor="@color/gray9"
                                     android:textSize="8sp"
-                                    app:fontName="Custom6" />
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular" />
                             </LinearLayout>
 
                             <TextView
@@ -201,12 +187,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
-                                android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:text="익명닉네임"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_nickname_textview" />
@@ -216,11 +199,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="20dp"
-                                android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_anonymous_nick_name_textview"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.0"
@@ -234,12 +214,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="18dp"
-                                android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:text="휴대전화"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_anonymous_nick_name_textview" />
 
@@ -251,12 +228,10 @@
                                 android:gravity="center"
                                 android:includeFontPadding="false"
                                 android:inputType="number"
-                                android:lineSpacingExtra="7sp"
                                 android:maxLength="3"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
                                 android:theme="@style/EditTextTheme"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_phone_num_textview"
                                 app:layout_constraintStart_toEndOf="@id/userinfoedited_phone_num_textview"
                                 app:layout_constraintTop_toTopOf="@+id/userinfoedited_phone_num_textview"
@@ -268,11 +243,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="7dp"
                                 android:layout_marginTop="16dp"
-                                android:lineSpacingExtra="7sp"
                                 android:text="-"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_1"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
@@ -283,14 +256,11 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="9dp"
                                 android:gravity="center"
-                                android:includeFontPadding="false"
                                 android:inputType="number"
-                                android:lineSpacingExtra="7sp"
                                 android:maxLength="4"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
                                 android:theme="@style/EditTextTheme"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toEndOf="@id/userinfoeditededited_first_dash"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
@@ -301,11 +271,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
-                                android:lineSpacingExtra="7sp"
                                 android:text="-"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toEndOf="@id/userinfoedited_edittext_phone_num_2"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_textview_anonymous_nick_name" />
 
@@ -316,14 +284,11 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="9dp"
                                 android:gravity="center"
-                                android:includeFontPadding="false"
                                 android:inputType="number"
-                                android:lineSpacingExtra="7sp"
                                 android:maxLength="4"
                                 android:textColor="@color/black"
-                                android:textSize="15sp"
                                 android:theme="@style/EditTextTheme"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.2"
                                 app:layout_constraintStart_toEndOf="@id/userinfoeditededited_second_dash"
@@ -335,11 +300,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="26dp"
-                                android:lineSpacingExtra="7sp"
                                 android:text="성별"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/userinfoedited_phone_num_textview" />
 
@@ -410,7 +373,7 @@
                                     android:includeFontPadding="false"
                                     android:text="학교정보"
                                     android:textColor="@color/gray7"
-                                    app:fontName="Custom6" />
+                                    android:textAppearance="@style/TextAppearance.Koin.Regular.15" />
                             </FrameLayout>
 
                             <TextView
@@ -419,12 +382,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="18dp"
-                                android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:text="학번"
                                 android:textColor="@color/gray9"
-                                android:textSize="15sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.15"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/userinfoedited_school_info_framlayout" />
 
@@ -435,12 +395,9 @@
                                 android:layout_marginStart="61dp"
                                 android:layout_marginEnd="16dp"
                                 android:hint="학번을 입력해주세요"
-                                android:includeFontPadding="false"
-                                android:lineSpacingExtra="7sp"
                                 android:textColor="@color/black"
                                 android:textColorHint="@color/blue1"
-                                android:textSize="13sp"
-                                app:fontName="Custom6"
+                                android:textAppearance="@style/TextAppearance.Koin.Regular.13"
                                 app:layout_constraintBottom_toBottomOf="@+id/userinfoedited_student_id_textview"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"

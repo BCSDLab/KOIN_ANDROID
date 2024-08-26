@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.api.auth
 
 import `in`.koreatech.koin.data.constant.URLConstant
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.notification.NotificationPermissionInfoResponse
@@ -47,4 +48,7 @@ interface UserAuthApi {
 
     @DELETE("/notification")
     suspend fun deleteDeviceToken(): Response<Unit?>
+
+    @POST(URLConstant.USER.CHECKPASSWORD)
+    suspend fun checkPassword(@Body passwordRequest: PasswordRequest)
 }

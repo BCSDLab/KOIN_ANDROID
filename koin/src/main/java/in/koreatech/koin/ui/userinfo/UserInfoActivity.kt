@@ -55,7 +55,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
                 onBackPressed()
             },
             rightButtonClicked = {
-                userInfoEditActivityNew.launch(Unit)
+                UserInfoCheckPasswordDialog().show(supportFragmentManager, "dialog")
             }
         )
 

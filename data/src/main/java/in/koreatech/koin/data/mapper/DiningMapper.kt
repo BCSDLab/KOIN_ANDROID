@@ -17,7 +17,8 @@ fun DiningResponse.toDining() = Dining(
     this.updatedAt,
     this.soldoutAt ?: "",
     this.changedAt ?: "",
-    this.error ?: ""
+    this.likes ?: 0,
+    this.isLiked ?: false
 )
 
 fun List<String>.toLineChangingString(): String {

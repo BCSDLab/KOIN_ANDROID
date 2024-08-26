@@ -1,31 +1,27 @@
 package `in`.koreatech.koin.ui.bus.fragment
 
-import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.fragment.DataBindingFragment
-import `in`.koreatech.koin.core.progressdialog.IProgressDialog
-import `in`.koreatech.koin.databinding.LayoutCityBusTimetableBinding
-import `in`.koreatech.koin.databinding.LayoutExpressBusTimetableBinding
-import `in`.koreatech.koin.databinding.LayoutShuttleBusTimetableBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.CityBusTimetableAdapter
-import `in`.koreatech.koin.ui.bus.adpater.timetable.ExpressBusTimetableAdapter
-import `in`.koreatech.koin.ui.bus.adpater.timetable.ShuttleBusTimetableAdapter
-import `in`.koreatech.koin.ui.bus.state.toCityBusTimetableUiItem
-import `in`.koreatech.koin.ui.bus.state.toExpressBusTimetableUiItem
-import `in`.koreatech.koin.ui.bus.state.toShuttleBusTimetableUiItem
-import `in`.koreatech.koin.ui.bus.viewmodel.CityBusTimetableViewModel
-import `in`.koreatech.koin.ui.bus.viewmodel.ExpressBusTimetableViewModel
-import `in`.koreatech.koin.ui.bus.viewmodel.ShuttleBusTimetableViewModel
-import `in`.koreatech.koin.util.SnackbarUtil
-import `in`.koreatech.koin.util.ext.observeLiveData
-import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
-import `in`.koreatech.koin.util.ext.withLoading
-import `in`.koreatech.koin.util.ext.withToastError
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.fragment.DataBindingFragment
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
+import `in`.koreatech.koin.databinding.LayoutCityBusTimetableBinding
+import `in`.koreatech.koin.domain.model.bus.city.CityBusGeneralDestination
+import `in`.koreatech.koin.domain.model.bus.city.CityBusNumber
+import `in`.koreatech.koin.domain.model.bus.city.toggleSelection
+import `in`.koreatech.koin.ui.bus.adpater.timetable.CityBusTimetableAdapter
+import `in`.koreatech.koin.ui.bus.state.toCityBusTimetableUiItemList
+import `in`.koreatech.koin.ui.bus.viewmodel.CityBusTimetableViewModel
+import `in`.koreatech.koin.util.ext.observeLiveData
+import `in`.koreatech.koin.util.ext.setOnItemSelectedListener
+import `in`.koreatech.koin.util.ext.withLoading
+import `in`.koreatech.koin.util.ext.withToastError
 
 @AndroidEntryPoint
 class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBinding>() {
@@ -47,6 +43,25 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
             adapter = cityBusTimetableAdapter
             itemAnimator = null
         }
+        busTimetableCityCourseToggle.setOnCheckedChangeListener { _, isChecked ->
+            val selection =
+                if (isChecked) CityBusGeneralDestination.Terminal.toggleSelection else CityBusGeneralDestination.Beongchon.toggleSelection
+            cityBusTimetableViewModel.setDestination(selection)
+        }
+        busTimetableCityBusNumberSpinner.adapter =
+            ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                CityBusNumber.entries.map { "${it.number}번" }
+            )
+        busTimetableCityBusNumberSpinner.setOnItemSelectedListener { _, _, position, _ ->
+            cityBusTimetableViewModel.setBusNumber(position)
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.CAMPUS,
+                AnalyticsConstant.Label.BUS_TIMETABLE_AREA,
+                busTimetableCityBusNumberSpinner.selectedItem.toString()
+            )
+        }
     }
 
     private fun initViewModel() = with(cityBusTimetableViewModel) {
@@ -54,11 +69,13 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
 
         withToastError(this@CityBusTimetableFragment, binding.root)
 
-        observeLiveData(busTimetables) { list ->
-            cityBusTimetableAdapter.submitList(
-                list.map { it.toCityBusTimetableUiItem() }
-            )
+        observeLiveData(busDepartTimes) { list ->
+            cityBusTimetableAdapter.submitList(list.toCityBusTimetableUiItemList())
             binding.recyclerView.smoothScrollToPosition(0)
+        }
+
+        observeLiveData(updatedAt) {
+            cityBusTimetableAdapter.setUpdatedAt(it)
         }
     }
 }
