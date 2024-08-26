@@ -10,21 +10,21 @@ import kotlinx.parcelize.Parcelize
 data class ArticleHeaderState(
     val id: Int,
     val boardId: Int,
-    @StringRes val boardName: Int,
+    @StringRes val boardName: Int?,
     val title: String,
     val author: String,
     val viewCount: Int,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
 ) : Parcelable
 
 fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
     id = id,
     boardId = boardId,
-    boardName = BoardType.entries.find { it.id == boardId }?.koreanName ?: throw IllegalArgumentException("Unable to find board name"),
+    boardName = BoardType.entries.find { it.id == boardId }?.koreanName,
     title = title,
     author = author,
     viewCount = viewCount,
     createdAt = createdAt,
-    updatedAt = updatedAt
+    updatedAt = updatedAt,
 )

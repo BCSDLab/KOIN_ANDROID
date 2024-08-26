@@ -8,35 +8,64 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
-import `in`.koreatech.koin.domain.usecase.article.FetchArticleUseCase
+import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
+import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
-import `in`.koreatech.koin.ui.article.state.toHtmlElement
+import `in`.koreatech.koin.ui.article.state.toArticleState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
 class ArticleDetailViewModel @AssistedInject constructor(
-    @Assisted val articleHeader: ArticleHeaderState,
-    private val fetchArticleUseCase: FetchArticleUseCase,
+    @Assisted private val articleId: Int,
+    private val articleRepository: ArticleRepository,
     fetchHotArticlesUseCase: FetchHotArticlesUseCase,
 ) : BaseViewModel() {
 
-    private val _htmlContent = MutableStateFlow(HtmlElement(HtmlTag.UNKNOWN))
-    val htmlContent = _htmlContent.asStateFlow()
+    val article: StateFlow<ArticleState> =
+        articleRepository.fetchArticle(articleId)
+            .onStart {
+                _isLoading.value = true
+            }.map {
+                it.toArticleState()
+            }.onEach {
+                _isLoading.value = false
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = ArticleState(
+                    header = ArticleHeaderState(
+                        id = 0,
+                        boardId = 0,
+                        boardName = null,
+                        title = "",
+                        author = "",
+                        viewCount = 0,
+                        createdAt = "",
+                        updatedAt = "",
+                    ),
+                    content = HtmlElement(HtmlTag.UNKNOWN),
+                    prevArticleId = null,
+                    nextArticleId = null
+                )
+            )
 
     val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
         .map {
             var doesHotContainsThis = false
             it.filterIndexed { index, hotArticleHeader ->
-                if (articleHeader.id == hotArticleHeader.id)
+                if (articleId == hotArticleHeader.id)
                     doesHotContainsThis = true
-                articleHeader.id != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if(doesHotContainsThis) 1 else 0)
+                articleId != hotArticleHeader.id && index < (HOT_ARTICLE_COUNT + if(doesHotContainsThis) 1 else 0)
             }.map { it.toArticleHeaderState() }
         }.stateIn(
             scope = viewModelScope,
@@ -44,31 +73,21 @@ class ArticleDetailViewModel @AssistedInject constructor(
             initialValue = listOf()
         )
 
-    init {
-        fetchHtmlContent()
-    }
-
-    private fun fetchHtmlContent() {
-        viewModelScope.launchWithLoading {
-            fetchArticleUseCase.fetchArticle(articleHeader.id)
-                .onSuccess {
-                    _htmlContent.value = it.html.toHtmlElement()
-                }.onFailure {
-                    // Handle error
-                }
-        }
+    fun setIsLoading(isLoading: Boolean) {
+        _isLoading.value = isLoading
     }
 
     @AssistedFactory
     interface Factory {
-        fun create(articleHeader: ArticleHeaderState): ArticleDetailViewModel
+        fun create(articleId: Int): ArticleDetailViewModel
     }
 
     companion object {
         private const val HOT_ARTICLE_COUNT = 4
+
         fun provideFactory(
             assistedFactory: Factory,
-            article: ArticleHeaderState
+            article: Int
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {

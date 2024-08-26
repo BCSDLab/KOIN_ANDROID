@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
-import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_HEADER
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
@@ -92,7 +92,7 @@ class ArticleListFragment : Fragment() {
     private fun initPageButtonSelectedListener() {
         binding.chipGroupArticlePage.setOnCheckedStateChangeListener { _, checkedIds ->
             binding.root.findViewById<Chip>(checkedIds.first()).let {
-                viewModel.setCurrentPage(viewModel.pageNumbers.value[pageChips.indexOf(it)] ?: 1)
+                viewModel.setCurrentPage(viewModel.pageNumbers.value[pageChips.indexOf(it)])
             }
         }
     }
@@ -118,7 +118,7 @@ class ArticleListFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_HEADER to article)
+            bundleOf(ARTICLE_ID to article.id)
         )
     }
 

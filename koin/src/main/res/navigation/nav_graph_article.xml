@@ -19,10 +19,7 @@
             app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailFragment"
-            app:destination="@id/articleDetailFragment"
-            app:enterAnim="@anim/slide_in_from_left_in"
-            app:exitAnim="@anim/fade_out"
-            app:popExitAnim="@anim/fade_out" />
+            app:destination="@id/articleDetailFragment"/>
         <action
             android:id="@+id/action_articleListFragment_to_articleSearchFragment"
             app:destination="@id/articleSearchFragment"

@@ -8,13 +8,17 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
@@ -28,10 +32,12 @@ class ArticleListViewModel @Inject constructor(
     val articlePagination: StateFlow<ArticlePaginationState> = currentBoard.combine(currentPage) { board, page ->
         _isLoading.value = true
         articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
-    }.mapLatest {
-        it.toArticlePaginationState().also {
-            _isLoading.value = false
+    }.flatMapLatest {
+        it.mapLatest { articlePagination ->
+            articlePagination.toArticlePaginationState()
         }
+    }.onEach {
+        _isLoading.value = false
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),

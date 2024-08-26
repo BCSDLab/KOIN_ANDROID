@@ -7,5 +7,5 @@ data class ArticleHeader(
     val author: String,
     val viewCount: Int,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
 )

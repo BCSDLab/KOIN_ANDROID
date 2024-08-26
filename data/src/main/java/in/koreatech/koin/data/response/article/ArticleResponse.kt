@@ -7,8 +7,8 @@ import `in`.koreatech.koin.domain.constant.ITALIC
 import `in`.koreatech.koin.domain.constant.LINE_THROUGH
 import `in`.koreatech.koin.domain.constant.NORMAL
 import `in`.koreatech.koin.domain.constant.UNDERLINE
+import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
-import `in`.koreatech.koin.domain.model.article.html.ArticleContent
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlModel
@@ -30,7 +30,9 @@ data class ArticleResponse(
     @SerializedName("nickname") val author: String?,
     @SerializedName("hit") val viewCount: Int?,
     @SerializedName("created_at") val createdAt: String?,
-    @SerializedName("updated_at") val updatedAt: String?
+    @SerializedName("updated_at") val updatedAt: String?,
+    @SerializedName("prev_id") val prevArticleId: Int?,
+    @SerializedName("next_id") val nextArticleId: Int?,
 ) {
     fun toArticleHeader() = ArticleHeader(
         id = id ?: 0,
@@ -39,11 +41,14 @@ data class ArticleResponse(
         author = author ?: "",
         viewCount = viewCount ?: 0,
         createdAt = createdAt ?: "",
-        updatedAt = updatedAt ?: ""
+        updatedAt = updatedAt ?: "",
     )
 
-    fun toArticleContent() = ArticleContent(
-        html = Jsoup.parse(content ?: "").toHtmlModel(),
+    fun toArticle() = Article(
+        header = toArticleHeader(),
+        content = Jsoup.parse(content ?: "").toHtmlModel(),
+        prevArticleId = prevArticleId,
+        nextArticleId = nextArticleId
     )
 }
 
@@ -208,8 +213,6 @@ private fun MutableMap<CssAttribute, String>.removeNonInheritableStyles() {
     this.remove(CssAttribute.BORDER_COLOR)
     this.remove(CssAttribute.BORDER_WIDTH)
     this.remove(CssAttribute.DISPLAY)
-    this.remove(CssAttribute.BACKGROUND)
-    this.remove(CssAttribute.BACKGROUND_COLOR)
     this.remove(CssAttribute.BACKGROUND_IMAGE)
     this.remove(CssAttribute.BACKGROUND_SIZE)
 }
