@@ -135,11 +135,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             .setPositiveButton(getString(R.string.navigation_ok)) { dialog, _ ->
                 dialog.dismiss()
                 goToLoginActivity()
-                EventLogger.logClickEvent(
-                    AnalyticsConstant.Domain.USER,
-                    AnalyticsConstant.Label.USER_ONLY_OK,
-                    getString(R.string.user_only_ok)
-                )
             }
             .setNegativeButton(getString(R.string.navigation_cancel)) { dialog, _ ->
                 dialog.cancel()
@@ -203,17 +198,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             }
 
                             MenuState.UserInfo -> {
-                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous.not()) {
                                     EventLogger.logClickEvent(
                                         EventAction.USER,
-                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
-                                        getString(R.string.navigation_item_my_info)
-                                    )
-                                } else {
-                                    EventLogger.logClickEvent(
-                                        EventAction.USER,
-                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
-                                        getString(R.string.navigation_item_my_info)
+                                        AnalyticsConstant.Label.HAMBURGER,
+                                        "정보수정 -> 내정보"
                                     )
                                 }
                             }
@@ -316,6 +305,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             nameTextView.visibility = View.GONE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
+                            EventLogger.logClickEvent(
+                                EventAction.USER,
+                                AnalyticsConstant.Label.HAMBURGER,
+                                getString(R.string.navigation_item_login)
+                            )
                         }
 
                         is User.Student -> {
@@ -323,6 +317,11 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             nameTextView.visibility = View.VISIBLE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
+                            EventLogger.logClickEvent(
+                                EventAction.USER,
+                                AnalyticsConstant.Label.HAMBURGER,
+                                getString(R.string.navigation_item_logout)
+                            )
 
                             when (menuState) {
                                 MenuState.Main, MenuState.Notification -> {
