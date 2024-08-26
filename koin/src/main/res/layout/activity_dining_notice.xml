@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dining.DiningNoticeActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dining_notice_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_dining_notice_topbar_back"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back_black_24dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_dining_notice_topbar"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_dining_notice_topbar" />
+
+        <TextView
+            android:id="@+id/tv_dining_notice_topbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:text="학생식당정보"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.18"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_dining_notice_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:text="학생식당 학기중 운영시간"
+        android:textAppearance="@style/TextAppearance.Koin.Bold.20"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dining_notice_topbar" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_dining_notice_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:constraint_referenced_ids="tv_dining_notice_location_label,tv_dining_notice_location_value"
+        app:flow_horizontalGap="8dp"
+        app:layout_constraintStart_toStartOf="@id/tv_dining_notice_title"
+        app:layout_constraintTop_toBottomOf="@id/tv_dining_notice_title" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow_dining_notice_tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tv_dining_notice_tel_label,tv_dining_notice_tel_value"
+        app:flow_horizontalGap="8dp"
+        app:layout_constraintStart_toStartOf="@id/flow_dining_notice_location"
+        app:layout_constraintTop_toBottomOf="@id/flow_dining_notice_location" />
+
+    <TextView
+        android:id="@+id/tv_dining_notice_location_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="위치"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+        android:textColor="#4b4b4b" />
+
+    <TextView
+        android:id="@+id/tv_dining_notice_location_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.14"
+        android:textColor="#4b4b4b"
+        tools:text="학생회관 2층" />
+
+    <TextView
+        android:id="@+id/tv_dining_notice_tel_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전화번호"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+        android:textColor="#4b4b4b" />
+
+    <TextView
+        android:id="@+id/tv_dining_notice_tel_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.14"
+        android:textColor="#4b4b4b"
+        tools:text="560-1278" />
+
+    <View
+        android:id="@+id/tv_divider_dining_notice"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/background_dark"
+        app:layout_constraintTop_toBottomOf="@id/flow_dining_notice_tel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dining_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingHorizontal="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_divider_dining_notice" />
+
+    <TextView
+        android:id="@+id/tv_dining_notice_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:paddingStart="24dp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+        android:textColor="#8e8e8e"
+        app:layout_constraintTop_toBottomOf="@id/rv_dining_notice"
+        tools:text="2024.03.09 업데이트" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

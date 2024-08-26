@@ -1,8 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <View xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="1.5dp"
-        android:background="?attr/colorPrimary" />
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/view_footer_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray15"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_updated_at_explanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/bus_timetable_notice"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+            android:textColor="@color/neutral_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_footer_line" />
+
+        <TextView
+            android:id="@+id/text_view_updated_at_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_update"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+            android:textColor="@color/neutral_500"
+            app:layout_constraintStart_toStartOf="@id/text_view_updated_at_explanation"
+            app:layout_constraintTop_toBottomOf="@id/text_view_updated_at_explanation" />
+
+        <TextView
+            android:id="@+id/text_view_updated_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.12"
+            android:textColor="@color/neutral_500"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toEndOf="@id/text_view_updated_at_label"
+            app:layout_constraintTop_toTopOf="@id/text_view_updated_at_label"
+            tools:text="2024-03-19" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

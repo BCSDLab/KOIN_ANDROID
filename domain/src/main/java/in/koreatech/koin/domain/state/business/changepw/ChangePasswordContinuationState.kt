@@ -11,6 +11,10 @@ sealed class ChangePasswordExceptionState: Throwable() {
     object ToastNullEmail : ChangePasswordExceptionState()
     object ToastIsNotEmail : ChangePasswordExceptionState()
 
+    object ToastNullPhoneNumber : ChangePasswordExceptionState()
+    object ToastIsNotPhoneNumber : ChangePasswordExceptionState()
+
+
     object ToastNullAuthCode: ChangePasswordExceptionState()
     object ToastIsNotPasswordForm: ChangePasswordExceptionState()
 
