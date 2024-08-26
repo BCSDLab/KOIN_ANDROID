@@ -17,6 +17,14 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchArticle(articleId)
     }
 
+    suspend fun fetchPreviousArticle(articleId: Int): ArticleResponse {
+        return articleApi.fetchArticle(articleId)
+    }
+
+    suspend fun fetchNextArticle(articleId: Int): ArticleResponse {
+        return articleApi.fetchArticle(articleId)
+    }
+
     suspend fun fetchHotArticles(): List<ArticleResponse> {
         return articleApi.fetchHotArticles()
     }

@@ -22,8 +22,14 @@ interface ArticleApi {
         @Query("limit") limit: Int
     ): ArticlePaginationResponse
 
-    @GET("articles/{articleId}")
-    suspend fun fetchArticle(@Path("articleId") articleId: Int): ArticleResponse
+    /**
+     * 단일 게시글 조회
+     * @param id 게시글 아이디
+     */
+    @GET("articles/{id}")
+    suspend fun fetchArticle(
+        @Path("id") articleId: Int,
+    ): ArticleResponse
 
     @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>

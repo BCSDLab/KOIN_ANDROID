@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article.adapter
 
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -27,15 +28,22 @@ class ArticleAdapter(
         private val binding: ItemArticleHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(article: ArticleHeaderState) {
+        fun bind(articleHeader: ArticleHeaderState) {
             binding.apply {
-                textViewArticleBoardName.text = root.context.getString(article.boardName)
-                textViewArticleTitle.text = article.title.trim()
-                textViewArticleAuthor.text = article.author
-                textViewArticleDate.text = DateFormatUtil.getSimpleMonthAndDay(article.createdAt) +
-                        " " + DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.createdAt))
-                textViewArticleViewCount.text = article.viewCount.toString()
-                root.setOnClickListener { onClick(article) }
+                articleHeader.boardName?.let {
+                    textViewArticleBoardName.text = root.context.getString(it)
+                }
+                textViewArticleTitle.text = articleHeader.title.trim()
+                textViewArticleAuthor.text = articleHeader.author
+                try {
+                    textViewArticleDate.text = TextUtils.concat(
+                        DateFormatUtil.getSimpleMonthAndDay(articleHeader.createdAt),
+                        " ",
+                        DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(articleHeader.createdAt))
+                    )
+                } catch(e: Exception) { }
+                textViewArticleViewCount.text = articleHeader.viewCount.toString()
+                root.setOnClickListener { onClick(articleHeader) }
             }
             binding.executePendingBindings()
         }

@@ -2,16 +2,7 @@ package `in`.koreatech.koin.ui.article
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
-import android.text.TextUtils
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StrikethroughSpan
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.ImageView
@@ -19,11 +10,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.net.toUri
-import `in`.koreatech.koin.domain.constant.BOLD
-import `in`.koreatech.koin.domain.constant.BOLD_ITALIC
-import `in`.koreatech.koin.domain.constant.ITALIC
-import `in`.koreatech.koin.domain.constant.LINE_THROUGH
-import `in`.koreatech.koin.domain.constant.UNDERLINE
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
@@ -38,14 +24,26 @@ class HtmlView @JvmOverloads constructor(
     private var html: HtmlElement? = null
     private var lastAddedView: View = this  // 가장 마지막으로 추가된 View. 이미 추가된 View의 재활용을 위함
 
+    private var onPreDrawListener: OnPreDrawListener? = null
+    private var onPostDrawListener: OnPostDrawListener? = null
+
     init {
         orientation = VERTICAL
         setWillNotDraw(false)
     }
 
     fun setHtml(html: HtmlElement) {
+        onPreDrawListener?.onPreDraw()
+        clearView()
         this.html = html
         addHtmlView(html)
+        onPostDrawListener?.onPostDraw()
+    }
+
+    private fun clearView() {
+        removeAllViews()
+        html = null
+        lastAddedView = this
     }
 
     private fun addHtmlView(html: HtmlElement) {
@@ -94,6 +92,22 @@ class HtmlView @JvmOverloads constructor(
                 else -> {}
             }
         }
+    }
+
+    private fun interface OnPreDrawListener {
+        fun onPreDraw()
+    }
+
+    private fun interface OnPostDrawListener {
+        fun onPostDraw()
+    }
+
+    fun setOnPreDrawListener(callback: () -> Unit) {
+        onPreDrawListener = OnPreDrawListener { callback() }
+    }
+
+    fun setOnPostDrawListener(callback: () -> Unit) {
+        onPostDrawListener = OnPostDrawListener { callback() }
     }
 }
 

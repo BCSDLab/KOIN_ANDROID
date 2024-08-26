@@ -27,7 +27,9 @@ class HotArticleAdapter(
 
         fun bind(article: ArticleHeaderState) {
             binding.apply {
-                textViewArticleBoardName.text = root.context.getString(article.boardName)
+                article.boardName?.let {
+                    textViewArticleBoardName.text = root.context.getString(it)
+                }
                 textViewArticleTitle.text = article.title.trim()
                 root.setOnClickListener {
                     onClick(article)

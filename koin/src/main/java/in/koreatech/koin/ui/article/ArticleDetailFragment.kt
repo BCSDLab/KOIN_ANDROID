@@ -11,14 +11,17 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.article.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
+import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleDetailViewModel
-import `in`.koreatech.koin.util.ext.getParcelableExtraCompat
+import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,34 +37,27 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private val viewModel: ArticleDetailViewModel by viewModels {
         ArticleDetailViewModel.provideFactory(
             articleDetailViewModelFactory,
-            requireArguments().getParcelableExtraCompat<ArticleHeaderState>(ARTICLE_HEADER) ?: throw IllegalArgumentException("ArticleState is required"),
+            requireArguments().getInt(ARTICLE_ID)
         )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initHeader()
-        setContent()
+        (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
+        binding.htmlView.setOnPreDrawListener { viewModel.setIsLoading(true) }
+        binding.htmlView.setOnPostDrawListener { viewModel.setIsLoading(false) }
+        initArticle()
         initHotArticles()
         initButtonClickListeners()
     }
 
-    private fun initHeader() {
-        binding.articleHeader.apply {
-            textViewArticleBoardName.text = getString(viewModel.articleHeader.boardName)
-            textViewArticleTitle.text = viewModel.articleHeader.title
-            textViewArticleAuthor.text = viewModel.articleHeader.author
-            textViewArticleDate.text = TextUtils.concat(DateFormatUtil.getSimpleMonthAndDay(viewModel.articleHeader.createdAt),
-                    " ", DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(viewModel.articleHeader.createdAt)))
-            textViewArticleViewCount.text = viewModel.articleHeader.viewCount.toString()
-        }
-    }
-
-    private fun setContent() {
+    private fun initArticle() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.htmlContent.collect { htmlElement ->
-                    binding.htmlView.setHtml(htmlElement)
+                viewModel.article.collectLatest {
+                    setHeader(it)
+                    setContent(it)
+                    setNavigateArticleButtonVisibility(it)
                 }
             }
         }
@@ -83,18 +79,61 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
         binding.buttonToList.setOnClickListener {
             navController.popBackStack(R.id.articleListFragment, false)
         }
+        binding.buttonToPrevArticle.setOnClickListener {
+            navController.navigate(
+                R.id.action_articleDetailFragment_to_articleDetailFragment,
+                Bundle().apply {
+                    putInt(ARTICLE_ID, viewModel.article.value.prevArticleId!!)
+                }
+            )
+        }
+        binding.buttonToNextArticle.setOnClickListener {
+            navController.navigate(
+                R.id.action_articleDetailFragment_to_articleDetailFragment,
+                Bundle().apply {
+                    putInt(ARTICLE_ID, viewModel.article.value.nextArticleId!!)
+                }
+            )
+        }
+    }
+
+    private fun setHeader(article: ArticleState) {
+        binding.articleHeader.apply {
+            article.header.boardName?.let {
+                textViewArticleBoardName.text = getString(it)
+            }
+            textViewArticleTitle.text = article.header.title
+            textViewArticleAuthor.text = article.header.author
+            try {
+                textViewArticleDate.text = TextUtils.concat(
+                    DateFormatUtil.getSimpleMonthAndDay(article.header.createdAt),
+                    " ",
+                    DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.createdAt))
+                )
+            } catch(e: Exception) { }
+            textViewArticleViewCount.text = article.header.viewCount.toString()
+        }
+    }
+
+    private fun setContent(article: ArticleState) {
+        binding.htmlView.setHtml(article.content)
+    }
+
+    private fun setNavigateArticleButtonVisibility(article: ArticleState) {
+        binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.GONE else View.VISIBLE
+        binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.GONE else View.VISIBLE
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleDetailFragment_to_articleDetailFragment,
             Bundle().apply {
-                putParcelable(ARTICLE_HEADER, article)
+                putInt(ARTICLE_ID, article.id)
             }
         )
     }
 
     companion object {
-        const val ARTICLE_HEADER = "article_header"
+        const val ARTICLE_ID = "article_header"
     }
 }
