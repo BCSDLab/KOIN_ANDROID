@@ -53,14 +53,7 @@ public class AppBarBase extends AppBarLayout {
         this.onClickListener = onClickListener;
         background.setOnClickListener(onClickListener);
         leftButton.setOnClickListener(onClickListener);
-        rightButton.setOnClickListener( v -> {
-            onClickListener.onClick(v);
-            EventLogger.INSTANCE.logClickEvent(
-                    EventAction.USER,
-                    AnalyticsConstant.Label.HAMBURGER,
-                    getContext().getString(R.string.hamburger)
-            );
-        });
+        rightButton.setOnClickListener(onClickListener);
         title.setOnClickListener(onClickListener);
     }
 

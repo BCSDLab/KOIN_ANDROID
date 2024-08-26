@@ -25,7 +25,6 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.StoreActivityDetailBinding
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerTimeActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.ui.store.adapter.StoreDetailFlyerRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailImageViewpagerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailViewpagerAdapter
@@ -81,7 +80,7 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
         setContentView(binding.root)
         onBackPressedDispatcher.addCallback(this) {
             intent.putExtra(BACK_ACTION, "swipe")
-            intent.putExtra(ELAPSED_TIME, elapsedTime)
+            intent.putExtra(ELAPSED_TIME, getElapsedTimeAndReset())
             intent.putExtra(STORE_NAME, viewModel.store.value?.name)
             setResult(RESULT_OK, intent)
             finish()
@@ -90,7 +89,7 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
                     intent.putExtra(BACK_ACTION, "click")
-                    intent.putExtra(ELAPSED_TIME, elapsedTime)
+                    intent.putExtra(ELAPSED_TIME, getElapsedTimeAndReset())
                     intent.putExtra(STORE_NAME, viewModel.store.value?.name)
                     setResult(RESULT_OK, intent)
                     finish()
@@ -105,7 +104,7 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CALL,
                 viewModel.store.value?.name ?: "Unknown",
-                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTime().toString())
             )
         }
 

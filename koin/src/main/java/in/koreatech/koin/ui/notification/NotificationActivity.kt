@@ -15,6 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
@@ -145,6 +148,11 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun subscribeNotification() {
         binding.notificationDiningSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscription(isChecked, SubscribesType.DINING_SOLD_OUT)
             enableSubscriptionDetail(isChecked, SubscribesType.DINING_SOLD_OUT)
         }
@@ -155,12 +163,27 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     private fun subscribeDetailNotification() {
         binding.notificationDiningBreakfastSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_BREAKFAST_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.BREAKFAST)
         }
         binding.notificationDiningLunchSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_LUNCH_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.LUNCH)
         }
         binding.notificationDiningDinnerSoldOut.setOnSwitchClickListener { isChecked ->
+            EventLogger.logClickEvent(
+                EventAction.CAMPUS,
+                AnalyticsConstant.Label.NOTIFICATION_DINNER_SOLD_OUT,
+                if (isChecked) "on" else "off"
+            )
             handleSubscriptionDetail(isChecked, SubscribesDetailType.DINNER)
         }
     }

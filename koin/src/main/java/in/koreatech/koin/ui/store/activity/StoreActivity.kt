@@ -73,7 +73,7 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
                 it.name,
                 EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
                 EventExtra(AnalyticsConstant.CURRENT_PAGE, it.name),
-                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
         }
     }
@@ -91,16 +91,19 @@ class StoreActivity : KoinNavigationDrawerTimeActivity() {
 
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
+            val previous = getStoreCategoryName(viewModel.category.value)
+
             viewModel.setCategory(it.toStoreCategory())
             binding.searchEditText.text.clear()
-            val eventValue = getStoreCategoryName(viewModel.category.value)
+            val current = getStoreCategoryName(viewModel.category.value)
+
             EventLogger.logClickEvent(
                 EventAction.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES,
-                eventValue,
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, getStoreCategoryName(viewModel.category.value)),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, eventValue),
-                EventExtra(AnalyticsConstant.DURATION_TIME, elapsedTime.toString())
+                current,
+                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previous),
+                EventExtra(AnalyticsConstant.CURRENT_PAGE, current),
+                EventExtra(AnalyticsConstant.DURATION_TIME, getElapsedTimeAndReset().toString())
             )
         }
     }

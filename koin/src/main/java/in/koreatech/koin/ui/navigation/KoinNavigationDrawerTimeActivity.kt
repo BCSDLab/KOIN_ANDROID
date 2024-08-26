@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.ui.navigation
 
-import android.os.Bundle
 import android.os.SystemClock
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -8,19 +7,26 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class KoinNavigationDrawerTimeActivity : KoinNavigationDrawerActivity() {
 
     private var startTime = 0L
-    private var resumedTime = 0L
-    protected var elapsedTime: Long = 0
-        get() {
-            val time = SystemClock.elapsedRealtime() - startTime + resumedTime
-            startTime = SystemClock.elapsedRealtime()
-            resumedTime = 0
-            return time
-        }
+    private var elapsedTime = 0L
 
+    fun getElapsedTimeAndReset(): Double {
+        val time = SystemClock.elapsedRealtime() - startTime + elapsedTime
+        reset()
+        return time / 1000.0
+    }
+
+    fun getElapsedTime(): Double {
+        return (SystemClock.elapsedRealtime() - startTime + elapsedTime) / 1000.0
+    }
+
+    private fun reset() {
+        startTime = SystemClock.elapsedRealtime()
+        elapsedTime = 0
+    }
 
     override fun onPause() {
         super.onPause()
-        resumedTime += SystemClock.elapsedRealtime() - startTime
+        elapsedTime += SystemClock.elapsedRealtime() - startTime
     }
 
     override fun onResume() {
@@ -28,13 +34,13 @@ abstract class KoinNavigationDrawerTimeActivity : KoinNavigationDrawerActivity()
         startTime = SystemClock.elapsedRealtime()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putLong("elapsedTime" , elapsedTime)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        elapsedTime = savedInstanceState.getLong("elapsedTime")
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//        outState.putLong("elapsedTime" , elapsedTime)
+//    }
+//
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        elapsedTime = savedInstanceState.getLong("elapsedTime")
+//    }
 }

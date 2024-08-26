@@ -105,12 +105,17 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
             startActivity(Intent(this@LoginActivity, SignupActivity::class.java))
             EventLogger.logClickEvent(
                 EventAction.USER,
-                AnalyticsConstant.Label.START_SIGN_UP,
+                AnalyticsConstant.Label.LOGIN,
                 getString(R.string.sign_up)
             )
         }
 
         forgotPasswordLinearLayout.setOnClickListener {
+            EventLogger.logClickEvent(
+                EventAction.USER,
+                AnalyticsConstant.Label.LOGIN,
+                getString(R.string.find_password)
+            )
             startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 
