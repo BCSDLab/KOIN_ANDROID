@@ -3,7 +3,6 @@ package `in`.koreatech.koin.data.repository
 import `in`.koreatech.koin.data.mapper.toBoolean
 import `in`.koreatech.koin.data.mapper.toInt
 import `in`.koreatech.koin.data.mapper.toPhoneNumber
-import `in`.koreatech.koin.data.mapper.toSchoolEamil
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
@@ -28,27 +27,27 @@ class SignupRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestEmailVerification(
-            portalAccount: String,
-            gender: Gender,
-            isGraduated: Graduated,
-            major: String,
-            name:String,
-            nickName: String,
-            password: String,
-            phoneNumber: String,
-            studentNumber: String,
+        portalAccount: String,
+        gender: Gender?,
+        isGraduated: Graduated?,
+        major: String?,
+        name: String?,
+        nickName: String?,
+        password: String,
+        phoneNumber: String?,
+        studentNumber: String?,
     ): Result<Unit> {
         return try {
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
                     email = portalAccount,
-                    gender = gender.toInt(),
-                    isGraduated = isGraduated.toBoolean(),
+                    gender = gender?.toInt(),
+                    isGraduated = isGraduated?.toBoolean(),
                     major = major,
                     name = name,
                     nickName = nickName,
                     password = password.toSHA256(),
-                    phoneNumber = phoneNumber.toPhoneNumber(),
+                    phoneNumber = phoneNumber?.toPhoneNumber(),
                     studentNumber = studentNumber
                 )
             )
