@@ -507,5 +507,6 @@
     <string name="next_article">다음 글</string>
     <string name="prev_article">이전 글</string>
     <string name="hot_articles">인기있는 공지</string>
+    <string name="see_all_article">모두보기</string>
 
 </resources>

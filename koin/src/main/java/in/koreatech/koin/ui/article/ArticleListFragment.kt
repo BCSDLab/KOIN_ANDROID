@@ -51,6 +51,7 @@ class ArticleListFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         }
 
+    private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private val pageChips: ArrayList<Chip> by lazy {
         arrayListOf(
             binding.chipPage1,
@@ -60,9 +61,6 @@ class ArticleListFragment : Fragment() {
             binding.chipPage5
         )
     }
-
-    private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,6 +76,9 @@ class ArticleListFragment : Fragment() {
             }
             binding.textViewPreviousPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value - 1)
+            }
+            binding.imageViewToKeywordAddPage.setOnClickListener {
+                navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
             }
         }
         collectData()

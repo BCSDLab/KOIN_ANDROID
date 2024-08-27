@@ -29,21 +29,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_article_keywords"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:id="@+id/horizontal_scroll_view_article_keywords"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:orientation="horizontal"
-                    android:paddingVertical="16dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    android:requiresFadingEdge="horizontal"
+                    android:fadingEdgeLength="25dp"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="16dp" >
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chip_group_article_keywords"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:selectionRequired="true"
+                        app:chipSpacingHorizontal="8dp">
+
+                        <ImageView
+                            android:id="@+id/image_view_to_keyword_add_page"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_chip_icon" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip_see_all"
+                            style="@style/RectangleChoiceChip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:chipCornerRadius="60dp"
+                            android:checked="true"
+                            app:ensureMinTouchTargetSize="false"
+                            android:text="@string/see_all_article" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_article_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_article_keywords"
+                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_article_keywords"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_article_header"
