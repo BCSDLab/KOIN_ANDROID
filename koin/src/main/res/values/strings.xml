@@ -99,17 +99,18 @@
 
     <string name="user_lock_bottom_sheet_behavior">in.koreatech.koin.ui.timetable.UserLockBottomSheetBehavior</string>
 
-    <!--Sign Up-->
+    <!--SignUp-->
     <string name="signup_info">인적사항</string>
-    <string name="signup_name">이름</string>
-    <string name="signup_nickname">닉네임</string>
+    <string name="signup_name">이름 (선택)</string>
+    <string name="signup_nickname">닉네임 (선택)</string>
     <string name="signup_nickname_check_duplicated">중복 확인</string>
-    <string name="signup_gender">성별</string>
+    <string name="signup_gender">성별 (선택)</string>
     <string name="signup_gender_man">남자</string>
     <string name="signup_gender_woman">여자</string>
-    <string name="signup_phone_number">전화번호</string>
-    <string name="signup_student_id">학번</string>
-    <string name="signup_is_graduate">졸업여부</string>
+    <string name="signup_phone_number">전화번호 (선택)</string>
+    <string name="signup_student_id">학번 (선택)</string>
+    <string name="signup_major">학부 (선택)</string>
+    <string name="signup_is_graduate">졸업여부 (선택)</string>
     <string name="signup_graduated_student">졸업생</string>
     <string name="signup_enrolled_student">재학생</string>
     <string name="signup_confirm">회원가입하기</string>
@@ -138,6 +139,11 @@
     <string name="signup_email_validation_completed_title">KOREATECH E-mail 인증</string>
     <string name="signup_email_validation_completed_message">10분안에 학교 메일로 인증을 완료해 주세요. 이동하실래요?</string>
 
+    <!-- Signup complete -->
+    <string name="signup_complete_title">임시 회원 가입 완료</string>
+    <string name="signup_complete_description">임시 회원 가입이 완료되었습니다.\n10분 안에 아우누리에서 이메일 인증해 주세요.</string>
+    <string name="signup_complete_go_college_portal">아우누리 바로가기</string>
+    <string name="signup_complete_go_login">로그인 화면 바로가기</string>
     <!-- Forgot password -->
     <string name="forgotpassword_title">FORGOT PASSWORD?</string>
     <string name="forgotpassword_message">비밀번호 초기화가 필요합니다.\n계정을 찾으려면 KOREATECH 이메일을 입력해주세요.</string>
