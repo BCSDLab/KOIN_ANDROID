@@ -183,7 +183,7 @@ fun ChangePasswordScreen(
                 text = stringResource(R.string.confirm_password),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
-                modifier = modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp),
+                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp, top = 29.dp),
             )
             LinedTextField(
                 value = passwordChecked,
@@ -222,6 +222,7 @@ fun HandleSideEffects(viewModel: ChangePasswordViewModel, navigateToFinish: () -
         when (it) {
             is ChangePasswordSideEffect.GotoFinishScreen -> navigateToFinish()
             is ChangePasswordSideEffect.NotCoincidePassword -> viewModel.viewNotCoincidePassword()
+            else -> {}
         }
     }
 }

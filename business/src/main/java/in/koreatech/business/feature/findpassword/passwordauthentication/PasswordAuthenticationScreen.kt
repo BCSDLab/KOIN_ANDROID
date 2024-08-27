@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -199,19 +200,19 @@ fun PasswordAuthenticationScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 LinedTextField(
-                    modifier = Modifier.width(200.dp),
+                    modifier =Modifier.widthIn(max = 230.dp),
                     value = authCode,
                     onValueChange = insertAuthCode,
                     label = stringResource(R.string.input_auth_code),
                     errorText = stringResource(R.string.auth_code_not_equal),
                     isError = authState is ChangePasswordContinuationState.Failed,
                 )
-
+                Spacer(modifier = Modifier.width(8.dp))
                 Button(
                     onClick = sendAuthCode,
                     colors = if (authState is ChangePasswordContinuationState.Failed) ButtonDefaults.buttonColors(
                         ColorAccent
-                    ) else ButtonDefaults.buttonColors(ColorPrimary),
+                    ) else buttonColors(ColorPrimary),
                     modifier = modifier
                         .width(124.dp)
                         .height(41.dp)
@@ -262,6 +263,8 @@ private fun HandleSideEffects(
             is PasswordAuthenticationSideEffect.GotoChangePasswordScreen -> navigateToChangePassword(
                 email
             )
+
+            else -> {}
         }
     }
 }
