@@ -1,11 +1,8 @@
 package `in`.koreatech.business.feature.insertstore.selectcategory
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.domain.usecase.business.OwnerChangePasswordUseCase
 import `in`.koreatech.koin.domain.usecase.store.GetStoreCategoriesUseCase
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost

@@ -4,13 +4,14 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -34,6 +35,7 @@ import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.launch
 
 class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
@@ -77,6 +79,9 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        initViewModel()
+
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
@@ -87,29 +92,42 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                     )
                     onBackPressed()
                 }
-                AppBarBase.getRightButtonId() -> toggleNavigationDrawer()
+                AppBarBase.getRightButtonId() -> {
+                    showCallDialog()
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CALL,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                }
             }
         }
         binding.storeDetailViewPager.adapter = storeDetailViewpagerAdapter
-        binding.storeDetailCallButton.setOnClickListener {
-            showCallDialog()
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CALL,
-                viewModel.store.value?.name ?: "Unknown"
-            )
+
+        binding.scrollUpButton.setOnClickListener {
+            viewModel.scrollUp()
         }
 
-        TabLayoutMediator(
+        binding.storeDetailViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.settingFragmentIndex(position)
+            }
+        })
+
+        val tabLayoutMediator = TabLayoutMediator(
             binding.storeDetailTabLayout,
             binding.storeDetailViewPager
         ) { tab, position ->
             tab.text = when (position) {
                 0 -> getString(R.string.menu)
                 1 -> getString(R.string.event_notification)
+                2 -> getString(R.string.review)
                 else -> throw IllegalArgumentException("Invalid position")
             }
-        }.attach()
+        }
+
+        tabLayoutMediator.attach()
 
         binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -138,7 +156,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             ToastUtil.getInstance().makeShort(getString(R.string.store_account_copy))
         }
 
-        initViewModel()
         val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
         if (storeId == null) {
             ToastUtil.getInstance()
@@ -148,6 +165,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         viewModel.getStoreWithMenu(storeId!!)
         viewModel.getShopMenus(storeId)
         viewModel.getShopEvents(storeId)
+        viewModel.getShopReviews(storeId)
     }
 
     override fun onBackPressed() {
@@ -162,6 +180,10 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     private fun initViewModel() {
         withLoading(this@StoreDetailActivity, viewModel)
+
+        observeLiveData(viewModel.storeReview){
+            binding.storeDetailTabLayout.getTabAt(2)?.text = getString(R.string.review, it.totalCount.toString())
+        }
 
         observeLiveData(viewModel.store) {
             with(binding) {
@@ -232,7 +254,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
                 binding.storeDetailImageview.apply {
                     adapter = StoreDetailImageViewpagerAdapter(it.imageUrls)
-
                 }
 
             }
@@ -240,10 +261,28 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
     }
 
+    override fun onRestart() {
+        val storeId = intent.extras?.getInt(StoreDetailActivityContract.STORE_ID)
+        if (storeId != null) {
+            viewModel.getShopReviews(storeId)
+        }
+        super.onRestart()
+    }
+
     override fun onDestroy() {
         flyerDialogFragment?.dismiss()
         flyerDialogFragment = null
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch {
+            observeLiveData(viewModel.store) {
+                viewModel.getShopReviews(it.uid)
+            }
+        }
+        if(viewModel.store.value != null) viewModel.getShopReviews(viewModel.store.value!!.uid)
     }
 
     private fun showCallDialog() {
