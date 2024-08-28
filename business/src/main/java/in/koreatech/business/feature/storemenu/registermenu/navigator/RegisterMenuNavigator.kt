@@ -1,5 +1,6 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.navigator
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel

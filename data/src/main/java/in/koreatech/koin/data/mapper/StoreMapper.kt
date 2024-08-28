@@ -10,12 +10,14 @@ import `in`.koreatech.koin.data.response.store.StoreItemResponse
 import `in`.koreatech.koin.data.response.store.StoreItemWithMenusResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoriesResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuCategoryResponse
+import `in`.koreatech.koin.data.response.store.StoreMenuInfoResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuRegisterResponse
 import `in`.koreatech.koin.data.response.store.StoreMenuResponse
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
 import `in`.koreatech.koin.domain.model.store.ShopEvents
@@ -210,4 +212,29 @@ fun List<StoreMenuOptionPrice>.toOptionPriceList(): List<StoreMenuRegisterRespon
         responseList.add(response)
     }
     return responseList
+}
+
+fun StoreMenuInfoResponse.toStoreMenuInfo(): StoreMenuInfo{
+    val responseList = ArrayList<StoreMenuOptionPrice>()
+
+    if (this.optionPrices != null){
+        for (priceOption in this.optionPrices){
+            val response = StoreMenuOptionPrice(
+                option = priceOption.option,
+                price =  priceOption.price.toString()
+            )
+
+            responseList.add(response)
+        }
+    }
+    return StoreMenuInfo(
+        shopId = shopId,
+        name = name,
+        isSingle = isSingle,
+        singlePrice = singlePrice,
+        optionPrice = responseList,
+        description = description,
+        categoryIds = categoryIds,
+        imageUrl = imageUrls
+    )
 }
