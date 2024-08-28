@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -19,6 +21,8 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -65,6 +69,8 @@ fun MyStoreDetailScreen(
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: () -> Unit = {},
+    navigateToManageMenuScreen: () -> Unit = {},
+    navigateToRegisterMenuScreen: () -> Unit = {},
 ) {
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
@@ -103,6 +109,14 @@ fun MyStoreDetailScreen(
 
             MyStoreDetailSideEffect.NavigateToUploadEventScreen -> navigateToUploadEventScreen()
             MyStoreDetailSideEffect.NavigateToModifyScreen -> navigateToModifyScreen()
+            MyStoreDetailSideEffect.NavigateToManageMenuScreen -> {
+                navigateToManageMenuScreen()
+            }
+
+            MyStoreDetailSideEffect.NavigateToRegisterMenuScreen -> {
+                navigateToRegisterMenuScreen()
+            }
+
             MyStoreDetailSideEffect.ShowErrorModifyEventToast -> ToastUtil.getInstance().makeShort(
                 context.getString(R.string.error_modify_event)
             )
@@ -181,6 +195,60 @@ fun MyStoreScrollScreen(
                             )
                         }
                         Spacer(modifier = Modifier.width(10.dp))
+                    }
+                }
+            }
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 5.dp),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    Button(
+                        onClick = { viewModel.onManageMenuClicked() },
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .border(1.dp, ColorPrimary, RoundedCornerShape(0.dp))
+                            .width(107.dp)
+                            .height(40.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.White,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(0.dp),
+                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.manage_menu),
+                            style = TextStyle(
+                                color = ColorPrimary,
+                                fontSize = 15.sp
+                            )
+                        )
+                    }
+
+                    Button(
+                        onClick = { viewModel.onRegisterMenuClicked() },
+                        modifier = Modifier
+                            .padding(end = 20.dp)
+                            .width(107.dp)
+                            .height(40.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = ColorPrimary,
+                            contentColor = Color.White
+                        ),
+                        shape = RoundedCornerShape(0.dp),
+                        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
+
+                    ) {
+                        Text(
+                            text = stringResource(R.string.register_menu),
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = 15.sp
+                            )
+                        )
                     }
                 }
             }
