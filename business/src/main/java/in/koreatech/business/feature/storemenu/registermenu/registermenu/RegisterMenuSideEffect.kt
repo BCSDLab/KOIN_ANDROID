@@ -1,8 +1,5 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
-import `in`.koreatech.business.feature.insertstore.insertmaininfo.BasicInfoErrorType
-import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenSideEffect
-import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordSideEffect
 
 sealed class RegisterMenuSideEffect {
 

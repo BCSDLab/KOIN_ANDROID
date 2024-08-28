@@ -282,7 +282,7 @@ class DiningAdapter(
                 textViewCashPrice.visibility = View.VISIBLE
                 dividerSlash.visibility = View.VISIBLE
                 textViewCardPrice.visibility = View.VISIBLE
-                
+
                 if(dining.kcal.isEmpty() || dining.kcal == "0") {
                     textViewKcal.visibility = View.GONE
                     dividerDot.visibility = View.GONE
