@@ -508,5 +508,13 @@
     <string name="prev_article">이전 글</string>
     <string name="hot_articles">인기있는 공지</string>
     <string name="see_all_article">모두보기</string>
+    <string name="my_keyword">내 키워드</string>
+    <string name="keyword_notice_description">키워드는 최대 10개까지 추가 가능합니다.</string>
+    <string name="add_keyword">추가</string>
+    <string name="recommend_keyword">추천 키워드</string>
+    <string name="keyword_notification">키워드 알림</string>
+    <string name="keyword_notification_notice_description">키워드가 포함된 게시물의 알림을 받을 수 있습니다.</string>
+    <string name="get_keyword_notification">키워드 알림받기</string>
+    <string name="hint_input_keyword">알림받을 키워드를 입력해 주세요.</string>
 
 </resources>

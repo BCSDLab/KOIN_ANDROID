@@ -201,10 +201,6 @@ class ArticleListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.tabLayoutArticleBoard.removeOnTabSelectedListener(onTabSelectedListener)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
         _binding = null
     }
 }
