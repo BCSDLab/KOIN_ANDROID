@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -56,6 +58,13 @@ class StoreDetailEventFragment : Fragment() {
     private fun initViewModel() {
         observeLiveData(viewModel.storeEvent) {
             storeDetailEventAdapter.submitList(it)
+        }
+
+        observeLiveData(viewModel.scrollUp){
+            if(it == StoreDetailScrollType.EVENT){
+                binding.storeEventScrollView.fullScroll(ScrollView.FOCUS_UP)
+                viewModel.scrollReset()
+            }
         }
 
     }

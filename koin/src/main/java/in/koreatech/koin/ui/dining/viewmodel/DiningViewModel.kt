@@ -1,5 +1,8 @@
 package `in`.koreatech.koin.ui.dining.viewmodel
 
+import `in`.koreatech.koin.domain.constant.BREAKFAST
+import `in`.koreatech.koin.domain.constant.DINNER
+import `in`.koreatech.koin.domain.constant.LUNCH
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

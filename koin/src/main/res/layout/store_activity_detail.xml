@@ -27,9 +27,9 @@
                     app:leftButtonBackground="@drawable/ic_back_arrow"
                     app:leftButtonHeight="14dp"
                     app:leftButtonWidth="14dp"
-                    app:rightButtonBackground="@drawable/ic_hamburger_button"
-                    app:rightButtonHeight="18dp"
-                    app:rightButtonWidth="12dp"
+                    app:rightButtonBackground="@drawable/ic_call"
+                    app:rightButtonHeight="24dp"
+                    app:rightButtonWidth="24dp"
                     app:titleText="@string/nearby_store" />
 
 
@@ -39,9 +39,9 @@
                     android:layout_height="fill_parent">
 
                     <com.google.android.material.appbar.AppBarLayout
+                        android:id="@+id/store_detail_appbar_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
 
                         <com.google.android.material.appbar.CollapsingToolbarLayout
                             android:id="@+id/store_detail_collapsing_toolbar"
@@ -404,17 +404,22 @@
             </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/store_detail_call_button"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
+                android:alpha="0.5"
+                android:id="@+id/scroll_up_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="48dp"
+                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/colorPrimary"
-                android:scaleType="center"
-                android:src="@drawable/basic_phone_outline"
                 app:borderWidth="0dp"
-                app:tint="@color/white" />
+                app:fabSize="mini"
+                android:src="@drawable/ic_arrow_up"
+                app:tint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
         <!--navigation drawer-->
         <include layout="@layout/base_navigation_drawer_right" />

@@ -76,20 +76,17 @@ fun LinedTextField(
 
                 }
 
-                Box {
+                Box(modifier = Modifier.padding(start = 8.dp, top = 1.dp)) {
                     Text(
-                        modifier = Modifier.padding(start = 8.dp),
-                        text = helperText,
+                        text = if(isError) "" else helperText,
                         fontSize = 11.sp,
                         color = ColorHelper,
                     )
 
                     if (isError) Text(
-                        modifier = Modifier.padding(start = 8.dp),
                         text = errorText, fontSize = 11.sp, color = ColorSecondary
                     )
                     else if (isSuccess) Text(
-                        modifier = Modifier.padding(start = 8.dp),
                         text = successText,
                         fontSize = 11.sp,
                         color = ColorPrimary
