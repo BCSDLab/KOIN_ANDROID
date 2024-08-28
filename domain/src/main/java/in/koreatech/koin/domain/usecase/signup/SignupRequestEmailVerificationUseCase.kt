@@ -12,7 +12,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         portalAccount: String,
-        gender: Gender?,
+        gender: Gender,
         isGraduated: Graduated?,
         major: String?,
         name: String?,

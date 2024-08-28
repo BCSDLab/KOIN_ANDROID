@@ -9,7 +9,7 @@ interface SignupRepository {
 
     suspend fun requestEmailVerification(
         portalAccount: String,
-        gender: Gender?,
+        gender: Gender,
         isGraduated: Graduated?,
         major: String?,
         name: String?,

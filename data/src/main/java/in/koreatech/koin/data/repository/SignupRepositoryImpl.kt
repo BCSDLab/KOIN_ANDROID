@@ -29,7 +29,7 @@ class SignupRepositoryImpl @Inject constructor(
 
     override suspend fun requestEmailVerification(
         portalAccount: String,
-        gender: Gender?,
+        gender: Gender,
         isGraduated: Graduated?,
         major: String?,
         name: String?,
@@ -42,7 +42,7 @@ class SignupRepositoryImpl @Inject constructor(
             userRemoteDataSource.sendRegisterEmail(
                 StudentInfoRequest(
                     email = portalAccount,
-                    gender = gender?.toInt(),
+                    gender = gender.toInt(),
                     isGraduated = isGraduated?.toBoolean(),
                     major = major,
                     name = name,

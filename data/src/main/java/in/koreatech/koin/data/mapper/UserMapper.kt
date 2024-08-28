@@ -42,10 +42,11 @@ fun Graduated.toBoolean(): Boolean{
     return this == Graduated.Graduate
 }
 
-fun Gender.toInt(): Int{
+fun Gender.toInt(): Int? {
     return when (this){
         Gender.Man -> 0
-        else -> 1
+        Gender.Woman -> 1
+        else -> null
     }
 }
 
