@@ -21,6 +21,7 @@ object DiningUtil {
         }
     }
 
+
     fun getCurrentType(): DiningType {
         var currentType = DiningType.Breakfast
         diningEndTime.forEachIndexed { index, time ->

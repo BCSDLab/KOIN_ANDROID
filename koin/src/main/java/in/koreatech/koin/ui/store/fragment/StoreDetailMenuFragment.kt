@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailMenuRecyclerAdapter
 import `in`.koreatech.koin.ui.store.adapter.StoreRecyclerAdapter
 import `in`.koreatech.koin.ui.store.contract.StoreDetailActivityContract
@@ -173,6 +175,13 @@ class StoreDetailMenuFragment : Fragment() {
                             "사이드 메뉴" -> storeSideMenuAdapter.setCategory(category.name)
                         }
                     }
+                }
+            }
+
+            observeLiveData(viewModel.scrollUp){
+                if(it == StoreDetailScrollType.MENU){
+                    binding.storeDetailMenuNestedScrollView.fullScroll(ScrollView.FOCUS_UP)
+                    viewModel.scrollReset()
                 }
             }
         }
