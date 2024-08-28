@@ -12,5 +12,5 @@ interface OwnerVerificationCodeRepository {
     suspend fun verifySmsCode(
         phoneNumber: String,
         verificationCode: String
-    ): Result<OwnerAuthToken?>
+    ): OwnerAuthToken
 }

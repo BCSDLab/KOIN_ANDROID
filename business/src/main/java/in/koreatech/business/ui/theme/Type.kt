@@ -22,70 +22,70 @@ val Pretendard = FontFamily(
 )
 
 val Typography = Typography(
-    defaultFontFamily = FontFamily.Default,
+    defaultFontFamily = Pretendard,
     h1 = TextStyle(
         color = Color.White,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 24.sp,
     ),
     h2 = TextStyle(
         color = Color.White,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 20.sp,
     ),
     h3 = TextStyle(
         color = Color.White,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 18.sp,
     ),
     h4 = TextStyle(
         color = Color(0xFF4590BB),
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 18.sp,
     ),
     h5 = TextStyle(
         color = ColorPrimary,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 16.sp,
     ),
     h6 = TextStyle(
         color = Color.Black,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
     ),
     body1 = TextStyle(
         color = Color.Black,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W400,
         fontSize = 15.sp,
     ),
     body2 = TextStyle(
         color = Color.Black,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W400,
         fontSize = 14.sp,
     ),
     button = TextStyle(
         color = Color.White,
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.W500,
         fontSize = 14.sp,
     ),
     caption = TextStyle(
         color = Color(0xFFD2DAE2),
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.Normal,
         fontSize = 11.sp,
     ),
     overline = TextStyle(
         color = Color(0xFFCACACA),
-        fontFamily = Rubik,
+        fontFamily = Pretendard,
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp,
     )

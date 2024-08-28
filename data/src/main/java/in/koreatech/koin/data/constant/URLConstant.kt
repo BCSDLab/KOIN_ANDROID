@@ -14,7 +14,6 @@ object URLConstant {
 
     const val ADMIN = "admin/"
     const val VERSION = "versions"
-    const val DINING = "dinings"
     const val FAQ = "faqs"
     const val LECTURE = "lectures"
     const val TIMETABLE = "timetable"
@@ -22,7 +21,15 @@ object URLConstant {
     const val SEMESTERS = "semesters"
     const val LAND = "lands"
     const val TERM = "term"
+    const val COOPSHOP = "coopshop"
 
+    object DINING {
+        const val DINING = "dining"
+        const val DININGS = "dinings"
+        const val LIKE = "${DINING}/like"
+        const val UNLIKE = "${LIKE}/cancel"
+    }
+    // external url
     const val UNIBUS = "koreatech.unibus.kr"
 
 
@@ -54,6 +61,7 @@ object URLConstant {
         const val REFRESH: String = "$USER/refresh"
         const val CHECKNICKNAME: String = "$USER/check/nickname"
         const val CHECKEMAIL: String = "$USER/check/email"
+        const val CHECKPASSWORD: String = "$USER/check/password"
         const val PROFILEUPLOAD: String = "$USER/profile/upload"
         const val ID = "portal_account"
         const val EMAIL = "email"
@@ -70,17 +78,22 @@ object URLConstant {
         const val OWNERS = "owners"
         const val VERIFICATION = "verification"
         const val REGISTER: String = "$OWNERS/register"
+        const val REGISTER_PHONE: String = "$OWNERS/register/phone"
         const val CODE = "$OWNERS/$VERIFICATION/code"
         const val EMAIL = "$OWNERS/$VERIFICATION/email"
         const val PASSWORD = "password"
         const val RESET = "reset"
         const val CHANGEPASSWORDEMAIL = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION"
+        const val CHANGEPASSWORDESENDSMS = "$OWNERS/$PASSWORD/$RESET/$VERIFICATION/sms"
+        const val CHANGEPASSWORDSMSCODE = "$OWNERS/$PASSWORD/$RESET/send/sms"
         const val CHANGEPASSWORDCODE = "$OWNERS/$PASSWORD/$RESET/send"
         const val CHANGEPASSWORD ="$OWNERS/$PASSWORD/$RESET"
+        const val CHANGEPASSWORDSMS ="$OWNERS/$PASSWORD/$RESET/sms"
         const val CODE_SMS = "$OWNERS/$VERIFICATION/code/sms"
         const val SMS = "$OWNERS/$VERIFICATION/sms"
         const val PW = "password"
         const val SHOPS = "$OWNER/shops"
+        const val EXISTS_ACCOUNT= "$OWNERS/exists/account"
     }
 
     object CALLVANS {

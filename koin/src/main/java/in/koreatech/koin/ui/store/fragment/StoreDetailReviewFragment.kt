@@ -2,7 +2,6 @@ package `in`.koreatech.koin.ui.store.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -13,42 +12,45 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
+import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
+import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
-import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
+import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
+import `in`.koreatech.koin.ui.store.dialog.LoginRequsetDialog
+import `in`.koreatech.koin.ui.store.dialog.ReviewDeleteCheckDialog
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
 
 class StoreDetailReviewFragment : Fragment() {
     private var _binding: FragmentStoreDetailReviewBinding? = null
     private val binding: FragmentStoreDetailReviewBinding get() = _binding!!
+    private val loginActivityLauncher = registerForActivityResult(LoginContract()) {}
     private val viewModel by activityViewModels<StoreDetailViewModel>()
     private val storeDetailReviewRecyclerAdapter by lazy {
         StoreDetailReviewRecyclerAdapter(
             onModifyItem = {
-//                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
-//                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
-//                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
-//                goToReviewScreen.putExtra("review", it)
-//                startActivity(goToReviewScreen)
+                val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+                goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+                goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+                goToReviewScreen.putExtra("review", it)
+                startActivity(goToReviewScreen)
 
             },
             onDeleteItem = {
-//                val reviewDeleteDialog = ReviewDeleteCheckDialog(
-//                    onDelete = {
-//                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
-//                        viewModel.getShopReviews(viewModel.store.value!!.uid)
-//                    }
-//                )
-//                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+                val reviewDeleteDialog = ReviewDeleteCheckDialog(
+                    onDelete = {
+                        viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                        viewModel.getShopReviews(viewModel.store.value!!.uid)
+                    }
+                )
+                reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
                 if(it.isReported){
@@ -80,13 +82,33 @@ class StoreDetailReviewFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initViews() {
+    override fun onResume() {
+        super.onResume()
+    }
 
-        with(binding){
+    private fun initViews() {
+        viewModel.checkToken()
+        with(binding) {
 
             reviewContentRecyclerview.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = storeDetailReviewRecyclerAdapter
+            }
+            storeDetailReviewButton.setOnClickListener {
+                if (viewModel.tokenState.value == TokenState.Valid) {
+                    val goToReviewScreen = Intent(requireContext(), WriteReviewActivity::class.java)
+                    goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
+                    goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
+                    startActivity(goToReviewScreen)
+                }
+                else {
+                    val loginRequestDialog = LoginRequsetDialog(
+                        goToLogin = {
+                            loginActivityLauncher.launch(Unit)
+                        }
+                    )
+                    loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+                }
             }
 
             observeLiveData(viewModel.storeReview) {

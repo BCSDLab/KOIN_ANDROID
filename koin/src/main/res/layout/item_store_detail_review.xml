@@ -45,7 +45,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-        <RatingBar
+        <in.koreatech.koin.ui.store.ratingbar.StarRatingBar
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:id="@+id/user_rating_bar"
             android:layout_width="wrap_content"
