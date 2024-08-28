@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.mapper.toPhoneNumber
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.source.local.SignupTermsLocalDataSource
 import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
+import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
@@ -54,7 +55,7 @@ class SignupRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } catch (e: HttpException) {
             if (e.code() == 409) Result.failure(SignupAlreadySentEmailException())
-            else Result.failure(e)
+            else Result.failure(Throwable(e.getErrorResponse()?.message ?: ""))
         } catch (t: Throwable) {
             Result.failure(t)
         }
