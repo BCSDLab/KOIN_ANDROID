@@ -8,6 +8,8 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -18,6 +20,14 @@ class ArticleKeywordViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val articleRepository: ArticleRepository
 ) : BaseViewModel() {
+
+    val keywordInputUiState: StateFlow<KeywordInputUiState> = savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
+        if (it.isEmpty()) KeywordInputUiState.Empty else KeywordInputUiState.Valid(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = KeywordInputUiState.Empty
+    )
 
     val myKeywords: StateFlow<List<String>> = articleRepository.fetchMyKeyword()
         .stateIn(
@@ -60,6 +70,8 @@ class ArticleKeywordViewModel @Inject constructor(
             _keywordAddUiState.emit(KeywordAddUiState.Loading)
         }.onEach {
             _keywordAddUiState.emit(KeywordAddUiState.Success)
+        }.catch {
+            _keywordAddUiState.emit(KeywordAddUiState.Error)
         }
     }
 
@@ -85,4 +97,10 @@ sealed interface KeywordAddUiState {
     data object LimitExceeded : KeywordAddUiState
     data object BlankNotAllowed : KeywordAddUiState
     data object RequireInput : KeywordAddUiState
+    data object Error : KeywordAddUiState
+}
+
+sealed interface KeywordInputUiState {
+    data object Empty : KeywordInputUiState
+    data class Valid(val keyword: String) : KeywordInputUiState
 }

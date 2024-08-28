@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
-import androidx.core.view.children
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,6 +19,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordAddUiState
+import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
 import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,6 @@ class ArticleKeywordFragment : Fragment() {
     private var _binding: FragmentArticleKeywordBinding? = null
     private val binding get() = _binding!!
 
-    private val navController by lazy { findNavController() }
     private val viewModel by viewModels<ArticleKeywordViewModel>()
 
     override fun onCreateView(
@@ -42,7 +42,11 @@ class ArticleKeywordFragment : Fragment() {
             binding.buttonAddKeyword.setOnClickListener {
                 viewModel.addKeyword(binding.textInputKeyword.text.toString())
             }
+            binding.textInputKeyword.addTextChangedListener {
+                viewModel.onKeywordInputChanged(it.toString())
+            }
             setMyKeywords()
+            setAddButtonState()
             setSuggestedKeywords()
             handleKeywordAddResult()
         }
@@ -66,7 +70,7 @@ class ArticleKeywordFragment : Fragment() {
         binding.run {
             if (chipGroupMyKeyword.childCount < keywords.size) {
                 keywords.forEach { keyword ->
-                    if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
+                    //if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
                         chipGroupMyKeyword.addView(
                             createKeywordChip(keyword, R.drawable.ic_close_round, viewModel::removeKeyword)
                         )
@@ -105,6 +109,7 @@ class ArticleKeywordFragment : Fragment() {
                 .build()
             isChecked = false
             isCheckable = false
+            isCloseIconVisible = true
             setCloseIconResource(icon)
             setOnCloseIconClickListener {
                 onCloseIconClicked(keyword)
@@ -146,7 +151,33 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.Loading -> {
                         }
                         KeywordAddUiState.Success -> {
+                            binding.textInputKeyword.text = null
                         }
+                        KeywordAddUiState.Error -> {
+                            SnackbarUtil.makeShortSnackbar(
+                                binding.root,
+                                getString(R.string.error_network_unknown),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setAddButtonState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.keywordInputUiState.collect { state ->
+                    binding.buttonAddKeyword.apply {
+                        background.setTint(when (state) {
+                            is KeywordInputUiState.Empty -> ContextCompat.getColor(requireContext(), R.color.gray16)
+                            is KeywordInputUiState.Valid -> ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+                        })
+                        setTextColor(when (state) {
+                            is KeywordInputUiState.Empty -> ContextCompat.getColor(requireContext(), R.color.gray14)
+                            is KeywordInputUiState.Valid -> ContextCompat.getColor(requireContext(), R.color.white)
+                        })
                     }
                 }
             }
