@@ -43,6 +43,14 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun fetchMyKeyword(): Flow<List<String>> {
+        return flow {
+            emit(articleRemoteDataSource.fetchMyKeyword().keywords.map {
+                it.keyword
+            })
+        }
+    }
+
     override suspend fun fetchSearchedArticles(
         query: String,
         page: Int,
