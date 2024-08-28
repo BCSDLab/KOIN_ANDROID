@@ -19,7 +19,6 @@ import `in`.koreatech.koin.data.response.store.StoreReviewContentResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewResponse
 import `in`.koreatech.koin.data.response.store.StoreReviewStatisticsResponse
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
-import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.insertstore.OperatingTime
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.model.store.ShopEvent
