@@ -2,23 +2,22 @@ package `in`.koreatech.koin.ui.bus.adpater.timetable
 
 import `in`.koreatech.koin.databinding.BusTimetableExpressHeaderBinding
 import `in`.koreatech.koin.databinding.BusTimetableExpressItemBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableHeaderViewHolder
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableItemViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableHeaderViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableItemViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.ExpressBusTimetableHeaderViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.ExpressBusTimetableItemViewHolder
 import `in`.koreatech.koin.ui.bus.state.ExpressBusTimetableUiItem
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import `in`.koreatech.koin.databinding.BusTimetableExpressFooterBinding
-import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.BusTimetableFooterViewHolder
+import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.TableFooterViewHolder
 import `in`.koreatech.koin.ui.bus.adpater.timetable.viewholder.ExpressBusTimetableFooterViewHolder
 
-class ExpressBusTimetableAdapter : BusTimetableAdapter<ExpressBusTimetableUiItem>(itemCallback) {
+class ExpressBusTimetableAdapter : TableAdapter<ExpressBusTimetableUiItem>(itemCallback) {
 
-    override fun onCreateHeaderViewHolder(parent: ViewGroup): BusTimetableHeaderViewHolder {
+    override fun onCreateHeaderViewHolder(parent: ViewGroup): TableHeaderViewHolder {
         return ExpressBusTimetableHeaderViewHolder(
             BusTimetableExpressHeaderBinding.inflate(
                 LayoutInflater.from(parent.context)
@@ -26,7 +25,7 @@ class ExpressBusTimetableAdapter : BusTimetableAdapter<ExpressBusTimetableUiItem
         )
     }
 
-    override fun onCreateItemViewHolder(parent: ViewGroup): BusTimetableItemViewHolder<ExpressBusTimetableUiItem> {
+    override fun onCreateItemViewHolder(parent: ViewGroup): TableItemViewHolder<ExpressBusTimetableUiItem> {
         return ExpressBusTimetableItemViewHolder(
             BusTimetableExpressItemBinding.inflate(LayoutInflater.from(parent.context)).apply {
                 root.layoutParams = ConstraintLayout.LayoutParams(
@@ -37,7 +36,7 @@ class ExpressBusTimetableAdapter : BusTimetableAdapter<ExpressBusTimetableUiItem
         )
     }
 
-    override fun onCreateFooterViewHolder(parent: ViewGroup): BusTimetableFooterViewHolder {
+    override fun onCreateFooterViewHolder(parent: ViewGroup): TableFooterViewHolder {
         return ExpressBusTimetableFooterViewHolder(
             BusTimetableExpressFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )

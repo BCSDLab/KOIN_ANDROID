@@ -8,18 +8,13 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ItemStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
@@ -33,15 +28,16 @@ class StoreDetailReviewRecyclerAdapter (
     val onReportItem: (StoreReviewContent) -> Unit
 ):
     ListAdapter<StoreReviewContent, StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder>(
-    diffCallback
-){
+        diffCallback
+    ) {
 
     var onItemClickListener: OnItemClickListener? = null
     var selectPosition: Int? = null
     var isDoubleClick: Boolean = false
     var storeId: Int? = null
 
-    inner class StoreDetailReviewViewHolder(val binding: ItemStoreDetailReviewBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class StoreDetailReviewViewHolder(val binding: ItemStoreDetailReviewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val isMineIcon = binding.iconMyReview
         val nickName = binding.userIdTextview
         val rating = binding.userRatingBar
@@ -54,18 +50,24 @@ class StoreDetailReviewRecyclerAdapter (
         val container = binding.storeReviewContainer
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding =ItemStoreDetailReviewBinding.inflate(inflater, parent, false)
+        val binding = ItemStoreDetailReviewBinding.inflate(inflater, parent, false)
         return StoreDetailReviewViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: StoreDetailReviewRecyclerAdapter.StoreDetailReviewViewHolder,
+        position: Int
+    ) {
         val review = getItem(position)
 
-        with(holder){
+        with(holder) {
 
-            if(review.isMine) {
+            if (review.isMine) {
                 isMineIcon.isVisible = true
 
                 container.background = ColorDrawable(ContextCompat.getColor(itemView.context, R.color.my_review))
@@ -88,10 +90,7 @@ class StoreDetailReviewRecyclerAdapter (
                         iconKebab.setImageResource(R.drawable.ic_kebab)
                     }
                 }
-
-
-            }
-            else{
+            } else {
                 iconKebab.setOnClickListener {
                     iconKebab.setImageResource(R.drawable.ic_kebab_clicked)
 
@@ -121,13 +120,21 @@ class StoreDetailReviewRecyclerAdapter (
             reviewContent.text = review.content
 
             reviewImageRecyclerView.apply {
-                layoutManager =  LinearLayoutManager(reviewImageRecyclerView.context, RecyclerView.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(
+                    reviewImageRecyclerView.context,
+                    RecyclerView.HORIZONTAL,
+                    false
+                )
                 adapter = storeDetailReviewImageRecyclerAdapter
             }
 
             reviewMenuRecyclerview.apply {
-                layoutManager =  LinearLayoutManager(reviewImageRecyclerView.context, RecyclerView.HORIZONTAL, false)
-                adapter =storeDetailReviewMenuRecyclerAdapter
+                layoutManager = LinearLayoutManager(
+                    reviewImageRecyclerView.context,
+                    RecyclerView.HORIZONTAL,
+                    false
+                )
+                adapter = storeDetailReviewMenuRecyclerAdapter
             }
 
             reviewReportMessage.isVisible = review.isReported
@@ -152,11 +159,17 @@ class StoreDetailReviewRecyclerAdapter (
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<StoreReviewContent>() {
-            override fun areItemsTheSame(oldItem: StoreReviewContent, newItem: StoreReviewContent): Boolean {
+            override fun areItemsTheSame(
+                oldItem: StoreReviewContent,
+                newItem: StoreReviewContent
+            ): Boolean {
                 return oldItem.nickName == newItem.nickName
             }
 
-            override fun areContentsTheSame(oldItem: StoreReviewContent, newItem: StoreReviewContent): Boolean {
+            override fun areContentsTheSame(
+                oldItem: StoreReviewContent,
+                newItem: StoreReviewContent
+            ): Boolean {
                 return oldItem == newItem
             }
         }

@@ -44,7 +44,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_gravity="center"/>
 
-                <RatingBar
+                <in.koreatech.koin.ui.store.ratingbar.StarRatingBar
                     android:id="@+id/store_total_rating"
                     style="@style/Widget.AppCompat.RatingBar.Small"
                     android:layout_width="wrap_content"
@@ -388,7 +388,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/divide_line"
                 app:layout_constraintStart_toStartOf="parent"
-                android:foregroundGravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
                 >
                 <ImageView
                     android:id="@+id/store_detail_no_review_image_view"

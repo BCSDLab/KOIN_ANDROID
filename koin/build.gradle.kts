@@ -56,6 +56,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -66,6 +67,9 @@ fun getPropertyKey(propertyKey: String): String {
 }
 
 dependencies {
+    implementation ("androidx.datastore:datastore-preferences:1.0.0") // 버전은 최신 버전으로 변경해주세요.
+
+    implementation ("androidx.datastore:datastore:1.0.0")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(project(":core"))
     implementation(project(":data"))
@@ -94,4 +98,9 @@ dependencies {
     implementation(libs.powerSpinner)
     implementation(libs.viewpager2)
     implementation(libs.napier)
+
+    implementation(libs.kakao.share)
+    implementation(libs.lottie)
+    implementation(libs.balloon)
+    implementation(libs.dataStore)
 }

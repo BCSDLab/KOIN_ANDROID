@@ -4,6 +4,7 @@ import `in`.koreatech.koin.data.api.StoreApi
 import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.mapper.toReportContent
 import `in`.koreatech.koin.data.request.store.StoreReviewReportsRequest
+import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.response.store.StoreCategoriesItemResponse
 import `in`.koreatech.koin.data.response.store.StoreEventItemReponse
 import `in`.koreatech.koin.data.response.store.StoreDetailEventResponse
@@ -72,6 +73,21 @@ class StoreRemoteDataSource @Inject constructor(
         return storeApi.getShopEvents(storeUid)
     }
 
+    suspend fun getStoreReviews(storeUid: Int): StoreReviewResponse {
+        return userAuthApi.getShopReviewsWithAuth(storeUid)
+    }
+
+    suspend fun writeReview(shopId: Int, reviewRequest: ReviewRequest) {
+        userAuthApi.writeReview(shopId, reviewRequest)
+    }
+
+    suspend fun deleteReview(reviewId: Int, shopId:Int) {
+        userAuthApi.deleteReview(reviewId, shopId)
+    }
+
+    suspend fun modifyReview(reviewId: Int, shopId: Int, reviewRequest: ReviewRequest) {
+        userAuthApi.modifyReview(reviewId, shopId, reviewRequest)
+    }
     suspend fun postReviewReports(storeUid: Int, reviewId: Int, reportList:List<StoreReport>){
         userAuthApi.postStoreReviewReports(
             storeUid,
@@ -80,7 +96,4 @@ class StoreRemoteDataSource @Inject constructor(
         )
     }
 
-    suspend fun getStoreReviews(storeUid: Int): StoreReviewResponse {
-        return userAuthApi.getShopReviewsWithAuth(storeUid)
-    }
 }

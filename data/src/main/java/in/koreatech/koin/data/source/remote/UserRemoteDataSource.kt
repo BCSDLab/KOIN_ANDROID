@@ -5,6 +5,7 @@ import `in`.koreatech.koin.data.api.auth.UserAuthApi
 import `in`.koreatech.koin.data.request.user.DeviceTokenRequest
 import `in`.koreatech.koin.data.request.user.IdRequest
 import `in`.koreatech.koin.data.request.user.LoginRequest
+import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.UserRequest
 import `in`.koreatech.koin.data.response.user.*
@@ -39,11 +40,11 @@ class UserRemoteDataSource(
         return userAuthApi.deleteUser()
     }
 
-    suspend fun checkNickname(nickname: String){
+    suspend fun checkNickname(nickname: String) {
         userApi.checkNickname(nickname)
     }
 
-    suspend fun checkEmail(email: String){
+    suspend fun checkEmail(email: String) {
         userApi.checkEmail(email)
     }
 
@@ -57,5 +58,9 @@ class UserRemoteDataSource(
 
     suspend fun deleteDeviceToken() {
         userAuthApi.deleteDeviceToken()
+    }
+
+    suspend fun verifyPassword(passwordRequest: PasswordRequest) {
+        userAuthApi.checkPassword(passwordRequest)
     }
 }

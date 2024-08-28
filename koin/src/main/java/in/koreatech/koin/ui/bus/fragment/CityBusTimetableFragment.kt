@@ -73,5 +73,9 @@ class CityBusTimetableFragment : DataBindingFragment<LayoutCityBusTimetableBindi
             cityBusTimetableAdapter.submitList(list.toCityBusTimetableUiItemList())
             binding.recyclerView.smoothScrollToPosition(0)
         }
+
+        observeLiveData(updatedAt) {
+            cityBusTimetableAdapter.setUpdatedAt(it)
+        }
     }
 }

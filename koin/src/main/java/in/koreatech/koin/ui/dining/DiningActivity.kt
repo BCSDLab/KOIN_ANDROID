@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.ui.dining
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +24,7 @@ import `in`.koreatech.koin.domain.util.TimeUtil
 import `in`.koreatech.koin.ui.dining.adapter.DiningDateAdapter
 import `in`.koreatech.koin.ui.dining.adapter.DiningItemsViewPager2Adapter
 import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
+import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.util.ext.toggleDrawer
@@ -39,7 +43,11 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         viewModel.setSelectedDate(it)
     } }
     private lateinit var diningViewPagerScrollCallback: ViewPager2.OnPageChangeCallback
-
+    private var initialDateTab = 0
+    private var initialDiningTab = 0
+    private val diningOnBoardingBottomSheet by lazy {
+        DiningNotificationOnBoardingFragment()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,14 +56,30 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         initDiningViewPagerScrollCallback()
         initCalendar()
         initViewPager()
+        onActionView()
+        selectInitialPositions()
+        initOnRefreshDiningList()
 
         withLoading(this, viewModel)
-        viewModel.getDining()
+
+        lifecycleScope.launch {
+            viewModel.userState.collect {
+                if(it != null && it.isAnonymous.not()) {
+                    viewModel.shouldShowNotificationOnBoarding()
+                }
+            }
+        }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedDate.collect {
-                    viewModel.getDining(it)
+                viewModel.showDiningNotificationOnBoarding.collect { shouldShowOnBoarding ->
+                    if (shouldShowOnBoarding) {
+                        diningOnBoardingBottomSheet.show(
+                            supportFragmentManager,
+                            diningOnBoardingBottomSheet.tag
+                        )
+                        viewModel.updateShouldShowNotificationOnBoarding(false)
+                    }
                 }
             }
         }
@@ -63,7 +87,49 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.koinBaseAppBarDark.setOnClickListener {
             when(it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
-                AppBarBase.getRightButtonId() -> binding.drawerLayout.toggleDrawer()
+                AppBarBase.getRightButtonId() -> startActivity(Intent(this@DiningActivity, DiningNoticeActivity::class.java))
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (isTaskRoot) {
+                    val intent = Intent(this@DiningActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+    }
+
+    private fun selectInitialPositions() {
+        binding.tabsDiningTime.selectTab(binding.tabsDiningTime.getTabAt(initialDiningTab))
+        diningDateAdapter.selectPosition(initialDateTab)
+        diningDateAdapter.notifyDataSetChanged()
+        viewModel.setSelectedDate(dates[initialDateTab].also {
+            Log.d("dddddddddddddddd333", it.toString())
+        })
+    }
+
+    private fun onActionView() {
+        if(Intent.ACTION_VIEW == intent.action) {
+            val uri = intent.data
+            uri?.let {
+                try {
+                    val dateString = it.getQueryParameter("date")
+                    dateString?.let { ds ->
+                        val date = TimeUtil.stringToDateYYYYMMDD(ds)
+                        val diff = TimeUtil.getDateDifferenceInDays(date, dates[dates.size / 2])
+                        initialDateTab = dates.size / 2 + diff
+                    }
+
+                    it.getQueryParameter("type")?.let { type ->
+                        initialDiningTab = getDiningTabByType(DiningUtil.getTypeByString(type))
+                    }
+                } catch (_: Exception) { }
             }
         }
     }
@@ -83,15 +149,9 @@ class DiningActivity : KoinNavigationDrawerActivity() {
                     else -> throw IllegalArgumentException("Position must be lower than ${diningViewPager.offscreenPageLimit}")
                 }
             }.attach()
-            when(DiningUtil.getCurrentType()) {
-                DiningType.Breakfast -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
-                DiningType.Lunch -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(1))
-                DiningType.Dinner -> tabsDiningTime.selectTab(tabsDiningTime.getTabAt(2))
-                DiningType.NextBreakfast -> {
-                    tabsDiningTime.selectTab(tabsDiningTime.getTabAt(0))
-                    diningDateAdapter.selectPosition(dates.size / 2 + 1)
-                }
-            }
+
+            initialDiningTab = getDiningTabByType(DiningUtil.getCurrentType())
+
             // 스크롤이 아닌 탭 선택 이벤트만 받기 위한 구현
             repeat(binding.tabsDiningTime.tabCount) {
                 val tab = binding.tabsDiningTime.getTabAt(it)
@@ -109,6 +169,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
     private fun initCalendar() {
         with(binding) {
             recyclerViewCalendar.adapter = diningDateAdapter
+            dates.clear()
             val current = TimeUtil.getCurrentTime()
             dates.add(current)
             repeat(3) {
@@ -120,8 +181,8 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             diningDateAdapter.submitList(dates)
 
             val todayPos = dates.size / 2
-            diningDateAdapter.selectPosition(todayPos)
             scrollDateTodayToCenter(todayPos)
+            initialDateTab = todayPos
         }
     }
 
@@ -156,8 +217,35 @@ class DiningActivity : KoinNavigationDrawerActivity() {
             }
         }
     }
+
+    private fun getDiningTabByType(type: DiningType): Int {
+        return when (type) {
+            DiningType.Breakfast -> 0
+            DiningType.Lunch -> 1
+            DiningType.Dinner -> 2
+            DiningType.NextBreakfast -> 0
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding.diningViewPager.unregisterOnPageChangeCallback(diningViewPagerScrollCallback)
+    }
+
+    private fun initOnRefreshDiningList() {
+        binding.swipeRefreshLayoutDining.setOnRefreshListener {
+            viewModel.getDining(viewModel.selectedDate.value)
+            binding.swipeRefreshLayoutDining.isRefreshing = false
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        intent.apply {
+            this?.action = Intent.ACTION_VIEW
+            setIntent(this)
+        }
+        super.onNewIntent(intent)
+        onActionView()
+        selectInitialPositions()
     }
 }

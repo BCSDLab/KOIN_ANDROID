@@ -7,13 +7,10 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,13 +21,10 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -159,7 +153,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
                 if(result) {
                     saveTimeTableViewInBMP(semester);
                 } else {
-                    ToastUtil.getInstance().makeShort(R.string.need_permission);
+                    ToastUtil.getInstance().makeShort(R.string.common_need_permission);
                 }
             }
     );
@@ -611,14 +605,14 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         duplicateClassTitile.append(TimeDuplicateCheckUtil.duplicateScheduleTostring(duplicateTimeTableItems));
         duplicateClassTitile.append(getResources().getString(R.string.timetable_want_to_change_message));
         builder.setMessage(duplicateClassTitile.toString());
-        builder.setPositiveButton(R.string.positive,
+        builder.setPositiveButton(R.string.common_confirmation,
                 (dialog, which) -> {
                     this.timetablePresenter.addTimeTableItem(new TimeTable.TimeTableItem(selectedLectureSeperateArrayList.get(position)), semester);
                     for (TimeTable.TimeTableItem timeTableItem : duplicateTimeTableItems) {
                         this.timetablePresenter.deleteItem(semester, timeTableItem.getId());
                     }
                 });
-        builder.setNegativeButton(R.string.cancel,
+        builder.setNegativeButton(R.string.common_cancellation,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -627,11 +621,11 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
     public void showAskDeleteTimeTableItemDialog(int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.timetable_delete_class_message);
-        builder.setPositiveButton(R.string.positive,
+        builder.setPositiveButton(R.string.common_confirmation,
                 (dialog, which) -> {
                     this.timetablePresenter.deleteItem(semester, index);
                 });
-        builder.setNegativeButton(R.string.cancel,
+        builder.setNegativeButton(R.string.common_cancellation,
                 (dialog, which) -> {
                 });
         builder.show();
@@ -869,7 +863,7 @@ public class TimetableAnonymousActivity extends KoinNavigationDrawerActivity imp
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.timetable_update_message);
         builder.setMessage(message);
-        builder.setPositiveButton(R.string.positive,
+        builder.setPositiveButton(R.string.common_confirmation,
                 (dialog, which) -> {
                 });
         builder.show();
