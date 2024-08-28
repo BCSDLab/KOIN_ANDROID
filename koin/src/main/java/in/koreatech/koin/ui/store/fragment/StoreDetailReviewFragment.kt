@@ -53,14 +53,25 @@ class StoreDetailReviewFragment : Fragment() {
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
-                if(it.isReported){
-                    ToastUtil.getInstance().makeShort(getString(R.string.review_already_reported))
+                viewModel.checkToken()
+                if (viewModel.tokenState.value == TokenState.Valid) {
+                    if (it.isReported) {
+                        ToastUtil.getInstance()
+                            .makeShort(getString(R.string.review_already_reported))
+                    } else {
+                        val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                        intent.putExtra("storeId", viewModel.store.value?.uid)
+                        intent.putExtra("reviewId", it.reviewId)
+                        startActivity(intent)
+                    }
                 }
                 else{
-                    val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
-                    intent.putExtra("storeId", viewModel.store.value?.uid)
-                    intent.putExtra("reviewId", it.reviewId)
-                    startActivity(intent)
+                    val loginRequestDialog = LoginRequsetDialog(
+                        goToLogin = {
+                            loginActivityLauncher.launch(Unit)
+                        }
+                    )
+                    loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
             }
         )
