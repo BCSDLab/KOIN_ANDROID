@@ -86,21 +86,19 @@ class OwnerChangePasswordRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun requestSmsVerification(phoneNumber: String): Result<Unit> {
+    override suspend fun requestSmsVerification(phoneNumber: String) {
         return try {
             ownerRemoteDataSource.changePasswordVerificationSms (
                 VerificationSmsRequest(
                     phoneNumber = phoneNumber
                 )
             )
-            Result.success(Unit)
         } catch (t: CancellationException) {
             throw t
         } catch (e: HttpException) {
             throw e
         } catch (e: Exception) {
             throw e
-
         }
     }
 
