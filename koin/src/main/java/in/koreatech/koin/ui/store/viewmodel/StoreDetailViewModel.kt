@@ -101,6 +101,7 @@ class StoreDetailViewModel @Inject constructor(
 
     fun deleteReview(reviewId: Int, storeId: Int) = viewModelScope.launchWithLoading {
         deleteReviewUseCase(reviewId, storeId)
+        getShopReviews(storeId)
     }
 
     fun checkShowMyReview(isChecked: Boolean) {
