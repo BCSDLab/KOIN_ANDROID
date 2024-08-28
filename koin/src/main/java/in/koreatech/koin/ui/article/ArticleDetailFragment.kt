@@ -121,8 +121,8 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     }
 
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
-        binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.GONE else View.VISIBLE
-        binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.GONE else View.VISIBLE
+        binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
+        binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {

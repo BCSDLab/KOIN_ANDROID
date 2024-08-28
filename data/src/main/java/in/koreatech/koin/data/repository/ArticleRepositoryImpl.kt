@@ -5,13 +5,34 @@ import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
-    private val articleRemoteDataSource: ArticleRemoteDataSource
+    private val articleRemoteDataSource: ArticleRemoteDataSource,
+    private val coroutineScope: CoroutineScope
 ) : ArticleRepository {
+
+    private val _myKeywords = MutableStateFlow<List<String>>(emptyList())
+    private val myKeywords = _myKeywords.flatMapLatest {
+        flow {
+            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords.map {
+                it.keyword
+            }
+            emit(keywords)
+        }
+    }.stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = emptyList()
+    )
 
     override fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): Flow<ArticlePagination> {
         return flow {
@@ -44,10 +65,22 @@ class ArticleRepositoryImpl @Inject constructor(
     }
 
     override fun fetchMyKeyword(): Flow<List<String>> {
+        return myKeywords
+    }
+
+    override fun fetchKeywordSuggestions(): Flow<List<String>> {
         return flow {
-            emit(articleRemoteDataSource.fetchMyKeyword().keywords.map {
+            emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords.map {
                 it.keyword
             })
+        }
+    }
+
+    override fun saveKeyword(keyword: String): Flow<Unit> {
+        return flow {
+            emit(articleRemoteDataSource.saveKeyword(keyword))
+        }.onEach {
+            _myKeywords.emit(buildList { addAll(_myKeywords.value); add(keyword) })
         }
     }
 
