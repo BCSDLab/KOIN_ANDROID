@@ -127,4 +127,8 @@
     <style name="WhiteToolbarIconTheme" parent="AppTheme">
         <item name="android:textColorSecondary">@color/black</item>
     </style>
+
+    <style name="OutlinedTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxStrokeColor">@color/color_outline_text_field</item>
+    </style>
 </resources>
