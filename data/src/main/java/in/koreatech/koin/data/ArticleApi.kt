@@ -1,10 +1,13 @@
 package `in`.koreatech.koin.data
 
+import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -39,6 +42,12 @@ interface ArticleApi {
 
     @GET("articles/keyword/me")
     suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
+
+    @GET("articles/keyword/suggestions")
+    suspend fun fetchKeywordSuggestions(): ArticleKeywordWrapperResponse
+
+    @POST("articles/keyword")
+    suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest)
 
     /**
      * 검색된 게시글 목록과 페이지 정보를 가져옴

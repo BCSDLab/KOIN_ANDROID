@@ -75,6 +75,7 @@
             app:layout_constraintTop_toBottomOf="@id/text_keyword_notice_description">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_keyword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_input_keyword"

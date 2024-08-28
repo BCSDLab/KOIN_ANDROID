@@ -17,7 +17,7 @@ class FetchHotArticlesUseCase @Inject constructor(
     private val headers: StateFlow<List<ArticleHeader>> =
         articleRepository.fetchHotArticleHeaders().stateIn(
             scope = CoroutineScope(dispatcher),
-            started = SharingStarted.WhileSubscribed(10000),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = listOf()
         )
 
