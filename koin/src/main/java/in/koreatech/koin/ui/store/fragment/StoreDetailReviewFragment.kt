@@ -47,7 +47,6 @@ class StoreDetailReviewFragment : Fragment() {
                 val reviewDeleteDialog = ReviewDeleteCheckDialog(
                     onDelete = {
                         viewModel.deleteReview(it, viewModel.store.value!!.uid)
-                        viewModel.getShopReviews(viewModel.store.value!!.uid)
                     }
                 )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
