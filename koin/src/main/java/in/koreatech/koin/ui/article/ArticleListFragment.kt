@@ -24,6 +24,7 @@ import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleListBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
@@ -119,7 +120,7 @@ class ArticleListFragment : Fragment() {
     private fun onArticleClicked(article: ArticleHeaderState) {
         navController.navigate(
             R.id.action_articleListFragment_to_articleDetailFragment,
-            bundleOf(ARTICLE_ID to article.id)
+            bundleOf(ARTICLE_ID to article.id, NAVIGATED_BOARD_ID to viewModel.currentBoard.value.id)
         )
     }
 
