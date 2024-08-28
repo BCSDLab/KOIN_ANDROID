@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.mapper.toStoreWithMenu
 import `in`.koreatech.koin.data.request.user.ReviewRequest
 import `in`.koreatech.koin.data.request.owner.OwnerChangePasswordRequest
 import `in`.koreatech.koin.data.source.remote.StoreRemoteDataSource
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.error.signup.SignupAlreadySentEmailException
 import `in`.koreatech.koin.domain.model.owner.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.store.Review
