@@ -305,7 +305,13 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         }
 
                         is User.Student -> {
-                            nameTextView.text = user.name
+                            nameTextView.text = if(user.nickname?.isNotEmpty() == true) {
+                                user.nickname!!
+                            } else if(user.name?.isNotEmpty() == true) {
+                                user.name!!
+                            } else {
+                                "회원"
+                            }
                             nameTextView.visibility = View.VISIBLE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
