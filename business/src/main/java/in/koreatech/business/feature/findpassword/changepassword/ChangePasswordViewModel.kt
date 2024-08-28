@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.findpassword.changepassword
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

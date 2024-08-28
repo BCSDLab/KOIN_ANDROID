@@ -1,4 +1,5 @@
-package `in`.koreatech.business.feature_changepassword.navigator
+package `in`.koreatech.business.feature.findpassword.navigator
+
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -9,9 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordScreenImpl
-import `in`.koreatech.business.feature_changepassword.finishchangepassword.FinishChangePasswordScreen
-import `in`.koreatech.business.feature_changepassword.passwordauthentication.PasswordAuthenticationScreenImpl
+import `in`.koreatech.business.feature.findpassword.changepassword.ChangePasswordScreenImpl
+import `in`.koreatech.business.feature.findpassword.finishchangepassword.FinishChangePasswordScreen
+import `in`.koreatech.business.feature.findpassword.passwordauthentication.PasswordAuthenticationScreenImpl
 
 
 @Composable
@@ -23,8 +24,8 @@ fun ChangePassword(
         navController = navController,
         startDestination = ChangePasswordRoute.Authentication.name,
         modifier = modifier
-    ){
-        composable(route = ChangePasswordRoute.Authentication.name){
+    ) {
+        composable(route = ChangePasswordRoute.Authentication.name) {
             PasswordAuthenticationScreenImpl(
                 navigateToChangePassword = {
                     navigateToRandomScreen(navController, it)
@@ -38,12 +39,12 @@ fun ChangePassword(
         composable(
             route = "${ChangePasswordRoute.ChangePassword.name}/{phoneNumber}",
             arguments = listOf(
-                navArgument("phoneNumber"){
+                navArgument("phoneNumber") {
                     type = NavType.StringType
                     defaultValue = ""
                 }
             )
-        ){
+        ) {
             ChangePasswordScreenImpl(
                 navigateToFinish = {
                     navController.navigate(ChangePasswordRoute.Finish.name)
@@ -54,7 +55,7 @@ fun ChangePassword(
             )
         }
 
-        composable(route = ChangePasswordRoute.Finish.name){
+        composable(route = ChangePasswordRoute.Finish.name) {
             FinishChangePasswordScreen()
         }
     }
