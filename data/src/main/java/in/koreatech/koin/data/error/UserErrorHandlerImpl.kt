@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.util.getErrorResponse
 import `in`.koreatech.koin.data.util.handleCommonError
 import `in`.koreatech.koin.data.util.unknownErrorHandler
 import `in`.koreatech.koin.data.util.withUnknown
+import `in`.koreatech.koin.domain.constant.ERROR_INVALID_PHONE_NUMBER
 import `in`.koreatech.koin.domain.constant.ERROR_INVALID_STUDENT_ID
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_GENDER_NOT_SET
 import `in`.koreatech.koin.domain.constant.ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK
@@ -72,11 +73,15 @@ class UserErrorHandlerImpl @Inject constructor(
     override fun handleUsernameDuplicatedError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when (it) {
+                is HttpException -> {
+                    ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_network))
+                }
+
                 is IllegalArgumentException -> {
                     ErrorHandler(context.getString(R.string.error_nickname_error))
                 }
+                else -> unknownErrorHandler(context)
             }
-            unknownErrorHandler(context)
         }
     }
 
@@ -93,6 +98,10 @@ class UserErrorHandlerImpl @Inject constructor(
 
                 it.message == ERROR_USERINFO_GENDER_NOT_SET -> {
                     ErrorHandler(context.getString(R.string.error_gender_not_checked))
+                }
+
+                it.message == ERROR_INVALID_PHONE_NUMBER -> {
+                    ErrorHandler(context.getString(R.string.error_phone_number_invalid_format))
                 }
 
                 else -> unknownErrorHandler(context)
