@@ -7,9 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {
     fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): Flow<ArticlePagination>
-    fun fetchArticle(articleId: Int): Flow<Article>
-    fun fetchPreviousArticle(articleId: Int): Flow<Article>
-    fun fetchNextArticle(articleId: Int): Flow<Article>
+    fun fetchArticle(articleId: Int, boardId: Int): Flow<Article>
+    fun fetchPreviousArticle(articleId: Int, boardId: Int): Flow<Article>
+    fun fetchNextArticle(articleId: Int, boardId: Int): Flow<Article>
     fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>>
     fun fetchMyKeyword(): Flow<List<String>>
     suspend fun fetchSearchedArticles(query: String, page: Int, limit: Int): ArticlePagination

@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.response.article
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.domain.model.article.ArticleKeyword
 
 data class ArticleKeywordWrapperResponse(
     @SerializedName("count") val count: Int,

@@ -26,13 +26,14 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
 class ArticleDetailViewModel @AssistedInject constructor(
-    @Assisted private val articleId: Int,
-    private val articleRepository: ArticleRepository,
+    @Assisted("articleId") articleId: Int,
+    @Assisted("navigatedBoardId") navigatedBoardId: Int,
+    articleRepository: ArticleRepository,
     fetchHotArticlesUseCase: FetchHotArticlesUseCase,
 ) : BaseViewModel() {
 
     val article: StateFlow<ArticleState> =
-        articleRepository.fetchArticle(articleId)
+        articleRepository.fetchArticle(articleId, navigatedBoardId)
             .onStart {
                 _isLoading.value = true
             }.map {
@@ -79,7 +80,10 @@ class ArticleDetailViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(articleId: Int): ArticleDetailViewModel
+        fun create(
+            @Assisted("articleId") articleId: Int,
+            @Assisted("navigatedBoardId") navigatedBoardId: Int,
+        ): ArticleDetailViewModel
     }
 
     companion object {
@@ -87,11 +91,12 @@ class ArticleDetailViewModel @AssistedInject constructor(
 
         fun provideFactory(
             assistedFactory: Factory,
-            article: Int
+            article: Int,
+            boardId: Int
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return assistedFactory.create(article) as T
+                    return assistedFactory.create(article, boardId) as T
                 }
             }
         }

@@ -14,16 +14,16 @@ class ArticleRemoteDataSource @Inject constructor(
         return articleApi.fetchArticlePagination(boardId, page, limit)
     }
 
-    suspend fun fetchArticle(articleId: Int): ArticleResponse {
-        return articleApi.fetchArticle(articleId)
+    suspend fun fetchArticle(articleId: Int, boardId: Int): ArticleResponse {
+        return articleApi.fetchArticle(articleId, boardId)
     }
 
-    suspend fun fetchPreviousArticle(articleId: Int): ArticleResponse {
-        return articleApi.fetchArticle(articleId)
+    suspend fun fetchPreviousArticle(articleId: Int, boardId: Int): ArticleResponse {
+        return articleApi.fetchArticle(articleId, boardId)
     }
 
-    suspend fun fetchNextArticle(articleId: Int): ArticleResponse {
-        return articleApi.fetchArticle(articleId)
+    suspend fun fetchNextArticle(articleId: Int, boardId: Int): ArticleResponse {
+        return articleApi.fetchArticle(articleId, boardId)
     }
 
     suspend fun fetchHotArticles(): List<ArticleResponse> {

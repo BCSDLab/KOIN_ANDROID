@@ -19,21 +19,21 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun fetchArticle(articleId: Int): Flow<Article> {
+    override fun fetchArticle(articleId: Int, boardId: Int): Flow<Article> {
         return flow {
-            emit(articleRemoteDataSource.fetchArticle(articleId).toArticle())
+            emit(articleRemoteDataSource.fetchArticle(articleId, boardId).toArticle())
         }
     }
 
-    override fun fetchPreviousArticle(articleId: Int): Flow<Article> {
+    override fun fetchPreviousArticle(articleId: Int, boardId: Int): Flow<Article> {
         return flow {
-            emit(articleRemoteDataSource.fetchPreviousArticle(articleId).toArticle())
+            emit(articleRemoteDataSource.fetchPreviousArticle(articleId, boardId).toArticle())
         }
     }
 
-    override fun fetchNextArticle(articleId: Int): Flow<Article> {
+    override fun fetchNextArticle(articleId: Int, boardId: Int): Flow<Article> {
         return flow {
-            emit(articleRemoteDataSource.fetchNextArticle(articleId).toArticle())
+            emit(articleRemoteDataSource.fetchNextArticle(articleId, boardId).toArticle())
         }
     }
 

@@ -37,7 +37,8 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private val viewModel: ArticleDetailViewModel by viewModels {
         ArticleDetailViewModel.provideFactory(
             articleDetailViewModelFactory,
-            requireArguments().getInt(ARTICLE_ID)
+            requireArguments().getInt(ARTICLE_ID),
+            requireArguments().getInt(NAVIGATED_BOARD_ID)
         )
     }
 
@@ -135,5 +136,6 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
 
     companion object {
         const val ARTICLE_ID = "article_header"
+        const val NAVIGATED_BOARD_ID = "navigated_board_id"
     }
 }
