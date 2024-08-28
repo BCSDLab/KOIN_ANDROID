@@ -38,7 +38,8 @@
         tools:replace="android:name">
         <activity
             android:name=".ui.article.ArticleActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
