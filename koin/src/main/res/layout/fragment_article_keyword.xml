@@ -107,11 +107,11 @@
             app:layout_constraintTop_toBottomOf="@id/outlinedTextField" />
 
         <TextView
-            android:id="@+id/text_recommend_keyword"
+            android:id="@+id/text_suggestion_keywords"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="@string/recommend_keyword"
+            android:text="@string/suggestion_keywords"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -119,19 +119,19 @@
             app:layout_constraintTop_toBottomOf="@id/chip_group_my_keyword" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_recommend_keyword"
+            android:id="@+id/chip_group_suggestion_keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="12dp"
             app:chipSpacingHorizontal="8dp"
-            app:layout_constraintTop_toBottomOf="@id/text_recommend_keyword" />
+            app:layout_constraintTop_toBottomOf="@id/text_suggestion_keywords" />
 
         <View
             android:id="@+id/divider_recommend_chip_group_notification"
             android:layout_width="match_parent"
             android:layout_height="6dp"
             android:background="@color/neutral_100"
-            app:layout_constraintTop_toBottomOf="@id/chip_group_recommend_keyword" />
+            app:layout_constraintTop_toBottomOf="@id/chip_group_suggestion_keywords" />
 
         <TextView
             android:id="@+id/text_keyword_notification"
