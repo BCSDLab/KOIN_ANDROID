@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.source.remote
 
 import `in`.koreatech.koin.data.ArticleApi
+import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
@@ -27,6 +28,10 @@ class ArticleRemoteDataSource @Inject constructor(
 
     suspend fun fetchHotArticles(): List<ArticleResponse> {
         return articleApi.fetchHotArticles()
+    }
+
+    suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse {
+        return articleApi.fetchMyKeyword()
     }
 
     suspend fun fetchSearchedArticles(query: String, page: Int, limit: Int): ArticlePaginationResponse {

@@ -11,6 +11,7 @@ interface ArticleRepository {
     fun fetchPreviousArticle(articleId: Int): Flow<Article>
     fun fetchNextArticle(articleId: Int): Flow<Article>
     fun fetchHotArticleHeaders(): Flow<List<ArticleHeader>>
+    fun fetchMyKeyword(): Flow<List<String>>
     suspend fun fetchSearchedArticles(query: String, page: Int, limit: Int): ArticlePagination
     suspend fun fetchHotKeywords(count: Int): List<String>
 }

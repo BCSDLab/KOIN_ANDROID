@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data
 
+import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
@@ -33,6 +34,9 @@ interface ArticleApi {
 
     @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>
+
+    @GET("articles/keyword/me")
+    suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
 
     /**
      * 검색된 게시글 목록과 페이지 정보를 가져옴
