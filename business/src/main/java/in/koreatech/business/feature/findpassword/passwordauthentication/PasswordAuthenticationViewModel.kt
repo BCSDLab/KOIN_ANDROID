@@ -92,7 +92,8 @@ class PasswordAuthenticationViewModel @Inject constructor(
                     reduce {
                         state.copy(
                             accountContinuationState = ChangePasswordContinuationState.SendAuthCode,
-                            authenticationBtnIsClicked = true
+                            authenticationBtnIsClicked = true,
+                            sendSmsError = null,
                         )
                     }
                 }
@@ -101,9 +102,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
                 intent {
                     reduce {
                         state.copy(
-                            accountContinuationState = ChangePasswordContinuationState.Failed(
-                                it.message
-                            )
+                            sendSmsError = it,
                         )
                     }
                 }

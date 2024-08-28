@@ -8,7 +8,8 @@ data class PasswordAuthenticationState (
     val authenticationCode: String = "",
     val accountContinuationState: ChangePasswordContinuationState=ChangePasswordContinuationState.RequestedSmsValidation,
     val smsAuthContinuationState: ChangePasswordContinuationState=ChangePasswordContinuationState.RequestedSmsValidation,
-    val authErrorMessage:String?= null,
+    val sendSmsError:Throwable?=null,
+    val authError:Throwable?=null,
     )
 
 fun PasswordAuthenticationState.phoneNumberIsEmpty() = phoneNumber.isEmpty()

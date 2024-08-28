@@ -42,6 +42,7 @@ import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorUnarchived
 import `in`.koreatech.business.ui.theme.Gray1
 import `in`.koreatech.business.util.ext.clickableOnce
+import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -75,6 +76,7 @@ fun PasswordAuthenticationScreenImpl(
         },
         accountState = state.accountContinuationState,
         authState = state.smsAuthContinuationState,
+        sendSmsError = state.sendSmsError
     )
 
     HandleSideEffects(viewModel, state.phoneNumber.trim(), navigateToChangePassword)
@@ -94,6 +96,7 @@ fun PasswordAuthenticationScreen(
     sendAuthCode: () -> Unit,
     authenticateCode: () -> Unit,
     accountState: ChangePasswordContinuationState,
+    sendSmsError: Throwable?,
     authState: ChangePasswordContinuationState,
 ) {
 
@@ -181,9 +184,14 @@ fun PasswordAuthenticationScreen(
                 value = phoneNumber,
                 onValueChange = insertPhoneNumber,
                 label = stringResource(R.string.enter_phone_number),
-                isError = accountState is ChangePasswordContinuationState.Failed,
-                errorText = if (accountState is ChangePasswordContinuationState.Failed)
-                    accountState.message else stringResource(R.string.error_network_unknown),
+                isError = sendSmsError != null,
+                errorText = when (sendSmsError) {
+                    OwnerError.NotValidPhoneNumberException -> stringResource(id = R.string.error_invalid_phone_number)
+                    OwnerError.NotExistsPhoneNumberException -> stringResource(id = R.string.phone_number_not_validate)
+                    else -> stringResource(
+                        R.string.error_network_unknown
+                    )
+                },
                 isSuccess = accountState == ChangePasswordContinuationState.SendAuthCode,
                 successText = stringResource(R.string.success_send_sms_code),
             )
@@ -287,6 +295,7 @@ fun PreviewPasswordAuthenticationScreen() {
             authenticateCode = { },
             accountState = ChangePasswordContinuationState.SendAuthCode,
             authState = ChangePasswordContinuationState.SendAuthCode,
+            sendSmsError = null
         )
     }
 }
