@@ -11,5 +11,6 @@ data class StoreReviewContent(
     val menuNames: List<String>,
     val isMine: Boolean,
     val isModified: Boolean,
+    val isReported: Boolean,
     val createdAt: String
 ): Serializable

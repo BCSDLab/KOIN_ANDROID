@@ -300,12 +300,14 @@
 
                     <CheckBox
                         android:id="@+id/is_mine_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="115dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:button="@null"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/check_box_review_is_mine"
                         app:layout_constraintTop_toTopOf="@id/my_review_textview"
                         app:layout_constraintBottom_toBottomOf="@id/my_review_textview"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/my_review_textview"
                         />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -358,8 +360,8 @@
 
                     <CheckBox
                         android:id="@+id/header_is_mine_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginEnd="115dp"
                         app:layout_constraintTop_toTopOf="@id/header_my_review_textview"
                         app:layout_constraintBottom_toBottomOf="@id/header_my_review_textview"
@@ -380,7 +382,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="gone"
+
                 android:id="@+id/no_review_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
