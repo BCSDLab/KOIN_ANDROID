@@ -5,13 +5,18 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -36,8 +41,11 @@ class ArticleKeywordViewModel @Inject constructor(
             initialValue = listOf()
         )
 
-    private val _keywordAddUiState = MutableStateFlow<KeywordAddUiState>(KeywordAddUiState.Nothing)
-    val keywordAddUiState: StateFlow<KeywordAddUiState> = _keywordAddUiState
+    private val _keywordAddUiState = MutableSharedFlow<KeywordAddUiState>(
+        extraBufferCapacity = 1,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
+    val keywordAddUiState: SharedFlow<KeywordAddUiState> = _keywordAddUiState
 
     val suggestedKeywords: StateFlow<List<String>> = articleRepository.fetchKeywordSuggestions()
         .stateIn(
@@ -48,21 +56,21 @@ class ArticleKeywordViewModel @Inject constructor(
 
     fun addKeyword(keyword: String) {
         val trimmedKeyword = keyword.trim().ifEmpty {
-            _keywordAddUiState.value = KeywordAddUiState.RequireInput
+            _keywordAddUiState.tryEmit(KeywordAddUiState.RequireInput)
             return
         }
         if (myKeywords.value.size >= MAX_KEYWORD_COUNT) {
-            _keywordAddUiState.value = KeywordAddUiState.LimitExceeded
+            _keywordAddUiState.tryEmit(KeywordAddUiState.LimitExceeded)
             return
         }
 
         if (myKeywords.value.contains(trimmedKeyword)) {
-            _keywordAddUiState.value = KeywordAddUiState.AlreadyExist
+            _keywordAddUiState.tryEmit(KeywordAddUiState.AlreadyExist)
             return
         }
 
         if (trimmedKeyword.contains(" ")) {
-            _keywordAddUiState.value = KeywordAddUiState.BlankNotAllowed
+            _keywordAddUiState.tryEmit(KeywordAddUiState.BlankNotAllowed)
             return
         }
 
@@ -72,7 +80,7 @@ class ArticleKeywordViewModel @Inject constructor(
             _keywordAddUiState.emit(KeywordAddUiState.Success)
         }.catch {
             _keywordAddUiState.emit(KeywordAddUiState.Error)
-        }
+        }.launchIn(viewModelScope)
     }
 
     fun removeKeyword(keyword: String) {

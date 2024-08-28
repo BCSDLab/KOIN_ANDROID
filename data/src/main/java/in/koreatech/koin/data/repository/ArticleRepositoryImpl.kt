@@ -11,22 +11,26 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
-    private val coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
     private val _myKeywords = MutableStateFlow<List<String>>(emptyList())
     private val myKeywords = _myKeywords.flatMapLatest {
-        flow {
-            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords.map {
-                it.keyword
+        if (_myKeywords.value.isEmpty()) {
+            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords.map { response ->
+                response.keyword
             }
-            emit(keywords)
+            flowOf(keywords)
+        } else {
+            flowOf(it)
         }
     }.stateIn(
         scope = coroutineScope,
@@ -80,7 +84,10 @@ class ArticleRepositoryImpl @Inject constructor(
         return flow {
             emit(articleRemoteDataSource.saveKeyword(keyword))
         }.onEach {
-            _myKeywords.emit(buildList { addAll(_myKeywords.value); add(keyword) })
+            _myKeywords.emit(buildList {
+                addAll(myKeywords.value)
+                add(keyword)
+            })
         }
     }
 

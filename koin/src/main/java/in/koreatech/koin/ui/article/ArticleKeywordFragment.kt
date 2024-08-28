@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -70,7 +71,7 @@ class ArticleKeywordFragment : Fragment() {
         binding.run {
             if (chipGroupMyKeyword.childCount < keywords.size) {
                 keywords.forEach { keyword ->
-                    //if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
+                    if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
                         chipGroupMyKeyword.addView(
                             createKeywordChip(keyword, R.drawable.ic_close_round, viewModel::removeKeyword)
                         )
