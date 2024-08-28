@@ -13,15 +13,14 @@ class SendAuthSmsCodeUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         phoneNumber: String
-    ): Pair<Result<ChangePasswordContinuationState>?, ErrorHandler?> {
+    ): Pair<ChangePasswordContinuationState?, ErrorHandler?> {
         return try {
             ownerChangePasswordRepository.requestSmsVerification(
                 phoneNumber = phoneNumber
             )
-            Result.success(ChangePasswordContinuationState.SendAuthCode) to null
+            ChangePasswordContinuationState.SendAuthCode to null
         } catch (t: Throwable) {
             null to ownerErrorHandler.handleFindPasswordError(t)
         }
     }
-
 }
