@@ -1,15 +1,11 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
-import `in`.koreatech.business.feature.insertstore.insertmaininfo.BasicInfoErrorType
-import `in`.koreatech.business.feature.insertstore.insertmaininfo.InsertBasicInfoScreenSideEffect
-import `in`.koreatech.business.feature_changepassword.changepassword.ChangePasswordSideEffect
-
 sealed class RegisterMenuSideEffect {
 
-    object GoToCheckMenuScreen: RegisterMenuSideEffect()
+    object GoToCheckMenuScreen : RegisterMenuSideEffect()
 
-    object FinishRegisterMenu: RegisterMenuSideEffect()
-    data class ShowMessage(val type: RegisterMenuErrorType): RegisterMenuSideEffect()
+    object FinishRegisterMenu : RegisterMenuSideEffect()
+    data class ShowMessage(val type: RegisterMenuErrorType) : RegisterMenuSideEffect()
 }
 enum class RegisterMenuErrorType {
     NullMenuName,
