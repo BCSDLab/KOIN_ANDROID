@@ -124,8 +124,8 @@
     <string name="signup_error_check_password">특수문자를 포함한 영어와 숫자 6~18 자리 비밀번호를 입력해주세요</string>
     <string name="signup_error_check_password_match">비밀번호가 일치하지 않습니다</string>
     <string name="signup_error_when_email_validation">이메일 인증 중 오류가 발생했습니다</string>
-    <string name="signup_init_name">이름을 입력해주세요</string>
-    <string name="signup_init_phone_number">전화번호를 입력해주세요</string>
+    <string name="signup_init_name">이름을 올바른 형식으로 입력해주세요</string>
+    <string name="signup_init_phone_number">전화번호를 올바른 형식으로 입력해주세요</string>
     <string name="signup_init_student_id">학번을 입력해주세요</string>
     <string name="signup_check_nickname">닉네임을 확인해주세요.</string>
     <string name="signup_check_gender">성별을 선택해주세요</string>
