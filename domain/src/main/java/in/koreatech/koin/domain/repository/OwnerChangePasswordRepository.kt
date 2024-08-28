@@ -17,7 +17,7 @@ interface OwnerChangePasswordRepository  {
 
     suspend fun requestSmsVerification(
         phoneNumber: String,
-    ): Result<Unit>
+    )
     suspend fun authenticateSmsCode(
         phoneNumber: String,
         authCode: String,
