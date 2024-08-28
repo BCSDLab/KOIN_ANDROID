@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.passwordauthentication
+package `in`.koreatech.business.feature.findpassword.passwordauthentication
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -200,7 +200,7 @@ fun PasswordAuthenticationScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 LinedTextField(
-                    modifier =Modifier.widthIn(max = 230.dp),
+                    modifier = Modifier.widthIn(max = 230.dp),
                     value = authCode,
                     onValueChange = insertAuthCode,
                     label = stringResource(R.string.input_auth_code),
@@ -239,7 +239,7 @@ fun PasswordAuthenticationScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(48.dp),
-                enabled= authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty
+                enabled = authState !is ChangePasswordContinuationState.Failed && !authCodeIsEmpty && !phoneNumberIsEmpty
             ) {
                 Text(
                     text = stringResource(R.string.next),

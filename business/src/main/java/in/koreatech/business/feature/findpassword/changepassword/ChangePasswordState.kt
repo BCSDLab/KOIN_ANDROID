@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.findpassword.changepassword
 
 import android.os.Parcelable
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState

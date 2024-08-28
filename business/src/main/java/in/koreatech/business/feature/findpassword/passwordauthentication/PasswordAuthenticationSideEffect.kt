@@ -1,4 +1,5 @@
-package `in`.koreatech.business.feature_changepassword.passwordauthentication
+package `in`.koreatech.business.feature.findpassword.passwordauthentication
+
 
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordExceptionState

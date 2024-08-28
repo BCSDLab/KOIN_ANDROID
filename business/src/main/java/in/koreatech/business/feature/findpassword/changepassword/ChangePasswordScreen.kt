@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.findpassword.changepassword
 
 
 import androidx.compose.foundation.Canvas
@@ -177,7 +177,7 @@ fun ChangePasswordScreen(
                 label = stringResource(R.string.input_new_password),
                 isError = password.isNotValidPassword() && !passwordIsEmpty,
                 errorText = stringResource(R.string.password_not_validate),
-                )
+            )
 
             Text(
                 text = stringResource(R.string.confirm_password),

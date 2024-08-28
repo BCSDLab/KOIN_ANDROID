@@ -1,4 +1,4 @@
-package `in`.koreatech.business.feature_changepassword.passwordauthentication
+package `in`.koreatech.business.feature.findpassword.passwordauthentication
 
 
 import androidx.lifecycle.ViewModel
@@ -8,8 +8,6 @@ import `in`.koreatech.koin.domain.error.owner.OwnerError
 import `in`.koreatech.koin.domain.state.business.changepw.ChangePasswordContinuationState
 import `in`.koreatech.koin.domain.usecase.business.changepassword.AuthenticateSmsCodeUseCase
 import `in`.koreatech.koin.domain.usecase.business.changepassword.SendAuthSmsCodeUseCase
-import `in`.koreatech.koin.domain.util.onFailure
-import `in`.koreatech.koin.domain.util.onSuccess
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
@@ -33,11 +31,11 @@ class PasswordAuthenticationViewModel @Inject constructor(
     private val sendAuthCodeFlow = MutableSharedFlow<String>()
     private val authenticateCodeFlow = MutableSharedFlow<Pair<String, String>>()
 
-    init{
+    init {
         viewModelScope.launch {
             sendAuthCodeFlow
                 .debounce(500L)
-                .collect{
+                .collect {
                     performSendAuthCode(it)
                 }
         }
@@ -45,7 +43,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
         viewModelScope.launch {
             authenticateCodeFlow
                 .debounce(500L)
-                .collect{
+                .collect {
                     performAuthenticateCode(it.first, it.second)
                 }
         }
@@ -115,7 +113,7 @@ class PasswordAuthenticationViewModel @Inject constructor(
     private suspend fun performAuthenticateCode(
         phoneNumber: String,
         authCode: String
-    ){
+    ) {
         viewModelScope.launch {
             ownerAuthenticateCode(
                 phoneNumber = phoneNumber,

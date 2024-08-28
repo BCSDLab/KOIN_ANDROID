@@ -1,4 +1,5 @@
-package `in`.koreatech.business.feature_changepassword.changepassword
+package `in`.koreatech.business.feature.findpassword.changepassword
+
 sealed class ChangePasswordSideEffect {
 
     object NotCoincidePassword: ChangePasswordSideEffect()
