@@ -144,6 +144,7 @@
 
     <!-- 메뉴 등록 -->
     <string name="menu_add">메뉴 추가</string>
+    <string name="menu_modify">메뉴 수정</string>
     <string name="menu_info">메뉴 정보</string>
     <string name="menu_name">메뉴명</string>
     <string name="menu_price">가격</string>
