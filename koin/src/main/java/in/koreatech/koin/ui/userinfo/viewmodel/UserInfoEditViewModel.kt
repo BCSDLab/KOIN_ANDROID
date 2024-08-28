@@ -101,7 +101,7 @@ class UserInfoEditViewModel @Inject constructor(
         name: String,
         nickname: String,
         separatedPhoneNumber: List<String>?,
-        gender: Gender?,
+        gender: Gender,
         studentId: String,
         major: String
     ) {
@@ -116,7 +116,7 @@ class UserInfoEditViewModel @Inject constructor(
                         gender = gender,
                         studentId = studentId,
                         major = major,
-                        checkedEmailValidation = nicknameState.value?.let {
+                        isCheckNickname = nicknameState.value?.let {
                             it.nickname == nickname && it.isNicknameDuplicated == false
                         } ?: false
                     )?.let { errorHandler ->

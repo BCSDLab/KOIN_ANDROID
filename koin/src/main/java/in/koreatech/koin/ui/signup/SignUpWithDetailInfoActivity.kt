@@ -83,7 +83,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
                     gender = when {
                         signupUserRadiobuttonGenderMan.isChecked -> Gender.Man
                         signupUserRadiobuttonGenderWoman.isChecked -> Gender.Woman
-                        else -> null
+                        else -> Gender.Unknown
                     },
                     isGraduated = when {
                         signupUserRadiobuttonGraduate.isChecked -> Graduated.Graduate

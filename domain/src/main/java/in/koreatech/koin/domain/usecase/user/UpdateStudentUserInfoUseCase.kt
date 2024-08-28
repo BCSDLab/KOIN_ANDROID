@@ -20,21 +20,17 @@ class UpdateStudentUserInfoUseCase @Inject constructor(
         name: String,
         nickname: String,
         separatedPhoneNumber: List<String>?,
-        gender: Gender?,
+        gender: Gender,
         studentId: String,
         major: String,
-        checkedEmailValidation: Boolean
+        isCheckNickname: Boolean
     ): ErrorHandler? {
         return try {
-            if (!checkedEmailValidation) {
+            if (!isCheckNickname) {
                 throw IllegalStateException(ERROR_USERINFO_NICKNAME_VALIDATION_NOT_CHECK)
             }
 
-            if (gender == null) {
-                throw IllegalStateException(ERROR_USERINFO_GENDER_NOT_SET)
-            }
-
-            if (!studentId.isValidStudentId) {
+            if (studentId.isNotEmpty() && !studentId.isValidStudentId) {
                 throw IllegalStateException(ERROR_INVALID_STUDENT_ID)
             }
 
