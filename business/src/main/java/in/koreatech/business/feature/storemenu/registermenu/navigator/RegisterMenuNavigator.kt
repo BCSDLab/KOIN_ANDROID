@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuCheckScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuScreen
 import `in`.koreatech.business.feature.storemenu.registermenu.registermenu.RegisterMenuViewModel
 
@@ -27,7 +28,21 @@ fun RegisterMenuNavigator(
         ) {
             RegisterMenuScreen(
                 viewModel = registerMenuViewModel,
-                onBackPressed = {}
+                onBackPressed = {
+                    navController.navigateUp()
+                },
+                goToCheckMenuScreen = {
+                    navController.navigate(RegisterMenuRoute.CHECK_MENU.name)
+                }
+            )
+        }
+
+        composable(
+            route = RegisterMenuRoute.CHECK_MENU.name
+        ){
+            RegisterMenuCheckScreen(
+                onBackPressed = { navController.navigateUp() },
+                viewModel = registerMenuViewModel
             )
         }
     }
