@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
@@ -46,16 +47,20 @@ class StoreDetailReviewFragment : Fragment() {
                 val reviewDeleteDialog = ReviewDeleteCheckDialog(
                     onDelete = {
                         viewModel.deleteReview(it, viewModel.store.value!!.uid)
-                        viewModel.getShopReviews(viewModel.store.value!!.uid)
                     }
                 )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
-                val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
-                intent.putExtra("storeId", viewModel.store.value?.uid)
-                intent.putExtra("reviewId", it.reviewId)
-                startActivity(intent)
+                if(it.isReported){
+                    ToastUtil.getInstance().makeShort(getString(R.string.review_already_reported))
+                }
+                else{
+                    val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                    intent.putExtra("storeId", viewModel.store.value?.uid)
+                    intent.putExtra("reviewId", it.reviewId)
+                    startActivity(intent)
+                }
             }
         )
     }
@@ -192,6 +197,10 @@ class StoreDetailReviewFragment : Fragment() {
                     binding.reviewScrollView.fullScroll(ScrollView.FOCUS_UP)
                     viewModel.scrollReset()
                 }
+            }
+
+            observeLiveData(storeReviewContent){
+                binding.noReviewLayout.isVisible = it.isEmpty()
             }
         }
     }

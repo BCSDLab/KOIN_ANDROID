@@ -247,6 +247,7 @@ fun List<StoreReviewContentResponse>.toStoreReviewContentList(): List<StoreRevie
             menuNames = response.menuNames ?: emptyList(),
             isMine = response.isMine ?: false,
             isModified = response.isModified ?: false,
+            isReported = response.isReported ?: false,
             createdAt = response.createdAt ?: ""
         )
     }
