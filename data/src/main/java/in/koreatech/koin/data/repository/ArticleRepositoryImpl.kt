@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.repository
 
+import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -22,12 +24,10 @@ class ArticleRepositoryImpl @Inject constructor(
     coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
-    private val _myKeywords = MutableStateFlow<List<String>>(emptyList())
+    private val _myKeywords = MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
     private val myKeywords = _myKeywords.flatMapLatest {
         if (_myKeywords.value.isEmpty()) {
-            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords.map { response ->
-                response.keyword
-            }
+            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords
             flowOf(keywords)
         } else {
             flowOf(it)
@@ -69,7 +69,9 @@ class ArticleRepositoryImpl @Inject constructor(
     }
 
     override fun fetchMyKeyword(): Flow<List<String>> {
-        return myKeywords
+        return myKeywords.map { response ->
+            response.map { it.keyword }
+        }
     }
 
     override fun fetchKeywordSuggestions(): Flow<List<String>> {
@@ -86,7 +88,18 @@ class ArticleRepositoryImpl @Inject constructor(
         }.onEach {
             _myKeywords.emit(buildList {
                 addAll(myKeywords.value)
-                add(keyword)
+                add(it)
+            })
+        }.map { Unit }
+    }
+
+    override fun deleteKeyword(keyword: String): Flow<Unit> {
+        return flow {
+            emit(articleRemoteDataSource.deleteKeyword(keyword))
+        }.onEach {
+            _myKeywords.emit(buildList {
+                addAll(myKeywords.value)
+                remove(myKeywords.value.first { it.keyword == keyword })
             })
         }
     }

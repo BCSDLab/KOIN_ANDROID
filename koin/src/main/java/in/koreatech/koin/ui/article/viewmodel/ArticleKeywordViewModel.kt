@@ -7,7 +7,6 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +15,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -83,8 +81,12 @@ class ArticleKeywordViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun removeKeyword(keyword: String) {
-
+    fun deleteKeyword(keyword: String) {
+        articleRepository.deleteKeyword(keyword).onEach {
+            _keywordAddUiState.emit(KeywordAddUiState.Success)
+        }.catch {
+            _keywordAddUiState.emit(KeywordAddUiState.Error)
+        }.launchIn(viewModelScope)
     }
 
     fun onKeywordInputChanged(keyword: String) {
