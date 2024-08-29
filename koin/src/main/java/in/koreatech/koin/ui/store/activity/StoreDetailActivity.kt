@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import `in`.koreatech.koin.R
@@ -44,7 +43,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "상점 상세"
     private val viewModel by viewModels<StoreDetailViewModel>()
     private var flyerDialogFragment: StoreFlyerDialogFragment? = null
-    
+    private var currentPage = 0
     private val callPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -82,7 +81,8 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
         initViewModel()
 
-        binding.koinBaseAppbar.setOnClickListener {
+
+        binding.koinBaseAppbar.storeDetailClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
                     EventLogger.logClickEvent(
@@ -99,6 +99,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                         AnalyticsConstant.Label.SHOP_CALL,
                         viewModel.store.value?.name ?: "Unknown"
                     )
+                    if(currentPage==2){
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
+                            viewModel.store.value?.name ?: "Unknown"
+                        )
+                    }
                 }
             }
         }
@@ -129,14 +136,27 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
 
         tabLayoutMediator.attach()
 
-        binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.storeDetailTabLayout.addOnTabSelectedListener(object :
+            TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 1)
-                    EventLogger.logClickEvent(
+                currentPage = tab?.position ?: 0
+                when (tab?.position) {
+                    0 -> EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                    1 -> EventLogger.logClickEvent(
                         AnalyticsConstant.Domain.BUSINESS,
                         AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
                         viewModel.store.value?.name ?: "Unknown"
                     )
+                    2 -> EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                }
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {}
@@ -175,6 +195,13 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             return
         }
 
+        if(currentPage==2){
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
+                viewModel.store.value?.name ?: "Unknown"
+            )
+        }
         super.onBackPressed()
     }
 

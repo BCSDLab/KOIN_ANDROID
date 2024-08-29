@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
@@ -33,6 +35,7 @@ class StoreDetailEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
+        initEventScrollCallback()
     }
 
     private fun initViews() {
@@ -67,5 +70,17 @@ class StoreDetailEventFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun initEventScrollCallback() {
+        binding.storeEventScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY >= 1 && oldScrollY < 1) {
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
+            }
+        }
     }
 }
