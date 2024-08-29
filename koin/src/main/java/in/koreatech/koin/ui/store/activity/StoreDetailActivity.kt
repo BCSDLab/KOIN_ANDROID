@@ -121,12 +121,18 @@ class StoreDetailActivity : KoinNavigationDrawerTimeActivity() {
 
         binding.storeDetailTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab?.position == 1)
-                    EventLogger.logClickEvent(
+                when(tab?.position) {
+                    0 -> EventLogger.logClickEvent(
                         EventAction.BUSINESS,
                         AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
                         viewModel.store.value?.name ?: "Unknown"
                     )
+                    1 -> EventLogger.logClickEvent(
+                        EventAction.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                        viewModel.store.value?.name ?: "Unknown"
+                    )
+                }
             }
 
             override fun onTabUnselected(p0: TabLayout.Tab?) {}

@@ -100,7 +100,7 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
             EventLogger.logClickEvent(
                 EventAction.USER,
                 AnalyticsConstant.Label.LOGIN,
-                getString(R.string.login)
+                getString(R.string.login_complete)
             )
         }
 
