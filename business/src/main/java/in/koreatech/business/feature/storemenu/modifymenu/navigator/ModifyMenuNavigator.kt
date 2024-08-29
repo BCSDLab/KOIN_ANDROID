@@ -17,13 +17,16 @@ import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.ModifyMen
 fun ModifyMenuNavigator(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    modifyMenuViewModel: ModifyMenuViewModel = hiltViewModel()
+    modifyMenuViewModel: ModifyMenuViewModel = hiltViewModel(),
+    menuId: Int = 2796
 ) {
     NavHost(
         navController = navController,
         startDestination = ModifyMenuRoute.MODIFY_MENU.name,
         modifier = modifier
     ) {
+
+        modifyMenuViewModel.settingId(menuId)
 
         composable(
             route = ModifyMenuRoute.MODIFY_MENU.name,

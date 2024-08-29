@@ -76,8 +76,6 @@ fun ModifyMenuScreen(
     modifier: Modifier = Modifier,
     goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
-    shopId: Int = 163,
-    menuId: Int = 2796,
     viewModel: ModifyMenuViewModel
 ) {
     val state = viewModel.collectAsState().value
@@ -130,8 +128,6 @@ fun ModifyMenuScreen(
             viewModel.onNextButtonClick()
         },
     )
-    viewModel.settingId(shopId, menuId)
-
     //HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
 
