@@ -88,6 +88,10 @@ class UserErrorHandlerImpl @Inject constructor(
     override fun handleUpdateUserError(throwable: Throwable): ErrorHandler {
         return throwable.handleCommonError(context) {
             when {
+                it is HttpException -> {
+                    ErrorHandler(it.getErrorResponse()?.message ?: context.getString(R.string.error_network))
+                }
+
                 it is IndexOutOfBoundsException || it.message == ERROR_INVALID_STUDENT_ID -> {
                     ErrorHandler(context.getString(R.string.error_invalid_student_number))
                 }
