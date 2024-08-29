@@ -16,7 +16,8 @@ import `in`.koreatech.koin.databinding.ReviewDeleteDialogBinding
 import `in`.koreatech.koin.util.ext.windowWidth
 
 class ReviewDeleteCheckDialog(
-    val onDelete: () -> Unit
+    val onDelete: () -> Unit,
+    val onCancel: () -> Unit,
 ) : DialogFragment() {
     private lateinit var binding: ReviewDeleteDialogBinding
 
@@ -40,6 +41,7 @@ class ReviewDeleteCheckDialog(
             dismiss()
         }
         binding.buttonCancle.setOnClickListener {
+            onCancel()
             dismiss()
         }
         return binding.root

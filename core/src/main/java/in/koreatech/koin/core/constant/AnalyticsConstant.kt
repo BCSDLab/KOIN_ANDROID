@@ -46,6 +46,29 @@ object AnalyticsConstant {
         const val SHOP_CLICK = "shop_click"
         const val SHOP_BACK_BUTTON = "shop_back_button"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
+
+
+        const val SHOP_DETAIL_VIEW_REVIEW = "shop_detail_view_review"
+        const val SHOP_DETAIL_VIEW_REVIEW_WRITE = "shop_detail_view_review_write"
+        const val SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE = "shop_detail_view_review_write_done"
+        const val SHOP_DETAIL_VIEW_REVIEW_REPORT = "shop_detail_view_review_report"
+        const val SHOP_DETAIL_VIEW_REVIEW_REPORT_DONE = "shop_detail_view_review_report_done"
+
+        const val SHOP_DETAIL_VIEW_REVIEW_DELETE = "shop_detail_view_review_delete"
+        const val SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE = "shop_detail_view_review_delete_done"
+        const val SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL = "shop_detail_view_review_delete_cancel"
+
+
+        const val SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN = "shop_detail_view_review_write_login"
+        const val SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL = "shop_detail_view_review_write_cancel"
+
+        const val SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN = "shop_detail_view_review_report_login"
+        const val SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL = "shop_detail_view_review_report_cancel"
+
+        const val SHOP_DETAIL_VIEW = "shop_detail_view"
+
+        const val SHOP_DETAIL_VIEW_REVIEW_BACK ="shop_detail_view_review_back"
+
     }
 
 }

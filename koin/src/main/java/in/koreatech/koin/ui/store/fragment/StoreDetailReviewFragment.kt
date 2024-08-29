@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.contract.LoginContract
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
@@ -23,7 +25,7 @@ import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
-import `in`.koreatech.koin.ui.store.dialog.LoginRequsetDialog
+import `in`.koreatech.koin.ui.store.dialog.LoginRequestDialog
 import `in`.koreatech.koin.ui.store.dialog.ReviewDeleteCheckDialog
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -47,20 +49,66 @@ class StoreDetailReviewFragment : Fragment() {
                 val reviewDeleteDialog = ReviewDeleteCheckDialog(
                     onDelete = {
                         viewModel.deleteReview(it, viewModel.store.value!!.uid)
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_DONE,
+                            viewModel.store.value?.name ?: "Unknown"
+                        )
+                    },
+                    onCancel = {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE_CANCEL,
+                            viewModel.store.value?.name ?: "Unknown"
+                        )
                     }
                 )
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_DELETE,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
             },
             onReportItem ={
-                if(it.isReported){
-                    ToastUtil.getInstance().makeShort(getString(R.string.review_already_reported))
+                viewModel.checkToken()
+                if (viewModel.tokenState.value == TokenState.Valid) {
+                    if (it.isReported) {
+                        ToastUtil.getInstance()
+                            .makeShort(getString(R.string.review_already_reported))
+                    } else {
+                        val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                        intent.putExtra("storeName", viewModel.store.value?.name)
+                        intent.putExtra("storeId", viewModel.store.value?.uid)
+                        intent.putExtra("reviewId", it.reviewId)
+                        startActivity(intent)
+                    }
                 }
                 else{
-                    val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
-                    intent.putExtra("storeId", viewModel.store.value?.uid)
-                    intent.putExtra("reviewId", it.reviewId)
-                    startActivity(intent)
+                    val loginRequestDialog = LoginRequestDialog(
+                        goToLogin = {
+                            loginActivityLauncher.launch(Unit)
+                            EventLogger.logClickEvent(
+                                AnalyticsConstant.Domain.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_LOGIN,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
+                        },
+                        onCancel ={
+                            EventLogger.logClickEvent(
+                                AnalyticsConstant.Domain.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
+                        }
+                    )
+                    loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
             }
         )
     }
@@ -79,6 +127,7 @@ class StoreDetailReviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
+        initReviewScrollCallback()
     }
 
     override fun onResume() {
@@ -101,13 +150,30 @@ class StoreDetailReviewFragment : Fragment() {
                     startActivity(goToReviewScreen)
                 }
                 else {
-                    val loginRequestDialog = LoginRequsetDialog(
+                    val loginRequestDialog = LoginRequestDialog(
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
+                            EventLogger.logClickEvent(
+                                AnalyticsConstant.Domain.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_LOGIN,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
+                        },
+                        onCancel = {
+                            EventLogger.logClickEvent(
+                                AnalyticsConstant.Domain.BUSINESS,
+                                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_CANCEL,
+                                viewModel.store.value?.name ?: "Unknown"
+                            )
                         }
                     )
                     loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
             }
 
             observeLiveData(viewModel.storeReview) {
@@ -205,5 +271,27 @@ class StoreDetailReviewFragment : Fragment() {
         }
     }
 
-    private fun calculateScore(total: Int, count: Int?) = count?.let { ((it.toFloat() / total) * 100).toInt() } ?: 0
+    private fun initReviewScrollCallback() {
+        binding.reviewScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY >= 1 && oldScrollY < 1) {
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
+            }
+        }
+    }
+
+    override fun onPause() {
+        EventLogger.logClickEvent(
+            AnalyticsConstant.Domain.BUSINESS,
+            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
+            viewModel.store.value?.name ?: "Unknown"
+        )
+        super.onPause()
+    }
+
+    private fun calculateScore(total: Int, count: Int?) =
+        count?.let { ((it.toFloat() / total) * 100).toInt() } ?: 0
 }
