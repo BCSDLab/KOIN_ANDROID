@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -47,7 +48,10 @@ interface ArticleApi {
     suspend fun fetchKeywordSuggestions(): ArticleKeywordWrapperResponse
 
     @POST("articles/keyword")
-    suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest)
+    suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest): ArticleKeywordWrapperResponse.ArticleKeywordResponse
+
+    @DELETE("articles/keyword/{id}")
+    suspend fun deleteKeyword(@Path("id") keywordId: Int)
 
     /**
      * 검색된 게시글 목록과 페이지 정보를 가져옴

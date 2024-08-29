@@ -59,8 +59,7 @@ class ArticleKeywordFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.myKeywords.collect {
                     binding.run {
-                        textViewMyKeywordCount.text = it.size.toString()
-                        addMyKeywordView(it)
+                        onMyKeywordsChanged(it)
                     }
                 }
             }
@@ -73,16 +72,26 @@ class ArticleKeywordFragment : Fragment() {
                 keywords.forEach { keyword ->
                     if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
                         chipGroupMyKeyword.addView(
-                            createKeywordChip(keyword, R.drawable.ic_close_round, viewModel::removeKeyword)
+                            createKeywordChip(keyword, R.drawable.ic_close_round, viewModel::deleteKeyword)
                         )
                 }
             }
         }
     }
 
-    private fun removeMyKeywordView(keyword: String) {
-        binding.run {
+    private fun removeMyKeywordView(keywords: List<String>) {
+        binding.chipGroupMyKeyword.children.forEach { chip ->
+            if (keywords.none { it == (chip as Chip).text }) {
+                binding.chipGroupMyKeyword.removeView(chip)
+            }
+        }
+    }
 
+    private fun onMyKeywordsChanged(keywords: List<String>) {
+        binding.run {
+            textViewMyKeywordCount.text = keywords.size.toString()
+            addMyKeywordView(keywords)
+            removeMyKeywordView(keywords)
         }
     }
 

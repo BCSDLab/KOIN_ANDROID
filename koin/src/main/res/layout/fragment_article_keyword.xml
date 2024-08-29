@@ -105,6 +105,7 @@
             android:paddingVertical="12dp"
             app:chipSpacingHorizontal="8dp"
             android:layout_marginHorizontal="24dp"
+            android:animateLayoutChanges="true"
             app:layout_constraintTop_toBottomOf="@id/outlinedTextField" />
 
         <TextView
@@ -126,6 +127,7 @@
             android:paddingVertical="12dp"
             app:chipSpacingHorizontal="8dp"
             android:layout_marginHorizontal="24dp"
+            android:animateLayoutChanges="true"
             app:layout_constraintTop_toBottomOf="@id/text_suggestion_keywords" />
 
         <View
