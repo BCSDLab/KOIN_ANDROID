@@ -28,7 +28,7 @@ class SignupRequestEmailVerificationUseCase @Inject constructor(
         else if (!phoneNumber.isNullOrBlank() && (phoneNumber.length != 11))
             return Result.success(SignupContinuationState.CheckPhoneNumberFormat)
         else if (!nickName.isNullOrBlank() && !isCheckNickname)
-            return Result.success(SignupContinuationState.CheckNickName)
+            return Result.success(SignupContinuationState.CheckNickNameDuplication)
 
         return signupRepository.requestEmailVerification(
             portalAccount = portalAccount,
