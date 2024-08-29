@@ -98,7 +98,7 @@ class DiningAdapter(
                     cardViewDining.setOnClickListener {
                         dialog.show()
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
+                            EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
                             DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )
@@ -111,7 +111,7 @@ class DiningAdapter(
                     imageViewDining.visibility = View.INVISIBLE
                     cardViewDining.setOnClickListener {
                         EventLogger.logClickEvent(
-                            AnalyticsConstant.Domain.CAMPUS,
+                            EventAction.CAMPUS,
                             AnalyticsConstant.Label.MENU_IMAGE,
                             DiningUtil.getKoreanName(dining.type) + "_" + dining.place
                         )

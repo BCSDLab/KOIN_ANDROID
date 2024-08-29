@@ -207,7 +207,21 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 }
                             }
 
-                            MenuState.LoginOrLogout -> {}
+                            MenuState.LoginOrLogout -> {
+                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isStudent) {
+                                    EventLogger.logClickEvent(
+                                        EventAction.USER,
+                                        AnalyticsConstant.Label.HAMBURGER,
+                                        getString(R.string.navigation_item_logout)
+                                    )
+                                } else {
+                                    EventLogger.logClickEvent(
+                                        EventAction.USER,
+                                        AnalyticsConstant.Label.HAMBURGER,
+                                        getString(R.string.navigation_item_login)
+                                    )
+                                }
+                            }
 
                             else -> Unit
                         }
@@ -305,11 +319,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             nameTextView.visibility = View.GONE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message_anonymous)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_login)
-                            EventLogger.logClickEvent(
-                                EventAction.USER,
-                                AnalyticsConstant.Label.HAMBURGER,
-                                getString(R.string.navigation_item_login)
-                            )
                         }
 
                         is User.Student -> {
@@ -317,11 +326,6 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             nameTextView.visibility = View.VISIBLE
                             helloMessageTextView.text = getString(R.string.navigation_hello_message)
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
-                            EventLogger.logClickEvent(
-                                EventAction.USER,
-                                AnalyticsConstant.Label.HAMBURGER,
-                                getString(R.string.navigation_item_logout)
-                            )
 
                             when (menuState) {
                                 MenuState.Main, MenuState.Notification -> {
