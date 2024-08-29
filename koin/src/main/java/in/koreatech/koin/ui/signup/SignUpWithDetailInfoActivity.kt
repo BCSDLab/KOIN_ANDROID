@@ -140,7 +140,7 @@ class SignupWithDetailInfoActivity : ActivityBase() {
 
                     SignupContinuationState.CheckPhoneNumberFormat -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_init_phone_number))
 
-                    SignupContinuationState.CheckNickName -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_nickname))
+                    SignupContinuationState.CheckNickNameDuplication -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.signup_check_nickname_duplication))
 
                     SignupContinuationState.NicknameDuplicated -> SnackbarUtil.makeShortSnackbar(binding.root, getString(R.string.error_nickname_duplicated))
 
