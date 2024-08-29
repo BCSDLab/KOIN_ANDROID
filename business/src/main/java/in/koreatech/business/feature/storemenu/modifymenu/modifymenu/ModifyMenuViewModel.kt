@@ -44,6 +44,7 @@ class ModifyMenuViewModel @Inject constructor(
                 val menuInfo = getMenuInfoUseCase(state.menuId)
                 reduce {
                     state.copy(
+                        shopId = menuInfo.shopId,
                         menuName = menuInfo.name,
                         menuPrice = menuInfo.singlePrice.toString(),
                         menuOptionPrice = menuInfo.optionPrice,
@@ -62,7 +63,6 @@ class ModifyMenuViewModel @Inject constructor(
         intent {
             viewModelScope.launch {
                 val menuCategory = getMenuCategoryUseCase(state.shopId)
-
                 val newMenuCategory = menuCategory.map { category ->
                     StoreMenuCategory(
                         menuCategoryId = category.menuCategoryId,
@@ -167,11 +167,10 @@ class ModifyMenuViewModel @Inject constructor(
         postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailUploadImage))
     }
 
-    fun settingId(shopId: Int, menuId: Int){
+    fun settingId(menuId: Int){
         intent{
             reduce {
                 state.copy(
-                    shopId = shopId,
                     menuId = menuId
                 )
             }

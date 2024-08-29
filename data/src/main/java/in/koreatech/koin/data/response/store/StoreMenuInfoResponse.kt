@@ -3,7 +3,7 @@ package `in`.koreatech.koin.data.response.store
 import com.google.gson.annotations.SerializedName
 
 data class StoreMenuInfoResponse(
-    @SerializedName("id") val shopId: Int,
+    @SerializedName("shop_id") val shopId: Int,
     @SerializedName("name") val name: String,
     @SerializedName("is_single") val isSingle: Boolean,
     @SerializedName("single_price") val singlePrice : Int,
