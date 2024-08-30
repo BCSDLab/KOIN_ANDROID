@@ -107,6 +107,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
                                     }
 
                                     SubscribesType.NOTHING -> Unit
+                                    else -> Unit
                                 }
                             }
                             uiState.notificationPermissionInfo.subscribes.forEach {
