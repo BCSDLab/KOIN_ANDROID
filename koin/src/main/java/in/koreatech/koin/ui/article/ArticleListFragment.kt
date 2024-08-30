@@ -206,6 +206,11 @@ class ArticleListFragment : Fragment() {
                     viewModel.articlePagination.collectLatest {
                         articleAdapter.submitList(it.articles)
                         binding.nestedScrollViewArticleList.scrollTo(0, 0)
+                        if (it.articles.isEmpty()) {
+                            binding.textViewEmptyArticles.visibility = View.VISIBLE
+                        } else {
+                            binding.textViewEmptyArticles.visibility = View.GONE
+                        }
                     }
                 }
             }
