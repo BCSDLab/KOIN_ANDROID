@@ -85,6 +85,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
                 R.id.action_articleDetailFragment_to_articleDetailFragment,
                 Bundle().apply {
                     putInt(ARTICLE_ID, viewModel.article.value.prevArticleId!!)
+                    putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
                 }
             )
         }
@@ -93,6 +94,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
                 R.id.action_articleDetailFragment_to_articleDetailFragment,
                 Bundle().apply {
                     putInt(ARTICLE_ID, viewModel.article.value.nextArticleId!!)
+                    putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
                 }
             )
         }

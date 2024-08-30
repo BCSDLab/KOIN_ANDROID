@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.stateIn
 
 class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
-    @Assisted("navigatedBoardId") navigatedBoardId: Int,
+    @Assisted("navigatedBoardId") val navigatedBoardId: Int,
     articleRepository: ArticleRepository,
     fetchHotArticlesUseCase: FetchHotArticlesUseCase,
 ) : BaseViewModel() {
@@ -42,7 +42,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                 _isLoading.value = false
             }.stateIn(
                 scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
+                started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = ArticleState(
                     header = ArticleHeaderState(
                         id = 0,
@@ -70,7 +70,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
             }.map { it.toArticleHeaderState() }
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.WhileSubscribed(5_000),
             initialValue = listOf()
         )
 
