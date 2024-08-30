@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -115,7 +114,9 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchHotKeywords(count: Int): List<String> {
-        return articleRemoteDataSource.fetchHotKeywords(count).keywords
+    override fun fetchMostSearchedKeywords(count: Int): Flow<List<String>> {
+        return flow {
+            emit(articleRemoteDataSource.fetchMostSearchedKeywords(count).keywords)
+        }
     }
 }

@@ -61,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/text_my_keyword" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/outlinedTextField"
+            android:id="@+id/text_input_layout_keyword"
             style="@style/OutlinedTextInputLayoutStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,9 +93,9 @@
             android:minWidth="0dp"
             android:paddingHorizontal="14dp"
             android:text="@string/add_keyword"
-            app:layout_constraintBottom_toBottomOf="@id/outlinedTextField"
+            app:layout_constraintBottom_toBottomOf="@id/text_input_layout_keyword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/outlinedTextField"
+            app:layout_constraintTop_toTopOf="@id/text_input_layout_keyword"
             app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.chip.ChipGroup
@@ -107,7 +107,7 @@
             app:chipSpacingVertical="8dp"
             android:layout_marginHorizontal="24dp"
             android:animateLayoutChanges="true"
-            app:layout_constraintTop_toBottomOf="@id/outlinedTextField" />
+            app:layout_constraintTop_toBottomOf="@id/text_input_layout_keyword" />
 
         <TextView
             android:id="@+id/text_suggestion_keywords"
