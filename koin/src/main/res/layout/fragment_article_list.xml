@@ -11,9 +11,9 @@
             android:id="@+id/tab_layout_article_board"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/tab_layout_underline"
             android:paddingHorizontal="16dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/tab_layout_underline"
             app:tabMode="scrollable">
 
         </com.google.android.material.tabs.TabLayout>
@@ -33,117 +33,127 @@
                     android:id="@+id/horizontal_scroll_view_article_keywords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:requiresFadingEdge="horizontal"
                     android:fadingEdgeLength="25dp"
                     android:paddingHorizontal="24dp"
-                    android:paddingVertical="16dp" >
+                    android:paddingVertical="16dp"
+                    android:requiresFadingEdge="horizontal"
+                    android:scrollbars="none"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_group_article_keywords"
+                    <LinearLayout
+                        android:id="@+id/linear_layout_article_keywords"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:singleSelection="true"
-                        app:selectionRequired="true"
-                        app:chipSpacingHorizontal="8dp">
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:id="@+id/image_view_to_keyword_add_page"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/background_chip_icon" />
+                            android:background="@drawable/background_chip_icon"
+                            android:layout_marginEnd="8dp"/>
 
-                        <com.google.android.material.chip.Chip
-                            android:id="@+id/chip_see_all"
-                            style="@style/RectangleChoiceChip"
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group_my_keywords"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:chipCornerRadius="60dp"
-                            android:checked="true"
-                            app:ensureMinTouchTargetSize="false"
-                            android:text="@string/see_all_article" />
+                            app:chipSpacingHorizontal="8dp"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
 
-                    </com.google.android.material.chip.ChipGroup>
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/chip_see_all"
+                                style="@style/RectangleChoiceChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="@string/see_all_article"
+                                app:chipCornerRadius="60dp"
+                                app:ensureMinTouchTargetSize="false" />
+
+                        </com.google.android.material.chip.ChipGroup>
+                    </LinearLayout>
                 </HorizontalScrollView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_article_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_article_keywords"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_article_header"
-                    tools:itemCount="10"/>
+                    app:layout_constraintTop_toBottomOf="@id/horizontal_scroll_view_article_keywords"
+                    tools:itemCount="10"
+                    tools:listitem="@layout/item_article_header" />
 
                 <TextView
                     android:id="@+id/text_view_previous_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/previous_page"
-                    android:padding="6dp"
                     android:layout_marginEnd="10dp"
+                    android:padding="6dp"
+                    android:text="@string/previous_page"
+                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page"
                     app:layout_constraintEnd_toStartOf="@id/chip_group_article_page"
-                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page"
-                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page" />
+                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chip_group_article_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:singleSelection="true"
                     android:paddingVertical="32dp"
                     app:chipSpacingHorizontal="4dp"
-                    app:selectionRequired="true"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_article_list">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_article_list"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page1"
-                        style="@style/RectangleChoiceChip"
+                        style="@style/RectangleChoiceChipDeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:chipCornerRadius="6dp"
                         android:checked="true"
+                        app:chipCornerRadius="6dp"
                         app:ensureMinTouchTargetSize="false"
                         tools:text="1" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page2"
-                        style="@style/RectangleChoiceChip"
+                        style="@style/RectangleChoiceChipDeep"
                         android:layout_width="wrap_content"
-                        app:chipCornerRadius="6dp"
                         android:layout_height="wrap_content"
+                        app:chipCornerRadius="6dp"
                         app:ensureMinTouchTargetSize="false"
                         tools:text="2" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page3"
-                        style="@style/RectangleChoiceChip"
+                        style="@style/RectangleChoiceChipDeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:ensureMinTouchTargetSize="false"
                         app:chipCornerRadius="6dp"
+                        app:ensureMinTouchTargetSize="false"
                         tools:text="3" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page4"
-                        style="@style/RectangleChoiceChip"
+                        style="@style/RectangleChoiceChipDeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:ensureMinTouchTargetSize="false"
                         app:chipCornerRadius="6dp"
+                        app:ensureMinTouchTargetSize="false"
                         tools:text="4" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_page5"
-                        style="@style/RectangleChoiceChip"
+                        style="@style/RectangleChoiceChipDeep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:ensureMinTouchTargetSize="false"
                         app:chipCornerRadius="6dp"
+                        app:ensureMinTouchTargetSize="false"
                         tools:text="5" />
 
                 </com.google.android.material.chip.ChipGroup>
@@ -152,12 +162,12 @@
                     android:id="@+id/text_view_next_page"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/next_page"
-                    android:padding="6dp"
                     android:layout_marginStart="10dp"
+                    android:padding="6dp"
+                    android:text="@string/next_page"
+                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page"
                     app:layout_constraintStart_toEndOf="@id/chip_group_article_page"
-                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page"
-                    app:layout_constraintBottom_toBottomOf="@id/chip_group_article_page" />
+                    app:layout_constraintTop_toTopOf="@id/chip_group_article_page" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

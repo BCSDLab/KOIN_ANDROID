@@ -520,5 +520,6 @@
     <string name="keyword_add_limit_exceeded">키워드는 최대 10개까지 추가 가능합니다.</string>
     <string name="keyword_add_already_exist">이미 추가되어 있는 키워드입니다.</string>
     <string name="keyword_add_blank_not_allowed">키워드에 공백은 포함할 수 없습니다.</string>
+    <string name="add_new_keyword">새 키워드 추가</string>
 
 </resources>

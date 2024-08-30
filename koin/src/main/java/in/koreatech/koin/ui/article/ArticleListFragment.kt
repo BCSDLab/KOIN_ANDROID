@@ -3,6 +3,7 @@ package `in`.koreatech.koin.ui.article
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
 class ArticleListFragment : Fragment() {
 
@@ -53,15 +55,8 @@ class ArticleListFragment : Fragment() {
         }
 
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
-    private val pageChips: ArrayList<Chip> by lazy {
-        arrayListOf(
-            binding.chipPage1,
-            binding.chipPage2,
-            binding.chipPage3,
-            binding.chipPage4,
-            binding.chipPage5
-        )
-    }
+    private lateinit var pageChips: ArrayList<Chip>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,17 +67,22 @@ class ArticleListFragment : Fragment() {
             initArticleRecyclerView()
             initPageButtonSelectedListener()
             addCategoryTabs()
+            pageChips = arrayListOf(
+                binding.chipPage1,
+                binding.chipPage2,
+                binding.chipPage3,
+                binding.chipPage4,
+                binding.chipPage5
+            )
             binding.textViewNextPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value + 1)
             }
             binding.textViewPreviousPage.setOnClickListener {
                 viewModel.setCurrentPage(viewModel.currentPage.value - 1)
             }
-            binding.imageViewToKeywordAddPage.setOnClickListener {
-                navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
-            }
+            handleKeywordChips()
+            collectData()
         }
-        collectData()
         return binding.root
     }
 
@@ -124,9 +124,83 @@ class ArticleListFragment : Fragment() {
         )
     }
 
+    private fun handleKeywordChips() {
+        binding.imageViewToKeywordAddPage.setOnClickListener {
+            navigateToKeywordFragment()
+        }
+        binding.chipSeeAll.setOnClickListener {
+            viewModel.selectKeyword("")
+        }
+        viewLifecycleOwner.lifecycleScope.run {
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.myKeywords.collect { keywords ->
+                        binding.chipGroupMyKeywords.children.forEach { chip ->
+                            if ((chip as Chip).text != getString(R.string.see_all_article))
+                                binding.chipGroupMyKeywords.removeView(chip)
+                        }
+                        if (keywords.isEmpty()) {
+                            binding.chipGroupMyKeywords.addView(
+                                createChip(getString(R.string.add_new_keyword), false, ::navigateToKeywordFragment)
+                            )
+                        } else {
+                            keywords.forEach { keyword ->
+                                binding.chipGroupMyKeywords.addView(
+                                    createChip(TextUtils.concat("#", keyword).toString(), true) {
+                                        viewModel.selectKeyword(keyword)
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.selectedKeyword.collect { keyword ->
+                        var isKeywordSelected = false
+                        binding.chipGroupMyKeywords.children.forEach {
+                            if ("#$keyword" == (it as Chip).text.toString()) {
+                                it.isChecked = true
+                                isKeywordSelected = true
+                                return@forEach
+                            }
+                        }
+                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우
+                            viewModel.selectKeyword("")
+                            binding.chipSeeAll.isChecked = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun navigateToKeywordFragment() {
+        navController.navigate(R.id.action_articleListFragment_to_articleKeywordFragment)
+    }
+
+    private fun createChip(text: String, isCheckable: Boolean, onChipClicked: () -> Unit): Chip {
+        val chip = layoutInflater.inflate(R.layout.chip_layout, binding.chipGroupMyKeywords, false) as Chip
+        return chip.apply {
+            id = View.generateViewId()
+            this.isCheckable = isCheckable
+            isCloseIconVisible = false
+            this.text = text
+            setOnClickListener { onChipClicked() }
+        }
+    }
+
     private fun collectData() {
         (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
         viewLifecycleOwner.lifecycleScope.run {
+            this.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.currentBoard.collect { board ->
+                        binding.tabLayoutArticleBoard.getTabAt(BoardType.entries.indexOf(board))?.select()
+                    }
+                }
+            }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.articlePagination.collectLatest {
@@ -138,41 +212,44 @@ class ArticleListFragment : Fragment() {
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.currentPage.collect { page ->
-                        viewModel.calculatePageNumber()
                         setPagingTextButtonVisibility(page)
-                        changeChipSelectedState(page)
+                        changePageChipSelectedState(page)
                     }
                 }
             }
             this.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.pageNumbers.collect { pageNumbers ->
-                        changeChipDataState(pageNumbers)
+                    viewModel.pageNumbers.collectLatest { pageNumbers ->
+                        setPagingTextButtonVisibility(viewModel.currentPage.value)
+                        changePageChipDataState(pageNumbers)
+                        changePageChipSelectedState(viewModel.currentPage.value)
                     }
                 }
             }
         }
     }
 
-    private fun changeChipSelectedState(page: Int) {
+    private fun changePageChipSelectedState(page: Int) {
         pageChips.forEachIndexed { i, chip ->
             chip.isChecked = page == viewModel.pageNumbers.value[i]
         }
     }
 
-    private fun changeChipDataState(pageNumbers: IntArray) {
+    private fun changePageChipDataState(pageNumbers: IntArray) {
         pageChips.forEachIndexed { i, chip ->
-            if (pageNumbers[i] != 0) {
-                chip.text = pageNumbers[i].toString()
-                chip.visibility = View.VISIBLE
-            } else {
-                chip.visibility = View.GONE
+            chip.post {
+                if (pageNumbers[i] != 0) {
+                    chip.text = pageNumbers[i].toString()
+                    chip.visibility = View.VISIBLE
+                } else {
+                    chip.visibility = View.GONE
+                }
             }
         }
     }
 
     private fun setPagingTextButtonVisibility(currentPage: Int) {
-        if (currentPage == viewModel.articlePagination.value.totalPage) {
+        if (currentPage >= viewModel.articlePagination.value.totalPage) {
             binding.textViewNextPage.visibility = View.GONE
         } else {
             binding.textViewNextPage.visibility = View.VISIBLE

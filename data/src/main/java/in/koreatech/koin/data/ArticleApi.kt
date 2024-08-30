@@ -62,6 +62,7 @@ interface ArticleApi {
     @GET("articles/search")
     suspend fun fetchSearchedArticles(
         @Query("query") query: String,
+        @Query("boardId") boardId: Int,
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): ArticlePaginationResponse
