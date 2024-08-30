@@ -17,9 +17,12 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
+import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordAddUiState
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
+import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
+import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
 import kotlinx.coroutines.launch
 
@@ -30,6 +33,7 @@ class ArticleKeywordFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<ArticleKeywordViewModel>()
+    private val notificationViewModel by viewModels<NotificationViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +49,7 @@ class ArticleKeywordFragment : Fragment() {
             binding.textInputKeyword.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())
             }
+            initKeywordNotification()
             setMyKeywords()
             setAddButtonState()
             setSuggestedKeywords()
@@ -188,6 +193,36 @@ class ArticleKeywordFragment : Fragment() {
             }
         }
     }
+
+    private fun initKeywordNotification() {
+        binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
+            if (isChecked)
+                notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD_DETECT)
+            else
+                notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD_DETECT)
+        }
+
+        notificationViewModel.getPermissionInfo()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                notificationViewModel.notificationUiState.collect { uiState ->
+                    if (uiState is NotificationUiState.Success) {
+                        uiState.notificationPermissionInfo.subscribes.forEach {
+                            if (it.type == SubscribesType.ARTICLE_KEYWORD_DETECT) {
+                                binding.notificationKeyword.run {
+                                    if (isChecked != it.isPermit) {
+                                        fakeChecked = it.isPermit
+                                        isChecked = it.isPermit
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

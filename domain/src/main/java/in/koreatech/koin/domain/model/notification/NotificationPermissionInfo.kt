@@ -14,6 +14,7 @@ data class Subscribes(
         const val SHOP_EVENT = "SHOP_EVENT"
         const val DINING_SOLD_OUT = "DINING_SOLD_OUT"
         const val DINING_IMAGE_UPLOAD = "DINING_IMAGE_UPLOAD"
+        const val ARTICLE_KEYWORD_DETECT = "ARTICLE_KEYWORD_DETECT"
     }
 }
 
@@ -29,7 +30,7 @@ data class SubscribesDetail(
 }
 
 enum class SubscribesType {
-    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING
+    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING, ARTICLE_KEYWORD_DETECT
 }
 
 enum class SubscribesDetailType {
