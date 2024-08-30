@@ -16,5 +16,5 @@ interface ArticleRepository {
     fun saveKeyword(keyword: String): Flow<Unit>
     fun deleteKeyword(keyword: String): Flow<Unit>
     fun fetchSearchedArticles(query: String, boardId: Int, page: Int, limit: Int): Flow<ArticlePagination>
-    suspend fun fetchHotKeywords(count: Int): List<String>
+    fun fetchMostSearchedKeywords(count: Int): Flow<List<String>>
 }

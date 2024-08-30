@@ -72,5 +72,5 @@ interface ArticleApi {
      * @param count 키워드 수
      */
     @GET("articles/hot/keyword")
-    suspend fun fetchHotKeywords(@Query("count") count: Int): KeywordsResponse
+    suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
 }
