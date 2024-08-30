@@ -122,6 +122,7 @@
     <style name="RectangleChoiceChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/color_chip_background</item>
         <item name="android:textColor">@color/color_chip_text</item>
+        <item name="closeIconTint">@color/neutral_500</item>
     </style>
 
     <style name="RectangleChoiceChipDeep" parent="@style/Widget.MaterialComponents.Chip.Choice">
