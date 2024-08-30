@@ -34,9 +34,9 @@ class ModifyMenuViewModel @Inject constructor(
     override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
 
 
-    init {
+    /*init {
         getStoreMenuInfo()
-    }
+    }*/
 
     private fun getStoreMenuInfo(){
         intent {
@@ -169,10 +169,14 @@ class ModifyMenuViewModel @Inject constructor(
 
     fun settingId(menuId: Int){
         intent{
-            reduce {
-                state.copy(
-                    menuId = menuId
-                )
+            if(menuId != state.menuId){
+                reduce {
+                    state.copy(
+                        menuId = menuId
+                    )
+                }
+                getStoreMenuInfo()
+
             }
         }
     }

@@ -2,6 +2,7 @@ package `in`.koreatech.business.feature.insertstore.navigator
 
 import android.os.Build
 import android.os.Bundle
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,7 @@ import `in`.koreatech.business.feature.insertstore.selectcategory.SelectCategory
 import `in`.koreatech.business.feature.insertstore.startinsetstore.StartInsertScreen
 import `in`.koreatech.koin.domain.model.owner.insertstore.StoreBasicInfo
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun InsertStoreNavigator(
     modifier: Modifier = Modifier,
