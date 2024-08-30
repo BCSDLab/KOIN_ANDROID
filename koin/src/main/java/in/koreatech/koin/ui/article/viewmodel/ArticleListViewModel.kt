@@ -12,6 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
@@ -27,17 +28,30 @@ class ArticleListViewModel @Inject constructor(
 
     val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, BoardType.ALL)
     val currentPage = savedStateHandle.getStateFlow(CURRENT_PAGE, 1)
+    val selectedKeyword = savedStateHandle.getStateFlow(SELECTED_KEYWORD, "")
+
     val pageNumbers = savedStateHandle.getStateFlow(PAGE_NUMBERS, IntArray(PAGE_NUMBER_COUNT))  // 값이 0일 경우 존재하지 않는 페이지
 
-    val articlePagination: StateFlow<ArticlePaginationState> = currentBoard.combine(currentPage) { board, page ->
+    val myKeywords: StateFlow<List<String>> = articleRepository.fetchMyKeyword()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
+        )
+
+    val articlePagination: StateFlow<ArticlePaginationState> = combine(currentBoard, currentPage, selectedKeyword) { board, page, query ->
         _isLoading.value = true
-        articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
-    }.flatMapLatest {
+        if (query.isEmpty())
+            articleRepository.fetchArticlePagination(board.id, page, ARTICLES_PER_PAGE)
+        else
+            articleRepository.fetchSearchedArticles(query, board.id, page, ARTICLES_PER_PAGE)
+    }.debounce(10).flatMapLatest {
         it.mapLatest { articlePagination ->
             articlePagination.toArticlePaginationState()
         }
     }.onEach {
         _isLoading.value = false
+        calculatePageNumber(it.totalPage)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
@@ -53,11 +67,16 @@ class ArticleListViewModel @Inject constructor(
         savedStateHandle[CURRENT_PAGE] = page
     }
 
-    fun calculatePageNumber() {
+    fun selectKeyword(keyword: String) {
+        savedStateHandle[SELECTED_KEYWORD] = keyword
+        setCurrentPage(1)
+    }
+
+    private fun calculatePageNumber(totalPage: Int) {
         val newPageNumbers = pageNumbers.value.copyOf()
-        repeat(pageNumbers.value.size) { index ->
+        repeat(PAGE_NUMBER_COUNT) { index ->
             val pageNumber = ((currentPage.value - 1) / PAGE_NUMBER_COUNT) * PAGE_NUMBER_COUNT + index + 1
-            if (pageNumber <= articlePagination.value.totalPage) {
+            if (pageNumber <= totalPage) {
                 newPageNumbers[index] = pageNumber
             } else {
                 newPageNumbers[index] = 0
@@ -74,5 +93,6 @@ class ArticleListViewModel @Inject constructor(
         private const val BOARD_TYPE = "board_type"
         private const val CURRENT_PAGE = "current_page"
         private const val PAGE_NUMBERS = "page_numbers"
+        private const val SELECTED_KEYWORD = "selected_keyword"
     }
 }

@@ -104,12 +104,15 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchSearchedArticles(
+    override fun fetchSearchedArticles(
         query: String,
+        boardId: Int,
         page: Int,
         limit: Int
-    ): ArticlePagination {
-        return articleRemoteDataSource.fetchSearchedArticles(query, page, limit).toArticlePagination()
+    ): Flow<ArticlePagination> {
+        return flow {
+            emit(articleRemoteDataSource.fetchSearchedArticles(query, boardId, page, limit).toArticlePagination())
+        }
     }
 
     override suspend fun fetchHotKeywords(count: Int): List<String> {

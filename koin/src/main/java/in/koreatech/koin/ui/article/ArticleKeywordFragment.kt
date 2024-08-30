@@ -14,7 +14,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
-import com.google.android.material.shape.ShapeAppearanceModel
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
@@ -72,7 +71,7 @@ class ArticleKeywordFragment : Fragment() {
                 keywords.forEach { keyword ->
                     if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
                         chipGroupMyKeyword.addView(
-                            createKeywordChip(keyword, R.drawable.ic_close_round, viewModel::deleteKeyword)
+                            createChip(keyword, R.drawable.ic_close_round, binding.chipGroupMyKeyword, viewModel::deleteKeyword)
                         )
                 }
             }
@@ -88,11 +87,9 @@ class ArticleKeywordFragment : Fragment() {
     }
 
     private fun onMyKeywordsChanged(keywords: List<String>) {
-        binding.run {
-            textViewMyKeywordCount.text = keywords.size.toString()
-            addMyKeywordView(keywords)
-            removeMyKeywordView(keywords)
-        }
+        binding.textViewMyKeywordCount.text = keywords.size.toString()
+        addMyKeywordView(keywords)
+        removeMyKeywordView(keywords)
     }
 
     private fun setSuggestedKeywords() {
@@ -102,7 +99,7 @@ class ArticleKeywordFragment : Fragment() {
                     binding.run {
                         it.forEach { keyword ->
                             chipGroupSuggestionKeywords.addView(
-                                createKeywordChip(keyword, R.drawable.ic_add_round, viewModel::addKeyword)
+                                createChip(keyword, R.drawable.ic_add_round, binding.chipGroupSuggestionKeywords, viewModel::addKeyword)
                             )
                         }
                     }
@@ -111,20 +108,18 @@ class ArticleKeywordFragment : Fragment() {
         }
     }
 
-    private fun createKeywordChip(keyword: String, @DrawableRes icon: Int, onCloseIconClicked: (String) -> Unit): Chip {
-        return Chip(requireContext()).apply {
+    private fun createChip(text: String, @DrawableRes icon: Int, root: ViewGroup, onCloseIconClicked: (String) -> Unit): Chip {
+        val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as Chip
+        return chip.apply {
             id = View.generateViewId()
-            shapeAppearanceModel = ShapeAppearanceModel.Builder()
-                .setAllCornerSizes(60f)
-                .build()
             isChecked = false
             isCheckable = false
             isCloseIconVisible = true
             setCloseIconResource(icon)
             setOnCloseIconClickListener {
-                onCloseIconClicked(keyword)
+                onCloseIconClicked(text)
             }
-            text = keyword
+            this.text = text
         }
     }
 

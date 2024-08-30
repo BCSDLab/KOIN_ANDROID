@@ -124,6 +124,11 @@
         <item name="android:textColor">@color/color_chip_text</item>
     </style>
 
+    <style name="RectangleChoiceChipDeep" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/color_chip_background_deep</item>
+        <item name="android:textColor">@color/color_chip_text_deep</item>
+    </style>
+
     <style name="WhiteToolbarIconTheme" parent="AppTheme">
         <item name="android:textColorSecondary">@color/black</item>
     </style>
