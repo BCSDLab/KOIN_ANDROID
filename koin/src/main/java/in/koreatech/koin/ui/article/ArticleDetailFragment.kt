@@ -109,9 +109,9 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
             textViewArticleAuthor.text = article.header.author
             try {
                 textViewArticleDate.text = TextUtils.concat(
-                    DateFormatUtil.getSimpleMonthAndDay(article.header.createdAt),
+                    DateFormatUtil.getSimpleMonthAndDay(article.header.registeredAt),
                     " ",
-                    DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.createdAt))
+                    DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.registeredAt))
                 )
             } catch(e: Exception) { }
             textViewArticleViewCount.text = article.header.viewCount.toString()

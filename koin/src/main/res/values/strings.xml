@@ -523,5 +523,7 @@
     <string name="add_new_keyword">새 키워드 추가</string>
     <string name="empty_articles">게시글이 존재하지 않습니다.</string>
     <string name="most_searched_keyword">많이 검색된 키워드</string>
+    <string name="recent_searched_keyword">최근 검색기록</string>
+    <string name="clear_all">전체 삭제</string>
 
 </resources>

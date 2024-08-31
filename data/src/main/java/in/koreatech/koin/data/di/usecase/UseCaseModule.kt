@@ -11,6 +11,7 @@ import `in`.koreatech.koin.domain.repository.PreSignedUrlRepository
 import `in`.koreatech.koin.domain.repository.StoreRepository
 import `in`.koreatech.koin.domain.repository.UploadUrlRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
+import `in`.koreatech.koin.domain.usecase.article.SearchArticleUseCase
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import `in`.koreatech.koin.domain.usecase.store.SearchStoreUseCase
@@ -54,5 +55,13 @@ object UseCaseModule {
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): FetchHotArticlesUseCase {
         return FetchHotArticlesUseCase(articleRepository, coroutineDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchArticleUse(
+        articleRepository: ArticleRepository,
+    ): SearchArticleUseCase {
+        return SearchArticleUseCase(articleRepository)
     }
 }

@@ -27,9 +27,9 @@ data class ArticleResponse(
     @SerializedName("board_id") val boardId: Int?,
     @SerializedName("title") val title: String?,
     @SerializedName("content") val content: String?,
-    @SerializedName("nickname") val author: String?,
+    @SerializedName("author") val author: String?,
     @SerializedName("hit") val viewCount: Int?,
-    @SerializedName("created_at") val createdAt: String?,
+    @SerializedName("registered_at") val registeredAt: String?,
     @SerializedName("updated_at") val updatedAt: String?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
@@ -40,7 +40,7 @@ data class ArticleResponse(
         title = title ?: "",
         author = author ?: "",
         viewCount = viewCount ?: 0,
-        createdAt = createdAt ?: "",
+        registeredAt = registeredAt ?: "",
         updatedAt = updatedAt ?: "",
     )
 

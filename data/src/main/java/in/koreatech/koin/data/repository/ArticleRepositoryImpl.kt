@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
+import `in`.koreatech.koin.data.source.local.ArticleLocalDataSource
 import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
+    private val articleLocalDataSource: ArticleLocalDataSource,
     coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
@@ -117,6 +119,16 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun fetchMostSearchedKeywords(count: Int): Flow<List<String>> {
         return flow {
             emit(articleRemoteDataSource.fetchMostSearchedKeywords(count).keywords)
+        }
+    }
+
+    override fun fetchSearchHistory(): Flow<List<String>> {
+        return articleLocalDataSource.fetchSearchHistory()
+    }
+
+    override fun saveSearchHistory(query: String): Flow<Unit> {
+        return flow {
+            emit(articleLocalDataSource.saveSearchHistory(query))
         }
     }
 }

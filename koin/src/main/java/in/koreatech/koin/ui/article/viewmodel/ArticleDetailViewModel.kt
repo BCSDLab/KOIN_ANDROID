@@ -15,13 +15,10 @@ import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleState
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
@@ -51,7 +48,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                         title = "",
                         author = "",
                         viewCount = 0,
-                        createdAt = "",
+                        registeredAt = "",
                         updatedAt = "",
                     ),
                     content = HtmlElement(HtmlTag.UNKNOWN),
