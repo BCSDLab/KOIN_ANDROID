@@ -15,4 +15,8 @@ class ArticleLocalDataSource @Inject constructor(
     suspend fun saveSearchHistory(keyword: String) {
         articleDataStore.saveSearchHistory(keyword)
     }
+
+    suspend fun deleteSearchHistory(vararg query: String) {
+        articleDataStore.deleteSearchHistory(*query)
+    }
 }

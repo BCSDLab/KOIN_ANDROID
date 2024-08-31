@@ -29,8 +29,8 @@ class ArticleSearchFragment : Fragment() {
 
     private val recentSearchedHistoryAdapter: RecentSearchedHistoryAdapter by lazy {
         RecentSearchedHistoryAdapter(
-            onKeywordClicked = ::onRecentKeywordClicked,
-            onDeleteClicked = ::onRecentKeywordDeleteClicked
+            onSearchHistoryClicked = ::onRecentSearchHistoryClicked,
+            onDeleteClicked = ::onRecentSearchHistoryDeleteClicked
         )
     }
 
@@ -48,7 +48,9 @@ class ArticleSearchFragment : Fragment() {
             binding.imageSearch.setOnClickListener {
                 viewModel.search()
             }
-
+            binding.textViewRecentSearchedKeywordClear.setOnClickListener {
+                viewModel.clearSearchHistory()
+            }
             binding.recyclerViewRecentSearchedKeyword.adapter = recentSearchedHistoryAdapter
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -81,11 +83,11 @@ class ArticleSearchFragment : Fragment() {
         viewModel.onSearchInputChanged(query)
     }
 
-    private fun onRecentKeywordClicked(keyword: String) {
-        binding.textInputSearch.setText(keyword)
+    private fun onRecentSearchHistoryClicked(query: String) {
+        binding.textInputSearch.setText(query)
     }
 
-    private fun onRecentKeywordDeleteClicked(keyword: String) {
-
+    private fun onRecentSearchHistoryDeleteClicked(query: String) {
+        viewModel.deleteSearchHistory(query)
     }
 }
