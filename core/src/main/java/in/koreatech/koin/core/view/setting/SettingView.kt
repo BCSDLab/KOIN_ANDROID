@@ -9,6 +9,7 @@ import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import `in`.koreatech.koin.core.R
 import `in`.koreatech.koin.core.databinding.SettingViewBinding
+import `in`.koreatech.koin.core.view.setting.SettingView.OnSettingClickListener
 
 /**
  *
@@ -40,9 +41,16 @@ class SettingView @JvmOverloads constructor(
     @ColorRes
     private var dividerColorRes = R.color.neutral_100
 
+    private var onSettingClickListener: OnSettingClickListener? = null
+
+    private var onTextLabelClickListener: OnSettingClickListener? = null
+
+    private var onImageLabelClickListener: OnSettingClickListener? = null
+
     init {
         initAttrs(attrs)
         initView(context)
+        initListeners()
     }
 
     private fun initAttrs(attrs: AttributeSet?) {
@@ -78,8 +86,8 @@ class SettingView @JvmOverloads constructor(
 
         with(binding) {
             tvHead.setPadding(paddingHorizontal, paddingVertical, 0, paddingVertical)
-            tvLabel.setPadding(0, 0, paddingHorizontal, 0)
-            ivLabel.setPadding(0, 0, paddingHorizontal, 0)
+            tvLabel.setPadding(paddingVertical / 2, 0, paddingHorizontal, 0)
+            ivLabel.setPadding(paddingVertical / 2, 0, paddingHorizontal, 0)
 
             with(tvHead) {
                 text = headText
@@ -114,6 +122,66 @@ class SettingView @JvmOverloads constructor(
             }
         }
     }
+
+    private fun initListeners() {
+        with(binding) {
+            root.setOnClickListener {
+                onSettingClickListener?.onClick()
+            }
+
+            tvLabel.setOnClickListener {
+                if(onTextLabelClickListener == null) {
+                    onSettingClickListener?.onClick()
+                } else {
+                    onTextLabelClickListener!!.onClick()
+                }
+            }
+
+            ivLabel.setOnClickListener {
+                if(onImageLabelClickListener == null) {
+                    onSettingClickListener?.onClick()
+                } else {
+                    onImageLabelClickListener!!.onClick()
+                }
+            }
+        }
+    }
+
+    fun interface OnSettingClickListener {
+        fun onClick()
+    }
+
+    fun setOnSettingClickListener(value: OnSettingClickListener) {
+        this.onSettingClickListener = value
+    }
+
+    fun setOnSettingClickListener(block: () -> Unit) {
+        this.onSettingClickListener = OnSettingClickListener {
+            block()
+        }
+    }
+
+    fun setOnImageLabelClickListener(value: OnSettingClickListener) {
+        this.onImageLabelClickListener = value
+    }
+
+    fun setOnImageLabelClickListener(block: () -> Unit) {
+        this.onImageLabelClickListener = OnSettingClickListener {
+            block()
+        }
+    }
+
+    fun setOnTextLabelClickListener(value: OnSettingClickListener) {
+        this.onTextLabelClickListener = value
+    }
+
+    fun setOnTextLabelClickListener(block: () -> Unit) {
+        this.onTextLabelClickListener = OnSettingClickListener {
+            block()
+        }
+    }
+
+
 
     private companion object {
         const val LABEL_TYPE_NONE = -1
