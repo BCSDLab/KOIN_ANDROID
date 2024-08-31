@@ -21,7 +21,7 @@ object DateFormatUtil {
      * yyyy-MM-dd HH:mm:ss -> MM.dd
      */
     fun getSimpleMonthAndDay(dateString: String): String {
-        val originalFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        val originalFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val targetFormat = SimpleDateFormat("MM.dd", Locale.getDefault())
         val date = originalFormat.parse(dateString)
         return targetFormat.format(date)

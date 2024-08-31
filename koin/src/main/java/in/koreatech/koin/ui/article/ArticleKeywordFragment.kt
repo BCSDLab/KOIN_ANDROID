@@ -44,9 +44,9 @@ class ArticleKeywordFragment : Fragment() {
             _binding = FragmentArticleKeywordBinding.inflate(inflater, container, false)
             binding.textViewMaxKeywordCount.text = ArticleKeywordViewModel.MAX_KEYWORD_COUNT.toString()
             binding.buttonAddKeyword.setOnClickListener {
-                viewModel.addKeyword(binding.textInputKeyword.text.toString())
+                viewModel.addKeyword(binding.textInputSearch.text.toString())
             }
-            binding.textInputKeyword.addTextChangedListener {
+            binding.textInputSearch.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())
             }
             initKeywordNotification()
@@ -161,7 +161,7 @@ class ArticleKeywordFragment : Fragment() {
                         KeywordAddUiState.Loading -> {
                         }
                         KeywordAddUiState.Success -> {
-                            binding.textInputKeyword.text = null
+                            binding.textInputSearch.text = null
                         }
                         KeywordAddUiState.Error -> {
                             SnackbarUtil.makeShortSnackbar(

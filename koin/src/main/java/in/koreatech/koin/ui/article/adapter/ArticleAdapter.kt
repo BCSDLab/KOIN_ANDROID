@@ -37,9 +37,9 @@ class ArticleAdapter(
                 textViewArticleAuthor.text = articleHeader.author
                 try {
                     textViewArticleDate.text = TextUtils.concat(
-                        DateFormatUtil.getSimpleMonthAndDay(articleHeader.createdAt),
+                        DateFormatUtil.getSimpleMonthAndDay(articleHeader.registeredAt),
                         " ",
-                        DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(articleHeader.createdAt))
+                        DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(articleHeader.registeredAt))
                     )
                 } catch(e: Exception) { }
                 textViewArticleViewCount.text = articleHeader.viewCount.toString()
