@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import `in`.koreatech.koin.databinding.ItemRecentSearchedHistoryBinding
 
 class RecentSearchedHistoryAdapter(
-    private val onKeywordClicked: (String) -> Unit,
+    private val onSearchHistoryClicked: (String) -> Unit,
     private val onDeleteClicked: (String) -> Unit
 ) : ListAdapter<String, RecyclerView.ViewHolder>(diffUtil) {
 
@@ -28,7 +28,7 @@ class RecentSearchedHistoryAdapter(
         fun bind(keyword: String) {
             binding.apply {
                 textViewKeyword.text = keyword
-                textViewKeyword.setOnClickListener { onKeywordClicked(keyword) }
+                textViewKeyword.setOnClickListener { onSearchHistoryClicked(keyword) }
                 imageViewDelete.setOnClickListener { onDeleteClicked(keyword) }
             }
             binding.executePendingBindings()

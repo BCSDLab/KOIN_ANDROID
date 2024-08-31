@@ -131,4 +131,10 @@ class ArticleRepositoryImpl @Inject constructor(
             emit(articleLocalDataSource.saveSearchHistory(query))
         }
     }
+
+    override fun deleteSearchHistory(vararg query: String): Flow<Unit> {
+        return flow {
+            emit(articleLocalDataSource.deleteSearchHistory(*query))
+        }
+    }
 }

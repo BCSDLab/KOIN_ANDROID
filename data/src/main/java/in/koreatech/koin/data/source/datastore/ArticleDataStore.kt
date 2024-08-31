@@ -27,7 +27,16 @@ class ArticleDataStore @Inject constructor(
         dataStore.edit { preferences ->
             val historyJson = preferences[KEY_SEARCH_HISTORY] ?: ""
             val list = gson.fromJson<List<String>>(historyJson, List::class.java).toMutableList()
-            list.add(keyword)
+            list.add(0, keyword)
+            preferences[KEY_SEARCH_HISTORY] = gson.toJson(list)
+        }
+    }
+
+    suspend fun deleteSearchHistory(vararg query: String) {
+        dataStore.edit { preferences ->
+            val historyJson = preferences[KEY_SEARCH_HISTORY] ?: ""
+            val list = gson.fromJson<List<String>>(historyJson, List::class.java).toMutableList()
+            query.forEach { list.remove(it) }
             preferences[KEY_SEARCH_HISTORY] = gson.toJson(list)
         }
     }
