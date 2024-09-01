@@ -11,6 +11,7 @@ import android.text.style.RelativeSizeSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import android.view.View
 import `in`.koreatech.koin.domain.constant.BOLD
 import `in`.koreatech.koin.domain.constant.BOLD_ITALIC
 import `in`.koreatech.koin.domain.constant.ITALIC
@@ -129,5 +130,17 @@ fun SpannableStringBuilder.setFontSize(
                 SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE
             )
         }
+    }
+}
+
+fun String?.parseTextAlignment(): Int {
+    return when(this) {
+        "left" -> View.TEXT_ALIGNMENT_VIEW_START
+        "start" -> View.TEXT_ALIGNMENT_VIEW_START
+        "center" -> View.TEXT_ALIGNMENT_CENTER
+        "right" -> View.TEXT_ALIGNMENT_VIEW_END
+        "end" -> View.TEXT_ALIGNMENT_VIEW_END
+        "justify" -> View.TEXT_ALIGNMENT_GRAVITY
+        else -> View.TEXT_ALIGNMENT_GRAVITY
     }
 }
