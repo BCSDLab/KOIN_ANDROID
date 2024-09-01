@@ -51,9 +51,11 @@ class HtmlView @JvmOverloads constructor(
 
     private fun addHtmlView(html: HtmlElement) {
         html.children.forEach { self ->
+            //println("dddddddddd2000  " + (lastAddedView).textAlignment + " " +  self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment() + " " + self.tag + " " + self.content.length)
             when (self.tag) {
                 HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR -> {
-                    if (lastAddedView is TextView) {    // 직전 View가 TextView일 경우 재활용
+                    if (lastAddedView is TextView
+                        && lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()) {    // 직전 View가 TextView일 경우 재활용
                         val lineBreak = when(self.tag) {
                             HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> "\n"
                             else -> ""
@@ -64,15 +66,18 @@ class HtmlView @JvmOverloads constructor(
 
                         (lastAddedView as TextView).text = originalText.append(newSpanned)
                     } else {
-                        val textView = TextView(context).apply {
-                            setTextIsSelectable(true)
+                        TextView(context).apply {
                             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                        }
-                        val newTextBuilder = SpannableStringBuilder(self.content)
-                        textView.text = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
-                        addView(textView)
+                            addView(this)
+                            setTextIsSelectable(true)
 
-                        lastAddedView = textView
+                            val newTextBuilder = SpannableStringBuilder(self.content)
+                            text = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
+
+                            this.textAlignment = self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()
+                        }.also {
+                            lastAddedView = it
+                        }
                     }
                     addHtmlView(self)
                 }
@@ -88,11 +93,11 @@ class HtmlView @JvmOverloads constructor(
                     val imageView = ImageView(context).apply {
                         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                     }
+                    addView(imageView)
                     Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC]).error(
                         Glide.with(context).load(self.attributes[HtmlAttribute.SRC])
                     ).into(imageView)
 
-                    addView(imageView)
                     lastAddedView = imageView
                 }
                 else -> {}
