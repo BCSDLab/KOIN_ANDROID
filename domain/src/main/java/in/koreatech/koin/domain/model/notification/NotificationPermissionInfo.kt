@@ -14,7 +14,7 @@ data class Subscribes(
         const val SHOP_EVENT = "SHOP_EVENT"
         const val DINING_SOLD_OUT = "DINING_SOLD_OUT"
         const val DINING_IMAGE_UPLOAD = "DINING_IMAGE_UPLOAD"
-        const val ARTICLE_KEYWORD_DETECT = "ARTICLE_KEYWORD_DETECT"
+        const val ARTICLE_KEYWORD = "ARTICLE_KEYWORD"
     }
 }
 
