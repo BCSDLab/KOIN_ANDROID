@@ -9,10 +9,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
+import `in`.koreatech.koin.ui.article.HtmlView.OnPostDrawListener
+import `in`.koreatech.koin.ui.article.HtmlView.OnPreDrawListener
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 
 class HtmlView @JvmOverloads constructor(
@@ -84,8 +87,11 @@ class HtmlView @JvmOverloads constructor(
                 HtmlTag.IMG -> {
                     val imageView = ImageView(context).apply {
                         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                        setImageURI(self.attributes[HtmlAttribute.SRC]?.toUri())
                     }
+                    Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC]).error(
+                        Glide.with(context).load(self.attributes[HtmlAttribute.SRC])
+                    ).into(imageView)
+
                     addView(imageView)
                     lastAddedView = imageView
                 }
