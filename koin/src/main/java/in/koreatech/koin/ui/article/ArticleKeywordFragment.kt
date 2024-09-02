@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +17,14 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.dialog.AlertModalDialog
+import `in`.koreatech.koin.core.dialog.AlertModalDialogData
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordAddUiState
 import `in`.koreatech.koin.ui.article.viewmodel.KeywordInputUiState
+import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationUiState
 import `in`.koreatech.koin.ui.notification.viewmodel.NotificationViewModel
 import `in`.koreatech.koin.util.SnackbarUtil
@@ -34,6 +38,25 @@ class ArticleKeywordFragment : Fragment() {
 
     private val viewModel by viewModels<ArticleKeywordViewModel>()
     private val notificationViewModel by viewModels<NotificationViewModel>()
+
+    private val loginModal: AlertModalDialog by lazy {
+        AlertModalDialog(
+            requireContext(),
+            AlertModalDialogData(
+                title = R.string.recommend_login_to_get_keyword_notification_title,
+                message = R.string.recommend_login_to_get_keyword_notification_message,
+                positiveButtonText = R.string.action_login
+            ),
+            onPositiveButtonClicked = {
+                val intent = Intent(
+                    binding.root.context,
+                    LoginActivity::class.java
+                )
+                startActivity(intent)
+            }, onNegativeButtonClicked = {
+                it.dismiss()
+            })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -196,6 +219,11 @@ class ArticleKeywordFragment : Fragment() {
 
     private fun initKeywordNotification() {
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
+            if (viewModel.user.value.isAnonymous) {
+                binding.notificationKeyword.isChecked = false
+                loginModal.show()
+                return@setOnSwitchClickListener
+            }
             if (isChecked)
                 notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD_DETECT)
             else

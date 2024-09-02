@@ -525,5 +525,7 @@
     <string name="most_searched_keyword">많이 검색된 키워드</string>
     <string name="recent_searched_keyword">최근 검색기록</string>
     <string name="clear_all">전체 삭제</string>
+    <string name="recommend_login_to_get_keyword_notification_title">키워드 알림을 받으려면\n로그인이 필요해요.</string>
+    <string name="recommend_login_to_get_keyword_notification_message">로그인 후 간편하게 공지사항 키워드\n알림을 받아보세요!</string>
 
 </resources>
