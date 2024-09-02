@@ -28,8 +28,11 @@ class ArticleDataStore @Inject constructor(
         dataStore.edit { preferences ->
             val historyJson = preferences[KEY_SEARCH_HISTORY] ?: ""
             val list = (gson.fromJson<List<String>>(historyJson, List::class.java) ?: listOf()).toMutableList()
+            if (list.contains(keyword)) {
+                list.remove(keyword)
+            }
             list.add(0, keyword)
-            preferences[KEY_SEARCH_HISTORY] = gson.toJson(list)
+            preferences[KEY_SEARCH_HISTORY] = gson.toJson(list.take(5))
         }
     }
 
