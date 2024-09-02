@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -21,8 +23,12 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleKeywordViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    getUserStatusUseCase: GetUserStatusUseCase
 ) : BaseViewModel() {
+
+    val user: StateFlow<User> = getUserStatusUseCase()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), User.Anonymous)
 
     val keywordInputUiState: StateFlow<KeywordInputUiState> = savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
         if (it.isEmpty()) KeywordInputUiState.Empty else KeywordInputUiState.Valid(it)

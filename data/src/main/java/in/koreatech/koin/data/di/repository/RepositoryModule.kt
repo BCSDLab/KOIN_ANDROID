@@ -184,8 +184,9 @@ object RepositoryModule {
     fun provideArticleRepository(
         articleRemoteDataSource: ArticleRemoteDataSource,
         articleLocalDataSource: ArticleLocalDataSource,
+        userRepository: UserRepository,
         @IoDispatcher dispatcher: CoroutineDispatcher
     ): ArticleRepository {
-        return ArticleRepositoryImpl(articleRemoteDataSource, articleLocalDataSource, CoroutineScope(SupervisorJob() + dispatcher))
+        return ArticleRepositoryImpl(articleRemoteDataSource, articleLocalDataSource, userRepository, CoroutineScope(SupervisorJob() + dispatcher))
     }
 }
