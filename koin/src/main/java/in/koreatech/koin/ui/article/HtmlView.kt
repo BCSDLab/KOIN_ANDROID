@@ -2,6 +2,7 @@ package `in`.koreatech.koin.ui.article
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.view.View
@@ -10,7 +11,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 import `in`.koreatech.koin.domain.model.article.html.CssAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlAttribute
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
@@ -94,9 +99,33 @@ class HtmlView @JvmOverloads constructor(
                         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                     }
                     addView(imageView)
-                    Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC]).error(
-                        Glide.with(context).load(self.attributes[HtmlAttribute.SRC])
-                    ).into(imageView)
+                    Glide.with(context).load(self.attributes[HtmlAttribute.SRC]).error(
+                        Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC])
+                    ).addListener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<Drawable>?,
+                            dataSource: DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            val dialog = ImageZoomableDialog(context, model as String)
+                            dialog.initialScale = .8f
+                            imageView.setOnClickListener {
+                                dialog.show()
+                            }
+                            return false
+                        }
+                    }).into(imageView)
 
                     lastAddedView = imageView
                 }
