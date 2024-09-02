@@ -23,7 +23,7 @@ import `in`.koreatech.koin.ui.splash.state.TokenState
 import `in`.koreatech.koin.ui.store.activity.StoreReviewReportActivity
 import `in`.koreatech.koin.ui.store.activity.WriteReviewActivity
 import `in`.koreatech.koin.ui.store.adapter.review.StoreDetailReviewRecyclerAdapter
-import `in`.koreatech.koin.ui.store.dialog.LoginRequsetDialog
+import `in`.koreatech.koin.ui.store.dialog.LoginRequestDialog
 import `in`.koreatech.koin.ui.store.dialog.ReviewDeleteCheckDialog
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -52,14 +52,25 @@ class StoreDetailReviewFragment : Fragment() {
                 reviewDeleteDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
             },
             onReportItem ={
-                if(it.isReported){
-                    ToastUtil.getInstance().makeShort(getString(R.string.review_already_reported))
+                viewModel.checkToken()
+                if (viewModel.tokenState.value == TokenState.Valid) {
+                    if (it.isReported) {
+                        ToastUtil.getInstance()
+                            .makeShort(getString(R.string.review_already_reported))
+                    } else {
+                        val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
+                        intent.putExtra("storeId", viewModel.store.value?.uid)
+                        intent.putExtra("reviewId", it.reviewId)
+                        startActivity(intent)
+                    }
                 }
                 else{
-                    val intent = Intent(requireContext(), StoreReviewReportActivity::class.java)
-                    intent.putExtra("storeId", viewModel.store.value?.uid)
-                    intent.putExtra("reviewId", it.reviewId)
-                    startActivity(intent)
+                    val loginRequestDialog = LoginRequestDialog(
+                        goToLogin = {
+                            loginActivityLauncher.launch(Unit)
+                        }
+                    )
+                    loginRequestDialog.show(childFragmentManager, "ReviewDeleteCheckDialog")
                 }
             }
         )
@@ -101,7 +112,7 @@ class StoreDetailReviewFragment : Fragment() {
                     startActivity(goToReviewScreen)
                 }
                 else {
-                    val loginRequestDialog = LoginRequsetDialog(
+                    val loginRequestDialog = LoginRequestDialog(
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
                         }
