@@ -132,6 +132,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
             R.id.action_articleDetailFragment_to_articleDetailFragment,
             Bundle().apply {
                 putInt(ARTICLE_ID, article.id)
+                putInt(NAVIGATED_BOARD_ID, viewModel.navigatedBoardId)
             }
         )
     }
