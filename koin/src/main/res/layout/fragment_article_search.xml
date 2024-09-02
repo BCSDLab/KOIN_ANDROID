@@ -36,8 +36,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_search"
                     android:padding="4dp"
+                    android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/text_input_search"
                     app:layout_constraintTop_toTopOf="parent"
@@ -135,12 +135,12 @@
             android:id="@+id/text_view_recent_searched_keyword_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="14sp"
-            app:layout_constraintTop_toTopOf="@id/text_recent_searched_keyword"
-            app:layout_constraintBottom_toBottomOf="@id/text_recent_searched_keyword"
             android:layout_marginEnd="24dp"
-            android:text="@string/clear_all" />
+            android:text="@string/clear_all"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/text_recent_searched_keyword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_recent_searched_keyword" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_recent_searched_keyword"
@@ -150,8 +150,35 @@
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/text_recent_searched_keyword"
-            tools:listitem="@layout/item_recent_searched_history"
-            tools:itemCount="5"/>
+            tools:itemCount="5"
+            tools:listitem="@layout/item_recent_searched_history" />
 
+        <FrameLayout
+            android:id="@+id/frame_layout_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_layout_search">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_search_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <TextView
+                android:id="@+id/text_view_search_result_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:text="@string/empty_search_result" />
+
+        </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
