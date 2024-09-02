@@ -6,32 +6,53 @@ import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
     private val articleLocalDataSource: ArticleLocalDataSource,
+    private val userRepository: UserRepository,
     coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
+    val user = userRepository.getUserInfoFlow().stateIn(
+        scope = coroutineScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = User.Anonymous
+    )
+
     private val _myKeywords = MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
     private val myKeywords = _myKeywords.flatMapLatest {
-        if (_myKeywords.value.isEmpty()) {
-            val keywords = articleRemoteDataSource.fetchMyKeyword().keywords
-            flowOf(keywords)
+        if (user.value.isStudent) {
+            if (_myKeywords.value.isEmpty()) {
+                val keywords = articleRemoteDataSource.fetchMyKeyword().keywords
+                flowOf(keywords)
+            } else flowOf(it)
+
         } else {
-            flowOf(it)
+            if (_myKeywords.value.isEmpty()) {
+                val keywords = articleLocalDataSource.fetchMyKeyword().map { list ->
+                    list.map {
+                        ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                    }
+                }
+                keywords  // 여기
+            } else flowOf(it)
         }
     }.stateIn(
         scope = coroutineScope,
@@ -71,32 +92,42 @@ class ArticleRepositoryImpl @Inject constructor(
 
     override fun fetchMyKeyword(): Flow<List<String>> {
         return myKeywords.map { response ->
-            response.map { it.keyword }
+            response.map {
+                it.keyword
+            }
         }
     }
 
     override fun fetchKeywordSuggestions(): Flow<List<String>> {
         return flow {
-            emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords.map {
-                it.keyword
-            })
+            emit(articleRemoteDataSource.fetchKeywordSuggestions().keywords)
         }
     }
 
     override fun saveKeyword(keyword: String): Flow<Unit> {
         return flow {
-            emit(articleRemoteDataSource.saveKeyword(keyword))
+            if (user.value.isStudent)
+                emit(articleRemoteDataSource.saveKeyword(keyword))
+            else {
+                articleLocalDataSource.saveKeyword(keyword)
+                emit(ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, keyword))
+            }
         }.onEach {
             _myKeywords.emit(buildList {
                 addAll(myKeywords.value)
                 add(it)
             })
-        }.map { Unit }
+        }.map { Unit }.catch {
+            println("ddddddd   " + it)
+        }
     }
 
     override fun deleteKeyword(keyword: String): Flow<Unit> {
         return flow {
-            emit(articleRemoteDataSource.deleteKeyword(keyword))
+            if (user.value.isStudent)
+                emit(articleRemoteDataSource.deleteKeyword(myKeywords.value.first { it.keyword == keyword }.id))
+            else
+                emit(articleLocalDataSource.deleteKeyword(keyword))
         }.onEach {
             _myKeywords.emit(buildList {
                 addAll(myKeywords.value)

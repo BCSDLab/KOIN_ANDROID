@@ -41,18 +41,6 @@ interface ArticleApi {
     @GET("articles/hot")
     suspend fun fetchHotArticles(): List<ArticleResponse>
 
-    @GET("articles/keyword/me")
-    suspend fun fetchMyKeyword(): ArticleKeywordWrapperResponse
-
-    @GET("articles/keyword/suggestions")
-    suspend fun fetchKeywordSuggestions(): ArticleKeywordWrapperResponse
-
-    @POST("articles/keyword")
-    suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest): ArticleKeywordWrapperResponse.ArticleKeywordResponse
-
-    @DELETE("articles/keyword/{id}")
-    suspend fun deleteKeyword(@Path("id") keywordId: Int)
-
     /**
      * 검색된 게시글 목록과 페이지 정보를 가져옴
      * @param query 검색어
