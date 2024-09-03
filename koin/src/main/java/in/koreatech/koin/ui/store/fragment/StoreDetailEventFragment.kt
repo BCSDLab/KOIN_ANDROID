@@ -74,7 +74,12 @@ class StoreDetailEventFragment : Fragment() {
 
     private fun initEventScrollCallback() {
         binding.storeEventScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            if (scrollY >= 1 && oldScrollY < 1) {
+            val contentHeight = binding.storeEventScrollView.getChildAt(0).measuredHeight
+            val scrollViewHeight = binding.storeEventScrollView.height
+            val totalScrollRange = contentHeight - scrollViewHeight
+            val seventyPercentScroll = (totalScrollRange * 0.7).toInt()
+
+            if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
                 EventLogger.logScrollEvent(
                     AnalyticsConstant.Domain.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,

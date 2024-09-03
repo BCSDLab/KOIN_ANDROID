@@ -11,6 +11,7 @@ object AnalyticsConstant {
     object Category {
         const val CLICK = "click"
         const val SCROLL = "scroll"
+        const val SWIPE = "swipe"
     }
 
     object Label {
@@ -41,10 +42,11 @@ object AnalyticsConstant {
         const val LOGIN = "login"
         const val START_SIGN_UP = "start_sign_up"
         const val COMPLETE_SIGN_UP = "complete_sign_up"
+        const val SHOP_CAN = "shop_can"
         const val SHOP_PICTURE = "shop_picture"
         const val SHOP_CALL = "shop_call"
         const val SHOP_CLICK = "shop_click"
-        const val SHOP_BACK_BUTTON = "shop_back_button"
+        const val SHOP_DETAIL_VIEW_BACK = "shop_detail_view_back"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
 
 
