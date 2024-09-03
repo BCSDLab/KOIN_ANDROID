@@ -41,17 +41,19 @@ import `in`.koreatech.koin.util.ext.hideSoftKeyboard
 import `in`.koreatech.koin.util.ext.observeLiveData
 import `in`.koreatech.koin.util.ext.showSoftKeyboard
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class StoreActivity : KoinNavigationDrawerActivity() {
     override val menuState = MenuState.Store
+    private var currentTime by Delegates.notNull<Long>()
+    private var categoryElapsedTime by Delegates.notNull<Long>()
+    private var storeElapsedTime by Delegates.notNull<Long>()
 
     private val binding by dataBinding<StoreActivityMainBinding>(R.layout.store_activity_main)
     override val screenTitle = "상점"
     private val viewModel by viewModels<StoreViewModel>()
-
     private val storeDetailContract = registerForActivityResult(StoreDetailActivityContract()) {
-
     }
 
     private val viewPagerHandler = Handler(Looper.getMainLooper())
@@ -59,11 +61,13 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
     private val storeAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailContract.launch(it.uid)
+            storeElapsedTime = System.currentTimeMillis() - currentTime
+
+            storeDetailContract.launch(Pair(it.uid, getStoreCategoryName(viewModel.category.value)))
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CLICK,
-                it.name
+                it.name + ", category: " + getStoreCategoryName(viewModel.category.value) + ", store_name: " + it.name + ", duration_time: " + storeElapsedTime / 1000
             )
         }
     }
@@ -75,20 +79,24 @@ class StoreActivity : KoinNavigationDrawerActivity() {
                 AnalyticsConstant.Label.SHOP_CATEGORIES_EVENT,
                 it.shopName
             )
-            storeDetailContract.launch(it.shopId)
+            storeDetailContract.launch(Pair(it.shopId, getStoreCategoryName(viewModel.category.value)))
         }
     }
 
     private val storeCategoriesAdapter = StoreCategoriesRecyclerAdapter().apply {
         setOnItemClickListener {
+            categoryElapsedTime = System.currentTimeMillis() - currentTime
             viewModel.setCategory(it.toStoreCategory())
             binding.searchEditText.text.clear()
             val eventValue = getStoreCategoryName(viewModel.category.value)
+            val preValue = getStoreCategoryName(preCategories)
             EventLogger.logClickEvent(
                 AnalyticsConstant.Domain.BUSINESS,
                 AnalyticsConstant.Label.SHOP_CATEGORIES,
-                eventValue
+                eventValue+ ", previous_categories: " + preValue + ", current_categories: " + eventValue + ", duration_time: " + categoryElapsedTime / 1000
             )
+            preCategories = it.toStoreCategory()
+            currentTime = System.currentTimeMillis()
         }
     }
 
@@ -133,10 +141,11 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
         val initStoreCategory =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.toStoreCategory()
-
         storeCategoriesAdapter.selectPosition =
             intent.extras?.getInt(StoreActivityContract.STORE_CATEGORY)?.minus(2)
         viewModel.setCategory(initStoreCategory)
+
+        storeCategoriesAdapter.initCategory(initStoreCategory)
     }
 
     override fun onBackPressed() {
@@ -148,6 +157,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initView() {
+        currentTime = System.currentTimeMillis()
         binding.koinBaseAppbar.setOnClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
@@ -232,9 +242,13 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
             binding.containerScrollView.setOnScrollChangeListener { v, _, scrollY, _, oldScrollY ->
                 val oldScrollRatio =
-                    oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
+                    oldScrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
+                        0
+                    ).height - statusBarHeight))
                 val scrollRatio =
-                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(0).height - statusBarHeight))
+                    scrollY.toFloat() / (binding.containerScrollView.getChildAt(0).height - (binding.root.height - binding.callvanMainLayout.getChildAt(
+                        0
+                    ).height - statusBarHeight))
                 if (scrollRatio >= 0.7 && oldScrollRatio < 0.7) {
                     EventLogger.logScrollEvent(
                         AnalyticsConstant.Domain.BUSINESS,
@@ -245,39 +259,86 @@ class StoreActivity : KoinNavigationDrawerActivity() {
             }
         }
 
-        with(binding){
+        with(binding) {
             storeManyReviewCheckbox.setOnClickListener {
 
-                if(storeManyReviewCheckbox.isChecked){
-                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20))
+                if (storeManyReviewCheckbox.isChecked) {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CAN,
+                        "check_review_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                    )
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.blue_alpha20
+                        )
+                    )
                     viewModel.settingStoreSorter(StoreSorter.COUNT)
 
                     storeHighRatingCheckbox.isChecked = false
-                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
-                }
-                else{
-                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                } else {
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
             }
 
             storeHighRatingCheckbox.setOnClickListener {
-                if(storeHighRatingCheckbox.isChecked){
-                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20))
+                if (storeHighRatingCheckbox.isChecked) {
+                    EventLogger.logClickEvent(
+                        AnalyticsConstant.Domain.BUSINESS,
+                        AnalyticsConstant.Label.SHOP_CAN,
+                        "check_star_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                    )
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.blue_alpha20
+                        )
+                    )
                     viewModel.settingStoreSorter(StoreSorter.RATING)
 
                     storeManyReviewCheckbox.isChecked = false
-                    storeManyReviewCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
-                }
-                else{
-                    storeHighRatingCheckbox.setTextColor(ContextCompat.getColor(this@StoreActivity, R.color.gray15))
+                    storeManyReviewCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
+                } else {
+                    storeHighRatingCheckbox.setTextColor(
+                        ContextCompat.getColor(
+                            this@StoreActivity,
+                            R.color.gray15
+                        )
+                    )
                     viewModel.settingStoreSorter(StoreSorter.NONE)
                 }
             }
 
             storeIsOperatingCheckbox.setOnClickListener {
                 storeIsOperatingCheckbox.setTextColor(
-                    if(storeIsOperatingCheckbox.isChecked) ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20)
+                    if (storeIsOperatingCheckbox.isChecked) {
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            "check_open_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        )
+                        ContextCompat.getColor(
+                        this@StoreActivity,
+                        R.color.blue_alpha20
+                    )}
                     else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
                 )
 
@@ -286,7 +347,16 @@ class StoreActivity : KoinNavigationDrawerActivity() {
 
             storeIsDeliveryCheckbox.setOnClickListener {
                 storeIsDeliveryCheckbox.setTextColor(
-                    if(storeIsDeliveryCheckbox.isChecked) ContextCompat.getColor(this@StoreActivity, R.color.blue_alpha20)
+                    if (storeIsDeliveryCheckbox.isChecked){
+                        EventLogger.logClickEvent(
+                            AnalyticsConstant.Domain.BUSINESS,
+                            AnalyticsConstant.Label.SHOP_CAN,
+                            "check_delivery_"+viewModel.category.value?.let { getStoreCategoryName(it) }
+                        )
+                        ContextCompat.getColor(
+                        this@StoreActivity,
+                        R.color.blue_alpha20
+                    )}
                     else ContextCompat.getColor(this@StoreActivity, R.color.gray15)
                 )
 
@@ -364,6 +434,7 @@ class StoreActivity : KoinNavigationDrawerActivity() {
     }
 
     override fun onResume() {
+        currentTime = System.currentTimeMillis()
         super.onResume()
         startAutoScroll()
     }

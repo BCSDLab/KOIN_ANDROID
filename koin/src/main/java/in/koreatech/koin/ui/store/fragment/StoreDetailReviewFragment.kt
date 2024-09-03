@@ -14,10 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import `in`.koreatech.koin.R
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.contract.LoginContract
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.FragmentStoreDetailReviewBinding
 import `in`.koreatech.koin.domain.model.store.ReviewFilterEnum
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
@@ -70,7 +70,7 @@ class StoreDetailReviewFragment : Fragment() {
                     viewModel.store.value?.name ?: "Unknown"
                 )
             },
-            onReportItem ={
+            onReportItem = {
                 viewModel.checkToken()
                 if (viewModel.tokenState.value == TokenState.Valid) {
                     if (it.isReported) {
@@ -83,8 +83,7 @@ class StoreDetailReviewFragment : Fragment() {
                         intent.putExtra("reviewId", it.reviewId)
                         startActivity(intent)
                     }
-                }
-                else{
+                } else {
                     val loginRequestDialog = LoginRequestDialog(
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
@@ -94,7 +93,7 @@ class StoreDetailReviewFragment : Fragment() {
                                 viewModel.store.value?.name ?: "Unknown"
                             )
                         },
-                        onCancel ={
+                        onCancel = {
                             EventLogger.logClickEvent(
                                 AnalyticsConstant.Domain.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_CANCEL,
@@ -148,8 +147,7 @@ class StoreDetailReviewFragment : Fragment() {
                     goToReviewScreen.putExtra("storeId", viewModel.store.value?.uid)
                     goToReviewScreen.putExtra("storeName", viewModel.store.value?.name)
                     startActivity(goToReviewScreen)
-                }
-                else {
+                } else {
                     val loginRequestDialog = LoginRequestDialog(
                         goToLogin = {
                             loginActivityLauncher.launch(Unit)
@@ -181,27 +179,31 @@ class StoreDetailReviewFragment : Fragment() {
                 scoreText.text = String.format("%.1f", it.statistics.averageRating)
                 storeTotalRating.rating = it.statistics.averageRating.toFloat()
 
-                ratingFiveCountTv.text  = it.statistics.ratings["5"].toString()
-                ratingFiveProgressbar.progress = calculateScore(it.totalCount, it.statistics.ratings["5"])
+                ratingFiveCountTv.text = it.statistics.ratings["5"].toString()
+                ratingFiveProgressbar.progress =
+                    calculateScore(it.totalCount, it.statistics.ratings["5"])
 
-                ratingFourCountTv.text  = it.statistics.ratings["4"].toString()
-                ratingFourProgressbar.progress = calculateScore(it.totalCount, it.statistics.ratings["4"])
+                ratingFourCountTv.text = it.statistics.ratings["4"].toString()
+                ratingFourProgressbar.progress =
+                    calculateScore(it.totalCount, it.statistics.ratings["4"])
 
-                ratingThreeCountTv.text  = it.statistics.ratings["3"].toString()
-                ratingThreeProgressbar.progress = calculateScore(it.totalCount, it.statistics.ratings["3"])
+                ratingThreeCountTv.text = it.statistics.ratings["3"].toString()
+                ratingThreeProgressbar.progress =
+                    calculateScore(it.totalCount, it.statistics.ratings["3"])
 
-                ratingTwoCountTv.text  = it.statistics.ratings["2"].toString()
-                ratingTwoProgressbar.progress = calculateScore(it.totalCount, it.statistics.ratings["2"])
+                ratingTwoCountTv.text = it.statistics.ratings["2"].toString()
+                ratingTwoProgressbar.progress =
+                    calculateScore(it.totalCount, it.statistics.ratings["2"])
 
-                ratingOneCountTv.text  = it.statistics.ratings["1"].toString()
-                ratingOneProgressbar.progress = calculateScore(it.totalCount, it.statistics.ratings["1"])
+                ratingOneCountTv.text = it.statistics.ratings["1"].toString()
+                ratingOneProgressbar.progress =
+                    calculateScore(it.totalCount, it.statistics.ratings["1"])
 
 
-                if(it.totalCount == 0) {
-                    yesReviewLayout.isGone= true
+                if (it.totalCount == 0) {
+                    yesReviewLayout.isGone = true
                     noReviewLayout.isVisible = true
-                }
-                else {
+                } else {
                     yesReviewLayout.isVisible = true
                     noReviewLayout.isGone = true
                 }
@@ -214,25 +216,41 @@ class StoreDetailReviewFragment : Fragment() {
                 popup.setOnMenuItemClickListener { item: MenuItem ->
                     when (item.itemId) {
                         R.id.action_latest -> {
-                            viewModel.filterReview(ReviewFilterEnum.LATEST, isMineCheckbox.isChecked)
+                            viewModel.filterReview(
+                                ReviewFilterEnum.LATEST,
+                                isMineCheckbox.isChecked
+                            )
                             filterTextview.text = getString(R.string.latest)
                             true
                         }
+
                         R.id.action_oldest -> {
-                            viewModel.filterReview(ReviewFilterEnum.OLDEST, isMineCheckbox.isChecked)
+                            viewModel.filterReview(
+                                ReviewFilterEnum.OLDEST,
+                                isMineCheckbox.isChecked
+                            )
                             filterTextview.text = getString(R.string.oldest)
                             true
                         }
+
                         R.id.action_high_rating -> {
-                            viewModel.filterReview(ReviewFilterEnum.HIGH_RATTING, isMineCheckbox.isChecked)
+                            viewModel.filterReview(
+                                ReviewFilterEnum.HIGH_RATTING,
+                                isMineCheckbox.isChecked
+                            )
                             filterTextview.text = getString(R.string.high_rating)
                             true
                         }
+
                         R.id.action_low_rating -> {
-                            viewModel.filterReview(ReviewFilterEnum.LOW_RATIONG, isMineCheckbox.isChecked)
+                            viewModel.filterReview(
+                                ReviewFilterEnum.LOW_RATIONG,
+                                isMineCheckbox.isChecked
+                            )
                             filterTextview.text = getString(R.string.low_rating)
                             true
                         }
+
                         else -> false
                     }
                 }
@@ -249,23 +267,23 @@ class StoreDetailReviewFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        with(viewModel){
+        with(viewModel) {
             observeLiveData(storeReviewContent) {
                 storeDetailReviewRecyclerAdapter.submitList(it)
             }
 
-            observeLiveData(store){
+            observeLiveData(store) {
                 storeDetailReviewRecyclerAdapter.storeId = store.value?.uid
             }
 
-            observeLiveData(scrollUp){
-                if(it == StoreDetailScrollType.REVIEW){
+            observeLiveData(scrollUp) {
+                if (it == StoreDetailScrollType.REVIEW) {
                     binding.reviewScrollView.fullScroll(ScrollView.FOCUS_UP)
                     viewModel.scrollReset()
                 }
             }
 
-            observeLiveData(storeReviewContent){
+            observeLiveData(storeReviewContent) {
                 binding.noReviewLayout.isVisible = it.isEmpty()
             }
         }
@@ -273,23 +291,19 @@ class StoreDetailReviewFragment : Fragment() {
 
     private fun initReviewScrollCallback() {
         binding.reviewScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            if (scrollY >= 1 && oldScrollY < 1) {
+            val contentHeight = binding.reviewScrollView.getChildAt(0).measuredHeight
+            val scrollViewHeight = binding.reviewScrollView.height
+            val totalScrollRange = contentHeight - scrollViewHeight
+            val seventyPercentScroll = (totalScrollRange * 0.7).toInt()
+
+            if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
                 EventLogger.logScrollEvent(
                     AnalyticsConstant.Domain.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW,
                     viewModel.store.value?.name ?: "Unknown"
                 )
             }
         }
-    }
-
-    override fun onPause() {
-        EventLogger.logClickEvent(
-            AnalyticsConstant.Domain.BUSINESS,
-            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-            viewModel.store.value?.name ?: "Unknown"
-        )
-        super.onPause()
     }
 
     private fun calculateScore(total: Int, count: Int?) =
