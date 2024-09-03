@@ -37,7 +37,6 @@ object EventLogger {
      * @param value: 이벤트 값
      */
     fun logSwipeEvent(action: String, label: String, value: String) {
-        Log.e("로그로그EventLogger", "logSwipeEvent: $action, $label, $value")
         logEvent(action, AnalyticsConstant.Category.SWIPE, label, value)
     }
 
