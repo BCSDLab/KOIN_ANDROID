@@ -16,7 +16,8 @@ import `in`.koreatech.koin.databinding.LoginRequestDialogBinding
 import `in`.koreatech.koin.util.ext.windowWidth
 
 class LoginRequestDialog(
-    val goToLogin: () -> Unit
+    val goToLogin: () -> Unit,
+    val onCancel: () -> Unit,
 ) : DialogFragment() {
     private lateinit var binding: LoginRequestDialogBinding
 
@@ -40,6 +41,7 @@ class LoginRequestDialog(
             dismiss()
         }
         binding.buttonCancle.setOnClickListener {
+            onCancel()
             dismiss()
         }
         return binding.root
