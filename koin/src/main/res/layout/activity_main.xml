@@ -115,6 +115,17 @@
                                     android:layout_marginTop="12dp"
                                     app:layout_constraintTop_toBottomOf="@id/text_view_hot_article" />
 
+                                <com.google.android.material.tabs.TabLayout
+                                    android:id="@+id/tab_hot_article"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@id/view_pager_hot_article"
+                                    app:tabBackground="@drawable/tab_dot_selector"
+                                    app:tabIndicatorHeight="0dp"
+                                    app:tabPaddingStart="3dp"
+                                    app:tabGravity="center" />
+
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView

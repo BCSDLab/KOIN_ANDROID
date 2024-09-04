@@ -153,6 +153,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             adapter = hotArticleAdapter
             offscreenPageLimit = 3
         }
+        TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
 
         textSeeMoreArticle.setOnClickListener {
             startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
