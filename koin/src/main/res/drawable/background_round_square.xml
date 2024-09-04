@@ -5,7 +5,7 @@
             <!-- TODO::색상 변경 -->
             <stroke
                 android:width="1dp"
-                android:color="@color/neutral_500" />
+                android:color="@color/neutral_450" />
             <corners android:radius="3dp" />
         </shape>
     </item>

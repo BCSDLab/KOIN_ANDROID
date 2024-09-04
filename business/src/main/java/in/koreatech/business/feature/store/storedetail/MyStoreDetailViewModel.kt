@@ -74,74 +74,17 @@ class MyStoreDetailViewModel @Inject constructor(
 
     fun onChangeEditMode() = intent {
         reduce {
-            state.copy(isEditMode = !state.isEditMode, isSelectedEvent = mutableListOf(), isAllEventSelected = false)
+            state.copy(
+                isEditMode = !state.isEditMode,
+                isSelectedEvent = mutableListOf(),
+                isAllEventSelected = false
+            )
         }
     }
 
     fun initEventItem() = intent {
         reduce {
             state.copy(isEventExpanded = List(state.isEventExpanded.size) { _ -> false })
-        }
-    }
-
-    fun onCardAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isCardOk = !(state.storeInfo?.isCardOk ?: false)
-                )
-            )
-
-        }
-    }
-
-    fun onDeliveryAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isDeliveryOk = !(state.storeInfo?.isDeliveryOk ?: false)
-                )
-            )
-        }
-    }
-
-    fun onTransferAvailableChanged() = intent {
-        reduce {
-            state.copy(
-                storeInfo = state.storeInfo?.copy(
-                    isBankOk = !(state.storeInfo?.isBankOk ?: false)
-                )
-            )
-        }
-    }
-
-    fun onStoreNameChanged(storeName: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(name = storeName))
-        }
-    }
-
-    fun onPhoneNumberChanged(phone: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(phone = phone))
-        }
-    }
-
-    fun onAddressChanged(address: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(address = address))
-        }
-    }
-
-    fun onDeliveryPriceChanged(price: Int) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(deliveryPrice = price))
-        }
-    }
-
-    fun onDescriptionChanged(description: String) = intent {
-        reduce {
-            state.copy(storeInfo = state.storeInfo?.copy(description = description))
         }
     }
 
@@ -154,9 +97,10 @@ class MyStoreDetailViewModel @Inject constructor(
                 }
                 getShopEvents()
                 getShopMenus()
-
             }.onFailure {
-                postSideEffect(MyStoreDetailSideEffect.ShowErrorMessage(it.message))
+                reduce {
+                    state.copy(storeInfo = null)
+                }
             }
         }
     }
@@ -171,7 +115,7 @@ class MyStoreDetailViewModel @Inject constructor(
                 }
                 reduce {
                     state.copy(
-                        storeId = if(state.storeList.isNotEmpty()) state.storeList.first().uid else -1
+                        storeId = if (state.storeList.isNotEmpty()) state.storeList.first().uid else -1
                     )
                 }
                 getOwnerShopInfo(state.storeId)
@@ -219,6 +163,7 @@ class MyStoreDetailViewModel @Inject constructor(
             )
         }
     }
+
     fun navigateToModifyScreen() = intent {
         postSideEffect(MyStoreDetailSideEffect.NavigateToModifyScreen)
     }
@@ -227,7 +172,7 @@ class MyStoreDetailViewModel @Inject constructor(
         postSideEffect(MyStoreDetailSideEffect.ShowErrorModifyEventToast)
     }
 
-    fun deleteEventAll() = intent{
+    fun deleteEventAll() = intent {
         state.isSelectedEvent.forEach {
             deleteEventItem(state.storeId, it)
         }

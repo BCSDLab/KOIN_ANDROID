@@ -9,291 +9,230 @@
     android:layout_height="match_parent"
     android:layout_gravity="end"
     android:background="@color/background"
-    android:fitsSystemWindows="false"
-    android:theme="@style/KAPNavigationHeader">
+    android:fitsSystemWindows="false">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/drawer_left_arrow_button"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/img_menu_logo"
+            android:src="@drawable/ic_arrow_left"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/navi_item_notification"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:src="@drawable/ic_notification"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/drawer_left_arrow_button"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="14dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/arrows_arrow_left"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/base_naviagtion_drawer_nickname_textview"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="52dp"
-            android:textColor="@color/colorPrimary"
-            android:textSize="15sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:textAppearance="@style/TextAppearance.Koin.Bold.18"
+            android:textColor="@color/primary_600"
+            app:layout_constraintBaseline_toBaselineOf="@id/navi_hello_message"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:text="홍길동" />
 
-        <TextView
-            android:id="@+id/textView2"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_hello_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="54dp"
-            android:text="@string/navigation_drawer_right_hello_message"
-            android:textColor="@color/colorPrimary"
-            android:textSize="13sp"
-            app:layout_constraintStart_toEndOf="@id/base_naviagtion_drawer_nickname_textview"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/navigation_hello_message"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+            android:textColor="@color/neutral_600"
+            app:layout_constraintStart_toEndOf="@id/navi_user_nickname"
+            app:layout_constraintTop_toBottomOf="@id/drawer_left_arrow_button"
+            app:layout_goneMarginStart="24dp" />
 
         <LinearLayout
             android:id="@+id/navi_item_myinfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
             android:orientation="horizontal"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintEnd_toStartOf="@id/navi_item_notification"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/base_naviagtion_drawer_nickname_textview">
+            app:layout_constraintTop_toBottomOf="@id/navi_hello_message">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginLeft="16dp"
-                android:src="@drawable/ic_drawer_myinfo" />
+                android:src="@drawable/ic_drawer_myinfo"
+                app:tint="@color/neutral_600" />
 
-            <TextView
-                android:id="@+id/navi_item_myinfo_textview"
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
-                android:gravity="center"
-                android:text="@string/navigation_drawer_right_myinfo"
-                android:textColor="#252525"
-                android:textSize="15sp" />
+                android:layout_marginStart="4dp"
+                android:gravity="center_vertical"
+                android:text="@string/navigation_item_my_info"
+                android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+                android:textColor="@color/neutral_600" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/navi_item_notification"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_login_or_logout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/navi_item_myinfo"
+            android:layout_height="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_vertical"
+            android:text="로그인"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+            android:textColor="@color/neutral_600"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@id/navi_item_myinfo"
-            app:layout_constraintTop_toTopOf="@id/navi_item_myinfo">
+            app:layout_constraintTop_toTopOf="@id/navi_item_myinfo" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_notification" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_view_section_service"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_section_service"
             android:layout_width="match_parent"
             android:layout_height="32dp"
-            android:background="@color/blue_alpha51"
+            android:layout_marginTop="12dp"
+            android:background="@color/neutral_50"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
+            android:paddingHorizontal="24dp"
             android:text="서비스"
-            android:textSize="15sp"
+            android:textAppearance="@style/TextAppearance.Koin.Medium.14"
+            android:textColor="@color/neutral_600"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/navi_item_myinfo">
+            app:layout_constraintTop_toBottomOf="@id/navi_item_myinfo" />
 
-        </TextView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:orientation="vertical"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_bus"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_bus"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_section_service">
+            app:layout_constraintTop_toBottomOf="@id/tv_section_service" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_bus" />
 
-                <LinearLayout
-                    android:id="@+id/navi_item_store"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_dining"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_dining"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_bus" />
 
-                    <TextView
-                        android:id="@+id/navi_item_store_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:lineSpacingExtra="7sp"
-                        android:text="주변 상점"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-                </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_dining" />
 
-                <LinearLayout
-                    android:id="@+id/navi_item_bus"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_timetable"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_timetable"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_dining" />
 
-                    <TextView
-                        android:id="@+id/navi_item_bus_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:lineSpacingExtra="7sp"
-                        android:text="버스 / 교통"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-                </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_timetable" />
 
-            </LinearLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_land"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_land"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_timetable" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_land" />
 
-                <LinearLayout
-                    android:id="@+id/navi_item_dining"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_store"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_store"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_land" />
 
-                    <TextView
-                        android:id="@+id/navi_item_dining_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:lineSpacingExtra="7sp"
-                        android:text="식단"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-                </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_store" />
 
-                <LinearLayout
-                    android:id="@+id/navi_item_timetable"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/navi_item_owner"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="24dp"
+            android:text="@string/navigation_item_owner"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_store" />
 
-                    <TextView
-                        android:id="@+id/navi_item_timetable_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:lineSpacingExtra="7sp"
-                        android:text="시간표"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/navi_item_land"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/navi_item_land_textview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:lineSpacingExtra="7sp"
-                        android:text="복덕방"
-                        android:textColor="@color/black"
-                        android:textSize="15sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/navi_item_owner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/navi_item_owner_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:lineSpacingExtra="7sp"
-                            android:text="코인 for Business"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/button_ask"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/navigation_drawer_right_button_ask"
-            android:textColor="?attr/colorPrimaryDark"
-            app:elevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/bcsd_logo"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="20dp"
-            android:src="@drawable/bcsd_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/neutral_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/navi_item_owner" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.navigation.NavigationView>

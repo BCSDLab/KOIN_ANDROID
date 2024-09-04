@@ -12,4 +12,17 @@ object DateFormatUtil {
         return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.KOREAN)
                 ?.toString() ?: ""
     }
+
+    fun dayOfWeekToIndex(dayOfWeek: String): Int {
+        return when (dayOfWeek) {
+            "SUNDAY" -> 0
+            "MONDAY" -> 1
+            "TUESDAY" -> 2
+            "WEDNESDAY" -> 3
+            "THURSDAY" -> 4
+            "FRIDAY" -> 5
+            "SATURDAY" -> 6
+            else -> -1
+        }
+    }
 }
