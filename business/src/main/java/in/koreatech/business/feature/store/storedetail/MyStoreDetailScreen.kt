@@ -26,6 +26,7 @@ import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -40,9 +41,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.hilt.navigation.compose.hiltViewModel
 import `in`.koreatech.business.R
 import `in`.koreatech.business.feature.store.OwnerStoreAppBar
+import `in`.koreatech.business.feature.store.modifyinfo.ModifyInfoViewModel
 import `in`.koreatech.business.feature.store.storedetail.event.EventScreen
 import `in`.koreatech.business.feature.store.storedetail.menu.MenuScreen
 import `in`.koreatech.business.ui.theme.Blue2
@@ -59,28 +60,38 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @Composable
 fun MyStoreDetailScreen(
     modifier: Modifier,
+    viewModel: MyStoreDetailViewModel,
+    modifyInfoViewModel: ModifyInfoViewModel,
     navigateToLoginScreen: () -> Unit = {},
     navigateToUploadEventScreen: () -> Unit = {},
     navigateToModifyScreen: () -> Unit = {},
 ) {
-    val viewModel: MyStoreDetailViewModel = hiltViewModel()
     val state = viewModel.collectAsState().value
     val pagerState = rememberPagerState(0, 0f) { 2 }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
+    LaunchedEffect(state.storeInfo) {
+        viewModel.initOwnerShopList()
+        modifyInfoViewModel.initStoreInfo(state.storeInfo ?: return@LaunchedEffect)
+    }
+
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OwnerStoreAppBar(stringResource(R.string.my_shop))
         MyStoreScrollScreen(
-            state, listState, pagerState, viewModel, onTabSelected = {
+            state = state,
+            listState = listState,
+            pagerState = pagerState,
+            viewModel = viewModel,
+            onTabSelected = {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(it)
                 }
             },
-            viewModel::deleteEventAll
+            onDeleteEvent = viewModel::deleteEventAll,
         )
     }
     viewModel.collectSideEffect {
@@ -134,7 +145,12 @@ fun MyStoreScrollScreen(
         ) to state.storeInfo?.isBankOk
     )
     Box {
-        CollapsedTopBar(modifier = Modifier.zIndex(2f), isCollapsed = isCollapsedTopBar)
+        CollapsedTopBar(
+            modifier = Modifier.zIndex(2f),
+            isCollapsed = isCollapsedTopBar,
+            onNavigateToModifyScreen = viewModel::navigateToModifyScreen,
+            state = state,
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -142,7 +158,7 @@ fun MyStoreScrollScreen(
             verticalArrangement = Arrangement.Top,
         ) {
             item {
-                StoreInfoScreen()
+                StoreInfoScreen(viewModel)
             }
             storeDetailInfo(infoDataList)
             item {
