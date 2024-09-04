@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
+import androidx.compose.ui.text.input.ImeAction
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -69,6 +71,12 @@ class ArticleKeywordFragment : Fragment() {
                 ArticleKeywordViewModel.MAX_KEYWORD_COUNT.toString()
             binding.buttonAddKeyword.setOnClickListener {
                 viewModel.addKeyword(binding.textInputSearch.text.toString())
+            }
+            binding.textInputSearch.setOnEditorActionListener { _, id, _ ->
+                if (id == EditorInfo.IME_ACTION_DONE) {
+                    viewModel.addKeyword(binding.textInputSearch.text.toString())
+                    true
+                } else false
             }
             binding.textInputSearch.addTextChangedListener {
                 viewModel.onKeywordInputChanged(it.toString())

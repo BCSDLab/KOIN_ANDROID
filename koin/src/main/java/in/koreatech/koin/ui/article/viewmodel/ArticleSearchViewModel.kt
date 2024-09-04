@@ -54,12 +54,13 @@ class ArticleSearchViewModel @Inject constructor(
     }
 
     fun search() {
-        if (query.value.trim().isEmpty()) {
+        val trimmedQuery = query.value.trim()
+        if (trimmedQuery.isEmpty()) {
             _searchResultUiState.tryEmit(SearchUiState.RequireInput)
             return
         }
 
-        articleRepository.fetchSearchedArticles(query.value, 4, 1, 10)
+        articleRepository.fetchSearchedArticles(trimmedQuery, 4, 1, 10)
             .onStart {
                 _searchResultUiState.tryEmit(SearchUiState.Loading)
             }.onEach {
@@ -68,7 +69,7 @@ class ArticleSearchViewModel @Inject constructor(
                 } else {
                     _searchResultUiState.emit(SearchUiState.Success(it.toArticlePaginationState()))
                 }
-                articleRepository.saveSearchHistory(query.value).launchIn(viewModelScope)
+                articleRepository.saveSearchHistory(trimmedQuery).launchIn(viewModelScope)
             }.launchIn(viewModelScope)
     }
 
