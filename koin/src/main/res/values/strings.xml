@@ -21,7 +21,7 @@
 
     <!--부가서비스-->
     <string name="navigation_item_callvan_sharing">콜밴쉐어링</string>
-    <!--<string name="navigation_item_real_estate">복덕방</string>-->
+    <string name="navigation_item_real_estate">복덕방</string>
     <string name="navigation_item_usedmarket">중고장터</string>
     <string name="navigation_item_timetable">시간표</string>
     <string name="navigation_item_search">검색</string>

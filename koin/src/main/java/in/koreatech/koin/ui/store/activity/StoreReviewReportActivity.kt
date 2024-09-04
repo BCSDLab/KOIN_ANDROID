@@ -17,7 +17,9 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.appbar.AppBarBase
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySignupCompleteBinding
 import `in`.koreatech.koin.databinding.StoreActivityReportReviewBinding
@@ -38,6 +40,7 @@ class StoreReviewReportActivity:  ActivityBase() {
     override val screenTitle = "리뷰 신고"
     private val viewModel by viewModels<StoreReviewReportViewModel>()
 
+    private var storeName: String? = null
     private var storeId: Int? = null
     private var reviewId: Int? = null
 
@@ -64,7 +67,7 @@ class StoreReviewReportActivity:  ActivityBase() {
                 AppBarBase.getLeftButtonId() -> onBackPressed()
             }
         }
-
+        storeName = intent.extras?.getString("storeName")
         storeId = intent.extras?.getInt("storeId")
         reviewId = intent.extras?.getInt("reviewId")
 
@@ -113,6 +116,11 @@ class StoreReviewReportActivity:  ActivityBase() {
                 storeId,
                 reviewId,
                 inputReportReasonEdittext.text.toString()
+            )
+            EventLogger.logClickEvent(
+                AnalyticsConstant.Domain.BUSINESS,
+                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_REPORT_DONE,
+                storeName ?: "Unknown"
             )
         }
     }
