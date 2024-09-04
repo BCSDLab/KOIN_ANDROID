@@ -63,9 +63,10 @@ class ArticleKeywordFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if(_binding == null) {
+        if (_binding == null) {
             _binding = FragmentArticleKeywordBinding.inflate(inflater, container, false)
-            binding.textViewMaxKeywordCount.text = ArticleKeywordViewModel.MAX_KEYWORD_COUNT.toString()
+            binding.textViewMaxKeywordCount.text =
+                ArticleKeywordViewModel.MAX_KEYWORD_COUNT.toString()
             binding.buttonAddKeyword.setOnClickListener {
                 viewModel.addKeyword(binding.textInputSearch.text.toString())
             }
@@ -99,7 +100,12 @@ class ArticleKeywordFragment : Fragment() {
                 keywords.forEach { keyword ->
                     if (chipGroupMyKeyword.children.none { (it as Chip).text == keyword })
                         chipGroupMyKeyword.addView(
-                            createChip(keyword, R.drawable.ic_close_round, binding.chipGroupMyKeyword, viewModel::deleteKeyword)
+                            createChip(
+                                keyword,
+                                R.drawable.ic_close_round,
+                                binding.chipGroupMyKeyword,
+                                viewModel::deleteKeyword
+                            )
                         )
                 }
             }
@@ -123,12 +129,22 @@ class ArticleKeywordFragment : Fragment() {
     private fun setSuggestedKeywords() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.suggestedKeywords.collect {
-                    binding.run {
-                        it.forEach { keyword ->
-                            chipGroupSuggestionKeywords.addView(
-                                createChip(keyword, R.drawable.ic_add_round, binding.chipGroupSuggestionKeywords, viewModel::addKeyword)
-                            )
+                viewModel.suggestedKeywords.collect { suggests ->
+                    suggests.forEach { keyword ->
+                        binding.run {
+                            if (chipGroupSuggestionKeywords.childCount >= ArticleKeywordViewModel.MAX_SUGGEST_KEYWORD_COUNT)
+                                return@forEach
+
+                            if (viewModel.myKeywords.value.contains(keyword).not()) {
+                                chipGroupSuggestionKeywords.addView(
+                                    createChip(
+                                        keyword,
+                                        R.drawable.ic_add_round,
+                                        binding.chipGroupSuggestionKeywords,
+                                        viewModel::addKeyword
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -136,7 +152,12 @@ class ArticleKeywordFragment : Fragment() {
         }
     }
 
-    private fun createChip(text: String, @DrawableRes icon: Int, root: ViewGroup, onCloseIconClicked: (String) -> Unit): Chip {
+    private fun createChip(
+        text: String,
+        @DrawableRes icon: Int,
+        root: ViewGroup,
+        onCloseIconClicked: (String) -> Unit
+    ): Chip {
         val chip = layoutInflater.inflate(R.layout.chip_layout, root, false) as Chip
         return chip.apply {
             id = View.generateViewId()
@@ -163,29 +184,35 @@ class ArticleKeywordFragment : Fragment() {
                                 getString(R.string.keyword_add_require_input),
                             )
                         }
+
                         KeywordAddUiState.LimitExceeded -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
                                 getString(R.string.keyword_add_limit_exceeded),
                             )
                         }
+
                         KeywordAddUiState.AlreadyExist -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
                                 getString(R.string.keyword_add_already_exist),
                             )
                         }
+
                         KeywordAddUiState.BlankNotAllowed -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
                                 getString(R.string.keyword_add_blank_not_allowed),
                             )
                         }
+
                         KeywordAddUiState.Loading -> {
                         }
+
                         KeywordAddUiState.Success -> {
                             binding.textInputSearch.text = null
                         }
+
                         KeywordAddUiState.Error -> {
                             SnackbarUtil.makeShortSnackbar(
                                 binding.root,
@@ -203,14 +230,32 @@ class ArticleKeywordFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.keywordInputUiState.collect { state ->
                     binding.buttonAddKeyword.apply {
-                        background.setTint(when (state) {
-                            is KeywordInputUiState.Empty -> ContextCompat.getColor(requireContext(), R.color.gray16)
-                            is KeywordInputUiState.Valid -> ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-                        })
-                        setTextColor(when (state) {
-                            is KeywordInputUiState.Empty -> ContextCompat.getColor(requireContext(), R.color.gray14)
-                            is KeywordInputUiState.Valid -> ContextCompat.getColor(requireContext(), R.color.white)
-                        })
+                        background.setTint(
+                            when (state) {
+                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.gray16
+                                )
+
+                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.colorPrimary
+                                )
+                            }
+                        )
+                        setTextColor(
+                            when (state) {
+                                is KeywordInputUiState.Empty -> ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.gray14
+                                )
+
+                                is KeywordInputUiState.Valid -> ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color.white
+                                )
+                            }
+                        )
                     }
                 }
             }

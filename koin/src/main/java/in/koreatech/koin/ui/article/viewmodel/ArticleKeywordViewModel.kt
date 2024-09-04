@@ -101,6 +101,7 @@ class ArticleKeywordViewModel @Inject constructor(
 
     companion object {
         const val MAX_KEYWORD_COUNT = 10
+        const val MAX_SUGGEST_KEYWORD_COUNT = 5
         const val KEYWORD_INPUT = "keyword_input"
     }
 }
