@@ -1,9 +1,9 @@
 package `in`.koreatech.koin.ui.article.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class ArticleSearchViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val articleRepository: ArticleRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     val query = savedStateHandle.getStateFlow(SEARCH_INPUT, "")
 
@@ -56,13 +57,14 @@ class ArticleSearchViewModel @Inject constructor(
     }
 
     fun search() {
+        _isLoading.value = true
         val trimmedQuery = query.value.trim()
         if (trimmedQuery.isEmpty()) {
             _searchResultUiState.tryEmit(SearchUiState.RequireInput)
             return
         }
 
-        articleRepository.fetchSearchedArticles(trimmedQuery, 4, 1, 10)
+        articleRepository.fetchSearchedArticles(trimmedQuery, 4, 1, 20)
             .onStart {
                 _searchResultUiState.tryEmit(SearchUiState.Loading)
             }.onEach {
@@ -72,6 +74,8 @@ class ArticleSearchViewModel @Inject constructor(
                     _searchResultUiState.emit(SearchUiState.Success(it.toArticlePaginationState()))
                 }
                 articleRepository.saveSearchHistory(trimmedQuery).launchIn(viewModelScope)
+            }.onCompletion {
+                _isLoading.value = false
             }.launchIn(viewModelScope)
     }
 
