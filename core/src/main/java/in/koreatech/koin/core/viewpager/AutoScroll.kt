@@ -8,9 +8,9 @@ fun ViewPager2.enableAutoScroll(lifecycleOwner: LifecycleOwner, interval: Long) 
 
     val runnable = Runnable {
         if (currentItem < (adapter?.itemCount ?: 0) - 1) {
-            currentItem += 1
+            setCurrentItem(currentItem + 1, true)
         } else {
-            currentItem = 0
+            setCurrentItem(0, true)
         }
     }
 
