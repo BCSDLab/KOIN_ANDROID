@@ -111,7 +111,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#FAFAFA">
+                    android:background="@color/neutral_50">
 
                     <ImageView
                         android:id="@+id/image_view_dining"
@@ -172,11 +172,12 @@
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/lottie_image_loading"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:lottie_rawRes="@raw/lottie_loading"
                         android:visibility="gone"
                         app:lottie_autoPlay="true"
+                        android:scaleType="centerCrop"
                         app:lottie_loop="true"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"

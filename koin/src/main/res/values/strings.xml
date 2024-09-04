@@ -429,6 +429,7 @@
     <string name="last_update">업데이트 날짜 : </string>
     <string name="sold_out_menu">품절된 메뉴입니다.</string>
     <string name="no_photo">사진 없음</string>
+    <string name="photo_not_provided_on_weekend">주말은 식단 이미지를 제공하지 않습니다.</string>
     <string name="sold_out">품절</string>
     <string name="changed">변경됨</string>
     <string name="price">%1$s원</string>

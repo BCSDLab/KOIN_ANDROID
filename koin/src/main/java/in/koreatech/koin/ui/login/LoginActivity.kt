@@ -52,7 +52,10 @@ class LoginActivity : ActivityBase(R.layout.activity_login) {
                     when (it.status) {
                         is UiStatus.Init -> Unit
                         is UiStatus.Loading -> Unit
-                        is UiStatus.Success -> startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+                        is UiStatus.Success -> {
+                            startActivity(Intent(this@LoginActivity, nextNavigateActivityClass))
+                            finishAffinity()
+                        }
                         is UiStatus.Failed -> {
                             SnackbarUtil.makeShortSnackbar(binding.root, it.status.message)
                             loginViewModel.onFailedLogin()
