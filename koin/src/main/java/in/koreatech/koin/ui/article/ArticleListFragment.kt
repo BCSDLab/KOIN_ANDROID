@@ -135,22 +135,14 @@ class ArticleListFragment : Fragment() {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.myKeywords.collect { keywords ->
-                        binding.chipGroupMyKeywords.children.forEach { chip ->
-                            if ((chip as Chip).text != getString(R.string.see_all_article))
-                                binding.chipGroupMyKeywords.removeView(chip)
-                        }
+                        removeKeywordChip(keywords)
+
                         if (keywords.isEmpty()) {
                             binding.chipGroupMyKeywords.addView(
                                 createChip(getString(R.string.add_new_keyword), false, ::navigateToKeywordFragment)
                             )
                         } else {
-                            keywords.forEach { keyword ->
-                                binding.chipGroupMyKeywords.addView(
-                                    createChip(TextUtils.concat("#", keyword).toString(), true) {
-                                        viewModel.selectKeyword(keyword)
-                                    }
-                                )
-                            }
+                            addKeywordChip(keywords)
                         }
                     }
                 }
@@ -173,6 +165,27 @@ class ArticleListFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun removeKeywordChip(keywords: List<String>) {
+        binding.chipGroupMyKeywords.children.forEachIndexed { i, chip ->
+            if (i != 0)
+                if (keywords.contains((chip as Chip).text.toString().substring(1)).not())
+                    binding.chipGroupMyKeywords.removeView(chip)
+        }
+    }
+
+    private fun addKeywordChip(keywords: List<String>) {
+        keywords.forEach { keyword ->
+            if (binding.chipGroupMyKeywords.children.any { (it as Chip).text == TextUtils.concat("#", keyword) }.not())
+                binding.chipGroupMyKeywords.addView(
+                    createChip(TextUtils.concat("#", keyword).toString(), true,
+                        onChipClicked = {
+                            viewModel.selectKeyword(keyword)
+                        }
+                    )
+                )
         }
     }
 
