@@ -257,16 +257,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment = null
             return
         }
-
-        if (currentTab == 2) {
-            reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                (viewModel.store.value?.name
-                    ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
-            )
-        }
         super.onBackPressed()
     }
 
