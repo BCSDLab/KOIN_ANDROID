@@ -2,6 +2,10 @@ package `in`.koreatech.koin.constant
 
 const val GOTO_KOREATECH_PORTAL_SNACK_BAR_TIME = 5000
 
+object URL {
+    const val BCSD_ASK_FORM = "https://forms.gle/hE4VMchTZuff5rLB7"
+}
+
 //Dining
 object DINING {
     const val WIDGET_ACTION_CLICKED = "dining_place"

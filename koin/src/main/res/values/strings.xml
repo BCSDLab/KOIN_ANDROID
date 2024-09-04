@@ -28,7 +28,7 @@
 
     <!--right drawer menu-->
     <string name="navigation_item_user_info">회원 정보</string>
-    <!--<string name="navigation_item_setting">설정</string>-->
+    <string name="navigation_item_setting">설정</string>
     <string name="navigation_item_koin_page">코인 사이트</string>
     <!--<string name="navigation_item_user_request">문의 사항</string>-->
     <string name="navigation_item_kakao_talk">카카오톡 대화</string>
@@ -237,6 +237,22 @@
     <string name="show_more_menu">메뉴 더보기</string>
     <string name="hide_menu">메뉴 접기</string>
     <string name="search">검색</string>
+
+    <!-- Setting -->
+    <string name="setting_title_normal">일반</string>
+    <string name="setting_item_profile">프로필</string>
+    <string name="setting_item_change_password">비밀번호 변경</string>
+    <string name="setting_item_notification">알림</string>
+
+    <string name="setting_title_service">서비스</string>
+    <string name="setting_item_privacy_policy">개인정보 처리방침</string>
+    <string name="setting_item_koin_terms">코인 이용약관</string>
+    <string name="setting_item_open_source_license">오픈소스 라이선스</string>
+    <string name="setting_item_app_version">앱 버전</string>
+    <string name="setting_app_version_is_latest">현재 최신 버전 입니다.</string>
+    <string name="setting_app_version_display_latest">최신 버전 %s</string>
+
+    <string name="setting_item_contact">문의하기</string>
 
     <!-- user info -->
     <string name="user_info_no_email">이메일을 설정해 주세요</string>

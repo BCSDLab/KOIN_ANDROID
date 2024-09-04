@@ -36,7 +36,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
     private val userInfoViewModel by viewModels<UserInfoViewModel>()
 
     private val userInfoEditActivityNew = registerForActivityResult(UserInfoEditContract()) { edited ->
-        if(edited) userInfoViewModel.getUserInfo()
+        if (edited) userInfoViewModel.getUserInfo()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +60,8 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         )
 
         userinfoButtonDeleteUser.setOnClickListener {
-            SnackbarUtil.makeLongSnackbarActionYes(userinfoScrollview, getString(R.string.user_info_user_remove_message)
+            SnackbarUtil.makeLongSnackbarActionYes(
+                userinfoScrollview, getString(R.string.user_info_user_remove_message)
             ) {
                 userInfoViewModel.removeUser()
             }
@@ -75,7 +76,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
         withLoading(this@UserInfoActivity, this)
 
         observeLiveData(user) { user ->
-            if(user != null) {
+            if (user != null && user.isStudent) {
                 val userState = user.toUserState(this@UserInfoActivity)
                 binding.userinfoTextviewId.text = userState.email
                 binding.userinfoTextviewName.text = userState.username
@@ -100,6 +101,7 @@ class UserInfoActivity : KoinNavigationDrawerActivity() {
             }
         }.launchIn(lifecycleScope)
     }
+
     private fun goToLoginActivity() {
         finishAffinity()
         startActivity(Intent(this@UserInfoActivity, LoginActivity::class.java))
