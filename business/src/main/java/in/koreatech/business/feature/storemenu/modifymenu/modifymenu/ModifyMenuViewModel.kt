@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.RegisterMenuUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
+import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -25,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ModifyMenuViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val getMenuCategoryUseCase : GetMenuCategoryUseCase,
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val getMenuInfoUseCase: GetMenuInfoUseCase,
@@ -33,10 +36,10 @@ class ModifyMenuViewModel @Inject constructor(
 ): ViewModel(), ContainerHost<ModifyMenuState, ModifyMenuSideEffect> {
     override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
 
-
-    /*init {
-        getStoreMenuInfo()
-    }*/
+    private val menuId: Int = checkNotNull(savedStateHandle["menuId"])
+    init {
+        settingId(menuId)
+    }
 
     private fun getStoreMenuInfo(){
         intent {

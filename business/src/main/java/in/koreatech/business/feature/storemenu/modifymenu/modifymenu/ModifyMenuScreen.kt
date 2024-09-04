@@ -54,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
@@ -76,7 +77,7 @@ fun ModifyMenuScreen(
     modifier: Modifier = Modifier,
     goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: ModifyMenuViewModel
+    viewModel: ModifyMenuViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 

@@ -54,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.feature.store.navigator.ModifyInfoNavigator
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
@@ -79,7 +80,7 @@ fun RegisterMenuScreen(
     modifier: Modifier = Modifier,
     goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: RegisterMenuViewModel
+    viewModel: RegisterMenuViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
