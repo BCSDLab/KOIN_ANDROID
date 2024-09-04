@@ -150,15 +150,21 @@ class ArticleListFragment : Fragment() {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.selectedKeyword.collect { keyword ->
+                        /* 다른 화면을 갔다가 돌아와도 키워드 선택 상태 유지 */
                         var isKeywordSelected = false
-                        binding.chipGroupMyKeywords.children.forEach {
-                            if ("#$keyword" == (it as Chip).text.toString()) {
-                                it.isChecked = true
-                                isKeywordSelected = true
-                                return@forEach
-                            }
+                        if (keyword.isEmpty()) {
+                            binding.chipSeeAll.isChecked = true
+                            isKeywordSelected = true
                         }
-                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우
+                        else
+                            binding.chipGroupMyKeywords.children.forEach {
+                                if ("#$keyword" == (it as Chip).text.toString()) {
+                                    it.isChecked = true
+                                    isKeywordSelected = true
+                                    return@forEach
+                                }
+                            }
+                        if (isKeywordSelected.not()) {      // 원래 선택된 상태였던 키워드가 삭제된 경우 "모두보기" 선택
                             viewModel.selectKeyword("")
                             binding.chipSeeAll.isChecked = true
                         }
