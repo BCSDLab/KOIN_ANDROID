@@ -26,7 +26,8 @@
                     android:id="@+id/text_input_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_input_keyword"
+                    android:hint="@string/search_input_required"
+                    android:imeOptions="actionSearch"
                     android:padding="12dp"
                     android:textSize="14sp"
                     app:layout_constraintTop_toTopOf="parent" />

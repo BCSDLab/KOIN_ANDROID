@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.children
@@ -55,6 +56,12 @@ class ArticleSearchFragment : Fragment() {
     ): View {
         if(_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
+            binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    viewModel.search()
+                    true
+                } else false
+            }
             initMostSearchedKeywordChips()
             binding.textInputSearch.addTextChangedListener {
                 onSearchInputChanged(it.toString())
