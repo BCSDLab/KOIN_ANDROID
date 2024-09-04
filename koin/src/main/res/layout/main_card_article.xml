@@ -24,9 +24,9 @@
 
                 <ImageView
                     android:id="@+id/ic_hot_now"
-                    android:layout_width="33dp"
-                    android:layout_height="33dp"
-                    android:backgroundTint="@color/red"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_star"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +38,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/now_hot_article"
                     android:textColor="@color/sub_sub500"
+                    android:textStyle="bold"
                     android:textSize="12sp"
                     app:layout_constraintStart_toEndOf="@id/ic_hot_now"
                     app:layout_constraintTop_toTopOf="parent" />
