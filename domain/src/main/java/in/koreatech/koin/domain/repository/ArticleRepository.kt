@@ -19,5 +19,6 @@ interface ArticleRepository {
     fun fetchMostSearchedKeywords(count: Int): Flow<List<String>>
     fun fetchSearchHistory(): Flow<List<String>>
     fun saveSearchHistory(query: String): Flow<Unit>
-    fun deleteSearchHistory(vararg query: String): Flow<Unit>
+    fun deleteSearchHistory(query: String): Flow<Unit>
+    fun clearSearchHistory(): Flow<Unit>
 }
