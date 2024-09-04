@@ -16,8 +16,12 @@ class ArticleLocalDataSource @Inject constructor(
         articleDataStore.saveSearchHistory(keyword)
     }
 
-    suspend fun deleteSearchHistory(vararg query: String) {
-        articleDataStore.deleteSearchHistory(*query)
+    suspend fun deleteSearchHistory(query: String) {
+        articleDataStore.deleteSearchHistory(query)
+    }
+
+    suspend fun clearSearchHistory() {
+        articleDataStore.clearSearchHistory()
     }
 
     fun fetchMyKeyword(): Flow<List<String>> {

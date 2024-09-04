@@ -117,9 +117,7 @@ class ArticleRepositoryImpl @Inject constructor(
                 addAll(myKeywords.value)
                 add(it)
             })
-        }.map { Unit }.catch {
-            println("ddddddd   " + it)
-        }
+        }.map { Unit }
     }
 
     override fun deleteKeyword(keyword: String): Flow<Unit> {
@@ -163,9 +161,15 @@ class ArticleRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun deleteSearchHistory(vararg query: String): Flow<Unit> {
+    override fun deleteSearchHistory(query: String): Flow<Unit> {
         return flow {
-            emit(articleLocalDataSource.deleteSearchHistory(*query))
+            emit(articleLocalDataSource.deleteSearchHistory(query))
+        }
+    }
+
+    override fun clearSearchHistory(): Flow<Unit> {
+        return flow {
+            emit(articleLocalDataSource.clearSearchHistory())
         }
     }
 }
