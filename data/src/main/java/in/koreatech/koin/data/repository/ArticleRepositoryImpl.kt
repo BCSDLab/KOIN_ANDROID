@@ -51,7 +51,7 @@ class ArticleRepositoryImpl @Inject constructor(
                         ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
                     }
                 }
-                keywords  // 여기
+                keywords
             } else flowOf(it)
         }
     }.stateIn(
