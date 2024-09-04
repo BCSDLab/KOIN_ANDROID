@@ -32,9 +32,14 @@ import `in`.koreatech.koin.databinding.ActivityMainBinding
 import `in`.koreatech.koin.domain.model.bus.BusType
 import `in`.koreatech.koin.domain.model.bus.timer.BusArrivalInfo
 import `in`.koreatech.koin.domain.model.dining.DiningPlace
+import `in`.koreatech.koin.ui.article.ArticleActivity
+import `in`.koreatech.koin.ui.article.ArticleActivity.Companion.NAVIGATE_ACTION
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
+import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
 import `in`.koreatech.koin.ui.bus.BusActivity
 import `in`.koreatech.koin.ui.main.adapter.BusPagerAdapter
 import `in`.koreatech.koin.ui.main.adapter.DiningContainerViewPager2Adapter
+import `in`.koreatech.koin.ui.main.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.main.adapter.StoreCategoriesRecyclerAdapter
 import `in`.koreatech.koin.ui.main.viewmodel.MainActivityViewModel
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
@@ -50,6 +55,17 @@ class MainActivity : KoinNavigationDrawerActivity() {
     override val screenTitle = "코인 - 메인"
     private val viewModel by viewModels<MainActivityViewModel>()
     private lateinit var diningTooltip: Balloon
+
+    private val hotArticleAdapter = HotArticleAdapter(
+        onClick = {
+            val intent = Intent(this, ArticleActivity::class.java).apply {
+                putExtra(NAVIGATE_ACTION, R.id.action_articleListFragment_to_articleDetailFragment)
+                putExtra(ARTICLE_ID, it.id)
+                putExtra(NAVIGATED_BOARD_ID, it.boardId)
+            }
+            startActivity(intent)
+        }
+    )
 
     private val busPagerAdapter = BusPagerAdapter().apply {
         setOnCardClickListener {
@@ -133,6 +149,15 @@ class MainActivity : KoinNavigationDrawerActivity() {
             )
         }
 
+        viewPagerHotArticle.apply {
+            adapter = hotArticleAdapter
+            offscreenPageLimit = 3
+        }
+
+        textSeeMoreArticle.setOnClickListener {
+            startActivity(Intent(this@MainActivity, ArticleActivity::class.java))
+        }
+
         busViewPager.apply {
             adapter = busPagerAdapter
             offscreenPageLimit = 3
@@ -152,7 +177,6 @@ class MainActivity : KoinNavigationDrawerActivity() {
         recyclerViewStoreCategory.apply {
             layoutManager =
                 LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-            //adapter = storeCategoryRecyclerAdapter
             adapter = storeCategoriesRecyclerAdapter
         }
 
@@ -165,6 +189,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
 //        }
 
         pagerDiningContainer.adapter = diningContainerAdapter
+        pagerDiningContainer.offscreenPageLimit = 3
 
         TabLayoutMediator(tabDining, pagerDiningContainer) { tab, position ->
             tab.text = DiningPlace.entries[position].place
@@ -188,6 +213,13 @@ class MainActivity : KoinNavigationDrawerActivity() {
     }
 
     private fun initViewModel() = with(viewModel) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.hotArticles.collect {
+                    hotArticleAdapter.submitList(it)
+                }
+            }
+        }
         observeLiveData(isLoading) {
             binding.mainSwipeRefreshLayout.isRefreshing = it
         }
