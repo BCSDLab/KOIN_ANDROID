@@ -28,6 +28,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/search_input_required"
                     android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:padding="12dp"
                     android:textSize="14sp"
                     app:layout_constraintTop_toTopOf="parent" />
