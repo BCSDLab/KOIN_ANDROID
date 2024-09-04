@@ -25,6 +25,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.viewpager.HorizontalMarginItemDecoration
+import `in`.koreatech.koin.core.viewpager.enableAutoScroll
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.data.util.localized
 import `in`.koreatech.koin.data.util.todayOrTomorrow
@@ -152,6 +153,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
         viewPagerHotArticle.apply {
             adapter = hotArticleAdapter
             offscreenPageLimit = 3
+            enableAutoScroll(this@MainActivity, 5_000)
         }
         TabLayoutMediator(tabHotArticle, viewPagerHotArticle) { _, _ -> }.attach()
 
