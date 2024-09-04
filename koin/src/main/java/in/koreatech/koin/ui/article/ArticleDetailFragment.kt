@@ -138,7 +138,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     }
 
     companion object {
-        const val ARTICLE_ID = "article_header"
+        const val ARTICLE_ID = "article_id"
         const val NAVIGATED_BOARD_ID = "navigated_board_id"
     }
 }

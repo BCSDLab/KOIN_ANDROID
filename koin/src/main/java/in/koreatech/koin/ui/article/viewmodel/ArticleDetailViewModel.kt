@@ -84,7 +84,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
     }
 
     companion object {
-        private const val HOT_ARTICLE_COUNT = 4
+        const val HOT_ARTICLE_COUNT = 4
 
         fun provideFactory(
             assistedFactory: Factory,
