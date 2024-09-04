@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
@@ -59,7 +60,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun RegisterMenuCheckScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    viewModel: RegisterMenuViewModel,
+    viewModel: RegisterMenuViewModel = hiltViewModel(),
     goToStoreMainScreen: () -> Unit = {}
 ) {
     val state = viewModel.collectAsState().value
