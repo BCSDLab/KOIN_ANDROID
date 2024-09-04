@@ -2,13 +2,13 @@ package `in`.koreatech.koin.ui.dining
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,6 @@ import `in`.koreatech.koin.ui.dining.viewmodel.DiningViewModel
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
-import `in`.koreatech.koin.util.ext.toggleDrawer
 import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -109,9 +108,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         binding.tabsDiningTime.selectTab(binding.tabsDiningTime.getTabAt(initialDiningTab))
         diningDateAdapter.selectPosition(initialDateTab)
         diningDateAdapter.notifyDataSetChanged()
-        viewModel.setSelectedDate(dates[initialDateTab].also {
-            Log.d("dddddddddddddddd333", it.toString())
-        })
+        viewModel.setSelectedDate(dates[initialDateTab])
     }
 
     private fun onActionView() {
@@ -201,6 +198,7 @@ class DiningActivity : KoinNavigationDrawerActivity() {
         diningViewPagerScrollCallback = object : ViewPager2.OnPageChangeCallback() {
             var isUserScrolling = false
             override fun onPageScrollStateChanged(state: Int) {
+                binding.swipeRefreshLayoutDining.isEnabled = state == ViewPager.SCROLL_STATE_IDLE
                 super.onPageScrollStateChanged(state)
                 if(state == ViewPager2.SCROLL_STATE_DRAGGING){
                     isUserScrolling = true
