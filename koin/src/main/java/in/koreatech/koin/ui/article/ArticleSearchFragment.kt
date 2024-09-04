@@ -18,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.progressdialog.IProgressDialog
 import `in`.koreatech.koin.databinding.FragmentArticleSearchBinding
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.ARTICLE_ID
 import `in`.koreatech.koin.ui.article.ArticleDetailFragment.Companion.NAVIGATED_BOARD_ID
@@ -27,6 +28,7 @@ import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleSearchViewModel
 import `in`.koreatech.koin.ui.article.viewmodel.SearchUiState
 import `in`.koreatech.koin.util.SnackbarUtil
+import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -56,6 +58,7 @@ class ArticleSearchFragment : Fragment() {
     ): View {
         if(_binding == null) {
             _binding = FragmentArticleSearchBinding.inflate(inflater, container, false)
+            (requireActivity() as IProgressDialog).withLoading(viewLifecycleOwner, viewModel)
             binding.textInputSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     viewModel.search()
@@ -136,9 +139,11 @@ class ArticleSearchFragment : Fragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.mostSearchedKeywords.collect {
                     binding.chipGroupMostSearchedKeyword.children.forEachIndexed { i, view ->
-                        (view as Chip).text = it.getOrNull(i)
+                        val chipText = it.getOrNull(i)
+                        (view as Chip).text = chipText
                         view.setOnClickListener { _ ->
-                            binding.textInputSearch.setText(it.getOrNull(i))
+                            binding.textInputSearch.setText(chipText)
+                            binding.textInputSearch.setSelection(chipText?.length ?: 0)
                             viewModel.search()
                         }
                     }
