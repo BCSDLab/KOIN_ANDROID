@@ -56,13 +56,12 @@ class HtmlView @JvmOverloads constructor(
 
     private fun addHtmlView(html: HtmlElement) {
         html.children.forEach { self ->
-            //println("dddddddddd2000  " + (lastAddedView).textAlignment + " " +  self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment() + " " + self.tag + " " + self.content.length)
             when (self.tag) {
                 HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR -> {
                     if (lastAddedView is TextView
                         && lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()) {    // 직전 View가 TextView일 경우 재활용
                         val lineBreak = when(self.tag) {
-                            HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> "\n"
+                            HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> if (self.children.isEmpty()) "" else "\n"
                             else -> ""
                         }
                         val originalText = SpannableStringBuilder((lastAddedView as TextView).text)
