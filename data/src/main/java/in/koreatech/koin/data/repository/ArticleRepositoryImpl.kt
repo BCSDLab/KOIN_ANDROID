@@ -128,8 +128,10 @@ class ArticleRepositoryImpl @Inject constructor(
                 emit(articleLocalDataSource.deleteKeyword(keyword))
         }.onEach {
             _myKeywords.emit(buildList {
-                addAll(myKeywords.value)
-                remove(myKeywords.value.first { it.keyword == keyword })
+                myKeywords.value.forEach {
+                    if (it.keyword != keyword)
+                        add(it)
+                }
             })
         }
     }
