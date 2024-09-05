@@ -6,12 +6,14 @@ data class ArticleState(
     val header: ArticleHeaderState,
     val content: HtmlElement,
     val prevArticleId: Int?,
-    val nextArticleId: Int?
+    val nextArticleId: Int?,
+    val attachments: List<AttachmentState>
 )
 
 fun Article.toArticleState() = ArticleState(
     header = header.toArticleHeaderState(),
     content = content.toHtmlElement(),
     prevArticleId = prevArticleId,
-    nextArticleId = nextArticleId
+    nextArticleId = nextArticleId,
+    attachments = attachments.map { it.toAttachmentState() }
 )

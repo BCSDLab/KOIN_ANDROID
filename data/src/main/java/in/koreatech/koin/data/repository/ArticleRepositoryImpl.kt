@@ -175,10 +175,4 @@ class ArticleRepositoryImpl @Inject constructor(
             emit(articleLocalDataSource.clearSearchHistory())
         }
     }
-
-    override fun fetchAttachment(articleId: Int): Flow<List<Attachment>> {
-        return flow {
-            emit(articleRemoteDataSource.fetchAttachment(articleId).map { it.toAttachment() })
-        }
-    }
 }

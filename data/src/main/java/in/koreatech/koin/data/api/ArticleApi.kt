@@ -57,12 +57,4 @@ interface ArticleApi {
      */
     @GET("articles/hot/keyword")
     suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
-
-    /**
-     * TODO : API 명세 없음 (임시 구현)
-     * 게시글 첨부파일 목록을 가져옴
-     * @param articleId 게시글 아이디
-     */
-    @GET("articles/{id}/attachments")
-    suspend fun fetchAttachment(articleId: Int): List<AttachmentResponse>
 }

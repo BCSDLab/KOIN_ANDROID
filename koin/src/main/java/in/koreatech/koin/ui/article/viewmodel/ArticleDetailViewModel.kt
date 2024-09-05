@@ -19,6 +19,8 @@ import `in`.koreatech.koin.ui.article.state.toArticleState
 import `in`.koreatech.koin.ui.article.state.toAttachmentState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -27,7 +29,7 @@ import kotlinx.coroutines.flow.stateIn
 class ArticleDetailViewModel @AssistedInject constructor(
     @Assisted("articleId") articleId: Int,
     @Assisted("navigatedBoardId") val navigatedBoardId: Int,
-    articleRepository: ArticleRepository,
+    private val articleRepository: ArticleRepository,
     fetchHotArticlesUseCase: FetchHotArticlesUseCase,
 ) : BaseViewModel() {
 
@@ -55,18 +57,10 @@ class ArticleDetailViewModel @AssistedInject constructor(
                     ),
                     content = HtmlElement(HtmlTag.UNKNOWN),
                     prevArticleId = null,
-                    nextArticleId = null
+                    nextArticleId = null,
+                    attachments = listOf()
                 )
             )
-
-    val attachments: StateFlow<List<AttachmentState>> = articleRepository.fetchAttachment(articleId)
-        .map { attachments ->
-            attachments.map { it.toAttachmentState() }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = listOf()
-        )
 
     val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
         .map {
@@ -84,6 +78,9 @@ class ArticleDetailViewModel @AssistedInject constructor(
 
     fun setIsLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
+    }
+
+    fun downloadAttachment(attachment: AttachmentState) {
     }
 
     @AssistedFactory

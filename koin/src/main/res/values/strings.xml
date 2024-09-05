@@ -533,5 +533,8 @@
     <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
     <string name="now_hot_article">지금 인기있는 공지</string>
     <string name="attachment">첨부파일</string>
+    <string name="downloading">다운로드 중</string>
+    <string name="start_download">파일을 다운로드합니다.</string>
+    <string name="download_complete">다운로드가 완료되었습니다.</string>
 
 </resources>
