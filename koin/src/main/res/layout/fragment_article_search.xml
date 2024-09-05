@@ -160,7 +160,7 @@
             android:id="@+id/frame_layout_search_result"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="8dp"
             android:visibility="gone"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

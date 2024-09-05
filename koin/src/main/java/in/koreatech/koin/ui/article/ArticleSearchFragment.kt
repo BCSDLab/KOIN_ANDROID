@@ -142,9 +142,7 @@ class ArticleSearchFragment : Fragment() {
                         val chipText = it.getOrNull(i)
                         (view as Chip).text = chipText
                         view.setOnClickListener { _ ->
-                            binding.textInputSearch.setText(chipText)
-                            binding.textInputSearch.setSelection(chipText?.length ?: 0)
-                            viewModel.search()
+                            onSearchQueryClicked(chipText ?: "")
                         }
                     }
                 }
@@ -161,7 +159,13 @@ class ArticleSearchFragment : Fragment() {
     }
 
     private fun onRecentSearchHistoryClicked(query: String) {
+        onSearchQueryClicked(query)
+    }
+
+    private fun onSearchQueryClicked(query: String) {
         binding.textInputSearch.setText(query)
+        binding.textInputSearch.setSelection(query.length)
+        viewModel.search()
     }
 
     private fun onRecentSearchHistoryDeleteClicked(query: String) {
