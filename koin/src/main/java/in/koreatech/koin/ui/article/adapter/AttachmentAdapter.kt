@@ -27,7 +27,8 @@ class AttachmentAdapter(
 
         fun bind(attachment: AttachmentState) {
             binding.apply {
-                textViewAttachmentTitle.text = attachment.title
+                textViewAttachmentTitle.text = attachment.name
+                textViewAttachmentSize.text = attachment.size
                 root.setOnClickListener {
                     onClick(attachment)
                 }
