@@ -1,14 +1,10 @@
-package `in`.koreatech.koin.data
+package `in`.koreatech.koin.data.api
 
-import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
-import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
+import `in`.koreatech.koin.data.response.article.AttachmentResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
-import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -61,4 +57,12 @@ interface ArticleApi {
      */
     @GET("articles/hot/keyword")
     suspend fun fetchMostSearchedKeywords(@Query("count") count: Int): KeywordsResponse
+
+    /**
+     * TODO : API 명세 없음 (임시 구현)
+     * 게시글 첨부파일 목록을 가져옴
+     * @param articleId 게시글 아이디
+     */
+    @GET("articles/{id}/attachments")
+    suspend fun fetchAttachment(articleId: Int): List<AttachmentResponse>
 }

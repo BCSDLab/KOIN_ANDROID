@@ -1,11 +1,12 @@
 package `in`.koreatech.koin.data.source.remote
 
-import `in`.koreatech.koin.data.ArticleApi
+import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.ArticlePaginationResponse
 import `in`.koreatech.koin.data.response.article.ArticleResponse
+import `in`.koreatech.koin.data.response.article.AttachmentResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
 import javax.inject.Inject
 
@@ -55,5 +56,9 @@ class ArticleRemoteDataSource @Inject constructor(
 
     suspend fun fetchMostSearchedKeywords(count: Int): KeywordsResponse {
         return articleApi.fetchMostSearchedKeywords(count)
+    }
+
+    suspend fun fetchAttachment(articleId: Int): List<AttachmentResponse> {
+        return articleApi.fetchAttachment(articleId)
     }
 }

@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import `in`.koreatech.koin.data.ArticleApi
+import `in`.koreatech.koin.data.api.ArticleApi
 import `in`.koreatech.koin.data.api.*
 import `in`.koreatech.koin.data.api.auth.ArticleAuthApi
 import `in`.koreatech.koin.data.api.auth.DiningAuthApi

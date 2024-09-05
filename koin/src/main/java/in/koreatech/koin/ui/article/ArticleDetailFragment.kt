@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.ui.article
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
@@ -16,6 +18,7 @@ import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.databinding.FragmentArticleDetailBinding
 import `in`.koreatech.koin.domain.util.DateFormatUtil
 import `in`.koreatech.koin.domain.util.TimeUtil
+import `in`.koreatech.koin.ui.article.adapter.AttachmentAdapter
 import `in`.koreatech.koin.ui.article.adapter.HotArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
@@ -33,6 +36,8 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private val navController by lazy { findNavController() }
 
     private val binding: FragmentArticleDetailBinding by dataBinding()
+
+    private val attachmentAdapter = AttachmentAdapter(::onAttachmentClick)
     private val hotArticleAdapter = HotArticleAdapter(::onHotArticleClick)
     private val viewModel: ArticleDetailViewModel by viewModels {
         ArticleDetailViewModel.provideFactory(
@@ -48,6 +53,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
         binding.htmlView.setOnPreDrawListener { viewModel.setIsLoading(true) }
         binding.htmlView.setOnPostDrawListener { viewModel.setIsLoading(false) }
         initArticle()
+        initAttachment()
         initHotArticles()
         initButtonClickListeners()
     }
@@ -64,9 +70,35 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
         }
     }
 
+    private fun initAttachment() {
+        binding.recyclerViewAttachments.adapter = attachmentAdapter
+        binding.recyclerViewAttachments.addItemDecoration(object : RecyclerView.ItemDecoration(){
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                val offset = 10
+                val count = state.itemCount
+
+                val position = parent.getChildAdapterPosition(view)
+                if (position != count - 1) {
+                    outRect.bottom = offset
+                }
+            }
+        })
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.attachments.collect {
+                    if (it.isEmpty())
+                        binding.groupAttachment.visibility = View.GONE
+                    else {
+                        binding.groupAttachment.visibility = View.VISIBLE
+                        attachmentAdapter.submitList(it)
+                    }
+                }
+            }
+        }
+    }
+
     private fun initHotArticles() {
         binding.recyclerViewHotArticles.adapter = hotArticleAdapter
-        binding.recyclerViewHotArticles.isNestedScrollingEnabled = false
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.hotArticles.collect {
@@ -125,6 +157,10 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private fun setNavigateArticleButtonVisibility(article: ArticleState) {
         binding.buttonToPrevArticle.visibility = if (article.prevArticleId == null) View.INVISIBLE else View.VISIBLE
         binding.buttonToNextArticle.visibility = if (article.nextArticleId == null) View.INVISIBLE else View.VISIBLE
+    }
+
+    private fun onAttachmentClick(url: String) {
+        // TODO : Download
     }
 
     private fun onHotArticleClick(article: ArticleHeaderState) {
