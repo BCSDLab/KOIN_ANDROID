@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityNotificationBinding
@@ -49,7 +50,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (!checkPermission()) {
+        if (!checkNotificationPermission()) {
             permissionDenied()
         } else {
             permissionGranted()
@@ -142,6 +143,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
                         is NotificationUiState.Failed -> {}
                         is NotificationUiState.Nothing -> {}
+                        else -> {}
                     }
                 }
             }
@@ -161,7 +163,7 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.SHOP_EVENT)
         }
-        binding.notificationShopEvent.setOnSwitchClickListener { isChecked ->
+        binding.notificationDiningImageUpload.setOnSwitchClickListener { isChecked ->
             handleSubscription(isChecked, SubscribesType.DINING_IMAGE_UPLOAD)
         }
     }
@@ -200,12 +202,6 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
         binding.notificationDiningDinnerSoldOut.isVisible = isChecked
     }
 
-    private fun checkPermission() = NOTIFICATION_REQUIRED_PERMISSION.all {
-        ContextCompat.checkSelfPermission(
-            this, it
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
     private fun setOnClickNotificationSetting() {
         binding.textViewNotificationSetting.setOnClickListener {
             intentAppSettings()
@@ -221,11 +217,5 @@ class NotificationActivity : KoinNavigationDrawerActivity() {
 
     companion object {
         const val PACKAGE = "package"
-
-        private val NOTIFICATION_REQUIRED_PERMISSION = mutableListOf<String>().apply {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }.toTypedArray()
     }
 }

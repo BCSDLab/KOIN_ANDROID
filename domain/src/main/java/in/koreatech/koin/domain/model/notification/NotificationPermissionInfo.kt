@@ -30,7 +30,7 @@ data class SubscribesDetail(
 }
 
 enum class SubscribesType {
-    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING, ARTICLE_KEYWORD_DETECT
+    SHOP_EVENT, DINING_SOLD_OUT, DINING_IMAGE_UPLOAD, NOTHING, ARTICLE_KEYWORD
 }
 
 enum class SubscribesDetailType {
