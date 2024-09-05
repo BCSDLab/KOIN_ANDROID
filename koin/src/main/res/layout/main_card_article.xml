@@ -53,6 +53,7 @@
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:ellipsize="end"
+                    android:minLines="2"
                     tools:text="[교내장학] 교내장학 미래학습관 회계팀 학기근로장학봉사 선발 학기기간 절차 봉사 근로장학 식단 사진 업로드"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/text_hot_now"

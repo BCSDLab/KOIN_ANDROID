@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -50,6 +51,10 @@ class ArticleKeywordViewModel @Inject constructor(
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val keywordAddUiState: SharedFlow<KeywordAddUiState> = _keywordAddUiState
+        .shareIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+        )
 
     val suggestedKeywords: StateFlow<List<String>> = articleRepository.fetchKeywordSuggestions()
         .stateIn(
