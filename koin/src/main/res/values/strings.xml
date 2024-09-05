@@ -499,7 +499,9 @@
     <string name="article_qna">질문게시판</string>
     <string name="article_promotion">홍보게시판</string>
     <string name="article_ipp">현장실습</string>
+    <string name="article_ipp_simple">현장실습</string>
     <string name="article_student">학생생활</string>
+    <string name="article_student_simple">학생</string>
     <string name="previous_page">이전</string>
     <string name="next_page">다음</string>
     <string name="divider_dot">•</string>

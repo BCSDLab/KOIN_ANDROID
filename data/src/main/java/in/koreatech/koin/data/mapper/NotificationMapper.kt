@@ -29,7 +29,7 @@ fun String.toSubscribesType(): SubscribesType = when (this) {
     Subscribes.SHOP_EVENT -> SubscribesType.SHOP_EVENT
     Subscribes.DINING_SOLD_OUT -> SubscribesType.DINING_SOLD_OUT
     Subscribes.DINING_IMAGE_UPLOAD -> SubscribesType.DINING_IMAGE_UPLOAD
-    Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD_DETECT
+    Subscribes.ARTICLE_KEYWORD -> SubscribesType.ARTICLE_KEYWORD
     else -> SubscribesType.NOTHING
 }
 

@@ -19,6 +19,6 @@ enum class BoardType(
     // KOIN(9, R.string.article_koin, R.string.article_koin),
     // QNA(10, R.string.article_qna),               // NOT USED
     // PROMOTION(11, R.string.article_promotion),   // NOT USED
-    // IPP(10, R.string.article_ipp),                // API 준비중
-    // STUDENT(11, R.string.article_student),        // API 준비중
+     IPP(12, R.string.article_ipp, R.string.article_ipp_simple),
+     STUDENT(13, R.string.article_student, R.string.article_student_simple),
 }

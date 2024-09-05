@@ -28,7 +28,7 @@ class ArticleKeywordViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val user: StateFlow<User> = getUserStatusUseCase()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), User.Anonymous)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, User.Anonymous)
 
     val keywordInputUiState: StateFlow<KeywordInputUiState> = savedStateHandle.getStateFlow(KEYWORD_INPUT, "").map {
         if (it.isEmpty()) KeywordInputUiState.Empty else KeywordInputUiState.Valid(it)
@@ -73,7 +73,7 @@ class ArticleKeywordViewModel @Inject constructor(
             return
         }
 
-        if (trimmedKeyword.contains(" ")) {
+        if (Regex("""\s+""").containsMatchIn(trimmedKeyword)) {
             _keywordAddUiState.tryEmit(KeywordAddUiState.BlankNotAllowed)
             return
         }

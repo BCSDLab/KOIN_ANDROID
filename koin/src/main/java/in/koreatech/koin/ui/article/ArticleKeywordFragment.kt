@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.DrawableRes
-import androidx.compose.ui.text.input.ImeAction
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.widget.addTextChangedListener
@@ -21,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.dialog.AlertModalDialog
 import `in`.koreatech.koin.core.dialog.AlertModalDialogData
+import `in`.koreatech.koin.core.permission.checkNotificationPermission
 import `in`.koreatech.koin.databinding.FragmentArticleKeywordBinding
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleKeywordViewModel
@@ -271,6 +271,11 @@ class ArticleKeywordFragment : Fragment() {
     }
 
     private fun initKeywordNotification() {
+        notificationViewModel.getPermissionInfo()
+        if (requireContext().checkNotificationPermission().not()) {
+            binding.notificationKeyword.disableAll()
+        }
+
         binding.notificationKeyword.setOnSwitchClickListener { isChecked ->
             if (viewModel.user.value.isAnonymous) {
                 binding.notificationKeyword.isChecked = false
@@ -278,18 +283,17 @@ class ArticleKeywordFragment : Fragment() {
                 return@setOnSwitchClickListener
             }
             if (isChecked)
-                notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD_DETECT)
+                notificationViewModel.updateSubscription(SubscribesType.ARTICLE_KEYWORD)
             else
-                notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD_DETECT)
+                notificationViewModel.deleteSubscription(SubscribesType.ARTICLE_KEYWORD)
         }
 
-        notificationViewModel.getPermissionInfo()
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 notificationViewModel.notificationUiState.collect { uiState ->
                     if (uiState is NotificationUiState.Success) {
                         uiState.notificationPermissionInfo.subscribes.forEach {
-                            if (it.type == SubscribesType.ARTICLE_KEYWORD_DETECT) {
+                            if (it.type == SubscribesType.ARTICLE_KEYWORD) {
                                 binding.notificationKeyword.run {
                                     if (isChecked != it.isPermit) {
                                         fakeChecked = it.isPermit
@@ -303,7 +307,6 @@ class ArticleKeywordFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
