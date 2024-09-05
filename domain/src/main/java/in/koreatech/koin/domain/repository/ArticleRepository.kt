@@ -22,5 +22,4 @@ interface ArticleRepository {
     fun saveSearchHistory(query: String): Flow<Unit>
     fun deleteSearchHistory(query: String): Flow<Unit>
     fun clearSearchHistory(): Flow<Unit>
-    fun fetchAttachment(articleId: Int): Flow<List<Attachment>>
 }

@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/neutral_200"
+        app:cardElevation="0dp"
         app:cardCornerRadius="12dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="@id/text_view_attachment_title"
                 app:layout_constraintTop_toBottomOf="@id/text_view_attachment_title"
                 tools:text="152342KB" />

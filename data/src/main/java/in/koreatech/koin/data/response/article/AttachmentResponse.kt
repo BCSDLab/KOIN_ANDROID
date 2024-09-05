@@ -4,14 +4,12 @@ import com.google.gson.annotations.SerializedName
 import `in`.koreatech.koin.domain.model.article.Attachment
 
 data class AttachmentResponse(
-    @SerializedName("title") val title: String,
+    @SerializedName("name") val name: String,
     @SerializedName("url") val url: String,
-    @SerializedName("size") val size: String,
 ) {
 
     fun toAttachment() = Attachment(
-        title = title,
+        name = name,
         url = url,
-        size = size,
     )
 }

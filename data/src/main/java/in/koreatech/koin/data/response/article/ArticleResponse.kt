@@ -33,6 +33,7 @@ data class ArticleResponse(
     @SerializedName("updated_at") val updatedAt: String?,
     @SerializedName("prev_id") val prevArticleId: Int?,
     @SerializedName("next_id") val nextArticleId: Int?,
+    @SerializedName("attachments") val attachments: List<AttachmentResponse>?
 ) {
     fun toArticleHeader() = ArticleHeader(
         id = id ?: 0,
@@ -48,7 +49,8 @@ data class ArticleResponse(
         header = toArticleHeader(),
         content = Jsoup.parse(content ?: "").toHtmlModel(),
         prevArticleId = prevArticleId,
-        nextArticleId = nextArticleId
+        nextArticleId = nextArticleId,
+        attachments = attachments?.map { it.toAttachment() } ?: listOf()
     )
 }
 

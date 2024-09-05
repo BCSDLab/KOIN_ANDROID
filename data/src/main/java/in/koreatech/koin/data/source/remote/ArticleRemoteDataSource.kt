@@ -57,8 +57,4 @@ class ArticleRemoteDataSource @Inject constructor(
     suspend fun fetchMostSearchedKeywords(count: Int): KeywordsResponse {
         return articleApi.fetchMostSearchedKeywords(count)
     }
-
-    suspend fun fetchAttachment(articleId: Int): List<AttachmentResponse> {
-        return articleApi.fetchAttachment(articleId)
-    }
 }
