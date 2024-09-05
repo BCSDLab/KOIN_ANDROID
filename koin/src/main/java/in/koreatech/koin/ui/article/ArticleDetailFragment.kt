@@ -172,8 +172,8 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
     private fun onAttachmentClick(attachment: AttachmentState) {
         ToastUtil.getInstance().makeShort(getString(R.string.start_download))
         attachmentDownloadManager.download(DownloadManager.Request(Uri.parse(attachment.url))
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, attachment.title)
-            .setTitle(attachment.title)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, attachment.name)
+            .setTitle(attachment.name)
             .setDescription(getString(R.string.downloading))
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             .setAllowedOverMetered(true)
