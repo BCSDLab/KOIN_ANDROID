@@ -249,10 +249,10 @@
     <string name="setting_item_koin_terms">코인 이용약관</string>
     <string name="setting_item_open_source_license">오픈소스 라이선스</string>
     <string name="setting_item_app_version">앱 버전</string>
+    <string name="setting_item_contact">문의하기</string>
+
     <string name="setting_app_version_is_latest">현재 최신 버전 입니다.</string>
     <string name="setting_app_version_display_latest">최신 버전 %s</string>
-
-    <string name="setting_item_contact">문의하기</string>
 
     <!-- user info -->
     <string name="user_info_no_email">이메일을 설정해 주세요</string>
@@ -278,6 +278,26 @@
     <string name="user_info_check_password_title">내 정보 수정하기</string>
     <string name="user_info_check_password_subtitle">보안을 위해 비밀번호 입력이 필요합니다.</string>
     <string name="user_info_check_password_warning">비밀번호가 일치하지 않습니다.</string>
+
+    <!-- Change Password -->
+    <string name="change_password_title">비밀번호 변경</string>
+    <string name="change_password_warning_password_wrong">비밀번호가 일치하지 않습니다</string>
+
+    <string name="change_password_verify_title">1. 계정인증</string>
+    <string name="change_password_verify_id">아이디</string>
+    <string name="change_password_verify_current_pwd">현재 비밀번호</string>
+    <string name="change_password_verify_current_pwd_hint">현재 비밀번호를 다시 입력해주세요.</string>
+
+    <string name="change_password_change_title">2. 비밀번호 변경</string>
+    <string name="change_password_change_new_password">새 비밀번호</string>
+    <string name="change_password_change_new_password_hint">새 비밀번호를 입력하세요.</string>
+    <string name="change_password_change_confirm_new_password">새 비밀번호 확인</string>
+    <string name="change_password_change_confirm_new_password_hint">새 비밀번호를 다시 입력해주세요.</string>
+    <string name="change_password_change_terms_english">영어 포함</string>
+    <string name="change_password_change_terms_number">숫자 포함</string>
+    <string name="change_password_change_terms_special_symbol">특수문자 포함</string>
+    <string name="change_password_change_terms_length">6자이상 18자 이내 입력</string>
+    <string name="change_password_change_complete">비밀번호 변경이 완료되었습니다.</string>
 
     <!-- Dining -->
     <string name="dining_no_more_data_load">더 이상 데이터를 불러올 수 없습니다.</string>

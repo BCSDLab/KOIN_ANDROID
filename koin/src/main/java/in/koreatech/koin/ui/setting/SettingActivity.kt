@@ -14,6 +14,7 @@ import `in`.koreatech.koin.constant.URL
 import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivitySettingBinding
+import `in`.koreatech.koin.ui.changepassword.ChangePasswordActivity
 import `in`.koreatech.koin.ui.notification.NotificationActivity
 import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
 import kotlinx.coroutines.launch
@@ -63,7 +64,7 @@ class SettingActivity : ActivityBase() {
             }
             svChangePassword.setOnSettingClickListener {
                 if (viewModel.isStudent)
-                    //
+                    startActivity(Intent(this@SettingActivity, ChangePasswordActivity::class.java))
                 else
                     loginAlertDialog.show()
             }

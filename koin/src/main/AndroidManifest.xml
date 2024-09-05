@@ -248,6 +248,11 @@
             android:exported="false"
             android:label="설정"
             android:theme="@style/KAPTheme.NoActionBar"  />
+
+        <activity android:name=".ui.changepassword.ChangePasswordActivity"
+            android:exported="false"
+            android:label="설정"
+            android:theme="@style/KAPTheme.NoActionBar"  />
     </application>
 
 </manifest>
