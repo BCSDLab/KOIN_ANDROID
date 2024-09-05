@@ -20,9 +20,10 @@
 
         <ImageView
             android:id="@+id/image_view_delete"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:padding="2dp"
+            android:layout_marginStart="12dp"
             android:src="@drawable/ic_close_round"
             app:tint="@color/gray14"
             />
