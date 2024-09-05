@@ -12,9 +12,11 @@ import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
+import `in`.koreatech.koin.ui.article.state.AttachmentState
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleState
+import `in`.koreatech.koin.ui.article.state.toAttachmentState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -56,6 +58,15 @@ class ArticleDetailViewModel @AssistedInject constructor(
                     nextArticleId = null
                 )
             )
+
+    val attachments: StateFlow<List<AttachmentState>> = articleRepository.fetchAttachment(articleId)
+        .map { attachments ->
+            attachments.map { it.toAttachmentState() }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = listOf()
+        )
 
     val hotArticles: StateFlow<List<ArticleHeaderState>> = fetchHotArticlesUseCase()
         .map {

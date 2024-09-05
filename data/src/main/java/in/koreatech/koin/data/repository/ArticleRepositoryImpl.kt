@@ -6,6 +6,7 @@ import `in`.koreatech.koin.data.source.remote.ArticleRemoteDataSource
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
+import `in`.koreatech.koin.domain.model.article.Attachment
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.repository.UserRepository
@@ -172,6 +173,12 @@ class ArticleRepositoryImpl @Inject constructor(
     override fun clearSearchHistory(): Flow<Unit> {
         return flow {
             emit(articleLocalDataSource.clearSearchHistory())
+        }
+    }
+
+    override fun fetchAttachment(articleId: Int): Flow<List<Attachment>> {
+        return flow {
+            emit(articleRemoteDataSource.fetchAttachment(articleId).map { it.toAttachment() })
         }
     }
 }

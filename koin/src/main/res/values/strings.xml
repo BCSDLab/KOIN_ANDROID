@@ -532,5 +532,6 @@
     <string name="search_input_required">검색어를 입력해주세요.</string>
     <string name="empty_search_result">일치하는 공지글이 없습니다.\n다른 키워드로 다시 시도해주세요.</string>
     <string name="now_hot_article">지금 인기있는 공지</string>
+    <string name="attachment">첨부파일</string>
 
 </resources>
