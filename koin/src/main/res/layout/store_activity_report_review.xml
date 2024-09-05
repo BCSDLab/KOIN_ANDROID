@@ -69,6 +69,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
                 <LinearLayout
+                    android:id="@+id/not_relation_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -116,6 +117,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
                 <LinearLayout
+                    android:id="@+id/spam_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -163,6 +165,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     />
                 <LinearLayout
+                    android:id="@+id/abuse_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -210,6 +213,7 @@
                     />
 
                 <LinearLayout
+                    android:id="@+id/private_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -258,6 +262,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/etc_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="기타"

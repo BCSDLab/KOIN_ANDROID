@@ -19,6 +19,8 @@ import com.google.android.material.internal.TextWatcherAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.ActivityWriteReviewBinding
 import `in`.koreatech.koin.domain.model.store.Review
 import `in`.koreatech.koin.domain.model.store.StoreReviewContent
@@ -161,6 +163,11 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                         )
                     )
                 }
+                EventLogger.logClickEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
+                    storeName ?: "Unknown"
+                )
                 finish()
             }
         }

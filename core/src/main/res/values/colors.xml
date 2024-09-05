@@ -153,6 +153,7 @@
     <color name="neutral_0">#FFFFFF</color>
     <!-- Danger -->
     <!-- Warning -->
+    <color name="warning_500">#FFC62B</color>
     <!-- Success -->
     <!-- Info -->
 
