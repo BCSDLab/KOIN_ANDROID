@@ -1,15 +1,18 @@
 package `in`.koreatech.koin.ui.store.adapter
 
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.dialog.ImageZoomableDialog
 
-class StoreDetailImageViewpagerAdapter(private val images: List<String>?):
+class StoreDetailImageViewpagerAdapter(
+    private val images: List<String>?,
+    private val onClick: () -> Unit
+) :
     RecyclerView.Adapter<StoreDetailImageViewpagerAdapter.ImageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -38,6 +41,7 @@ class StoreDetailImageViewpagerAdapter(private val images: List<String>?):
                 .into(imageView)
 
             itemView.setOnClickListener {
+                onClick()
                 imageRes?.let { ImageZoomableDialog(context, imageRes) }
                     .also { it?.show() }
             }

@@ -25,24 +25,24 @@
                 android:id="@+id/review_rating_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/store_detail_review_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:foregroundGravity="center_horizontal"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/store_detail_review_button">
 
                 <TextView
                     android:id="@+id/score_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.0"
-                    android:textSize="32sp"
-                    android:textColor="@color/black"
+                    android:layout_gravity="center"
                     android:paddingStart="45dp"
                     android:paddingTop="26dp"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="0.0"
+                    android:textColor="@color/black"
+                    android:textSize="32sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_gravity="center"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <in.koreatech.koin.ui.store.ratingbar.StarRatingBar
                     android:id="@+id/store_total_rating"
@@ -55,184 +55,188 @@
                     android:stepSize="0.1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/score_text"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/score_text" />
 
                 <TextView
                     android:id="@+id/rating_five"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5점"
-                    android:textSize="12sp"
                     android:layout_marginStart="126dp"
                     android:layout_marginTop="14dp"
+                    android:text="5점"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toStartOf="@id/rating_five_progressbar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ProgressBar
                     android:id="@+id/rating_five_progressbar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
-                    android:progressTint="@color/colorAccent"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="50"
-                    app:layout_constraintTop_toTopOf="@id/rating_five"
+                    android:progressTint="@color/warning_500"
+                    app:layout_constraintEnd_toStartOf="@id/rating_five_count_tv"
                     app:layout_constraintBottom_toBottomOf="@id/rating_five"
                     app:layout_constraintStart_toEndOf="@id/rating_five"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/rating_five" />
 
                 <TextView
                     android:id="@+id/rating_five_count_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/rating_five_progressbar"
-                    app:layout_constraintTop_toTopOf="@id/rating_five"
+                    android:layout_marginEnd="24dp"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="@id/rating_five"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_five_progressbar"
+                    app:layout_constraintTop_toTopOf="@id/rating_five" />
 
                 <TextView
                     android:id="@+id/rating_four"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="126dp"
                     android:text="4점"
                     android:textSize="12sp"
-                    android:layout_marginStart="126dp"
+                    app:layout_constraintEnd_toStartOf="@id/rating_four_progressbar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_five"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/rating_five" />
 
                 <ProgressBar
                     android:id="@+id/rating_four_progressbar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
-                    android:progressTint="@color/colorAccent"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="40"
-                    app:layout_constraintTop_toTopOf="@id/rating_four"
+                    android:progressTint="@color/warning_500"
+                    app:layout_constraintEnd_toStartOf="@id/rating_four_count_tv"
                     app:layout_constraintBottom_toBottomOf="@id/rating_four"
                     app:layout_constraintStart_toEndOf="@id/rating_four"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/rating_four" />
 
                 <TextView
                     android:id="@+id/rating_four_count_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/rating_four_progressbar"
-                    app:layout_constraintTop_toTopOf="@id/rating_four"
+                    android:layout_marginEnd="24dp"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="@id/rating_four"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_four_progressbar"
+                    app:layout_constraintTop_toTopOf="@id/rating_four" />
 
                 <TextView
                     android:id="@+id/rating_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="126dp"
                     android:text="3점"
                     android:textSize="12sp"
-                    android:layout_marginStart="126dp"
+                    app:layout_constraintEnd_toStartOf="@id/rating_three_progressbar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_four"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/rating_four" />
 
                 <ProgressBar
                     android:id="@+id/rating_three_progressbar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
-                    android:progressTint="@color/colorAccent"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="30"
-                    app:layout_constraintTop_toTopOf="@id/rating_three"
+                    android:progressTint="@color/warning_500"
+                    app:layout_constraintEnd_toStartOf="@id/rating_three_count_tv"
                     app:layout_constraintBottom_toBottomOf="@id/rating_three"
                     app:layout_constraintStart_toEndOf="@id/rating_three"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/rating_three" />
 
                 <TextView
                     android:id="@+id/rating_three_count_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/rating_three_progressbar"
-                    app:layout_constraintTop_toTopOf="@id/rating_three"
+                    android:layout_marginEnd="24dp"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="@id/rating_three"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_three_progressbar"
+                    app:layout_constraintTop_toTopOf="@id/rating_three" />
 
                 <TextView
                     android:id="@+id/rating_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="126dp"
                     android:text="2점"
                     android:textSize="12sp"
-                    android:layout_marginStart="126dp"
+                    app:layout_constraintEnd_toStartOf="@id/rating_two_progressbar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_three"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/rating_three" />
 
                 <ProgressBar
                     android:id="@+id/rating_two_progressbar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
-                    android:progressTint="@color/colorAccent"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="20"
-                    app:layout_constraintTop_toTopOf="@id/rating_two"
+                    android:progressTint="@color/warning_500"
+                    app:layout_constraintEnd_toStartOf="@id/rating_two_count_tv"
                     app:layout_constraintBottom_toBottomOf="@id/rating_two"
                     app:layout_constraintStart_toEndOf="@id/rating_two"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/rating_two" />
 
                 <TextView
                     android:id="@+id/rating_two_count_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/rating_two_progressbar"
-                    app:layout_constraintTop_toTopOf="@id/rating_two"
+                    android:layout_marginEnd="24dp"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="@id/rating_two"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_two_progressbar"
+                    app:layout_constraintTop_toTopOf="@id/rating_two" />
 
                 <TextView
                     android:id="@+id/rating_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="126dp"
                     android:text="1점"
                     android:textSize="12sp"
-                    android:layout_marginStart="126dp"
+                    app:layout_constraintEnd_toStartOf="@id/rating_one_progressbar"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rating_two"
-                    />
+                    app:layout_constraintTop_toBottomOf="@id/rating_two" />
 
                 <ProgressBar
                     android:id="@+id/rating_one_progressbar"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:layout_width="200dp"
                     android:layout_height="7dp"
                     android:paddingStart="12dp"
-                    android:progressTint="@color/colorAccent"
-                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
                     android:progress="10"
-                    app:layout_constraintTop_toTopOf="@id/rating_one"
+                    android:progressTint="@color/warning_500"
+                    app:layout_constraintEnd_toStartOf="@id/rating_one_count_tv"
                     app:layout_constraintBottom_toBottomOf="@id/rating_one"
                     app:layout_constraintStart_toEndOf="@id/rating_one"
-                    />
+                    app:layout_constraintTop_toTopOf="@id/rating_one" />
 
                 <TextView
                     android:id="@+id/rating_one_count_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="20dp"
                     android:layout_height="wrap_content"
-                    android:text="0"
                     android:layout_marginStart="12dp"
-                    app:layout_constraintStart_toEndOf="@id/rating_two_progressbar"
-                    app:layout_constraintTop_toTopOf="@id/rating_one"
+                    android:layout_marginEnd="24dp"
+                    android:text="0"
                     app:layout_constraintBottom_toBottomOf="@id/rating_one"
-                    />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rating_one_progressbar"
+                    app:layout_constraintTop_toTopOf="@id/rating_one" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
@@ -300,12 +304,14 @@
 
                     <CheckBox
                         android:id="@+id/is_mine_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="115dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:button="@null"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/check_box_review_is_mine"
                         app:layout_constraintTop_toTopOf="@id/my_review_textview"
                         app:layout_constraintBottom_toBottomOf="@id/my_review_textview"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/my_review_textview"
                         />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -358,8 +364,8 @@
 
                     <CheckBox
                         android:id="@+id/header_is_mine_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_marginEnd="115dp"
                         app:layout_constraintTop_toTopOf="@id/header_my_review_textview"
                         app:layout_constraintBottom_toBottomOf="@id/header_my_review_textview"
@@ -380,7 +386,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:visibility="gone"
+
                 android:id="@+id/no_review_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
