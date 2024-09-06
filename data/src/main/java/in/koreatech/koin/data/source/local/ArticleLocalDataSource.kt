@@ -24,7 +24,7 @@ class ArticleLocalDataSource @Inject constructor(
         articleDataStore.clearSearchHistory()
     }
 
-    fun fetchMyKeyword(): Flow<List<String>> {
+    suspend fun fetchMyKeyword(): List<String> {
         return articleDataStore.fetchMyKeyword()
     }
 

@@ -13,7 +13,6 @@ import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
-import `in`.koreatech.koin.ui.article.state.AttachmentState
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleState

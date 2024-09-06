@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -51,12 +52,11 @@ class ArticleDataStore @Inject constructor(
         }
     }
 
-    fun fetchMyKeyword(): Flow<List<String>> {
-        return dataStore.data
-            .map { preferences ->
-                val myKeyword = preferences[KEY_MY_KEYWORD] ?: ""
-                gson.fromJson<List<String>>(myKeyword, List::class.java) ?: emptyList()
-            }
+    suspend fun fetchMyKeyword(): List<String> {
+        return dataStore.data.first()[KEY_MY_KEYWORD]?.let {
+            gson.fromJson<List<String>>(it, List::class.java) ?: emptyList()
+        } ?: emptyList()
+
     }
 
     suspend fun saveKeyword(keyword: String) {
