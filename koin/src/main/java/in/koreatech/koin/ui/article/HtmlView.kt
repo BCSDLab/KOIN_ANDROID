@@ -55,17 +55,20 @@ class HtmlView @JvmOverloads constructor(
     }
 
     private fun addHtmlView(html: HtmlElement) {
-        html.children.forEach { self ->
+        html.children.forEachIndexed { i, self ->
             when (self.tag) {
-                HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR -> {
-                    if (lastAddedView is TextView
-                        && lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()) {    // 직전 View가 TextView일 경우 재활용
-                        val lineBreak = when(self.tag) {
-                            HtmlTag.P, HtmlTag.DIV, HtmlTag.BR -> if (self.children.isEmpty()) "" else "\n"
+                HtmlTag.P, HtmlTag.DIV, HtmlTag.SPAN, HtmlTag.A, HtmlTag.BR, HtmlTag.LI, HtmlTag.OL, HtmlTag.UL -> {
+                    if (lastAddedView is TextView       // 직전 View가 TextView이고
+                        && lastAddedView.textAlignment == self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()) {    // Text-align이 같으면 TextView 재사용
+                        val frontLineBreak = when(self.tag) {
+                            HtmlTag.P, HtmlTag.DIV, HtmlTag.BR, HtmlTag.LI, HtmlTag.OL, HtmlTag.UL -> if (self.children.isEmpty()) "" else "\n"
                             else -> ""
                         }
+
+                        val listMarker = createListMarker(self.tag, html.tag, i)
+
                         val originalText = SpannableStringBuilder((lastAddedView as TextView).text)
-                        val newTextBuilder = SpannableStringBuilder(lineBreak + self.content)
+                        val newTextBuilder = SpannableStringBuilder(frontLineBreak + listMarker + self.content)
                         val newSpanned = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
 
                         (lastAddedView as TextView).text = originalText.append(newSpanned)
@@ -75,7 +78,9 @@ class HtmlView @JvmOverloads constructor(
                             addView(this)
                             setTextIsSelectable(true)
 
-                            val newTextBuilder = SpannableStringBuilder(self.content)
+                            val listMarker = createListMarker(self.tag, html.tag, i)
+
+                            val newTextBuilder = SpannableStringBuilder(listMarker + self.content)
                             text = newTextBuilder.getStyledText(0, newTextBuilder.length, self.styles)
 
                             this.textAlignment = self.styles[CssAttribute.TEXT_ALIGN].parseTextAlignment()
@@ -94,43 +99,59 @@ class HtmlView @JvmOverloads constructor(
                     lastAddedView = hr
                 }
                 HtmlTag.IMG -> {
-                    val imageView = ImageView(context).apply {
-                        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-                    }
-                    addView(imageView)
-                    Glide.with(context).load(self.attributes[HtmlAttribute.SRC]).error(
-                        Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC])
-                    ).addListener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: com.bumptech.glide.request.target.Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: com.bumptech.glide.request.target.Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            val dialog = ImageZoomableDialog(context, model as String)
-                            dialog.initialScale = .8f
-                            imageView.setOnClickListener {
-                                dialog.show()
-                            }
-                            return false
-                        }
-                    }).into(imageView)
-
-                    lastAddedView = imageView
+                    lastAddedView = drawImage(self)
                 }
                 else -> {}
             }
         }
+    }
+
+    private fun createListMarker(selfTag: HtmlTag, parentTag: HtmlTag, index: Int): String {
+        return when(selfTag) {
+            HtmlTag.LI -> {
+                when(parentTag) {
+                    HtmlTag.UL -> "• "
+                    HtmlTag.OL -> "${index + 1}. "
+                    else -> "• "
+                }
+            }
+            else -> ""
+        }
+    }
+
+    private fun drawImage(self: HtmlElement): ImageView {
+        val imageView = ImageView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        }
+        addView(imageView)
+        Glide.with(context).load(self.attributes[HtmlAttribute.SRC]).error(
+            Glide.with(context).load(context.getString(R.string.koreatech_url) + self.attributes[HtmlAttribute.SRC])
+        ).addListener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: com.bumptech.glide.request.target.Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                val dialog = ImageZoomableDialog(context, model as String)
+                dialog.initialScale = .8f
+                imageView.setOnClickListener {
+                    dialog.show()
+                }
+                return false
+            }
+        }).into(imageView)
+        return imageView
     }
 
     private fun interface OnPreDrawListener {
