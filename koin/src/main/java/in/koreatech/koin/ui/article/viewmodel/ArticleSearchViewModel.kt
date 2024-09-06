@@ -12,11 +12,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
@@ -74,7 +76,9 @@ class ArticleSearchViewModel @Inject constructor(
                     _searchResultUiState.emit(SearchUiState.Success(it.toArticlePaginationState()))
                 }
                 articleRepository.saveSearchHistory(trimmedQuery).launchIn(viewModelScope)
-            }.onCompletion {
+            }.catch {
+                _searchResultUiState.tryEmit(SearchUiState.Error)
+            }.onCompletion { e ->
                 _isLoading.value = false
             }.launchIn(viewModelScope)
     }
@@ -98,6 +102,7 @@ sealed interface SearchUiState {
     data object Idle : SearchUiState
     data object Empty : SearchUiState
     data object Loading : SearchUiState
+    data object Error : SearchUiState
     data class Success(val articlePagination: ArticlePaginationState) : SearchUiState
     data object RequireInput : SearchUiState
 }

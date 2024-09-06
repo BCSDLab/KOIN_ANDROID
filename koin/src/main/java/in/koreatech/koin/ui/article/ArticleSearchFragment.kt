@@ -128,6 +128,11 @@ class ArticleSearchFragment : Fragment() {
                             searchResultAdapter.submitList(emptyList())
                             binding.textViewSearchResultEmpty.visibility = View.VISIBLE
                         }
+
+                        is SearchUiState.Error -> SnackbarUtil.makeShortSnackbar(
+                            binding.root,
+                            getString(R.string.error_network_unknown)
+                        )
                     }
                 }
             }
