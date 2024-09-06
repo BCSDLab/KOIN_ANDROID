@@ -20,6 +20,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
+import com.skydoves.balloon.ArrowOrientation
+import com.skydoves.balloon.ArrowOrientationRules
+import com.skydoves.balloon.ArrowPositionRules
+import com.skydoves.balloon.Balloon
+import com.skydoves.balloon.BalloonAnimation
+import com.skydoves.balloon.BalloonSizeSpec
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.progressdialog.IProgressDialog
@@ -30,6 +36,7 @@ import `in`.koreatech.koin.ui.article.adapter.ArticleAdapter
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.viewmodel.ArticleListViewModel
 import `in`.koreatech.koin.util.ext.withLoading
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -57,6 +64,8 @@ class ArticleListFragment : Fragment() {
     private val articleAdapter = ArticleAdapter(onClick = ::onArticleClicked)
     private lateinit var pageChips: ArrayList<Chip>
 
+    private lateinit var keywordTooltip: Balloon
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,6 +90,7 @@ class ArticleListFragment : Fragment() {
                 viewModel.setCurrentPage(viewModel.currentPage.value - 1)
             }
             handleKeywordChips()
+            initTooltipState()
             collectData()
         }
         return binding.root
@@ -89,6 +99,21 @@ class ArticleListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.tabLayoutArticleBoard.addOnTabSelectedListener(onTabSelectedListener)
+    }
+
+    private fun initTooltipState() {
+        initKeywordTooltip()
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.shouldShowKeywordTooltip.collect { shouldShow ->
+                    if (shouldShow) {
+                        delay(500)
+                        keywordTooltip.showAlignBottom(binding.imageViewToKeywordAddPage)
+                        viewModel.updateShouldShowKeywordTooltip(false)
+                    }
+                }
+            }
+        }
     }
 
     private fun initPageButtonSelectedListener() {
@@ -298,6 +323,26 @@ class ArticleListFragment : Fragment() {
             val bottom = top + height
             c.drawRect(left, top, right, bottom, paint)
         }
+    }
+
+    private fun initKeywordTooltip() {
+        keywordTooltip = Balloon.Builder(requireContext())
+            .setHeight(BalloonSizeSpec.WRAP)
+            .setWidth(BalloonSizeSpec.WRAP)
+            .setText(getString(R.string.keyword_tooltip))
+            .setTextColorResource(R.color.white)
+            .setBackgroundColorResource(R.color.neutral_600)
+            .setTextSize(12f)
+            .setArrowOrientationRules(ArrowOrientationRules.ALIGN_FIXED)
+            .setArrowOrientation(ArrowOrientation.TOP)
+            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+            .setArrowSize(10)
+            .setPaddingVertical(8)
+            .setPaddingHorizontal(12)
+            .setMarginLeft(10)
+            .setCornerRadius(8f)
+            .setBalloonAnimation(BalloonAnimation.FADE)
+            .build()
     }
 
     override fun onDestroyView() {

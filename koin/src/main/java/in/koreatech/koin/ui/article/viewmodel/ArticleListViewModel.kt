@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.repository.ArticleRepository
+import `in`.koreatech.koin.domain.repository.OnBoardingRepository
 import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticlePaginationState
 import `in`.koreatech.koin.ui.article.state.toArticlePaginationState
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class ArticleListViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     articleRepository: ArticleRepository,
+    private val onBoardingRepository: OnBoardingRepository
 ) : BaseViewModel() {
 
     val currentBoard = savedStateHandle.getStateFlow(BOARD_TYPE, BoardType.ALL)
@@ -58,6 +61,13 @@ class ArticleListViewModel @Inject constructor(
         initialValue = ArticlePaginationState(emptyList(), 0, 0, 5, 1)
     )
 
+    val shouldShowKeywordTooltip: StateFlow<Boolean> = onBoardingRepository.getShouldShowKeywordTooltip()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false
+        )
+
     fun setCurrentBoard(board: BoardType) {
         savedStateHandle[BOARD_TYPE] = board
         setCurrentPage(1)
@@ -85,6 +95,10 @@ class ArticleListViewModel @Inject constructor(
 
         if (pageNumbers.value.contentEquals(newPageNumbers).not())
             savedStateHandle[PAGE_NUMBERS] = newPageNumbers
+    }
+
+    fun updateShouldShowKeywordTooltip(shouldShow: Boolean) {
+        onBoardingRepository.updateShouldShowKeywordTooltip(shouldShow).launchIn(viewModelScope)
     }
 
     companion object {

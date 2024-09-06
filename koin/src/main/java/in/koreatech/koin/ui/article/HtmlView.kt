@@ -144,7 +144,6 @@ class HtmlView @JvmOverloads constructor(
                 isFirstResource: Boolean
             ): Boolean {
                 val dialog = ImageZoomableDialog(context, model as String)
-                dialog.initialScale = .8f
                 imageView.setOnClickListener {
                     dialog.show()
                 }
