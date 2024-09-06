@@ -148,6 +148,7 @@ fun Node.toHtmlModel(parentStyles: Map<CssAttribute, String>): HtmlModel {
 
     this.childNodes().forEach { child ->
         if (child is TextNode) {
+            if (selfTag == HtmlTag.HTML && child.wholeText == "\n") return@forEach
             if (child.wholeText.isNotEmpty())
                 selfChildren.add(HtmlModel(
                     tag = HtmlTag.SPAN,
