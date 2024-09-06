@@ -10,17 +10,15 @@ import `in`.koreatech.koin.core.viewmodel.BaseViewModel
 import `in`.koreatech.koin.domain.model.article.html.HtmlTag
 import `in`.koreatech.koin.domain.repository.ArticleRepository
 import `in`.koreatech.koin.domain.usecase.article.FetchHotArticlesUseCase
+import `in`.koreatech.koin.ui.article.BoardType
 import `in`.koreatech.koin.ui.article.state.ArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.ArticleState
 import `in`.koreatech.koin.ui.article.state.AttachmentState
 import `in`.koreatech.koin.ui.article.state.HtmlElement
 import `in`.koreatech.koin.ui.article.state.toArticleHeaderState
 import `in`.koreatech.koin.ui.article.state.toArticleState
-import `in`.koreatech.koin.ui.article.state.toAttachmentState
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -47,8 +45,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                 initialValue = ArticleState(
                     header = ArticleHeaderState(
                         id = 0,
-                        boardId = 0,
-                        boardName = null,
+                        board = BoardType.ALL,
                         title = "",
                         author = "",
                         viewCount = 0,
@@ -78,9 +75,6 @@ class ArticleDetailViewModel @AssistedInject constructor(
 
     fun setIsLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
-    }
-
-    fun downloadAttachment(attachment: AttachmentState) {
     }
 
     @AssistedFactory

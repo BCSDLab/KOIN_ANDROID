@@ -62,7 +62,7 @@ class MainActivity : KoinNavigationDrawerActivity() {
             val intent = Intent(this, ArticleActivity::class.java).apply {
                 putExtra(NAVIGATE_ACTION, R.id.action_articleListFragment_to_articleDetailFragment)
                 putExtra(ARTICLE_ID, it.id)
-                putExtra(NAVIGATED_BOARD_ID, it.boardId)
+                putExtra(NAVIGATED_BOARD_ID, it.board.id)
             }
             startActivity(intent)
         }

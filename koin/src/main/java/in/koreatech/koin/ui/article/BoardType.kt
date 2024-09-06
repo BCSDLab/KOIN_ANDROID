@@ -6,7 +6,8 @@ import `in`.koreatech.koin.R
 enum class BoardType(
     val id: Int,
     @StringRes val koreanName: Int,
-    @StringRes val simpleKoreanName: Int
+    @StringRes val simpleKoreanName: Int,
+    val exposedInAll: Boolean = true
 ) {
     // FREE(1, R.string.article_free),              // NOT USED
     // EMPLOYMENT(2, R.string.article_employment),  // NOT USED
@@ -20,5 +21,5 @@ enum class BoardType(
     // QNA(10, R.string.article_qna),               // NOT USED
     // PROMOTION(11, R.string.article_promotion),   // NOT USED
      IPP(12, R.string.article_ipp, R.string.article_ipp_simple),
-     STUDENT(13, R.string.article_student, R.string.article_student_simple),
+     STUDENT(13, R.string.article_student, R.string.article_student_simple, false),
 }

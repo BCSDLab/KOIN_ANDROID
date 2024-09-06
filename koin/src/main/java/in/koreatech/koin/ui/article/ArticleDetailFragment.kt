@@ -144,9 +144,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
 
     private fun setHeader(article: ArticleState) {
         binding.articleHeader.apply {
-            article.header.boardName?.let {
-                textViewArticleBoardName.text = getString(it)
-            }
+            textViewArticleBoardName.text = getString(article.header.board.koreanName)
             textViewArticleTitle.text = article.header.title
             textViewArticleAuthor.text = article.header.author
             try {
@@ -155,7 +153,7 @@ class ArticleDetailFragment : Fragment(R.layout.fragment_article_detail) {
                     " ",
                     DateFormatUtil.getDayOfWeek(TimeUtil.stringToDateYYYYMMDD(article.header.registeredAt))
                 )
-            } catch(e: Exception) { }
+            } catch(_: Exception) { }
             textViewArticleViewCount.text = article.header.viewCount.toString()
         }
     }
