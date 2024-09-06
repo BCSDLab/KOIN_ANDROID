@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -67,9 +68,11 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 
 @Composable
@@ -129,7 +132,7 @@ fun ModifyMenuScreen(
             viewModel.onNextButtonClick()
         },
     )
-    //HandleSideEffects(viewModel, goToCheckMenuScreen)
+    HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -631,29 +634,29 @@ fun ModifyMenuScreenImpl(
     }
 }
 
-/*@Composable
-private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScreen: () -> Unit) {
+@Composable
+private fun HandleSideEffects(viewModel: ModifyMenuViewModel, goToCheckMenuScreen: () -> Unit) {
     val context = LocalContext.current
 
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
-            is RegisterMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
-            is RegisterMenuSideEffect.ShowMessage -> {
+            is ModifyMenuSideEffect.GoToCheckMenuScreen -> goToCheckMenuScreen()
+            is ModifyMenuSideEffect.ShowMessage -> {
                 val message = when (sideEffect.type) {
-                    RegisterMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
-                    RegisterMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
-                    RegisterMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
-                    RegisterMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
-                    RegisterMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
-                    RegisterMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
-                    RegisterMenuErrorType.FailRegisterMenu ->context.getString(R.string.menu_fail_register_menu)
+                    ModifyMenuErrorType.NullMenuName -> context.getString(R.string.menu_null_name)
+                    ModifyMenuErrorType.NullMenuPrice -> context.getString(R.string.menu_null_price)
+                    ModifyMenuErrorType.NullMenuCategory -> context.getString(R.string.menu_null_category)
+                    ModifyMenuErrorType.NullMenuDescription-> context.getString(R.string.menu_null_description)
+                    ModifyMenuErrorType.NullMenuImage-> context.getString(R.string.menu_null_image)
+                    ModifyMenuErrorType.FailUploadImage -> context.getString(R.string.menu_fail_upload_image)
+                    ModifyMenuErrorType.FailModifyMenu ->context.getString(R.string.menu_fail_register_menu)
                 }
                 ToastUtil.getInstance().makeShort(message)
             }
             else -> ""
         }
     }
-}*/
+}
 
 @Composable
 fun CategoryRadioButton(
