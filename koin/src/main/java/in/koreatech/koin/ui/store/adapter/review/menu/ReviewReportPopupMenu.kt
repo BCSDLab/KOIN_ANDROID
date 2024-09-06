@@ -21,8 +21,8 @@ class ReviewReportPopupMenu(
 
     init {
         contentView = binding.root
-        width = 600
-        height = 120 * menuList.size
+        width = 350
+        height = 160
         isOutsideTouchable = true
         isFocusable = true
 
