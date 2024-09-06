@@ -141,7 +141,39 @@ class OwnerRegisterRepositoryImpl(
                     singlePrice = if(isSingle)menuSinglePrice.toInt() else null
                 )
             )
+            Result.success(Unit)
+        } catch (e: EOFException) {
+            Result.failure(e)
+        } catch (e: HttpException) {
+            Result.failure(e)
+        } catch (t: Throwable) {
+            Result.failure(t)
+        }
+    }
 
+    override suspend fun storeMenuModify(
+        menuId: Int,
+        menuCategoryId: List<Int>,
+        description: String,
+        menuImageUrlList: List<String>,
+        isSingle: Boolean,
+        menuName: String,
+        menuOptionPrice: List<StoreMenuOptionPrice>,
+        menuSinglePrice: String
+    ): Result<Unit> {
+        return try {
+            ownerRemoteDataSource.putStoreModifiedMenu(
+                menuId,
+                StoreMenuRegisterResponse(
+                    menuCategoryId = menuCategoryId,
+                    description = description,
+                    imageUrls=menuImageUrlList,
+                    isSingle = isSingle,
+                    name = menuName,
+                    optionPrices = if(!isSingle)menuOptionPrice.toOptionPriceList() else null,
+                    singlePrice = if(isSingle)menuSinglePrice.toInt() else null
+                )
+            )
             Result.success(Unit)
         } catch (e: EOFException) {
             Result.failure(e)

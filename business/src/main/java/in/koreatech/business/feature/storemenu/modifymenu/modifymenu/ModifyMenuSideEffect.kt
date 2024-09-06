@@ -4,7 +4,7 @@ sealed class ModifyMenuSideEffect {
 
     object GoToCheckMenuScreen: ModifyMenuSideEffect()
 
-    object FinishRegisterMenu: ModifyMenuSideEffect()
+    object FinishModifyMenu: ModifyMenuSideEffect()
     data class ShowMessage(val type: ModifyMenuErrorType): ModifyMenuSideEffect()
 }
 enum class ModifyMenuErrorType {
@@ -14,7 +14,7 @@ enum class ModifyMenuErrorType {
     NullMenuDescription,
     NullMenuImage,
     FailUploadImage,
-    FailRegisterMenu
+    FailModifyMenu
 }
 
 sealed class ImageHolder{

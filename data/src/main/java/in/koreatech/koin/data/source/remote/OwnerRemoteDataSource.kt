@@ -105,6 +105,10 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
     }
 
+    suspend fun putStoreModifiedMenu(menuId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse){
+        return ownerAuthApi.putShopModifiedMenu(menuId, storeMenuRegisterResponse)
+    }
+
     suspend fun getStoreMenuInfo(menuId: Int): StoreMenuInfoResponse {
         return ownerAuthApi.getMenuInfo(menuId)
     }

@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
 import `in`.koreatech.koin.domain.usecase.business.UploadFileUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuCategoryUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuInfoUseCase
+import `in`.koreatech.koin.domain.usecase.business.menu.ModifyMenuUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.RegisterMenuUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
 import kotlinx.coroutines.launch
@@ -32,7 +33,7 @@ class ModifyMenuViewModel @Inject constructor(
     private val getMarketPreSignedUrlUseCase: GetMarketPreSignedUrlUseCase,
     private val getMenuInfoUseCase: GetMenuInfoUseCase,
     private val uploadFilesUseCase: UploadFileUseCase,
-    private val registerMenuUseCase: RegisterMenuUseCase
+    private val modifyMenuUseCase: ModifyMenuUseCase
 ): ViewModel(), ContainerHost<ModifyMenuState, ModifyMenuSideEffect> {
     override val container = container<ModifyMenuState, ModifyMenuSideEffect>(ModifyMenuState())
 
@@ -130,17 +131,17 @@ class ModifyMenuViewModel @Inject constructor(
                 )
             }
 
-            if(state.imageUrlList.size == state.imageUriList.size){
-                registerMenu()
+            if((state.imageUriList.last() == TEMP_IMAGE_URI && (state.imageUrlList.size == state.imageUriList.size - 1)) || state.imageUrlList.size == STORE_MENU_IMAGE_MAX){
+                modifyMenu()
             }
         }
     }
 
-    private fun registerMenu(){
+    private fun modifyMenu(){
         intent {
             viewModelScope.launch{
-                    registerMenuUseCase(
-                        storeId = state.shopId,
+                    modifyMenuUseCase(
+                        menuId = state.menuId,
                         menuCategoryId = state.menuCategoryId,
                         description = state.description,
                         menuImageUrlList = state.imageUrlList,
@@ -148,14 +149,14 @@ class ModifyMenuViewModel @Inject constructor(
                         menuOptionPrice = state.menuOptionPrice,
                         menuSinglePrice = state.menuPrice
                     ).onSuccess {
-                        postSideEffect(ModifyMenuSideEffect.FinishRegisterMenu)
+                        postSideEffect(ModifyMenuSideEffect.FinishModifyMenu)
                         reduce {
                             state.copy(
                                 imageUrlList = emptyList()
                             )
                         }
                     }.onFailure {
-                        postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailRegisterMenu))
+                        postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailModifyMenu))
                         reduce {
                             state.copy(
                                 imageUrlList = emptyList()
@@ -170,7 +171,7 @@ class ModifyMenuViewModel @Inject constructor(
         postSideEffect(ModifyMenuSideEffect.ShowMessage(ModifyMenuErrorType.FailUploadImage))
     }
 
-    fun settingId(menuId: Int){
+    private fun settingId(menuId: Int){
         intent{
             if(menuId != state.menuId){
                 reduce {
@@ -378,33 +379,38 @@ class ModifyMenuViewModel @Inject constructor(
             state.imageUriList.forEach { uriString ->
                 if (uriString != TEMP_IMAGE_URI)
                 {
-                    val uri = Uri.parse(uriString)
+                    if(uriString.contains("content")){
+                        val uri = Uri.parse(uriString)
 
-                    val inputStream = context.contentResolver.openInputStream(uri)
+                        val inputStream = context.contentResolver.openInputStream(uri)
 
-                    if (uri.scheme.equals("content")) {
-                        val cursor = context.contentResolver.query(uri, null, null, null, null)
-                        cursor.use {
-                            if (cursor != null && cursor.moveToFirst()) {
-                                val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
+                        if (uri.scheme.equals("content")) {
+                            val cursor = context.contentResolver.query(uri, null, null, null, null)
+                            cursor.use {
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                    val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
 
-                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                    val fileName = cursor.getString(fileNameIndex)
-                                    val fileSize = cursor.getLong(fileSizeIndex)
+                                    if (fileNameIndex != -1 && fileSizeIndex != -1) {
+                                        val fileName = cursor.getString(fileNameIndex)
+                                        val fileSize = cursor.getLong(fileSizeIndex)
 
-                                    if (inputStream != null) {
-                                        getPreSignedUrl(
-                                            fileSize = fileSize,
-                                            fileType = "image/" + fileName.split(".")[1],
-                                            fileName = fileName,
-                                            imageUri = uriString
-                                        )
+                                        if (inputStream != null) {
+                                            getPreSignedUrl(
+                                                fileSize = fileSize,
+                                                fileType = "image/" + fileName.split(".")[1],
+                                                fileName = fileName,
+                                                imageUri = uriString
+                                            )
+                                        }
+                                        inputStream?.close()
                                     }
-                                    inputStream?.close()
                                 }
                             }
                         }
+                    }
+                    else{
+                        insertStoreFileUrl(uriString)
                     }
                 }
             }
