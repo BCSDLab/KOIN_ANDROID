@@ -30,6 +30,16 @@ object EventLogger {
         logEvent(action, AnalyticsConstant.Category.SCROLL, label, value)
     }
 
+
+    /**
+     * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
+     * @param label: 이벤트 소분류
+     * @param value: 이벤트 값
+     */
+    fun logSwipeEvent(action: String, label: String, value: String) {
+        logEvent(action, AnalyticsConstant.Category.SWIPE, label, value)
+    }
+
     /**
      * @param action: 이벤트 발생 도메인(BUSINESS, CAMPUS, USER)
      * @param category: 이벤트 종류(click, scroll, ...)

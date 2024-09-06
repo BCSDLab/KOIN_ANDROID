@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailMenuBinding
 import `in`.koreatech.koin.domain.model.store.ShopMenus
 import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
@@ -37,7 +39,8 @@ class StoreDetailMenuFragment : Fragment() {
 
     private val storeRandomRecyclerAdapter = StoreRecyclerAdapter().apply {
         setOnItemClickListener {
-            storeDetailActivityContract.launch(it.uid)
+
+            storeDetailActivityContract.launch(Pair(it.uid,null))
             requireActivity().finish()
         }
     }
@@ -56,6 +59,7 @@ class StoreDetailMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
+        initEventScrollCallback()
     }
 
     private fun initViews() {
@@ -235,5 +239,23 @@ class StoreDetailMenuFragment : Fragment() {
             }
         }
 
+    }
+
+
+    private fun initEventScrollCallback() {
+        binding.storeDetailMenuNestedScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val contentHeight = binding.storeDetailMenuNestedScrollView.getChildAt(0).measuredHeight
+            val scrollViewHeight = binding.storeDetailMenuNestedScrollView.height
+            val totalScrollRange = contentHeight - scrollViewHeight
+            val seventyPercentScroll = (totalScrollRange * 0.7).toInt()
+
+            if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
+            }
+        }
     }
 }

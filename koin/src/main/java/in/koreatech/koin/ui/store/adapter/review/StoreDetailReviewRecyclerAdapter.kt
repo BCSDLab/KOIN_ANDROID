@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ class StoreDetailReviewRecyclerAdapter (
         val nickName = binding.userIdTextview
         val rating = binding.userRatingBar
         val updateAt = binding.reviewUpdateDataTextview
+        val reviewReportMessage = binding.reviewReportImageview
         val reviewContent = binding.reviewContentTextview
         val reviewImageRecyclerView = binding.reviewImageRecyclerview
         val reviewMenuRecyclerview = binding.reviewMenuRecyclerview
@@ -134,6 +136,11 @@ class StoreDetailReviewRecyclerAdapter (
                 )
                 adapter = storeDetailReviewMenuRecyclerAdapter
             }
+
+            reviewReportMessage.isVisible = review.isReported
+            reviewContent.isGone = review.isReported || review.content.isBlank()
+            reviewImageRecyclerView.isGone = review.isReported || review.imageUrls.isEmpty()
+            reviewMenuRecyclerview.isGone = review.isReported || review.menuNames.isEmpty()
 
         }
     }
