@@ -19,7 +19,7 @@ class HotArticleAdapter(
 
         fun bind(articleHeader: ArticleHeaderState) {
             binding.textArticleTitle.text = articleHeader.title
-            binding.root.setOnClickListener { onClick(articleHeader) }
+            binding.cardViewArticleHeader.setOnClickListener { onClick(articleHeader) }
         }
     }
 

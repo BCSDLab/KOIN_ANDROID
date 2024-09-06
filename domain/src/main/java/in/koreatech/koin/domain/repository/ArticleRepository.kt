@@ -3,7 +3,6 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.article.Article
 import `in`.koreatech.koin.domain.model.article.ArticleHeader
 import `in`.koreatech.koin.domain.model.article.ArticlePagination
-import `in`.koreatech.koin.domain.model.article.Attachment
 import kotlinx.coroutines.flow.Flow
 
 interface ArticleRepository {

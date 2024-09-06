@@ -9,8 +9,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ArticleHeaderState(
     val id: Int,
-    val boardId: Int,
-    @StringRes val boardName: Int?,
+    val board: BoardType,
     val title: String,
     val author: String,
     val viewCount: Int,
@@ -20,8 +19,7 @@ data class ArticleHeaderState(
 
 fun ArticleHeader.toArticleHeaderState() = ArticleHeaderState(
     id = id,
-    boardId = boardId,
-    boardName = BoardType.entries.find { it.id == boardId }?.koreanName,
+    board = BoardType.entries.firstOrNull { it.id == boardId } ?: BoardType.ALL,
     title = title,
     author = author,
     viewCount = viewCount,

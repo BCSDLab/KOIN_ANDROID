@@ -69,19 +69,19 @@ class FileDownloadManager(
         id = downloadManager.enqueue(request)
     }
 
-    fun setOnDownloadSuccessListener(onDownloadSuccessListener: OnDownloadSuccessListener) {
-        this.onDownloadSuccessListener = onDownloadSuccessListener
+    fun setOnDownloadSuccessListener(callback: () -> Unit) {
+        this.onDownloadSuccessListener = OnDownloadSuccessListener { callback() }
     }
 
-    fun setOnDownloadFailureListener(onDownloadFailureListener: OnDownloadFailureListener) {
-        this.onDownloadFailureListener = onDownloadFailureListener
+    fun setOnDownloadFailureListener(callback: () -> Unit) {
+        this.onDownloadFailureListener = OnDownloadFailureListener { callback() }
     }
 
-    fun interface OnDownloadSuccessListener {
+    private fun interface OnDownloadSuccessListener {
         fun onDownloadSuccess()
     }
 
-    fun interface OnDownloadFailureListener {
+    private fun interface OnDownloadFailureListener {
         fun onDownloadFailure()
     }
 }

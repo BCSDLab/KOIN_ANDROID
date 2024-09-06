@@ -30,9 +30,7 @@ class ArticleAdapter(
 
         fun bind(articleHeader: ArticleHeaderState) {
             binding.apply {
-                articleHeader.boardName?.let {
-                    textViewArticleBoardName.text = root.context.getString(it)
-                }
+                textViewArticleBoardName.text = root.context.getString(articleHeader.board.koreanName)
                 textViewArticleTitle.text = articleHeader.title.trim()
                 textViewArticleAuthor.text = articleHeader.author
                 try {
