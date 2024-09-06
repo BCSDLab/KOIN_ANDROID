@@ -536,5 +536,6 @@
     <string name="downloading">다운로드 중</string>
     <string name="start_download">파일을 다운로드합니다.</string>
     <string name="download_complete">다운로드가 완료되었습니다.</string>
+    <string name="keyword_tooltip">키워드를 추가하고 맞춤 알림을 받아보세요!</string>
 
 </resources>
