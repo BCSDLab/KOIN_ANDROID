@@ -14,10 +14,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -28,38 +32,34 @@ class ArticleRepositoryImpl @Inject constructor(
     private val articleRemoteDataSource: ArticleRemoteDataSource,
     private val articleLocalDataSource: ArticleLocalDataSource,
     private val userRepository: UserRepository,
-    coroutineScope: CoroutineScope
+    private val coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
-    val user = userRepository.getUserInfoFlow().stateIn(
-        scope = coroutineScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = User.Anonymous
-    )
+    val user = userRepository.getUserInfoFlow().distinctUntilChanged()
+        .onEach { user ->
+            if (user.isStudent) {
+                _myKeywords.emit(articleRemoteDataSource.fetchMyKeyword().keywords)
+            } else {
+                _myKeywords.emit(articleLocalDataSource.fetchMyKeyword().map {
+                    ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
+                })
+            }
+        }.stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = User.Anonymous
+        )
 
     private val _myKeywords = MutableStateFlow<List<ArticleKeywordWrapperResponse.ArticleKeywordResponse>>(emptyList())
-    private val myKeywords = _myKeywords.flatMapLatest {
-        if (user.value.isStudent) {
-            if (_myKeywords.value.isEmpty()) {
-                val keywords = articleRemoteDataSource.fetchMyKeyword().keywords
-                flowOf(keywords)
-            } else flowOf(it)
-
-        } else {
-            if (_myKeywords.value.isEmpty()) {
-                val keywords = articleLocalDataSource.fetchMyKeyword().map { list ->
-                    list.map {
-                        ArticleKeywordWrapperResponse.ArticleKeywordResponse(0, it)
-                    }
-                }
-                keywords
-            } else flowOf(it)
-        }
-    }.stateIn(
+    private val myKeywords = _myKeywords.stateIn(
         scope = coroutineScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = emptyList()
     )
+
+    init {
+        user.launchIn(coroutineScope)
+    }
 
     override fun fetchArticlePagination(boardId: Int, page: Int, limit: Int): Flow<ArticlePagination> {
         return flow {

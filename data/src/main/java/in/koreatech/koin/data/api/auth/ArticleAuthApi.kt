@@ -3,6 +3,7 @@ package `in`.koreatech.koin.data.api.auth
 import `in`.koreatech.koin.data.request.article.ArticleKeywordRequest
 import `in`.koreatech.koin.data.response.article.ArticleKeywordWrapperResponse
 import `in`.koreatech.koin.data.response.article.KeywordsResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -20,5 +21,5 @@ interface ArticleAuthApi {
     suspend fun saveKeyword(@Body keywordRequest: ArticleKeywordRequest): ArticleKeywordWrapperResponse.ArticleKeywordResponse
 
     @DELETE("articles/keyword/{id}")
-    suspend fun deleteKeyword(@Path("id") keywordId: Int)
+    suspend fun deleteKeyword(@Path("id") keywordId: Int): Response<Unit>
 }
