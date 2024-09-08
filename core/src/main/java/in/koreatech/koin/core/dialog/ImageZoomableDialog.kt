@@ -18,14 +18,15 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.github.chrisbanes.photoview.PhotoView
 import `in`.koreatech.koin.core.R
+import `in`.koreatech.koin.core.databinding.ImageZoomableDialogBinding
 
 class ImageZoomableDialog(private val context: Context, private val image: String) : Dialog(context) {
 
+    private lateinit var binding: ImageZoomableDialogBinding
     private var isUserImageInteraction = false
-    private lateinit var photoView : PhotoView
     var initialScale = 1f
+    var cancelableOnTouchOutside = true
 
     override fun onStart() {
         super.onStart()
@@ -36,12 +37,17 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.image_zoomable_dialog)
+        binding = ImageZoomableDialogBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        photoView = findViewById(R.id.photo_view)
-        photoView.apply {
+        binding.dialogCloseButton.setOnClickListener {
+            dismiss()
+        }
+
+        binding.photoView.apply {
             setOnTouchListener { v, event ->
                 attacher.onTouch(v, event)
+
                 if (event?.action == ACTION_POINTER_DOWN || event?.action == MotionEvent.ACTION_UP)
                     false
                 else true
@@ -61,9 +67,10 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                 window!!.decorView.getWindowVisibleDisplayFrame(rect)
                 val statusBarHeight = rect.top
 
-                if(photoView.displayRect != null)
-                    if (!photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
-                        dismiss()
+                if(binding.photoView.displayRect != null)
+                    if (!binding.photoView.displayRect.contains(event.rawX, event.rawY - statusBarHeight)) {
+                        if (cancelableOnTouchOutside)
+                            dismiss()
                     }
             }
             isUserImageInteraction = false
@@ -90,12 +97,12 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    photoView.post {
-                        photoView.scale = initialScale
+                    binding.photoView.post {
+                        binding.photoView.scale = initialScale
 
                         val closeButton = findViewById<ImageView>(R.id.dialog_close_button)
-                        val lp = closeButton.layoutParams as FrameLayout.LayoutParams
-                        val rectF = photoView.displayRect
+                        val lp = closeButton?.layoutParams as FrameLayout.LayoutParams
+                        val rectF = binding.photoView.displayRect
                         lp.setMargins(0, rectF.top.toInt() - closeButton.height - 8, rectF.left.toInt(), 0)
                         closeButton.layoutParams = lp
                         closeButton.visibility = View.VISIBLE
@@ -103,7 +110,7 @@ class ImageZoomableDialog(private val context: Context, private val image: Strin
                     return false
                 }
             })
-            .into(photoView)
+            .into(binding.photoView)
     }
 
     companion object {

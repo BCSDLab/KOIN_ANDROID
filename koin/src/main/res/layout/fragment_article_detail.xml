@@ -32,6 +32,14 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="24dp"
                 android:paddingVertical="16dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/divider_header_content"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/divider_header_content" />
 
             <androidx.constraintlayout.widget.Group
@@ -51,7 +59,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/html_view" />
+                app:layout_constraintTop_toBottomOf="@id/web_view" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_attachments"
