@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu.TEMP_IMAGE_URI
+import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
@@ -86,21 +87,6 @@ class RegisterMenuViewModel @Inject constructor(
         }
     }
 
-    private fun filterEmptyUri(){
-        intent{
-            reduce {
-                val newMenuUriList = state.imageUriList.toMutableList()
-
-                if(newMenuUriList.last() == Uri.EMPTY) {
-                    newMenuUriList.removeAt(newMenuUriList.lastIndex)
-                }
-                state.copy(
-                    imageUriList = newMenuUriList
-                )
-            }
-        }
-    }
-
     private fun insertStoreFileUrl(url: String) {
         intent{
             val newImageUrl = state.imageUrlList.toMutableList()
@@ -111,7 +97,6 @@ class RegisterMenuViewModel @Inject constructor(
                     imageUrlList = newImageUrl
                 )
             }
-
             if((state.imageUriList.last() == Uri.EMPTY && (state.imageUrlList.size == state.imageUriList.size - 1)) || state.imageUrlList.size == STORE_MENU_IMAGE_MAX){
                 registerMenu()
             }
@@ -317,7 +302,6 @@ class RegisterMenuViewModel @Inject constructor(
                 state.imageUriList.size == 1 && state.imageUriList[0] == Uri.EMPTY -> postSideEffect(RegisterMenuSideEffect.ShowMessage(RegisterMenuErrorType.NullMenuImage))
                 else ->{
                     makeMenuCategoryString()
-                    filterEmptyUri()
                     postSideEffect(RegisterMenuSideEffect.GoToCheckMenuScreen)
                 }
             }
@@ -330,32 +314,13 @@ class RegisterMenuViewModel @Inject constructor(
             state.imageUriList.forEach { uri ->
                 if (uri != Uri.EMPTY)
                 {
-                    val inputStream = context.contentResolver.openInputStream(uri)
-
-                    if (uri.scheme.equals("content")) {
-                        val cursor = context.contentResolver.query(uri, null, null, null, null)
-                        cursor.use {
-                            if (cursor != null && cursor.moveToFirst()) {
-                                val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                                if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                    val fileName = cursor.getString(fileNameIndex)
-                                    val fileSize = cursor.getLong(fileSizeIndex)
-
-                                    if (inputStream != null) {
-                                        getPreSignedUrl(
-                                            fileSize = fileSize,
-                                            fileType = "image/" + fileName.split(".")[1],
-                                            fileName = fileName,
-                                            imageUri = uri.toString()
-                                        )
-                                    }
-                                    inputStream?.close()
-                                }
-                            }
-                        }
-                    }
+                    val imageInfo = getImageInfo(context, uri)
+                    getPreSignedUrl(
+                        fileSize = imageInfo.imageSize,
+                        fileType = imageInfo.imageType,
+                        fileName = imageInfo.imageName,
+                        imageUri = uri.toString()
+                    )
                 }
             }
         }

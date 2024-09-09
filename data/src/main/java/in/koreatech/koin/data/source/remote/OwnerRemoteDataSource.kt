@@ -97,12 +97,12 @@ class OwnerRemoteDataSource(
         return ownerAuthApi.getOwnerShopEvents(storeUid)
     }
 
-    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse): StoreRegisterResponse {
-        return ownerAuthApi.postMyStore(storeRegisterResponse)
+    suspend fun postStoreRegister(storeRegisterResponse: StoreRegisterResponse){
+        ownerAuthApi.postMyStore(storeRegisterResponse)
     }
 
-    suspend fun postStoreMenu(storeId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse): StoreMenuRegisterResponse {
-        return ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
+    suspend fun postStoreMenu(storeId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse){
+       ownerAuthApi.postShopMenu(storeId, storeMenuRegisterResponse)
     }
 
     suspend fun putStoreModifiedMenu(menuId: Int, storeMenuRegisterResponse: StoreMenuRegisterResponse){
