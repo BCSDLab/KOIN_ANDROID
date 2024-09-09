@@ -33,11 +33,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.Serializable
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
     private lateinit var binding: ActivityWriteReviewBinding
     override val screenTitle = "리뷰 작성"
+    private var currentTime by Delegates.notNull<Long>()
+    private var elapsedTime by Delegates.notNull<Long>()
     private val viewModel by viewModels<WriteReviewViewModel>()
     private val menuRecyclerViewAdapter = MenuRecyclerViewAdapter()
     private val menuImageRecyclerViewAdapter = MenuImageRecyclerViewAdapter { position ->
@@ -148,6 +151,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 }
             })
             writeReviewButton.debounce(300, lifecycleScope) {
+                elapsedTime = System.currentTimeMillis() - currentTime
                 if (review?.reviewId != null) {
                     viewModel.modifyReview(
                         review.reviewId, storeId, Review(
@@ -166,7 +170,7 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 EventLogger.logClickEvent(
                     AnalyticsConstant.Domain.BUSINESS,
                     AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_WRITE_DONE,
-                    storeName ?: "Unknown"
+                    (storeName ?: "Unknown") + ", duration_time: "+ elapsedTime/1000
                 )
                 finish()
             }
@@ -218,6 +222,11 @@ class WriteReviewActivity : ActivityBase(R.layout.activity_write_review) {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentTime = System.currentTimeMillis()
     }
 
     fun View.debounce(

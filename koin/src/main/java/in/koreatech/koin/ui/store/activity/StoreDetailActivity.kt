@@ -92,10 +92,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         setContentView(binding.root)
         initViewModel()
 
-        window.decorView.setOnTouchListener { _, event ->
-            isSwipeGesture = event.action == MotionEvent.ACTION_MOVE
-            false
-        }
+
         binding.koinBaseAppbar.storeDetailClickListener {
             when (it.id) {
                 AppBarBase.getLeftButtonId() -> {
@@ -120,7 +117,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                             AnalyticsConstant.Domain.BUSINESS,
                             AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                             (viewModel.store.value?.name
-                                ?: "Unknown") + ", previous_page: 리뷰"+ ", current_page:"+ currentPage +", duration_time: ${reviewElapsedTime / 1000}"
+                                ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
                         )
                     }
                 }
@@ -171,7 +168,7 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
                                 AnalyticsConstant.Domain.BUSINESS,
                                 AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
                                 (viewModel.store.value?.name
-                                    ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
+                                    ?: "Unknown") + ", previous_page: 리뷰" + ", current_page:" + currentPage + ", duration_time: ${reviewElapsedTime / 1000}"
                             )
                         }
                     }
@@ -244,6 +241,14 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
         viewModel.getShopMenus(storeId)
         viewModel.getShopEvents(storeId)
         viewModel.getShopReviews(storeId)
+
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_CANCEL) {
+            isSwipeGesture = true
+        }
+        return super.onTouchEvent(event)
     }
 
     override fun onBackPressed() {
@@ -251,16 +256,6 @@ class StoreDetailActivity : KoinNavigationDrawerActivity() {
             flyerDialogFragment!!.dismiss()
             flyerDialogFragment = null
             return
-        }
-
-        if (currentTab == 2) {
-            reviewElapsedTime = System.currentTimeMillis() - reviewCurrentTime
-            EventLogger.logClickEvent(
-                AnalyticsConstant.Domain.BUSINESS,
-                AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                (viewModel.store.value?.name
-                    ?: "Unknown") +", previous_page: 리뷰" +", current_page:" +currentPage+ ", duration_time: ${reviewElapsedTime / 1000}"
-            )
         }
         super.onBackPressed()
     }
