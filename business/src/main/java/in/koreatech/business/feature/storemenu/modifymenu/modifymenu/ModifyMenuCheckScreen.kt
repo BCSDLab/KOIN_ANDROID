@@ -40,6 +40,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import `in`.koreatech.business.feature.storemenu.TitleAndContent
+import `in`.koreatech.business.feature.storemenu.TitleAndImageString
+import `in`.koreatech.business.feature.storemenu.TitleAndImageUri
+import `in`.koreatech.business.feature.storemenu.TitleAndOptionPrice
 import `in`.koreatech.business.ui.theme.ColorPrimary
 import `in`.koreatech.business.ui.theme.ColorSecondary
 import `in`.koreatech.business.ui.theme.ColorSecondaryText
@@ -94,7 +98,7 @@ fun ModifyMenuCheckScreenImpl(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
                     .padding(start = 16.dp),
-                onClick = { onBackPressed }
+                onClick = { onBackPressed() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_white_arrow_back),
@@ -111,7 +115,7 @@ fun ModifyMenuCheckScreenImpl(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
+            item{
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -127,165 +131,32 @@ fun ModifyMenuCheckScreenImpl(
                         color = ColorSecondaryText
                     )
                 }
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_name),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 12.dp),
-                    text = menuName,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-
-            }
-
-            item{
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_price),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 8.dp)
-                ){
-                    if(modifyMenuState.menuOptionPrice.isEmpty()){
-                        Text(
-                            modifier = Modifier.padding(top = 16.dp),
-                            text = stringResource(id = R.string.menu_price_won, modifyMenuState.menuPrice),
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    else{
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ){
-                            modifyMenuState.menuOptionPrice.forEach { menuDetailPrice ->
-                                Text(
-                                    modifier = Modifier.padding(top = 4.dp),
-                                    text = stringResource(id = R.string.menu_price_many_won, menuDetailPrice.option, menuDetailPrice.price),
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-                }
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-            }
-
-            item{
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_category),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = modifyMenuState.menuCategoryLabel,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
             }
 
             item {
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_composition),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
+                TitleAndContent(
+                    stringId = R.string.menu_name,
+                    content = menuName
                 )
 
-                Text(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)
-                    ,
-                    text = modifyMenuState.description,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
+                TitleAndOptionPrice(
+                    optionPriceList = modifyMenuState.menuOptionPrice,
+                    menuPrice = modifyMenuState.menuPrice
                 )
 
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp),
-                    thickness = 1.dp,
-                    color = Gray7
-                )
-            }
-
-            item{
-                Text(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                    text = stringResource(id = R.string.menu_image),
-                    fontSize = 15.sp,
-                    color = ColorPrimary,
-                    fontWeight = FontWeight.Bold
+                TitleAndContent(
+                    stringId = R.string.menu_category,
+                    content = modifyMenuState.menuCategoryLabel
                 )
 
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 16.dp)
-                ) {
-                    items(modifyMenuState.imageUriList) { item ->
-                        if (item != stringResource(id = R.string.temp_uri)){
-                            Image(
-                                modifier = Modifier
-                                    .size(137.dp)
-                                    .padding(bottom = 16.dp)
-                                    .padding(end = 16.dp),
-                                painter = rememberAsyncImagePainter(
-                                    item
-                                ),
-                                contentDescription = "",
-                                contentScale = ContentScale.Crop
-                            )
-                        }
-                    }
-                }
+                TitleAndContent(
+                    stringId = R.string.menu_composition,
+                    content = modifyMenuState.description
+                )
+
+                TitleAndImageString(
+                    imageStringList = modifyMenuState.imageUriList
+                )
             }
 
             item {

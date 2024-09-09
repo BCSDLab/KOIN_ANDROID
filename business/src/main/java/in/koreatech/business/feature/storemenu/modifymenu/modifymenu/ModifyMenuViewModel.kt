@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import `in`.koreatech.business.util.getImageInfo
 import `in`.koreatech.koin.domain.constant.STORE_MENU_IMAGE_MAX
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuOptionPrice
@@ -17,6 +18,7 @@ import `in`.koreatech.koin.domain.usecase.business.menu.GetMenuInfoUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.ModifyMenuUseCase
 import `in`.koreatech.koin.domain.usecase.business.menu.RegisterMenuUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.GetMarketPreSignedUrlUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -375,42 +377,21 @@ class ModifyMenuViewModel @Inject constructor(
 
     fun onPositiveButtonClicked(context: Context){
         intent {
-
-            state.imageUriList.forEach { uriString ->
-                if (uriString != TEMP_IMAGE_URI)
-                {
-                    if(uriString.contains("content")){
-                        val uri = Uri.parse(uriString)
-
-                        val inputStream = context.contentResolver.openInputStream(uri)
-
-                        if (uri.scheme.equals("content")) {
-                            val cursor = context.contentResolver.query(uri, null, null, null, null)
-                            cursor.use {
-                                if (cursor != null && cursor.moveToFirst()) {
-                                    val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                                    val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-
-                                    if (fileNameIndex != -1 && fileSizeIndex != -1) {
-                                        val fileName = cursor.getString(fileNameIndex)
-                                        val fileSize = cursor.getLong(fileSizeIndex)
-
-                                        if (inputStream != null) {
-                                            getPreSignedUrl(
-                                                fileSize = fileSize,
-                                                fileType = "image/" + fileName.split(".")[1],
-                                                fileName = fileName,
-                                                imageUri = uriString
-                                            )
-                                        }
-                                        inputStream?.close()
-                                    }
-                                }
-                            }
+            viewModelScope.launch {
+                state.imageUriList.forEach { uriString ->
+                    if (uriString != TEMP_IMAGE_URI) {
+                        if (uriString.contains("content")) {
+                            val uri = Uri.parse(uriString)
+                            val imageInfo = getImageInfo(context, uri)
+                            getPreSignedUrl(
+                                fileSize = imageInfo.imageSize,
+                                fileType = imageInfo.imageType,
+                                fileName = imageInfo.imageName,
+                                imageUri = uriString
+                            )
+                        } else {
+                            insertStoreFileUrl(uriString)
                         }
-                    }
-                    else{
-                        insertStoreFileUrl(uriString)
                     }
                 }
             }
