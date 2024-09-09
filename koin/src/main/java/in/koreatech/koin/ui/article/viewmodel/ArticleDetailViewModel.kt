@@ -51,7 +51,7 @@ class ArticleDetailViewModel @AssistedInject constructor(
                         registeredAt = "",
                         updatedAt = "",
                     ),
-                    content = HtmlElement(HtmlTag.UNKNOWN),
+                    content = "",
                     prevArticleId = null,
                     nextArticleId = null,
                     attachments = listOf()
