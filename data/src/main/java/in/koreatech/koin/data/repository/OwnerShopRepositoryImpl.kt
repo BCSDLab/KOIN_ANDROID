@@ -6,9 +6,11 @@ import `in`.koreatech.koin.data.mapper.toStore
 import `in`.koreatech.koin.data.mapper.toStoreDetailEvents
 import `in`.koreatech.koin.data.mapper.toStoreDetailInfo
 import `in`.koreatech.koin.data.mapper.toStoreMenu
+import `in`.koreatech.koin.data.mapper.toStoreMenuInfo
 import `in`.koreatech.koin.data.response.store.StoreRegisterResponse
 import `in`.koreatech.koin.data.source.remote.OwnerRemoteDataSource
 import `in`.koreatech.koin.domain.model.owner.StoreDetailInfo
+import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuInfo
 import `in`.koreatech.koin.domain.model.store.ShopEvents
 import `in`.koreatech.koin.domain.model.store.Store
 import `in`.koreatech.koin.domain.model.store.StoreMenu
@@ -32,6 +34,10 @@ class OwnerShopRepositoryImpl @Inject constructor(
 
     override suspend fun getOwnerShopEvents(storeId: Int): ShopEvents {
         return ownerRemoteDataSource.getOwnerShopEvents(storeId).toStoreDetailEvents()
+    }
+
+    override suspend fun getStoreMenuInfo(menuId: Int): StoreMenuInfo {
+        return ownerRemoteDataSource.getStoreMenuInfo(menuId).toStoreMenuInfo()
     }
 
     override suspend fun deleteOwnerShopEvent(storeId: Int, eventId: Int) {

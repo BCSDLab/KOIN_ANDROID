@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.constant.AnalyticsConstant
 import `in`.koreatech.koin.databinding.FragmentStoreDetailEventBinding
+import `in`.koreatech.koin.domain.model.store.StoreDetailScrollType
 import `in`.koreatech.koin.ui.store.adapter.StoreDetailEventRecyclerAdapter
 import `in`.koreatech.koin.ui.store.viewmodel.StoreDetailViewModel
 import `in`.koreatech.koin.util.ext.observeLiveData
@@ -31,6 +35,7 @@ class StoreDetailEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         initViewModel()
+        initEventScrollCallback()
     }
 
     private fun initViews() {
@@ -58,5 +63,29 @@ class StoreDetailEventFragment : Fragment() {
             storeDetailEventAdapter.submitList(it)
         }
 
+        observeLiveData(viewModel.scrollUp){
+            if(it == StoreDetailScrollType.EVENT){
+                binding.storeEventScrollView.fullScroll(ScrollView.FOCUS_UP)
+                viewModel.scrollReset()
+            }
+        }
+
+    }
+
+    private fun initEventScrollCallback() {
+        binding.storeEventScrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            val contentHeight = binding.storeEventScrollView.getChildAt(0).measuredHeight
+            val scrollViewHeight = binding.storeEventScrollView.height
+            val totalScrollRange = contentHeight - scrollViewHeight
+            val seventyPercentScroll = (totalScrollRange * 0.7).toInt()
+
+            if (seventyPercentScroll in (oldScrollY + 1)..scrollY) {
+                EventLogger.logScrollEvent(
+                    AnalyticsConstant.Domain.BUSINESS,
+                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_EVENT,
+                    viewModel.store.value?.name ?: "Unknown"
+                )
+            }
+        }
     }
 }

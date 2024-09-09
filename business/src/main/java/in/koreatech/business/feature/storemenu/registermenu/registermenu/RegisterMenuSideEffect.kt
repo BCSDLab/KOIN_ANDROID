@@ -1,11 +1,20 @@
 package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
 
 sealed class RegisterMenuSideEffect {
-}
 
-sealed class ImageHolder{
-    data object TempUri: ImageHolder()
-    data class ImageUri(val imageUri: String): ImageHolder()
+    object GoToCheckMenuScreen: RegisterMenuSideEffect()
+
+    object FinishRegisterMenu: RegisterMenuSideEffect()
+    data class ShowMessage(val type: RegisterMenuErrorType): RegisterMenuSideEffect()
+}
+enum class RegisterMenuErrorType {
+    NullMenuName,
+    NullMenuPrice,
+    NullMenuCategory,
+    NullMenuDescription,
+    NullMenuImage,
+    FailUploadImage,
+    FailRegisterMenu
 }
 
 sealed class PriceHolder{

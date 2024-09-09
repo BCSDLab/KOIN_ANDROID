@@ -50,6 +50,7 @@ fun KOIN_ANDROIDTheme(
     MaterialTheme(
         colors = colorScheme,
         shapes = Shapes,
-        content = content
+        content = content,
+        typography = Typography
     )
 }

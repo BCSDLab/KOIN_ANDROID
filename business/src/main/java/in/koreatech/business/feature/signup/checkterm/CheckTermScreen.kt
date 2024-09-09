@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -139,7 +138,8 @@ fun CheckTermScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp).verticalScroll(scrollState),
+                .padding(horizontal = 24.dp)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -147,6 +147,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(40.dp)
+                    .clickable {
+                        viewModel.onAllTermCheckedChanged()
+                    }
                     .background(color = ColorTextField, shape = RoundedCornerShape(4.dp)),
                 verticalAlignment = Alignment.CenterVertically
 
@@ -160,9 +163,7 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onAllTermCheckedChanged()
-                        }
+
                 )
 
                 Text(
@@ -179,7 +180,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(22.dp)
-
+                    .clickable {
+                        viewModel.onPrivacyTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter = if (state.isCheckedPrivacyTerms || state.isAllTermChecked) painterResource(
@@ -192,10 +195,7 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onPrivacyTermCheckedChanged()
 
-                        }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
@@ -223,7 +223,9 @@ fun CheckTermScreen(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(22.dp)
-
+                    .clickable {
+                        viewModel.onKoinTermCheckedChanged()
+                    }
             ) {
                 Image(
                     painter = if (state.isCheckedKoinTerms || state.isAllTermChecked) painterResource(
@@ -236,9 +238,6 @@ fun CheckTermScreen(
                         .padding(horizontal = 8.dp)
                         .height(24.dp)
                         .width(24.dp)
-                        .clickable {
-                            viewModel.onKoinTermCheckedChanged()
-                        }
                 )
 
                 Text(
