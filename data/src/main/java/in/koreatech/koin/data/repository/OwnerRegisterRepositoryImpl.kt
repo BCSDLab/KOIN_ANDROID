@@ -166,8 +166,7 @@ class OwnerRegisterRepositoryImpl(
                 )
             )
         }.onFailure {exception ->
-
-        if(exception is CancellationException) throw exception
+            if(exception is CancellationException) throw exception
         }
 
     }
