@@ -1,6 +1,7 @@
-package `in`.koreatech.business.feature.storemenu.registermenu.registermenu
+package `in`.koreatech.business.feature.storemenu.modifymenu.modifymenu
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +45,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -56,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import `in`.koreatech.business.feature.store.navigator.ModifyInfoNavigator
 import `in`.koreatech.business.feature.textfield.MenuBorderTextField
 import `in`.koreatech.business.ui.theme.ColorAccent
 import `in`.koreatech.business.ui.theme.ColorMinor
@@ -68,23 +67,21 @@ import `in`.koreatech.business.ui.theme.ColorTransparency
 import `in`.koreatech.business.ui.theme.Gray6
 import `in`.koreatech.business.ui.theme.Gray7
 import `in`.koreatech.koin.core.R
-import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.domain.model.owner.menu.StoreMenuCategory
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 
 
 @Composable
-fun RegisterMenuScreen(
+fun ModifyMenuScreen(
     modifier: Modifier = Modifier,
     goToCheckMenuScreen: () -> Unit,
     onBackPressed: () -> Unit,
-    viewModel: RegisterMenuViewModel = hiltViewModel()
+    viewModel: ModifyMenuViewModel = hiltViewModel()
 ) {
     val state = viewModel.collectAsState().value
 
-    RegisterMenuScreenImpl(
+    ModifyMenuScreenImpl(
         onBackPressed = onBackPressed,
         registerMenuState = state,
         imageIndex = state.imageIndex,
@@ -111,7 +108,7 @@ fun RegisterMenuScreen(
             viewModel.addPrice()
         },
         onMenuCategoryIsClicked = {
-          viewModel.menuCategoryIsClicked(it)
+            viewModel.menuCategoryIsClicked(it)
         },
         onChangeImage = {
             viewModel.changeMenuImageUri(it)
@@ -132,16 +129,15 @@ fun RegisterMenuScreen(
             viewModel.onNextButtonClick()
         },
     )
-
-    HandleSideEffects(viewModel, goToCheckMenuScreen)
+    //HandleSideEffects(viewModel, goToCheckMenuScreen)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RegisterMenuScreenImpl(
+fun ModifyMenuScreenImpl(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    registerMenuState: RegisterMenuState = RegisterMenuState(),
+    registerMenuState: ModifyMenuState = ModifyMenuState(),
     imageIndex: Int = 0,
     isModify: Boolean = false,
     changeMenuName: (String) -> Unit = {},
@@ -154,7 +150,7 @@ fun RegisterMenuScreenImpl(
     onMenuCategoryIsClicked: (Int) -> Unit = {},
     onChangeImage: (List<Uri>) -> Unit = {},
     onDeleteImage: (Int) -> Unit ={},
-    onModifyImage: (Uri) -> Unit ={},
+    onModifyImage: (String) -> Unit ={},
     setImageModify:(Boolean) -> Unit ={},
     setImageIndex: (Int) -> Unit = {},
     onNextButtonClicked: () -> Unit ={}
@@ -173,7 +169,7 @@ fun RegisterMenuScreenImpl(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
             if (uri != null) {
-                onModifyImage(uri)
+                onModifyImage(uri.toString())
             }
         }
     )
@@ -289,7 +285,7 @@ fun RegisterMenuScreenImpl(
                     )
                 }
                 Text(
-                    text = stringResource(R.string.menu_add),
+                    text = stringResource(R.string.menu_modify),
                     modifier = Modifier.align(Alignment.Center),
                     style = TextStyle(color = Color.White, fontSize = 20.sp),
                 )
@@ -509,7 +505,7 @@ fun RegisterMenuScreenImpl(
                             .padding(top = 16.dp)
                     ) {
                         itemsIndexed(registerMenuState.imageUriList) { index, item ->
-                            if (item == Uri.EMPTY) {
+                            if (item == stringResource(id = R.string.temp_uri)) {
                                 Image(
                                     modifier = Modifier
                                         .size(137.dp)
@@ -635,7 +631,7 @@ fun RegisterMenuScreenImpl(
     }
 }
 
-@Composable
+/*@Composable
 private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScreen: () -> Unit) {
     val context = LocalContext.current
 
@@ -657,7 +653,7 @@ private fun HandleSideEffects(viewModel: RegisterMenuViewModel, goToCheckMenuScr
             else -> ""
         }
     }
-}
+}*/
 
 @Composable
 fun CategoryRadioButton(
@@ -703,47 +699,47 @@ private fun CategoryRadioButtonScreen(
             .padding(horizontal = 16.dp)
             .padding(top = 8.dp)
     ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ){
-                CategoryRadioButton(
-                    buttonName = menuCategory[0].menuCategoryName,
-                    isClicked = menuCategory[0].menuCategoryIsChecked,
-                    index = 0,
-                    onButtonClicked = onMenuCategoryIsClicked
-                )
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ){
+            CategoryRadioButton(
+                buttonName = menuCategory[0].menuCategoryName,
+                isClicked = menuCategory[0].menuCategoryIsChecked,
+                index = 0,
+                onButtonClicked = onMenuCategoryIsClicked
+            )
 
-                Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f))
 
-                CategoryRadioButton(
-                    buttonName = menuCategory[1].menuCategoryName,
-                    isClicked = menuCategory[1].menuCategoryIsChecked,
-                    index = 1,
-                    onButtonClicked = onMenuCategoryIsClicked
-                )
-            }
+            CategoryRadioButton(
+                buttonName = menuCategory[1].menuCategoryName,
+                isClicked = menuCategory[1].menuCategoryIsChecked,
+                index = 1,
+                onButtonClicked = onMenuCategoryIsClicked
+            )
+        }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            ){
-                CategoryRadioButton(
-                    buttonName = menuCategory[2].menuCategoryName,
-                    isClicked = menuCategory[2].menuCategoryIsChecked,
-                    index = 2,
-                    onButtonClicked = onMenuCategoryIsClicked
-                )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ){
+            CategoryRadioButton(
+                buttonName = menuCategory[2].menuCategoryName,
+                isClicked = menuCategory[2].menuCategoryIsChecked,
+                index = 2,
+                onButtonClicked = onMenuCategoryIsClicked
+            )
 
-                Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(1f))
 
-                CategoryRadioButton(
-                    buttonName = menuCategory[3].menuCategoryName,
-                    isClicked =  menuCategory[3].menuCategoryIsChecked,
-                    index = 3,
-                    onButtonClicked = onMenuCategoryIsClicked
-                )
-            }
+            CategoryRadioButton(
+                buttonName = menuCategory[3].menuCategoryName,
+                isClicked =  menuCategory[3].menuCategoryIsChecked,
+                index = 3,
+                onButtonClicked = onMenuCategoryIsClicked
+            )
+        }
     }
 }
 
@@ -857,7 +853,7 @@ fun PreviewDetailMenuTextField() {
 @Preview
 @Composable
 fun PreviewRegisterMenuScreen(){
-    RegisterMenuScreenImpl(
+    ModifyMenuScreenImpl(
         modifier = Modifier,
         onBackPressed = {},
     )
