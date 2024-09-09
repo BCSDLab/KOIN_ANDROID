@@ -47,7 +47,7 @@ data class ArticleResponse(
 
     fun toArticle() = Article(
         header = toArticleHeader(),
-        content = Jsoup.parse(content ?: "").toHtmlModel(),
+        content = content ?: "",
         prevArticleId = prevArticleId,
         nextArticleId = nextArticleId,
         attachments = attachments?.map { it.toAttachment() } ?: listOf()
