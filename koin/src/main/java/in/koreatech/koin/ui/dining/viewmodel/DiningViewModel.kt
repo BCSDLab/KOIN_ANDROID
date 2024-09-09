@@ -78,14 +78,11 @@ class DiningViewModel @Inject constructor(
     fun getDining(
         date: String = selectedDate.value
     ) {
-        Log.d("dddddddddddddddd555555555", date)
         if (isLoading.value == false) {
             viewModelScope.launchWithLoading {
                 getDiningUseCase(date)
                     .onSuccess {
-                        _dining.value = it.also {
-                            Log.d("dddddddddddddddd6666666", it.toString())
-                        }
+                        _dining.value = it
                     }
                     .onFailure {
 
