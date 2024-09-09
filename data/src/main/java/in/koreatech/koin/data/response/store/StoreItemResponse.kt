@@ -13,6 +13,8 @@ data class StoreItemResponse(
     @SerializedName("category_ids") val categoryIds: List<Int>?,
     @SerializedName("is_event") val  isEvent: Boolean?,
     @SerializedName("is_open") val  isOpen: Boolean?,
+    @SerializedName("average_rate") val averageRate : Double,
+    @SerializedName("review_count") val reviewCount : Int
 ) {
     data class OpenResponseDTO(
         @SerializedName("day_of_week")
