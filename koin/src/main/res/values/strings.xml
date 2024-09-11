@@ -284,9 +284,9 @@
     <string name="change_password_warning_password_wrong">비밀번호가 일치하지 않습니다</string>
 
     <string name="change_password_verify_title">1. 계정인증</string>
-    <string name="change_password_verify_id">아이디</string>
-    <string name="change_password_verify_current_pwd">현재 비밀번호</string>
-    <string name="change_password_verify_current_pwd_hint">현재 비밀번호를 다시 입력해주세요.</string>
+    <string name="change_password_verify_id_title">아이디</string>
+    <string name="change_password_verify_current_pwd_title">현재 비밀번호</string>
+    <string name="change_password_verify_current_pwd_hint">현재 비밀번호를 입력해주세요.</string>
 
     <string name="change_password_change_title">2. 비밀번호 변경</string>
     <string name="change_password_change_new_password">새 비밀번호</string>
@@ -295,7 +295,7 @@
     <string name="change_password_change_confirm_new_password_hint">새 비밀번호를 다시 입력해주세요.</string>
     <string name="change_password_change_terms_english">영어 포함</string>
     <string name="change_password_change_terms_number">숫자 포함</string>
-    <string name="change_password_change_terms_special_symbol">특수문자 포함</string>
+    <string name="change_password_change_terms_symbol">특수문자 포함</string>
     <string name="change_password_change_terms_length">6자이상 18자 이내 입력</string>
     <string name="change_password_change_complete">비밀번호 변경이 완료되었습니다.</string>
 

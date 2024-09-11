@@ -153,6 +153,14 @@
     <!-- Danger -->
     <!-- Warning -->
     <!-- Success -->
+    <color name="success_700">#0C9D61</color>
+    <color name="success_600">#47B881</color>
+    <color name="success_500">#6BC497</color>
+    <color name="success_400">#97D4B4</color>
+    <color name="success_300">#C0E5D1</color>
+    <color name="success_200">#E5F5EC</color>
+    <color name="success_100">#F2FAF6</color>
+    <color name="success_50">#FBFEFC</color>
     <!-- Info -->
 
 </resources>

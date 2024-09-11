@@ -63,4 +63,8 @@ class UserRemoteDataSource(
     suspend fun verifyPassword(passwordRequest: PasswordRequest) {
         userAuthApi.checkPassword(passwordRequest)
     }
+
+    suspend fun updateUserPassword(passwordRequest: PasswordRequest) {
+        userAuthApi.updateUserPassword(passwordRequest)
+    }
 }

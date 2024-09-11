@@ -10,7 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.ActivityBase
+import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.databinding.ActivityChangePasswordBinding
 import kotlinx.coroutines.launch
 
@@ -63,6 +65,28 @@ class ChangePasswordActivity : ActivityBase() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currentStep.collect {
                     binding.vpContainer.setCurrentItem(it.ordinal, true)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.onFinishStep.collect {
+                    viewModel.changeUserPassword()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isPasswordChangeSuccess.collect { isSuccessful ->
+                    if(isSuccessful) {
+                        ToastUtil.getInstance().makeShort(R.string.change_password_change_complete)
+                        finish()
+                    }
+                    else {
+                        ToastUtil.getInstance().makeShort(R.string.server_failed)
+                    }
                 }
             }
         }
