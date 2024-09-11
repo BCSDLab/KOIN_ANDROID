@@ -100,4 +100,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun verifyPassword(hashedPassword: String) {
         userRemoteDataSource.verifyPassword(PasswordRequest(hashedPassword))
     }
+
+    override suspend fun updateUserPassword(hashedPassword: String) {
+        userRemoteDataSource.updateUserPassword(PasswordRequest(hashedPassword))
+    }
 }

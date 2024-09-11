@@ -51,4 +51,7 @@ interface UserAuthApi {
 
     @POST(URLConstant.USER.CHECKPASSWORD)
     suspend fun checkPassword(@Body passwordRequest: PasswordRequest)
+
+    @PUT(URLConstant.USER.ME)
+    suspend fun updateUserPassword(@Body passwordRequest: PasswordRequest)
 }
