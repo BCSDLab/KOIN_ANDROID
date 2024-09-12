@@ -19,6 +19,7 @@ import android.util.AttributeSet;
 import in.koreatech.koin.core.R;
 import in.koreatech.koin.core.analytics.EventLogger;
 import in.koreatech.koin.core.constant.AnalyticsConstant;
+import in.koreatech.koin.core.util.FontManager;
 
 
 public class AppBarBase extends AppBarLayout {
@@ -26,9 +27,8 @@ public class AppBarBase extends AppBarLayout {
     public TextView leftButton;
     public TextView rightButton;
     public TextView title;
-    final Typeface textFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/notosans_medium.ttf");
+    final Typeface textFont = FontManager.getTypeface(getContext(), FontManager.KoinFontType.PRETENDARD_MEDIUM);
     public OnClickListener onClickListener;
-
 
     public AppBarBase(Context context) {
         super(context);
@@ -60,6 +60,16 @@ public class AppBarBase extends AppBarLayout {
                     getContext().getString(R.string.hamburger)
             );
         });
+        title.setOnClickListener(onClickListener);
+    }
+
+
+    public void storeDetailClickListener(OnClickListener onClickListener) {
+        if (onClickListener == null) return;
+        this.onClickListener = onClickListener;
+        background.setOnClickListener(onClickListener);
+        leftButton.setOnClickListener(onClickListener);
+        rightButton.setOnClickListener( onClickListener);
         title.setOnClickListener(onClickListener);
     }
 

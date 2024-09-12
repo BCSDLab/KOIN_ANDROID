@@ -13,8 +13,12 @@ data class Store(
     val isDeliveryOk: Boolean,
     val isCardOk: Boolean,
     val isBankOk: Boolean,
+    val isEvent: Boolean,
+    val isOpen: Boolean,
+    val averageRate : Double,
+    val reviewCount : Int,
     val open: OpenData,
-    val categoryIds: List<StoreCategory?>,
+    val categoryIds: List<StoreCategory?>
 ) {
     data class OpenData(
         val dayOfWeek: String,

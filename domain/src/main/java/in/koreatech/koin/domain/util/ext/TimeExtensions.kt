@@ -15,7 +15,7 @@ val localDayOfWeekName get() = when(localDateTimeNow.dayOfWeek.value) {
     5 -> "FRIDAY"
     6 -> "SATURDAY"
     7 -> "SUNDAY"
-    else -> {}
+    else -> ""
 }
 
 val LocalTime.HHMM get() = this.format(DateTimeFormatter.ofPattern("HH:mm"))
@@ -27,6 +27,12 @@ fun LocalTime.isEqualOrBigger(time: LocalTime): Boolean =
 // this <= time (17:00 <= 22:00)
 fun LocalTime.isEqualOrSmaller(time: LocalTime): Boolean =
     this.isBefore(time) || this.equals(time)
+
+fun LocalTime.isAm(): Boolean =
+    this.isBefore(LocalTime.of(12, 0))
+
+fun LocalTime.isPm(): Boolean =
+    this.isAfter(LocalTime.of(12, 0)) || this.equals(LocalTime.of(12, 0))
 
 val Int.second get() = this * 1000L
 val Int.minute get() = this * 60 * 1000L

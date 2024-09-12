@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="16dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.Koin.Medium.18"
+        android:textColor="@color/neutral_800"
+        app:layout_constraintEnd_toStartOf="@id/btn_switch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="식단 알림" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+        android:textColor="@color/neutral_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:text="오늘 나오는 식단 알림을 받습니다." />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/btn_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:background="@null"
+        android:thumb="@drawable/selector_thumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_title"
+        app:layout_constraintTop_toTopOf="@id/tv_title"
+        app:showText="false"
+        app:track="@drawable/selector_switch" />
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/btn_switch_fake"
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:background="@null"
+        android:checked="true"
+        android:thumb="@drawable/selector_thumb"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/btn_switch"
+        app:layout_constraintStart_toEndOf="@id/btn_switch"
+        app:layout_constraintStart_toStartOf="@+id/btn_switch"
+        app:layout_constraintTop_toTopOf="@id/btn_switch"
+        app:showText="false"
+        app:track="@drawable/selector_switch" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,13 +10,13 @@
 
     <string-array name="major">
         <item></item>
-        <item>@string/mechanical_engineering</item>
-        <item>@string/mechatronics_engineering</item>
-        <item>@string/electrical_electronics_and_communication_engineering</item>
-        <item>@string/computer_science_and_engineering</item>
-        <item>@string/industrial_design_and_architectural_engineering</item>
-        <item>@string/energy_meterials_chemical_engineering</item>
-        <item>@string/industrial_management</item>
+        <item>@string/major_mechanical_engineering</item>
+        <item>@string/major_mechatronics_engineering</item>
+        <item>@string/major_electrical_electronics_and_communication_engineering</item>
+        <item>@string/major_computer_science_and_engineering</item>
+        <item>@string/major_industrial_design_and_architectural_engineering</item>
+        <item>@string/major_energy_meterials_chemical_engineering</item>
+        <item>@string/major_industrial_management</item>
     </string-array>
 
     <string-array name="days">

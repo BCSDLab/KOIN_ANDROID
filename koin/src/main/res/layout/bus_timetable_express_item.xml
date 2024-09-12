@@ -2,7 +2,6 @@
 <layout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,48 +11,32 @@
             android:id="@+id/text_view_bus_departure_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            tools:text="08:35"
             android:layout_weight="1"
-            android:textColor="@color/black"
-            android:textSize="13sp" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue1" />
+            android:gravity="center"
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            tools:text="08:35" />
 
         <TextView
             android:id="@+id/text_view_bus_arrival_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            tools:text="08:56"
-            android:textColor="@color/black"
-            android:textSize="13sp"
-            android:layout_weight="1"/>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:background="@color/blue1" />
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
+            tools:text="08:56" />
 
         <TextView
             android:id="@+id/text_view_charge"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:minWidth="96dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textColor="@color/black"
-            android:textSize="13sp"
+            android:paddingVertical="8dp"
+            android:textAppearance="@style/TextAppearance.Koin.Regular.16"
             tools:text="1700원" />
-
 
     </LinearLayout>
 </layout>
