@@ -7,14 +7,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import `in`.koreatech.koin.R
+import `in`.koreatech.koin.core.activity.ActivityBase
 import `in`.koreatech.koin.core.toast.ToastUtil
 import `in`.koreatech.koin.core.util.dataBinding
 import `in`.koreatech.koin.core.util.setAppBarButtonClickedListener
 import `in`.koreatech.koin.databinding.ActivityUserInfoEditedBinding
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.ui.navigation.KoinNavigationDrawerActivity
-import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.userinfo.contract.UserInfoEditContract
 import `in`.koreatech.koin.ui.userinfo.state.NicknameCheckState
 import `in`.koreatech.koin.ui.userinfo.viewmodel.UserInfoEditViewModel
@@ -25,9 +24,7 @@ import `in`.koreatech.koin.util.ext.withLoading
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserInfoEditActivity : KoinNavigationDrawerActivity() {
-    override val menuState: MenuState = MenuState.UserInfo
-
+class UserInfoEditActivity : ActivityBase() {
     private val binding by dataBinding<ActivityUserInfoEditedBinding>(R.layout.activity_user_info_edited)
     override val screenTitle = "내 정보 수정"
     private val userInfoEditViewModel by viewModels<UserInfoEditViewModel>()
@@ -62,11 +59,10 @@ class UserInfoEditActivity : KoinNavigationDrawerActivity() {
                         else -> Gender.Unknown
                     },
                     studentId = binding.userinfoeditedEdittextStudentId.textString,
-                    major = userinfoeditedSpinnerMajor.selected.text.toString()
+                    major = userinfoeditedSpinnerMajor.text.toString()
                 )
             }
         )
-
         userinfoeditedSpinnerMajor.lifecycleOwner = this@UserInfoEditActivity
 
         userinfoeditedButtonNicknameCheck.setOnClickListener {
