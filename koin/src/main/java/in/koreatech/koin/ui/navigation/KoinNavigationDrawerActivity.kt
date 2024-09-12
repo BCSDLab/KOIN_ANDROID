@@ -37,11 +37,10 @@ import `in`.koreatech.koin.ui.login.LoginActivity
 import `in`.koreatech.koin.ui.main.activity.MainActivity
 import `in`.koreatech.koin.ui.navigation.state.MenuState
 import `in`.koreatech.koin.ui.navigation.viewmodel.KoinNavigationDrawerViewModel
-import `in`.koreatech.koin.ui.notification.NotificationActivity
+import `in`.koreatech.koin.ui.setting.SettingActivity
 import `in`.koreatech.koin.ui.store.activity.StoreActivity
 import `in`.koreatech.koin.ui.timetable.TimetableActivity
 import `in`.koreatech.koin.ui.timetable.TimetableAnonymousActivity
-import `in`.koreatech.koin.ui.userinfo.UserInfoActivity
 import `in`.koreatech.koin.util.ext.addDrawerListener
 import `in`.koreatech.koin.util.ext.blueStatusBar
 import `in`.koreatech.koin.util.ext.closeDrawer
@@ -52,6 +51,7 @@ import `in`.koreatech.koin.util.ext.whiteStatusBar
 import `in`.koreatech.koin.util.ext.windowWidth
 import kotlinx.coroutines.launch
 
+// TODO:: UserInfo 걷어내고 Notification 걷어내고 Setting 추가하기
 @AndroidEntryPoint
 abstract class KoinNavigationDrawerActivity : ActivityBase(),
     NavigationView.OnNavigationItemSelectedListener {
@@ -72,26 +72,28 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
 
     private val menus by lazy {
         listOf(
-            R.id.navi_item_notification,
-            R.id.navi_item_myinfo,
+            R.id.navi_item_setting,
             R.id.navi_item_login_or_logout,
             R.id.navi_item_store,
-            R.id.navi_item_bus, R.id.navi_item_dining,
-            R.id.navi_item_timetable, R.id.navi_item_land,
-            R.id.navi_item_owner
+            R.id.navi_item_bus,
+            R.id.navi_item_dining,
+            R.id.navi_item_timetable,
+            R.id.navi_item_land,
+            R.id.navi_item_owner,
+            R.id.navi_item_contact
         ).map {
             findViewById<View>(it)
         }.zip(
             listOf(
-                MenuState.Notification,
-                MenuState.UserInfo,
+                MenuState.Setting,
                 MenuState.LoginOrLogout,
                 MenuState.Store,
                 MenuState.Bus,
                 MenuState.Dining,
                 MenuState.Timetable,
                 MenuState.Land,
-                MenuState.Owner
+                MenuState.Owner,
+                MenuState.Contact
             )
         ) { view, state ->
             state to view
@@ -169,6 +171,19 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                     else -> {
                         koinNavigationDrawerViewModel.selectMenu(state)
                         when (state) {
+                            MenuState.Setting -> {
+                                // TODO::로그 변경 사항 전달하여 수정하기
+//                                EventLogger.logClickEvent(
+//                                    AnalyticsConstant.Domain.USER,
+//                                    AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
+//                                    getString(R.string.navigation_item_my_info)
+//                                )
+                            }
+
+                            MenuState.LoginOrLogout -> {
+                                //
+                            }
+
                             MenuState.Store -> {
                                 EventLogger.logClickEvent(
                                     AnalyticsConstant.Domain.BUSINESS,
@@ -193,23 +208,10 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                                 )
                             }
 
-                            MenuState.UserInfo -> {
-                                if (koinNavigationDrawerViewModel.userInfoFlow.value.isAnonymous) {
-                                    EventLogger.logClickEvent(
-                                        AnalyticsConstant.Domain.USER,
-                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITHOUT_LOGIN,
-                                        getString(R.string.navigation_item_my_info)
-                                    )
-                                } else {
-                                    EventLogger.logClickEvent(
-                                        AnalyticsConstant.Domain.USER,
-                                        AnalyticsConstant.Label.HAMBURGER_MY_INFO_WITH_LOGIN,
-                                        getString(R.string.navigation_item_my_info)
-                                    )
-                                }
-                            }
+                            MenuState.Contact -> {
+                                // TODO::로그 변경 사항 전달하여 수정하기
 
-                            MenuState.LoginOrLogout -> {}
+                            }
 
                             else -> Unit
                         }
@@ -258,28 +260,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                 MenuState.Land -> goToLandActivity()
                 MenuState.Main -> goToMainActivity()
                 MenuState.Store -> goToStoreActivity()
-                MenuState.Timetable -> {
-                    if (userInfoFlow.value.isAnonymous) {
-                        goToAnonymousTimeTableActivity()
-                    } else {
-                        goToTimetableActivty()
-                    }
-                }
-
-                MenuState.UserInfo -> {
-                    if (userInfoFlow.value.isAnonymous) {
-                        loginAlertDialog.show()
-                    } else {
-                        goToUserInfoActivity()
-                    }
-                }
-
-                MenuState.Notification -> {
-                    if (userInfoFlow.value.isAnonymous) {
-                        loginAlertDialog.show()
-                    } else {
-                        goToNotificationActivity()
-                    }
+                MenuState.Setting -> {
+                    goToSettingActivity()
                 }
 
                 MenuState.LoginOrLogout -> {
@@ -287,6 +269,18 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         logout()
                     }
                     goToLoginActivity()
+                }
+
+                MenuState.Timetable -> {
+                    if (userInfoFlow.value.isAnonymous) {
+                        goToAnonymousTimeTableActivity()
+                    } else {
+                        goToTimetableActivity()
+                    }
+                }
+
+                MenuState.Contact -> {
+                    goToContactWebActivity()
                 }
 
                 else -> Unit
@@ -305,9 +299,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                         }
 
                         is User.Student -> {
-                            nameTextView.text = if(user.nickname?.isNotEmpty() == true) {
+                            nameTextView.text = if (user.nickname?.isNotEmpty() == true) {
                                 user.nickname!!
-                            } else if(user.name?.isNotEmpty() == true) {
+                            } else if (user.name?.isNotEmpty() == true) {
                                 user.name!!
                             } else {
                                 "회원"
@@ -317,7 +311,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
                             loginOrLogoutTextView.text = getString(R.string.navigation_item_logout)
 
                             when (menuState) {
-                                MenuState.Main, MenuState.Notification -> {
+                                MenuState.Main -> {
                                     if (!checkMainPermission()) requestMainPermissionLauncher.launch(MAIN_REQUIRED_PERMISSION)
                                     koinNavigationDrawerViewModel.updateDeviceToken()
                                 }
@@ -330,6 +324,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
             }
         }
     }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val itemId = item.itemId
@@ -435,7 +430,7 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         }
     }
 
-    private fun goToTimetableActivty() {
+    private fun goToTimetableActivity() {
         if (menuState != MenuState.Main) {
             goToActivityFinish(Intent(this, TimetableActivity::class.java))
         } else {
@@ -462,14 +457,8 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
     /**
      * right navigation drawer 서비스 메뉴 호출
      */
-    private fun goToUserInfoActivity() {
-        Intent(this, UserInfoActivity::class.java).apply {
-            startActivity(this)
-        }
-    }
-
-    private fun goToNotificationActivity() {
-        Intent(this, NotificationActivity::class.java).apply {
+    private fun goToSettingActivity() {
+        Intent(this, SettingActivity::class.java).apply {
             startActivity(this)
         }
     }
@@ -480,7 +469,9 @@ abstract class KoinNavigationDrawerActivity : ActivityBase(),
         finish()
     }
 
-    private fun goToNavigationDeveloper() {
+
+    //TODO:: 문의하기 이거로 변경
+    private fun goToContactWebActivity() {
         Intent(this, WebViewActivity::class.java).apply {
             putExtra("title", getString(R.string.bcsd_webpage_name))
             putExtra("url", "https://bcsdlab.com/")
